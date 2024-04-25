@@ -17,6 +17,7 @@ import androidx.navigation.compose.rememberNavController
 import com.tidal.sdk.auth.Auth
 import com.tidal.sdk.auth.CredentialsProvider
 import com.tidal.sdk.auth.TidalAuth
+import com.tidal.sdk.auth.demo.BuildConfig
 import com.tidal.sdk.auth.model.AuthConfig
 import com.tidal.sdk.auth.model.AuthResult
 import com.tidal.sdk.auth.model.DeviceAuthorizationResponse
@@ -48,9 +49,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         val authConfig = AuthConfig(
-            // Currently, for development, add a clientID and a unique key here manually
-            clientId = "YOUR_CLIENT_ID",
-            clientUniqueKey = "YOUR_CLIENT_UNIQUE_CODE",
+            // Make sure to provide your clientId and required credentials in local.properties
+            clientId = BuildConfig.TIDAL_CLIENT_ID,
+            clientSecret = BuildConfig.TIDAL_CLIENT_SECRET,
             credentialsKey = STORAGE_KEY,
             scopes = setOf("YOUR_SCOPES"),
             enableCertificatePinning = true,
