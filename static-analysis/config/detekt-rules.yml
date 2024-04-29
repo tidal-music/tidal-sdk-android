@@ -1,0 +1,39 @@
+build:
+  maxIssues: 0
+
+exceptions:
+  SwallowedException:
+    excludes: [ '**/test/**', '**/androidTest/**' ]
+  TooGenericExceptionCaught:
+    exceptionNames:
+      - Error
+      - Exception
+      - IllegalMonitorStateException
+      - NullPointerException
+      - RuntimeException
+      - Throwable
+  PrintStackTrace:
+    active: false
+
+naming:
+  FunctionNaming:
+    ignoreAnnotated: ['Composable']
+
+performance:
+  SpreadOperator:
+    active: false
+
+style:
+  MaxLineLength:
+    maxLineLength: 100
+    excludes: ['**/test/**', '**/androidTest/**']
+  UnusedPrivateMember:
+    ignoreAnnotated: [ 'Preview' ]
+
+complexity: 
+  LargeClass:
+    excludes: ['**/test/**', '**/androidTest/**']
+  LongParameterList:
+    excludes: ['**Module.kt', '**Service.kt', '**Repository.kt', '**/test/**', '**/androidTest/**']
+  TooManyFunctions:
+     excludes: ['**Module.kt', '**Service.kt', '**Repository.kt', '**/test/**', '**/androidTest/**']

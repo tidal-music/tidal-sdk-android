@@ -1,0 +1,15 @@
+.DS_Store
+**/.idea
+/projectFilesBackup
+.gradle
+.DS_Store
+*.iml
+*.ipr
+*.iws
+**/version.json
+**/build/
+**/local.properties
+gradle-user-home
+profile-out*/
+local.settings.gradle.kts
+static-analysis/bin

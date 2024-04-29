@@ -1,0 +1,135 @@
+[versions]
+activity-compose = "1.8.2"
+coroutines = "1.8.0"
+compose-compiler = "1.5.11"
+compose-libs = "1.6.5"
+compose-navigation = "2.7.7"
+core-ktx = "1.12.0"
+dagger = "2.51.1"
+dokka = "1.9.20"
+junit5 = "5.10.2"
+kotlin = "1.9.23"
+kotlin-logging = "6.0.3"
+mockito = "5.8.0"
+mockito-kotlin = "5.2.1"
+moshi = "1.15.1"
+okhttp3 = "4.12.0"
+plugin-android = "8.2.2"
+retrofit = "2.11.0"
+room = "2.6.1"
+slf4j-api = "2.0.12"
+tickaroo = "0.8.13"
+tidal-androidx-media = "1.1.1.1"
+plugins-tidal = "unspecified"
+
+[libraries]
+plugin-kotlin-android = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+plugin-android-tools-build = { group = "com.android.tools.build", name = "gradle", version.ref = "plugin-android" }
+plugin-dokka = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
+plugin-gradle-maven-publish = { module = "com.vanniktech:gradle-maven-publish-plugin", version = "0.28.0" }
+
+# Android
+androidx-annotations = "androidx.annotation:annotation:1.3.0"
+androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
+androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version = "2.7.0" }
+
+# Compose
+compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose-libs" }
+compose-material = { module = "androidx.compose.material:material", version.ref = "compose-libs" }
+compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "compose-navigation" }
+androidx-compose-bom = "androidx.compose:compose-bom:2024.04.00"
+androidx-compose-material3 = { module = "androidx.compose.material3:material3" }
+
+# Coroutines
+kotlinxCoroutinesAndroid = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
+kotlinxCoroutinesCore = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
+
+# Dependency injection
+dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
+dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
+
+dokka-android = { module = "org.jetbrains.dokka:android-documentation-plugin", version.ref = "dokka" }
+gson = "com.google.code.gson:gson:2.9.0"
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
+kotlin-logging = { module = "io.github.oshai:kotlin-logging-jvm", version.ref = "kotlin-logging" }
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j-api" }
+truetime = "com.github.instacart.truetime-android:library-extension-rx:3.5"
+
+# Moshi
+moshi = { module = "com.squareup.moshi:moshi", version.ref ="moshi"}
+moshi-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "moshi" }
+
+# Networking
+okhttp-okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp3" }
+okhttp-loggingInterceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp3" }
+okhttp-mockwebserver = { module = "com.squareup.okhttp3:mockwebserver", version.ref = "okhttp3" }
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+retrofit-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
+
+# Room
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+
+# Serialization
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version = "0.5.0" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.6.3" }
+kotlinx-serialization-retrofit-converter = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter", version = "1.0.0" }
+
+# SDK
+tidal-sdk-common = { module = "com.tidal.sdk:common", version = "0.2.3" }
+tidal-sdk-auth = { module = "com.tidal.sdk:auth", version = "0.6.0" }
+tidal-sdk-eventproducer = { module = "com.tidal.sdk:eventproducer", version = "0.2.9" }
+tidal-sdk-player = { module = "com.tidal.sdk:player", version = "0.0.36" }
+
+# Testing
+test-androidx-espresso-core = "androidx.test.espresso:espresso-core:3.5.1"
+test-androidx-junit = { module = "androidx.test.ext:junit", version = "1.1.5" }
+test-androidx-runner = { module = "androidx.test:runner", version = "1.5.2" }
+test-androidx-orchestrator = { module = "androidx.test:orchestrator", version = "1.4.2" }
+test-assertk = "com.willowtreeapps.assertk:assertk-jvm:0.28.0"
+test-fluidtime = { module = "io.fluidsonic.time:fluid-time", version = "0.18.0" }
+test-junit5Api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit5" }
+test-junit5Engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit5" }
+test-junit5Params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "junit5" }
+test-kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+test-mockk = { module = "io.mockk:mockk", version = "1.13.9" }
+test-mockito-android = { module = "org.mockito:mockito-android", version.ref = "mockito" }
+test-mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito-kotlin" }
+test-turbine = { module = "app.cash.turbine:turbine", version = "1.0.0" }
+
+#Tickaroo
+tickaroo-annotation = { module = "com.tickaroo.tikxml:annotation", version.ref = "tickaroo" }
+tickaroo-core = { module = "com.tickaroo.tikxml:core", version.ref = "tickaroo" }
+tickaroo-processor = { module = "com.tickaroo.tikxml:processor", version.ref = "tickaroo" }
+tickaroo-retrofitConverter = { module = "com.tickaroo.tikxml:retrofit-converter", version.ref = "tickaroo" }
+
+tidal-exoPlayer-core = { module = "tidal.androidx.media3:media3-exoplayer", version.ref = "tidal-androidx-media" }
+tidal-exoPlayer-dash = { module = "tidal.androidx.media3:media3-exoplayer-dash", version.ref = "tidal-androidx-media" }
+tidal-exoPlayer-hls = { module = "tidal.androidx.media3:media3-exoplayer-hls", version.ref = "tidal-androidx-media" }
+tidal-exoPlayer-extension-flac = { module = "tidal.androidx.media3:media3-flac", version.ref = "tidal-androidx-media" }
+tidal-exoPlayer-extension-okhttp = { module = "tidal.androidx.media3:media3-datasource-okhttp", version.ref = "tidal-androidx-media" }
+
+# Security
+androidx-security-crypto = { module = "androidx.security:security-crypto", version = "1.0.0" }
+
+[bundles]
+compose = [
+    "androidx-activity-compose",
+    "compose-ui",
+    "compose-material",
+    "compose-navigation"
+]
+
+[plugins]
+android-junit5 = { id = "de.mannodermaus.android-junit5", version = "1.10.0.0" }
+google-devtools-ksp = { id = "com.google.devtools.ksp", version = "1.9.23-1.0.20" }
+gradle-maven-publish = { id = "com.vanniktech.maven.publish", version = "0.28.0" }
+kotlin-dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+kotlin-plugin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+tidal-android-application = { id = "com.tidal-sdk.android.application", version.ref = "plugins-tidal" }
+tidal-android-library = { id = "com.tidal-sdk.android.library", version.ref = "plugins-tidal"  }
+tidal-kotlin-jvm = { id = "com.tidal-sdk.kotlin.jvm", version.ref = "plugins-tidal" }
+tidal-jvm-platform = { id = "com.tidal-sdk.jvm.platform", version.ref = "plugins-tidal" }

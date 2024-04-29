@@ -1,0 +1,73 @@
+name: Post-Merge
+on:
+  push:
+    branches: 'main'
+
+concurrency:
+  group: ${{ github.workflow_ref }}-${{ github.ref }}
+
+jobs:
+
+  build-module-list:
+    runs-on: ubuntu-latest
+    name: Generate candidate SDK module list
+    outputs:
+      modules: ${{ steps.build-matrix.outputs.modules}}
+    env:
+      REF_BEFORE: ${{ github.event.before }}
+      ORG_GRADLE_PROJECT_githubToken: ${{ secrets.pat }}
+    steps:
+      - uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: temurin
+      - run: mkdir workspace && cd workspace
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.REF_BEFORE }}
+      - uses: gradle/wrapper-validation-action@b231772637bb498f11fdbc86052b6e8a8dc9fc92
+      - name: Get base versions
+        run: |
+          for module in $(./gradlew -q --console=plain printSdkModules); do
+            ./gradlew $module:properties | grep "^version: " | awk '{print $2}' > ../$module.base.version
+          done
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.GITHUB_REF }}
+      - name: Get HEAD versions
+        run: |
+          for module in $(./gradlew -q --console=plain printSdkModules); do
+             ./gradlew $module:properties | grep "^version: " | awk '{print $2}' > ../$module.head.version
+          done
+      - name: Build matrix input
+        id: build-matrix
+        run: |
+          set +e
+          module_list=()
+          for module in $(./gradlew -q --console=plain printSdkModules); do
+            VERSION_FILE_HEAD=../$module.head.version
+            if [ ! -f "$VERSION_FILE_HEAD" ]; then
+              continue
+            fi
+            if cmp -s ../$module.base.version $VERSION_FILE_HEAD; then
+              continue
+            fi
+            module_list+=("$module")
+          done
+
+          jsonString="$(jq --compact-output --null-input '$ARGS.positional' --args -- "${module_list[@]}")"
+          echo "modules=$jsonString" >> $GITHUB_OUTPUT
+          
+  trigger-releases:
+    name: Trigger releases
+    needs: [ build-module-list ]
+    if: ${{ needs.build-module-list.outputs.modules != '' && toJson(fromJson(needs.build-module-list.outputs.modules)) != '[]' }}
+    permissions: write-all
+    strategy:
+      matrix:
+        module: ${{ fromJSON(needs.build-module-list.outputs.modules) }}
+    uses: ./.github/workflows/create-release.yml
+    with:
+      module: ${{ matrix.module }}
+    secrets:
+      pat: ${{ secrets.PACKAGES_PAT }}

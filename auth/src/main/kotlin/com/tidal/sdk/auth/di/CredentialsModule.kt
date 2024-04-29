@@ -1,0 +1,51 @@
+package com.tidal.sdk.auth.di
+
+import com.tidal.sdk.auth.TokenRepository
+import com.tidal.sdk.auth.model.AuthConfig
+import com.tidal.sdk.auth.storage.TokensStore
+import com.tidal.sdk.auth.token.TokenService
+import com.tidal.sdk.auth.util.RetryPolicy
+import com.tidal.sdk.auth.util.TimeProvider
+import com.tidal.sdk.auth.util.UpgradeTokenRetryPolicy
+import com.tidal.sdk.common.TidalMessage
+import dagger.Module
+import dagger.Provides
+import javax.inject.Named
+import javax.inject.Singleton
+import kotlinx.coroutines.flow.MutableSharedFlow
+import retrofit2.Retrofit
+
+@Module
+internal class CredentialsModule {
+
+    @Provides
+    @Singleton
+    @Named("upgrade")
+    fun provideUpgradeRetryPolicy(): RetryPolicy = UpgradeTokenRetryPolicy()
+
+    @Provides
+    @Singleton
+    fun provideTokenService(retrofit: Retrofit): TokenService {
+        return retrofit.create(TokenService::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideTokenRepository(
+        authConfig: AuthConfig,
+        timeProvider: TimeProvider,
+        tokensStore: TokensStore,
+        tokenService: TokenService,
+        @Named("default") defaultBackoffPolicy: RetryPolicy,
+        @Named("upgrade") upgradeBackoffPolicy: RetryPolicy,
+        bus: MutableSharedFlow<TidalMessage>,
+    ) = TokenRepository(
+        authConfig,
+        timeProvider,
+        tokensStore,
+        tokenService,
+        defaultBackoffPolicy,
+        upgradeBackoffPolicy,
+        bus,
+    )
+}
