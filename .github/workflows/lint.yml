@@ -1,0 +1,51 @@
+name: Run lint checks
+
+on:
+  workflow_call:
+    secrets:
+      pat:
+        required: true
+
+env:
+  ORG_GRADLE_PROJECT_githubToken: ${{ secrets.pat }}
+
+jobs:
+  run-ktlint:
+    runs-on: ubuntu-latest
+    name: Run ktlint
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run ktlint
+        run: static-analysis/run-ktlint.sh
+
+  run-detekt:
+    runs-on: ubuntu-latest
+    name: Run detekt
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: temurin
+
+      - name: Run detekt
+        run: static-analysis/run-detekt.sh
+
+  run-lint:
+    runs-on: ubuntu-latest
+    name: Run lint
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: temurin
+
+      - name: Run lint
+        run: ./gradlew lint
+
+      - name: Print lint report(s)
+        if: ${{ failure() }}
+        run: cat **/build/reports/lint-results-*.xml

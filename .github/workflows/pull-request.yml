@@ -1,0 +1,32 @@
+name: Pull Request
+
+on:
+  pull_request:
+  merge_group:
+    types: [checks_requested]
+
+jobs:
+  trigger-lint:
+    name: Trigger linters
+    uses: ./.github/workflows/lint.yml
+    secrets:
+      pat: ${{ secrets.PACKAGES_PAT }}
+      
+  trigger-unit-test:
+    name: Trigger Unit Tests
+    uses: ./.github/workflows/unit-test.yml
+    secrets:
+      pat: ${{ secrets.PACKAGES_PAT }}
+
+  trigger-instrumented-test:
+    name: Trigger Instrumented Tests
+    uses: ./.github/workflows/instrumented-test.yml
+    secrets:
+      pat: ${{ secrets.PACKAGES_PAT }}
+
+  trigger-fossa-scan:
+    name: Trigger FOSSA Scan
+    uses: ./.github/workflows/fossa-scan.yml
+    secrets:
+      pat: ${{ secrets.PACKAGES_PAT }}
+      fossaApiKey: ${{ secrets.FOSSAAPIKEY }}
