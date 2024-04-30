@@ -12,6 +12,7 @@ internal class FakeTokenService : TokenService {
 
     override suspend fun getTokenFromRefreshToken(
         clientId: String,
+        clientSecret: String?,
         refreshToken: String,
         grantType: String,
         scope: String,
