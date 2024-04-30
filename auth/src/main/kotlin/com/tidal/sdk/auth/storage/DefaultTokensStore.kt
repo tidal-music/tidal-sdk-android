@@ -41,7 +41,9 @@ internal class DefaultTokensStore @Inject constructor(
                 Json.decode<Tokens>(it)
             } catch (e: Exception) {
                 logger.w { " Failed to decode tokens. Attempting to decode legacy tokens" }
-                decodeLegacyTokens(it)
+                decodeLegacyTokens(it).also { convertedLegacyTokens ->
+                    saveTokens(convertedLegacyTokens)
+                }
             }
         }
     }
