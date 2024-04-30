@@ -9,7 +9,7 @@ import com.tidal.sdk.auth.network.NetworkLogLevel
  * @param clientUniqueKey The unique key of the application.
  * @param clientSecret The client secret of the application.
  * @param credentialsKey The key used to encrypt and store store credentials on the device.
- * @param scopes The [Scopes] that the application requests.
+ * @param scopes The scopes that the application requests.
  * @param tidalLoginServiceBaseUrl The base URL of the TIDAL login service. Only pass in a value if
  * you want to override the default value.
  * @param tidalAuthServiceBaseUrl The base URL of the TIDAL auth service. Only pass in a value if
@@ -23,7 +23,7 @@ data class AuthConfig(
     val clientUniqueKey: String? = null,
     val clientSecret: String? = null,
     val credentialsKey: String,
-    val scopes: Scopes = Scopes(setOf()),
+    val scopes: Set<String> = setOf(),
     val tidalLoginServiceBaseUrl: String = TidalAuth.LOGIN_SERVICE_BASE_URL,
     val tidalAuthServiceBaseUrl: String = TidalAuth.AUTH_SERVICE_BASE_URL,
     val enableCertificatePinning: Boolean = true,

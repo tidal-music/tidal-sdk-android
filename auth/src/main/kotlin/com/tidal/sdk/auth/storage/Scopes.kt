@@ -1,4 +1,4 @@
-package com.tidal.sdk.auth.model
+package com.tidal.sdk.auth.storage
 
 import kotlinx.serialization.Serializable
 
@@ -6,6 +6,7 @@ import kotlinx.serialization.Serializable
  * Represents a set of scopes. Scopes are used to define the capabilities of a TIDAL client.
  * @param scopes The set of scopes.
  */
+@Deprecated("Use [String] instead.")
 @Serializable
 data class Scopes(val scopes: Set<String>) {
 

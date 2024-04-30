@@ -22,7 +22,6 @@ import com.tidal.sdk.auth.model.AuthResult
 import com.tidal.sdk.auth.model.DeviceAuthorizationResponse
 import com.tidal.sdk.auth.model.LoginConfig
 import com.tidal.sdk.auth.model.QueryParameter
-import com.tidal.sdk.auth.model.Scopes
 import com.tidal.sdk.auth.network.NetworkLogLevel
 import com.tidal.sdk.common.d
 import com.tidal.sdk.common.logger
@@ -53,7 +52,7 @@ class MainActivity : ComponentActivity() {
             clientId = "YOUR_CLIENT_ID",
             clientUniqueKey = "YOUR_CLIENT_UNIQUE_CODE",
             credentialsKey = STORAGE_KEY,
-            scopes = Scopes(setOf("r_usr", "w_usr", "w_sub")),
+            scopes = setOf("r_usr", "w_usr", "w_sub"),
             enableCertificatePinning = true,
             logLevel = NetworkLogLevel.BODY,
         )

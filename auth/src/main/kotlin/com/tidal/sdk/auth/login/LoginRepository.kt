@@ -8,7 +8,6 @@ import com.tidal.sdk.auth.model.CredentialsUpdatedMessage
 import com.tidal.sdk.auth.model.DeviceAuthorizationResponse
 import com.tidal.sdk.auth.model.LoginConfig
 import com.tidal.sdk.auth.model.LoginResponse
-import com.tidal.sdk.auth.model.Scopes
 import com.tidal.sdk.auth.model.Tokens
 import com.tidal.sdk.auth.model.failure
 import com.tidal.sdk.auth.network.LoginService
@@ -16,6 +15,7 @@ import com.tidal.sdk.auth.storage.TokensStore
 import com.tidal.sdk.auth.util.RetryPolicy
 import com.tidal.sdk.auth.util.TimeProvider
 import com.tidal.sdk.auth.util.retryWithPolicy
+import com.tidal.sdk.auth.util.toScopesString
 import com.tidal.sdk.common.TidalMessage
 import com.tidal.sdk.common.d
 import com.tidal.sdk.common.logger
@@ -71,7 +71,7 @@ internal class LoginRepository constructor(
                     clientId = authConfig.clientId,
                     grantType = GRANT_TYPE_AUTHORIZATION_CODE,
                     redirectUri = url,
-                    scopes = authConfig.scopes.toString(),
+                    scopes = authConfig.scopes.toScopesString(),
                     codeVerifier = requireNotNull(codeVerifier),
                     clientUniqueKey = authConfig.clientUniqueKey,
                 )
@@ -101,7 +101,7 @@ internal class LoginRepository constructor(
                 authConfig.clientId,
                 authConfig.scopes,
                 authConfig.clientUniqueKey,
-                Scopes.fromString(response.scopesString),
+                response.scopesString.split(", ").toSet(),
                 response.userId?.toString(),
                 Instant.fromEpochSeconds(
                     timeProvider.now.epochSeconds + response.expiresIn.toLong(),
@@ -121,10 +121,12 @@ internal class LoginRepository constructor(
 
     suspend fun initializeDeviceLogin(): AuthResult<DeviceAuthorizationResponse> {
         return retryWithPolicy(retryPolicy = exponentialBackoffPolicy) {
-            loginService.getDeviceAuthorization(authConfig.clientId, authConfig.scopes.toString())
-                .also {
-                    deviceLoginPollHelper.prepareForPoll(it.interval, it.expiresIn)
-                }
+            loginService.getDeviceAuthorization(
+                authConfig.clientId,
+                authConfig.scopes.toScopesString(),
+            ).also {
+                deviceLoginPollHelper.prepareForPoll(it.interval, it.expiresIn)
+            }
         }
     }
 

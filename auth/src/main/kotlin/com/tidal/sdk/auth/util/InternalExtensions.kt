@@ -54,3 +54,7 @@ internal fun String?.shouldRefreshToken(): Boolean {
 internal fun String?.isSubStatus(status: ApiErrorSubStatus): Boolean {
     return this == status.value
 }
+
+internal fun Set<String>.toScopesString(): String {
+    return joinToString(" ")
+}
