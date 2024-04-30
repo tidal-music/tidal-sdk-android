@@ -1,7 +1,6 @@
 package com.tidal.sdk.util
 
 import com.tidal.sdk.auth.model.Credentials
-import com.tidal.sdk.auth.model.Scopes
 import com.tidal.sdk.auth.util.TimeProvider
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
@@ -14,7 +13,7 @@ internal val TEST_TIME_PROVIDER: TimeProvider by lazy { TestTimeProvider() }
 fun makeCredentials(
     clientId: String = TEST_CLIENT_ID,
     clientUniqueKey: String = TEST_CLIENT_UNIQUE_KEY,
-    scopes: Scopes = Scopes(setOf()),
+    scopes: Set<String> = setOf(),
     isExpired: Boolean,
     userId: String? = "userId",
     token: String = "token",
@@ -28,7 +27,7 @@ fun makeCredentials(
         clientId = clientId,
         requestedScopes = scopes,
         clientUniqueKey = clientUniqueKey,
-        grantedScopes = Scopes(setOf()),
+        grantedScopes = setOf(),
         userId = userId,
         expires = expiry,
         token = token,

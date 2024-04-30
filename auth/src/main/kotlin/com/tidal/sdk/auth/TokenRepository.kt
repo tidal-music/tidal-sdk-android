@@ -5,7 +5,6 @@ import com.tidal.sdk.auth.model.AuthResult
 import com.tidal.sdk.auth.model.Credentials
 import com.tidal.sdk.auth.model.CredentialsUpdatedMessage
 import com.tidal.sdk.auth.model.RefreshResponse
-import com.tidal.sdk.auth.model.Scopes
 import com.tidal.sdk.auth.model.Tokens
 import com.tidal.sdk.auth.model.UnexpectedError
 import com.tidal.sdk.auth.model.failure
@@ -16,6 +15,7 @@ import com.tidal.sdk.auth.util.RetryPolicy
 import com.tidal.sdk.auth.util.TimeProvider
 import com.tidal.sdk.auth.util.retryWithPolicy
 import com.tidal.sdk.auth.util.shouldRefreshToken
+import com.tidal.sdk.auth.util.toScopesString
 import com.tidal.sdk.common.RetryableError
 import com.tidal.sdk.common.TidalMessage
 import com.tidal.sdk.common.d
@@ -121,7 +121,7 @@ internal class TokenRepository(
                         clientUniqueKey = requireNotNull(authConfig.clientUniqueKey),
                         clientId = authConfig.clientId,
                         clientSecret = authConfig.clientSecret,
-                        scopes = authConfig.scopes.toString(),
+                        scopes = authConfig.scopes.toScopesString(),
                         grantType = GRANT_TYPE_UPGRADE,
                     )
                 }
@@ -146,7 +146,7 @@ internal class TokenRepository(
             Credentials.create(
                 authConfig,
                 timeProvider,
-                grantedScopes = Scopes(emptySet()),
+                grantedScopes = setOf<String>(),
                 expiresIn = 0,
                 userId = null,
                 token = null,
@@ -201,14 +201,14 @@ internal class TokenRepository(
     }
 
     private suspend fun refreshUserCredentials(refreshToken: String): AuthResult<RefreshResponse> {
-        logger.d { "Refreshing user credentials" }
+        logger.d { "Refreshing user credentials, scopes: ${authConfig.scopes.toScopesString()}" }
         return retryWithPolicy(defaultBackoffPolicy) {
             tokenService.getTokenFromRefreshToken(
                 authConfig.clientId,
                 authConfig.clientSecret,
                 refreshToken,
                 GRANT_TYPE_REFRESH_TOKEN,
-                authConfig.scopes.toString(),
+                authConfig.scopes.toScopesString(),
             )
         }
     }
@@ -219,7 +219,7 @@ internal class TokenRepository(
                 authConfig.clientId,
                 clientSecret,
                 GRANT_TYPE_CLIENT_CREDENTIALS,
-                authConfig.scopes.toString(),
+                authConfig.scopes.toScopesString(),
             )
         }
     }

@@ -17,9 +17,9 @@ class CredentialsTest {
         val expiry = time.plus(2.toDuration(DurationUnit.MINUTES))
         val token = Credentials(
             "",
-            Scopes(setOf()),
+            setOf(),
             "",
-            Scopes(setOf()),
+            setOf(),
             "",
             expiry,
             "",
@@ -41,9 +41,9 @@ class CredentialsTest {
         val expiry = time.plus(30.toDuration(DurationUnit.SECONDS))
         val token = Credentials(
             "",
-            Scopes(setOf()),
+            setOf(),
             "",
-            Scopes(setOf()),
+            setOf(),
             "",
             expiry,
             "",
@@ -63,9 +63,9 @@ class CredentialsTest {
         // given
         val token = Credentials(
             "",
-            Scopes(setOf()),
+            setOf(),
             "",
-            Scopes(setOf()),
+            setOf(),
             "",
             null,
             "",
@@ -85,9 +85,9 @@ class CredentialsTest {
         // given
         val token = Credentials(
             "",
-            Scopes(setOf()),
+            setOf(),
             "",
-            Scopes(setOf()),
+            setOf(),
             "userId",
             null,
             "token",
@@ -107,9 +107,9 @@ class CredentialsTest {
         // given
         val token = Credentials(
             "",
-            Scopes(setOf()),
+            setOf(),
             "",
-            Scopes(setOf()),
+            setOf(),
             null,
             null,
             "token",
@@ -129,9 +129,9 @@ class CredentialsTest {
         // given
         val token = Credentials(
             "",
-            Scopes(setOf()),
+            setOf(),
             "",
-            Scopes(setOf()),
+            setOf(),
             null,
             null,
             null,

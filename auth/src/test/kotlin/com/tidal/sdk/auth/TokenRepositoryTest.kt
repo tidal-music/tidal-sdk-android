@@ -7,7 +7,6 @@ import com.tidal.sdk.auth.model.ApiErrorSubStatus
 import com.tidal.sdk.auth.model.AuthConfig
 import com.tidal.sdk.auth.model.AuthResult
 import com.tidal.sdk.auth.model.CredentialsUpdatedMessage
-import com.tidal.sdk.auth.model.Scopes
 import com.tidal.sdk.auth.model.Tokens
 import com.tidal.sdk.auth.util.RetryPolicy
 import com.tidal.sdk.auth.util.UpgradeTokenRetryPolicy
@@ -65,7 +64,7 @@ class TokenRepositoryTest {
     private fun createAuthConfig(
         clientId: String = TEST_CLIENT_ID,
         clientUniqueKey: String = TEST_CLIENT_UNIQUE_KEY,
-        scopes: Scopes = Scopes(setOf()),
+        scopes: Set<String> = setOf(),
         secret: String? = null,
     ) {
         authConfig = AuthConfig(

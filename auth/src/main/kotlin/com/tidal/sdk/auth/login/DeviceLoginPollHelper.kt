@@ -17,6 +17,7 @@ import com.tidal.sdk.auth.util.isSubStatus
 import com.tidal.sdk.auth.util.retryWithPolicy
 import com.tidal.sdk.auth.util.retryWithPolicyUnwrapped
 import com.tidal.sdk.auth.util.toMilliseconds
+import com.tidal.sdk.auth.util.toScopesString
 import com.tidal.sdk.common.NetworkError
 import com.tidal.sdk.common.RetryableError
 import com.tidal.sdk.common.TidalError
@@ -58,7 +59,7 @@ internal class DeviceLoginPollHelper(private val loginService: LoginService) {
                     clientSecret = authConfig.clientSecret,
                     grantType = grantType,
                     deviceCode = deviceCode,
-                    scopes = authConfig.scopes.toString(),
+                    scopes = authConfig.scopes.toScopesString(),
                     clientUniqueKey = authConfig.clientUniqueKey,
                 )
             }

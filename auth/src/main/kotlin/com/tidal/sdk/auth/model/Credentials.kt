@@ -12,9 +12,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Credentials(
     val clientId: String,
-    val requestedScopes: Scopes,
+    val requestedScopes: Set<String>,
     val clientUniqueKey: String?,
-    val grantedScopes: Scopes,
+    val grantedScopes: Set<String>,
     val userId: String?,
     val expires: Instant?,
     val token: String?,
@@ -76,7 +76,7 @@ data class Credentials(
                 clientId = authConfig.clientId,
                 requestedScopes = authConfig.scopes,
                 clientUniqueKey = authConfig.clientUniqueKey,
-                grantedScopes = Scopes(setOf()),
+                grantedScopes = setOf(),
                 userId = null,
                 expires = null,
                 token = null,
@@ -90,7 +90,7 @@ data class Credentials(
         ) = create(
             authConfig = authConfig,
             timeProvider = timeProvider,
-            grantedScopes = Scopes.fromString(response.scopesString),
+            grantedScopes = response.scopesString.split(", ").toSet(),
             userId = response.userId?.toString(),
             expiresIn = response.expiresIn,
             token = response.accessToken,
@@ -100,7 +100,7 @@ data class Credentials(
         internal fun create(
             authConfig: AuthConfig,
             timeProvider: TimeProvider,
-            grantedScopes: Scopes? = null,
+            grantedScopes: Set<String>? = null,
             userId: String?,
             token: String?,
             expiresIn: Int?,
@@ -108,7 +108,7 @@ data class Credentials(
             clientId = authConfig.clientId,
             requestedScopes = authConfig.scopes,
             clientUniqueKey = authConfig.clientUniqueKey,
-            grantedScopes = grantedScopes ?: Scopes(setOf()),
+            grantedScopes = grantedScopes ?: setOf(),
             userId = userId,
             expires = expiresIn?.let {
                 Instant.fromEpochSeconds(timeProvider.now.epochSeconds + it.toLong())

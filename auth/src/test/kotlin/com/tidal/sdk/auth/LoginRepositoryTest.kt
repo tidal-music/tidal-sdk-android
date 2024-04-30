@@ -20,7 +20,6 @@ import com.tidal.sdk.auth.model.ErrorResponse
 import com.tidal.sdk.auth.model.LoginConfig
 import com.tidal.sdk.auth.model.LoginResponse
 import com.tidal.sdk.auth.model.QueryParameter
-import com.tidal.sdk.auth.model.Scopes
 import com.tidal.sdk.auth.model.TokenResponseError
 import com.tidal.sdk.auth.model.Tokens
 import com.tidal.sdk.auth.model.UnexpectedError
@@ -53,7 +52,7 @@ class LoginRepositoryTest {
         clientId = TEST_CLIENT_ID,
         clientUniqueKey = TEST_CLIENT_UNIQUE_KEY,
         credentialsKey = "credentialsKey",
-        scopes = Scopes(setOf()),
+        scopes = setOf(),
         enableCertificatePinning = false,
     )
     private val dummyEncodedString = "encoded_string"
