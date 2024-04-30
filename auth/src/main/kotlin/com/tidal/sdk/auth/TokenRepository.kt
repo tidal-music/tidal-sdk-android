@@ -205,6 +205,7 @@ internal class TokenRepository(
         return retryWithPolicy(defaultBackoffPolicy) {
             tokenService.getTokenFromRefreshToken(
                 authConfig.clientId,
+                authConfig.clientSecret,
                 refreshToken,
                 GRANT_TYPE_REFRESH_TOKEN,
                 authConfig.scopes.toString(),
