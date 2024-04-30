@@ -4,7 +4,6 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.tidal.sdk.auth.CredentialsProvider
 import com.tidal.sdk.auth.model.Credentials
-import com.tidal.sdk.auth.model.Scopes
 import com.tidal.sdk.common.TidalMessage
 import kotlinx.coroutines.flow.Flow
 import okhttp3.OkHttpClient
@@ -34,9 +33,9 @@ internal class AuthorizationInterceptorTest {
 
         override fun getLatestCredentials() = Credentials(
             clientId = "clientId",
-            requestedScopes = Scopes(emptySet()),
+            requestedScopes = emptySet(),
             clientUniqueKey = null,
-            grantedScopes = Scopes(emptySet()),
+            grantedScopes = emptySet(),
             userId = null,
             expires = null,
             token = accessToken,

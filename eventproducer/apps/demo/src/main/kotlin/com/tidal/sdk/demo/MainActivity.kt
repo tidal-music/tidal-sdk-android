@@ -6,7 +6,6 @@ import androidx.activity.compose.setContent
 import com.tidal.sdk.auth.CredentialsProvider
 import com.tidal.sdk.auth.model.AuthResult
 import com.tidal.sdk.auth.model.Credentials
-import com.tidal.sdk.auth.model.Scopes
 import com.tidal.sdk.common.TidalMessage
 import com.tidal.sdk.eventproducer.EventProducer
 import com.tidal.sdk.eventproducer.EventSender
@@ -46,9 +45,9 @@ class MainActivity : ComponentActivity() {
     private fun getCredentialsProvider(): CredentialsProvider {
         val credentials = Credentials(
             clientId = "123",
-            requestedScopes = Scopes(setOf()),
+            requestedScopes = emptySet(),
             clientUniqueKey = "clientUniqueKey",
-            grantedScopes = Scopes(setOf()),
+            grantedScopes = emptySet(),
             userId = "123",
             expires = Instant.DISTANT_FUTURE,
             token = null,

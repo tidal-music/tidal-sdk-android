@@ -6,7 +6,6 @@ import com.google.gson.Gson
 import com.tidal.sdk.auth.CredentialsProvider
 import com.tidal.sdk.auth.model.AuthResult
 import com.tidal.sdk.auth.model.Credentials
-import com.tidal.sdk.auth.model.Scopes
 import com.tidal.sdk.common.TidalMessage
 import com.tidal.sdk.player.MockWebServerExtensions.enqueueResponse
 import kotlinx.coroutines.flow.Flow
@@ -79,9 +78,9 @@ internal class DefaultAuthenticatorTest {
                 AuthResult.Success(
                     Credentials(
                         clientId = "clientId",
-                        requestedScopes = Scopes(emptySet()),
+                        requestedScopes = emptySet(),
                         clientUniqueKey = null,
-                        grantedScopes = Scopes(emptySet()),
+                        grantedScopes = emptySet(),
                         userId = null,
                         expires = null,
                         token = "newAccessToken",

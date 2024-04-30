@@ -3,7 +3,6 @@ package com.tidal.eventproducer.fakes
 import com.tidal.sdk.auth.CredentialsProvider
 import com.tidal.sdk.auth.model.AuthResult
 import com.tidal.sdk.auth.model.Credentials
-import com.tidal.sdk.auth.model.Scopes
 import com.tidal.sdk.common.NetworkError
 import com.tidal.sdk.common.TidalMessage
 import kotlinx.coroutines.flow.Flow
@@ -39,9 +38,9 @@ class FakeCredentialsProvider(
 
     private fun getDefaultCredentials(accessToken: String, clientId: String) = Credentials(
         clientId = clientId,
-        requestedScopes = Scopes(setOf()),
+        requestedScopes = emptySet(),
         clientUniqueKey = "",
-        grantedScopes = Scopes(setOf()),
+        grantedScopes = emptySet(),
         userId = "",
         expires = Instant.DISTANT_FUTURE,
         token = accessToken,

@@ -10,7 +10,6 @@ import com.google.gson.JsonObject
 import com.tidal.sdk.auth.CredentialsProvider
 import com.tidal.sdk.auth.model.AuthResult
 import com.tidal.sdk.auth.model.Credentials
-import com.tidal.sdk.auth.model.Scopes
 import com.tidal.sdk.common.TidalMessage
 import com.tidal.sdk.eventproducer.EventSender
 import com.tidal.sdk.eventproducer.model.ConsentCategory
@@ -76,9 +75,9 @@ class PlayerPlayTest {
             object : CredentialsProvider {
                 private val CREDENTIALS = Credentials(
                     clientId = "a client id",
-                    requestedScopes = Scopes(emptySet()),
+                    requestedScopes = emptySet(),
                     clientUniqueKey = null,
-                    grantedScopes = Scopes(emptySet()),
+                    grantedScopes = emptySet(),
                     userId = null,
                     expires = null,
                     token = null,
