@@ -7,6 +7,8 @@ import com.tidal.sdk.auth.model.Credentials
 import com.tidal.sdk.auth.model.DeviceAuthorizationResponse
 import com.tidal.sdk.auth.model.LoginConfig
 import com.tidal.sdk.auth.model.TokenResponseError
+import com.tidal.sdk.auth.model.failure
+import com.tidal.sdk.auth.model.success
 import com.tidal.sdk.common.NetworkError
 import com.tidal.sdk.common.d
 import com.tidal.sdk.common.logger
@@ -48,10 +50,16 @@ class Auth internal constructor(
      * @return A response containing device and user verification information.
      * @throws NetworkError If a network error occurs during the process.
      */
-    suspend fun finalizeLogin(loginResponseUri: String) {
-        loginRepository.getCredentialsFromLoginCode(loginResponseUri).also {
-            logger.d {
-                "finalizeLogin: loginResponseUri: $loginResponseUri, result: $it"
+    suspend fun finalizeLogin(loginResponseUri: String): AuthResult<Nothing> {
+        with(loginRepository.getCredentialsFromLoginCode(loginResponseUri)) {
+            return if (this is AuthResult.Failure) {
+                failure(this.message)
+            } else {
+                success(null)
+            }.also {
+                logger.d {
+                    "finalizeLogin: loginResponseUri: $loginResponseUri, result: $this"
+                }
             }
         }
     }
@@ -88,6 +96,12 @@ class Auth internal constructor(
      * when requesting the access token.
      */
     suspend fun finalizeDeviceLogin(deviceCode: String): AuthResult<Nothing> {
-        return loginRepository.pollForDeviceLoginResponse(deviceCode)
+        with(loginRepository.pollForDeviceLoginResponse(deviceCode)) {
+            return if (this is AuthResult.Failure) {
+                failure(this.message)
+            } else {
+                success(null)
+            }
+        }
     }
 }
