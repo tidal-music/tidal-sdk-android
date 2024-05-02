@@ -5,20 +5,20 @@ import com.tickaroo.tikxml.annotation.PropertyElement
 import com.tickaroo.tikxml.annotation.Xml
 
 @Xml(name = "SendMessageBatchResponse")
-data class SendMessageBatchResponse(
+internal data class SendMessageBatchResponse(
 
     @Element
     val result: SendMessageBatchResult,
 )
 
 @Xml(name = "SendMessageBatchResult")
-data class SendMessageBatchResult(
+internal data class SendMessageBatchResult(
     @Element
     val successfullySentEntries: List<SendMessageBatchResultEntry>?,
 )
 
 @Xml(name = "SendMessageBatchResultEntry")
-data class SendMessageBatchResultEntry(
+internal data class SendMessageBatchResultEntry(
     @PropertyElement(name = "Id")
     val id: String,
 )

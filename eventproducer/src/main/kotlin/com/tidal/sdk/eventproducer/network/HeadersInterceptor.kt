@@ -5,7 +5,9 @@ import com.tidal.sdk.eventproducer.auth.updateAuthHeader
 import okhttp3.Interceptor
 import okhttp3.Response
 
-class HeadersInterceptor(private val credentialsProvider: CredentialsProvider) : Interceptor {
+internal class HeadersInterceptor(
+    private val credentialsProvider: CredentialsProvider,
+) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val updatedRequest = chain.request().newBuilder().apply {
             addHeader(

@@ -10,7 +10,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 
 @Module
-class NetworkModule {
+internal class NetworkModule {
 
     @Provides
     @Singleton

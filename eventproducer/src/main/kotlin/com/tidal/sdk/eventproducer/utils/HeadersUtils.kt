@@ -6,15 +6,15 @@ import com.tidal.sdk.eventproducer.model.ConsentCategory
 import javax.inject.Inject
 import kotlinx.coroutines.runBlocking
 
-const val CONSENT_CATEGORY_KEY = "consent-category"
-const val OS_NAME_KEY = "os-name"
-const val OS_VERSION_KEY = "os-version"
-const val APP_VERSION_KEY = "app-version"
-const val REQUESTED_SENT_TIMESTAMP_KEY = "requested-sent-timestamp"
-const val AUTHORIZATION_KEY = "authorization"
-const val CLIENT_ID_KEY = "client-id"
-const val DEVICE_MODEL_KEY = "device-model"
-const val DEVICE_VENDOR_KEY = "device-vendor"
+internal const val CONSENT_CATEGORY_KEY = "consent-category"
+internal const val OS_NAME_KEY = "os-name"
+internal const val OS_VERSION_KEY = "os-version"
+internal const val APP_VERSION_KEY = "app-version"
+internal const val REQUESTED_SENT_TIMESTAMP_KEY = "requested-sent-timestamp"
+internal const val AUTHORIZATION_KEY = "authorization"
+internal const val CLIENT_ID_KEY = "client-id"
+internal const val DEVICE_MODEL_KEY = "device-model"
+internal const val DEVICE_VENDOR_KEY = "device-vendor"
 
 internal class HeadersUtils @Inject constructor(
     private val appVersion: String,

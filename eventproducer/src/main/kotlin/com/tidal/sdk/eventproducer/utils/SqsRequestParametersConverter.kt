@@ -5,7 +5,9 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class SqsRequestParametersConverter @Inject constructor(private val mapConverter: MapConverter) {
+internal class SqsRequestParametersConverter @Inject constructor(
+    private val mapConverter: MapConverter,
+) {
 
     fun getSendEventsParameters(events: List<Event>): Map<String, String> {
         val params = mutableMapOf<String, String>()

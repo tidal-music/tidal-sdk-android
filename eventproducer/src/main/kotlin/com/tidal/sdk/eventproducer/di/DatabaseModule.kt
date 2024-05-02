@@ -13,7 +13,7 @@ import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class DatabaseModule {
+internal class DatabaseModule {
 
     @Provides
     @Singleton

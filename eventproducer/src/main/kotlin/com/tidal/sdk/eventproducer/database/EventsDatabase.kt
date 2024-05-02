@@ -12,7 +12,7 @@ import java.io.File
 
 @TypeConverters(MapConverter::class)
 @Database(entities = [EventEntity::class, MonitoringEntity::class], version = 1)
-abstract class EventsDatabase : RoomDatabase() {
+internal abstract class EventsDatabase : RoomDatabase() {
 
     abstract fun eventDao(): EventDao
     abstract fun monitoringDao(): MonitoringDao

@@ -7,7 +7,7 @@ import androidx.room.Query
 import com.tidal.sdk.eventproducer.model.Event
 
 @Dao
-abstract class EventDao : EventsLocalDataSource {
+internal abstract class EventDao : EventsLocalDataSource {
 
     override fun insertEvent(event: Event) {
         insert(event.toEventEntity())

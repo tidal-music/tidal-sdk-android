@@ -1,6 +1,6 @@
 package com.tidal.sdk.eventproducer.monitoring
 
-interface MonitoringLocalDataSource {
+internal interface MonitoringLocalDataSource {
 
     fun insert(monitoringEntity: MonitoringInfo)
 

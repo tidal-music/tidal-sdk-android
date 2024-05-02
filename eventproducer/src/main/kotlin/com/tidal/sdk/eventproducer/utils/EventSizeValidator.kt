@@ -6,7 +6,7 @@ import dagger.Reusable
 import javax.inject.Inject
 
 @Reusable
-class EventSizeValidator @Inject constructor(private val moshi: Moshi) {
+internal class EventSizeValidator @Inject constructor(private val moshi: Moshi) {
 
     fun isEventSizeValid(event: Event): Boolean {
         val adapter = moshi.adapter(Event::class.java)

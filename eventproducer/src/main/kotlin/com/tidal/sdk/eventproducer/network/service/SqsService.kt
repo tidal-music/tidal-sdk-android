@@ -5,7 +5,7 @@ import retrofit2.http.FieldMap
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
 
-interface SqsService {
+internal interface SqsService {
 
     @FormUrlEncoded
     @POST("api/event-batch")

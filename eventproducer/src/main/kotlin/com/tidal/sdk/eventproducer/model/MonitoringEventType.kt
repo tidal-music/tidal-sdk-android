@@ -1,6 +1,6 @@
 package com.tidal.sdk.eventproducer.model
 
-enum class MonitoringEventType {
+internal enum class MonitoringEventType {
     EventStoringFailed,
     EventValidationFailed,
     EventConsentFiltered,

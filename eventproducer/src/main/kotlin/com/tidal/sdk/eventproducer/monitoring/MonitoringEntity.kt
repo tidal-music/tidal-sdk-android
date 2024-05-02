@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "monitoring")
-data class MonitoringEntity(
+internal data class MonitoringEntity(
     @PrimaryKey val id: String = MONITORING_ENTITY_PRIMARY_KEY,
     var consentFilteredEvents: Map<String, Int>,
     var validationFailedEvents: Map<String, Int>,

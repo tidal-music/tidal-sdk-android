@@ -9,7 +9,7 @@ import com.tidal.sdk.eventproducer.database.EventsDatabase
  * @property maxDiskUsageBytes specifies the maximum amount of disk the EventProducer
  * is allowed to use for temporarily storing events before they are sent to TL Consumer.
  */
-class DatabaseSizeChecker(
+internal class DatabaseSizeChecker(
     private val db: EventsDatabase,
     private val maxDiskUsageBytes: Int,
 ) {

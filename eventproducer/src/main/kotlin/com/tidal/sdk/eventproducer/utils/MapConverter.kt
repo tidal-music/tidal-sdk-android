@@ -7,7 +7,7 @@ import dagger.Reusable
 import javax.inject.Inject
 
 @Reusable
-class MapConverter @Inject constructor() {
+internal class MapConverter @Inject constructor() {
 
     private val mapStringStringType = Types.newParameterizedType(
         Map::class.java,

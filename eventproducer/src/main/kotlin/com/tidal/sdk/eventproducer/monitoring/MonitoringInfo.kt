@@ -3,13 +3,13 @@ package com.tidal.sdk.eventproducer.monitoring
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class MonitoringInfo(
+internal data class MonitoringInfo(
     var consentFilteredEvents: Map<String, Int> = mapOf(),
     var validationFailedEvents: Map<String, Int> = mapOf(),
     var storingFailedEvents: Map<String, Int> = mapOf(),
 )
 
-fun MonitoringEntity.toMonitoringInfo(): MonitoringInfo {
+internal fun MonitoringEntity.toMonitoringInfo(): MonitoringInfo {
     return MonitoringInfo(
         consentFilteredEvents = consentFilteredEvents,
         validationFailedEvents = validationFailedEvents,
@@ -17,7 +17,7 @@ fun MonitoringEntity.toMonitoringInfo(): MonitoringInfo {
     )
 }
 
-fun MonitoringInfo.toMonitoringEntity(): MonitoringEntity {
+internal fun MonitoringInfo.toMonitoringEntity(): MonitoringEntity {
     return MonitoringEntity(
         consentFilteredEvents = consentFilteredEvents,
         validationFailedEvents = validationFailedEvents,
@@ -25,7 +25,7 @@ fun MonitoringInfo.toMonitoringEntity(): MonitoringEntity {
     )
 }
 
-fun MonitoringInfo.isNotEmpty(): Boolean {
+internal fun MonitoringInfo.isNotEmpty(): Boolean {
     return consentFilteredEvents.isNotEmpty() ||
         validationFailedEvents.isNotEmpty() ||
         storingFailedEvents.isNotEmpty()

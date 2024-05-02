@@ -4,9 +4,9 @@ import com.tidal.sdk.auth.CredentialsProvider
 import kotlinx.coroutines.runBlocking
 import okhttp3.Request
 
-const val AUTHORIZATION_HEADER_NAME = "Authorization"
-const val X_TIDAL_TOKEN_HEADER_NAME = "X-Tidal-Token"
-const val BEARER = "Bearer"
+internal const val AUTHORIZATION_HEADER_NAME = "Authorization"
+internal const val X_TIDAL_TOKEN_HEADER_NAME = "X-Tidal-Token"
+internal const val BEARER = "Bearer"
 
 internal fun Request.Builder.updateAuthHeader(
     credentialsProvider: CredentialsProvider,

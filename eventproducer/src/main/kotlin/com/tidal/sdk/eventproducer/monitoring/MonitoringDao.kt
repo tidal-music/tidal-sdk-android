@@ -6,7 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
 @Dao
-abstract class MonitoringDao : MonitoringLocalDataSource {
+internal abstract class MonitoringDao : MonitoringLocalDataSource {
 
     override fun insert(monitoringInfo: MonitoringInfo) {
         insertMonitoringEntity(monitoringInfo.toMonitoringEntity())

@@ -2,7 +2,7 @@ package com.tidal.sdk.eventproducer.model
 
 import com.tidal.sdk.common.TidalMessage
 
-sealed class Result<out T> {
+internal sealed class Result<out T> {
 
     data class Success<out T>(val data: T?) : Result<T>()
 
@@ -31,9 +31,9 @@ sealed class Result<out T> {
 /**
  * Creates a [Result.Success] with data payload
  */
-fun <T> success(data: T?) = Result.Success(data)
+internal fun <T> success(data: T?) = Result.Success(data)
 
 /**
  * Creates a [Result.Failure]
  */
-fun failure(message: TidalMessage? = null) = Result.Failure(message)
+internal fun failure(message: TidalMessage? = null) = Result.Failure(message)

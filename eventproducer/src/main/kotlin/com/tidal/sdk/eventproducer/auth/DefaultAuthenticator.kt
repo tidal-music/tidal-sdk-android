@@ -22,7 +22,7 @@ import okhttp3.Route
  * Authorization header of the request.
  */
 @Singleton
-class DefaultAuthenticator @Inject constructor(
+internal class DefaultAuthenticator @Inject constructor(
     private val credentialsProvider: CredentialsProvider,
 ) : Authenticator {
 
