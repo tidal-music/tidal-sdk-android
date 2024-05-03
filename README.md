@@ -2,6 +2,13 @@
 
 This is the repository for TIDAL Android SDK modules.
 
+## Available modules
+
+- [auth](./auth/README.md)
+- [common](./common/README.md)
+- [eventproducer](./eventproducer/README.md)
+- [player](./player/README.md)
+
 ## Working in this repository
 
 ### First time setup
