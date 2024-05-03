@@ -28,4 +28,11 @@ interface CredentialsProvider {
      * [IllegalConfigurationError] If the configuration prevents creating valid credentials.
      */
     suspend fun getCredentials(apiErrorSubStatus: String? = null): AuthResult<Credentials>
+
+    /**
+     * Convenience function to quickly check if a user is logged in.
+     *
+     * @return `true` if a user is logged in, `false` otherwise.
+     */
+    fun isUserLoggedIn(): Boolean
 }
