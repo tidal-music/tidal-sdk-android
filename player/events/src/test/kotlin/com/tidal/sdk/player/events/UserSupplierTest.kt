@@ -1,12 +1,15 @@
 package com.tidal.sdk.player.events
 
 import assertk.assertThat
+import assertk.assertions.isEqualTo
 import assertk.assertions.isSameAs
 import com.tidal.sdk.auth.CredentialsProvider
+import com.tidal.sdk.auth.model.AuthResult
 import com.tidal.sdk.auth.model.Credentials
 import com.tidal.sdk.player.commonandroid.jwt.Base64JwtDecoder
 import com.tidal.sdk.player.events.model.reflectionId
 import com.tidal.sdk.player.events.model.reflectionSessionId
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.jsonPrimitive
@@ -28,10 +31,13 @@ class UserSupplierTest {
     fun afterEach() = verifyNoMoreInteractions(base64JwtDecoder, credentialsProvider)
 
     @Test
-    fun invokeHappyPath() {
+    fun invokeHappyPath() = runBlocking {
         val token = "token"
         val credentials = mock<Credentials> {
             on { it.token } doReturn token
+        }
+        val authResult = mock<AuthResult.Success<Credentials>> {
+            on { it.successData } doReturn credentials
         }
         val userIdString = "123"
         val userId = mock<JsonPrimitive> {
@@ -47,30 +53,37 @@ class UserSupplierTest {
             on { it[userIdKey] } doReturn userId
             on { it[sessionIdKey] } doReturn sessionId
         }
-        whenever(credentialsProvider.getLatestCredentials()).thenReturn(credentials)
+        whenever(credentialsProvider.getCredentials()).thenReturn(authResult)
         whenever(base64JwtDecoder.getClaims(token)).thenReturn(claims)
 
         val actualUser = userSupplier.invoke()
 
-        assertThat(actualUser.reflectionId).isSameAs(userIdString.toLong())
-        assertThat(actualUser.reflectionSessionId).isSameAs(sessionIdString)
-        verify(credentialsProvider).getLatestCredentials()
+        assertThat(actualUser.reflectionId).isEqualTo(userIdString.toLong())
+        assertThat(actualUser.reflectionSessionId).isEqualTo(sessionIdString)
+        verify(credentialsProvider).getCredentials()
+        verify(authResult).successData
         verify(base64JwtDecoder).getClaims(token)
         verify(claims)[userIdKey]
         verify(claims)[sessionIdKey]
+        Unit
     }
 
     @Test
-    fun invokeWithEmptyToken() {
+    fun invokeWithEmptyToken() = runBlocking {
         val credentials = mock<Credentials> {
             on { it.token } doReturn ""
         }
-        whenever(credentialsProvider.getLatestCredentials()).thenReturn(credentials)
+        val authResult = mock<AuthResult.Success<Credentials>> {
+            on { it.successData } doReturn credentials
+        }
+        whenever(credentialsProvider.getCredentials()).thenReturn(authResult)
 
         val actualUser = userSupplier.invoke()
 
-        assertThat(actualUser.reflectionId).isSameAs(-1)
+        assertThat(actualUser.reflectionId).isEqualTo(-1)
         assertThat(actualUser.reflectionSessionId).isSameAs("")
-        verify(credentialsProvider).getLatestCredentials()
+        verify(credentialsProvider).getCredentials()
+        verify(authResult).successData
+        Unit
     }
 }

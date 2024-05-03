@@ -10,6 +10,7 @@ import com.tidal.sdk.player.events.model.BroadcastPlaybackStatistics
 import com.tidal.sdk.player.events.model.Client
 import com.tidal.sdk.player.events.model.User
 import java.util.UUID
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.mock
@@ -44,7 +45,7 @@ internal class BroadcastPlaybackStatisticsEventFactoryTest {
     )
 
     @Test
-    fun invoke() {
+    fun invoke() = runBlocking {
         val currentTimeMillis = -3L
         whenever(trueTimeWrapper.currentTimeMillis).thenReturn(currentTimeMillis)
         val randomUUID = mock<UUID>()

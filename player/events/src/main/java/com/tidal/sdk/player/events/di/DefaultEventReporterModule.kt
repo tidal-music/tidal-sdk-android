@@ -9,6 +9,7 @@ import com.tidal.sdk.player.events.model.Event
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
+import kotlinx.coroutines.CoroutineScope
 
 @Module
 @SuppressWarnings("TooManyFunctions")
@@ -20,5 +21,6 @@ internal object DefaultEventReporterModule {
         @Suppress("MaxLineLength") eventFactories: Map<Class<out Event.Payload>, @JvmSuppressWildcards EventFactory<out Event.Payload>>, // ktlint-disable max-line-length parameter-wrapping
         eventSender: EventSender,
         gson: Gson,
-    ): EventReporter = DefaultEventReporter(eventFactories, eventSender, gson)
+        coroutineScope: CoroutineScope,
+    ): EventReporter = DefaultEventReporter(eventFactories, eventSender, gson, coroutineScope)
 }

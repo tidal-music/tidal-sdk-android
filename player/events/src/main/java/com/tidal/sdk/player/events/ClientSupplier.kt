@@ -25,8 +25,8 @@ class ClientSupplier(
 
     private var claims: JsonObject? = null
 
-    operator fun invoke(): Client {
-        accessToken = credentialsProvider.getLatestCredentials()?.token.orEmpty()
+    suspend operator fun invoke(): Client {
+        accessToken = credentialsProvider.getCredentials().successData?.token.orEmpty()
         return Client(
             claims?.get("cid")?.jsonPrimitive?.content ?: "",
             Client.DeviceType.from(context, uiModeManager),

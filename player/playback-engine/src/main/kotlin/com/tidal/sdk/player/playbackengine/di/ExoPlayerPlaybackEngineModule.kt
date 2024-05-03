@@ -38,23 +38,12 @@ import dagger.Provides
 import dagger.Reusable
 import javax.inject.Named
 import javax.inject.Singleton
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 
 @Module
 @Suppress("TooManyFunctions")
 internal object ExoPlayerPlaybackEngineModule {
-
-    @Provides
-    @Reusable
-    fun coroutineDispatcher() = Dispatchers.Default
-
-    @Provides
-    @Singleton
-    fun coroutineScope(coroutineDispatcher: CoroutineDispatcher) =
-        CoroutineScope(coroutineDispatcher)
 
     @Provides
     @Singleton

@@ -17,6 +17,9 @@ import dagger.Module
 import dagger.Provides
 import dagger.Reusable
 import javax.inject.Singleton
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
 
 @Module
@@ -50,6 +53,15 @@ internal object EventReporterModule {
     ) = ClientSupplier(context, uiModeManager, base64JwtDecoder, credentialsProvider, version)
 
     @Provides
+    @Reusable
+    fun coroutineDispatcher() = Dispatchers.Default
+
+    @Provides
+    @Singleton
+    fun coroutineScope(coroutineDispatcher: CoroutineDispatcher) =
+        CoroutineScope(coroutineDispatcher)
+
+    @Provides
     @Singleton
     fun eventReporter(
         context: Context,
@@ -62,6 +74,7 @@ internal object EventReporterModule {
         uuidWrapper: UUIDWrapper,
         trueTimeWrapper: TrueTimeWrapper,
         eventSender: EventSender,
+        coroutineScope: CoroutineScope,
     ) = EventReporterModuleRoot(
         context,
         connectivityManager,
@@ -72,5 +85,6 @@ internal object EventReporterModule {
         uuidWrapper,
         trueTimeWrapper,
         eventSender,
+        coroutineScope,
     ).eventReporter
 }

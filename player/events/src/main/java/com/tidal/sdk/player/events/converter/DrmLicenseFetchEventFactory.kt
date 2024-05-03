@@ -14,7 +14,7 @@ internal class DrmLicenseFetchEventFactory(
     private val drmLicenseFetchFactory: DrmLicenseFetch.Factory,
 ) : EventFactory<DrmLicenseFetch.Payload> {
 
-    override fun invoke(payload: DrmLicenseFetch.Payload) = drmLicenseFetchFactory
+    override suspend fun invoke(payload: DrmLicenseFetch.Payload) = drmLicenseFetchFactory
         .create(
             trueTimeWrapper.currentTimeMillis,
             uuidWrapper.randomUUID,

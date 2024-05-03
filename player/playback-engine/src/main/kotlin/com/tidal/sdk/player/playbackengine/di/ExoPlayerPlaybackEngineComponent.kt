@@ -23,6 +23,8 @@ import dagger.BindsInstance
 import dagger.Component
 import java.io.File
 import javax.inject.Singleton
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import okhttp3.OkHttpClient
 
@@ -56,6 +58,8 @@ interface ExoPlayerPlaybackEngineComponent {
             @BindsInstance offlineCacheProvider: OfflineCacheProvider?,
             @BindsInstance encryption: Encryption?,
             @BindsInstance base64Codec: Base64Codec,
+            @BindsInstance coroutineDispatcher: CoroutineDispatcher,
+            @BindsInstance coroutineScope: CoroutineScope,
         ): ExoPlayerPlaybackEngineComponent
     }
 }

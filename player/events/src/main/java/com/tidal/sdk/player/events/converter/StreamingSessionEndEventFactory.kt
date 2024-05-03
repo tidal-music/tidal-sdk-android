@@ -14,7 +14,7 @@ internal class StreamingSessionEndEventFactory(
     private val streamingSessionEndFactory: StreamingSessionEnd.Factory,
 ) : EventFactory<StreamingSessionEnd.Payload> {
 
-    override fun invoke(payload: StreamingSessionEnd.Payload) = streamingSessionEndFactory
+    override suspend fun invoke(payload: StreamingSessionEnd.Payload) = streamingSessionEndFactory
         .create(
             trueTimeWrapper.currentTimeMillis,
             uuidWrapper.randomUUID,

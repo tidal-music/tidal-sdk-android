@@ -23,6 +23,7 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.tidal.sdk.auth)
     implementation(libs.tidal.sdk.eventproducer)
+    implementation(libs.kotlinxCoroutinesCore)
 
     testImplementation(libs.test.assertk)
     testImplementation(libs.test.junit5Api)

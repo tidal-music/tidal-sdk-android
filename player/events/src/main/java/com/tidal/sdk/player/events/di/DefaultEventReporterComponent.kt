@@ -12,6 +12,7 @@ import com.tidal.sdk.player.events.UserSupplier
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
+import kotlinx.coroutines.CoroutineScope
 import okhttp3.OkHttpClient
 
 @Component(
@@ -38,6 +39,7 @@ interface DefaultEventReporterComponent {
             @BindsInstance uuidWrapper: UUIDWrapper,
             @BindsInstance trueTimeWrapper: TrueTimeWrapper,
             @BindsInstance eventSender: EventSender,
+            @BindsInstance coroutineScope: CoroutineScope,
         ): DefaultEventReporterComponent
     }
 }

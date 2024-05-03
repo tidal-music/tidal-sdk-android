@@ -14,7 +14,7 @@ internal class NotStartedPlaybackStatisticsEventFactory(
     private val notStartedPlaybackStatisticsFactory: NotStartedPlaybackStatistics.Factory,
 ) : EventFactory<NotStartedPlaybackStatistics.Payload> {
 
-    override fun invoke(payload: NotStartedPlaybackStatistics.Payload) =
+    override suspend fun invoke(payload: NotStartedPlaybackStatistics.Payload) =
         notStartedPlaybackStatisticsFactory
             .create(
                 trueTimeWrapper.currentTimeMillis,

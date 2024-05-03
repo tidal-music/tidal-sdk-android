@@ -14,7 +14,7 @@ internal class VideoPlaybackSessionEventFactory(
     private val videoPlaybackSessionFactory: VideoPlaybackSession.Factory,
 ) : EventFactory<VideoPlaybackSession.Payload> {
 
-    override fun invoke(payload: VideoPlaybackSession.Payload) = videoPlaybackSessionFactory
+    override suspend fun invoke(payload: VideoPlaybackSession.Payload) = videoPlaybackSessionFactory
         .create(
             trueTimeWrapper.currentTimeMillis,
             uuidWrapper.randomUUID,

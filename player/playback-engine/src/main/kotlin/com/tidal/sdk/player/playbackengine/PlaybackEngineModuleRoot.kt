@@ -19,6 +19,8 @@ import com.tidal.sdk.player.playbackengine.player.renderer.audio.AudioDecodingMo
 import com.tidal.sdk.player.streamingapi.StreamingApi
 import com.tidal.sdk.player.streamingprivileges.StreamingPrivileges
 import java.io.File
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import okhttp3.OkHttpClient
 
@@ -44,6 +46,8 @@ class PlaybackEngineModuleRoot(
     offlineCacheProvider: OfflineCacheProvider?,
     encryption: Encryption?,
     base64Codec: Base64Codec,
+    coroutineDispatcher: CoroutineDispatcher,
+    coroutineScope: CoroutineScope,
 ) {
 
     private val component = componentFactoryF()
@@ -68,6 +72,8 @@ class PlaybackEngineModuleRoot(
             offlineCacheProvider,
             encryption,
             base64Codec,
+            coroutineDispatcher,
+            coroutineScope,
         )
     val playbackEngine = component.playbackEngine
 

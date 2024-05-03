@@ -14,12 +14,13 @@ internal class AudioPlaybackStatisticsEventFactory(
     private val audioPlaybackStatisticsFactory: AudioPlaybackStatistics.Factory,
 ) : EventFactory<AudioPlaybackStatistics.Payload> {
 
-    override fun invoke(payload: AudioPlaybackStatistics.Payload) = audioPlaybackStatisticsFactory
-        .create(
-            trueTimeWrapper.currentTimeMillis,
-            uuidWrapper.randomUUID,
-            userSupplier(),
-            clientSupplier(),
-            payload,
-        )
+    override suspend fun invoke(payload: AudioPlaybackStatistics.Payload) =
+        audioPlaybackStatisticsFactory
+            .create(
+                trueTimeWrapper.currentTimeMillis,
+                uuidWrapper.randomUUID,
+                userSupplier(),
+                clientSupplier(),
+                payload,
+            )
 }

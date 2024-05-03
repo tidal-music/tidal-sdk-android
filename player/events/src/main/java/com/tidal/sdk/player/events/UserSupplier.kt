@@ -21,8 +21,8 @@ class UserSupplier(
 
     private var claims: JsonObject? = null
 
-    operator fun invoke(): User {
-        accessToken = credentialsProvider.getLatestCredentials()?.token.orEmpty()
+    suspend operator fun invoke(): User {
+        accessToken = credentialsProvider.getCredentials().successData?.token.orEmpty()
         return User(
             claims?.get("uid")?.jsonPrimitive?.content?.toLong() ?: -1,
             userClientIdSupplier?.invoke(),

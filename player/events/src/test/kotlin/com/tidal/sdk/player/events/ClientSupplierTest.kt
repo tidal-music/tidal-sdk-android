@@ -8,12 +8,14 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isSameAs
 import com.tidal.sdk.auth.CredentialsProvider
+import com.tidal.sdk.auth.model.AuthResult
 import com.tidal.sdk.auth.model.Credentials
 import com.tidal.sdk.player.commonandroid.jwt.Base64JwtDecoder
 import com.tidal.sdk.player.events.model.Client
 import com.tidal.sdk.player.events.model.reflectionDeviceType
 import com.tidal.sdk.player.events.model.reflectionToken
 import com.tidal.sdk.player.events.model.reflectionVersion
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.jsonPrimitive
@@ -38,13 +40,16 @@ class ClientSupplierTest {
         verifyNoMoreInteractions(context, uiModeManager, base64JwtDecoder, credentialsProvider)
 
     @Test
-    fun invokeWhenTV() {
+    fun invokeWhenTV() = runBlocking {
         val version = "version"
         val clientSupplier =
             ClientSupplier(context, uiModeManager, base64JwtDecoder, credentialsProvider, version)
         val token = "token"
         val credentials = mock<Credentials> {
             on { it.token } doReturn token
+        }
+        val authResult = mock<AuthResult.Success<Credentials>> {
+            on { it.successData } doReturn credentials
         }
         val clientIdString = "123-abc"
         val clientId = mock<JsonPrimitive> {
@@ -54,7 +59,7 @@ class ClientSupplierTest {
         val claims = mock<JsonObject> {
             on { it[clientIdKey] } doReturn clientId
         }
-        whenever(credentialsProvider.getLatestCredentials()).thenReturn(credentials)
+        whenever(credentialsProvider.getCredentials()).thenReturn(authResult)
         whenever(base64JwtDecoder.getClaims(token)).thenReturn(claims)
         whenever(uiModeManager.currentModeType) doReturn Configuration.UI_MODE_TYPE_TELEVISION
 
@@ -63,22 +68,26 @@ class ClientSupplierTest {
         assertThat(actualClient.reflectionToken).isSameAs(clientIdString)
         assertThat(actualClient.reflectionDeviceType).isEqualTo(Client.DeviceType.TV)
         assertThat(actualClient.reflectionVersion).isSameAs(version)
-        verify(credentialsProvider).getLatestCredentials()
+        verify(credentialsProvider).getCredentials()
+        verify(authResult).successData
         verify(base64JwtDecoder).getClaims(token)
         verify(claims)[clientIdKey]
         verify(uiModeManager).currentModeType
         verify(credentials).token
-        verifyNoMoreInteractions(credentials)
+        verifyNoMoreInteractions(authResult, credentials)
     }
 
     @Test
-    fun invokeWhenAndroidAuto() {
+    fun invokeWhenAndroidAuto() = runBlocking {
         val version = "version"
         val clientSupplier =
             ClientSupplier(context, uiModeManager, base64JwtDecoder, credentialsProvider, version)
         val token = "token"
         val credentials = mock<Credentials> {
             on { it.token } doReturn token
+        }
+        val authResult = mock<AuthResult.Success<Credentials>> {
+            on { it.successData } doReturn credentials
         }
         val clientIdString = "123-abc"
         val clientId = mock<JsonPrimitive> {
@@ -88,7 +97,7 @@ class ClientSupplierTest {
         val claims = mock<JsonObject> {
             on { it[clientIdKey] } doReturn clientId
         }
-        whenever(credentialsProvider.getLatestCredentials()).thenReturn(credentials)
+        whenever(credentialsProvider.getCredentials()).thenReturn(authResult)
         whenever(base64JwtDecoder.getClaims(token)).thenReturn(claims)
         whenever(uiModeManager.currentModeType) doReturn Configuration.UI_MODE_TYPE_CAR
 
@@ -97,16 +106,17 @@ class ClientSupplierTest {
         assertThat(actualClient.reflectionToken).isSameAs(clientIdString)
         assertThat(actualClient.reflectionDeviceType).isEqualTo(Client.DeviceType.ANDROID_AUTO)
         assertThat(actualClient.reflectionVersion).isSameAs(version)
-        verify(credentialsProvider).getLatestCredentials()
+        verify(credentialsProvider).getCredentials()
+        verify(authResult).successData
         verify(base64JwtDecoder).getClaims(token)
         verify(claims)[clientIdKey]
         verify(uiModeManager, times(2)).currentModeType
         verify(credentials).token
-        verifyNoMoreInteractions(credentials)
+        verifyNoMoreInteractions(authResult, credentials)
     }
 
     @Test
-    fun invokeWhenTablet() {
+    fun invokeWhenTablet() = runBlocking {
         val resources = mock<Resources> {
             on { getBoolean(R.bool.is_tablet) } doReturn true
         }
@@ -118,6 +128,9 @@ class ClientSupplierTest {
         val credentials = mock<Credentials> {
             on { it.token } doReturn token
         }
+        val authResult = mock<AuthResult.Success<Credentials>> {
+            on { it.successData } doReturn credentials
+        }
         val clientIdString = "123-abc"
         val clientId = mock<JsonPrimitive> {
             on { it.jsonPrimitive.content } doReturn clientIdString
@@ -126,7 +139,7 @@ class ClientSupplierTest {
         val claims = mock<JsonObject> {
             on { it[clientIdKey] } doReturn clientId
         }
-        whenever(credentialsProvider.getLatestCredentials()).thenReturn(credentials)
+        whenever(credentialsProvider.getCredentials()).thenReturn(authResult)
         whenever(base64JwtDecoder.getClaims(token)).thenReturn(claims)
 
         val actualClient = clientSupplier.invoke()
@@ -134,18 +147,19 @@ class ClientSupplierTest {
         assertThat(actualClient.reflectionToken).isSameAs(clientIdString)
         assertThat(actualClient.reflectionDeviceType).isEqualTo(Client.DeviceType.TABLET)
         assertThat(actualClient.reflectionVersion).isSameAs(version)
-        verify(credentialsProvider).getLatestCredentials()
+        verify(credentialsProvider).getCredentials()
+        verify(authResult).successData
         verify(base64JwtDecoder).getClaims(token)
         verify(claims)[clientIdKey]
         verify(context).resources
         verify(resources).getBoolean(R.bool.is_tablet)
         verify(uiModeManager, times(2)).currentModeType
         verify(credentials).token
-        verifyNoMoreInteractions(resources, credentials)
+        verifyNoMoreInteractions(resources, authResult, credentials)
     }
 
     @Test
-    fun invokeWhenPhone() {
+    fun invokeWhenPhone() = runBlocking {
         val resources = mock<Resources> {
             on { getBoolean(R.bool.is_tablet) } doReturn false
         }
@@ -157,6 +171,9 @@ class ClientSupplierTest {
         val credentials = mock<Credentials> {
             on { it.token } doReturn token
         }
+        val authResult = mock<AuthResult.Success<Credentials>> {
+            on { it.successData } doReturn credentials
+        }
         val clientIdString = "123-abc"
         val clientId = mock<JsonPrimitive> {
             on { it.jsonPrimitive.content } doReturn clientIdString
@@ -165,7 +182,7 @@ class ClientSupplierTest {
         val claims = mock<JsonObject> {
             on { it[clientIdKey] } doReturn clientId
         }
-        whenever(credentialsProvider.getLatestCredentials()).thenReturn(credentials)
+        whenever(credentialsProvider.getCredentials()).thenReturn(authResult)
         whenever(base64JwtDecoder.getClaims(token)).thenReturn(claims)
 
         val actualClient = clientSupplier.invoke()
@@ -173,18 +190,19 @@ class ClientSupplierTest {
         assertThat(actualClient.reflectionToken).isSameAs(clientIdString)
         assertThat(actualClient.reflectionDeviceType).isEqualTo(Client.DeviceType.PHONE)
         assertThat(actualClient.reflectionVersion).isSameAs(version)
-        verify(credentialsProvider).getLatestCredentials()
+        verify(credentialsProvider).getCredentials()
+        verify(authResult).successData
         verify(base64JwtDecoder).getClaims(token)
         verify(claims)[clientIdKey]
         verify(context).resources
         verify(resources).getBoolean(R.bool.is_tablet)
         verify(uiModeManager, times(2)).currentModeType
         verify(credentials).token
-        verifyNoMoreInteractions(resources, credentials)
+        verifyNoMoreInteractions(resources, authResult, credentials)
     }
 
     @Test
-    fun invokeWhenPhoneWithEmptyToken() {
+    fun invokeWhenPhoneWithEmptyToken() = runBlocking {
         val resources = mock<Resources> {
             on { getBoolean(R.bool.is_tablet) } doReturn false
         }
@@ -196,18 +214,22 @@ class ClientSupplierTest {
         val credentials = mock<Credentials> {
             on { it.token } doReturn token
         }
-        whenever(credentialsProvider.getLatestCredentials()).thenReturn(credentials)
+        val authResult = mock<AuthResult.Success<Credentials>> {
+            on { it.successData } doReturn credentials
+        }
+        whenever(credentialsProvider.getCredentials()).thenReturn(authResult)
 
         val actualClient = clientSupplier.invoke()
 
         assertThat(actualClient.reflectionToken).isSameAs("")
         assertThat(actualClient.reflectionDeviceType).isEqualTo(Client.DeviceType.PHONE)
         assertThat(actualClient.reflectionVersion).isSameAs(version)
-        verify(credentialsProvider).getLatestCredentials()
+        verify(credentialsProvider).getCredentials()
+        verify(authResult).successData
         verify(context).resources
         verify(resources).getBoolean(R.bool.is_tablet)
         verify(uiModeManager, times(2)).currentModeType
         verify(credentials).token
-        verifyNoMoreInteractions(resources, credentials)
+        verifyNoMoreInteractions(resources, authResult, credentials)
     }
 }

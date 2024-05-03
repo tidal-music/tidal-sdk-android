@@ -10,6 +10,7 @@ import com.tidal.sdk.player.common.Configuration
 import com.tidal.sdk.player.common.UUIDWrapper
 import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
 import com.tidal.sdk.player.events.di.DefaultEventReporterComponent
+import kotlinx.coroutines.CoroutineScope
 import okhttp3.OkHttpClient
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
@@ -31,6 +32,7 @@ internal class EventReporterModuleRootTest {
     private val trueTimeWrapper = mock<TrueTimeWrapper>()
     private val eventSender = mock<EventSender>()
     private val configuration = mock<Configuration>()
+    private val coroutineScope = mock<CoroutineScope>()
     private val eventReporterModuleRoot by lazy {
         EventReporterModuleRoot(
             context,
@@ -42,6 +44,7 @@ internal class EventReporterModuleRootTest {
             uuidWrapper,
             trueTimeWrapper,
             eventSender,
+            coroutineScope
         )
     }
 
@@ -90,6 +93,7 @@ internal class EventReporterModuleRootTest {
                     uuidWrapper,
                     trueTimeWrapper,
                     eventSender,
+                    coroutineScope,
                 )
             } doReturn component
         }
@@ -107,6 +111,7 @@ internal class EventReporterModuleRootTest {
             uuidWrapper,
             trueTimeWrapper,
             eventSender,
+            coroutineScope,
         )
         verify(component).eventReporter
         verifyNoMoreInteractions(expected, component, componentFactory)

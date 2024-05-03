@@ -12,6 +12,8 @@ import com.tidal.sdk.player.playbackengine.model.AssetTimeoutConfig
 import com.tidal.sdk.player.playbackengine.model.BufferConfiguration
 import com.tidal.sdk.player.playbackengine.player.CacheProvider
 import com.tidal.sdk.player.playbackengine.player.renderer.audio.AudioDecodingMode
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import okhttp3.OkHttpClient
 import org.junit.Test
@@ -40,6 +42,8 @@ internal class ExoPlayerPlaybackEngineLooperTest {
         mock(),
         mock(),
         Base64Codec(),
+        Dispatchers.IO,
+        CoroutineScope(Dispatchers.IO),
     ).playbackEngine as SingleHandlerPlaybackEngine
 
     private val exoPlayerPlaybackEngine =

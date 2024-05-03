@@ -23,6 +23,8 @@ import dagger.Provides
 import java.io.File
 import javax.inject.Named
 import javax.inject.Singleton
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import okhttp3.OkHttpClient
 
@@ -61,6 +63,8 @@ internal object PlaybackEngineModule {
         playbackPrivilegeProvider: PlaybackPrivilegeProvider,
         offlinePlayProvider: OfflinePlayProvider?,
         base64Codec: Base64Codec,
+        coroutineDispatcher: CoroutineDispatcher,
+        coroutineScope: CoroutineScope,
     ) = PlaybackEngineModuleRoot(
         context,
         connectivityManager,
@@ -82,5 +86,7 @@ internal object PlaybackEngineModule {
         offlinePlayProvider?.offlineCacheProvider,
         offlinePlayProvider?.encryption,
         base64Codec,
+        coroutineDispatcher,
+        coroutineScope,
     ).playbackEngine
 }

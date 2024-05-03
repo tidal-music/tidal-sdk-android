@@ -14,7 +14,7 @@ internal class ProgressEventFactory(
     private val progressFactory: Progress.Factory,
 ) : EventFactory<Progress.Payload> {
 
-    override fun invoke(payload: Progress.Payload) = progressFactory
+    override suspend fun invoke(payload: Progress.Payload) = progressFactory
         .create(
             trueTimeWrapper.currentTimeMillis,
             uuidWrapper.randomUUID,
