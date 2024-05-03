@@ -79,7 +79,7 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
         )
     private var state: MainActivityViewModelState = AwaitingLoginFlowChoice(
         null,
-        credentialsProvider.getLatestCredentials(),
+        credentialsProvider.getLatestCredentials() != null,
         authLoginUri,
     )
         set(value) {
@@ -459,7 +459,7 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
                     } else {
                         AwaitingLoginFlowChoice(
                             state.snackbarMessage,
-                            credentialsProvider.getLatestCredentials(),
+                            credentialsProvider.getLatestCredentials() != null,
                             viewModel.authLoginUri,
                         )
                     }
@@ -507,7 +507,8 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
 
                         is PlayerReleasing.FromLogOut -> AwaitingLoginFlowChoice(
                             state.snackbarMessage,
-                            mainActivityViewModel.credentialsProvider.getLatestCredentials(),
+                            mainActivityViewModel.credentialsProvider
+                                .getLatestCredentials() != null,
                             mainActivityViewModel.authLoginUri,
                         )
                     }

@@ -44,10 +44,10 @@ internal fun LoginScreen(
             dispatchSetSnackbarMessage(null)
         }
     }
-    if (state.credentials != null || !BuildConfig.TIDAL_CLIENT_SECRET.isNullOrBlank()) {
+    if (state.isUserLoggedIn || !BuildConfig.TIDAL_CLIENT_SECRET.isNullOrBlank()) {
         LoadingScreen()
         val context = LocalContext.current
-        LaunchedEffect(state.credentials) { dispatchFinalizeImplicitLoginFlow(context) }
+        LaunchedEffect(Unit) { dispatchFinalizeImplicitLoginFlow(context) }
         return
     }
     Box(

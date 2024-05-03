@@ -1,7 +1,6 @@
 package com.tidal.sdk.player.mainactivity
 
 import android.net.Uri
-import com.tidal.sdk.auth.model.Credentials
 import com.tidal.sdk.player.common.model.AudioQuality
 import com.tidal.sdk.player.common.model.LoudnessNormalizationMode
 import com.tidal.sdk.player.common.model.MediaProduct
@@ -14,7 +13,7 @@ internal sealed class MainActivityState private constructor() {
 
     data class AwaitingLoginFlowChoice(
         override val snackbarMessage: String? = null,
-        val credentials: Credentials?,
+        val isUserLoggedIn: Boolean,
         val webLoginUri: Uri,
     ) : MainActivityState()
 

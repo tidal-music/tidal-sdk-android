@@ -8,7 +8,7 @@ internal class DeriveUiState {
                 is MainActivityViewModelState.AwaitingLoginFlowChoice ->
                     MainActivityState.AwaitingLoginFlowChoice(
                         snackbarMessage,
-                        credentials,
+                        isUserLoggedIn,
                         webLoginUri,
                     )
 
