@@ -65,10 +65,10 @@ internal class MainActivity : ComponentActivity() {
                                         addedNonTopPadding,
                                 ),
                                 dispatchLoad = {
-                                    dispatch(Impure.Load(credentialsProvider, it))
+                                    dispatch(Impure.Load(it))
                                 },
                                 dispatchSetNext = {
-                                    dispatch(Impure.SetNext(credentialsProvider, it))
+                                    dispatch(Impure.SetNext(it))
                                 },
                                 dispatchPlay = {
                                     dispatch(MainActivityViewModel.Operation.Pure.Play)
@@ -77,16 +77,16 @@ internal class MainActivity : ComponentActivity() {
                                     dispatch(MainActivityViewModel.Operation.Pure.Skip)
                                 },
                                 dispatchSetVideoSurfaceView = {
-                                    dispatch(Impure.SetVideoSurfaceView(credentialsProvider, it))
+                                    dispatch(Impure.SetVideoSurfaceView(it))
                                 },
                                 dispatchSetDraggedPosition = {
-                                    dispatch(Impure.SetDraggedPosition(credentialsProvider, it))
+                                    dispatch(Impure.SetDraggedPosition(it))
                                 },
                                 dispatchPause = {
                                     dispatch(MainActivityViewModel.Operation.Pure.Pause)
                                 },
                                 dispatchReset = {
-                                    dispatch(Impure.Reset(credentialsProvider))
+                                    dispatch(Impure.Reset)
                                 },
                                 dispatchRewind = {
                                     dispatch(MainActivityViewModel.Operation.Pure.Seek.Rewind)
@@ -100,28 +100,25 @@ internal class MainActivity : ComponentActivity() {
                                     )
                                 },
                                 dispatchSetRepeatOne = {
-                                    dispatch(Impure.SetRepeatOne(credentialsProvider, it))
+                                    dispatch(Impure.SetRepeatOne(it))
                                 },
                                 dispatchSetOfflineMode = {
-                                    dispatch(Impure.SetOfflineMode(credentialsProvider, it))
+                                    dispatch(Impure.SetOfflineMode(it))
                                 },
                                 dispatchSetAudioQualityOnWifi = {
-                                    dispatch(Impure.SetAudioQualityOnWifi(credentialsProvider, it))
+                                    dispatch(Impure.SetAudioQualityOnWifi(it))
                                 },
                                 dispatchSetAudioQualityOnCell = {
-                                    dispatch(Impure.SetAudioQualityOnCell(credentialsProvider, it))
+                                    dispatch(Impure.SetAudioQualityOnCell(it))
                                 },
                                 dispatchSetLoudnessNormalizationMode = {
                                     dispatch(
-                                        Impure.SetLoudnessNormalizationMode(
-                                            credentialsProvider,
-                                            it
-                                        ),
+                                        Impure.SetLoudnessNormalizationMode(it),
                                     )
                                 },
                                 dispatchRelease = { dispatch(Impure.Release) },
                                 dispatchSetSnackbarMessage = {
-                                    dispatch(Impure.SetSnackbarMessage(credentialsProvider, it))
+                                    dispatch(Impure.SetSnackbarMessage(it))
                                 },
                                 dispatchCreatePlayerWithExternalCache = { context, startOffline ->
                                     dispatch(

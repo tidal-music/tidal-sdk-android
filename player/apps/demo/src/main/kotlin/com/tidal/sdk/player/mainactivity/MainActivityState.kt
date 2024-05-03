@@ -24,7 +24,6 @@ internal sealed class MainActivityState private constructor() {
 
     data class PlayerInitialized(
         override val snackbarMessage: String?,
-        val credentials: Credentials,
         val streamingAudioQualityOnWifi: AudioQuality,
         val streamingAudioQualityOnCell: AudioQuality,
         val loudnessNormalizationMode: LoudnessNormalizationMode,

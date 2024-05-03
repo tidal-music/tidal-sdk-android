@@ -105,7 +105,7 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
                         ),
                     )
                 } else {
-                    state = state.copyWithLatestCredentials(credentialsProvider)
+                    state = state.castAndCopy()
                 }
             }
         }
@@ -222,8 +222,6 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
 
                             mainActivityViewModel.state = PlayerInitialized(
                                 player = player,
-                                credentials = mainActivityViewModel.credentialsProvider
-                                    .getLatestCredentials()!!,
                                 eventCollectionJob = mainActivityViewModel.viewModelScope.launch {
                                     player.playbackEngine
                                         .events
@@ -237,10 +235,7 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
                                     .launch {
                                         while (true) {
                                             mainActivityViewModel.state =
-                                                mainActivityViewModel.state
-                                                    .copyWithLatestCredentials(
-                                                        mainActivityViewModel.credentialsProvider,
-                                                    )
+                                                mainActivityViewModel.state.castAndCopy()
                                             delay(200)
                                         }
                                     },
@@ -292,27 +287,20 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
                 }
             }
 
-            class Load(
-                private val credentialsProvider: CredentialsProvider,
-                private val mediaProduct: MediaProduct,
-            ) : Impure<PlayerInitialized, PlayerInitialized>() {
-
-                override suspend operator fun invoke(state: PlayerInitialized): PlayerInitialized {
-                    state.player.playbackEngine.load(mediaProduct)
-                    return state.copyWithLatestCredentials(
-                        credentialsProvider,
-                        current = mediaProduct,
-                    )
-                }
-            }
-
-            data class Reset(private val credentialsProvider: CredentialsProvider) :
+            class Load(private val mediaProduct: MediaProduct) :
                 Impure<PlayerInitialized, PlayerInitialized>() {
 
                 override suspend operator fun invoke(state: PlayerInitialized): PlayerInitialized {
+                    state.player.playbackEngine.load(mediaProduct)
+                    return state.copy(current = mediaProduct)
+                }
+            }
+
+            data object Reset : Impure<PlayerInitialized, PlayerInitialized>() {
+
+                override suspend operator fun invoke(state: PlayerInitialized): PlayerInitialized {
                     state.player.playbackEngine.reset()
-                    return state.copyWithLatestCredentials(
-                        credentialsProvider,
+                    return state.copy(
                         current = null,
                         next = null,
                         isRepeatOneEnabled = false,
@@ -320,124 +308,87 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
                 }
             }
 
-            class SetRepeatOne(
-                private val credentialsProvider: CredentialsProvider,
-                private val repeatOne: Boolean,
-            ) : Impure<PlayerInitialized, PlayerInitialized>() {
+            class SetRepeatOne(private val repeatOne: Boolean) :
+                Impure<PlayerInitialized, PlayerInitialized>() {
 
                 override suspend operator fun invoke(state: PlayerInitialized): PlayerInitialized {
                     state.player.playbackEngine.setRepeatOne(repeatOne)
-                    return state.copyWithLatestCredentials(
-                        credentialsProvider,
-                        isRepeatOneEnabled = repeatOne,
-                    )
+                    return state.copy(isRepeatOneEnabled = repeatOne)
                 }
             }
 
-            class SetOfflineMode(
-                private val credentialsProvider: CredentialsProvider,
-                private val isOfflineMode: Boolean,
-            ) : Impure<PlayerInitialized, PlayerInitialized>() {
+            class SetOfflineMode(private val isOfflineMode: Boolean) :
+                Impure<PlayerInitialized, PlayerInitialized>() {
 
                 override suspend operator fun invoke(state: PlayerInitialized): PlayerInitialized {
                     state.player.configuration.isOfflineMode = isOfflineMode
-                    return state.copyWithLatestCredentials(credentialsProvider)
+                    return state.copy()
                 }
             }
 
-            class SetSnackbarMessage(
-                private val credentialsProvider: CredentialsProvider,
-                private val snackbarMessage: String?,
-            ) : Impure<MainActivityViewModelState, MainActivityViewModelState>() {
+            class SetSnackbarMessage(private val snackbarMessage: String?) :
+                Impure<MainActivityViewModelState, MainActivityViewModelState>() {
 
                 override suspend operator fun invoke(state: MainActivityViewModelState) =
-                    state.copyWithLatestCredentials(
-                        credentialsProvider,
-                        snackbarMessage = snackbarMessage,
-                    )
+                    state.castAndCopy(snackbarMessage = snackbarMessage)
             }
 
-            class SetDraggedPosition(
-                private val credentialsProvider: CredentialsProvider,
-                private val positionSeconds: Float?,
-            ) : Impure<PlayerInitialized, PlayerInitialized>() {
+            class SetDraggedPosition(private val positionSeconds: Float?) :
+                Impure<PlayerInitialized, PlayerInitialized>() {
 
                 override suspend operator fun invoke(state: PlayerInitialized): PlayerInitialized {
                     if (state.draggedPositionSeconds != null && positionSeconds != null) {
                         state.player.playbackEngine.seek(positionSeconds * 1_000)
                     }
-                    return state.copyWithLatestCredentials(
-                        credentialsProvider,
-                        draggedPositionSeconds = positionSeconds,
-                    )
+                    return state.copy(draggedPositionSeconds = positionSeconds)
                 }
             }
 
-            class SetAudioQualityOnWifi(
-                private val credentialsProvider: CredentialsProvider,
-                private val audioQuality: AudioQuality,
-            ) : Impure<PlayerInitialized, PlayerInitialized>() {
+            class SetAudioQualityOnWifi(private val audioQuality: AudioQuality) :
+                Impure<PlayerInitialized, PlayerInitialized>() {
 
                 override suspend operator fun invoke(state: PlayerInitialized): PlayerInitialized {
                     state.player.playbackEngine.streamingWifiAudioQuality = audioQuality
-                    return state.copyWithLatestCredentials(
-                        credentialsProvider,
-                        streamingAudioQualityWifi = audioQuality,
-                    )
+                    return state.copy(streamingAudioQualityWifi = audioQuality)
                 }
             }
 
-            class SetAudioQualityOnCell(
-                private val credentialsProvider: CredentialsProvider,
-                private val audioQuality: AudioQuality,
-            ) : Impure<PlayerInitialized, PlayerInitialized>() {
+            class SetAudioQualityOnCell(private val audioQuality: AudioQuality) :
+                Impure<PlayerInitialized, PlayerInitialized>() {
 
                 override suspend operator fun invoke(state: PlayerInitialized): PlayerInitialized {
                     state.player.playbackEngine.streamingCellularAudioQuality = audioQuality
-                    return state.copyWithLatestCredentials(
-                        credentialsProvider,
-                        streamingAudioQualityCellular = audioQuality,
-                    )
+                    return state.copy(streamingAudioQualityCellular = audioQuality)
                 }
             }
 
             class SetLoudnessNormalizationMode(
-                private val credentialsProvider: CredentialsProvider,
                 private val loudnessNormalizationMode: LoudnessNormalizationMode,
             ) : Impure<PlayerInitialized, PlayerInitialized>() {
 
                 override suspend operator fun invoke(state: PlayerInitialized): PlayerInitialized {
                     state.player.playbackEngine.loudnessNormalizationMode =
                         loudnessNormalizationMode
-                    return state.copyWithLatestCredentials(
-                        credentialsProvider,
-                        loudnessNormalizationMode = loudnessNormalizationMode,
-                    )
+                    return state.copy(loudnessNormalizationMode = loudnessNormalizationMode)
                 }
             }
 
-            class SetNext(
-                private val credentialsProvider: CredentialsProvider,
-                private val mediaProduct: MediaProduct?,
-            ) : Impure<PlayerInitialized, PlayerInitialized>() {
+            class SetNext(private val mediaProduct: MediaProduct?) :
+                Impure<PlayerInitialized, PlayerInitialized>() {
 
                 override suspend operator fun invoke(state: PlayerInitialized): PlayerInitialized {
                     state.player.playbackEngine.setNext(mediaProduct)
-                    return state.copyWithLatestCredentials(
-                        credentialsProvider,
-                        next = mediaProduct,
-                    )
+                    return state.copy(next = mediaProduct)
                 }
             }
 
             class SetVideoSurfaceView(
-                private val credentialsProvider: CredentialsProvider,
                 private val aspectRatioAdjustingSurfaceView: AspectRatioAdjustingSurfaceView?,
             ) : Impure<PlayerInitialized, PlayerInitialized>() {
 
                 override suspend operator fun invoke(state: PlayerInitialized): PlayerInitialized {
                     state.player.playbackEngine.videoSurfaceView = aspectRatioAdjustingSurfaceView
-                    return state.copyWithLatestCredentials(credentialsProvider)
+                    return state.copy()
                 }
             }
 
@@ -534,8 +485,7 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
                 is Event.MediaProductTransition -> {
                     val state = mainActivityViewModel.state as PlayerInitialized
                     if (value.mediaProduct.referenceId != state.current?.referenceId) {
-                        mainActivityViewModel.state = state.copyWithLatestCredentials(
-                            mainActivityViewModel.credentialsProvider,
+                        mainActivityViewModel.state = state.copy(
                             current = value.mediaProduct,
                             next = null,
                         )
@@ -544,10 +494,7 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
 
                 is Event.MediaProductEnded -> {
                     val state = mainActivityViewModel.state as PlayerInitialized
-                    mainActivityViewModel.state = state.copyWithLatestCredentials(
-                        mainActivityViewModel.credentialsProvider,
-                        current = null,
-                    )
+                    mainActivityViewModel.state = state.copy(current = null)
                 }
 
                 is Event.Release -> {
@@ -568,8 +515,7 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
 
                 is Event.Error -> {
                     val state = mainActivityViewModel.state as PlayerInitialized
-                    mainActivityViewModel.state = state.copyWithLatestCredentials(
-                        mainActivityViewModel.credentialsProvider,
+                    mainActivityViewModel.state = state.copy(
                         snackbarMessage =
                         "${value.javaClass.simpleName}(${value::errorCode.name}=" +
                             "${value.errorCode})",
@@ -580,15 +526,12 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
                 is Event.DjSessionUpdate,
                 -> {
                     val state = mainActivityViewModel.state as PlayerInitialized
-                    mainActivityViewModel.state = state.copyWithLatestCredentials(
-                        mainActivityViewModel.credentialsProvider,
-                        snackbarMessage = value.toString(),
-                    )
+                    mainActivityViewModel.state = state.copy(snackbarMessage = value.toString())
                 }
 
                 else ->
                     mainActivityViewModel.state = (mainActivityViewModel.state as PlayerInitialized)
-                        .copyWithLatestCredentials(mainActivityViewModel.credentialsProvider)
+                        .copy()
             }
         }
     }
@@ -598,61 +541,16 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
     }
 }
 
-@Suppress("ComplexMethod", "LongParameterList")
-private fun <T : MainActivityViewModelState> T.copyWithLatestCredentials(
-    credentialsProvider: CredentialsProvider,
+private fun <T : MainActivityViewModelState> T.castAndCopy(
     snackbarMessage: String? = this.snackbarMessage,
-    current: MediaProduct? = when (this) {
-        is PlayerInitialized -> this.current
-        else -> null
-    },
-    next: MediaProduct? = when (this) {
-        is PlayerInitialized -> this.next
-        else -> null
-    },
-    isRepeatOneEnabled: Boolean? = when (this) {
-        is PlayerInitialized -> this.isRepeatOneEnabled
-        else -> null
-    },
-    draggedPositionSeconds: Float? = when (this) {
-        is PlayerInitialized -> this.draggedPositionSeconds
-        else -> null
-    },
-    streamingAudioQualityWifi: AudioQuality? = when (this) {
-        is PlayerInitialized -> this.streamingAudioQualityWifi
-        else -> null
-    },
-    streamingAudioQualityCellular: AudioQuality? = when (this) {
-        is PlayerInitialized -> this.streamingAudioQualityCellular
-        else -> null
-    },
-    loudnessNormalizationMode: LoudnessNormalizationMode? = when (this) {
-        is PlayerInitialized -> this.loudnessNormalizationMode
-        else -> null
-    },
 ) = (this as MainActivityViewModelState).run {
     when (this) {
-        is AwaitingLoginFlowChoice -> copy(
-            snackbarMessage = snackbarMessage,
-            credentials = credentialsProvider.getLatestCredentials(),
-        )
-
+        is AwaitingLoginFlowChoice -> copy(snackbarMessage = snackbarMessage)
         is LoggingIn -> copy(snackbarMessage = snackbarMessage)
         is PlayerReleasing.FromRequest -> copy(snackbarMessage = snackbarMessage)
         is PlayerReleasing.FromLogOut -> copy(snackbarMessage = snackbarMessage)
         is PlayerNotInitialized -> copy(snackbarMessage = snackbarMessage)
-        is PlayerInitialized -> copy(
-            snackbarMessage = snackbarMessage,
-            credentials = credentialsProvider.getLatestCredentials()!!,
-            current = current,
-            next = next,
-            isRepeatOneEnabled = isRepeatOneEnabled!!,
-            draggedPositionSeconds = draggedPositionSeconds,
-            streamingAudioQualityWifi = streamingAudioQualityWifi!!,
-            streamingAudioQualityCellular = streamingAudioQualityCellular!!,
-            loudnessNormalizationMode = loudnessNormalizationMode!!,
-        )
-
-        is PlayerInitializing -> copy(snackbarMessage)
+        is PlayerInitialized -> copy(snackbarMessage = snackbarMessage)
+        is PlayerInitializing -> copy(snackbarMessage = snackbarMessage)
     } as T
 }

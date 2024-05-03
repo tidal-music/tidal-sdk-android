@@ -51,7 +51,6 @@ internal sealed class MainActivityViewModelState private constructor() {
      */
     data class PlayerInitialized(
         override val snackbarMessage: String?,
-        val credentials: Credentials,
         val player: Player,
         val eventCollectionJob: Job,
         val itemPositionPollingJob: Job,

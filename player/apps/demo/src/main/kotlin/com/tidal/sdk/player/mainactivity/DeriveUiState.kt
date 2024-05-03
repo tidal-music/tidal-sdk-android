@@ -24,7 +24,6 @@ internal class DeriveUiState {
                 is MainActivityViewModelState.PlayerInitialized ->
                     MainActivityState.PlayerInitialized(
                         snackbarMessage,
-                        credentials,
                         streamingAudioQualityWifi,
                         streamingAudioQualityCellular,
                         loudnessNormalizationMode,

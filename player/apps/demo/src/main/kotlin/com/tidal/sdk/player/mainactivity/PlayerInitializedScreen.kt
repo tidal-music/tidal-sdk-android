@@ -30,6 +30,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import com.tidal.sdk.auth.model.Credentials
+import com.tidal.sdk.player.BuildConfig
 import com.tidal.sdk.player.common.model.AudioQuality
 import com.tidal.sdk.player.common.model.LoudnessNormalizationMode
 import com.tidal.sdk.player.common.model.MediaProduct
@@ -118,7 +120,7 @@ private fun DemoPlayableItemsList(
 ) {
     val itemListState = rememberLazyListState()
     val selectedDemoPlayableItems = DemoPlayableItem.HARDCODED.filter {
-        state.credentials.level in it.allowedCredentialLevels
+        CREDENTIAL_LEVEL in it.allowedCredentialLevels
     }
     val selectedIndex = if (state.currentMediaProduct != null) {
         selectedDemoPlayableItems.run {
@@ -333,4 +335,9 @@ private fun PlaybackControls(
             Text(text = "RELEASE PLAYER")
         }
     }
+}
+
+private val CREDENTIAL_LEVEL = when {
+    BuildConfig.TIDAL_CLIENT_SECRET.isNullOrBlank() -> Credentials.Level.USER
+    else -> Credentials.Level.CLIENT
 }
