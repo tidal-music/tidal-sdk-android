@@ -21,12 +21,4 @@ internal class DefaultCredentialsProvider internal constructor(
             logger.d { "getCredentials called, apiErrorSubStatus: $apiErrorSubStatus, result $it" }
         }
     }
-
-    /**
-     * Returns the latest locally available (in memory or in device storage)
-     * credentials, if any are available.
-     */
-    override fun getLatestCredentials(): Credentials? {
-        return tokenRepository.getLatestTokens()?.credentials
-    }
 }

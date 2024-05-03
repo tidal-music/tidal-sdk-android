@@ -28,9 +28,4 @@ interface CredentialsProvider {
      * [IllegalConfigurationError] If the configuration prevents creating valid credentials.
      */
     suspend fun getCredentials(apiErrorSubStatus: String? = null): AuthResult<Credentials>
-
-    /**
-     * Convenience function to synchronously retrieve current in-memory [Credentials], if available.
-     */
-    fun getLatestCredentials(): Credentials?
 }
