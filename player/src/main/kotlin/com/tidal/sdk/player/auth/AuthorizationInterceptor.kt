@@ -2,6 +2,7 @@ package com.tidal.sdk.player.auth
 
 import com.tidal.sdk.auth.CredentialsProvider
 import java.net.HttpURLConnection
+import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.Protocol
@@ -22,7 +23,8 @@ internal class AuthorizationInterceptor(
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
         val credentials =
-            credentialsProvider.getLatestCredentials() ?: return chain.proceed(request)
+            runBlocking { credentialsProvider.getCredentials().successData }
+                ?: return chain.proceed(request)
         return requestAuthorizationDelegate(request, credentials)?.let { chain.proceed(it) }
             ?: Response.Builder()
                 .request(request)

@@ -3,6 +3,7 @@ package com.tidal.sdk.player.auth
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.tidal.sdk.auth.CredentialsProvider
+import com.tidal.sdk.auth.model.AuthResult
 import com.tidal.sdk.auth.model.Credentials
 import com.tidal.sdk.common.TidalMessage
 import kotlinx.coroutines.flow.Flow
@@ -29,17 +30,20 @@ internal class AuthorizationInterceptorTest {
             get() = throw IllegalAccessException("Not supported")
 
         override suspend fun getCredentials(apiErrorSubStatus: String?) =
-            throw IllegalAccessException("Not supported")
+            AuthResult.Success(
+                Credentials(
+                    clientId = "clientId",
+                    requestedScopes = emptySet(),
+                    clientUniqueKey = null,
+                    grantedScopes = emptySet(),
+                    userId = null,
+                    expires = null,
+                    token = accessToken,
+                ),
+            )
 
-        override fun getLatestCredentials() = Credentials(
-            clientId = "clientId",
-            requestedScopes = emptySet(),
-            clientUniqueKey = null,
-            grantedScopes = emptySet(),
-            userId = null,
-            expires = null,
-            token = accessToken,
-        )
+        override fun getLatestCredentials() =
+            throw IllegalAccessException("Not supported")
     }
 
     private val authorizationInterceptor = AuthorizationInterceptor(
