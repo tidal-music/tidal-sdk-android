@@ -8,7 +8,7 @@ on:
 
 jobs:
   run-instrumented-tests:
-    runs-on: macos-12
+    runs-on: macos-12-large
     env:
       ORG_GRADLE_PROJECT_githubToken: ${{ secrets.pat }}
     name: Run instrumented tests
