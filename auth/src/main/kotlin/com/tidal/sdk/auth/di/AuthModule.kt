@@ -3,7 +3,6 @@ package com.tidal.sdk.auth.di
 import com.tidal.sdk.auth.CredentialsProvider
 import com.tidal.sdk.auth.DefaultCredentialsProvider
 import com.tidal.sdk.auth.TokenRepository
-import com.tidal.sdk.auth.login.LoginRepository
 import com.tidal.sdk.auth.util.DefaultRetryPolicy
 import com.tidal.sdk.auth.util.DefaultTimeProvider
 import com.tidal.sdk.auth.util.RetryPolicy
@@ -36,7 +35,6 @@ internal class AuthModule {
     @JvmSuppressWildcards
     fun provideCredentialsProvider(
         bus: MutableSharedFlow<TidalMessage>,
-        loginRepository: LoginRepository,
         tokenRepository: TokenRepository,
-    ): CredentialsProvider = DefaultCredentialsProvider(bus, loginRepository, tokenRepository)
+    ): CredentialsProvider = DefaultCredentialsProvider(bus, tokenRepository)
 }

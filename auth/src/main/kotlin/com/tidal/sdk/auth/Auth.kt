@@ -22,14 +22,6 @@ class Auth internal constructor(
 ) {
 
     /**
-     * Checks whether a user is currently logged in.
-     * @return True if a user is logged in, false otherwise.
-     */
-    fun isLoggedIn(): Boolean {
-        return loginRepository.isLoggedIn()
-    }
-
-    /**
      * Begins the login process by generating a URI to the login service.
      * @param redirectUri The URI to redirect to after successful login.
      * @param loginConfig Optional configuration for customizing the login process.

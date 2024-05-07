@@ -18,7 +18,7 @@ import androidx.navigation.NavController
 @Composable
 fun StartScreen(navController: NavController) {
     val activity = LocalContext.current.findActivity() as MainActivity
-    val isLoggedIn = remember { mutableStateOf(activity.auth.isLoggedIn()) }
+    val isLoggedIn = remember { mutableStateOf(activity.credentialsProvider.isUserLoggedIn()) }
 
     Box(
         modifier = Modifier
@@ -29,7 +29,7 @@ fun StartScreen(navController: NavController) {
         if (isLoggedIn.value) {
             LoggedInUI {
                 activity.logout()
-                isLoggedIn.value = activity.auth.isLoggedIn()
+                isLoggedIn.value = activity.credentialsProvider.isUserLoggedIn()
             }
         } else {
             NotLoggedInUI(

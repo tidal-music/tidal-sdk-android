@@ -38,11 +38,6 @@ internal class LoginRepository constructor(
         DeviceLoginPollHelper(loginService)
     }
 
-    fun isLoggedIn(): Boolean {
-        val tokens = tokensStore.getLatestTokens(authConfig.credentialsKey)
-        return tokens?.credentials?.level == Credentials.Level.USER
-    }
-
     fun getLoginUri(
         redirectUri: String,
         loginConfig: LoginConfig?,

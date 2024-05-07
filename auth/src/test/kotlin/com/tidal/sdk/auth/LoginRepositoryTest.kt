@@ -723,9 +723,6 @@ class LoginRepositoryTest {
         assert(fakeTokensStore.last() == null) {
             "After logout, there should not be stored credentials"
         }
-        assert(!loginRepository.isLoggedIn()) {
-            "After logout, isLoggedIn() should return false"
-        }
     }
 
     @Test
