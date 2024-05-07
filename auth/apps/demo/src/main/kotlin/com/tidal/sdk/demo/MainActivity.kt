@@ -52,7 +52,7 @@ class MainActivity : ComponentActivity() {
             clientId = "YOUR_CLIENT_ID",
             clientUniqueKey = "YOUR_CLIENT_UNIQUE_CODE",
             credentialsKey = STORAGE_KEY,
-            scopes = setOf("r_usr", "w_usr", "w_sub"),
+            scopes = setOf("YOUR_SCOPES"),
             enableCertificatePinning = true,
             logLevel = NetworkLogLevel.BODY,
         )
