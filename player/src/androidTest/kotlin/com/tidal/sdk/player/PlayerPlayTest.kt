@@ -88,7 +88,7 @@ class PlayerPlayTest {
                 override suspend fun getCredentials(apiErrorSubStatus: String?) =
                     AuthResult.Success(CREDENTIALS)
 
-                override fun getLatestCredentials() = CREDENTIALS
+                override fun isUserLoggedIn() = true
             },
             eventSender,
             version = "PLAYLOG_TESTS_ANDROID",

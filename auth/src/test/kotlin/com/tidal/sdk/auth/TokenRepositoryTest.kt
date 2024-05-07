@@ -691,7 +691,7 @@ class TokenRepositoryTest {
         }
 
     @Test
-    fun `getLatestCredentials returns credentials from memory if possible`() = runTest {
+    fun `getLatestTokens returns tokens from memory if possible`() = runTest {
         // given
         val credentials = makeCredentials(
             userId = "valid",
@@ -723,7 +723,7 @@ class TokenRepositoryTest {
     }
 
     @Test
-    fun `getLatestCredentials returns credentials from storage if possible`() = runTest {
+    fun `getLatestTokens returns tokens from storage if possible`() = runTest {
         // given
         val credentials = makeCredentials(
             userId = "valid",

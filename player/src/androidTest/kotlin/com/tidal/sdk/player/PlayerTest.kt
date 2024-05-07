@@ -25,7 +25,7 @@ class PlayerTest {
         override suspend fun getCredentials(apiErrorSubStatus: String?) =
             throw IllegalAccessException("Not supported")
 
-        override fun getLatestCredentials() = null
+        override fun isUserLoggedIn() = false
     }
 
     private val eventSender = object : EventSender {

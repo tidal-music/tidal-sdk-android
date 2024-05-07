@@ -47,9 +47,7 @@ internal class DefaultAuthenticatorTest {
             override suspend fun getCredentials(apiErrorSubStatus: String?) =
                 AuthResult.Success<Credentials>(null)
 
-            override fun getLatestCredentials(): Credentials? {
-                throw IllegalAccessException("Not supported")
-            }
+            override fun isUserLoggedIn() = throw IllegalAccessException("Not supported")
         }
 
         val defaultAuthenticator = DefaultAuthenticator(
@@ -87,9 +85,7 @@ internal class DefaultAuthenticatorTest {
                     ),
                 )
 
-            override fun getLatestCredentials(): Credentials? {
-                throw IllegalAccessException("Not supported")
-            }
+            override fun isUserLoggedIn() = throw IllegalAccessException("Not supported")
         }
 
         val defaultAuthenticator = DefaultAuthenticator(

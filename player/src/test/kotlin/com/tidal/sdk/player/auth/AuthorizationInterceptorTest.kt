@@ -42,8 +42,7 @@ internal class AuthorizationInterceptorTest {
                 ),
             )
 
-        override fun getLatestCredentials() =
-            throw IllegalAccessException("Not supported")
+        override fun isUserLoggedIn() = throw IllegalAccessException("Not supported")
     }
 
     private val authorizationInterceptor = AuthorizationInterceptor(

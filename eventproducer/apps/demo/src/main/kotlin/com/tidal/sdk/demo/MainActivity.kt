@@ -62,7 +62,7 @@ class MainActivity : ComponentActivity() {
                 return AuthResult.Success(credentials)
             }
 
-            override fun getLatestCredentials() = credentials
+            override fun isUserLoggedIn() = true
         }
     }
 

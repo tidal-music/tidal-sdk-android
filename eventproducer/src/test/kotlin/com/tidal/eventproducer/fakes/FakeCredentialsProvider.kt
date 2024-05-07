@@ -33,8 +33,7 @@ class FakeCredentialsProvider(
         }
     }
 
-    override fun getLatestCredentials() =
-        getDefaultCredentials(accessToken = accessToken, clientId = clientId)
+    override fun isUserLoggedIn() = true
 
     private fun getDefaultCredentials(accessToken: String, clientId: String) = Credentials(
         clientId = clientId,
