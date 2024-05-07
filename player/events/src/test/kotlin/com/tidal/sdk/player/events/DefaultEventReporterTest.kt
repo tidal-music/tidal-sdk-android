@@ -4,8 +4,8 @@ import com.google.gson.Gson
 import com.tidal.sdk.eventproducer.EventSender
 import com.tidal.sdk.eventproducer.model.ConsentCategory
 import com.tidal.sdk.player.events.converter.EventFactory
+import com.tidal.sdk.player.events.model.AudioPlaybackSession
 import com.tidal.sdk.player.events.model.Event
-import com.tidal.sdk.player.events.model.Progress
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -35,13 +35,13 @@ internal class DefaultEventReporterTest {
     fun report() = runBlocking {
         val name = "eventName"
         val consentCategory = mock<ConsentCategory>()
-        val event = mock<Progress> {
+        val event = mock<AudioPlaybackSession> {
             on { it.name } doReturn name
             on { it.consentCategory } doReturn consentCategory
         }
         val jsonString = "event json"
         whenever(gson.toJson(event)) doReturn jsonString
-        val payload = mock<Progress.Payload>()
+        val payload = mock<AudioPlaybackSession.Payload>()
         val eventFactory = mock<EventFactory<Event.Payload>> {
             on { runBlocking { invoke(payload) } } doReturn event
         }

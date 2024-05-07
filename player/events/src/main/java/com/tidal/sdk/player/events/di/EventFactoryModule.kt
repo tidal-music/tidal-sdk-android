@@ -17,7 +17,6 @@ import com.tidal.sdk.player.events.converter.DrmLicenseFetchEventFactory
 import com.tidal.sdk.player.events.converter.EventFactory
 import com.tidal.sdk.player.events.converter.NotStartedPlaybackStatisticsEventFactory
 import com.tidal.sdk.player.events.converter.PlaybackInfoFetchEventFactory
-import com.tidal.sdk.player.events.converter.ProgressEventFactory
 import com.tidal.sdk.player.events.converter.StreamingSessionEndEventFactory
 import com.tidal.sdk.player.events.converter.StreamingSessionStartEventFactory
 import com.tidal.sdk.player.events.converter.StreamingSessionStartPayloadDecorator
@@ -33,7 +32,6 @@ import com.tidal.sdk.player.events.model.DrmLicenseFetch
 import com.tidal.sdk.player.events.model.Event
 import com.tidal.sdk.player.events.model.NotStartedPlaybackStatistics
 import com.tidal.sdk.player.events.model.PlaybackInfoFetch
-import com.tidal.sdk.player.events.model.Progress
 import com.tidal.sdk.player.events.model.StreamingSessionEnd
 import com.tidal.sdk.player.events.model.StreamingSessionStart
 import com.tidal.sdk.player.events.model.VideoDownloadStatistics
@@ -322,24 +320,6 @@ internal object EventFactoryModule {
         userSupplier,
         clientSupplier,
         notStartedPlaybackStatisticsFactory,
-    )
-
-    @Provides
-    @Reusable
-    @IntoMap
-    @EventFactoryKey(Progress.Payload::class)
-    fun progressEventFactory(
-        trueTimeWrapper: TrueTimeWrapper,
-        uuidWrapper: UUIDWrapper,
-        userSupplier: UserSupplier,
-        clientSupplier: ClientSupplier,
-        progressFactory: Progress.Factory,
-    ): EventFactory<out Event.Payload> = ProgressEventFactory(
-        trueTimeWrapper,
-        uuidWrapper,
-        userSupplier,
-        clientSupplier,
-        progressFactory,
     )
 
     @MapKey

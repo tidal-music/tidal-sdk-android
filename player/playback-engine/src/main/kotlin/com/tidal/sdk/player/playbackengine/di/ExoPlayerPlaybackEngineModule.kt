@@ -1,7 +1,6 @@
 package com.tidal.sdk.player.playbackengine.di
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.media.AudioManager
 import android.net.ConnectivityManager
 import android.os.Handler
@@ -9,7 +8,6 @@ import android.os.HandlerThread
 import android.os.Looper
 import androidx.media3.exoplayer.drm.ExoMediaDrm
 import androidx.media3.exoplayer.drm.FrameworkMediaDrm
-import com.google.gson.Gson
 import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
 import com.tidal.sdk.player.events.EventReporter
 import com.tidal.sdk.player.playbackengine.ExoPlayerPlaybackEngine
@@ -21,7 +19,6 @@ import com.tidal.sdk.player.playbackengine.dj.DjSessionManager
 import com.tidal.sdk.player.playbackengine.dj.HlsTagsParser
 import com.tidal.sdk.player.playbackengine.error.ErrorCodeFactory
 import com.tidal.sdk.player.playbackengine.error.ErrorHandler
-import com.tidal.sdk.player.playbackengine.mediasource.streamingsession.PlaybackReport
 import com.tidal.sdk.player.playbackengine.mediasource.streamingsession.UndeterminedPlaybackSessionResolver
 import com.tidal.sdk.player.playbackengine.mediasource.streamingsession.VersionedCdm
 import com.tidal.sdk.player.playbackengine.model.Event
@@ -102,21 +99,6 @@ internal object ExoPlayerPlaybackEngineModule {
 
     @Provides
     @Reusable
-    fun sharedPreferences(context: Context) = context.getSharedPreferences(
-        context.packageName + "_preferences_com.tidal.sdk.player",
-        Context.MODE_PRIVATE,
-    )
-
-    @Provides
-    @Singleton
-    fun playbackReportHandler(
-        gson: Gson,
-        sharedPreferences: SharedPreferences,
-        eventReporter: EventReporter,
-    ) = PlaybackReport.Handler(gson, sharedPreferences, eventReporter)
-
-    @Provides
-    @Reusable
     fun errorCodeFactory() = ErrorCodeFactory()
 
     @Provides
@@ -171,7 +153,6 @@ internal object ExoPlayerPlaybackEngineModule {
         audioQualityRepository: AudioQualityRepository,
         volumeHelper: VolumeHelper,
         trueTimeWrapper: TrueTimeWrapper,
-        playbackReportHandler: PlaybackReport.Handler,
         eventReporter: EventReporter,
         errorHandler: ErrorHandler,
         djSessionManager: DjSessionManager,
@@ -188,7 +169,6 @@ internal object ExoPlayerPlaybackEngineModule {
         audioQualityRepository,
         volumeHelper,
         trueTimeWrapper,
-        playbackReportHandler,
         eventReporter,
         errorHandler,
         djSessionManager,

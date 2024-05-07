@@ -22,7 +22,7 @@ sealed class Event<T : Event.Payload>(
     val consentCategory: ConsentCategory
         get() = when (group) {
             Group.STREAMING_METRICS -> ConsentCategory.PERFORMANCE
-            Group.PLAYBACK, Group.PLAY_LOG -> ConsentCategory.NECESSARY
+            Group.PLAY_LOG -> ConsentCategory.NECESSARY
         }
 
     @JvmInline
@@ -33,9 +33,6 @@ sealed class Event<T : Event.Payload>(
 
         @SerializedName("streaming_metrics")
         STREAMING_METRICS,
-
-        @SerializedName("playback")
-        PLAYBACK,
 
         @SerializedName("play_log")
         PLAY_LOG,

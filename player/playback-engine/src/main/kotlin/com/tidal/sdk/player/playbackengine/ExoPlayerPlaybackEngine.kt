@@ -38,7 +38,6 @@ import com.tidal.sdk.player.playbackengine.error.ErrorHandler
 import com.tidal.sdk.player.playbackengine.mediasource.PlaybackInfoMediaSource
 import com.tidal.sdk.player.playbackengine.mediasource.loadable.PlaybackInfoFetchException
 import com.tidal.sdk.player.playbackengine.mediasource.loadable.PlaybackInfoListener
-import com.tidal.sdk.player.playbackengine.mediasource.streamingsession.PlaybackReport
 import com.tidal.sdk.player.playbackengine.mediasource.streamingsession.PlaybackSession
 import com.tidal.sdk.player.playbackengine.mediasource.streamingsession.PlaybackStatistics
 import com.tidal.sdk.player.playbackengine.mediasource.streamingsession.StartedStall
@@ -83,7 +82,6 @@ internal class ExoPlayerPlaybackEngine(
     private val audioQualityRepository: AudioQualityRepository,
     private val volumeHelper: VolumeHelper,
     private val trueTimeWrapper: TrueTimeWrapper,
-    private val playbackReportHandler: PlaybackReport.Handler,
     private val eventReporter: EventReporter,
     private val errorHandler: ErrorHandler,
     private val djSessionManager: DjSessionManager,
@@ -463,7 +461,6 @@ internal class ExoPlayerPlaybackEngine(
 
     override fun onIsPlayingChanged(eventTime: EventTime, isPlaying: Boolean) {
         if (isPlaying) {
-            forwardingMediaProduct!!.startNewPlaybackReport(playbackContext!!)
             currentPlaybackSession!!.apply {
                 val positionInSeconds =
                     if (forwardingMediaProduct?.productType == ProductType.BROADCAST) {
@@ -472,10 +469,6 @@ internal class ExoPlayerPlaybackEngine(
                         eventTime.currentPlaybackPositionMs
                     }.toDouble() / MS_IN_SECOND
                 startAssetPosition = positionInSeconds
-            }
-        } else {
-            if (playbackState == PlaybackState.PLAYING) {
-                notifyProgressStop(eventTime.currentPlaybackPositionMs)
             }
         }
     }
@@ -553,7 +546,6 @@ internal class ExoPlayerPlaybackEngine(
                 endTimestamp = invokedAtMillis,
                 endPositionSeconds = oldPositionSeconds,
             )
-            notifyProgressStop(oldPositionMs)
 
             when (extendedExoPlayer.repeatMode) {
                 Player.REPEAT_MODE_OFF -> {
@@ -578,7 +570,6 @@ internal class ExoPlayerPlaybackEngine(
                     endTimestamp = invokedAtMillis,
                     endPositionSeconds = oldPositionSeconds,
                 )
-                notifyProgressStop(oldPositionMs)
                 handleTransitionForRepeatOff(eventTime, invokedAtMillis, newPositionSeconds)
                 return
             }
@@ -637,7 +628,6 @@ internal class ExoPlayerPlaybackEngine(
             ),
             mediaSource!!.playbackInfo!!,
         ).toStarted(invokedAtMillis)
-        forwardingMediaProduct!!.startNewPlaybackReport(playbackContext!!)
         currentPlaybackSession = targetPlaybackSession?.apply {
             startTimestamp = invokedAtMillis
             startAssetPosition = newPositionSeconds
@@ -657,7 +647,6 @@ internal class ExoPlayerPlaybackEngine(
             ),
             mediaSource!!.playbackInfo!!,
         ).toStarted(invokedAtMillis)
-        forwardingMediaProduct?.startNewPlaybackReport(playbackContext!!)
         currentPlaybackSession = newStreamingSession.createPlaybackSession(
             mediaSource!!.playbackInfo!!,
             forwardingMediaProduct!!,
@@ -976,24 +965,6 @@ internal class ExoPlayerPlaybackEngine(
                     trueTimeWrapper.currentTimeMillis,
                 )
         }
-    }
-
-    private fun ForwardingMediaProduct<*>.startNewPlaybackReport(playbackContext: PlaybackContext) {
-        playbackReportHandler.currentPlaybackReport = PlaybackReport(
-            playbackContext.productId,
-            productType.name,
-            (playbackContext.duration * MS_IN_SECOND).toInt(),
-            sourceInfo = mapOf(
-                PlaybackReport.Handler.KEY_SOURCE_INFO_TYPE to sourceType,
-                PlaybackReport.Handler.KEY_SOURCE_INFO_ID to sourceId,
-            ),
-        )
-    }
-
-    private fun notifyProgressStop(playbackPositionMs: Long) {
-        playbackReportHandler.currentPlaybackReport = playbackReportHandler.currentPlaybackReport
-            ?.copy(progressStop = playbackPositionMs.toInt())
-        playbackReportHandler.reportAndClearCurrent()
     }
 
     private fun resetInternal() {
