@@ -22,12 +22,12 @@ import com.tidal.sdk.auth.model.LoginResponse
 import com.tidal.sdk.auth.model.QueryParameter
 import com.tidal.sdk.auth.model.TokenResponseError
 import com.tidal.sdk.auth.model.Tokens
-import com.tidal.sdk.auth.model.UnexpectedError
 import com.tidal.sdk.auth.util.RetryPolicy
 import com.tidal.sdk.auth.util.TimeProvider
 import com.tidal.sdk.common.NetworkError
 import com.tidal.sdk.common.RetryableError
 import com.tidal.sdk.common.TidalMessage
+import com.tidal.sdk.common.UnexpectedError
 import com.tidal.sdk.util.CoroutineTestTimeProvider
 import com.tidal.sdk.util.TEST_CLIENT_ID
 import com.tidal.sdk.util.TEST_CLIENT_UNIQUE_KEY

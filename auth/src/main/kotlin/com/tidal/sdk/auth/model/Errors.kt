@@ -17,36 +17,12 @@ class AuthorizationError(
 ) : TidalError
 
 /**
- * An error to be raised for unexpected errors. Can be used as a "catch all" error.
- *
- * @param code The error code returned by the API.
- * @param subStatus The TIDAL-specific error code returned by the API.
- */
-class UnexpectedError(
-    override val code: String,
-    val subStatus: Int? = null,
-    val throwable: Throwable? = null,
-) : TidalError
-
-/**
  * Error used to indicate that an access token could not be retrieved.
  *
  * @param code The error code returned by the API.
  * @param subStatus The TIDAL-specific error code returned by the API.
  */
 class TokenResponseError(
-    override val code: String,
-    val subStatus: Int? = null,
-    val throwable: Throwable? = null,
-) : TidalError
-
-/**
- * Raised whenever an operation failed due to an incorrect configuration.
- *
- * @param code The error code returned by the API.
- * @param subStatus The TIDAL-specific error code returned by the API.
- */
-class IllegalConfigurationError(
     override val code: String,
     val subStatus: Int? = null,
     val throwable: Throwable? = null,

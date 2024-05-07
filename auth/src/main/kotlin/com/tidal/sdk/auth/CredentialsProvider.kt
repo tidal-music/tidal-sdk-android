@@ -3,7 +3,7 @@ package com.tidal.sdk.auth
 import com.tidal.sdk.auth.model.AuthResult
 import com.tidal.sdk.auth.model.Credentials
 import com.tidal.sdk.auth.model.CredentialsUpdatedMessage
-import com.tidal.sdk.auth.model.IllegalConfigurationError
+import com.tidal.sdk.common.IllegalConfigurationError
 import com.tidal.sdk.common.RetryableError
 import com.tidal.sdk.common.TidalMessage
 import kotlinx.coroutines.flow.Flow

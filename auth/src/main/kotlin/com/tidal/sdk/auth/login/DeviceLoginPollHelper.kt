@@ -6,7 +6,6 @@ import com.tidal.sdk.auth.model.AuthResult
 import com.tidal.sdk.auth.model.ErrorResponse
 import com.tidal.sdk.auth.model.LoginResponse
 import com.tidal.sdk.auth.model.TokenResponseError
-import com.tidal.sdk.auth.model.UnexpectedError
 import com.tidal.sdk.auth.model.failure
 import com.tidal.sdk.auth.network.LoginService
 import com.tidal.sdk.auth.util.AuthErrorPolicy
@@ -21,6 +20,7 @@ import com.tidal.sdk.auth.util.toScopesString
 import com.tidal.sdk.common.NetworkError
 import com.tidal.sdk.common.RetryableError
 import com.tidal.sdk.common.TidalError
+import com.tidal.sdk.common.UnexpectedError
 import java.net.HttpURLConnection
 import retrofit2.HttpException
 

@@ -2,10 +2,10 @@ package com.tidal.sdk.auth.util
 
 import com.tidal.sdk.auth.model.AuthResult
 import com.tidal.sdk.auth.model.ErrorResponse
-import com.tidal.sdk.auth.model.UnexpectedError
 import com.tidal.sdk.auth.model.failure
 import com.tidal.sdk.common.NetworkError
 import com.tidal.sdk.common.RetryableError
+import com.tidal.sdk.common.UnexpectedError
 import retrofit2.HttpException
 
 /**

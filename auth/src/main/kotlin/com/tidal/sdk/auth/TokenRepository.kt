@@ -6,7 +6,6 @@ import com.tidal.sdk.auth.model.Credentials
 import com.tidal.sdk.auth.model.CredentialsUpdatedMessage
 import com.tidal.sdk.auth.model.RefreshResponse
 import com.tidal.sdk.auth.model.Tokens
-import com.tidal.sdk.auth.model.UnexpectedError
 import com.tidal.sdk.auth.model.failure
 import com.tidal.sdk.auth.model.success
 import com.tidal.sdk.auth.storage.TokensStore
@@ -18,6 +17,7 @@ import com.tidal.sdk.auth.util.shouldRefreshToken
 import com.tidal.sdk.auth.util.toScopesString
 import com.tidal.sdk.common.RetryableError
 import com.tidal.sdk.common.TidalMessage
+import com.tidal.sdk.common.UnexpectedError
 import com.tidal.sdk.common.d
 import com.tidal.sdk.common.logger
 import java.net.HttpURLConnection
