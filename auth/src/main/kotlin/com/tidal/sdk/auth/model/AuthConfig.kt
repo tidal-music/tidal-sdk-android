@@ -1,6 +1,5 @@
 package com.tidal.sdk.auth.model
 
-import com.tidal.sdk.auth.TidalAuth
 import com.tidal.sdk.auth.network.NetworkLogLevel
 
 /**
@@ -25,11 +24,12 @@ data class AuthConfig(
     val credentialsKey: String,
     val scopes: Set<String> = setOf(),
     val tidalLoginServiceBaseUrl: String = DEFAULT_LOGIN_SERVICE_BASE_URL,
-    val tidalAuthServiceBaseUrl: String = TidalAuth.AUTH_SERVICE_BASE_URL,
+    val tidalAuthServiceBaseUrl: String = DEFAULT_AUTH_SERVICE_BASE_URL,
     val enableCertificatePinning: Boolean = true,
     val logLevel: NetworkLogLevel = NetworkLogLevel.NONE,
 ) {
     companion object {
         private const val DEFAULT_LOGIN_SERVICE_BASE_URL = "https://login.tidal.com/"
+        private const val DEFAULT_AUTH_SERVICE_BASE_URL = "https://auth.tidal.com/v1/"
     }
 }

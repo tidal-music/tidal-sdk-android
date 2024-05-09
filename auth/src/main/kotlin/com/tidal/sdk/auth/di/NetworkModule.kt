@@ -1,8 +1,6 @@
 package com.tidal.sdk.auth.di
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import com.tidal.sdk.auth.TidalAuth
-import com.tidal.sdk.auth.TidalAuth.Companion.AUTH_SERVICE_BASE_HOSTNAME
 import com.tidal.sdk.auth.model.AuthConfig
 import com.tidal.sdk.auth.network.NetworkLogLevel
 import com.tidal.sdk.auth.util.AuthHttp
@@ -13,6 +11,7 @@ import dagger.Provides
 import javax.inject.Singleton
 import kotlinx.serialization.json.Json
 import okhttp3.CertificatePinner
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -35,7 +34,7 @@ internal class NetworkModule {
                 builder.addInterceptor(getLoggingInterceptor(logLevel))
             }
             if (enableCertificatePinning) {
-                builder.certificatePinner(getCertificatePinner())
+                builder.certificatePinner(getCertificatePinner(config))
             }
         }
         return builder.build()
@@ -49,7 +48,7 @@ internal class NetworkModule {
             ignoreUnknownKeys = true
         }.asConverterFactory(contentType)
         return Retrofit.Builder()
-            .baseUrl("${TidalAuth.DEFAULT_PROTOCOL}${config.tidalAuthServiceBaseUrl}")
+            .baseUrl(config.tidalAuthServiceBaseUrl)
             .client(okHttpClient)
             .addConverterFactory(jsonConverter)
             .build()
@@ -63,10 +62,11 @@ internal class NetworkModule {
         }
     }
 
-    private fun getCertificatePinner(): CertificatePinner {
+    private fun getCertificatePinner(config: AuthConfig): CertificatePinner {
+        val authHost = config.tidalAuthServiceBaseUrl.toHttpUrl().host
         return CertificatePinner.Builder().apply {
             CERTIFICATE_PINS.forEach {
-                add(AUTH_SERVICE_BASE_HOSTNAME, it)
+                add(authHost, it)
             }
         }.build()
     }
