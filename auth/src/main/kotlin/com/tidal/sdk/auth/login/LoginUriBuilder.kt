@@ -3,6 +3,7 @@ package com.tidal.sdk.auth.login
 import com.tidal.sdk.auth.model.LoginConfig
 import com.tidal.sdk.auth.model.QueryParameter
 import okhttp3.HttpUrl
+import okhttp3.HttpUrl.Companion.toHttpUrl
 
 internal class LoginUriBuilder(
     private val clientId: String,
@@ -11,9 +12,9 @@ internal class LoginUriBuilder(
 ) {
 
     fun getLoginUri(redirectUri: String, loginConfig: LoginConfig?, codeChallenge: String): String {
-        var builder = HttpUrl.Builder().scheme(SCHEME).host(loginUri).addPathSegment(
-            AUTH_PATH,
-        )
+        var builder = loginUri.toHttpUrl()
+            .newBuilder()
+            .addPathSegment(AUTH_PATH)
 
         with(builder) {
             addQueryParameter(QueryKeys.REDIRECT_URI_KEY, redirectUri)
@@ -68,7 +69,6 @@ internal class LoginUriBuilder(
     }
 
     object QueryKeys {
-
         const val CLIENT_ID_KEY = "client_id"
         const val CLIENT_UNIQUE_KEY = "client_unique_key"
         const val CODE_CHALLENGE_KEY = "code_challenge"
@@ -79,9 +79,7 @@ internal class LoginUriBuilder(
     }
 
     companion object {
-
         private const val AUTH_PATH = "authorize"
         private const val CODE_CHALLENGE_METHOD = "S256"
-        private const val SCHEME = "https"
     }
 }

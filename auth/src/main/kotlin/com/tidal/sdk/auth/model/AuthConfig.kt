@@ -24,8 +24,12 @@ data class AuthConfig(
     val clientSecret: String? = null,
     val credentialsKey: String,
     val scopes: Set<String> = setOf(),
-    val tidalLoginServiceBaseUrl: String = TidalAuth.LOGIN_SERVICE_BASE_URL,
+    val tidalLoginServiceBaseUrl: String = DEFAULT_LOGIN_SERVICE_BASE_URL,
     val tidalAuthServiceBaseUrl: String = TidalAuth.AUTH_SERVICE_BASE_URL,
     val enableCertificatePinning: Boolean = true,
     val logLevel: NetworkLogLevel = NetworkLogLevel.NONE,
-)
+) {
+    companion object {
+        private const val DEFAULT_LOGIN_SERVICE_BASE_URL = "https://login.tidal.com/"
+    }
+}

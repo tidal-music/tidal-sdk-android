@@ -27,7 +27,6 @@ class TidalAuth private constructor() {
 
     companion object {
 
-        const val LOGIN_SERVICE_BASE_URL = "login.tidal.com"
         const val AUTH_SERVICE_BASE_HOSTNAME = "auth.tidal.com"
         const val AUTH_SERVICE_BASE_URL = "$AUTH_SERVICE_BASE_HOSTNAME/v1/"
         const val DEFAULT_PROTOCOL = "https://"

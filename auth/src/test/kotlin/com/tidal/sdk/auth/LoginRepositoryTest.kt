@@ -72,7 +72,7 @@ class LoginRepositoryTest {
         tokensStore: FakeTokensStore = FakeTokensStore(""),
         retryPolicy: RetryPolicy = testRetryPolicy,
         bus: MutableSharedFlow<TidalMessage> = messageBus,
-        loginBaseUrl: String = "login.tidal.com",
+        loginBaseUrl: String = "https://login.tidal.com/",
     ) {
         fakeLoginService = loginService
         fakeTokensStore = tokensStore
@@ -102,14 +102,13 @@ class LoginRepositoryTest {
     @Test
     fun `getLoginUri uses the correct base url`() {
         // given
-        val loginBaseUrl = "imaginary.address.tidal.com"
-        val protocol = TidalAuth.DEFAULT_PROTOCOL
+        val loginBaseUrl = "https://imaginary.address.tidal.com/"
         createLoginRepository(loginService = FakeLoginService(), loginBaseUrl = loginBaseUrl)
         // when
         val actualUrl = loginRepository.getLoginUri(loginUri, null)
 
         // then
-        assert(actualUrl.startsWith("$protocol$loginBaseUrl")) {
+        assert(actualUrl.startsWith(loginBaseUrl)) {
             "getLoginUri() should use the correct base url"
         }
     }
