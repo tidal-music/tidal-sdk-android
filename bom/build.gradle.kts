@@ -9,7 +9,7 @@ dependencies {
     constraints {
         val dependencies = mutableListOf<Provider<MinimalExternalModuleDependency>>()
         rootProject.sdkModules
-            .filterNot { it === project }
+            .filterNot { it === project || it.name === "common" }
             .forEach {
                 val expectedDependencyName = "tidal-sdk-${it.name}"
                 try {
