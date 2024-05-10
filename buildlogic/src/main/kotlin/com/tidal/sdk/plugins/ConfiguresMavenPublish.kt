@@ -45,6 +45,7 @@ internal class ConfiguresMavenPublish : (Project) -> Unit {
                         SCM_DEVELOPER_CONNECTION,
                     )
                 }
+                developers { developer { name.set("TIDAL") } }
                 project.gradle.projectsEvaluated {
                     this@pom.description.set(project.properties[PROJECT_DESCRIPTION_KEY] as String?)
                 }
