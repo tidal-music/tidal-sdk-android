@@ -30,3 +30,7 @@ jobs:
     secrets:
       pat: ${{ secrets.PACKAGES_PAT }}
       fossaApiKey: ${{ secrets.FOSSAAPIKEY }}
+
+  trigger-changelogs-check:
+    name: Trigger changelog files check
+    uses: ./.github/workflows/check-changelog-files.yml
