@@ -57,7 +57,7 @@ internal data class DemoPlayableItem(
                 "Dreams (Dolby Atmos)",
                 ProductType.TRACK,
                 "215245845",
-                setOf(Credentials.Level.USER, Credentials.Level.CLIENT),
+                setOf(Credentials.Level.USER),
             ),
         )
     }
