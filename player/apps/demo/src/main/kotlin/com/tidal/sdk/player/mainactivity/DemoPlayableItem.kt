@@ -18,9 +18,9 @@ internal data class DemoPlayableItem(
     companion object {
         val HARDCODED = arrayOf(
             DemoPlayableItem(
-                "Wolves",
+                "Izzo",
                 ProductType.TRACK,
-                "57273420",
+                "35738577",
                 setOf(Credentials.Level.USER, Credentials.Level.CLIENT),
             ),
             DemoPlayableItem(
@@ -30,9 +30,9 @@ internal data class DemoPlayableItem(
                 setOf(Credentials.Level.USER, Credentials.Level.CLIENT),
             ),
             DemoPlayableItem(
-                "Izzo",
+                "Yellow",
                 ProductType.TRACK,
-                "35738577",
+                "120272",
                 setOf(Credentials.Level.USER, Credentials.Level.CLIENT),
             ),
             DemoPlayableItem(
@@ -42,9 +42,9 @@ internal data class DemoPlayableItem(
                 setOf(Credentials.Level.USER),
             ),
             DemoPlayableItem(
-                "Cost of livin'",
+                "Hurt",
                 ProductType.VIDEO,
-                "26004828",
+                "104175463",
                 setOf(Credentials.Level.USER),
             ),
             DemoPlayableItem(
@@ -54,9 +54,9 @@ internal data class DemoPlayableItem(
                 setOf(Credentials.Level.USER),
             ),
             DemoPlayableItem(
-                "Rush (Dolby Atmos)",
+                "Dreams (Dolby Atmos)",
                 ProductType.TRACK,
-                "313178984",
+                "215245845",
                 setOf(Credentials.Level.USER, Credentials.Level.CLIENT),
             ),
         )
