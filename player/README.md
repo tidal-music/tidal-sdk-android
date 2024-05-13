@@ -37,24 +37,18 @@ The Player depends on the [Auth](https://github.com/tidal-music/tidal-sdk-androi
 
 Here's how to setup the Player and play a TIDAL track:
 
-1. The Player depends on a `CredentialsProvider` from the Auth module. It is required that the client is authenticated in order to start playing. 
-In the case of the [Client Credentials](https://github.com/tidal-music/tidal-sdk-android/tree/main/auth#client-credentials) authentication flow, this can be done by calling `getCredentials()` on the `CredentialsProvider` and awaiting its successful completion before requesting the Player to play.
-```kotlin
-coroutineScope.launch {
-    auth.credentialsProvider.getCredentials()
-}
-```
-
-2. Create the Player and start playing.
+1. Initialise the Player which depends on a `CredentialsProvider` from the Auth module and an `EventSender` from the EventProducer module.
 ```kotlin
 val player = Player(
     application = application,
     credentialsProvider = auth.credentialsProvider,
     eventSender = eventSender,
-    version = "0.0.1",
-    isDebuggable = true
+    version = "0.0.1"
 )
+```
 
+2. Load and play a `MediaProduct` track.
+```kotlin
 val mediaProduct = MediaProduct(ProductType.TRACK, "PRODUCT_ID")
 
 player.playbackEngine.load(mediaProduct)
