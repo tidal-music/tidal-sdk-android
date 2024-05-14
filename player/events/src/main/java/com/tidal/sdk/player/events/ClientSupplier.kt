@@ -14,7 +14,6 @@ class ClientSupplier(
     private val uiModeManager: UiModeManager,
     private val base64JwtDecoder: Base64JwtDecoder,
     private val credentialsProvider: CredentialsProvider,
-    private val version: String,
 ) {
 
     private var accessToken: String by Delegates.observable("") { _, oldValue, newValue ->
@@ -30,7 +29,6 @@ class ClientSupplier(
         return Client(
             claims?.get("cid")?.jsonPrimitive?.content ?: "",
             Client.DeviceType.from(context, uiModeManager),
-            version,
         )
     }
 }

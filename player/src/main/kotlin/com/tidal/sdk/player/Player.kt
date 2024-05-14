@@ -55,7 +55,6 @@ class Player(
         AudioDecodingMode.NATIVE
     },
     userClientIdSupplier: (() -> Int)? = null,
-    version: String,
     bufferConfiguration: BufferConfiguration = BufferConfiguration(),
     assetTimeoutConfig: AssetTimeoutConfig = AssetTimeoutConfig(),
     streamingApiTimeoutConfig: StreamingApiTimeoutConfig = StreamingApiTimeoutConfig(),
@@ -75,7 +74,6 @@ class Player(
             eventSender,
             audioDecodingMode,
             userClientIdSupplier,
-            version,
             bufferConfiguration,
             assetTimeoutConfig,
             streamingApiTimeoutConfig,

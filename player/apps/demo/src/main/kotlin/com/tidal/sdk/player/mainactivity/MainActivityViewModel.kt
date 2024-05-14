@@ -214,10 +214,9 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
                                     CoroutineScope(Dispatchers.IO),
                                 ).eventSender,
                                 userClientIdSupplier = { 1 },
-                                version = "player-sample-${BuildConfig.VERSION_NAME}",
+                                cacheProvider = cacheProviderLazy.value,
                                 isOfflineMode = isOfflineMode,
                                 isDebuggable = BuildConfig.DEBUG,
-                                cacheProvider = cacheProviderLazy.value,
                             )
 
                             mainActivityViewModel.state = PlayerInitialized(

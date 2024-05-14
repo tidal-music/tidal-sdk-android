@@ -7,6 +7,3 @@ internal val Client.reflectionToken: String
 
 internal val Client.reflectionDeviceType: Client.DeviceType
     get() = reflectionGetInstanceMemberProperty("deviceType")!!
-
-internal val Client.reflectionVersion: String
-    get() = reflectionGetInstanceMemberProperty("version")!!

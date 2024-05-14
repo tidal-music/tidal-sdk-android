@@ -20,14 +20,12 @@ internal class ClientMarshallingTest {
             Client.DeviceType.TABLET -> "tablet"
             Client.DeviceType.PHONE -> "phone"
         }
-        val version = "a version"
-        val src = Client(token, deviceType, version)
+        val src = Client(token, deviceType)
 
         val actual = gson.toJsonTree(src).asJsonObject
 
         assertThat(actual["token"].asString).isEqualTo(token)
         assertThat(actual["deviceType"].asString).isEqualTo(deviceTypeString)
-        assertThat(actual["version"].asString).isEqualTo(version)
         assertThat(actual["platform"].asString).isEqualTo("android")
     }
 
@@ -35,8 +33,7 @@ internal class ClientMarshallingTest {
     @EnumSource(Client.DeviceType::class)
     fun testUnmarshallingClient(deviceType: Client.DeviceType) {
         val token = "a token"
-        val version = "a version"
-        val expected = Client(token, deviceType, version)
+        val expected = Client(token, deviceType)
         val src = gson.toJson(expected)
 
         val actual = gson.fromJson(src, Client::class.java)

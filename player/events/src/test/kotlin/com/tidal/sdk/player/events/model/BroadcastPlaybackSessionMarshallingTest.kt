@@ -8,7 +8,7 @@ internal class BroadcastPlaybackSessionMarshallingTest : PlaybackSessionMarshall
     override val ts = 0L
     override val uuidString = "123e4567-e89b-12d3-a456-426614174000"
     override val user = User(0L, 3, "sessionId")
-    override val client = Client("token", Client.DeviceType.TV, "version")
+    override val client = Client("token", Client.DeviceType.TV)
     override val payload = BroadcastPlaybackSession.Payload(
         UUID.fromString(uuidString),
         Long.MIN_VALUE,

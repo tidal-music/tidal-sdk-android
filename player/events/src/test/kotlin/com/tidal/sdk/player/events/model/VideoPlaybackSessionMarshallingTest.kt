@@ -9,7 +9,7 @@ internal class VideoPlaybackSessionMarshallingTest : PlaybackSessionMarshallingT
     override val ts = 0L
     override val uuidString = "123e4567-e89b-12d3-a456-426614174000"
     override val user = User(1L, 2, "sessionId")
-    override val client = Client("token", Client.DeviceType.TABLET, "version")
+    override val client = Client("token", Client.DeviceType.TABLET)
     override val payload = VideoPlaybackSession.Payload(
         UUID.fromString(uuidString),
         Long.MAX_VALUE,

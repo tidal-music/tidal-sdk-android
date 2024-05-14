@@ -11,7 +11,7 @@ internal class AudioPlaybackStatisticsMarshallingTest : PlaybackStatisticsMarsha
     override val ts = -1L
     override val uuidString = "123e4567-e89b-12d3-a456-426614174000"
     override val user = User(8L, 54, "sessionId")
-    override val client = Client("token", Client.DeviceType.TV, "version")
+    override val client = Client("token", Client.DeviceType.TV)
     override val payload = AudioPlaybackStatistics.Payload(
         "streamingSessionId",
         Long.MAX_VALUE,
