@@ -42,8 +42,7 @@ Here's how to setup the Player and play a TIDAL track:
 val player = Player(
     application = application,
     credentialsProvider = auth.credentialsProvider,
-    eventSender = eventSender,
-    version = "0.0.1"
+    eventSender = eventSender
 )
 ```
 
