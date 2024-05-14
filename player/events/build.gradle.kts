@@ -29,6 +29,7 @@ dependencies {
     testImplementation(libs.test.junit5Api)
     testImplementation(libs.test.junit5Params)
     testImplementation(libs.test.mockito.kotlin)
+    testImplementation(libs.kotlinx.coroutines.test)
     testRuntimeOnly(libs.test.junit5Engine)
     testImplementation(project(":player:testutil"))
 

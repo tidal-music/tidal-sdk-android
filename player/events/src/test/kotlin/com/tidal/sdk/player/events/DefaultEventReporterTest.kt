@@ -6,10 +6,11 @@ import com.tidal.sdk.eventproducer.model.ConsentCategory
 import com.tidal.sdk.player.events.converter.EventFactory
 import com.tidal.sdk.player.events.model.AudioPlaybackSession
 import com.tidal.sdk.player.events.model.Event
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.TestCoroutineScheduler
+import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.doReturn
@@ -24,7 +25,7 @@ internal class DefaultEventReporterTest {
         mock<Map<Class<out Event.Payload>, EventFactory<out Event.Payload>>>()
     private val eventSender = mock<EventSender>()
     private val gson = mock<Gson>()
-    private val coroutineScope = CoroutineScope(Dispatchers.Default)
+    private val coroutineScope = TestScope(StandardTestDispatcher(TestCoroutineScheduler()))
     private val defaultEventReporter =
         DefaultEventReporter(eventFactories, eventSender, gson, coroutineScope)
 
@@ -32,7 +33,7 @@ internal class DefaultEventReporterTest {
     fun afterEach() = verifyNoMoreInteractions(eventFactories, eventSender, gson)
 
     @Test
-    fun report() = runBlocking {
+    fun report() = runTest {
         val name = "eventName"
         val consentCategory = mock<ConsentCategory>()
         val event = mock<AudioPlaybackSession> {
@@ -49,14 +50,14 @@ internal class DefaultEventReporterTest {
 
         defaultEventReporter.report(payload)
 
-        coroutineScope.launch {
-            verify(eventFactories)[payload::class.java]
-            verify(eventFactory)(payload)
-            verify(event).name
-            verify(event).consentCategory
-            verify(gson).toJson(event)
-            verify(eventSender).sendEvent(name, consentCategory, jsonString, emptyMap())
-            verifyNoMoreInteractions(consentCategory, event, payload, eventFactory)
-        }.join()
+        coroutineScope.testScheduler.advanceUntilIdle()
+
+        verify(eventFactories)[payload::class.java]
+        verify(eventFactory)(payload)
+        verify(event).name
+        verify(event).consentCategory
+        verify(gson).toJson(event)
+        verify(eventSender).sendEvent(name, consentCategory, jsonString, emptyMap())
+        verifyNoMoreInteractions(consentCategory, event, payload, eventFactory)
     }
 }
