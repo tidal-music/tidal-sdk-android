@@ -29,7 +29,7 @@ dependencies {
 
 ### Initialization
 
-The [EventSender](https://github.com/tidal-music/tidal-sdk-android/blob/main/eventproducer/src/main/kotlin/com/tidal/sdk/eventproducer/EventSender.kt) role exposes functionality for sending events and monitoring the status of the transportation layer. It is exposed through the [EventProducer](https://github.com/tidal-music/tidal-sdk-android/blob/main/eventproducer/src/main/kotlin/com/tidal/sdk/eventproducer/EventProducer.kt) which is initialized by providing appropriate configuration and [CredentialsProvider](https://github.com/tidal-music/tidal-sdk-android/blob/main/auth/src/main/kotlin/com/tidal/sdk/auth/CredentialsProvider.kt).
+The [EventSender](https://github.com/tidal-music/tidal-sdk-android/blob/main/eventproducer/src/main/kotlin/com/tidal/sdk/eventproducer/EventSender.kt) role exposes functionality for sending events and monitoring the status of the transportation layer. It is exposed through the [EventProducer](https://github.com/tidal-music/tidal-sdk-android/blob/main/eventproducer/src/main/kotlin/com/tidal/sdk/eventproducer/EventProducer.kt) which is initialized by providing appropriate configuration and [CredentialsProvider](https://github.com/tidal-music/tidal-sdk-android/blob/main/auth/src/main/kotlin/com/tidal/sdk/auth/CredentialsProvider.kt). The `tlConsumerUri` parameter is optional, with its default value set to the Tidal production environment. If user chooses to provide their own ingest endpoint, it's important to ensure that the entire backend infrastructure is in place.
 
 ```kotlin
 val eventsConfig = EventsConfig(
@@ -39,7 +39,7 @@ val eventsConfig = EventsConfig(
 )
 
 val eventProducer = EventProducer.getInstance(
-   tlConsumerUrl = URL("https://event-collector-url"),
+   tlConsumerUri = URI("https://event-collector-url"),
    credentialsProvider = getCredentialsProvider(),
    config = eventsConfig,
    context = context,

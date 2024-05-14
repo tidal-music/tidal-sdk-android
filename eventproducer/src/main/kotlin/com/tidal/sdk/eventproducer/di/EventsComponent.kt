@@ -6,7 +6,7 @@ import com.tidal.sdk.eventproducer.EventProducer
 import com.tidal.sdk.eventproducer.model.EventsConfigProvider
 import dagger.BindsInstance
 import dagger.Component
-import java.net.URL
+import java.net.URI
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
 
@@ -32,7 +32,7 @@ internal interface EventsComponent {
             @BindsInstance coroutineScope: CoroutineScope,
             @BindsInstance credentialsProvider: CredentialsProvider,
             @BindsInstance configProvider: EventsConfigProvider,
-            @BindsInstance tlConsumerUrl: URL,
+            @BindsInstance tlConsumerUri: URI,
         ): EventsComponent
     }
 }

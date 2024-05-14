@@ -11,7 +11,7 @@ import com.tidal.sdk.eventproducer.EventProducer
 import com.tidal.sdk.eventproducer.EventSender
 import com.tidal.sdk.eventproducer.model.ConsentCategory
 import com.tidal.sdk.eventproducer.model.EventsConfig
-import java.net.URL
+import java.net.URI
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -27,7 +27,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         val eventProducer = EventProducer.getInstance(
-            TL_CONSUMER_URL,
+            TL_CONSUMER_URI,
             getCredentialsProvider(),
             EventsConfig(MAX_DISK_USAGE_BYTES, emptySet(), "1.0"),
             applicationContext,
@@ -77,7 +77,7 @@ class MainActivity : ComponentActivity() {
 
     companion object {
         private const val MAX_DISK_USAGE_BYTES = 1000000
-        private val TL_CONSUMER_URL =
-            URL("https://event-collector.obelix-staging-use1.tidalhi.fi/")
+        private val TL_CONSUMER_URI =
+            URI("https://event-collector.obelix-staging-use1.tidalhi.fi/")
     }
 }

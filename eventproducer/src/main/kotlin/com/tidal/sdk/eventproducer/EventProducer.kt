@@ -8,7 +8,7 @@ import com.tidal.sdk.eventproducer.model.EventsConfigProvider
 import com.tidal.sdk.eventproducer.outage.OutageState
 import com.tidal.sdk.eventproducer.scheduler.MonitoringScheduler
 import com.tidal.sdk.eventproducer.scheduler.SendEventBatchScheduler
-import java.net.URL
+import java.net.URI
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -55,10 +55,12 @@ class EventProducer private constructor(coroutineScope: CoroutineScope) {
         @Volatile
         var instance: EventProducer? = null
 
+        private val TIDAL_PRODUCTION_TL_CONSUMER_URI = URI("https://ec.tidal.com/api")
+
         /**
          * Used to get a Singleton instance of the [EventProducer]
          *
-         * @param tlConsumerUrl identifies the TL Consumer ingest endpoint.
+         * @param tlConsumerUri identifies the TL Consumer ingest endpoint.
          * TL Consumer is the backend part of the Event delivery platform. Default value is
          * TIDAL production environment.
          * @param credentialsProvider is an implementation of the [CredentialsProvider] from the
@@ -71,7 +73,7 @@ class EventProducer private constructor(coroutineScope: CoroutineScope) {
          * @return EventProducer instance.
          */
         fun getInstance(
-            tlConsumerUrl: URL = URL("https://ec.tidal.com/api"),
+            tlConsumerUri: URI = TIDAL_PRODUCTION_TL_CONSUMER_URI,
             credentialsProvider: CredentialsProvider,
             config: EventsConfig,
             context: Context,
@@ -85,7 +87,7 @@ class EventProducer private constructor(coroutineScope: CoroutineScope) {
                             coroutineScope,
                             credentialsProvider,
                             EventsConfigProvider(config),
-                            tlConsumerUrl,
+                            tlConsumerUri,
                         )
                 EventProducer(coroutineScope).also {
                     eventsComponent.inject(it)
