@@ -10,7 +10,7 @@ android {
 
 dependencies {
 
-    api(project(":common"))
+    api(libs.tidal.sdk.common)
 
     testApi(libs.test.androidx.junit)
     testApi(libs.test.junit5Api)

@@ -15,8 +15,8 @@ android {
 
 dependencies {
     api(libs.okhttp.okhttp)
+    api(libs.tidal.sdk.common)
     api(libs.tidal.sdk.auth)
-    api(project(":common"))
 
     implementation(libs.dagger)
     implementation(libs.kotlinxCoroutinesCore)

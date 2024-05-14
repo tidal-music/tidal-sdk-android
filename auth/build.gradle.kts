@@ -10,7 +10,7 @@ android {
 }
 
 dependencies {
-    api(project(":common"))
+    api(libs.tidal.sdk.common)
 
     implementation(libs.androidx.security.crypto)
     implementation(libs.dagger)
