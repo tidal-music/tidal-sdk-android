@@ -59,7 +59,8 @@ class EventProducer private constructor(coroutineScope: CoroutineScope) {
          * Used to get a Singleton instance of the [EventProducer]
          *
          * @param tlConsumerUrl identifies the TL Consumer ingest endpoint.
-         * TL Consumer is the backend part of the Event delivery platform.
+         * TL Consumer is the backend part of the Event delivery platform. Default value is
+         * TIDAL production environment.
          * @param credentialsProvider is an implementation of the [CredentialsProvider] from the
          * tidal sdk auth module. It's responsible for providing credentials.
          * @param config specifies basic attributes of the Event Producer contained within the
@@ -70,7 +71,7 @@ class EventProducer private constructor(coroutineScope: CoroutineScope) {
          * @return EventProducer instance.
          */
         fun getInstance(
-            tlConsumerUrl: URL,
+            tlConsumerUrl: URL = URL("https://ec.tidal.com/api"),
             credentialsProvider: CredentialsProvider,
             config: EventsConfig,
             context: Context,
