@@ -1,8 +1,8 @@
 package com.tidal.sdk.player.playbackengine
 
+import androidx.media3.decoder.flac.FlacExtractor
 import androidx.media3.extractor.Extractor
 import androidx.media3.extractor.ExtractorsFactory
-import androidx.media3.extractor.flac.FlacExtractor
 import androidx.media3.extractor.mp3.Mp3Extractor
 import androidx.media3.extractor.mp4.Mp4Extractor
 
