@@ -80,7 +80,7 @@ class LoginRepositoryTest {
             authConfig,
             timeProvider,
             CodeChallengeBuilder(),
-            LoginUriBuilder(TEST_CLIENT_ID, TEST_CLIENT_UNIQUE_KEY, loginBaseUrl),
+            LoginUriBuilder(TEST_CLIENT_ID, TEST_CLIENT_UNIQUE_KEY, loginBaseUrl, authConfig.scopes),
             loginService,
             tokensStore,
             retryPolicy,

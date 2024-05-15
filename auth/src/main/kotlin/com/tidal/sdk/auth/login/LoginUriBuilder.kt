@@ -9,6 +9,7 @@ internal class LoginUriBuilder(
     private val clientId: String,
     private val clientUniqueKey: String?,
     private val loginUri: String,
+    private val scopes: Set<String>,
 ) {
 
     fun getLoginUri(redirectUri: String, loginConfig: LoginConfig?, codeChallenge: String): String {
@@ -18,6 +19,7 @@ internal class LoginUriBuilder(
 
         with(builder) {
             addQueryParameter(QueryKeys.REDIRECT_URI_KEY, redirectUri)
+            addQueryParameter(QueryKeys.SCOPES_KEY, scopes.joinToString(" "))
             buildBaseParameters(clientId, clientUniqueKey, codeChallenge).forEach {
                 addQueryParameter(
                     it.key,
@@ -76,6 +78,7 @@ internal class LoginUriBuilder(
         const val LANGUAGE_KEY = "lang"
         const val EMAIL_KEY = "email"
         const val REDIRECT_URI_KEY = "redirect_uri"
+        const val SCOPES_KEY = "scope"
     }
 
     companion object {

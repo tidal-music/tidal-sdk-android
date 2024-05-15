@@ -38,6 +38,7 @@ internal class LoginModule {
             authConfig.clientId,
             authConfig.clientUniqueKey,
             authConfig.tidalLoginServiceBaseUrl,
+            authConfig.scopes,
         )
     }
 
