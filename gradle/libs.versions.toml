@@ -81,7 +81,7 @@ kotlinx-serialization-retrofit-converter = { module = "com.jakewharton.retrofit:
 tidal-sdk-common = { module = "com.tidal.sdk:common", version = "0.2.4" }
 tidal-sdk-auth = { module = "com.tidal.sdk:auth", version = "0.9.1" }
 tidal-sdk-eventproducer = { module = "com.tidal.sdk:eventproducer", version = "0.2.9" }
-tidal-sdk-player = { module = "com.tidal.sdk:player", version = "0.0.36" }
+tidal-sdk-player = { module = "com.tidal.sdk:player", version = "0.0.39" }
 
 # Testing
 test-androidx-espresso-core = "androidx.test.espresso:espresso-core:3.5.1"
