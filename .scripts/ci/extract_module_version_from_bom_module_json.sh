@@ -26,9 +26,9 @@ if [ -z "${MODULE_NAME+x}" ]; then
   exit 1
 fi
 
-./gradlew "$MODULE_NAME":generateMetadataFileForReleasePublication > /dev/null 2>&1
+./gradlew "$MODULE_NAME":generateMetadataFileForMavenPublication > /dev/null 2>&1
 
-MODULE_FILE=$(./gradlew "$MODULE_NAME":properties | grep "^buildDir: " | awk '{print $2}')/publications/release/module.json
+MODULE_FILE=$(./gradlew "$MODULE_NAME":properties | grep "^buildDir: " | awk '{print $2}')/publications/maven/module.json
 MODULE_GROUP=$(jq -r ".component.group" "$MODULE_FILE")
 MODULE_ARTIFACT=$(jq -r ".component.module" "$MODULE_FILE")
 
