@@ -1,6 +1,5 @@
 package com.tidal.sdk.eventproducer.auth
 
-import com.tidal.sdk.auth.CredentialsProvider
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.runBlocking
@@ -23,13 +22,13 @@ import okhttp3.Route
  */
 @Singleton
 class DefaultAuthenticator @Inject constructor(
-    private val credentialsProvider: CredentialsProvider,
+    private val authProvider: AuthProvider,
 ) : Authenticator {
 
     @Synchronized
     override fun authenticate(route: Route?, response: Response): Request? {
         val shouldRetryRequest = runBlocking {
-            credentialsProvider.getCredentials().successData != null
+            authProvider.handleAuthError(response)
         }
 
         return if (shouldRetryRequest) {
@@ -43,7 +42,14 @@ class DefaultAuthenticator @Inject constructor(
      * Make a copy of the request with a new Authorization header.
      */
     private fun Response.createNewRequest(): Request {
-        val newRequest = request.newBuilder()
-        return newRequest.updateAuthHeader(credentialsProvider).build()
+        return request
+            .newBuilder()
+            .header(AUTHORIZATION_HEADER_NAME, "Bearer ${authProvider.token}")
+            .build()
+    }
+
+    companion object {
+
+        private const val AUTHORIZATION_HEADER_NAME = "Authorization"
     }
 }

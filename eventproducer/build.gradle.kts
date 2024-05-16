@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.tidal.android.library)
-    alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.google.devtools.ksp)
     alias(libs.plugins.android.junit5)
 }
@@ -29,9 +28,9 @@ dependencies {
     implementation(libs.tickaroo.retrofitConverter)
 
     ksp(libs.dagger.compiler)
-    kapt(libs.room.compiler)
-    kapt(libs.tickaroo.processor)
-    kapt(libs.moshi.codegen)
+    ksp(libs.room.compiler)
+    ksp(libs.tickaroo.processor)
+    ksp(libs.moshi.codegen)
 
     testImplementation(libs.test.assertk)
     testImplementation(libs.test.mockk)

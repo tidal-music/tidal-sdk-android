@@ -1,7 +1,8 @@
 package com.tidal.eventproducer.repository
 
 import android.database.sqlite.SQLiteException
-import com.tidal.sdk.eventproducer.EventProducer
+import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
+import com.tidal.sdk.eventproducer.EventSender
 import com.tidal.sdk.eventproducer.events.EventsLocalDataSource
 import com.tidal.sdk.eventproducer.model.Event
 import com.tidal.sdk.eventproducer.model.MonitoringEvent
@@ -28,7 +29,9 @@ import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import org.junit.runner.RunWith
 
+@RunWith(AndroidJUnit4ClassRunner::class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class EventsRepositoryTest {
 
@@ -115,17 +118,17 @@ class EventsRepositoryTest {
         every { monitoringDataSource.getMonitoringInfo() } returns monitoringInfoBeforeUpdate
         every { monitoringDataSource.insert(any()) } returns Unit
         every { eventsLocalDataSource.insertEvent(any()) } throws SQLiteException()
-        mockkObject(EventProducer.Companion)
-        every { EventProducer.instance?.startOutage() } returns Unit
+        mockkObject(EventSender.Companion)
+        every { EventSender.instance?.startOutage() } returns Unit
 
         // when
         eventsRepository.insertEvent(event)
 
         // then
         verify { monitoringDataSource.insert(monitoringInfoAfterUpdate) }
-        verify { EventProducer.instance?.startOutage() }
+        verify { EventSender.instance?.startOutage() }
 
-        unmockkObject(EventProducer.Companion)
+        unmockkObject(EventSender.Companion)
     }
 
     @Test
@@ -154,7 +157,7 @@ class EventsRepositoryTest {
     }
 
     @Test
-    fun `send events to sqs invokes sendEventBatch on sqsService when user is logged in`() =
+    fun `send events to sqs invokes sendEventBatch on sqsService when token is available`() =
         runTest {
             // given
             val sqsParameters = mapOf("SendMessageBatchRequestEntry.1.Id" to "1")
@@ -162,7 +165,7 @@ class EventsRepositoryTest {
                 SendMessageBatchResult(null),
             )
             every { sqsParametersConverter.getSendEventsParameters(any()) } returns sqsParameters
-            every { repositoryHelper.isUserLoggedIn() } returns true
+            every { repositoryHelper.isTokenProvided() } returns true
             coEvery { sqsService.sendEventsBatch(any()) } returns response
 
             // when
@@ -173,7 +176,7 @@ class EventsRepositoryTest {
         }
 
     @Test
-    fun `send events to sqs invokes sendEventBatchPublic on sqsService when user is logged out`() =
+    fun `send events to sqs invokes sendEventBatchPublic on sqsService when token is not available`() =
         runTest {
             // given
             val sqsParameters = mapOf("SendMessageBatchRequestEntry.1.Id" to "1")
@@ -181,7 +184,7 @@ class EventsRepositoryTest {
                 SendMessageBatchResult(null),
             )
             every { sqsParametersConverter.getSendEventsParameters(any()) } returns sqsParameters
-            every { repositoryHelper.isUserLoggedIn() } returns false
+            every { repositoryHelper.isTokenProvided() } returns false
             coEvery { sqsService.sendEventsBatchPublic(any()) } returns response
 
             // when
@@ -200,7 +203,7 @@ class EventsRepositoryTest {
                 SendMessageBatchResult(null),
             )
             every { sqsParametersConverter.getSendEventsParameters(any()) } returns sqsParameters
-            every { repositoryHelper.isUserLoggedIn() } returns false
+            every { repositoryHelper.isTokenProvided() } returns false
             coEvery { sqsService.sendEventsBatchPublic(any()) } returns serviceResponse
 
             // when
@@ -217,7 +220,7 @@ class EventsRepositoryTest {
             // given
             val sqsParameters = mapOf("SendMessageBatchRequestEntry.1.Id" to "1")
             every { sqsParametersConverter.getSendEventsParameters(any()) } returns sqsParameters
-            every { repositoryHelper.isUserLoggedIn() } returns false
+            every { repositoryHelper.isTokenProvided() } returns false
             coEvery { sqsService.sendEventsBatchPublic(any()) } throws TimeoutException()
 
             // when
@@ -291,7 +294,7 @@ class EventsRepositoryTest {
         )
         every { monitoringDataSource.getMonitoringInfo() } returns monitoringInfo
         every { repositoryHelper.getMonitoringEvent(monitoringInfo) } returns monitoringEvent
-        every { repositoryHelper.isUserLoggedIn() } returns true
+        every { repositoryHelper.isTokenProvided() } returns true
         every {
             sqsParametersConverter.getSendEventsParameters(listOf(monitoringEvent))
         } returns sqsParameters

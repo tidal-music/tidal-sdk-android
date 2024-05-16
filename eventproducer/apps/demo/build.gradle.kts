@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.tidal.android.application)
+    alias(libs.plugins.google.devtools.ksp)
 }
 
 android {
@@ -13,6 +14,9 @@ android {
 
     buildTypes {
         debug {}
+        release {
+            isMinifyEnabled = false
+        }
         buildFeatures {
             compose = true
         }

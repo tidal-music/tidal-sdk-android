@@ -1,10 +1,9 @@
 package com.tidal.sdk.eventproducer.utils
 
 import android.os.Build
-import com.tidal.sdk.auth.CredentialsProvider
+import com.tidal.sdk.eventproducer.auth.AuthProvider
 import com.tidal.sdk.eventproducer.model.ConsentCategory
 import javax.inject.Inject
-import kotlinx.coroutines.runBlocking
 
 const val CONSENT_CATEGORY_KEY = "consent-category"
 const val OS_NAME_KEY = "os-name"
@@ -18,7 +17,7 @@ const val DEVICE_VENDOR_KEY = "device-vendor"
 
 internal class HeadersUtils @Inject constructor(
     private val appVersion: String,
-    private val credentialsProvider: CredentialsProvider,
+    private val authProvider: AuthProvider,
 ) {
     fun getEventHeaders(
         defaultHeaders: Map<String, String>,
@@ -42,12 +41,11 @@ internal class HeadersUtils @Inject constructor(
         headers[DEVICE_VENDOR_KEY] = deviceVendor
         headers[DEVICE_MODEL_KEY] = deviceModel
         headers[CONSENT_CATEGORY_KEY] = consentCategory.toString()
-        val credentials = runBlocking { credentialsProvider.getCredentials().successData }
-        val token = credentials?.token
+        val token = authProvider.token
         if (!isMonitoringEvent && !token.isNullOrEmpty()) {
             headers[AUTHORIZATION_KEY] = token
         }
-        val clientId = credentials?.clientId
+        val clientId = authProvider.clientId
         if (!clientId.isNullOrEmpty()) headers[CLIENT_ID_KEY] = clientId
         return headers
     }

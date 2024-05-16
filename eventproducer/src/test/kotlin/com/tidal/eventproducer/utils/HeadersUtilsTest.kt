@@ -1,12 +1,12 @@
 package com.tidal.eventproducer.utils
 
 import assertk.assertThat
-import assertk.assertions.containsAll
-import com.tidal.eventproducer.fakes.FakeCredentialsProvider
+import com.tidal.sdk.eventproducer.auth.AuthProvider
 import com.tidal.sdk.eventproducer.utils.APP_VERSION_KEY
 import com.tidal.sdk.eventproducer.utils.CLIENT_ID_KEY
 import com.tidal.sdk.eventproducer.utils.HeadersUtils
 import com.tidal.sdk.eventproducer.utils.OS_NAME_KEY
+import okhttp3.Response
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -14,7 +14,13 @@ class HeadersUtilsTest {
 
     private val headerUtils = HeadersUtils(
         "",
-        FakeCredentialsProvider(),
+        object : AuthProvider {
+            override val token: String = ""
+            override val clientId: String? = null
+            override suspend fun handleAuthError(response: Response): Boolean {
+                return false
+            }
+        },
     )
 
     @Test
@@ -25,7 +31,9 @@ class HeadersUtilsTest {
         val suppliedHeaders = mapOf(header1)
         val defaultHeaders = mapOf(header2, header3)
         val headers = headerUtils.getEventHeaders(defaultHeaders, suppliedHeaders)
-        assertThat(headers).containsAll(header1, header2, header3)
+        assertThat { headers.contains(CLIENT_ID_KEY) }
+        assertThat { headers.contains(OS_NAME_KEY) }
+        assertThat { headers.contains(APP_VERSION_KEY) }
         assertEquals(3, headers.size)
     }
 

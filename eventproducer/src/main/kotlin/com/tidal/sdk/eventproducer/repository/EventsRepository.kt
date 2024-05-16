@@ -1,7 +1,7 @@
 package com.tidal.sdk.eventproducer.repository
 
 import android.database.sqlite.SQLiteException
-import com.tidal.sdk.eventproducer.EventProducer
+import com.tidal.sdk.eventproducer.EventSender
 import com.tidal.sdk.eventproducer.events.EventsLocalDataSource
 import com.tidal.sdk.eventproducer.model.Event
 import com.tidal.sdk.eventproducer.model.MonitoringEvent
@@ -45,14 +45,14 @@ internal class EventsRepository @Inject constructor(
                 eventName,
             ),
         )
-        EventProducer.instance?.startOutage()
+        EventSender.instance?.startOutage()
     }
 
     @Suppress("SwallowedException")
     private fun insertEventToDatabase(event: Event) {
         try {
             eventsLocalDataSource.insertEvent(event)
-            EventProducer.instance?.endOutage()
+            EventSender.instance?.endOutage()
         } catch (e: SQLiteException) {
             registerEventStoringFailed(event.name)
         }
@@ -68,7 +68,7 @@ internal class EventsRepository @Inject constructor(
 
     private suspend fun sendEventBatch(events: List<Event>): Result<SendMessageBatchResponse> {
         val sqsParameters = sqsParametersConverter.getSendEventsParameters(events)
-        return if (repositoryHelper.isUserLoggedIn()) {
+        return if (repositoryHelper.isTokenProvided()) {
             safeRequest { sqsService.sendEventsBatch(sqsParameters) }
         } else {
             safeRequest { sqsService.sendEventsBatchPublic(sqsParameters) }

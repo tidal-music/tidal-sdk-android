@@ -3,21 +3,14 @@ package com.tidal.sdk.demo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.tidal.sdk.auth.CredentialsProvider
-import com.tidal.sdk.auth.model.AuthResult
-import com.tidal.sdk.auth.model.Credentials
-import com.tidal.sdk.auth.model.Scopes
-import com.tidal.sdk.common.TidalMessage
-import com.tidal.sdk.eventproducer.EventProducer
 import com.tidal.sdk.eventproducer.EventSender
+import com.tidal.sdk.eventproducer.auth.AuthProvider
 import com.tidal.sdk.eventproducer.model.ConsentCategory
 import com.tidal.sdk.eventproducer.model.EventsConfig
 import java.net.URL
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.datetime.Instant
+import okhttp3.Response
 
 class MainActivity : ComponentActivity() {
 
@@ -27,43 +20,24 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val eventProducer = EventProducer.getInstance(
+        eventSender = EventSender.getInstance(
             TL_CONSUMER_URL,
-            getCredentialsProvider(),
+            object : AuthProvider {
+                override val token: String? = null
+                override val clientId: String? = null
+                override suspend fun handleAuthError(
+                    response: Response,
+                ): Boolean = false
+            },
             EventsConfig(MAX_DISK_USAGE_BYTES, emptySet(), "1.0"),
             applicationContext,
             coroutineScope,
         )
-        eventSender = eventProducer.eventSender
 
         setContent {
             EventSenderDemoScreen {
                 sendEvent()
             }
-        }
-    }
-
-    private fun getCredentialsProvider(): CredentialsProvider {
-        val credentials = Credentials(
-            clientId = "123",
-            requestedScopes = Scopes(setOf()),
-            clientUniqueKey = "clientUniqueKey",
-            grantedScopes = Scopes(setOf()),
-            userId = "123",
-            expires = Instant.DISTANT_FUTURE,
-            token = null,
-        )
-        return object : CredentialsProvider {
-            override val bus: Flow<TidalMessage>
-                get() = flowOf()
-
-            override suspend fun getCredentials(
-                apiErrorSubStatus: String?,
-            ): AuthResult<Credentials> {
-                return AuthResult.Success(credentials)
-            }
-
-            override fun getLatestCredentials() = credentials
         }
     }
 

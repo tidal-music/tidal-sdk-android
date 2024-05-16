@@ -1,7 +1,7 @@
 package com.tidal.sdk.eventproducer.di
 
-import com.tidal.sdk.auth.CredentialsProvider
 import com.tidal.sdk.eventproducer.BuildConfig
+import com.tidal.sdk.eventproducer.auth.AuthProvider
 import com.tidal.sdk.eventproducer.auth.DefaultAuthenticator
 import com.tidal.sdk.eventproducer.network.HeadersInterceptor
 import dagger.Module
@@ -25,8 +25,8 @@ internal class OkHttpModule {
     @Provides
     @Singleton
     @Named("headerInterceptor")
-    fun provideHeadersInterceptor(credentialsProvider: CredentialsProvider): Interceptor =
-        HeadersInterceptor(credentialsProvider)
+    fun provideHeadersInterceptor(authProvider: AuthProvider): Interceptor =
+        HeadersInterceptor(authProvider)
 
     @Provides
     @Singleton

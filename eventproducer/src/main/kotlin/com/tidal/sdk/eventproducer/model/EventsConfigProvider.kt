@@ -6,7 +6,7 @@ import javax.inject.Singleton
 class EventsConfigProvider(
     var config: EventsConfig,
 ) {
-    fun updateBlockedConsentCategories(blockedConsentCategories: Set<ConsentCategory>) {
-        config = config.copy(blockedConsentCategories = blockedConsentCategories)
+    fun updateBlacklistedConsentCategories(blacklistedConsentCategories: Set<ConsentCategory>) {
+        config = config.copy(blacklistedConsentCategories = blacklistedConsentCategories)
     }
 }

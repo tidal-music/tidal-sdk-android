@@ -26,7 +26,7 @@ internal class Submitter @Inject constructor(
         payload: String,
         suppliedHeaders: Map<String, String>,
     ) {
-        if (configProvider.config.blockedConsentCategories.contains(consentCategory)) {
+        if (configProvider.config.blacklistedConsentCategories.contains(consentCategory)) {
             storeNewMonitoringEvent(eventName, MonitoringEventType.EventConsentFiltered)
         } else {
             val event = createEvent(eventName, consentCategory, payload, suppliedHeaders)

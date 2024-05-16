@@ -1,8 +1,7 @@
 package com.tidal.sdk.eventproducer.repository
 
 import com.squareup.moshi.Moshi
-import com.tidal.sdk.auth.CredentialsProvider
-import com.tidal.sdk.auth.model.Credentials
+import com.tidal.sdk.eventproducer.auth.AuthProvider
 import com.tidal.sdk.eventproducer.model.ConsentCategory
 import com.tidal.sdk.eventproducer.model.Event
 import com.tidal.sdk.eventproducer.monitoring.MonitoringInfo
@@ -11,11 +10,10 @@ import com.tidal.sdk.eventproducer.utils.HeadersUtils
 import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlinx.coroutines.runBlocking
 
 @Singleton
 internal class RepositoryHelper @Inject constructor(
-    private val credentialsProvider: CredentialsProvider,
+    private val authProvider: AuthProvider,
     private val databaseSizeChecker: DatabaseSizeChecker,
     private val moshi: Moshi,
     private val headersUtils: HeadersUtils,
@@ -23,10 +21,7 @@ internal class RepositoryHelper @Inject constructor(
 
     fun isDatabaseLimitReached() = databaseSizeChecker.isDatabaseLimitReached()
 
-    fun isUserLoggedIn(): Boolean {
-        val credentials = runBlocking { credentialsProvider.getCredentials().successData }
-        return credentials?.level == Credentials.Level.USER
-    }
+    fun isTokenProvided() = !authProvider.token.isNullOrBlank()
 
     fun getMonitoringEvent(monitoringInfo: MonitoringInfo): Event {
         val monitoringEventPayload = getMonitoringEventPayload(monitoringInfo)
