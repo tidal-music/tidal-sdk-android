@@ -35,7 +35,6 @@ import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
 import org.junit.After
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.kotlin.argThat
@@ -111,7 +110,6 @@ class PlayerPlayTest {
     }
 
     @RepeatableFlakyTest
-    @Ignore("Asset positions are not accurate and we do not yet know why")
     @Test
     fun loadAndPlaySendsCorrectPlaylogEvent() {
         val mediaProduct = MediaProduct(ProductType.TRACK, "1", "TEST", "456")
