@@ -50,8 +50,6 @@ internal class PlayerHlsMediaSourceFactoryTest {
         whenever(mediaItemBuilder.build()) doReturn builtMediaItem
         whenever(hlsMediaSourceFactory.setDrmSessionManagerProvider(drmSessionManagerProvider))
             .thenReturn(hlsMediaSourceFactory)
-        whenever(hlsMediaSourceFactory.setAllowChunklessPreparation(true))
-            .thenReturn(hlsMediaSourceFactory)
         whenever(hlsMediaSourceFactory.createMediaSource(builtMediaItem))
             .thenReturn(expectedHlsMediaSource)
 
@@ -68,7 +66,6 @@ internal class PlayerHlsMediaSourceFactoryTest {
         verify(mediaItemBuilder).setMimeType(MIME_TYPE)
         verify(mediaItemBuilder).build()
         verify(hlsMediaSourceFactory).setDrmSessionManagerProvider(drmSessionManagerProvider)
-        verify(hlsMediaSourceFactory).setAllowChunklessPreparation(true)
         verify(hlsMediaSourceFactory).createMediaSource(builtMediaItem)
         verifyNoMoreInteractions(
             mediaItem,

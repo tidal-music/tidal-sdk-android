@@ -25,7 +25,6 @@ internal class PlayerHlsMediaSourceFactory(
 
         return hlsMediaSourceFactory
             .setDrmSessionManagerProvider(drmSessionManagerProvider)
-            .setAllowChunklessPreparation(true)
             .createMediaSource(newMediaItem)
     }
 }
