@@ -27,11 +27,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         val eventProducer = EventProducer.getInstance(
-            TL_CONSUMER_URI,
             getCredentialsProvider(),
             EventsConfig(MAX_DISK_USAGE_BYTES, emptySet(), "1.0"),
             applicationContext,
             coroutineScope,
+            TL_CONSUMER_URI,
         )
         eventSender = eventProducer.eventSender
 

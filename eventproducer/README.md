@@ -39,11 +39,11 @@ val eventsConfig = EventsConfig(
 )
 
 val eventProducer = EventProducer.getInstance(
-   tlConsumerUri = URI("https://event-collector-url"),
    credentialsProvider = getCredentialsProvider(),
    config = eventsConfig,
    context = context,
    coroutineScope = CoroutineScope(Dispatchers.IO),
+   tlConsumerUri = URI("https://event-collector-url")
 )
 
 val eventSender = eventProducer.eventSender
