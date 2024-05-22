@@ -52,8 +52,8 @@ internal class StreamingApiDefault(
         streamingSessionId: String,
         audioQuality: AudioQuality,
     ) = playbackInfoRepository.getBroadcastPlaybackInfo(
-        streamingSessionId,
         djSessionId,
+        streamingSessionId,
         audioQuality,
     )
 
