@@ -13,8 +13,6 @@ import com.tidal.sdk.auth.model.Credentials
 import com.tidal.sdk.common.TidalMessage
 import com.tidal.sdk.eventproducer.EventSender
 import com.tidal.sdk.eventproducer.model.ConsentCategory
-import com.tidal.sdk.player.MockWebServerExtensions.mockResponse
-import com.tidal.sdk.player.MockWebServerExtensions.mockResponseAsBuffer
 import com.tidal.sdk.player.common.model.MediaProduct
 import com.tidal.sdk.player.common.model.ProductType
 import com.tidal.sdk.player.playbackengine.model.Event
@@ -57,9 +55,9 @@ class PlayerPlayTest {
     private val dispatcher = object : Dispatcher() {
         override fun dispatch(request: RecordedRequest): MockResponse {
             return if (request.requestUrl?.encodedPath?.startsWith("/v1/tracks") == true) {
-                server.mockResponse("playbackinfo/tracks/get_1_bts.json")
+                MockResponse().setBodyFromFileAsText("playbackinfo/tracks/get_1_bts.json")
             } else if (request.requestUrl?.encodedPath?.endsWith("test.m4a") == true) {
-                server.mockResponseAsBuffer("test_5sec.m4a")
+                MockResponse().setBodyFromFileAsBuffer("test_5sec.m4a")
             } else {
                 MockResponse()
             }
