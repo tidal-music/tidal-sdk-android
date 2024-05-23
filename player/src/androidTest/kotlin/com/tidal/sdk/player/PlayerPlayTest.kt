@@ -90,7 +90,6 @@ class PlayerPlayTest {
                 override fun isUserLoggedIn() = true
             },
             eventSender,
-            version = "PLAYLOG_TESTS_ANDROID",
             okHttpClient = OkHttpClient.Builder()
                 .addInterceptor {
                     val request = it.request()

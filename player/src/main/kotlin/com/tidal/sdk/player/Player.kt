@@ -28,7 +28,6 @@ import okhttp3.OkHttpClient
  * info.
  * @param userClientIdSupplier A function that supplies a userClientId used for event tracking.
  * This value needs to be taken from the session. Internal use only.
- * @param version The version of the app, used for event tracking.
  * @param bufferConfiguration The parameters to configure different values for player buffer
  * functionalities.
  * @param assetTimeoutConfig The parameters to configure different values for player asset timeouts.
@@ -43,6 +42,7 @@ import okhttp3.OkHttpClient
  * be streamed. Internal use only.
  * @param[offlinePlayProvider] A means of supporting offline streaming when appropriate. Internal
  * use only.
+ * @param version The version of the app, used for event tracking. Defaults to 1.0.0.
  */
 @Suppress("LongParameterList")
 class Player(
@@ -55,7 +55,6 @@ class Player(
         AudioDecodingMode.NATIVE
     },
     userClientIdSupplier: (() -> Int)? = null,
-    version: String,
     bufferConfiguration: BufferConfiguration = BufferConfiguration(),
     assetTimeoutConfig: AssetTimeoutConfig = AssetTimeoutConfig(),
     streamingApiTimeoutConfig: StreamingApiTimeoutConfig = StreamingApiTimeoutConfig(),
@@ -67,6 +66,7 @@ class Player(
         override fun get(mediaProduct: MediaProduct) = PlaybackPrivilege.OK_ONLINE
     },
     offlinePlayProvider: OfflinePlayProvider? = null,
+    version: String = "1.0.0",
 ) : ConfigurationListener {
     private val playerComponent = DaggerPlayerComponent.factory()
         .create(
