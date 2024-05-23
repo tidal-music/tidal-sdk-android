@@ -15,6 +15,7 @@ import com.tidal.sdk.player.events.R
 data class Client(
     private val token: String,
     private val deviceType: DeviceType,
+    private val version: String,
 ) {
 
     private val platform = "android"

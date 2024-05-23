@@ -46,6 +46,7 @@ class PlayerTest {
             .applicationContext as Application,
         credentialsProvider,
         eventSender,
+        version = "version",
     )
 
     @After

@@ -49,7 +49,8 @@ internal object EventReporterModule {
         uiModeManager: UiModeManager,
         base64JwtDecoder: Base64JwtDecoder,
         credentialsProvider: CredentialsProvider,
-    ) = ClientSupplier(context, uiModeManager, base64JwtDecoder, credentialsProvider)
+        version: String,
+    ) = ClientSupplier(context, uiModeManager, base64JwtDecoder, credentialsProvider, version)
 
     @Provides
     @Reusable

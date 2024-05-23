@@ -12,7 +12,7 @@ internal class StreamingSessionStartMarshallingTest {
     private val ts = 0L
     private val uuidString = "123e4567-e89b-12d3-a456-426614174000"
     private val user = User(-3L, 0, "sessionId")
-    private val client = Client("token", Client.DeviceType.TV)
+    private val client = Client("token", Client.DeviceType.TV, "version")
     private val decoratedPayload = StreamingSessionStart.DecoratedPayload(
         "streamingSessionId",
         1L,

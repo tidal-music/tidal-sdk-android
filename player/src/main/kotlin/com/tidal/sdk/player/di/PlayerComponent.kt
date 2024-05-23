@@ -46,6 +46,7 @@ internal interface PlayerComponent {
             @BindsInstance eventSender: EventSender,
             @BindsInstance audioDecodingMode: AudioDecodingMode,
             @BindsInstance userClientIdSupplier: (() -> Int)?,
+            @BindsInstance version: String,
             @BindsInstance bufferConfiguration: BufferConfiguration,
             @BindsInstance assetTimeoutConfig: AssetTimeoutConfig,
             @BindsInstance streamingApiTimeoutConfig: StreamingApiTimeoutConfig,

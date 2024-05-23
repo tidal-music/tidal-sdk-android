@@ -10,7 +10,7 @@ internal class VideoDownloadStatisticsMarshallingTest : DownloadStatisticsMarsha
     override val ts = -1L
     override val uuidString = "123e4567-e89b-12d3-a456-426614174000"
     override val user = User(8L, 54, "sessionId")
-    override val client = Client("token", Client.DeviceType.ANDROID_AUTO)
+    override val client = Client("token", Client.DeviceType.ANDROID_AUTO, "version")
     override val payload = VideoDownloadStatistics.Payload(
         "streamingSessionId",
         0L,
