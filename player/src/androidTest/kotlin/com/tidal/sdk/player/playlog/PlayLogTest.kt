@@ -39,11 +39,10 @@ import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
-import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
-import okhttp3.mockwebserver.RecordedRequest
 import org.junit.After
 import org.junit.Before
 import org.junit.BeforeClass
@@ -64,27 +63,16 @@ class PlayLogTest {
 
     private val eventReporterCoroutineScope =
         TestScope(StandardTestDispatcher(TestCoroutineScheduler()))
+    private val responseDispatcher = PlayLogTestMockWebServerDispatcher(server)
     private val eventSender = mock<EventSender>()
     private lateinit var player: Player
-
-    private val dispatcher = object : Dispatcher() {
-        override fun dispatch(request: RecordedRequest): MockResponse {
-            return if (request.requestUrl?.encodedPath?.startsWith("/v1/tracks") == true) {
-                MockResponse().setBodyFromFile("playbackinfo/tracks/playlogtest/get_1_bts.json")
-            } else if (request.requestUrl?.encodedPath?.endsWith("test.m4a") == true) {
-                MockResponse().setBodyFromFile("raw/playlogtest/test_5sec.m4a")
-            } else {
-                MockResponse()
-            }
-        }
-    }
 
     @Before
     fun setUp() {
         EventReporterModuleRoot.reflectionComponentFactoryF = {
             PlayLogTestDefaultEventReporterComponentFactory(eventReporterCoroutineScope)
         }
-        server.dispatcher = dispatcher
+        server.dispatcher = responseDispatcher
 
         player = Player(
             InstrumentationRegistry.getInstrumentation().targetContext.applicationContext
@@ -111,10 +99,13 @@ class PlayLogTest {
             okHttpClient = OkHttpClient.Builder()
                 .addInterceptor {
                     val request = it.request()
-                    val newRequest = request.newBuilder()
-                        .url(server.url(request.url.encodedPath))
-                        .build()
-                    it.proceed(newRequest)
+                    val mockWebServerUrl = responseDispatcher.urlRecords[request.url]
+                        ?: return@addInterceptor it.proceed(request)
+                    it.proceed(
+                        request.newBuilder()
+                            .url(mockWebServerUrl)
+                            .build(),
+                    )
                 }.build(),
         )
     }
@@ -142,6 +133,16 @@ class PlayLogTest {
     @Test
     fun loadAndPlayUntilEnd() = runTest {
         val mediaProduct = MediaProduct(ProductType.TRACK, "1", "TEST", "456")
+        responseDispatcher[
+            "https://api.tidal.com/v1/tracks/1/playbackinfo?playbackmode=STREAM&assetpresentation=FULL&audioquality=LOW".toHttpUrl(),
+        ] = {
+            MockResponse().setBodyFromFile(
+                "api-responses/playbackinfo/tracks/playlogtest/get_1_bts.json"
+            )
+        }
+        responseDispatcher["https://test.audio.tidal.com/1_bts.m4a".toHttpUrl()] = {
+            MockResponse().setBodyFromFile("raw/playlogtest/1_bts.m4a")
+        }
 
         player.playbackEngine.load(mediaProduct)
         player.playbackEngine.play()
