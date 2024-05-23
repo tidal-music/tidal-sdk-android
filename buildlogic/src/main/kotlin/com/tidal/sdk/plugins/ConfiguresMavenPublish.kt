@@ -23,7 +23,7 @@ internal class ConfiguresMavenPublish : (Project) -> Unit {
 
         configure<MavenPublishBaseExtension> {
             setPublishJavadoc(this@with, false)
-            publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+            publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL, automaticRelease = true)
 
             if (project.properties.hasGpgData()) {
                 signAllPublications()
