@@ -130,22 +130,22 @@ class PlayLogTest {
         job.join()
     }
 
-    @RepeatableFlakyTest
+    @RepeatableFlakyTest // Playback may take longer in practice than it should in theory
     @Test
     fun loadAndPlayUntilEndNoNulls() =
         loadAndPlayUntilEnd(MediaProduct(ProductType.TRACK, "1", "TESTA", "456"))
 
-    @RepeatableFlakyTest
+    @RepeatableFlakyTest // Playback may take longer in practice than it should in theory
     @Test
     fun loadAndPlayUntilEndNullSourceType() =
         loadAndPlayUntilEnd(MediaProduct(ProductType.TRACK, "1", null, "789"))
 
-    @RepeatableFlakyTest
+    @RepeatableFlakyTest // Playback may take longer in practice than it should in theory
     @Test
     fun loadAndPlayUntilEndNullSourceId() =
         loadAndPlayUntilEnd(MediaProduct(ProductType.TRACK, "1", "TESTB", null))
 
-    @RepeatableFlakyTest
+    @RepeatableFlakyTest // Playback may take longer in practice than it should in theory
     @Test
     fun loadAndPlayUntilEndNullSourceTypeNullSourceId() =
         loadAndPlayUntilEnd(MediaProduct(ProductType.TRACK, "1", null, null))
