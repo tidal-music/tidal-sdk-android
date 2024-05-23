@@ -66,6 +66,7 @@ class PlayerPlayTest {
 
     @Before
     fun setUp() {
+        server.dispatcher = dispatcher
         player = Player(
             InstrumentationRegistry.getInstrumentation().targetContext.applicationContext
                 as Application,
@@ -97,7 +98,6 @@ class PlayerPlayTest {
                     it.proceed(newRequest)
                 }.build(),
         )
-        server.dispatcher = dispatcher
     }
 
     @After
