@@ -50,7 +50,10 @@ import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.Mockito.atMost
 import org.mockito.Mockito.mock
+import org.mockito.Mockito.verifyNoMoreInteractions
+import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.argThat
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.verify
@@ -129,6 +132,14 @@ class PlayLogTest {
         val job = launch { player.playbackEngine.events.first { it is Event.Release } }
         player.release()
         job.join()
+        verify(eventSender, atMost(Int.MAX_VALUE))
+            .sendEvent(
+                argThat { !contentEquals("playback_session") },
+                anyOrNull(),
+                anyOrNull(),
+                anyOrNull()
+            )
+        verifyNoMoreInteractions(eventSender)
     }
 
     @RepeatableFlakyTest // Playback may take longer in practice than it should in theory
