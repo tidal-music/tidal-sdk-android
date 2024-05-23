@@ -10,6 +10,7 @@ import com.google.gson.JsonObject
 import com.tidal.sdk.auth.CredentialsProvider
 import com.tidal.sdk.auth.model.AuthResult
 import com.tidal.sdk.auth.model.Credentials
+import com.tidal.sdk.auth.util.isLoggedIn
 import com.tidal.sdk.common.TidalMessage
 import com.tidal.sdk.eventproducer.EventSender
 import com.tidal.sdk.eventproducer.model.ConsentCategory
@@ -83,9 +84,9 @@ class PlayLogTest {
                     requestedScopes = emptySet(),
                     clientUniqueKey = null,
                     grantedScopes = emptySet(),
-                    userId = null,
+                    userId = "a non-null user id",
                     expires = null,
-                    token = null,
+                    token = "a non-null token",
                 )
 
                 override val bus: Flow<TidalMessage> = emptyFlow()
@@ -93,7 +94,7 @@ class PlayLogTest {
                 override suspend fun getCredentials(apiErrorSubStatus: String?) =
                     AuthResult.Success(CREDENTIALS)
 
-                override fun isUserLoggedIn() = true
+                override fun isUserLoggedIn() = CREDENTIALS.isLoggedIn()
             },
             eventSender = eventSender,
             okHttpClient = OkHttpClient.Builder()
