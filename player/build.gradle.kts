@@ -5,6 +5,14 @@ plugins {
 
 android {
     namespace = "com.tidal.sdk.player"
+
+    sourceSets {
+        getByName("androidTest").java
+            .srcDirs(
+                "events/src/androidTest/kotlin",
+                "events/src/testext/kotlin",
+            )
+    }
 }
 
 dependencies {
@@ -39,4 +47,5 @@ dependencies {
     androidTestImplementation(project(":player:testutil"))
     androidTestImplementation(libs.test.mockito.kotlin)
     androidTestImplementation(libs.test.mockito.android)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
 }
