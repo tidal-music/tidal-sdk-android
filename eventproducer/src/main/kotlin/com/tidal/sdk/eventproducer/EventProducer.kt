@@ -55,7 +55,7 @@ class EventProducer private constructor(coroutineScope: CoroutineScope) {
         @Volatile
         var instance: EventProducer? = null
 
-        private val TIDAL_PRODUCTION_TL_CONSUMER_URI = URI("https://ec.tidal.com/api")
+        private val TIDAL_PRODUCTION_TL_CONSUMER_URI = URI("https://ec.tidal.com")
 
         /**
          * Used to get a Singleton instance of the [EventProducer]
