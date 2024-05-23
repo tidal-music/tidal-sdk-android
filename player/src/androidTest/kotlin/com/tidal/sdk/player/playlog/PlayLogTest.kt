@@ -132,9 +132,26 @@ class PlayLogTest {
 
     @RepeatableFlakyTest
     @Test
-    fun loadAndPlayUntilEnd() = runTest {
-        val mediaProduct = MediaProduct(ProductType.TRACK, "1", "TEST", "456")
-        responseDispatcher[
+    fun loadAndPlayUntilEndNoNulls() =
+        loadAndPlayUntilEnd(MediaProduct(ProductType.TRACK, "1", "TESTA", "456"))
+
+    @RepeatableFlakyTest
+    @Test
+    fun loadAndPlayUntilEndNullSourceType() =
+        loadAndPlayUntilEnd(MediaProduct(ProductType.TRACK, "1", null, "789"))
+
+    @RepeatableFlakyTest
+    @Test
+    fun loadAndPlayUntilEndNullSourceId() =
+        loadAndPlayUntilEnd(MediaProduct(ProductType.TRACK, "1", "TESTB", null))
+
+    @RepeatableFlakyTest
+    @Test
+    fun loadAndPlayUntilEndNullSourceTypeNullSourceId() =
+        loadAndPlayUntilEnd(MediaProduct(ProductType.TRACK, "1", null, null))
+
+    private fun loadAndPlayUntilEnd(mediaProduct: MediaProduct) = runTest {
+        responseDispatcher [
             "https://api.tidal.com/v1/tracks/1/playbackinfo?playbackmode=STREAM&assetpresentation=FULL&audioquality=LOW".toHttpUrl(),
         ] = {
             MockResponse().setBodyFromFile(
@@ -161,9 +178,9 @@ class PlayLogTest {
                 with(Gson().fromJson(this, JsonObject::class.java)["payload"].asJsonObject) {
                     assertThat(get("startAssetPosition").asDouble).isEqualTo(0.0)
                     assertThat(get("endAssetPosition").asDouble).isBetween(5.0, 5.1)
-                    assertThat(get("actualProductId").asString).isEqualTo("1")
-                    assertThat(get("sourceType").asString).isEqualTo(mediaProduct.sourceType)
-                    assertThat(get("sourceId").asString).isEqualTo(mediaProduct.sourceId)
+                    assertThat(get("actualProductId").asString).isEqualTo(mediaProduct.productId)
+                    assertThat(get("sourceType")?.asString).isEqualTo(mediaProduct.sourceType)
+                    assertThat(get("sourceId")?.asString).isEqualTo(mediaProduct.sourceId)
                     assertThat(get("actions").asJsonArray.size()).isEqualTo(0)
                 }
                 true
