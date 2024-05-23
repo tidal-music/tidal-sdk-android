@@ -2,8 +2,9 @@ package com.tidal.sdk.player.playlog
 
 import android.app.Application
 import androidx.test.platform.app.InstrumentationRegistry
+import assertk.Assert
 import assertk.assertThat
-import assertk.assertions.isBetween
+import assertk.assertions.isCloseTo
 import assertk.assertions.isEqualTo
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -176,8 +177,10 @@ class PlayLogTest {
             eq(ConsentCategory.NECESSARY),
             argThat {
                 with(Gson().fromJson(this, JsonObject::class.java)["payload"].asJsonObject) {
-                    assertThat(get("startAssetPosition").asDouble).isEqualTo(0.0)
-                    assertThat(get("endAssetPosition").asDouble).isBetween(5.0, 5.1)
+                    // https://github.com/androidx/media/issues/1252
+                    assertThat(get("startAssetPosition").asDouble).isAssetPositionEqualTo(0.0)
+                    // https://github.com/androidx/media/issues/1253
+                    assertThat(get("endAssetPosition").asDouble).isAssetPositionEqualTo(5.065)
                     assertThat(get("actualProductId").asString).isEqualTo(mediaProduct.productId)
                     assertThat(get("sourceType")?.asString).isEqualTo(mediaProduct.sourceType)
                     assertThat(get("sourceId")?.asString).isEqualTo(mediaProduct.sourceId)
@@ -187,5 +190,9 @@ class PlayLogTest {
             },
             eq(emptyMap()),
         )
+    }
+
+    private fun Assert<Double>.isAssetPositionEqualTo(targetPosition: Double) = run {
+        isCloseTo(targetPosition, 0.5)
     }
 }
