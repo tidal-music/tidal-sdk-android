@@ -34,10 +34,10 @@ sealed class PlaybackSession<T : PlaybackSession.Payload> :
         @Keep
         @SuppressWarnings("UnusedPrivateMember")
         data class Action(
-            private val timestamp: Long,
+            val timestamp: Long,
             @SerializedName("assetPosition")
-            private val assetPositionSeconds: Double,
-            private val actionType: Type,
+            val assetPositionSeconds: Double,
+            val actionType: Type,
         ) {
 
             @Keep
