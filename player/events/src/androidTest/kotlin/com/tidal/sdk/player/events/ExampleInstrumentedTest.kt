@@ -9,12 +9,12 @@ import org.junit.Test
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
-class ExampleInstrumentedTest {
+internal class ExampleInstrumentedTest {
 
     @Test
-    fun useAppContext() {
-        // Context of the app under test.
+    fun comparePackageNames() {
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.tidal.sdk.player.events.test", appContext.packageName)
+        val instrumentationContext = InstrumentationRegistry.getInstrumentation().context
+        assertEquals(instrumentationContext.packageName, appContext.packageName)
     }
 }
