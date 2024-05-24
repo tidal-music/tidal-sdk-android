@@ -36,7 +36,6 @@ import com.tidal.sdk.player.playbackengine.model.Event
 import com.tidal.sdk.player.playbackengine.player.CacheProvider
 import com.tidal.sdk.player.playbackengine.view.AspectRatioAdjustingSurfaceView
 import java.io.File
-import java.net.URI
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -203,7 +202,6 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
                                 context.applicationContext as Application,
                                 mainActivityViewModel.credentialsProvider,
                                 EventProducer.getInstance(
-                                    URI("https://event-collector.obelix-staging-use1.tidalhi.fi/"),
                                     mainActivityViewModel.credentialsProvider,
                                     EventsConfig(
                                         Int.MAX_VALUE,
@@ -211,7 +209,7 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
                                         "player-sample-${BuildConfig.VERSION_NAME}",
                                     ),
                                     context,
-                                    CoroutineScope(Dispatchers.IO),
+                                    CoroutineScope(Dispatchers.IO)
                                 ).eventSender,
                                 userClientIdSupplier = { 1 },
                                 isOfflineMode = isOfflineMode,
