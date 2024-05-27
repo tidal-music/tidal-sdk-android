@@ -13,7 +13,6 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         tidalMusicGithub("tidal-sdk-android")
-        tidalMusicGithub("tidal-androidx-media")
         maven {
             url = uri("https://jitpack.io")
         }

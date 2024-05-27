@@ -19,7 +19,7 @@ retrofit = "2.11.0"
 room = "2.6.1"
 slf4j-api = "2.0.12"
 tickaroo = "0.8.13"
-tidal-androidx-media = "1.1.1.1"
+tidal-androidx-media = "1.1.1.2"
 plugins-tidal = "unspecified"
 
 [libraries]
@@ -105,11 +105,11 @@ tickaroo-core = { module = "com.tickaroo.tikxml:core", version.ref = "tickaroo" 
 tickaroo-processor = { module = "com.tickaroo.tikxml:processor", version.ref = "tickaroo" }
 tickaroo-retrofitConverter = { module = "com.tickaroo.tikxml:retrofit-converter", version.ref = "tickaroo" }
 
-tidal-exoPlayer-core = { module = "tidal.androidx.media3:media3-exoplayer", version.ref = "tidal-androidx-media" }
-tidal-exoPlayer-dash = { module = "tidal.androidx.media3:media3-exoplayer-dash", version.ref = "tidal-androidx-media" }
-tidal-exoPlayer-hls = { module = "tidal.androidx.media3:media3-exoplayer-hls", version.ref = "tidal-androidx-media" }
-tidal-exoPlayer-extension-flac = { module = "tidal.androidx.media3:media3-flac", version.ref = "tidal-androidx-media" }
-tidal-exoPlayer-extension-okhttp = { module = "tidal.androidx.media3:media3-datasource-okhttp", version.ref = "tidal-androidx-media" }
+tidal-exoPlayer-core = { module = "com.tidal.androidx.media3:media3-exoplayer", version.ref = "tidal-androidx-media" }
+tidal-exoPlayer-dash = { module = "com.tidal.androidx.media3:media3-exoplayer-dash", version.ref = "tidal-androidx-media" }
+tidal-exoPlayer-hls = { module = "com.tidal.androidx.media3:media3-exoplayer-hls", version.ref = "tidal-androidx-media" }
+tidal-exoPlayer-extension-flac = { module = "com.tidal.androidx.media3:media3-flac", version.ref = "tidal-androidx-media" }
+tidal-exoPlayer-extension-okhttp = { module = "com.tidal.androidx.media3:media3-datasource-okhttp", version.ref = "tidal-androidx-media" }
 
 # Security
 androidx-security-crypto = { module = "androidx.security:security-crypto", version = "1.0.0" }
