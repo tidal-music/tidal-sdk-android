@@ -28,4 +28,4 @@ jobs:
       - uses: reactivecircus/android-emulator-runner@v2.30.1
         with:
           api-level: 29
-          script: ./gradlew -Dorg.gradle.logging.level=info connectedCheck
+          script: ./gradlew -Dorg.gradle.logging.level=quiet connectedCheck
