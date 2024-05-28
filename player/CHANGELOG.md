@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.42] - 2024-05-28
+### Added
+- Add and support playback of new product type
+
 ## [0.0.41] - 2024-05-27
 ### Changed
 - Use our public fork of TIDAL's AndroidX Media library 
