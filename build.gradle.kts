@@ -22,9 +22,6 @@ sdkModules.forEach {
             it.tasks.findByName("publishToMavenCentral")?.let {
                 dependsOn(it)
             }
-            it.tasks.findByName("publishMavenPublicationToGithubPackagesRepository")?.let {
-                dependsOn(it)
-            }
         }
     }
 }

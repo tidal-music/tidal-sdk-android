@@ -4,10 +4,7 @@ import com.tidal.sdk.plugins.constant.PluginId
 import com.vanniktech.maven.publish.AndroidSingleVariantLibrary
 import com.vanniktech.maven.publish.MavenPublishBaseExtension
 import com.vanniktech.maven.publish.SonatypeHost
-import java.net.URI
 import org.gradle.api.Project
-import org.gradle.api.artifacts.dsl.RepositoryHandler
-import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPomLicense
 import org.gradle.kotlin.dsl.configure
 
@@ -16,10 +13,6 @@ internal class ConfiguresMavenPublish : (Project) -> Unit {
     override fun invoke(target: Project): Unit = with(target) {
         pluginManager.apply(PluginId.GRADLE_MAVEN_PUBLISH_PLUGIN_ID)
         ConfiguresGradleProjectVersion()(this)
-
-        configure<PublishingExtension> {
-            repositories.addGithubPackages()
-        }
 
         configure<MavenPublishBaseExtension> {
             setPublishJavadoc(this@with, false)
@@ -74,17 +67,6 @@ internal class ConfiguresMavenPublish : (Project) -> Unit {
 
     private fun String.toArtifactId(): String {
         return substring(1).replace(':', '-')
-    }
-
-    private fun RepositoryHandler.addGithubPackages() {
-        maven {
-            name = "GithubPackages"
-            url = URI.create("https://maven.pkg.github.com/${System.getenv("GITHUB_REPOSITORY")}")
-            credentials {
-                username = System.getenv("GITHUB_USER")
-                password = System.getenv("GITHUB_TOKEN")
-            }
-        }
     }
 
     private fun MavenPomLicense.apache() {
