@@ -27,9 +27,7 @@ dependencies {
 
 This authentication method uses `clientId` and `clientSecret`, e.g. when utilizing the [TIDAL API](https://developer.tidal.com/documentation/api/api-overview). Follow these steps in order to get an oAuth token.
 
-1. Initiate the process by initialising [TidalAuth](.
-   /auth/src/main/kotlin/com/tidal/sdk/auth/TidalAuth.
-   kt) by providing an [AuthConfig](./auth/src/main/kotlin/com/tidal/sdk/auth/model/AuthConfig.kt) with `clientId` and `clientSecret`.
+1. Initiate the process by initialising [TidalAuth](https://github.com/tidal-music/tidal-sdk-android/blob/main/auth/src/main/kotlin/com/tidal/sdk/auth/TidalAuth.kt) by providing an [AuthConfig](https://github.com/tidal-music/tidal-sdk-android/blob/main/auth/src/main/kotlin/com/tidal/sdk/auth/model/AuthConfig.kt) with `clientId` and `clientSecret`.
 ```kotlin
     val authConfig = AuthConfig(
         clientId = "YOUR_CLIENT_ID",
@@ -41,7 +39,7 @@ This authentication method uses `clientId` and `clientSecret`, e.g. when utilizi
 
     val tidalAuth = TidalAuth.getInstance(authConfig, context)
 ```   
-2. Get access to the [CredentialsProvider](./auth/src/main/kotlin/com/tidal/sdk/auth/CredentialsProvider.kt) which is responsible for getting [Credentials](./auth/src/main/kotlin/com/tidal/sdk/auth/model/Credentials.kt) and any updates sent through a message bus.
+2. Get access to the [CredentialsProvider](https://github.com/tidal-music/tidal-sdk-android/blob/main/auth/src/main/kotlin/com/tidal/sdk/auth/CredentialsProvider.kt) which is responsible for getting [Credentials](https://github.com/tidal-music/tidal-sdk-android/blob/main/auth/src/main/kotlin/com/tidal/sdk/auth/model/Credentials.kt) and any updates sent through a message bus.
 ```kotlin
     val credentialsProvider = tidalAuth.credentialsProvider
 ```  
