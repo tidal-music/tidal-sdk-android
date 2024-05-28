@@ -68,8 +68,7 @@ This authentication method uses `clientId` and `clientSecret`, e.g. when utilizi
 
 To implement the login redirect flow, follow these steps or refer to our [Demo app](https://github.com/tidal-music/tidal-sdk-android/tree/main/auth/apps/demo) implementation.
 
-1. Initiate the process by initialising [Auth](./auth/src/main/kotlin/com/tidal/sdk/auth/TidalAuth.
-   kt).
+1. Initiate the process by initialising [TidalAuth](https://github.com/tidal-music/tidal-sdk-android/blob/main/auth/src/main/kotlin/com/tidal/sdk/auth/TidalAuth.kt).
 2. For the first login:
     * Acquire `Auth` from your `TidalAuth` instance. Call its `initializeLogin` function, which 
       returns the login URL. Open this URL in a webview, where the user can log in using their username/password.
@@ -85,8 +84,7 @@ To implement the login redirect flow, follow these steps or refer to our [Demo a
 
 For devices with limited input capabilities, such as TVs, an alternative login method is provided. Follow these steps or refer to our [Demo app](https://github.com/tidal-music/tidal-sdk-android/tree/main/auth/apps/demo) implementation.
 
-1. Initiate the process by initialising [TidalAuth](.
-   /auth/src/main/kotlin/com/tidal/sdk/auth/TidalAuth.kt).
+1. Initiate the process by initialising [TidalAuth](https://github.com/tidal-music/tidal-sdk-android/blob/main/auth/src/main/kotlin/com/tidal/sdk/auth/TidalAuth.kt).
 2. Use `initializeDeviceLogin` and await the response.
 3. The response will contain a `userCode` and a `verificationUri`; display these to the user.
 4. Instruct the user to visit `link.tidal.com`, log in, and enter the displayed code.
