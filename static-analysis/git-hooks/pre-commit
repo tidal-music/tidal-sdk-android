@@ -1,0 +1,27 @@
+#!/bin/bash
+
+STAGED_KOTLIN_FILES=($(git --no-pager diff --cached --name-only --diff-filter=ACM | grep "\.kt"))
+
+if [ -z "$STAGED_KOTLIN_FILES" ]; then
+    echo "No Kotlin files staged."
+    exit 0
+fi
+
+FILES_ARGUMENT=""
+for i in "${STAGED_KOTLIN_FILES[@]}"; do
+    FILES_ARGUMENT="$FILES_ARGUMENT -i $i"
+done
+
+./static-analysis/run-detekt.sh $FILES_ARGUMENT
+DETEKT_RESULT=$?
+
+./static-analysis/run-ktlint.sh $FILES_ARGUMENT
+KTLINT_RESULT=$?
+
+if [ $KTLINT_RESULT != "0" ] || [ $DETEKT_RESULT != "0" ]; then
+   echo
+   echo "Some checks failed!"
+   echo "ktlint exit code: $KTLINT_RESULT"
+   echo "Detekt exit code: $DETEKT_RESULT"
+   exit -1
+fi

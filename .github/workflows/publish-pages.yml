@@ -1,0 +1,55 @@
+name: Generate and publish documentation
+
+on:
+  workflow_call
+
+concurrency:
+  group: pages
+
+jobs:
+  generate-and-publish:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    env:
+      ORG_GRADLE_PROJECT_githubToken: ${{ secrets.PACKAGES_PAT }}
+      PATH_CLONE_WORK: ${{ github.workspace }}/${{ github.repository }}
+      PATH_CLONE_SUPPORT: ${{ github.workspace }}/support
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.PATH_CLONE_WORK }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          path: ${{ env.PATH_CLONE_WORK }}
+      - name: Copy clone to support path
+        run: rsync -a $PATH_CLONE_WORK/ $PATH_CLONE_SUPPORT
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: temurin
+      - run: ./gradlew bom:generateMetadataFileForMavenPublication
+      - name: Extract module versions from BOM
+        run: |
+          for module in $(./gradlew -q --console=plain printSdkModules); do
+            if [ "$module" = "bom" ]; then
+              continue
+            fi
+            echo "$module=$module-$(.scripts/ci/extract_module_version_from_bom_module_json.sh -b bom/build/publications/maven/module.json -m "$module")" >> $GITHUB_WORKSPACE/bom-versions
+          done
+      - name: Check out version from the BOM for each module
+        run: |
+          while IFS= read -r <&3 line
+          do
+            .scripts/ci/checkout_module_version.sh -m $(echo $line | cut -d= -f1) -v $(echo $line | cut -d= -f2) -s $PATH_CLONE_SUPPORT
+          done 3< $GITHUB_WORKSPACE/bom-versions
+      - run: ./gradlew :dokkaHtmlMultiModule
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ env.PATH_CLONE_WORK}}/build/dokka/htmlMultiModule
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

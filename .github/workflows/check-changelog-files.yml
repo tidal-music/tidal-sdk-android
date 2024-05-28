@@ -1,0 +1,56 @@
+name: Check version bump and changelog files
+
+on:
+  workflow_call
+
+jobs:
+  check-version-bump:
+    runs-on: ubuntu-latest
+    name: Verify whether any updates were made to the modules' versions, and if they were, examine the changelog files for the respective modules
+    steps:
+      - uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: temurin
+      - run: mkdir workspace && cd workspace
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.base_ref }}
+      - uses: gradle/wrapper-validation-action@b231772637bb498f11fdbc86052b6e8a8dc9fc92
+      - name: Get base versions
+        run: |
+          for module in $(./gradlew -q --console=plain printSdkModules); do
+            ./gradlew $module:properties | grep "^version: " | awk '{print $2}' > ../$module.base.version
+          done
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.GITHUB_REF }}
+      - name: Get HEAD versions
+        run: |
+          for module in $(./gradlew -q --console=plain printSdkModules); do
+             ./gradlew $module:properties | grep "^version: " | awk '{print $2}' > ../$module.head.version
+          done
+      - name: Get modules which version has been increased comparing to the target branch
+        id: get-modules-with-increased-version
+        run: |
+          set +e
+          module_list=()
+          for module in $(./gradlew -q --console=plain printSdkModules); do
+            VERSION_FILE_HEAD=../$module.head.version
+            if [ ! -f "$VERSION_FILE_HEAD" ]; then
+              continue
+            fi
+            if cmp -s ../$module.base.version $VERSION_FILE_HEAD; then
+              continue
+            fi
+            head_version=$(cat $VERSION_FILE_HEAD)
+            module_list+=("{\"name\": \"$module\", \"version\": \"$head_version\"}")
+          done
+
+          jsonString="$(jq --compact-output --null-input '$ARGS.positional' --args -- "${module_list[@]}")"
+          echo "modules=$jsonString" >> $GITHUB_OUTPUT
+
+      - name: Check changelog files
+        if: ${{ steps.get-modules-with-increased-version.outputs.modules != '' }}
+        run: |
+          kotlinc -script .github/scripts/CheckChangelogs.main.kts ${{ steps.get-modules-with-increased-version.outputs.modules}}
