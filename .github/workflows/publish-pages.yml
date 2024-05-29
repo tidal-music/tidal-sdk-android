@@ -12,7 +12,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     env:
-      ORG_GRADLE_PROJECT_githubToken: ${{ secrets.PACKAGES_PAT }}
       PATH_CLONE_WORK: ${{ github.workspace }}/${{ github.repository }}
       PATH_CLONE_SUPPORT: ${{ github.workspace }}/support
     runs-on: ubuntu-latest

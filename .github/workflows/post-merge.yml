@@ -15,7 +15,6 @@ jobs:
       modules: ${{ steps.build-matrix.outputs.modules}}
     env:
       REF_BEFORE: ${{ github.event.before }}
-      ORG_GRADLE_PROJECT_githubToken: ${{ secrets.pat }}
     steps:
       - uses: actions/setup-java@v4
         with:

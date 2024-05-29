@@ -9,8 +9,6 @@ on:
 jobs:
   run-instrumented-tests:
     runs-on: ubuntu-latest
-    env:
-      ORG_GRADLE_PROJECT_githubToken: ${{ secrets.pat }}
     name: Run instrumented tests
     steps:
       - uses: actions/checkout@v4

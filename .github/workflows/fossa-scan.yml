@@ -7,8 +7,6 @@ on:
         required: true
       fossaApiKey:
         required: true
-env:
-  ORG_GRADLE_PROJECT_githubToken: ${{ secrets.pat }}
 
 jobs:
   fossa-scan:

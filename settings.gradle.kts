@@ -12,21 +12,8 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        tidalMusicGithub("tidal-sdk-android")
         maven {
             url = uri("https://jitpack.io")
-        }
-    }
-}
-
-fun RepositoryHandler.tidalMusicGithub(repository: String) {
-    maven(url = "https://maven.pkg.github.com/tidal-music/$repository/") {
-        credentials(HttpHeaderCredentials::class) {
-            name = "Authorization"
-            value = "Bearer ${extra["githubToken"]}"
-        }
-        authentication {
-            create<HttpHeaderAuthentication>("Authorization")
         }
     }
 }
