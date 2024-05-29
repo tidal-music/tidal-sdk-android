@@ -39,7 +39,6 @@ jobs:
     name: Trigger GH Pages deployment
     if: startsWith(github.ref, 'refs/tags/bom-')
     permissions:
-      contents: read # TODO remove when the repository goes public
       pages: write
       id-token: write
     uses: ./.github/workflows/publish-pages.yml
