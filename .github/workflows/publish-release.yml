@@ -4,9 +4,6 @@ on:
   release:
     types: [published]
 
-env:
-  ORG_GRADLE_PROJECT_githubToken: ${{ secrets.PACKAGES_PAT }}
-
 jobs:
   publish:
     runs-on: ubuntu-latest

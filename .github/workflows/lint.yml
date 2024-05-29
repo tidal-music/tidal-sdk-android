@@ -6,9 +6,6 @@ on:
       pat:
         required: true
 
-env:
-  ORG_GRADLE_PROJECT_githubToken: ${{ secrets.pat }}
-
 jobs:
   run-ktlint:
     runs-on: ubuntu-latest
