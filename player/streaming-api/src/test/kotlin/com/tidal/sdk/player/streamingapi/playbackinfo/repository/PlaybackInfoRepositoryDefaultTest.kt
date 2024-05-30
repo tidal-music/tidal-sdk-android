@@ -58,6 +58,7 @@ internal class PlaybackInfoRepositoryDefaultTest {
             trackId,
             AudioQuality.LOW,
             PlaybackMode.STREAM,
+            true,
             "streamingSessionId",
             null,
         )

@@ -34,6 +34,7 @@ import com.tidal.sdk.player.events.model.PlaybackStatistics.Payload.Adaptation
 import com.tidal.sdk.player.events.model.PlaybackStatistics.Payload.Stall
 import com.tidal.sdk.player.events.model.PlaybackStatistics.Payload.Stall.Reason
 import com.tidal.sdk.player.events.model.VideoPlaybackSession
+import com.tidal.sdk.player.playbackengine.audiomode.AudioModeRepository
 import com.tidal.sdk.player.playbackengine.dj.DjSessionManager
 import com.tidal.sdk.player.playbackengine.dj.DjSessionStatus
 import com.tidal.sdk.player.playbackengine.dj.HlsTags
@@ -108,6 +109,7 @@ internal class ExoPlayerPlaybackEngineTest {
     private val streamingPrivileges = mock<StreamingPrivileges>()
     private val playbackContextFactory = mock<PlaybackContextFactory>()
     private val audioQualityRepository = mock<AudioQualityRepository>()
+    private val audioModeRepository = mock<AudioModeRepository>()
     private val volumeHelper = mock<VolumeHelper>()
     private val trueTimeWrapper = mock<TrueTimeWrapper>()
     private val eventReporter = mock<EventReporter>()
@@ -136,6 +138,7 @@ internal class ExoPlayerPlaybackEngineTest {
             streamingPrivileges,
             playbackContextFactory,
             audioQualityRepository,
+            audioModeRepository,
             volumeHelper,
             trueTimeWrapper,
             eventReporter,

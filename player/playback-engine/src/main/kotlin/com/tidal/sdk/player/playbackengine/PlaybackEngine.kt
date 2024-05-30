@@ -173,4 +173,9 @@ interface Configuration {
      * Get or set [loudnessNormalizationPreAmp] as [Int] to use when playing.
      */
     var loudnessNormalizationPreAmp: Int
+
+    /**
+     * Get or set [immersiveAudio] as [Boolean] to use when playing.
+     */
+    var immersiveAudio: Boolean
 }

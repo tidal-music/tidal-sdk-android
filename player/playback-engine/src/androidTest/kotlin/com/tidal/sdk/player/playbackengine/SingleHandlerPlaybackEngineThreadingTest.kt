@@ -52,6 +52,8 @@ internal class SingleHandlerPlaybackEngineThreadingTest {
             set(_) = assignThreadAndReleaseLock()
         override var streamingCellularAudioQuality = AudioQuality.LOW
             set(_) = assignThreadAndReleaseLock()
+        override var immersiveAudio = true
+            set(_) = assignThreadAndReleaseLock()
         override var loudnessNormalizationMode = LoudnessNormalizationMode.ALBUM
             set(_) = assignThreadAndReleaseLock()
         override var loudnessNormalizationPreAmp = LOUDNESS_NORMALIZATION_PRE_AMP_DEFAULT

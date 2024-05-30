@@ -158,6 +158,7 @@ internal class PlaybackInfoServiceTest {
             PlaybackMode.STREAM,
             AssetPresentation.FULL,
             AudioQuality.LOW,
+            true,
             ApiConstants.STREAMING_SESSION_ID,
             null,
         )

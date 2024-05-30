@@ -169,7 +169,7 @@ class PlayLogTest {
 
     private fun loadAndPlayUntilEnd(mediaProduct: MediaProduct) = runTest {
         responseDispatcher[
-            "https://api.tidal.com/v1/tracks/1/playbackinfo?playbackmode=STREAM&assetpresentation=FULL&audioquality=LOW".toHttpUrl(),
+            "https://api.tidal.com/v1/tracks/1/playbackinfo?playbackmode=STREAM&assetpresentation=FULL&audioquality=LOW&immersiveaudio=true".toHttpUrl(),
         ] = {
             MockResponse().setBodyFromFile(
                 "api-responses/playbackinfo/tracks/playlogtest/get_1_bts.json"
@@ -228,7 +228,7 @@ class PlayLogTest {
     private fun loadAndPlayThenPauseThenPlay(mediaProduct: MediaProduct) = runTest {
         val gson = Gson()
         responseDispatcher[
-            "https://api.tidal.com/v1/tracks/1/playbackinfo?playbackmode=STREAM&assetpresentation=FULL&audioquality=LOW".toHttpUrl(),
+            "https://api.tidal.com/v1/tracks/1/playbackinfo?playbackmode=STREAM&assetpresentation=FULL&audioquality=LOW&immersiveaudio=true".toHttpUrl(),
         ] = {
             MockResponse().setBodyFromFile(
                 "api-responses/playbackinfo/tracks/playlogtest/get_1_bts.json",

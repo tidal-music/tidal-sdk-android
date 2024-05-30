@@ -34,6 +34,7 @@ internal interface PlaybackInfoService {
         @Query("playbackmode") playbackMode: PlaybackMode,
         @Query("assetpresentation") assetPresentation: AssetPresentation,
         @Query("audioquality") audioQuality: AudioQuality,
+        @Query("immersiveaudio") immersiveAudio: Boolean,
         @Header("x-tidal-streamingsessionid") streamingSessionId: String,
         @Header("x-tidal-playlistuuid") playlistUuid: String?,
     ): PlaybackInfo.Track

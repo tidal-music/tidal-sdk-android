@@ -10,6 +10,7 @@ import com.tidal.sdk.player.events.EventReporter
 import com.tidal.sdk.player.events.model.DrmLicenseFetch
 import com.tidal.sdk.player.events.model.EndReason
 import com.tidal.sdk.player.events.model.PlaybackInfoFetch
+import com.tidal.sdk.player.playbackengine.audiomode.AudioModeRepository
 import com.tidal.sdk.player.playbackengine.drm.MediaDrmCallbackExceptionFactory
 import com.tidal.sdk.player.playbackengine.error.ErrorCodeFactory
 import com.tidal.sdk.player.playbackengine.error.ErrorHandler
@@ -42,6 +43,7 @@ internal class StreamingApiRepository(
     private val streamingApi: StreamingApi,
     private val audioQualityRepository: AudioQualityRepository,
     private val videoQualityRepository: VideoQualityRepository,
+    private val audioModeRepository: AudioModeRepository,
     private val trueTimeWrapper: TrueTimeWrapper,
     private val mediaDrmCallbackExceptionFactory: MediaDrmCallbackExceptionFactory,
     private val eventReporter: EventReporter,
@@ -98,6 +100,7 @@ internal class StreamingApiRepository(
                     forwardingMediaProduct.productId.toInt(),
                     audioQualityRepository.streamingQuality,
                     PlaybackMode.STREAM,
+                    audioModeRepository.immersiveAudio,
                     streamingSessionId,
                 )
 

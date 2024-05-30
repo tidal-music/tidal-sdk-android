@@ -34,6 +34,7 @@ import com.tidal.sdk.player.events.model.UCPlaybackSession
 import com.tidal.sdk.player.events.model.UCPlaybackStatistics
 import com.tidal.sdk.player.events.model.VideoPlaybackSession
 import com.tidal.sdk.player.events.model.VideoPlaybackStatistics
+import com.tidal.sdk.player.playbackengine.audiomode.AudioModeRepository
 import com.tidal.sdk.player.playbackengine.dj.DjSessionManager
 import com.tidal.sdk.player.playbackengine.dj.DjSessionStatus
 import com.tidal.sdk.player.playbackengine.error.ErrorHandler
@@ -82,6 +83,7 @@ internal class ExoPlayerPlaybackEngine(
     private val streamingPrivileges: StreamingPrivileges,
     private val playbackContextFactory: PlaybackContextFactory,
     private val audioQualityRepository: AudioQualityRepository,
+    private val audioModeRepository: AudioModeRepository,
     private val volumeHelper: VolumeHelper,
     private val trueTimeWrapper: TrueTimeWrapper,
     private val eventReporter: EventReporter,
@@ -185,6 +187,12 @@ internal class ExoPlayerPlaybackEngine(
         set(value) {
             volumeHelper.loudnessNormalizationPreAmp = value
             updatePlayerVolume()
+        }
+
+    override var immersiveAudio: Boolean
+        get() = audioModeRepository.immersiveAudio
+        set(value) {
+            audioModeRepository.immersiveAudio = value
         }
 
     private var extendedExoPlayer by Delegates.observable(

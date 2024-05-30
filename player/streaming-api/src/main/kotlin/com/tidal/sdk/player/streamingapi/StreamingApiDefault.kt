@@ -23,12 +23,14 @@ internal class StreamingApiDefault(
         trackId: Int,
         audioQuality: AudioQuality,
         playbackMode: PlaybackMode,
+        immersiveAudio: Boolean,
         streamingSessionId: String,
         playlistUuid: String?,
     ) = playbackInfoRepository.getTrackPlaybackInfo(
         trackId,
         audioQuality,
         playbackMode,
+        immersiveAudio,
         streamingSessionId,
         playlistUuid,
     )
