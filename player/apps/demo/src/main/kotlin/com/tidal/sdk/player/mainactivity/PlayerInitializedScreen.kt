@@ -18,6 +18,7 @@ import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Slider
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -26,6 +27,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -60,6 +62,7 @@ internal fun PlayerInitializedScreen(
     dispatchSetAudioQualityOnWifi: (AudioQuality) -> Unit,
     dispatchSetAudioQualityOnCell: (AudioQuality) -> Unit,
     dispatchSetLoudnessNormalizationMode: (LoudnessNormalizationMode) -> Unit,
+    dispatchSetImmersiveAudio: (Boolean) -> Unit,
     dispatchRelease: () -> Unit,
 ) {
     Column(Modifier.padding(paddingValues)) {
@@ -104,6 +107,7 @@ internal fun PlayerInitializedScreen(
                 dispatchSetAudioQualityOnWifi,
                 dispatchSetAudioQualityOnCell,
                 dispatchSetLoudnessNormalizationMode,
+                dispatchSetImmersiveAudio,
                 dispatchRelease,
             )
         }
@@ -180,6 +184,7 @@ private fun PlaybackControls(
     dispatchSetAudioQualityOnWifi: (AudioQuality) -> Unit,
     dispatchSetAudioQualityOnCell: (AudioQuality) -> Unit,
     dispatchSetLoudnessNormalizationMode: (LoudnessNormalizationMode) -> Unit,
+    dispatchSetImmersiveAudioOnCell: (Boolean) -> Unit,
     dispatchRelease: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
@@ -327,6 +332,24 @@ private fun PlaybackControls(
             possibleValues = LoudnessNormalizationMode.values(),
         ) {
             dispatchSetLoudnessNormalizationMode(it)
+        }
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+        ) {
+            Text(
+                text = "Immersive Audio",
+                modifier = Modifier
+                    .padding(PaddingValues(end = 8F.dp))
+                    .weight(1F, fill = false),
+            )
+            Switch(
+                checked = state.immersiveAudio,
+                onCheckedChange = { dispatchSetImmersiveAudioOnCell(it) },
+            )
         }
         Button(
             onClick = dispatchRelease,

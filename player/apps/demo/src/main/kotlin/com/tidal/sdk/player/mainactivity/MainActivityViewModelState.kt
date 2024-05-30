@@ -61,5 +61,6 @@ internal sealed class MainActivityViewModelState private constructor() {
         val streamingAudioQualityWifi: AudioQuality,
         val streamingAudioQualityCellular: AudioQuality,
         val loudnessNormalizationMode: LoudnessNormalizationMode,
+        val immersiveAudio: Boolean,
     ) : MainActivityViewModelState()
 }
