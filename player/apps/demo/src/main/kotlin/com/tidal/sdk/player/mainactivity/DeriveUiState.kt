@@ -27,6 +27,7 @@ internal class DeriveUiState {
                         streamingAudioQualityWifi,
                         streamingAudioQualityCellular,
                         loudnessNormalizationMode,
+                        immersiveAudio,
                         current,
                         next,
                         player.playbackEngine.playbackState,

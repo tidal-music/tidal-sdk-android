@@ -249,6 +249,7 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
                                 player.playbackEngine.streamingWifiAudioQuality,
                                 loudnessNormalizationMode = player.playbackEngine
                                     .loudnessNormalizationMode,
+                                immersiveAudio = player.playbackEngine.immersiveAudio
                             )
                         }
 
@@ -368,6 +369,16 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
                     state.player.playbackEngine.loudnessNormalizationMode =
                         loudnessNormalizationMode
                     return state.copy(loudnessNormalizationMode = loudnessNormalizationMode)
+                }
+            }
+
+            class SetImmersiveAudio(
+                private val immersiveAudio: Boolean,
+            ) : Impure<PlayerInitialized, PlayerInitialized>() {
+
+                override suspend operator fun invoke(state: PlayerInitialized): PlayerInitialized {
+                    state.player.playbackEngine.immersiveAudio = immersiveAudio
+                    return state.copy(immersiveAudio = immersiveAudio)
                 }
             }
 

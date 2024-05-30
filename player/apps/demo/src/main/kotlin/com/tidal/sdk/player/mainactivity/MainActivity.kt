@@ -116,6 +116,9 @@ internal class MainActivity : ComponentActivity() {
                                         Impure.SetLoudnessNormalizationMode(it),
                                     )
                                 },
+                                dispatchSetImmersiveAudio = {
+                                    dispatch(Impure.SetImmersiveAudio(it))
+                                },
                                 dispatchRelease = { dispatch(Impure.Release) },
                                 dispatchSetSnackbarMessage = {
                                     dispatch(Impure.SetSnackbarMessage(it))
