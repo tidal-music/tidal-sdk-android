@@ -23,6 +23,7 @@ internal class PlaybackInfoServiceStub : PlaybackInfoService {
         playbackMode: PlaybackMode,
         assetPresentation: AssetPresentation,
         audioQuality: AudioQuality,
+        immersiveAudio: Boolean,
         streamingSessionId: String,
         playlistUuid: String?,
     ) = when (trackId) {

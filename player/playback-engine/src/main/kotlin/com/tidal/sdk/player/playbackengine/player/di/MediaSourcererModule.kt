@@ -32,6 +32,7 @@ import com.tidal.sdk.player.playbackengine.Encryption
 import com.tidal.sdk.player.playbackengine.PlayerLoadErrorHandlingPolicy
 import com.tidal.sdk.player.playbackengine.StreamingApiRepository
 import com.tidal.sdk.player.playbackengine.TidalExtractorsFactory
+import com.tidal.sdk.player.playbackengine.audiomode.AudioModeRepository
 import com.tidal.sdk.player.playbackengine.bts.DefaultBtsManifestFactory
 import com.tidal.sdk.player.playbackengine.cache.DefaultCacheKeyFactory
 import com.tidal.sdk.player.playbackengine.dash.DashManifestFactory
@@ -390,6 +391,7 @@ internal object MediaSourcererModule {
         streamingApi: StreamingApi,
         audioQualityRepository: AudioQualityRepository,
         videoQualityRepository: VideoQualityRepository,
+        audioModeRepository: AudioModeRepository,
         trueTimeWrapper: TrueTimeWrapper,
         mediaDrmCallbackExceptionFactory: MediaDrmCallbackExceptionFactory,
         eventReporter: EventReporter,
@@ -398,6 +400,7 @@ internal object MediaSourcererModule {
         streamingApi,
         audioQualityRepository,
         videoQualityRepository,
+        audioModeRepository,
         trueTimeWrapper,
         mediaDrmCallbackExceptionFactory,
         eventReporter,

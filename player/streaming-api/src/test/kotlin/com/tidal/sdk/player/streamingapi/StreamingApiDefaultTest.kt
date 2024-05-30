@@ -155,6 +155,7 @@ internal class StreamingApiDefaultTest {
             ApiConstants.PLAYBACK_INFO_ID_FOR_DEFAULT,
             AudioQuality.LOW,
             PlaybackMode.STREAM,
+            true,
             "streamingSessionId",
             null,
         )

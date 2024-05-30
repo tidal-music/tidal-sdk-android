@@ -19,14 +19,17 @@ interface StreamingApi {
      * @param[trackId] The requested track id as [Int].
      * @param[audioQuality] The requested audio quality as [AudioQuality].
      * @param[playbackMode] The requested playback mode as [PlaybackMode].
+     * @param[immersiveAudio] The requested option to include immersive audio or not.
      * @param[streamingSessionId] The streaming session uuid as [String], created by the client,
      * for this streaming session.
      * @param[playlistUuid] The playlistUuid this play originates from as [String]. May be null.
      */
+    @Suppress("LongParameterList")
     suspend fun getTrackPlaybackInfo(
         trackId: Int,
         audioQuality: AudioQuality,
         playbackMode: PlaybackMode,
+        immersiveAudio: Boolean,
         streamingSessionId: String,
         playlistUuid: String? = null,
     ): PlaybackInfo

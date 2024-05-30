@@ -31,6 +31,7 @@ internal class PlaybackInfoRepositoryDefault(
         trackId: Int,
         audioQuality: AudioQuality,
         playbackMode: PlaybackMode,
+        immersiveAudio: Boolean,
         streamingSessionId: String,
         playlistUuid: String?,
     ) = try {
@@ -39,6 +40,7 @@ internal class PlaybackInfoRepositoryDefault(
             playbackMode,
             AssetPresentation.FULL,
             audioQuality,
+            immersiveAudio,
             streamingSessionId,
             playlistUuid,
         )

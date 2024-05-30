@@ -14,6 +14,7 @@ import com.tidal.sdk.player.playbackengine.ExoPlayerPlaybackEngine
 import com.tidal.sdk.player.playbackengine.PlaybackContextFactory
 import com.tidal.sdk.player.playbackengine.PlaybackEngine
 import com.tidal.sdk.player.playbackengine.SingleHandlerPlaybackEngine
+import com.tidal.sdk.player.playbackengine.audiomode.AudioModeRepository
 import com.tidal.sdk.player.playbackengine.dj.DateParser
 import com.tidal.sdk.player.playbackengine.dj.DjSessionManager
 import com.tidal.sdk.player.playbackengine.dj.HlsTagsParser
@@ -142,6 +143,10 @@ internal object ExoPlayerPlaybackEngineModule {
 
     @Provides
     @Singleton
+    fun audioModeRepository() = AudioModeRepository()
+
+    @Provides
+    @Singleton
     fun exoPlayerPlaybackEngine(
         coroutineScope: CoroutineScope,
         extendedExoPlayerFactory: ExtendedExoPlayerFactory,
@@ -151,6 +156,7 @@ internal object ExoPlayerPlaybackEngineModule {
         streamingPrivileges: StreamingPrivileges,
         playbackContextFactory: PlaybackContextFactory,
         audioQualityRepository: AudioQualityRepository,
+        audioModeRepository: AudioModeRepository,
         volumeHelper: VolumeHelper,
         trueTimeWrapper: TrueTimeWrapper,
         eventReporter: EventReporter,
@@ -167,6 +173,7 @@ internal object ExoPlayerPlaybackEngineModule {
         streamingPrivileges,
         playbackContextFactory,
         audioQualityRepository,
+        audioModeRepository,
         volumeHelper,
         trueTimeWrapper,
         eventReporter,

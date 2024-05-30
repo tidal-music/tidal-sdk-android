@@ -43,6 +43,10 @@ internal class SingleHandlerPlaybackEngine(
         get() = delegate.loudnessNormalizationPreAmp
         set(value) = postOrThrow { delegate.loudnessNormalizationPreAmp = value }
 
+    override var immersiveAudio: Boolean
+        get() = delegate.immersiveAudio
+        set(value) = postOrThrow { delegate.immersiveAudio = value }
+
     override var videoSurfaceView: AspectRatioAdjustingSurfaceView?
         set(value) = postOrThrow { delegate.videoSurfaceView = value }
         get() = delegate.videoSurfaceView

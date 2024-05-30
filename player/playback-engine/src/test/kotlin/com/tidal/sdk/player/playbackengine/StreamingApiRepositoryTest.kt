@@ -16,6 +16,7 @@ import com.tidal.sdk.player.events.EventReporter
 import com.tidal.sdk.player.events.model.DrmLicenseFetch
 import com.tidal.sdk.player.events.model.EndReason
 import com.tidal.sdk.player.events.model.PlaybackInfoFetch
+import com.tidal.sdk.player.playbackengine.audiomode.AudioModeRepository
 import com.tidal.sdk.player.playbackengine.drm.MediaDrmCallbackExceptionFactory
 import com.tidal.sdk.player.playbackengine.error.ErrorCodeFactory
 import com.tidal.sdk.player.playbackengine.error.ErrorHandler
@@ -43,6 +44,7 @@ internal class StreamingApiRepositoryTest {
     private val streamingApi = mock<StreamingApi>()
     private val audioQualityRepository = mock<AudioQualityRepository>()
     private val videoQualityRepository = mock<VideoQualityRepository>()
+    private val audioModeRepository = mock<AudioModeRepository>()
     private val trueTimeWrapper = mock<TrueTimeWrapper>()
     private val mediaDrmCallbackExceptionFactory = mock<MediaDrmCallbackExceptionFactory>()
     private val eventReporter = mock<EventReporter>()
@@ -51,6 +53,7 @@ internal class StreamingApiRepositoryTest {
         streamingApi,
         audioQualityRepository,
         videoQualityRepository,
+        audioModeRepository,
         trueTimeWrapper,
         mediaDrmCallbackExceptionFactory,
         eventReporter,
@@ -149,6 +152,7 @@ internal class StreamingApiRepositoryTest {
                             productId.toInt(),
                             productQuality,
                             playbackMode,
+                            false,
                             "streamingSessionId",
                         ),
                     )
@@ -262,6 +266,7 @@ internal class StreamingApiRepositoryTest {
                             productId.toInt(),
                             productQuality,
                             playbackMode,
+                            false,
                             "streamingSessionId",
                         ),
                     )
