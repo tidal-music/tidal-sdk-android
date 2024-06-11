@@ -19,6 +19,7 @@ internal const val DEVICE_VENDOR_KEY = "device-vendor"
 internal class HeadersUtils @Inject constructor(
     private val appVersion: String,
     private val credentialsProvider: CredentialsProvider,
+    private val trueTimeWrapper: TrueTimeWrapper,
 ) {
     fun getEventHeaders(
         defaultHeaders: Map<String, String>,
@@ -31,7 +32,7 @@ internal class HeadersUtils @Inject constructor(
     ): Map<String, String> {
         val deviceModel = Build.MODEL
         val deviceVendor = Build.MANUFACTURER
-        val sentTimestamp = System.currentTimeMillis().toString()
+        val sentTimestamp = trueTimeWrapper.currentTimeMillis.toString()
         val osName = "Android"
         val osVersion = Build.VERSION.SDK_INT.toString()
         val headers = mutableMapOf<String, String>()
