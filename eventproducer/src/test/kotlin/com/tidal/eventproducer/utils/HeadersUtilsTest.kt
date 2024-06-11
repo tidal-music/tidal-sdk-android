@@ -7,6 +7,8 @@ import com.tidal.sdk.eventproducer.utils.APP_VERSION_KEY
 import com.tidal.sdk.eventproducer.utils.CLIENT_ID_KEY
 import com.tidal.sdk.eventproducer.utils.HeadersUtils
 import com.tidal.sdk.eventproducer.utils.OS_NAME_KEY
+import com.tidal.sdk.eventproducer.utils.TrueTimeWrapper
+import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -15,6 +17,7 @@ class HeadersUtilsTest {
     private val headerUtils = HeadersUtils(
         "",
         FakeCredentialsProvider(),
+        mockk<TrueTimeWrapper>(),
     )
 
     @Test
