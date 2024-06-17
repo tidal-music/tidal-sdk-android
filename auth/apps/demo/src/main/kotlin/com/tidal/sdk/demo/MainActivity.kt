@@ -48,8 +48,14 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        /**
+         * This test app expects the following values in 'local.properties' to be set:
+         * TIDAL_CLIENT_ID: The id of the app created by you in the TIDAL developer portal
+         * TIDAL_CLIENT_SECRET: The secret generated for this id
+         * TIDAL_CLIENT_SCOPES: The scopes you selected in the portal, entered as a single
+         * string, scopes separated by a space
+         */
         val authConfig = AuthConfig(
-            // Make sure to provide your clientId and required credentials in local.properties
             clientId = BuildConfig.TIDAL_CLIENT_ID,
             clientSecret = BuildConfig.TIDAL_CLIENT_SECRET,
             scopes = BuildConfig.TIDAL_CLIENT_SCOPES.split(" ").toSet(),
