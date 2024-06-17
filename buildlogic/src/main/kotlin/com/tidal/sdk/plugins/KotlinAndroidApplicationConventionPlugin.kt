@@ -3,8 +3,8 @@ package com.tidal.sdk.plugins
 import com.tidal.sdk.plugins.constant.Config
 import com.tidal.sdk.plugins.constant.PluginId
 import com.tidal.sdk.plugins.extensions.androidApplication
-import java.io.File
-import java.util.Properties
+import com.tidal.sdk.plugins.extensions.loadLocalProperties
+import com.tidal.sdk.plugins.extensions.localPropertiesFile
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
@@ -28,11 +28,7 @@ internal class KotlinAndroidApplicationConventionPlugin : Plugin<Project> {
     }
 
     private fun Project.configureApplication() {
-        val localProperties = Properties()
-        val localPropertiesFile: File = rootProject.file("local.properties")
-        if (localPropertiesFile.exists()) {
-            localProperties.load(localPropertiesFile.inputStream())
-        }
+        val localProperties = loadLocalProperties()
 
         val tidalClientId = "tidal.clientid"
         val clientId = localProperties[tidalClientId]
