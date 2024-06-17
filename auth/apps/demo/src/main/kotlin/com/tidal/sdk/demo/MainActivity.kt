@@ -52,8 +52,8 @@ class MainActivity : ComponentActivity() {
             // Make sure to provide your clientId and required credentials in local.properties
             clientId = BuildConfig.TIDAL_CLIENT_ID,
             clientSecret = BuildConfig.TIDAL_CLIENT_SECRET,
+            scopes = BuildConfig.TIDAL_CLIENT_SCOPES.split(" ").toSet(),
             credentialsKey = STORAGE_KEY,
-            scopes = setOf("YOUR_SCOPES"),
             enableCertificatePinning = true,
             logLevel = NetworkLogLevel.BODY,
         )
