@@ -1,3 +1,5 @@
+import com.tidal.sdk.plugins.extensions.loadLocalProperties
+
 plugins {
     alias(libs.plugins.tidal.android.application)
 }
@@ -12,6 +14,13 @@ android {
     }
 
     buildTypes {
+        all {
+            buildConfigField(
+                "String",
+                "TIDAL_CLIENT_SCOPES",
+                "${project.loadLocalProperties()["tidal.clientscopes"]}",
+            )
+        }
         debug {}
         composeOptions {
             kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
