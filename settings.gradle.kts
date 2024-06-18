@@ -50,3 +50,4 @@ listOf(
 includeFromDefaultHierarchy("auth")
 includeFromDefaultHierarchy("common")
 includeFromDefaultHierarchy("eventproducer")
+includeFromDefaultHierarchy("catalog")
