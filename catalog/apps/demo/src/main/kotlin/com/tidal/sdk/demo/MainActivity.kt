@@ -9,7 +9,6 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.tidal.sdk.catalog.Catalog
 
 class MainActivity : ComponentActivity() {
 
@@ -22,7 +21,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background,
                 ) {
-                    Greeting(Catalog().helloCatalog())
+                    Greeting("Catalog")
                 }
             }
         }

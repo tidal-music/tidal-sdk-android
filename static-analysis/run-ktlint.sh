@@ -69,7 +69,7 @@ for i in "${input[@]}"; do
 done
 
 if [ "$files_argument" == "" ]; then
-  files_argument="**/*.kt **/*.kts !**/build/** !catalog/**"
+  files_argument="**/*.kt **/*.kts !**/build/** !**catalog/**"
 fi
 
 echo

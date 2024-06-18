@@ -9,7 +9,11 @@ android {
 }
 
 dependencies {
-
+    implementation(libs.moshi.kotlin)
+    implementation(libs.moshi.kotlin)
+    implementation(libs.moshi.adapters)
+    implementation(libs.okhttp.okhttp)
+    testImplementation(libs.kotlintest.runner.junit5)
     api(libs.tidal.sdk.common)
 
     testApi(libs.test.androidx.junit)
