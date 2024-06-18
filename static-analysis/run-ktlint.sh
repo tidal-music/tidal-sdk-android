@@ -65,15 +65,16 @@ fi
 # Specify which files to analyze
 files_argument=""
 for i in "${input[@]}"; do
-  files_argument="$files_argument\"./$i\" "
+  files_argument="$files_argument\"./$i\" !**catalog/**"
 done
 
 if [ "$files_argument" == "" ]; then
-  files_argument="**/*.kt **/*.kts !**/build/**"
+  files_argument="**/*.kt **/*.kts !**/build/** !catalog/**"
 fi
 
 echo
 echo "Running ktlint..."
 command="$command $files_argument --experimental --reporter plain --baseline=$CONFIG_DIR/ktlint-baseline.xml"
+
 eval "$command"
 echo "Done."

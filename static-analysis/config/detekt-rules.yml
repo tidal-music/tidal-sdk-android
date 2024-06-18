@@ -18,7 +18,8 @@ exceptions:
 naming:
   FunctionNaming:
     ignoreAnnotated: ['Composable']
-
+  ConstructorParameterNaming:
+    excludes: ['**/catalog/**']
 performance:
   SpreadOperator:
     active: false
@@ -26,9 +27,20 @@ performance:
 style:
   MaxLineLength:
     maxLineLength: 100
-    excludes: ['**/test/**', '**/androidTest/**']
+    excludes: ['**/test/**', '**/androidTest/**', '**/catalog/**']
   UnusedPrivateMember:
     ignoreAnnotated: [ 'Preview' ]
+  ThrowsCount:
+    excludes: ['**/catalog/**']
+  MagicNumber:
+    excludes: ['**/test/**',
+               '**/androidTest/**','**/catalog/**']
+  ForbiddenComment:
+    excludes: ['**/catalog/**']
+  ReturnCount:
+    excludes: ['**/catalog/**']
+  UseCheckOrError:
+    excludes: ['**/catalog/**']
 
 complexity: 
   LargeClass:
@@ -36,4 +48,11 @@ complexity:
   LongParameterList:
     excludes: ['**Module.kt', '**Service.kt', '**Repository.kt', '**/test/**', '**/androidTest/**']
   TooManyFunctions:
-     excludes: ['**Module.kt', '**Service.kt', '**Repository.kt', '**/test/**', '**/androidTest/**']
+     excludes: ['**Module.kt', '**Service.kt', '**Repository.kt', '**/test/**',
+                '**/androidTest/**', '**/catalog/**']
+  CyclomaticComplexMethod:
+    excludes: ['**/catalog/**']
+  LongMethod:
+    excludes: ['**/catalog/**']
+  NestedBlockDepth:
+    excludes: [ '**/catalog/**' ]

@@ -29,7 +29,10 @@ sdkModules.forEach {
 tasks.dokkaHtmlMultiModule.configure {
     moduleVersion = "bom-${project(":bom").property("version")}"
     includes.setFrom("README.md")
-    pluginsMapConfiguration.set(mapOf("org.jetbrains.dokka.base.DokkaBase" to
-        """{"footerMessage": "© ${LocalDate.now().year} TIDAL"}"""
-    ))
+    pluginsMapConfiguration.set(
+        mapOf(
+            "org.jetbrains.dokka.base.DokkaBase" to
+                """{"footerMessage": "© ${LocalDate.now().year} TIDAL"}""",
+        ),
+    )
 }
