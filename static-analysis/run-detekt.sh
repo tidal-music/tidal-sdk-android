@@ -67,6 +67,6 @@ fi
 
 echo
 echo "Running Detekt..."
-command="$command --config $DETEKT_CONFIG --build-upon-default-config --parallel --excludes '**/build/**' --auto-correct $files_argument "
+command="$command --config $DETEKT_CONFIG --build-upon-default-config --parallel --excludes '**/build/**,**/openapitools/**' --auto-correct $files_argument "
 eval "$command"
 echo "Done."

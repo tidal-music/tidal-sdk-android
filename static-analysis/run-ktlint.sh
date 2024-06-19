@@ -69,7 +69,8 @@ for i in "${input[@]}"; do
 done
 
 if [ "$files_argument" == "" ]; then
-  files_argument="**/*.kt **/*.kts !**/build/**"
+  echo "No input files specified. Analyzing all Kotlin files..."
+  files_argument="**/*.kt **/*.kts !**/build/** !**/openapitools/**"
 fi
 
 echo
