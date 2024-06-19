@@ -9,7 +9,6 @@ package com.tidal.sdk.catalog
  * and helps prevent unnecessary recomposition
  */
 data class Catalog(private val optInt: Int = 5) {
-
     /**
      * This function returns the string "Catalog! The string is: [optInt]"
      */
