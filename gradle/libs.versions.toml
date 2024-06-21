@@ -78,7 +78,7 @@ kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 kotlinx-serialization-retrofit-converter = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter", version = "1.0.0" }
 
 # SDK
-tidal-sdk-catalog = { module = "com.tidal.sdk:catalog", version = "0.1.0" }
+tidal-sdk-catalogue = { module = "com.tidal.sdk:catalogue", version = "0.1.0" }
 tidal-sdk-common = { module = "com.tidal.sdk:common", version = "0.2.5" }
 tidal-sdk-auth = { module = "com.tidal.sdk:auth", version = "0.9.1" }
 tidal-sdk-eventproducer = { module = "com.tidal.sdk:eventproducer", version = "0.3.1" }
