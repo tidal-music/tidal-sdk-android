@@ -10,7 +10,7 @@ internal sealed interface WebSocketMessage {
 
         object Reconnect : Incoming
 
-        data class StreamingPrivilegesRevoked(val privilegedClientDisplayName: String) : Incoming
+        data class StreamingPrivilegesRevoked(val privilegedClientDisplayName: String?) : Incoming
 
         enum class Type(val string: String) {
 

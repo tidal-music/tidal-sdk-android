@@ -14,9 +14,9 @@ internal class IncomingWebSocketMessageParser(private val gson: Gson) {
                     WebSocketMessage.Incoming.Reconnect
 
                 WebSocketMessage.Incoming.Type.STREAMING_PRIVILEGES_REVOKED.string -> {
-                    val payload = parsedMessage["payload"].asJsonObject
+                    val payload = parsedMessage["payload"]?.asJsonObject
                     WebSocketMessage.Incoming.StreamingPrivilegesRevoked(
-                        payload["clientDisplayName"].asString,
+                        payload?.get("clientDisplayName")?.asString
                     )
                 }
 

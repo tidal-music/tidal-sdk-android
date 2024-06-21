@@ -358,7 +358,7 @@ internal class ExoPlayerPlaybackEngine(
         }
     }
 
-    override fun onStreamingPrivilegesRevoked(privilegedClientDisplayName: String) {
+    override fun onStreamingPrivilegesRevoked(privilegedClientDisplayName: String?) {
         if (playbackState == PlaybackState.PLAYING) {
             coroutineScope.launch {
                 eventSink.emit(Event.StreamingPrivilegesRevoked(privilegedClientDisplayName))
