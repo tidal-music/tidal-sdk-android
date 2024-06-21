@@ -45,7 +45,7 @@ sealed interface Event {
      * streaming privilege loss for this instance.
      */
     data class StreamingPrivilegesRevoked internal constructor(
-        val privilegedClientDisplayName: String,
+        val privilegedClientDisplayName: String?,
     ) : Event
 
     /**

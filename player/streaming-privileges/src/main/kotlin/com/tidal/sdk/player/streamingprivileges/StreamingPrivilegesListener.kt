@@ -20,5 +20,5 @@ interface StreamingPrivilegesListener {
      * @param privilegedClientDisplayName A name representative of the client that has caused this
      * client to lose streaming privileges.
      */
-    fun onStreamingPrivilegesRevoked(privilegedClientDisplayName: String)
+    fun onStreamingPrivilegesRevoked(privilegedClientDisplayName: String?)
 }

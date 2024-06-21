@@ -18,7 +18,7 @@ internal class StreamingPrivilegesEventDispatcher(private val networkInteraction
 
     fun dispatchStreamingPrivilegeRevoked(
         connectionMutableState: ConnectionMutableState,
-        privilegedClientDisplayName: String,
+        privilegedClientDisplayName: String?,
     ) {
         networkInteractionsHandler.post {
             connectionMutableState.streamingPrivilegesListener
