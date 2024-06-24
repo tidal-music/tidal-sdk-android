@@ -20,9 +20,10 @@ import com.tidal.sdk.common.TidalMessage
 import com.tidal.sdk.common.UnexpectedError
 import com.tidal.sdk.common.d
 import com.tidal.sdk.common.logger
-import java.net.HttpURLConnection
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.runBlocking
+import java.net.HttpURLConnection
+import java.util.concurrent.atomic.AtomicInteger
 
 internal class TokenRepository(
     private val authConfig: AuthConfig,
@@ -34,6 +35,12 @@ internal class TokenRepository(
     private val bus: MutableSharedFlow<TidalMessage>,
 ) {
 
+    var getCredentialsCalls = AtomicInteger(0)
+    var refreshesBranchSkipOrOuterSkip = AtomicInteger(0)
+    var refreshesBranchToken = AtomicInteger(0)
+    var refreshesBranchSecret = AtomicInteger(0)
+    var refreshesBranchLogout = AtomicInteger(0)
+    var upgrades = AtomicInteger(0)
 
     private fun needsCredentialsUpgrade(): Boolean {
         val storedCredentials = getLatestTokens()?.credentials
@@ -60,6 +67,7 @@ internal class TokenRepository(
 
     @Suppress("UnusedPrivateMember")
     suspend fun getCredentials(apiErrorSubStatus: String?): AuthResult<Credentials> {
+        getCredentialsCalls.incrementAndGet()
         logger.d { "Received subStatus: $apiErrorSubStatus" }
         val latestTokens = getLatestTokens()
         if ((latestTokens?.credentials?.isExpired(timeProvider) != false) ||
@@ -85,6 +93,7 @@ internal class TokenRepository(
                 }
             }
         }
+        refreshesBranchSkipOrOuterSkip.incrementAndGet()
         return success(latestTokens.credentials)
     }
 
@@ -95,26 +104,33 @@ internal class TokenRepository(
         storedTokens?.credentials?.isExpired(timeProvider) == false &&
             apiErrorSubStatus.shouldRefreshToken().not() -> {
             logger.d { "Refresh skipped" }
+            refreshesBranchSkipOrOuterSkip.incrementAndGet()
             success(storedTokens.credentials)
         }
         // if a refreshToken is available, we'll use it
         storedTokens?.refreshToken != null -> {
             val refreshToken = storedTokens.refreshToken
             logger.d { "Refreshing via refresh token" }
+            refreshesBranchToken.incrementAndGet()
             runBlocking { refreshCredentials { refreshUserCredentials(refreshToken) } }
         }
 
         // if nothing is stored, we will try and refresh using a client secret
         authConfig.clientSecret != null -> {
             logger.d { "Refreshing via client secret" }
+            refreshesBranchSecret.incrementAndGet()
             runBlocking { refreshCredentials { getClientCredentials(authConfig.clientSecret) } }
         }
 
         // as a last resort we return a token-less Credentials, we're logged out
-        else -> logout()
+        else -> {
+            refreshesBranchLogout.incrementAndGet()
+            logout()
+        }
     }
 
     private suspend fun upgradeTokens(storedTokens: Tokens): AuthResult<Tokens> {
+        upgrades.incrementAndGet()
         val response = retryWithPolicy(upgradeBackoffPolicy) {
             with(storedTokens) {
                 tokenService.upgradeToken(

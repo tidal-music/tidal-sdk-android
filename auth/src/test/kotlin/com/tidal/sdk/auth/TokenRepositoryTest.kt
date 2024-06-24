@@ -6,6 +6,7 @@ import com.tidal.sdk.auth.login.FakeTokensStore
 import com.tidal.sdk.auth.model.ApiErrorSubStatus
 import com.tidal.sdk.auth.model.AuthConfig
 import com.tidal.sdk.auth.model.AuthResult
+import com.tidal.sdk.auth.model.Credentials
 import com.tidal.sdk.auth.model.CredentialsUpdatedMessage
 import com.tidal.sdk.auth.model.Tokens
 import com.tidal.sdk.auth.util.RetryPolicy
@@ -18,14 +19,19 @@ import com.tidal.sdk.util.TEST_CLIENT_ID
 import com.tidal.sdk.util.TEST_CLIENT_UNIQUE_KEY
 import com.tidal.sdk.util.TEST_TIME_PROVIDER
 import com.tidal.sdk.util.makeCredentials
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import okio.IOException
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import kotlin.test.assertEquals
 
 class TokenRepositoryTest {
 
@@ -754,5 +760,43 @@ class TokenRepositoryTest {
         assert(fakeTokenService.calls.isEmpty()) {
             "No calls to the backend should have been made"
         }
+    }
+
+    @Test
+    fun `getCredentials called from many threads`() = runTest {
+        val credentials = makeCredentials(
+            userId = "valid",
+            isExpired = true,
+        )
+        val tokens = Tokens(
+            credentials,
+            "refreshToken",
+        )
+        createTokenRepository(
+            FakeTokenService(),
+            FakeTokensStore(authConfig.credentialsKey, tokens),
+        )
+        val deferreds = mutableSetOf<Deferred<AuthResult<Credentials>>>()
+        val threads = mutableSetOf<Thread>()
+        repeat(1_000) {
+            deferreds.add(
+                async { tokenRepository.getCredentials(null) },
+            )
+            threads.add(
+                Thread {
+                    runBlocking { tokenRepository.getCredentials(null) }
+                }.apply {
+                    start()
+                },
+            )
+        }
+        deferreds.awaitAll()
+        threads.onEach { it.join() }
+        assertEquals(2_000, tokenRepository.getCredentialsCalls.get())
+        assertEquals(1_999, tokenRepository.refreshesBranchSkipOrOuterSkip.get())
+        assertEquals(1, tokenRepository.refreshesBranchToken.get())
+        assertEquals(0, tokenRepository.refreshesBranchSecret.get())
+        assertEquals(0, tokenRepository.refreshesBranchLogout.get())
+        assertEquals(0, tokenRepository.upgrades.get())
     }
 }
