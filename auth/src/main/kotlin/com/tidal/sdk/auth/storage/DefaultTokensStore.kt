@@ -5,16 +5,18 @@ import androidx.security.crypto.EncryptedSharedPreferences
 import com.tidal.sdk.auth.model.Tokens
 import com.tidal.sdk.common.logger
 import com.tidal.sdk.common.w
+import kotlinx.serialization.json.Json
 import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.serialization.decodeFromString as decode
 import kotlinx.serialization.encodeToString as encode
-import kotlinx.serialization.json.Json
 
 /**
  * This class uses [EncryptedSharedPreferences] to securely store credentials.
  * Pass in a [SharedPreferences] instance to use a custom one, by default
  * we inject an [EncryptedSharedPreferences] instance.
  */
+@Singleton
 internal class DefaultTokensStore @Inject constructor(
     private val credentialsKey: String,
     private val sharedPreferences: SharedPreferences,
