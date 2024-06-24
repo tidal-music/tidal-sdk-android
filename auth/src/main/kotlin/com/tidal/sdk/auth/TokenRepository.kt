@@ -65,22 +65,26 @@ internal class TokenRepository(
 
     @Suppress("UnusedPrivateMember")
     suspend fun getCredentials(apiErrorSubStatus: String?): AuthResult<Credentials> {
-        var upgradedRefreshToken: String? = null
-        val credentials = getLatestTokens()
         logger.d { "Received subStatus: $apiErrorSubStatus" }
-        return if (credentials != null && needsCredentialsUpgrade()) {
-            logger.d { "Upgrading credentials" }
-            val upgradeCredentials = upgradeTokens(credentials)
-            upgradeCredentials.successData?.let {
-                upgradedRefreshToken = it.refreshToken
-                success(it.credentials)
-            } ?: upgradeCredentials as AuthResult.Failure
-        } else {
-            logger.d { "Updating credentials" }
-            updateCredentials(credentials, apiErrorSubStatus)
-        }.also {
-            it.successData?.let { token ->
-                saveTokensAndNotify(token, upgradedRefreshToken, credentials)
+
+        return tokenMutex.withLock {
+            var upgradedRefreshToken: String? = null
+            val credentials = getLatestTokens()
+
+            if (credentials != null && needsCredentialsUpgrade()) {
+                logger.d { "Upgrading credentials" }
+                val upgradeCredentials = upgradeTokens(credentials)
+                upgradeCredentials.successData?.let {
+                    upgradedRefreshToken = it.refreshToken
+                    success(it.credentials)
+                } ?: upgradeCredentials as AuthResult.Failure
+            } else {
+                logger.d { "Updating credentials" }
+                updateCredentials(credentials, apiErrorSubStatus)
+            }.also {
+                it.successData?.let { token ->
+                    saveTokensAndNotify(token, upgradedRefreshToken, credentials)
+                }
             }
         }
     }
@@ -89,42 +93,38 @@ internal class TokenRepository(
         storedTokens: Tokens?,
         apiErrorSubStatus: String?,
     ): AuthResult<Credentials> {
-        return tokenMutex.withLock {
-            when {
-                storedTokens?.credentials?.isExpired(timeProvider) == false &&
-                    apiErrorSubStatus.shouldRefreshToken().not() -> {
-                    success(storedTokens.credentials)
-                }
-                // if a refreshToken is available, we'll use it
-                storedTokens?.refreshToken != null -> {
-                    val refreshToken = storedTokens.refreshToken
-                    refreshCredentials { refreshUserCredentials(refreshToken) }
-                }
-
-                // if nothing is stored, we will try and refresh using a client secret
-                authConfig.clientSecret != null -> {
-                    refreshCredentials { getClientCredentials(authConfig.clientSecret) }
-                }
-
-                // as a last resort we return a token-less Credentials, we're logged out
-                else -> logout()
+        return when {
+            storedTokens?.credentials?.isExpired(timeProvider) == false &&
+                apiErrorSubStatus.shouldRefreshToken().not() -> {
+                success(storedTokens.credentials)
             }
+            // if a refreshToken is available, we'll use it
+            storedTokens?.refreshToken != null -> {
+                val refreshToken = storedTokens.refreshToken
+                refreshCredentials { refreshUserCredentials(refreshToken) }
+            }
+
+            // if nothing is stored, we will try and refresh using a client secret
+            authConfig.clientSecret != null -> {
+                refreshCredentials { getClientCredentials(authConfig.clientSecret) }
+            }
+
+            // as a last resort we return a token-less Credentials, we're logged out
+            else -> logout()
         }
     }
 
     private suspend fun upgradeTokens(storedTokens: Tokens): AuthResult<Tokens> {
-        val response = tokenMutex.withLock {
-            retryWithPolicy(upgradeBackoffPolicy) {
-                with(storedTokens) {
-                    tokenService.upgradeToken(
-                        refreshToken = requireNotNull(this.refreshToken),
-                        clientUniqueKey = requireNotNull(authConfig.clientUniqueKey),
-                        clientId = authConfig.clientId,
-                        clientSecret = authConfig.clientSecret,
-                        scopes = authConfig.scopes.toScopesString(),
-                        grantType = GRANT_TYPE_UPGRADE,
-                    )
-                }
+        val response = retryWithPolicy(upgradeBackoffPolicy) {
+            with(storedTokens) {
+                tokenService.upgradeToken(
+                    refreshToken = requireNotNull(this.refreshToken),
+                    clientUniqueKey = requireNotNull(authConfig.clientUniqueKey),
+                    clientId = authConfig.clientId,
+                    clientSecret = authConfig.clientSecret,
+                    scopes = authConfig.scopes.toScopesString(),
+                    grantType = GRANT_TYPE_UPGRADE,
+                )
             }
         }
 
