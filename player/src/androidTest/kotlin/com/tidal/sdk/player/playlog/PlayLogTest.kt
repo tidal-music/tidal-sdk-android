@@ -196,7 +196,8 @@ class PlayLogTest {
                     // https://github.com/androidx/media/issues/1252
                     assertThat(get("startAssetPosition").asDouble).isAssetPositionEqualTo(0.0)
                     // https://github.com/androidx/media/issues/1253
-                    assertThat(get("endAssetPosition").asDouble).isAssetPositionEqualTo(5.065)
+                    assertThat(get("endAssetPosition").asDouble)
+                        .isAssetPositionEqualTo(MEDIA_PRODUCT_DURATION_1_SECONDS)
                     assertThat(get("actualProductId").asString).isEqualTo(mediaProduct.productId)
                     assertThat(get("sourceType")?.asString).isEqualTo(mediaProduct.sourceType)
                     assertThat(get("sourceId")?.asString).isEqualTo(mediaProduct.sourceId)
@@ -263,7 +264,8 @@ class PlayLogTest {
             argThat {
                 with(gson.fromJson(this, JsonObject::class.java)["payload"].asJsonObject) {
                     assertThat(get("startAssetPosition").asDouble).isAssetPositionEqualTo(0.0)
-                    assertThat(get("endAssetPosition").asDouble).isAssetPositionEqualTo(5.065)
+                    assertThat(get("endAssetPosition").asDouble)
+                        .isAssetPositionEqualTo(MEDIA_PRODUCT_DURATION_1_SECONDS)
                     assertThat(get("actualProductId").asString).isEqualTo(mediaProduct.productId)
                     assertThat(get("sourceType")?.asString).isEqualTo(mediaProduct.sourceType)
                     assertThat(get("sourceId")?.asString).isEqualTo(mediaProduct.sourceId)
@@ -375,3 +377,5 @@ class PlayLogTest {
         isCloseTo(targetPosition, 0.5)
     }
 }
+
+private const val MEDIA_PRODUCT_DURATION_1_SECONDS = 5.055
