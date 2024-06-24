@@ -70,6 +70,11 @@ internal class TokenRepository(
         getCredentialsCalls.incrementAndGet()
         logger.d { "Received subStatus: $apiErrorSubStatus" }
         val latestTokens = getLatestTokens()
+        /**
+         * Note the double if check. This is to avoid synchronized whenever possible (since it's
+         * slow). It's the same reason why when you write a singleton you're supposed to do the
+         * null check both outside and inside the synchronized call.
+         */
         if ((latestTokens?.credentials?.isExpired(timeProvider) != false) ||
             needsCredentialsUpgrade()
         ) {
