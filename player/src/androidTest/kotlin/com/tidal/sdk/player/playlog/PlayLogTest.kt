@@ -292,6 +292,85 @@ class PlayLogTest {
         )
     }
 
+    @Test
+    fun loadAndPlayThenSeekForwardNoNulls() =
+        loadAndPlayThenSeekForward(MediaProduct(ProductType.TRACK, "1", "TESTA", "456"))
+
+    @Test
+    fun loadAndPlayThenSeekForwardNullSourceType() =
+        loadAndPlayThenSeekForward(MediaProduct(ProductType.TRACK, "1", null, "789"))
+
+    @Test
+    fun loadAndPlayThenSeekForwardNullSourceId() =
+        loadAndPlayThenSeekForward(MediaProduct(ProductType.TRACK, "1", "TESTB", null))
+
+    @Test
+    fun loadAndPlayThenSeekForwardNullSourceTypeNullSourceId() =
+        loadAndPlayThenSeekForward(MediaProduct(ProductType.TRACK, "1", null, null))
+
+    @Suppress("LongMethod")
+    private fun loadAndPlayThenSeekForward(mediaProduct: MediaProduct) = runTest {
+        val gson = Gson()
+        responseDispatcher[
+            "https://api.tidal.com/v1/tracks/1/playbackinfo?playbackmode=STREAM&assetpresentation=FULL&audioquality=LOW&immersiveaudio=true".toHttpUrl(),
+        ] = {
+            MockResponse().setBodyFromFile(
+                "api-responses/playbackinfo/tracks/playlogtest/get_1_bts.json",
+            )
+        }
+        responseDispatcher["https://test.audio.tidal.com/1_bts.m4a".toHttpUrl()] = {
+            MockResponse().setBodyFromFile("raw/playlogtest/1_bts.m4a")
+        }
+
+        player.playbackEngine.load(mediaProduct)
+        player.playbackEngine.play()
+        withContext(Dispatchers.Default.limitedParallelism(1)) {
+            withTimeout(4.seconds) {
+                player.playbackEngine.events.filter { it is Event.MediaProductTransition }.first()
+            }
+            delay(2.seconds)
+            while (player.playbackEngine.assetPosition < 2) {
+                delay(10.milliseconds)
+            }
+            player.playbackEngine.seek(3000F)
+            withTimeout(8.seconds) {
+                player.playbackEngine.events.filter { it is MediaProductEnded }.first()
+            }
+        }
+
+        eventReporterCoroutineScope.advanceUntilIdle()
+        verify(eventSender).sendEvent(
+            eq("playback_session"),
+            eq(ConsentCategory.NECESSARY),
+            argThat {
+                with(gson.fromJson(this, JsonObject::class.java)["payload"].asJsonObject) {
+                    assertThat(get("startAssetPosition").asDouble).isAssetPositionEqualTo(0.0)
+                    assertThat(get("endAssetPosition").asDouble).isAssetPositionEqualTo(5.065)
+                    assertThat(get("actualProductId").asString).isEqualTo(mediaProduct.productId)
+                    assertThat(get("sourceType")?.asString).isEqualTo(mediaProduct.sourceType)
+                    assertThat(get("sourceId")?.asString).isEqualTo(mediaProduct.sourceId)
+                    with(get("actions").asJsonArray) {
+                        val stopAction =
+                            gson.fromJson(this[0], PlaybackSession.Payload.Action::class.java)
+                        assertThat(stopAction.actionType)
+                            .isEqualTo(PlaybackSession.Payload.Action.Type.PLAYBACK_STOP)
+                        assertThat(stopAction.assetPositionSeconds).isAssetPositionEqualTo(2.0)
+                        val startAction =
+                            gson.fromJson(this[1], PlaybackSession.Payload.Action::class.java)
+                        assertThat(startAction.actionType)
+                            .isEqualTo(PlaybackSession.Payload.Action.Type.PLAYBACK_START)
+                        assertThat(startAction.assetPositionSeconds).isAssetPositionEqualTo(3.0)
+                        val perfectResumeTimestamp = stopAction.timestamp
+                        assertThat(startAction.timestamp)
+                            .isBetween(perfectResumeTimestamp - 500, perfectResumeTimestamp + 500)
+                    }
+                }
+                true
+            },
+            eq(emptyMap()),
+        )
+    }
+
     private fun Assert<Double>.isAssetPositionEqualTo(targetPosition: Double) = run {
         isCloseTo(targetPosition, 0.5)
     }
