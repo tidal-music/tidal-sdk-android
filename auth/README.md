@@ -64,8 +64,6 @@ This authentication method uses `clientId` and `clientSecret`, e.g. when utilizi
 
 
 ### Authorization Code Flow (user login)
-(Only available for TIDAL internally developed applications for now)
-
 To implement the login redirect flow, follow these steps or refer to our [Demo app](https://github.com/tidal-music/tidal-sdk-android/tree/main/auth/apps/demo) implementation.
 
 1. Initiate the process by initialising [TidalAuth](https://github.com/tidal-music/tidal-sdk-android/blob/main/auth/src/main/kotlin/com/tidal/sdk/auth/TidalAuth.kt).
