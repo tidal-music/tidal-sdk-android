@@ -6,6 +6,7 @@ import assertk.Assert
 import assertk.assertThat
 import assertk.assertions.isBetween
 import assertk.assertions.isCloseTo
+import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -621,6 +622,37 @@ internal class SingleMediaProductPlayLogTest {
                                 perfectSecondResumeTimestamp + 500,
                             )
                     }
+                }
+                true
+            },
+            eq(emptyMap()),
+        )
+    }
+
+    @Test
+    fun playFromSeekPosition() = runTest {
+        player.playbackEngine.load(mediaProduct)
+        player.playbackEngine.seek(2_000F)
+        player.playbackEngine.play()
+        withContext(Dispatchers.Default.limitedParallelism(1)) {
+            withTimeout(8.seconds) {
+                player.playbackEngine.events.filter { it is MediaProductEnded }.first()
+            }
+        }
+
+        eventReporterCoroutineScope.advanceUntilIdle()
+        verify(eventSender).sendEvent(
+            eq("playback_session"),
+            eq(ConsentCategory.NECESSARY),
+            argThat {
+                with(Gson().fromJson(this, JsonObject::class.java)["payload"].asJsonObject) {
+                    assertThat(get("startAssetPosition").asDouble).isAssetPositionEqualTo(2.0)
+                    assertThat(get("endAssetPosition").asDouble)
+                        .isAssetPositionEqualTo(MEDIA_PRODUCT_DURATION_SECONDS)
+                    assertThat(get("actualProductId").asString).isEqualTo(mediaProduct.productId)
+                    assertThat(get("sourceType")?.asString).isEqualTo(mediaProduct.sourceType)
+                    assertThat(get("sourceId")?.asString).isEqualTo(mediaProduct.sourceId)
+                    assertThat(get("actions").asJsonArray).isEmpty()
                 }
                 true
             },
