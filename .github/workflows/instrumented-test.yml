@@ -10,6 +10,7 @@ jobs:
   run-instrumented-tests:
     runs-on: ubuntu-latest
     name: Run instrumented tests
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
       - name: Enable KVM group perms
