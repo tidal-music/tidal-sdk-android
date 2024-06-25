@@ -27,3 +27,4 @@ jobs:
         with:
           api-level: 29
           script: ./gradlew -Dorg.gradle.logging.level=quiet connectedCheck
+          target: google_apis
