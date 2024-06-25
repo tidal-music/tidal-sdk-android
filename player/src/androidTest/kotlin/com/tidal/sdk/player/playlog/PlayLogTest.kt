@@ -347,7 +347,8 @@ class PlayLogTest {
             argThat {
                 with(gson.fromJson(this, JsonObject::class.java)["payload"].asJsonObject) {
                     assertThat(get("startAssetPosition").asDouble).isAssetPositionEqualTo(0.0)
-                    assertThat(get("endAssetPosition").asDouble).isAssetPositionEqualTo(5.065)
+                    assertThat(get("endAssetPosition").asDouble)
+                        .isAssetPositionEqualTo(MEDIA_PRODUCT_DURATION_1_SECONDS)
                     assertThat(get("actualProductId").asString).isEqualTo(mediaProduct.productId)
                     assertThat(get("sourceType")?.asString).isEqualTo(mediaProduct.sourceType)
                     assertThat(get("sourceId")?.asString).isEqualTo(mediaProduct.sourceId)
