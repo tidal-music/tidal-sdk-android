@@ -26,16 +26,17 @@ import com.tidal.sdk.player.events.model.PlaybackSession
 import com.tidal.sdk.player.events.playlogtest.PlayLogTestDefaultEventReporterComponentFactory
 import com.tidal.sdk.player.events.reflectionComponentFactoryF
 import com.tidal.sdk.player.playbackengine.model.Event
-import com.tidal.sdk.player.playbackengine.model.Event.MediaProductEnded
 import com.tidal.sdk.player.setBodyFromFile
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -56,6 +57,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito.atMost
 import org.mockito.Mockito.mock
+import org.mockito.Mockito.times
 import org.mockito.Mockito.verifyNoMoreInteractions
 import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.argThat
@@ -160,7 +162,7 @@ internal class SingleMediaProductPlayLogTest {
         player.playbackEngine.play()
         withContext(Dispatchers.Default.limitedParallelism(1)) {
             withTimeout(8.seconds) {
-                player.playbackEngine.events.filter { it is MediaProductEnded }.first()
+                player.playbackEngine.events.filter { it is Event.MediaProductEnded }.first()
             }
         }
 
@@ -205,7 +207,7 @@ internal class SingleMediaProductPlayLogTest {
             delay(1.seconds)
             player.playbackEngine.play()
             withTimeout(8.seconds) {
-                player.playbackEngine.events.filter { it is MediaProductEnded }.first()
+                player.playbackEngine.events.filter { it is Event.MediaProductEnded }.first()
             }
         }
 
@@ -263,7 +265,7 @@ internal class SingleMediaProductPlayLogTest {
             }
             player.playbackEngine.seek(3000F)
             withTimeout(8.seconds) {
-                player.playbackEngine.events.filter { it is MediaProductEnded }.first()
+                player.playbackEngine.events.filter { it is Event.MediaProductEnded }.first()
             }
         }
 
@@ -317,7 +319,7 @@ internal class SingleMediaProductPlayLogTest {
             }
             player.playbackEngine.seek(2000F)
             withTimeout(8.seconds) {
-                player.playbackEngine.events.filter { it is MediaProductEnded }.first()
+                player.playbackEngine.events.filter { it is Event.MediaProductEnded }.first()
             }
         }
 
@@ -373,7 +375,7 @@ internal class SingleMediaProductPlayLogTest {
             player.playbackEngine.seek(3000F)
             player.playbackEngine.play()
             withTimeout(8.seconds) {
-                player.playbackEngine.events.filter { it is MediaProductEnded }.first()
+                player.playbackEngine.events.filter { it is Event.MediaProductEnded }.first()
             }
         }
 
@@ -429,7 +431,7 @@ internal class SingleMediaProductPlayLogTest {
             player.playbackEngine.seek(2_000F)
             player.playbackEngine.play()
             withTimeout(8.seconds) {
-                player.playbackEngine.events.filter { it is MediaProductEnded }.first()
+                player.playbackEngine.events.filter { it is Event.MediaProductEnded }.first()
             }
         }
 
@@ -491,7 +493,7 @@ internal class SingleMediaProductPlayLogTest {
             player.playbackEngine.pause()
             player.playbackEngine.play()
             withTimeout(8.seconds) {
-                player.playbackEngine.events.filter { it is MediaProductEnded }.first()
+                player.playbackEngine.events.filter { it is Event.MediaProductEnded }.first()
             }
         }
 
@@ -569,7 +571,7 @@ internal class SingleMediaProductPlayLogTest {
             player.playbackEngine.seek(3_000F)
             player.playbackEngine.seek(2_000F)
             withTimeout(8.seconds) {
-                player.playbackEngine.events.filter { it is MediaProductEnded }.first()
+                player.playbackEngine.events.filter { it is Event.MediaProductEnded }.first()
             }
         }
 
@@ -636,7 +638,7 @@ internal class SingleMediaProductPlayLogTest {
         player.playbackEngine.play()
         withContext(Dispatchers.Default.limitedParallelism(1)) {
             withTimeout(8.seconds) {
-                player.playbackEngine.events.filter { it is MediaProductEnded }.first()
+                player.playbackEngine.events.filter { it is Event.MediaProductEnded }.first()
             }
         }
 
@@ -647,6 +649,43 @@ internal class SingleMediaProductPlayLogTest {
             argThat {
                 with(Gson().fromJson(this, JsonObject::class.java)["payload"].asJsonObject) {
                     assertThat(get("startAssetPosition").asDouble).isAssetPositionEqualTo(2.0)
+                    assertThat(get("endAssetPosition").asDouble)
+                        .isAssetPositionEqualTo(MEDIA_PRODUCT_DURATION_SECONDS)
+                    assertThat(get("actualProductId").asString).isEqualTo(mediaProduct.productId)
+                    assertThat(get("sourceType")?.asString).isEqualTo(mediaProduct.sourceType)
+                    assertThat(get("sourceId")?.asString).isEqualTo(mediaProduct.sourceId)
+                    assertThat(get("actions").asJsonArray).isEmpty()
+                }
+                true
+            },
+            eq(emptyMap()),
+        )
+    }
+
+    @Test
+    fun playWithRepeatOne() = runTest {
+        player.playbackEngine.load(mediaProduct)
+        player.playbackEngine.setRepeatOne(true)
+        player.playbackEngine.play()
+        withContext(Dispatchers.Default.limitedParallelism(1)) {
+            withTimeout(8.seconds) {
+                player.playbackEngine.events.filter { it is Event.MediaProductTransition }
+                    .take(2)
+                    .collect()
+            }
+            player.playbackEngine.setRepeatOne(false)
+            withTimeout(8.seconds) {
+                player.playbackEngine.events.filter { it is Event.MediaProductEnded }.first()
+            }
+        }
+
+        eventReporterCoroutineScope.advanceUntilIdle()
+        verify(eventSender, times(2)).sendEvent(
+            eq("playback_session"),
+            eq(ConsentCategory.NECESSARY),
+            argThat {
+                with(Gson().fromJson(this, JsonObject::class.java)["payload"].asJsonObject) {
+                    assertThat(get("startAssetPosition").asDouble).isAssetPositionEqualTo(0.0)
                     assertThat(get("endAssetPosition").asDouble)
                         .isAssetPositionEqualTo(MEDIA_PRODUCT_DURATION_SECONDS)
                     assertThat(get("actualProductId").asString).isEqualTo(mediaProduct.productId)
