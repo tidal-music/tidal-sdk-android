@@ -18,12 +18,13 @@ import com.tidal.sdk.util.TEST_CLIENT_ID
 import com.tidal.sdk.util.TEST_CLIENT_UNIQUE_KEY
 import com.tidal.sdk.util.TEST_TIME_PROVIDER
 import com.tidal.sdk.util.makeCredentials
+import java.io.IOException
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
-import okio.IOException
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -754,5 +755,32 @@ class TokenRepositoryTest {
         assert(fakeTokenService.calls.isEmpty()) {
             "No calls to the backend should have been made"
         }
+    }
+
+    @Test
+    fun `there can only be one refresh call even when requested from multiple threads`() = runTest {
+        val credentials = makeCredentials(
+            userId = "valid",
+            isExpired = true,
+        )
+        val tokens = Tokens(
+            credentials,
+            "refreshToken",
+        )
+        createTokenRepository(
+            FakeTokenService(),
+            FakeTokensStore(authConfig.credentialsKey, tokens),
+        )
+
+        val numberOfThreads = 100
+        val jobs = List(numberOfThreads) {
+            launch {
+                tokenRepository.getCredentials(null)
+            }
+        }
+        jobs.forEach { it.join() }
+
+        val numberOfRefreshCalls = fakeTokenService.calls.filter { it == CallType.Refresh }.size
+        assertEquals(1, numberOfRefreshCalls)
     }
 }
