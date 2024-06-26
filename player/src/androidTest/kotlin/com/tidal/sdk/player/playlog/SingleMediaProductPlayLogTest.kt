@@ -142,10 +142,17 @@ internal class SingleMediaProductPlayLogTest {
     }
 
     @After
-    fun afterEach() = runBlocking {
-        val job = launch { player.playbackEngine.events.first { it is Event.Release } }
-        player.release()
-        job.join()
+    fun afterEach() {
+        try {
+            runBlocking {
+                val job = launch { player.playbackEngine.events.first { it is Event.Release } }
+                player.release()
+                job.join()
+            }
+        } catch (alreadyReleasedException: IllegalStateException) {
+            assertThat(alreadyReleasedException.message)
+                .isEqualTo("Attempt to use a released instance of SingleHandlerPlaybackEngine")
+        }
         verify(eventSender, atMost(Int.MAX_VALUE))
             .sendEvent(
                 argThat { !contentEquals("playback_session") },
@@ -712,6 +719,40 @@ internal class SingleMediaProductPlayLogTest {
                 delay(10.milliseconds)
             }
             player.playbackEngine.reset()
+        }
+
+        eventReporterCoroutineScope.advanceUntilIdle()
+        verify(eventSender).sendEvent(
+            eq("playback_session"),
+            eq(ConsentCategory.NECESSARY),
+            argThat {
+                with(Gson().fromJson(this, JsonObject::class.java)["payload"].asJsonObject) {
+                    assertThat(get("startAssetPosition").asDouble).isAssetPositionEqualTo(0.0)
+                    assertThat(get("endAssetPosition").asDouble).isAssetPositionEqualTo(1.0)
+                    assertThat(get("actualProductId").asString).isEqualTo(mediaProduct.productId)
+                    assertThat(get("sourceType")?.asString).isEqualTo(mediaProduct.sourceType)
+                    assertThat(get("sourceId")?.asString).isEqualTo(mediaProduct.sourceId)
+                    assertThat(get("actions").asJsonArray).isEmpty()
+                }
+                true
+            },
+            eq(emptyMap()),
+        )
+    }
+
+    @Test
+    fun playWithRelease() = runTest {
+        player.playbackEngine.load(mediaProduct)
+        player.playbackEngine.play()
+        withContext(Dispatchers.Default.limitedParallelism(1)) {
+            withTimeout(8.seconds) {
+                player.playbackEngine.events.filter { it is Event.MediaProductTransition }.first()
+            }
+            delay(1.seconds)
+            while (player.playbackEngine.assetPosition < 1) {
+                delay(10.milliseconds)
+            }
+            player.playbackEngine.release()
         }
 
         eventReporterCoroutineScope.advanceUntilIdle()
