@@ -18,6 +18,7 @@ import com.tidal.sdk.common.TidalMessage
 import com.tidal.sdk.eventproducer.EventSender
 import com.tidal.sdk.eventproducer.model.ConsentCategory
 import com.tidal.sdk.player.Player
+import com.tidal.sdk.player.common.PlaybackEngineUsageAfterReleaseException
 import com.tidal.sdk.player.common.model.MediaProduct
 import com.tidal.sdk.player.common.model.ProductType
 import com.tidal.sdk.player.events.EventReporterModuleRoot
@@ -149,9 +150,10 @@ internal class SingleMediaProductPlayLogTest {
                 player.release()
                 job.join()
             }
-        } catch (alreadyReleasedException: IllegalStateException) {
-            assertThat(alreadyReleasedException.message)
-                .isEqualTo("Attempt to use a released instance of SingleHandlerPlaybackEngine")
+        } catch (throwable: Throwable) {
+            if (throwable !is PlaybackEngineUsageAfterReleaseException) {
+                throw throwable
+            }
         }
         verify(eventSender, atMost(Int.MAX_VALUE))
             .sendEvent(
