@@ -1,6 +1,7 @@
 package com.tidal.sdk.player.playbackengine
 
 import android.os.Handler
+import com.tidal.sdk.player.common.PlaybackEngineUsageAfterReleaseException
 import com.tidal.sdk.player.common.model.AudioQuality
 import com.tidal.sdk.player.common.model.LoudnessNormalizationMode
 import com.tidal.sdk.player.common.model.MediaProduct
@@ -78,8 +79,7 @@ internal class SingleHandlerPlaybackEngine(
 
     private fun postOrThrow(runnable: Runnable) {
         if (!handler.post(runnable)) {
-            val className = SingleHandlerPlaybackEngine::class.simpleName
-            error("Attempt to use a released instance of $className")
+            throw PlaybackEngineUsageAfterReleaseException()
         }
     }
 }
