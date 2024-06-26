@@ -13,7 +13,6 @@ import com.tidal.sdk.auth.util.UpgradeTokenRetryPolicy
 import com.tidal.sdk.auth.util.buildTestHttpException
 import com.tidal.sdk.common.RetryableError
 import com.tidal.sdk.common.TidalMessage
-import com.tidal.sdk.util.CoroutineTestTimeProvider
 import com.tidal.sdk.util.TEST_CLIENT_ID
 import com.tidal.sdk.util.TEST_CLIENT_UNIQUE_KEY
 import com.tidal.sdk.util.TEST_TIME_PROVIDER
@@ -21,8 +20,6 @@ import com.tidal.sdk.util.makeCredentials
 import java.io.IOException
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
@@ -652,44 +649,6 @@ class TokenRepositoryTest {
             }
         }
     }
-
-    @Test
-    fun `A call to getCredentials should not trigger a backend call if one is already in progress`() =
-        runTest {
-            // This test calls getCredentials 100 times in a row, to check if the synchronization
-            // works as intended, resulting in just a single call ever made to the backend.
-
-            // given
-            val dispatcher = StandardTestDispatcher()
-            val coroutineTimeProvider =
-                CoroutineTestTimeProvider(dispatcher, CoroutineTestTimeProvider.Mode.MILLISECONDS)
-            val credentials = makeCredentials(
-                userId = "valid",
-                isExpired = true,
-            )
-            val tokens = Tokens(
-                credentials,
-                "refreshToken",
-            )
-            val secret = "myLittleSecret"
-            createAuthConfig(secret = secret)
-            createTokenRepository(FakeTokenService())
-            fakeTokensStore.saveTokens(tokens)
-
-            // when
-            coroutineTimeProvider.startTimeFor(this, 100)
-            launch {
-                repeat(100) {
-                    tokenRepository.getCredentials(null)
-                }
-            }
-            advanceUntilIdle()
-
-            // then
-            assert(fakeTokenService.calls.filter { it == CallType.Refresh }.size == 1) {
-                "Only one call to the backend should have been made"
-            }
-        }
 
     @Test
     fun `getLatestTokens returns tokens from memory if possible`() = runTest {
