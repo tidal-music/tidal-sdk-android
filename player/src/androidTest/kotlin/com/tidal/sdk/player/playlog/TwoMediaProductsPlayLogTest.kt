@@ -21,12 +21,17 @@ import com.tidal.sdk.player.events.reflectionComponentFactoryF
 import com.tidal.sdk.player.playbackengine.model.Event
 import com.tidal.sdk.player.setBodyFromFile
 import kotlin.math.absoluteValue
+import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -48,6 +53,7 @@ import org.junit.Test
 import org.junit.runners.Parameterized
 import org.mockito.Mockito.atMost
 import org.mockito.Mockito.mock
+import org.mockito.Mockito.times
 import org.mockito.Mockito.verifyNoMoreInteractions
 import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.argThat
@@ -225,6 +231,65 @@ internal class TwoMediaProductsPlayLogTest {
                         // https://github.com/androidx/media/issues/1253
                         get("endAssetPosition").asDouble
                             .isAssetPositionEqualTo(MEDIA_PRODUCT_2_DURATION_SECONDS) &&
+                        get("actualProductId")?.asString.contentEquals(mediaProduct2.productId) &&
+                        get("sourceType")?.asString.contentEquals(mediaProduct2.sourceType) &&
+                        get("sourceId")?.asString.contentEquals(mediaProduct2.sourceId) &&
+                        get("actions").asJsonArray.isEmpty
+                }
+            },
+            eq(emptyMap()),
+        )
+    }
+
+    @Test
+    fun repeatOneWithNext() = runTest {
+        val gson = Gson()
+
+        player.playbackEngine.load(mediaProduct1)
+        player.playbackEngine.setNext(mediaProduct2)
+        player.playbackEngine.setRepeatOne(true)
+        player.playbackEngine.play()
+        withContext(Dispatchers.Default.limitedParallelism(1)) {
+            withTimeout(8.seconds) {
+                player.playbackEngine.events.filter { it is Event.MediaProductTransition }
+                    .take(2)
+                    .collect()
+            }
+            player.playbackEngine.setRepeatOne(false)
+            withTimeout(8.seconds) {
+                player.playbackEngine.events.filter { it is Event.MediaProductTransition }.first()
+            }
+            delay(1.seconds)
+            while (player.playbackEngine.assetPosition < 1) {
+                delay(10.milliseconds)
+            }
+            player.playbackEngine.reset()
+        }
+
+        eventReporterCoroutineScope.advanceUntilIdle()
+        verify(eventSender, times(2)).sendEvent(
+            eq("playback_session"),
+            eq(ConsentCategory.NECESSARY),
+            argThat {
+                with(gson.fromJson(this, JsonObject::class.java)["payload"].asJsonObject) {
+                    get("startAssetPosition").asDouble.isAssetPositionEqualTo(0.0) &&
+                        get("endAssetPosition").asDouble
+                            .isAssetPositionEqualTo(MEDIA_PRODUCT_1_DURATION_SECONDS) &&
+                        get("actualProductId")?.asString.contentEquals(mediaProduct1.productId) &&
+                        get("sourceType")?.asString.contentEquals(mediaProduct1.sourceType) &&
+                        get("sourceId")?.asString.contentEquals(mediaProduct1.sourceId) &&
+                        get("actions").asJsonArray.isEmpty
+                }
+            },
+            eq(emptyMap()),
+        )
+        verify(eventSender).sendEvent(
+            eq("playback_session"),
+            eq(ConsentCategory.NECESSARY),
+            argThat {
+                with(gson.fromJson(this, JsonObject::class.java)["payload"].asJsonObject) {
+                    get("startAssetPosition").asDouble.isAssetPositionEqualTo(0.0) &&
+                        get("endAssetPosition").asDouble.isAssetPositionEqualTo(1.0) &&
                         get("actualProductId")?.asString.contentEquals(mediaProduct2.productId) &&
                         get("sourceType")?.asString.contentEquals(mediaProduct2.sourceType) &&
                         get("sourceId")?.asString.contentEquals(mediaProduct2.sourceId) &&
