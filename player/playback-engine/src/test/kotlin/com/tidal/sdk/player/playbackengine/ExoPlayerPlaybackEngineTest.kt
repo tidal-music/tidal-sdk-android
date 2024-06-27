@@ -899,10 +899,7 @@ internal class ExoPlayerPlaybackEngineTest {
         } else {
             currentPlaybackPositionMs
         }.toDouble() / 1_000
-        val actions = mock<MutableList<Action>>()
-        val currentPlaybackSession = mock<PlaybackSession.Audio> {
-            on { it.actions } doReturn actions
-        }
+        val currentPlaybackSession = mock<PlaybackSession.Audio>()
         playbackEngine.reflectionCurrentPlaybackSession = currentPlaybackSession
         val currentTimeMills = -1L
         whenever(trueTimeWrapper.currentTimeMillis) doReturn currentTimeMills
@@ -925,9 +922,8 @@ internal class ExoPlayerPlaybackEngineTest {
             }
             verify(initialExtendedExoPlayer).currentPositionSinceEpochMs
         }
-        verify(currentPlaybackSession).actions
         verify(trueTimeWrapper).currentTimeMillis
-        verify(actions).add(
+        verify(currentPlaybackSession).tryAddAction(
             Action(
                 currentTimeMills,
                 positionSeconds,
@@ -939,7 +935,6 @@ internal class ExoPlayerPlaybackEngineTest {
             mediaSource,
             eventTime,
             currentPlaybackSession,
-            actions,
             initialExtendedExoPlayer,
         )
     }
@@ -1719,10 +1714,7 @@ internal class ExoPlayerPlaybackEngineTest {
         whenever(extendedExoPlayer.shouldStartPlaybackAfterUserAction()) doReturn false
         val currentTimeMills = -80L
         whenever(trueTimeWrapper.currentTimeMillis) doReturn currentTimeMills
-        val actions = mock<MutableList<Action>>()
-        val currentPlaybackSession = mock<PlaybackSession.Audio> {
-            on { it.actions } doReturn actions
-        }
+        val currentPlaybackSession = mock<PlaybackSession.Audio>()
         playbackEngine.reflectionCurrentPlaybackSession = currentPlaybackSession
 
         playbackEngine.onPositionDiscontinuity(
@@ -1735,16 +1727,15 @@ internal class ExoPlayerPlaybackEngineTest {
         verify(extendedExoPlayer).updatePosition(newPositionMs)
         verify(extendedExoPlayer).shouldStartPlaybackAfterUserAction()
         verify(trueTimeWrapper).currentTimeMillis
-        verify(currentPlaybackSession).actions
-        inOrder(actions).apply {
-            verify(actions).add(
+        inOrder(currentPlaybackSession).apply {
+            verify(currentPlaybackSession).tryAddAction(
                 Action(
                     currentTimeMills,
                     oldPositionMs.toDouble() / 1_000,
                     Action.Type.PLAYBACK_STOP,
                 ),
             )
-            verify(actions).add(
+            verify(currentPlaybackSession).tryAddAction(
                 Action(
                     currentTimeMills,
                     newPositionMs.toDouble() / 1_000,
@@ -1763,7 +1754,6 @@ internal class ExoPlayerPlaybackEngineTest {
             oldPosition,
             newPosition,
             extendedExoPlayer,
-            actions,
             currentPlaybackSession,
         )
     }
@@ -1803,10 +1793,7 @@ internal class ExoPlayerPlaybackEngineTest {
         whenever(extendedExoPlayer.shouldStartPlaybackAfterUserAction()) doReturn true
         val currentTimeMills = -80L
         whenever(trueTimeWrapper.currentTimeMillis) doReturn currentTimeMills
-        val actions = mock<MutableList<Action>>()
-        val currentPlaybackSession = mock<PlaybackSession.Audio> {
-            on { it.actions } doReturn actions
-        }
+        val currentPlaybackSession = mock<PlaybackSession.Audio>()
         playbackEngine.reflectionCurrentPlaybackSession = currentPlaybackSession
 
         playbackEngine.onPositionDiscontinuity(
@@ -1819,16 +1806,15 @@ internal class ExoPlayerPlaybackEngineTest {
         verify(extendedExoPlayer).updatePosition(newPositionMs)
         verify(extendedExoPlayer).shouldStartPlaybackAfterUserAction()
         verify(trueTimeWrapper).currentTimeMillis
-        verify(currentPlaybackSession).actions
-        inOrder(actions).apply {
-            verify(actions).add(
+        inOrder(currentPlaybackSession).apply {
+            verify(currentPlaybackSession).tryAddAction(
                 Action(
                     currentTimeMills,
                     oldPositionMs.toDouble() / 1_000,
                     Action.Type.PLAYBACK_STOP,
                 ),
             )
-            verify(actions).add(
+            verify(currentPlaybackSession).tryAddAction(
                 Action(
                     currentTimeMills,
                     newPositionMs.toDouble() / 1_000,
@@ -1842,7 +1828,6 @@ internal class ExoPlayerPlaybackEngineTest {
             oldPosition,
             newPosition,
             extendedExoPlayer,
-            actions,
             currentPlaybackSession,
         )
     }

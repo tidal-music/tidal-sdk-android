@@ -460,7 +460,7 @@ internal class ExoPlayerPlaybackEngine(
         } else {
             Action.Type.PLAYBACK_STOP
         }
-        currentPlaybackSession?.actions?.add(
+        currentPlaybackSession?.tryAddAction(
             Action(
                 trueTimeWrapper.currentTimeMillis,
                 positionInSeconds,
@@ -594,9 +594,15 @@ internal class ExoPlayerPlaybackEngine(
                     }.toDouble() / MS_IN_SECOND
                 startStall(Stall.Reason.SEEK, stallPositionSeconds, invokedAtMillis)
             }
-            currentPlaybackSession?.actions?.apply {
-                add(Action(invokedAtMillis, oldPositionSeconds, Action.Type.PLAYBACK_STOP))
-                add(Action(invokedAtMillis, newPositionSeconds, Action.Type.PLAYBACK_START))
+            currentPlaybackSession?.apply {
+                tryAddAction(Action(invokedAtMillis, oldPositionSeconds, Action.Type.PLAYBACK_STOP))
+                tryAddAction(
+                    Action(
+                        invokedAtMillis,
+                        newPositionSeconds,
+                        Action.Type.PLAYBACK_START,
+                    ),
+                )
             }
         }
     }
@@ -674,7 +680,7 @@ internal class ExoPlayerPlaybackEngine(
         } else {
             eventTime.currentPlaybackPositionMs
         }.toDouble() / MS_IN_SECOND
-        currentPlaybackSession?.actions?.add(
+        currentPlaybackSession?.tryAddAction(
             Action(
                 trueTimeWrapper.currentTimeMillis,
                 positionInSeconds,
