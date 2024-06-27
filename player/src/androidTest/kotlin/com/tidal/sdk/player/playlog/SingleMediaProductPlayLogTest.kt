@@ -550,6 +550,84 @@ internal class SingleMediaProductPlayLogTest {
         )
     }
 
+    @Suppress("LongMethod")
+    @Test
+    fun playWithDoubleSeek() = runTest {
+        val gson = Gson()
+
+        player.playbackEngine.load(mediaProduct)
+        player.playbackEngine.play()
+        withContext(Dispatchers.Default.limitedParallelism(1)) {
+            withTimeout(4.seconds) {
+                player.playbackEngine.events.filter { it is Event.MediaProductTransition }.first()
+            }
+            delay(2.seconds)
+            while (player.playbackEngine.assetPosition < 2) {
+                delay(10.milliseconds)
+            }
+            player.playbackEngine.seek(3_000F)
+            player.playbackEngine.seek(2_000F)
+            withTimeout(8.seconds) {
+                player.playbackEngine.events.filter { it is MediaProductEnded }.first()
+            }
+        }
+
+        eventReporterCoroutineScope.advanceUntilIdle()
+        verify(eventSender).sendEvent(
+            eq("playback_session"),
+            eq(ConsentCategory.NECESSARY),
+            argThat {
+                with(gson.fromJson(this, JsonObject::class.java)["payload"].asJsonObject) {
+                    assertThat(get("startAssetPosition").asDouble).isAssetPositionEqualTo(0.0)
+                    assertThat(get("endAssetPosition").asDouble)
+                        .isAssetPositionEqualTo(MEDIA_PRODUCT_DURATION_SECONDS)
+                    assertThat(get("actualProductId").asString).isEqualTo(mediaProduct.productId)
+                    assertThat(get("sourceType")?.asString).isEqualTo(mediaProduct.sourceType)
+                    assertThat(get("sourceId")?.asString).isEqualTo(mediaProduct.sourceId)
+                    with(get("actions").asJsonArray) {
+                        val firstStopAction =
+                            gson.fromJson(this[0], PlaybackSession.Payload.Action::class.java)
+                        assertThat(firstStopAction.actionType)
+                            .isEqualTo(PlaybackSession.Payload.Action.Type.PLAYBACK_STOP)
+                        assertThat(firstStopAction.assetPositionSeconds).isAssetPositionEqualTo(2.0)
+                        val firstStartAction =
+                            gson.fromJson(this[1], PlaybackSession.Payload.Action::class.java)
+                        assertThat(firstStartAction.actionType)
+                            .isEqualTo(PlaybackSession.Payload.Action.Type.PLAYBACK_START)
+                        assertThat(firstStartAction.assetPositionSeconds)
+                            .isAssetPositionEqualTo(3.0)
+                        val perfectFirstResumeTimestamp = firstStopAction.timestamp
+                        assertThat(firstStartAction.timestamp)
+                            .isBetween(
+                                perfectFirstResumeTimestamp - 500,
+                                perfectFirstResumeTimestamp + 500,
+                            )
+                        val secondStopAction =
+                            gson.fromJson(this[2], PlaybackSession.Payload.Action::class.java)
+                        assertThat(secondStopAction.actionType)
+                            .isEqualTo(PlaybackSession.Payload.Action.Type.PLAYBACK_STOP)
+                        assertThat(secondStopAction.assetPositionSeconds)
+                            .isAssetPositionEqualTo(3.0)
+                        val secondStartAction =
+                            gson.fromJson(this[3], PlaybackSession.Payload.Action::class.java)
+                        assertThat(secondStartAction.actionType)
+                            .isEqualTo(PlaybackSession.Payload.Action.Type.PLAYBACK_START)
+                        assertThat(secondStartAction.assetPositionSeconds)
+                            .isAssetPositionEqualTo(2.0)
+                        val perfectSecondResumeTimestamp = secondStopAction.timestamp
+                        assertThat(secondStartAction.timestamp)
+                            .isBetween(
+                                perfectSecondResumeTimestamp - 500,
+                                perfectSecondResumeTimestamp + 500,
+                            )
+                    }
+                }
+                true
+            },
+            eq(emptyMap()),
+        )
+    }
+
     private fun Assert<Double>.isAssetPositionEqualTo(targetPosition: Double) = run {
         isCloseTo(targetPosition, 0.5)
     }
