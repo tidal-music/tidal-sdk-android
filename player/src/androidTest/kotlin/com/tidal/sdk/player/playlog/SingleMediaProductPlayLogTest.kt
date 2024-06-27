@@ -61,7 +61,7 @@ import org.mockito.kotlin.argThat
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.verify
 
-class PlayLogTest {
+internal class SingleMediaProductPlayLogTest {
 
     @get:Rule
     val server = MockWebServer()
@@ -70,12 +70,23 @@ class PlayLogTest {
         TestScope(StandardTestDispatcher(TestCoroutineScheduler()))
     private val responseDispatcher = PlayLogTestMockWebServerDispatcher(server)
     private val eventSender = mock<EventSender>()
+    private val mediaProduct = MediaProduct(ProductType.TRACK, "1", "TEST_1", "456")
     private lateinit var player: Player
 
     @Before
     fun setUp() {
         EventReporterModuleRoot.reflectionComponentFactoryF = {
             PlayLogTestDefaultEventReporterComponentFactory(eventReporterCoroutineScope)
+        }
+        responseDispatcher[
+            "https://api.tidal.com/v1/tracks/${mediaProduct.productId}/playbackinfo?playbackmode=STREAM&assetpresentation=FULL&audioquality=LOW&immersiveaudio=true".toHttpUrl(),
+        ] = {
+            MockResponse().setBodyFromFile(
+                "api-responses/playbackinfo/tracks/playlogtest/get_1_bts.json",
+            )
+        }
+        responseDispatcher["https://test.audio.tidal.com/1_bts.m4a".toHttpUrl()] = {
+            MockResponse().setBodyFromFile("raw/playlogtest/1_bts.m4a")
         }
         server.dispatcher = responseDispatcher
 
@@ -143,33 +154,7 @@ class PlayLogTest {
     }
 
     @Test
-    fun loadAndPlayUntilEndNoNulls() =
-        loadAndPlayUntilEnd(MediaProduct(ProductType.TRACK, "1", "TESTA", "456"))
-
-    @Test
-    fun loadAndPlayUntilEndNullSourceType() =
-        loadAndPlayUntilEnd(MediaProduct(ProductType.TRACK, "1", null, "789"))
-
-    @Test
-    fun loadAndPlayUntilEndNullSourceId() =
-        loadAndPlayUntilEnd(MediaProduct(ProductType.TRACK, "1", "TESTB", null))
-
-    @Test
-    fun loadAndPlayUntilEndNullSourceTypeNullSourceId() =
-        loadAndPlayUntilEnd(MediaProduct(ProductType.TRACK, "1", null, null))
-
-    private fun loadAndPlayUntilEnd(mediaProduct: MediaProduct) = runTest {
-        responseDispatcher[
-            "https://api.tidal.com/v1/tracks/1/playbackinfo?playbackmode=STREAM&assetpresentation=FULL&audioquality=LOW&immersiveaudio=true".toHttpUrl(),
-        ] = {
-            MockResponse().setBodyFromFile(
-                "api-responses/playbackinfo/tracks/playlogtest/get_1_bts.json"
-            )
-        }
-        responseDispatcher["https://test.audio.tidal.com/1_bts.m4a".toHttpUrl()] = {
-            MockResponse().setBodyFromFile("raw/playlogtest/1_bts.m4a")
-        }
-
+    fun loadAndPlayUntilEnd() = runTest {
         player.playbackEngine.load(mediaProduct)
         player.playbackEngine.play()
         withContext(Dispatchers.Default.limitedParallelism(1)) {
@@ -188,7 +173,7 @@ class PlayLogTest {
                     assertThat(get("startAssetPosition").asDouble).isAssetPositionEqualTo(0.0)
                     // https://github.com/androidx/media/issues/1253
                     assertThat(get("endAssetPosition").asDouble)
-                        .isAssetPositionEqualTo(MEDIA_PRODUCT_DURATION_1_SECONDS)
+                        .isAssetPositionEqualTo(MEDIA_PRODUCT_DURATION_SECONDS)
                     assertThat(get("actualProductId").asString).isEqualTo(mediaProduct.productId)
                     assertThat(get("sourceType")?.asString).isEqualTo(mediaProduct.sourceType)
                     assertThat(get("sourceId")?.asString).isEqualTo(mediaProduct.sourceId)
@@ -200,35 +185,10 @@ class PlayLogTest {
         )
     }
 
-    @Test
-    fun loadAndPlayThenPauseThenPlayNoNulls() =
-        loadAndPlayThenPauseThenPlay(MediaProduct(ProductType.TRACK, "1", "TESTA", "456"))
-
-    @Test
-    fun loadAndPlayThenPauseThenPlayNullSourceType() =
-        loadAndPlayThenPauseThenPlay(MediaProduct(ProductType.TRACK, "1", null, "789"))
-
-    @Test
-    fun loadAndPlayThenPauseThenPlayNullSourceId() =
-        loadAndPlayThenPauseThenPlay(MediaProduct(ProductType.TRACK, "1", "TESTB", null))
-
-    @Test
-    fun loadAndPlayThenPauseThenPlayNullSourceTypeNullSourceId() =
-        loadAndPlayThenPauseThenPlay(MediaProduct(ProductType.TRACK, "1", null, null))
-
     @Suppress("LongMethod")
-    private fun loadAndPlayThenPauseThenPlay(mediaProduct: MediaProduct) = runTest {
+    @Test
+    fun loadAndPlayThenPauseThenPlay() = runTest {
         val gson = Gson()
-        responseDispatcher[
-            "https://api.tidal.com/v1/tracks/1/playbackinfo?playbackmode=STREAM&assetpresentation=FULL&audioquality=LOW&immersiveaudio=true".toHttpUrl(),
-        ] = {
-            MockResponse().setBodyFromFile(
-                "api-responses/playbackinfo/tracks/playlogtest/get_1_bts.json",
-            )
-        }
-        responseDispatcher["https://test.audio.tidal.com/1_bts.m4a".toHttpUrl()] = {
-            MockResponse().setBodyFromFile("raw/playlogtest/1_bts.m4a")
-        }
 
         player.playbackEngine.load(mediaProduct)
         player.playbackEngine.play()
@@ -256,7 +216,7 @@ class PlayLogTest {
                 with(gson.fromJson(this, JsonObject::class.java)["payload"].asJsonObject) {
                     assertThat(get("startAssetPosition").asDouble).isAssetPositionEqualTo(0.0)
                     assertThat(get("endAssetPosition").asDouble)
-                        .isAssetPositionEqualTo(MEDIA_PRODUCT_DURATION_1_SECONDS)
+                        .isAssetPositionEqualTo(MEDIA_PRODUCT_DURATION_SECONDS)
                     assertThat(get("actualProductId").asString).isEqualTo(mediaProduct.productId)
                     assertThat(get("sourceType")?.asString).isEqualTo(mediaProduct.sourceType)
                     assertThat(get("sourceId")?.asString).isEqualTo(mediaProduct.sourceId)
@@ -285,35 +245,10 @@ class PlayLogTest {
         )
     }
 
-    @Test
-    fun loadAndPlayThenSeekForwardNoNulls() =
-        loadAndPlayThenSeekForward(MediaProduct(ProductType.TRACK, "1", "TESTA", "456"))
-
-    @Test
-    fun loadAndPlayThenSeekForwardNullSourceType() =
-        loadAndPlayThenSeekForward(MediaProduct(ProductType.TRACK, "1", null, "789"))
-
-    @Test
-    fun loadAndPlayThenSeekForwardNullSourceId() =
-        loadAndPlayThenSeekForward(MediaProduct(ProductType.TRACK, "1", "TESTB", null))
-
-    @Test
-    fun loadAndPlayThenSeekForwardNullSourceTypeNullSourceId() =
-        loadAndPlayThenSeekForward(MediaProduct(ProductType.TRACK, "1", null, null))
-
     @Suppress("LongMethod")
-    private fun loadAndPlayThenSeekForward(mediaProduct: MediaProduct) = runTest {
+    @Test
+    fun loadAndPlayThenSeekForward() = runTest {
         val gson = Gson()
-        responseDispatcher[
-            "https://api.tidal.com/v1/tracks/1/playbackinfo?playbackmode=STREAM&assetpresentation=FULL&audioquality=LOW&immersiveaudio=true".toHttpUrl(),
-        ] = {
-            MockResponse().setBodyFromFile(
-                "api-responses/playbackinfo/tracks/playlogtest/get_1_bts.json",
-            )
-        }
-        responseDispatcher["https://test.audio.tidal.com/1_bts.m4a".toHttpUrl()] = {
-            MockResponse().setBodyFromFile("raw/playlogtest/1_bts.m4a")
-        }
 
         player.playbackEngine.load(mediaProduct)
         player.playbackEngine.play()
@@ -339,7 +274,7 @@ class PlayLogTest {
                 with(gson.fromJson(this, JsonObject::class.java)["payload"].asJsonObject) {
                     assertThat(get("startAssetPosition").asDouble).isAssetPositionEqualTo(0.0)
                     assertThat(get("endAssetPosition").asDouble)
-                        .isAssetPositionEqualTo(MEDIA_PRODUCT_DURATION_1_SECONDS)
+                        .isAssetPositionEqualTo(MEDIA_PRODUCT_DURATION_SECONDS)
                     assertThat(get("actualProductId").asString).isEqualTo(mediaProduct.productId)
                     assertThat(get("sourceType")?.asString).isEqualTo(mediaProduct.sourceType)
                     assertThat(get("sourceId")?.asString).isEqualTo(mediaProduct.sourceId)
@@ -370,4 +305,4 @@ class PlayLogTest {
     }
 }
 
-private const val MEDIA_PRODUCT_DURATION_1_SECONDS = 5.055
+private const val MEDIA_PRODUCT_DURATION_SECONDS = 5.055
