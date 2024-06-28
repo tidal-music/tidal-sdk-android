@@ -65,11 +65,16 @@ fi
 # Specify which files to analyze
 files_argument=""
 for i in "${input[@]}"; do
-  files_argument="$files_argument\"./$i\" "
+  if [[ "$i" != *'/generated/'* ]]; then
+    files_argument="$files_argument\"./$i\" "
+  else
+    echo "Ignoring generated file: $i"
+  fi
 done
 
 if [ "$files_argument" == "" ]; then
-  files_argument="**/*.kt **/*.kts !**/build/**"
+  echo "No input files specified. Analyzing all Kotlin files..."
+  files_argument="**/*.kt **/*.kts !**/build/** !**/generated/**"
 fi
 
 echo
