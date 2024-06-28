@@ -473,6 +473,7 @@ internal class ExoPlayerPlaybackEngineTest {
 
         playbackEngine.release()
 
+        verify(initialExtendedExoPlayer).currentPositionMs
         verify(initialExtendedExoPlayer).release()
         verifyNoMoreInteractions(initialExtendedExoPlayer, looper)
     }
