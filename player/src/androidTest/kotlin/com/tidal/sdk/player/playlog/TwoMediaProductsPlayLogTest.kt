@@ -20,7 +20,6 @@ import com.tidal.sdk.player.events.playlogtest.PlayLogTestDefaultEventReporterCo
 import com.tidal.sdk.player.events.reflectionComponentFactoryF
 import com.tidal.sdk.player.playbackengine.model.Event
 import com.tidal.sdk.player.setBodyFromFile
-import kotlin.math.absoluteValue
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
@@ -299,7 +298,4 @@ internal class TwoMediaProductsPlayLogTest {
             eq(emptyMap()),
         )
     }
-
-    private fun Double.isAssetPositionEqualTo(targetPosition: Double) =
-        (this - targetPosition).absoluteValue < 0.5
 }
