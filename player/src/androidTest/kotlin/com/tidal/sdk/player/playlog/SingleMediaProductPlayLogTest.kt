@@ -825,6 +825,76 @@ internal class SingleMediaProductPlayLogTest {
             eq(emptyMap()),
         )
     }
+
+    @Suppress("CyclomaticComplexMethod", "LongMethod")
+    @Test
+    fun seekBeyondBoundsWithRepeatOne() = runTest {
+        val gson = Gson()
+
+        player.playbackEngine.load(mediaProduct)
+        player.playbackEngine.setRepeatOne(true)
+        player.playbackEngine.play()
+        withContext(Dispatchers.Default.limitedParallelism(1)) {
+            delay(2.seconds)
+            while (player.playbackEngine.assetPosition < 2) {
+                delay(10.milliseconds)
+            }
+            player.playbackEngine.seek(10_000F)
+            delay(1.seconds)
+            while (player.playbackEngine.assetPosition < 1) {
+                delay(10.milliseconds)
+            }
+            player.playbackEngine.reset()
+        }
+
+        eventReporterCoroutineScope.advanceUntilIdle()
+        verify(eventSender).sendEvent(
+            eq("playback_session"),
+            eq(ConsentCategory.NECESSARY),
+            argThat {
+                with(gson.fromJson(this, JsonObject::class.java)["payload"].asJsonObject) {
+                    get("startAssetPosition").asDouble.isAssetPositionEqualTo(0.0) &&
+                        get("endAssetPosition").asDouble
+                            .isAssetPositionEqualTo(MEDIA_PRODUCT_DURATION_SECONDS) &&
+                        get("actualProductId")?.asString.contentEquals(mediaProduct.productId) &&
+                        get("sourceType")?.asString.contentEquals(mediaProduct.sourceType) &&
+                        get("sourceId")?.asString.contentEquals(mediaProduct.sourceId) &&
+                        get("actions").asJsonArray.run {
+                            val stopAction =
+                                gson.fromJson(this[0], PlaybackSession.Payload.Action::class.java)
+                            val startAction =
+                                gson.fromJson(this[1], PlaybackSession.Payload.Action::class.java)
+                            val perfectResumeTimestamp = stopAction.timestamp
+                            stopAction.actionType ==
+                                PlaybackSession.Payload.Action.Type.PLAYBACK_STOP &&
+                                stopAction.assetPositionSeconds.isAssetPositionEqualTo(2.0) &&
+                                startAction.actionType ==
+                                PlaybackSession.Payload.Action.Type.PLAYBACK_START &&
+                                startAction.assetPositionSeconds
+                                    .isAssetPositionEqualTo(MEDIA_PRODUCT_DURATION_SECONDS) &&
+                                startAction.timestamp in
+                                (perfectResumeTimestamp - 500)..(perfectResumeTimestamp + 500)
+                        }
+                }
+            },
+            eq(emptyMap()),
+        )
+        verify(eventSender).sendEvent(
+            eq("playback_session"),
+            eq(ConsentCategory.NECESSARY),
+            argThat {
+                with(gson.fromJson(this, JsonObject::class.java)["payload"].asJsonObject) {
+                    get("startAssetPosition").asDouble.isAssetPositionEqualTo(0.0) &&
+                        get("endAssetPosition").asDouble.isAssetPositionEqualTo(1.0) &&
+                        get("actualProductId")?.asString.contentEquals(mediaProduct.productId) &&
+                        get("sourceType")?.asString.contentEquals(mediaProduct.sourceType) &&
+                        get("sourceId")?.asString.contentEquals(mediaProduct.sourceId) &&
+                        get("actions").asJsonArray.isEmpty
+                }
+            },
+            eq(emptyMap()),
+        )
+    }
 }
 
 private const val MEDIA_PRODUCT_DURATION_SECONDS = 5.055
