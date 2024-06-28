@@ -30,3 +30,8 @@ jobs:
           arch: x86_64
           script: ./gradlew -Dorg.gradle.logging.level=quiet connectedCheck
           target: google_apis
+      - uses: actions/upload-artifact@v4.3.3
+        if: always()
+        with:
+          name: test-results-debug
+          path: player/build/reports/androidTests/connected/debug
