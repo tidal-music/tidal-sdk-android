@@ -1,0 +1,16 @@
+{
+  "trackId": 2,
+  "assetPresentation": "FULL",
+  "audioMode": "STEREO",
+  "audioQuality": "LOW",
+  "streamingSessionId": "356",
+  "manifestMimeType": "application/vnd.tidal.bts",
+  "manifestHash": "a manifest hash",
+  "manifest": "eyJtaW1lVHlwZSI6ImF1ZGlvL21wNCIsImNvZGVjcyI6Im1wNGEuNDAuNSIsInVybHMiOlsiaHR0cHM6Ly90ZXN0LmF1ZGlvLnRpZGFsLmNvbS90ZXN0XzFtaW4ubTRhIl19",
+  "albumReplayGain": -9.8,
+  "albumPeakAmplitude": 0.999923,
+  "trackReplayGain": -9.8,
+  "trackPeakAmplitude": 0.999923,
+  "bitDepth": 16,
+  "sampleRate": 44100
+}

@@ -2,10 +2,8 @@ package com.tidal.sdk.player.playlog
 
 import android.app.Application
 import androidx.test.platform.app.InstrumentationRegistry
-import assertk.Assert
 import assertk.assertThat
 import assertk.assertions.isBetween
-import assertk.assertions.isCloseTo
 import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import com.google.gson.Gson
@@ -774,10 +772,6 @@ internal class SingleMediaProductPlayLogTest {
             },
             eq(emptyMap()),
         )
-    }
-
-    private fun Assert<Double>.isAssetPositionEqualTo(targetPosition: Double) = run {
-        isCloseTo(targetPosition, 0.5)
     }
 }
 
