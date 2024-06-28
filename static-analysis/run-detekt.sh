@@ -58,7 +58,11 @@ fi
 # Specify which files to analyze
 files_argument=""
 for i in "${input[@]}"; do
-  files_argument="$files_argument$i,"
+  if [[ "$i" != *'/generated/'* ]]; then
+      files_argument="$files_argument$i,"
+  else
+    echo "Ignoring generated file: $i"
+  fi
 done
 
 if [ -n "$files_argument" ]; then
@@ -67,6 +71,6 @@ fi
 
 echo
 echo "Running Detekt..."
-command="$command --config $DETEKT_CONFIG --build-upon-default-config --parallel --excludes '**/build/**' --auto-correct $files_argument "
+command="$command --config $DETEKT_CONFIG --build-upon-default-config --parallel --excludes '**/build/**,**/generated/**' --auto-correct $files_argument "
 eval "$command"
 echo "Done."
