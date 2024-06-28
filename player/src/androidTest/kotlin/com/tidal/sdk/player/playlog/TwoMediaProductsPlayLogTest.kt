@@ -659,4 +659,61 @@ internal class TwoMediaProductsPlayLogTest {
             },
         )
     }
+
+    @Suppress("CyclomaticComplexMethod")
+    @Test
+    fun playSequentiallyWithoutRepeatOne() = runTest {
+        val gson = Gson()
+        val payloadCaptor = argumentCaptor<String>()
+
+        player.playbackEngine.load(mediaProduct1)
+        player.playbackEngine.play()
+        withContext(Dispatchers.Default.limitedParallelism(1)) {
+            withTimeout(8.seconds) {
+                player.playbackEngine.events.filter { it is Event.MediaProductTransition }.first()
+            }
+            delay(2.seconds)
+            while (player.playbackEngine.assetPosition < 2) {
+                delay(10.milliseconds)
+            }
+            player.playbackEngine.load(mediaProduct2)
+            player.playbackEngine.play()
+            withTimeout(8.seconds) {
+                player.playbackEngine.events.filter { it is Event.MediaProductTransition }.first()
+            }
+            delay(1.seconds)
+            while (player.playbackEngine.assetPosition < 1) {
+                delay(10.milliseconds)
+            }
+            player.playbackEngine.reset()
+        }
+
+        eventReporterCoroutineScope.advanceUntilIdle()
+        verify(eventSender, times(2)).sendEvent(
+            eq("playback_session"),
+            eq(ConsentCategory.NECESSARY),
+            payloadCaptor.capture(),
+            eq(emptyMap()),
+        )
+        payloadCaptor.allValues.map {
+            gson.fromJson(it, JsonObject::class.java)["payload"].asJsonObject
+        }.combinedPassAllOf(
+            1 to {
+                assertThat(get("startAssetPosition").asDouble).isAssetPositionEqualTo(0.0)
+                assertThat(get("endAssetPosition").asDouble).isAssetPositionEqualTo(2.0)
+                assertThat(get("actualProductId")?.asString).isEqualTo(mediaProduct1.productId)
+                assertThat(get("sourceType")?.asString).isEqualTo(mediaProduct1.sourceType)
+                assertThat(get("sourceId")?.asString).isEqualTo(mediaProduct1.sourceId)
+                assertThat(get("actions").asJsonArray).isEmpty()
+            },
+            1 to {
+                assertThat(get("startAssetPosition").asDouble).isAssetPositionEqualTo(0.0)
+                assertThat(get("endAssetPosition").asDouble).isAssetPositionEqualTo(1.0)
+                assertThat(get("actualProductId")?.asString).isEqualTo(mediaProduct2.productId)
+                assertThat(get("sourceType")?.asString).isEqualTo(mediaProduct2.sourceType)
+                assertThat(get("sourceId")?.asString).isEqualTo(mediaProduct2.sourceId)
+                assertThat(get("actions").asJsonArray).isEmpty()
+            },
+        )
+    }
 }
