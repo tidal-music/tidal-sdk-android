@@ -2,6 +2,9 @@ package com.tidal.sdk.player.playlog
 
 import android.app.Application
 import androidx.test.platform.app.InstrumentationRegistry
+import assertk.assertThat
+import assertk.assertions.isEmpty
+import assertk.assertions.isEqualTo
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.tidal.sdk.auth.CredentialsProvider
@@ -365,6 +368,39 @@ internal class TwoMediaProductsPlayLogTest {
                         get("sourceId")?.asString.contentEquals(mediaProduct2.sourceId) &&
                         get("actions").asJsonArray.isEmpty
                 }
+            },
+            eq(emptyMap()),
+        )
+    }
+
+    @Suppress("CyclomaticComplexMethod", "LongMethod")
+    @Test
+    fun setNextWhileIdle() = runTest {
+        player.playbackEngine.setNext(mediaProduct2)
+        player.playbackEngine.load(mediaProduct1)
+        player.playbackEngine.play()
+        player.playbackEngine.skipToNext()
+        withContext(Dispatchers.Default.limitedParallelism(1)) {
+            withTimeout(8.seconds) {
+                player.playbackEngine.events.first { it is Event.MediaProductEnded }
+            }
+        }
+
+        eventReporterCoroutineScope.advanceUntilIdle()
+        verify(eventSender).sendEvent(
+            eq("playback_session"),
+            eq(ConsentCategory.NECESSARY),
+            argThat {
+                with(Gson().fromJson(this, JsonObject::class.java)["payload"].asJsonObject) {
+                    assertThat(get("startAssetPosition").asDouble).isAssetPositionEqualTo(0.0)
+                    assertThat(get("endAssetPosition").asDouble)
+                        .isAssetPositionEqualTo(MEDIA_PRODUCT_1_DURATION_SECONDS)
+                    assertThat(get("actualProductId")?.asString).isEqualTo(mediaProduct1.productId)
+                    assertThat(get("sourceType")?.asString).isEqualTo(mediaProduct1.sourceType)
+                    assertThat(get("sourceId")?.asString).isEqualTo(mediaProduct1.sourceId)
+                    assertThat(get("actions").asJsonArray).isEmpty()
+                }
+                true
             },
             eq(emptyMap()),
         )
