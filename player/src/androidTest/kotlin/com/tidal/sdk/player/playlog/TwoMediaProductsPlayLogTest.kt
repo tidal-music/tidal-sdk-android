@@ -3,6 +3,7 @@ package com.tidal.sdk.player.playlog
 import android.app.Application
 import androidx.test.platform.app.InstrumentationRegistry
 import assertk.assertThat
+import assertk.assertions.isBetween
 import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import com.google.gson.Gson
@@ -60,6 +61,7 @@ import org.mockito.Mockito.times
 import org.mockito.Mockito.verifyNoMoreInteractions
 import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.argThat
+import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.verify
 
@@ -195,6 +197,7 @@ internal class TwoMediaProductsPlayLogTest {
     @Test
     fun playSequentially() = runTest(timeout = 3.minutes) {
         val gson = Gson()
+        val payloadCaptor = argumentCaptor<String>()
 
         player.playbackEngine.load(mediaProduct1)
         player.playbackEngine.setNext(mediaProduct2)
@@ -206,47 +209,44 @@ internal class TwoMediaProductsPlayLogTest {
         }
 
         eventReporterCoroutineScope.advanceUntilIdle()
-        verify(eventSender).sendEvent(
+        verify(eventSender, times(2)).sendEvent(
             eq("playback_session"),
             eq(ConsentCategory.NECESSARY),
-            argThat {
-                with(gson.fromJson(this, JsonObject::class.java)["payload"].asJsonObject) {
-                    // https://github.com/androidx/media/issues/1252
-                    get("startAssetPosition").asDouble.isAssetPositionEqualTo(0.0) &&
-                        // https://github.com/androidx/media/issues/1253
-                        get("endAssetPosition").asDouble
-                            .isAssetPositionEqualTo(MEDIA_PRODUCT_1_DURATION_SECONDS) &&
-                        get("actualProductId")?.asString.contentEquals(mediaProduct1.productId) &&
-                        get("sourceType")?.asString.contentEquals(mediaProduct1.sourceType) &&
-                        get("sourceId")?.asString.contentEquals(mediaProduct1.sourceId) &&
-                        get("actions").asJsonArray.isEmpty
-                }
-            },
+            payloadCaptor.capture(),
             eq(emptyMap()),
         )
-        verify(eventSender).sendEvent(
-            eq("playback_session"),
-            eq(ConsentCategory.NECESSARY),
-            argThat {
-                with(gson.fromJson(this, JsonObject::class.java)["payload"].asJsonObject) {
-                    // https://github.com/androidx/media/issues/1252
-                    get("startAssetPosition").asDouble.isAssetPositionEqualTo(0.0) &&
-                        // https://github.com/androidx/media/issues/1253
-                        get("endAssetPosition").asDouble
-                            .isAssetPositionEqualTo(MEDIA_PRODUCT_2_DURATION_SECONDS) &&
-                        get("actualProductId")?.asString.contentEquals(mediaProduct2.productId) &&
-                        get("sourceType")?.asString.contentEquals(mediaProduct2.sourceType) &&
-                        get("sourceId")?.asString.contentEquals(mediaProduct2.sourceId) &&
-                        get("actions").asJsonArray.isEmpty
-                }
+        payloadCaptor.allValues.map {
+            gson.fromJson(it, JsonObject::class.java)["payload"].asJsonObject
+        }.combinedPassAllOf(
+            1 to {
+                // https://github.com/androidx/media/issues/1252
+                assertThat(get("startAssetPosition").asDouble).isAssetPositionEqualTo(0.0)
+                // https://github.com/androidx/media/issues/1253
+                assertThat(get("endAssetPosition").asDouble)
+                    .isAssetPositionEqualTo(MEDIA_PRODUCT_1_DURATION_SECONDS)
+                assertThat(get("actualProductId")?.asString).isEqualTo(mediaProduct1.productId)
+                assertThat(get("sourceType")?.asString).isEqualTo(mediaProduct1.sourceType)
+                assertThat(get("sourceId")?.asString).isEqualTo(mediaProduct1.sourceId)
+                assertThat(get("actions").asJsonArray).isEmpty()
             },
-            eq(emptyMap()),
+            1 to {
+                // https://github.com/androidx/media/issues/1252
+                assertThat(get("startAssetPosition").asDouble).isAssetPositionEqualTo(0.0)
+                // https://github.com/androidx/media/issues/1253
+                assertThat(get("endAssetPosition").asDouble)
+                    .isAssetPositionEqualTo(MEDIA_PRODUCT_2_DURATION_SECONDS)
+                assertThat(get("actualProductId")?.asString).isEqualTo(mediaProduct2.productId)
+                assertThat(get("sourceType")?.asString).isEqualTo(mediaProduct2.sourceType)
+                assertThat(get("sourceId")?.asString).isEqualTo(mediaProduct2.sourceId)
+                assertThat(get("actions").asJsonArray).isEmpty()
+            },
         )
     }
 
     @Test
     fun repeatOneWithNext() = runTest {
         val gson = Gson()
+        val payloadCaptor = argumentCaptor<String>()
 
         player.playbackEngine.load(mediaProduct1)
         player.playbackEngine.setNext(mediaProduct2)
@@ -270,36 +270,32 @@ internal class TwoMediaProductsPlayLogTest {
         }
 
         eventReporterCoroutineScope.advanceUntilIdle()
-        verify(eventSender, times(2)).sendEvent(
+        verify(eventSender, times(3)).sendEvent(
             eq("playback_session"),
             eq(ConsentCategory.NECESSARY),
-            argThat {
-                with(gson.fromJson(this, JsonObject::class.java)["payload"].asJsonObject) {
-                    get("startAssetPosition").asDouble.isAssetPositionEqualTo(0.0) &&
-                        get("endAssetPosition").asDouble
-                            .isAssetPositionEqualTo(MEDIA_PRODUCT_1_DURATION_SECONDS) &&
-                        get("actualProductId")?.asString.contentEquals(mediaProduct1.productId) &&
-                        get("sourceType")?.asString.contentEquals(mediaProduct1.sourceType) &&
-                        get("sourceId")?.asString.contentEquals(mediaProduct1.sourceId) &&
-                        get("actions").asJsonArray.isEmpty
-                }
-            },
+            payloadCaptor.capture(),
             eq(emptyMap()),
         )
-        verify(eventSender).sendEvent(
-            eq("playback_session"),
-            eq(ConsentCategory.NECESSARY),
-            argThat {
-                with(gson.fromJson(this, JsonObject::class.java)["payload"].asJsonObject) {
-                    get("startAssetPosition").asDouble.isAssetPositionEqualTo(0.0) &&
-                        get("endAssetPosition").asDouble.isAssetPositionEqualTo(1.0) &&
-                        get("actualProductId")?.asString.contentEquals(mediaProduct2.productId) &&
-                        get("sourceType")?.asString.contentEquals(mediaProduct2.sourceType) &&
-                        get("sourceId")?.asString.contentEquals(mediaProduct2.sourceId) &&
-                        get("actions").asJsonArray.isEmpty
-                }
+        payloadCaptor.allValues.map {
+            gson.fromJson(it, JsonObject::class.java)["payload"].asJsonObject
+        }.combinedPassAllOf(
+            2 to {
+                assertThat(get("startAssetPosition").asDouble).isAssetPositionEqualTo(0.0)
+                assertThat(get("endAssetPosition").asDouble)
+                    .isAssetPositionEqualTo(MEDIA_PRODUCT_1_DURATION_SECONDS)
+                assertThat(get("actualProductId")?.asString).isEqualTo(mediaProduct1.productId)
+                assertThat(get("sourceType")?.asString).isEqualTo(mediaProduct1.sourceType)
+                assertThat(get("sourceId")?.asString).isEqualTo(mediaProduct1.sourceId)
+                assertThat(get("actions").asJsonArray).isEmpty()
             },
-            eq(emptyMap()),
+            1 to {
+                assertThat(get("startAssetPosition").asDouble).isAssetPositionEqualTo(0.0)
+                assertThat(get("endAssetPosition").asDouble).isAssetPositionEqualTo(1.0)
+                assertThat(get("actualProductId")?.asString).isEqualTo(mediaProduct2.productId)
+                assertThat(get("sourceType")?.asString).isEqualTo(mediaProduct2.sourceType)
+                assertThat(get("sourceId")?.asString).isEqualTo(mediaProduct2.sourceId)
+                assertThat(get("actions").asJsonArray).isEmpty()
+            },
         )
     }
 
@@ -307,6 +303,7 @@ internal class TwoMediaProductsPlayLogTest {
     @Test
     fun seekBeyondBoundsWithNext() = runTest {
         val gson = Gson()
+        val payloadCaptor = argumentCaptor<String>()
 
         player.playbackEngine.load(mediaProduct1)
         player.playbackEngine.setNext(mediaProduct2)
@@ -325,51 +322,49 @@ internal class TwoMediaProductsPlayLogTest {
         }
 
         eventReporterCoroutineScope.advanceUntilIdle()
-        verify(eventSender).sendEvent(
+        verify(eventSender, times(2)).sendEvent(
             eq("playback_session"),
             eq(ConsentCategory.NECESSARY),
-            argThat {
-                with(gson.fromJson(this, JsonObject::class.java)["payload"].asJsonObject) {
-                    get("startAssetPosition").asDouble.isAssetPositionEqualTo(0.0) &&
-                        get("endAssetPosition").asDouble
-                            .isAssetPositionEqualTo(MEDIA_PRODUCT_1_DURATION_SECONDS) &&
-                        get("actualProductId")?.asString.contentEquals(mediaProduct1.productId) &&
-                        get("sourceType")?.asString.contentEquals(mediaProduct1.sourceType) &&
-                        get("sourceId")?.asString.contentEquals(mediaProduct1.sourceId) &&
-                        get("actions").asJsonArray.run {
-                            val stopAction =
-                                gson.fromJson(this[0], PlaybackSession.Payload.Action::class.java)
-                            val startAction =
-                                gson.fromJson(this[1], PlaybackSession.Payload.Action::class.java)
-                            val perfectResumeTimestamp = stopAction.timestamp
-                            stopAction.actionType ==
-                                PlaybackSession.Payload.Action.Type.PLAYBACK_STOP &&
-                                stopAction.assetPositionSeconds.isAssetPositionEqualTo(2.0) &&
-                                startAction.actionType ==
-                                PlaybackSession.Payload.Action.Type.PLAYBACK_START &&
-                                startAction.assetPositionSeconds
-                                    .isAssetPositionEqualTo(MEDIA_PRODUCT_1_DURATION_SECONDS) &&
-                                startAction.timestamp in
-                                (perfectResumeTimestamp - 500)..(perfectResumeTimestamp + 500)
-                        }
-                }
-            },
+            payloadCaptor.capture(),
             eq(emptyMap()),
         )
-        verify(eventSender).sendEvent(
-            eq("playback_session"),
-            eq(ConsentCategory.NECESSARY),
-            argThat {
-                with(gson.fromJson(this, JsonObject::class.java)["payload"].asJsonObject) {
-                    get("startAssetPosition").asDouble.isAssetPositionEqualTo(0.0) &&
-                        get("endAssetPosition").asDouble.isAssetPositionEqualTo(1.0) &&
-                        get("actualProductId")?.asString.contentEquals(mediaProduct2.productId) &&
-                        get("sourceType")?.asString.contentEquals(mediaProduct2.sourceType) &&
-                        get("sourceId")?.asString.contentEquals(mediaProduct2.sourceId) &&
-                        get("actions").asJsonArray.isEmpty
+        payloadCaptor.allValues.map {
+            gson.fromJson(it, JsonObject::class.java)["payload"].asJsonObject
+        }.combinedPassAllOf(
+            1 to {
+                assertThat(get("startAssetPosition").asDouble).isAssetPositionEqualTo(0.0)
+                assertThat(get("endAssetPosition").asDouble)
+                    .isAssetPositionEqualTo(MEDIA_PRODUCT_1_DURATION_SECONDS)
+                assertThat(get("actualProductId")?.asString).isEqualTo(mediaProduct1.productId)
+                assertThat(get("sourceType")?.asString).isEqualTo(mediaProduct1.sourceType)
+                assertThat(get("sourceId")?.asString).isEqualTo(mediaProduct1.sourceId)
+                with(get("actions").asJsonArray) {
+                    val stopAction =
+                        gson.fromJson(this[0], PlaybackSession.Payload.Action::class.java)
+                    val startAction =
+                        gson.fromJson(this[1], PlaybackSession.Payload.Action::class.java)
+                    val perfectResumeTimestamp = stopAction.timestamp
+                    assertThat(stopAction.actionType)
+                        .isEqualTo(PlaybackSession.Payload.Action.Type.PLAYBACK_STOP)
+                    assertThat(stopAction.assetPositionSeconds)
+                        .isAssetPositionEqualTo(2.0)
+                    assertThat(startAction.actionType)
+                        .isEqualTo(PlaybackSession.Payload.Action.Type.PLAYBACK_START)
+                    assertThat(startAction.assetPositionSeconds)
+                        .isAssetPositionEqualTo(MEDIA_PRODUCT_1_DURATION_SECONDS)
+                    assertThat(startAction.timestamp)
+                        .isBetween(perfectResumeTimestamp - 500, perfectResumeTimestamp + 500)
                 }
             },
-            eq(emptyMap()),
+            1 to {
+                assertThat(get("startAssetPosition").asDouble)
+                    .isAssetPositionEqualTo(0.0)
+                assertThat(get("endAssetPosition").asDouble).isAssetPositionEqualTo(1.0)
+                assertThat(get("actualProductId")?.asString).isEqualTo(mediaProduct2.productId)
+                assertThat(get("sourceType")?.asString).isEqualTo(mediaProduct2.sourceType)
+                assertThat(get("sourceId")?.asString).isEqualTo(mediaProduct2.sourceId)
+                assertThat(get("actions").asJsonArray).isEmpty()
+            },
         )
     }
 
@@ -410,6 +405,7 @@ internal class TwoMediaProductsPlayLogTest {
     @Test
     fun skipToNext() = runTest {
         val gson = Gson()
+        val payloadCaptor = argumentCaptor<String>()
 
         player.playbackEngine.load(mediaProduct1)
         player.playbackEngine.play()
@@ -434,35 +430,31 @@ internal class TwoMediaProductsPlayLogTest {
         }
 
         eventReporterCoroutineScope.advanceUntilIdle()
-        verify(eventSender).sendEvent(
+        verify(eventSender, times(2)).sendEvent(
             eq("playback_session"),
             eq(ConsentCategory.NECESSARY),
-            argThat {
-                with(gson.fromJson(this, JsonObject::class.java)["payload"].asJsonObject) {
-                    get("startAssetPosition").asDouble.isAssetPositionEqualTo(0.0) &&
-                        get("endAssetPosition").asDouble.isAssetPositionEqualTo(1.0) &&
-                        get("actualProductId")?.asString.contentEquals(mediaProduct1.productId) &&
-                        get("sourceType")?.asString.contentEquals(mediaProduct1.sourceType) &&
-                        get("sourceId")?.asString.contentEquals(mediaProduct1.sourceId) &&
-                        get("actions").asJsonArray.isEmpty
-                }
-            },
+            payloadCaptor.capture(),
             eq(emptyMap()),
         )
-        verify(eventSender).sendEvent(
-            eq("playback_session"),
-            eq(ConsentCategory.NECESSARY),
-            argThat {
-                with(gson.fromJson(this, JsonObject::class.java)["payload"].asJsonObject) {
-                    get("startAssetPosition").asDouble.isAssetPositionEqualTo(0.0) &&
-                        get("endAssetPosition").asDouble.isAssetPositionEqualTo(1.0) &&
-                        get("actualProductId")?.asString.contentEquals(mediaProduct2.productId) &&
-                        get("sourceType")?.asString.contentEquals(mediaProduct2.sourceType) &&
-                        get("sourceId")?.asString.contentEquals(mediaProduct2.sourceId) &&
-                        get("actions").asJsonArray.isEmpty
-                }
+        payloadCaptor.allValues.map {
+            gson.fromJson(it, JsonObject::class.java)["payload"].asJsonObject
+        }.combinedPassAllOf(
+            1 to {
+                assertThat(get("startAssetPosition").asDouble).isAssetPositionEqualTo(0.0)
+                assertThat(get("endAssetPosition").asDouble).isAssetPositionEqualTo(1.0)
+                assertThat(get("actualProductId")?.asString).isEqualTo(mediaProduct1.productId)
+                assertThat(get("sourceType")?.asString).isEqualTo(mediaProduct1.sourceType)
+                assertThat(get("sourceId")?.asString).isEqualTo(mediaProduct1.sourceId)
+                assertThat(get("actions").asJsonArray).isEmpty()
             },
-            eq(emptyMap()),
+            1 to {
+                assertThat(get("startAssetPosition").asDouble).isAssetPositionEqualTo(0.0)
+                assertThat(get("endAssetPosition").asDouble).isAssetPositionEqualTo(1.0)
+                assertThat(get("actualProductId")?.asString).isEqualTo(mediaProduct2.productId)
+                assertThat(get("sourceType")?.asString).isEqualTo(mediaProduct2.sourceType)
+                assertThat(get("sourceId")?.asString).isEqualTo(mediaProduct2.sourceId)
+                assertThat(get("actions").asJsonArray).isEmpty()
+            },
         )
     }
 
@@ -470,6 +462,7 @@ internal class TwoMediaProductsPlayLogTest {
     @Test
     fun skipToNextWithRepeatOne() = runTest {
         val gson = Gson()
+        val payloadCaptor = argumentCaptor<String>()
 
         player.playbackEngine.load(mediaProduct1)
         player.playbackEngine.setRepeatOne(true)
@@ -495,35 +488,31 @@ internal class TwoMediaProductsPlayLogTest {
         }
 
         eventReporterCoroutineScope.advanceUntilIdle()
-        verify(eventSender).sendEvent(
+        verify(eventSender, times(2)).sendEvent(
             eq("playback_session"),
             eq(ConsentCategory.NECESSARY),
-            argThat {
-                with(gson.fromJson(this, JsonObject::class.java)["payload"].asJsonObject) {
-                    get("startAssetPosition").asDouble.isAssetPositionEqualTo(0.0) &&
-                        get("endAssetPosition").asDouble.isAssetPositionEqualTo(1.0) &&
-                        get("actualProductId")?.asString.contentEquals(mediaProduct1.productId) &&
-                        get("sourceType")?.asString.contentEquals(mediaProduct1.sourceType) &&
-                        get("sourceId")?.asString.contentEquals(mediaProduct1.sourceId) &&
-                        get("actions").asJsonArray.isEmpty
-                }
-            },
+            payloadCaptor.capture(),
             eq(emptyMap()),
         )
-        verify(eventSender).sendEvent(
-            eq("playback_session"),
-            eq(ConsentCategory.NECESSARY),
-            argThat {
-                with(gson.fromJson(this, JsonObject::class.java)["payload"].asJsonObject) {
-                    get("startAssetPosition").asDouble.isAssetPositionEqualTo(0.0) &&
-                        get("endAssetPosition").asDouble.isAssetPositionEqualTo(1.0) &&
-                        get("actualProductId")?.asString.contentEquals(mediaProduct2.productId) &&
-                        get("sourceType")?.asString.contentEquals(mediaProduct2.sourceType) &&
-                        get("sourceId")?.asString.contentEquals(mediaProduct2.sourceId) &&
-                        get("actions").asJsonArray.isEmpty
-                }
+        payloadCaptor.allValues.map {
+            gson.fromJson(it, JsonObject::class.java)["payload"].asJsonObject
+        }.combinedPassAllOf(
+            1 to {
+                assertThat(get("startAssetPosition").asDouble).isAssetPositionEqualTo(0.0)
+                assertThat(get("endAssetPosition").asDouble).isAssetPositionEqualTo(1.0)
+                assertThat(get("actualProductId")?.asString).isEqualTo(mediaProduct1.productId)
+                assertThat(get("sourceType")?.asString).isEqualTo(mediaProduct1.sourceType)
+                assertThat(get("sourceId")?.asString).isEqualTo(mediaProduct1.sourceId)
+                assertThat(get("actions").asJsonArray).isEmpty()
             },
-            eq(emptyMap()),
+            1 to {
+                assertThat(get("startAssetPosition").asDouble).isAssetPositionEqualTo(0.0)
+                assertThat(get("endAssetPosition").asDouble).isAssetPositionEqualTo(1.0)
+                assertThat(get("actualProductId")?.asString).isEqualTo(mediaProduct2.productId)
+                assertThat(get("sourceType")?.asString).isEqualTo(mediaProduct2.sourceType)
+                assertThat(get("sourceId")?.asString).isEqualTo(mediaProduct2.sourceId)
+                assertThat(get("actions").asJsonArray).isEmpty()
+            },
         )
     }
 }
