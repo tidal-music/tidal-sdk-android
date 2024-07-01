@@ -355,6 +355,7 @@ internal class TwoMediaProductsPlayLogTest {
                         .isAssetPositionEqualTo(MEDIA_PRODUCT_1_DURATION_SECONDS)
                     assertThat(startAction.timestamp)
                         .isBetween(perfectResumeTimestamp - 500, perfectResumeTimestamp + 500)
+                    assertThat(size()).isEqualTo(2)
                 }
             },
             1 to {
@@ -611,6 +612,7 @@ internal class TwoMediaProductsPlayLogTest {
                             perfectSecondResumeTimestamp - 500,
                             perfectSecondResumeTimestamp + 500,
                         )
+                    assertThat(size()).isEqualTo(4)
                 }
             },
             1 to {
@@ -640,6 +642,7 @@ internal class TwoMediaProductsPlayLogTest {
                     assertThat(startAction.assetPositionSeconds).isAssetPositionEqualTo(58.0)
                     assertThat(startAction.timestamp)
                         .isBetween(perfectResumeTimestamp - 500, perfectResumeTimestamp + 500)
+                    assertThat(size()).isEqualTo(2)
                 }
             },
             1 to {
