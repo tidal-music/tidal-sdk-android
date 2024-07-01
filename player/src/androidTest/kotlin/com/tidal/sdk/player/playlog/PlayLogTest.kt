@@ -26,8 +26,6 @@ import com.tidal.sdk.player.events.playlogtest.PlayLogTestDefaultEventReporterCo
 import com.tidal.sdk.player.events.reflectionComponentFactoryF
 import com.tidal.sdk.player.playbackengine.model.Event
 import com.tidal.sdk.player.playbackengine.model.Event.MediaProductEnded
-import com.tidal.sdk.player.repeatableflakytest.RepeatableFlakyTest
-import com.tidal.sdk.player.repeatableflakytest.RepeatableFlakyTestRule
 import com.tidal.sdk.player.setBodyFromFile
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
@@ -67,9 +65,6 @@ class PlayLogTest {
 
     @get:Rule
     val server = MockWebServer()
-
-    @get:Rule
-    val repeatableFlakyTestRule = RepeatableFlakyTestRule()
 
     private val eventReporterCoroutineScope =
         TestScope(StandardTestDispatcher(TestCoroutineScheduler()))
@@ -147,22 +142,18 @@ class PlayLogTest {
         verifyNoMoreInteractions(eventSender)
     }
 
-    @RepeatableFlakyTest // Playback may take longer in practice than it should in theory
     @Test
     fun loadAndPlayUntilEndNoNulls() =
         loadAndPlayUntilEnd(MediaProduct(ProductType.TRACK, "1", "TESTA", "456"))
 
-    @RepeatableFlakyTest // Playback may take longer in practice than it should in theory
     @Test
     fun loadAndPlayUntilEndNullSourceType() =
         loadAndPlayUntilEnd(MediaProduct(ProductType.TRACK, "1", null, "789"))
 
-    @RepeatableFlakyTest // Playback may take longer in practice than it should in theory
     @Test
     fun loadAndPlayUntilEndNullSourceId() =
         loadAndPlayUntilEnd(MediaProduct(ProductType.TRACK, "1", "TESTB", null))
 
-    @RepeatableFlakyTest // Playback may take longer in practice than it should in theory
     @Test
     fun loadAndPlayUntilEndNullSourceTypeNullSourceId() =
         loadAndPlayUntilEnd(MediaProduct(ProductType.TRACK, "1", null, null))
