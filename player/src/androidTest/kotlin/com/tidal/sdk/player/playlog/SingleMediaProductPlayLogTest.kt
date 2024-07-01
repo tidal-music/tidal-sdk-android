@@ -248,6 +248,7 @@ internal class SingleMediaProductPlayLogTest {
                             1.seconds.inWholeMilliseconds
                         assertThat(startAction.timestamp)
                             .isBetween(perfectResumeTimestamp - 500, perfectResumeTimestamp + 500)
+                        assertThat(size()).isEqualTo(2)
                     }
                 }
                 true
@@ -303,6 +304,7 @@ internal class SingleMediaProductPlayLogTest {
                         val perfectResumeTimestamp = stopAction.timestamp
                         assertThat(startAction.timestamp)
                             .isBetween(perfectResumeTimestamp - 500, perfectResumeTimestamp + 500)
+                        assertThat(size()).isEqualTo(2)
                     }
                 }
                 true
@@ -357,6 +359,7 @@ internal class SingleMediaProductPlayLogTest {
                         val perfectResumeTimestamp = stopAction.timestamp
                         assertThat(startAction.timestamp)
                             .isBetween(perfectResumeTimestamp - 500, perfectResumeTimestamp + 500)
+                        assertThat(size()).isEqualTo(2)
                     }
                 }
                 true
@@ -413,6 +416,7 @@ internal class SingleMediaProductPlayLogTest {
                         val perfectResumeTimestamp = stopAction.timestamp
                         assertThat(startAction.timestamp)
                             .isBetween(perfectResumeTimestamp - 500, perfectResumeTimestamp + 500)
+                        assertThat(size()).isEqualTo(2)
                     }
                 }
                 true
@@ -469,6 +473,7 @@ internal class SingleMediaProductPlayLogTest {
                         val perfectResumeTimestamp = stopAction.timestamp
                         assertThat(startAction.timestamp)
                             .isBetween(perfectResumeTimestamp - 500, perfectResumeTimestamp + 500)
+                        assertThat(size()).isEqualTo(2)
                     }
                 }
                 true
@@ -553,6 +558,7 @@ internal class SingleMediaProductPlayLogTest {
                                 perfectSecondResumeTimestamp - 500,
                                 perfectSecondResumeTimestamp + 500,
                             )
+                        assertThat(size()).isEqualTo(4)
                     }
                 }
                 true
@@ -631,6 +637,7 @@ internal class SingleMediaProductPlayLogTest {
                                 perfectSecondResumeTimestamp - 500,
                                 perfectSecondResumeTimestamp + 500,
                             )
+                        assertThat(size()).isEqualTo(4)
                     }
                 }
                 true
@@ -819,6 +826,7 @@ internal class SingleMediaProductPlayLogTest {
                         val perfectResumeTimestamp = stopAction.timestamp
                         assertThat(startAction.timestamp)
                             .isBetween(perfectResumeTimestamp - 500, perfectResumeTimestamp + 500)
+                        assertThat(size()).isEqualTo(2)
                     }
                 }
                 true
@@ -882,6 +890,7 @@ internal class SingleMediaProductPlayLogTest {
                         .isAssetPositionEqualTo(MEDIA_PRODUCT_DURATION_SECONDS)
                     assertThat(startAction.timestamp)
                         .isBetween(perfectResumeTimestamp - 500, perfectResumeTimestamp + 500)
+                    assertThat(size()).isEqualTo(2)
                 }
             },
             1 to {
