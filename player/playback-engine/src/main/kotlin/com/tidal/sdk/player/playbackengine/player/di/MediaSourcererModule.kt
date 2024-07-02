@@ -58,7 +58,6 @@ import com.tidal.sdk.player.playbackengine.mediasource.TidalMediaSourceCreator
 import com.tidal.sdk.player.playbackengine.mediasource.loadable.PlaybackInfoLoadableFactory
 import com.tidal.sdk.player.playbackengine.mediasource.loadable.PlaybackInfoLoadableLoaderCallbackFactory
 import com.tidal.sdk.player.playbackengine.mediasource.streamingsession.StreamingSession
-import com.tidal.sdk.player.playbackengine.mediasource.streamingsession.VersionedCdm
 import com.tidal.sdk.player.playbackengine.model.AssetTimeoutConfig
 import com.tidal.sdk.player.playbackengine.offline.OfflineDrmHelper
 import com.tidal.sdk.player.playbackengine.offline.OfflinePlayDataSourceFactoryHelper
@@ -491,11 +490,8 @@ internal object MediaSourcererModule {
 
     @Provides
     @Reusable
-    fun explicitStreamingSessionFactory(
-        uuidWrapper: UUIDWrapper,
-        versionedCdmCalculator: VersionedCdm.Calculator,
-        configuration: Configuration,
-    ) = StreamingSession.Factory.Explicit(uuidWrapper, versionedCdmCalculator, configuration)
+    fun explicitStreamingSessionFactory(uuidWrapper: UUIDWrapper, configuration: Configuration) =
+        StreamingSession.Factory.Explicit(uuidWrapper, configuration)
 
     @Provides
     @Reusable
@@ -511,11 +507,8 @@ internal object MediaSourcererModule {
 
     @Provides
     @Reusable
-    fun implicitStreamingSessionFactory(
-        uuidWrapper: UUIDWrapper,
-        versionedCdmCalculator: VersionedCdm.Calculator,
-        configuration: Configuration,
-    ) = StreamingSession.Factory.Implicit(uuidWrapper, versionedCdmCalculator, configuration)
+    fun implicitStreamingSessionFactory(uuidWrapper: UUIDWrapper, configuration: Configuration) =
+        StreamingSession.Factory.Implicit(uuidWrapper, configuration)
 
     @Provides
     @Reusable

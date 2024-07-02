@@ -6,11 +6,7 @@ import com.tidal.sdk.player.common.UUIDWrapper
 internal class ExplicitStreamingSessionFactoryTest : StreamingSessionFactoryTest() {
 
     override val streamingSessionFactoryF =
-        {
-                uuidWrapper: UUIDWrapper,
-                versionedCdmCalculator: VersionedCdm.Calculator,
-                configuration: Configuration,
-            ->
-            StreamingSession.Factory.Explicit(uuidWrapper, versionedCdmCalculator, configuration)
+        { uuidWrapper: UUIDWrapper, configuration: Configuration ->
+            StreamingSession.Factory.Explicit(uuidWrapper, configuration)
         }
 }
