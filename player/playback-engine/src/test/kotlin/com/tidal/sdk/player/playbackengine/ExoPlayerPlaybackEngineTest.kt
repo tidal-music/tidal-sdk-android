@@ -274,7 +274,9 @@ internal class ExoPlayerPlaybackEngineTest {
     }
 
     @Test
-    fun loadShouldSetCorrectPropertiesAndPreparePlayerWithCorrectMediaSource() = runBlocking {
+    fun loadShouldSetCorrectPropertiesAndPreparePlayerWithCorrectMediaSource() {
+        whenever(initialExtendedExoPlayer.load(any())) doReturn mediaSource
+
         playbackEngine.load(forwardingMediaProduct.delegate)
 
         assertThat(playbackEngine.mediaProduct).isEqualTo(forwardingMediaProduct.delegate)
@@ -287,7 +289,7 @@ internal class ExoPlayerPlaybackEngineTest {
     }
 
     @Test
-    fun nextShouldDoNothingIfPlaybackStateIsIdle() = runBlocking {
+    fun nextShouldDoNothingIfPlaybackStateIsIdle() {
         playbackEngine.setNext(forwardingMediaProduct.delegate)
 
         verify(initialExtendedExoPlayer, never())
