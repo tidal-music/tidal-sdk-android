@@ -16,16 +16,15 @@ import org.mockito.kotlin.whenever
 internal abstract class StreamingSessionFactoryTest {
 
     private val uuidWrapper = mock<UUIDWrapper>()
-    private val versionedCdmCalculator = mock<VersionedCdm.Calculator>()
     private val configuration = mock<Configuration>()
     protected abstract val streamingSessionFactoryF:
-        (UUIDWrapper, VersionedCdm.Calculator, Configuration) -> StreamingSession.Factory
+        (UUIDWrapper, Configuration) -> StreamingSession.Factory
     private val streamingSessionFactory by lazy {
-        streamingSessionFactoryF(uuidWrapper, versionedCdmCalculator, configuration)
+        streamingSessionFactoryF(uuidWrapper, configuration)
     }
 
     @AfterEach
-    fun tearDown() = verifyNoMoreInteractions(uuidWrapper, versionedCdmCalculator, configuration)
+    fun tearDown() = verifyNoMoreInteractions(uuidWrapper, configuration)
 
     @Test
     fun createCreatesInstanceWithProvidedData() {

@@ -14,7 +14,6 @@ import java.util.UUID
 
 internal sealed class StreamingSession private constructor(
     val id: UUID,
-    val versionedCdmCalculator: VersionedCdm.Calculator,
     val configuration: Configuration,
 ) {
 
@@ -86,19 +85,11 @@ internal sealed class StreamingSession private constructor(
         )
     }
 
-    class Explicit(
-        id: UUID,
-        versionedCdmCalculator: VersionedCdm.Calculator,
-        configuration: Configuration,
-    ) :
-        StreamingSession(id, versionedCdmCalculator, configuration)
+    class Explicit(id: UUID, configuration: Configuration) :
+        StreamingSession(id, configuration)
 
-    class Implicit(
-        id: UUID,
-        versionedCdmCalculator: VersionedCdm.Calculator,
-        configuration: Configuration,
-    ) :
-        StreamingSession(id, versionedCdmCalculator, configuration)
+    class Implicit(id: UUID, configuration: Configuration) :
+        StreamingSession(id, configuration)
 
     sealed class Creator<T : Factory> private constructor(
         private val factory: T,
@@ -145,36 +136,25 @@ internal sealed class StreamingSession private constructor(
 
     sealed class Factory private constructor(
         protected val uuidWrapper: UUIDWrapper,
-        protected val versionedCdmCalculator: VersionedCdm.Calculator,
         protected val configuration: Configuration,
     ) {
 
         abstract fun create(): StreamingSession
 
-        class Explicit(
-            uuidWrapper: UUIDWrapper,
-            versionedCdmCalculator: VersionedCdm.Calculator,
-            configuration: Configuration,
-        ) :
-            Factory(uuidWrapper, versionedCdmCalculator, configuration) {
+        class Explicit(uuidWrapper: UUIDWrapper, configuration: Configuration) :
+            Factory(uuidWrapper, configuration) {
 
             override fun create(): StreamingSession = Explicit(
                 uuidWrapper.randomUUID,
-                versionedCdmCalculator,
                 configuration,
             )
         }
 
-        class Implicit(
-            uuidWrapper: UUIDWrapper,
-            versionedCdmCalculator: VersionedCdm.Calculator,
-            configuration: Configuration,
-        ) :
-            Factory(uuidWrapper, versionedCdmCalculator, configuration) {
+        class Implicit(uuidWrapper: UUIDWrapper, configuration: Configuration) :
+            Factory(uuidWrapper, configuration) {
 
             override fun create(): StreamingSession = Implicit(
                 uuidWrapper.randomUUID,
-                versionedCdmCalculator,
                 configuration,
             )
         }
