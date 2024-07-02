@@ -465,4 +465,65 @@ internal class TwoMediaProductsPlayLogTest {
             eq(emptyMap()),
         )
     }
+
+    @Suppress("CyclomaticComplexMethod", "LongMethod")
+    @Test
+    fun skipToNextWithRepeatOne() = runTest {
+        val gson = Gson()
+
+        player.playbackEngine.load(mediaProduct1)
+        player.playbackEngine.setRepeatOne(true)
+        player.playbackEngine.play()
+        player.playbackEngine.setNext(mediaProduct2)
+        withContext(Dispatchers.Default.limitedParallelism(1)) {
+            withTimeout(8.seconds) {
+                player.playbackEngine.events.filter { it is Event.MediaProductTransition }.first()
+            }
+            delay(1.seconds)
+            while (player.playbackEngine.assetPosition < 1) {
+                delay(10.milliseconds)
+            }
+            player.playbackEngine.skipToNext()
+            withTimeout(8.seconds) {
+                player.playbackEngine.events.filter { it is Event.MediaProductTransition }.first()
+            }
+            delay(1.seconds)
+            while (player.playbackEngine.assetPosition < 1) {
+                delay(10.milliseconds)
+            }
+            player.playbackEngine.reset()
+        }
+
+        eventReporterCoroutineScope.advanceUntilIdle()
+        verify(eventSender).sendEvent(
+            eq("playback_session"),
+            eq(ConsentCategory.NECESSARY),
+            argThat {
+                with(gson.fromJson(this, JsonObject::class.java)["payload"].asJsonObject) {
+                    get("startAssetPosition").asDouble.isAssetPositionEqualTo(0.0) &&
+                        get("endAssetPosition").asDouble.isAssetPositionEqualTo(1.0) &&
+                        get("actualProductId")?.asString.contentEquals(mediaProduct1.productId) &&
+                        get("sourceType")?.asString.contentEquals(mediaProduct1.sourceType) &&
+                        get("sourceId")?.asString.contentEquals(mediaProduct1.sourceId) &&
+                        get("actions").asJsonArray.isEmpty
+                }
+            },
+            eq(emptyMap()),
+        )
+        verify(eventSender).sendEvent(
+            eq("playback_session"),
+            eq(ConsentCategory.NECESSARY),
+            argThat {
+                with(gson.fromJson(this, JsonObject::class.java)["payload"].asJsonObject) {
+                    get("startAssetPosition").asDouble.isAssetPositionEqualTo(0.0) &&
+                        get("endAssetPosition").asDouble.isAssetPositionEqualTo(1.0) &&
+                        get("actualProductId")?.asString.contentEquals(mediaProduct2.productId) &&
+                        get("sourceType")?.asString.contentEquals(mediaProduct2.sourceType) &&
+                        get("sourceId")?.asString.contentEquals(mediaProduct2.sourceId) &&
+                        get("actions").asJsonArray.isEmpty
+                }
+            },
+            eq(emptyMap()),
+        )
+    }
 }
