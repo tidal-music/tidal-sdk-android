@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.2] - 2024-07-03
+### Changed
+- Fix bug preventing properly synchronized backend calls when requesting a new token
+
+## [0.9.1] - 2024-05-28
+### Changed
+- No changes. release was created for technical reasons
+
 ## [0.9.0] - 2024-05-14
 ### Changed
 - Improve tidalAuthServiceBaseUrl and tidalLoginServiceBaseUrl usage in AuthConfig
