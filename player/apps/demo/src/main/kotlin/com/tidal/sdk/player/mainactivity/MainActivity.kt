@@ -65,7 +65,7 @@ internal class MainActivity : ComponentActivity() {
                                         addedNonTopPadding,
                                 ),
                                 dispatchLoad = {
-                                    dispatch(Impure.Load(it))
+                                    dispatch(MainActivityViewModel.Operation.Pure.Load(it))
                                 },
                                 dispatchSetNext = {
                                     dispatch(Impure.SetNext(it))

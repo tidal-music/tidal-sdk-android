@@ -132,6 +132,13 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
 
             abstract suspend fun invokePure(state: T)
 
+            class Load(private val mediaProduct: MediaProduct) : Pure<PlayerInitialized>() {
+
+                override suspend fun invokePure(state: PlayerInitialized) {
+                    state.player.playbackEngine.load(mediaProduct)
+                }
+            }
+
             sealed class Seek : Pure<PlayerInitialized>() {
 
                 override suspend fun invokePure(state: PlayerInitialized) {
@@ -283,15 +290,6 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
                 companion object {
                     private const val CACHE_DIR = "exoplayer-cache"
                     private val CACHE_MAX_SIZE_BYTES = 50.megabytes.value
-                }
-            }
-
-            class Load(private val mediaProduct: MediaProduct) :
-                Impure<PlayerInitialized, PlayerInitialized>() {
-
-                override suspend operator fun invoke(state: PlayerInitialized): PlayerInitialized {
-                    state.player.playbackEngine.load(mediaProduct)
-                    return state.copy(current = mediaProduct)
                 }
             }
 
