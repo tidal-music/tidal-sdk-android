@@ -108,7 +108,16 @@ internal class ExoPlayerPlaybackEngine(
     private val nextForwardingMediaProduct: ForwardingMediaProduct<MediaProduct>?
         get() = nextMediaSource?.forwardingMediaProduct
 
-    override var playbackContext: PlaybackContext? = null
+    override var playbackContext: PlaybackContext? by Delegates.observable(null) { _, old, new ->
+        if (old == new) {
+            return@observable
+        }
+        val mediaProduct = mediaProduct ?: return@observable
+        val playbackContext = new ?: return@observable
+        coroutineScope.launch {
+            eventSink.emit(Event.MediaProductTransition(mediaProduct, playbackContext))
+        }
+    }
         private set
 
     /**
@@ -642,8 +651,6 @@ internal class ExoPlayerPlaybackEngine(
             startTimestamp = invokedAtMillis
             startAssetPosition = newPositionSeconds
         }
-
-        emitMediaProductTransition(forwardingMediaProduct!!, playbackContext!!)
     }
 
     private fun handleTransitionForRepeatOne(invokedAtMillis: Long, newPositionSeconds: Double) {
@@ -664,8 +671,6 @@ internal class ExoPlayerPlaybackEngine(
             startTimestamp = invokedAtMillis
             startAssetPosition = newPositionSeconds
         }
-
-        emitMediaProductTransition(forwardingMediaProduct!!, playbackContext!!)
     }
 
     override fun onPlayWhenReadyChanged(eventTime: EventTime, playWhenReady: Boolean, reason: Int) {
@@ -698,15 +703,21 @@ internal class ExoPlayerPlaybackEngine(
         playerVolume = volumeHelper.getVolume(mediaSource?.playbackInfo)
     }
 
+    @Suppress("ReturnCount")
     override fun onTimelineChanged(eventTime: EventTime, reason: Int) {
         if (forwardingMediaProduct?.productType == ProductType.BROADCAST) {
             handleBroadcastTimelineChanged(reason)
-            updateDuration(eventTime)
-        } else {
-            updateDuration(eventTime) {
-                emitMediaProductTransition(forwardingMediaProduct!!, it)
-            }
         }
+        if (eventTime.correspondingForwardingMediaProductIfMatching !== forwardingMediaProduct) {
+            return
+        }
+        val durationMs = eventTime.windowDurationMs
+        if (durationMs == C.TIME_UNSET) {
+            return
+        }
+        val duration = durationMs.toFloat() / MS_IN_SECOND
+        playbackContext?.takeIf { it.duration != duration }
+            ?.let { playbackContext = it.copy(duration) }
     }
 
     private fun handleBroadcastTimelineChanged(reason: Int) {
@@ -721,25 +732,6 @@ internal class ExoPlayerPlaybackEngine(
                     it.mediaPlaylist.tags,
                     currentPositionSinceEpochMs,
                 )
-            }
-        }
-    }
-
-    @Suppress("ReturnCount")
-    private fun updateDuration(eventTime: EventTime, block: ((PlaybackContext) -> Unit)? = null) {
-        if (eventTime.correspondingForwardingMediaProductIfMatching !== forwardingMediaProduct) {
-            return
-        }
-        val durationMs = eventTime.windowDurationMs
-        if (durationMs == C.TIME_UNSET) {
-            return
-        }
-        val duration = durationMs.toFloat() / MS_IN_SECOND
-        (playbackContext ?: return).also {
-            if (it.duration != duration) {
-                playbackContext = it.copy(duration).also { updatedPlaybackContext ->
-                    block?.invoke(updatedPlaybackContext)
-                }
             }
         }
     }
@@ -760,20 +752,6 @@ internal class ExoPlayerPlaybackEngine(
             format.height,
         )
         trackNewAdaptation(eventTime, format)
-    }
-
-    private fun emitMediaProductTransition(
-        forwardingMediaProduct: ForwardingMediaProduct<MediaProduct>,
-        playbackContext: PlaybackContext,
-    ) {
-        coroutineScope.launch {
-            eventSink.emit(
-                Event.MediaProductTransition(
-                    forwardingMediaProduct.delegate,
-                    playbackContext,
-                ),
-            )
-        }
     }
 
     override fun onAudioPositionAdvancing(eventTime: EventTime, playoutStartSystemTimeMs: Long) {
