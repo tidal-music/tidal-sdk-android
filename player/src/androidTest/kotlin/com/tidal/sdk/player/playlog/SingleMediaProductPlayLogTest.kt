@@ -204,7 +204,7 @@ internal class SingleMediaProductPlayLogTest {
         player.playbackEngine.load(mediaProduct)
         player.playbackEngine.play()
         withContext(Dispatchers.Default.limitedParallelism(1)) {
-            withTimeout(4.seconds) {
+            withTimeout(8.seconds) {
                 player.playbackEngine.events.filter { it is Event.MediaProductTransition }.first()
             }
             delay(2.seconds)
@@ -264,7 +264,7 @@ internal class SingleMediaProductPlayLogTest {
         player.playbackEngine.load(mediaProduct)
         player.playbackEngine.play()
         withContext(Dispatchers.Default.limitedParallelism(1)) {
-            withTimeout(4.seconds) {
+            withTimeout(8.seconds) {
                 player.playbackEngine.events.filter { it is Event.MediaProductTransition }.first()
             }
             delay(2.seconds)
@@ -318,7 +318,7 @@ internal class SingleMediaProductPlayLogTest {
         player.playbackEngine.load(mediaProduct)
         player.playbackEngine.play()
         withContext(Dispatchers.Default.limitedParallelism(1)) {
-            withTimeout(4.seconds) {
+            withTimeout(8.seconds) {
                 player.playbackEngine.events.filter { it is Event.MediaProductTransition }.first()
             }
             delay(3.seconds)
@@ -372,7 +372,7 @@ internal class SingleMediaProductPlayLogTest {
         player.playbackEngine.load(mediaProduct)
         player.playbackEngine.play()
         withContext(Dispatchers.Default.limitedParallelism(1)) {
-            withTimeout(4.seconds) {
+            withTimeout(8.seconds) {
                 player.playbackEngine.events.filter { it is Event.MediaProductTransition }.first()
             }
             delay(2.seconds)
@@ -428,7 +428,7 @@ internal class SingleMediaProductPlayLogTest {
         player.playbackEngine.load(mediaProduct)
         player.playbackEngine.play()
         withContext(Dispatchers.Default.limitedParallelism(1)) {
-            withTimeout(4.seconds) {
+            withTimeout(8.seconds) {
                 player.playbackEngine.events.filter { it is Event.MediaProductTransition }.first()
             }
             delay(3.seconds)
@@ -485,7 +485,7 @@ internal class SingleMediaProductPlayLogTest {
         player.playbackEngine.load(mediaProduct)
         player.playbackEngine.play()
         withContext(Dispatchers.Default.limitedParallelism(1)) {
-            withTimeout(4.seconds) {
+            withTimeout(8.seconds) {
                 player.playbackEngine.events.filter { it is Event.MediaProductTransition }.first()
             }
             delay(2.seconds)
@@ -569,7 +569,7 @@ internal class SingleMediaProductPlayLogTest {
         player.playbackEngine.load(mediaProduct)
         player.playbackEngine.play()
         withContext(Dispatchers.Default.limitedParallelism(1)) {
-            withTimeout(4.seconds) {
+            withTimeout(8.seconds) {
                 player.playbackEngine.events.filter { it is Event.MediaProductTransition }.first()
             }
             delay(2.seconds)

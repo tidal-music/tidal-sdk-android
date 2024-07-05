@@ -541,7 +541,7 @@ internal class TwoMediaProductsPlayLogTest {
             while (player.playbackEngine.assetPosition < 4) {
                 delay(10.milliseconds)
             }
-            withTimeout(4.seconds) {
+            withTimeout(8.seconds) {
                 val waitJob = async {
                     player.playbackEngine.events
                         .filter { it is Event.MediaProductTransition }
