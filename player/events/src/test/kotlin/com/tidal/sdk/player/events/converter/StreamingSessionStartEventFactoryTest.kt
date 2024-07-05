@@ -2,14 +2,15 @@ package com.tidal.sdk.player.events.converter
 
 import assertk.assertThat
 import assertk.assertions.isSameAs
+import com.tidal.networktime.SNTPClient
 import com.tidal.sdk.player.common.UUIDWrapper
-import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
 import com.tidal.sdk.player.events.ClientSupplier
 import com.tidal.sdk.player.events.UserSupplier
 import com.tidal.sdk.player.events.model.Client
 import com.tidal.sdk.player.events.model.StreamingSessionStart
 import com.tidal.sdk.player.events.model.User
 import java.util.UUID
+import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
@@ -20,7 +21,7 @@ import org.mockito.kotlin.whenever
 
 internal class StreamingSessionStartEventFactoryTest {
 
-    private val trueTimeWrapper = mock<TrueTimeWrapper>()
+    private val sntpClient = mock<SNTPClient>()
     private val uuidWrapper = mock<UUIDWrapper>()
     private val userSupplier = mock<UserSupplier>()
     private val clientSupplier = mock<ClientSupplier>()
@@ -28,7 +29,7 @@ internal class StreamingSessionStartEventFactoryTest {
         mock<StreamingSessionStartPayloadDecorator>()
     private val streamingSessionStartFactory = mock<StreamingSessionStart.Factory>()
     private val streamingSessionStartEventFactory = StreamingSessionStartEventFactory(
-        trueTimeWrapper,
+        sntpClient,
         uuidWrapper,
         userSupplier,
         clientSupplier,
@@ -38,7 +39,7 @@ internal class StreamingSessionStartEventFactoryTest {
 
     @AfterEach
     fun afterEach() = verifyNoMoreInteractions(
-        trueTimeWrapper,
+        sntpClient,
         uuidWrapper,
         userSupplier,
         clientSupplier,
@@ -48,8 +49,8 @@ internal class StreamingSessionStartEventFactoryTest {
 
     @Test
     fun invoke() = runBlocking {
-        val currentTimeMillis = -3L
-        whenever(trueTimeWrapper.currentTimeMillis).thenReturn(currentTimeMillis)
+        val currentTime = -3.milliseconds
+        whenever(sntpClient.epochTime).thenReturn(currentTime)
         val randomUUID = mock<UUID>()
         whenever(uuidWrapper.randomUUID).thenReturn(randomUUID)
         val user = mock<User>()
@@ -62,19 +63,24 @@ internal class StreamingSessionStartEventFactoryTest {
             .thenReturn(decoratedPayload)
         val expected = mock<StreamingSessionStart>()
         whenever(
-            streamingSessionStartFactory
-                .create(currentTimeMillis, randomUUID, user, client, decoratedPayload),
+            streamingSessionStartFactory.create(
+                currentTime.inWholeMilliseconds,
+                randomUUID,
+                user,
+                client,
+                decoratedPayload,
+            ),
         ).thenReturn(expected)
 
         val actual = streamingSessionStartEventFactory(payload)
 
-        verify(trueTimeWrapper).currentTimeMillis
+        verify(sntpClient).epochTime
         verify(uuidWrapper).randomUUID
         verify(userSupplier)()
         verify(clientSupplier)()
         verify(streamingSessionStartPayloadDecorator).decorate(payload)
         verify(streamingSessionStartFactory).create(
-            currentTimeMillis,
+            currentTime.inWholeMilliseconds,
             randomUUID,
             user,
             client,

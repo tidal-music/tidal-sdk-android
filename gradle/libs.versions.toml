@@ -21,6 +21,7 @@ slf4j-api = "2.0.12"
 tickaroo = "0.8.13"
 tidal-androidx-media = "1.1.1.2"
 plugins-tidal = "unspecified"
+tidal-networktime = "1.1.2"
 
 [libraries]
 plugin-kotlin-android = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -55,7 +56,6 @@ gson = "com.google.code.gson:gson:2.9.0"
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
 kotlin-logging = { module = "io.github.oshai:kotlin-logging-jvm", version.ref = "kotlin-logging" }
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j-api" }
-truetime = "com.github.instacart.truetime-android:library-extension-rx:3.5"
 
 # Moshi
 moshi = { module = "com.squareup.moshi:moshi", version.ref ="moshi"}
@@ -111,6 +111,9 @@ tidal-exoPlayer-dash = { module = "com.tidal.androidx.media3:media3-exoplayer-da
 tidal-exoPlayer-hls = { module = "com.tidal.androidx.media3:media3-exoplayer-hls", version.ref = "tidal-androidx-media" }
 tidal-exoPlayer-extension-flac = { module = "com.tidal.androidx.media3:media3-flac", version.ref = "tidal-androidx-media" }
 tidal-exoPlayer-extension-okhttp = { module = "com.tidal.androidx.media3:media3-datasource-okhttp", version.ref = "tidal-androidx-media" }
+
+tidal-networktime = { module = "com.tidal.networktime:networktime", version.ref = "tidal-networktime" }
+tidal-networktime-singletons = { module = "com.tidal.networktime:networktime-singletons", version.ref = "tidal-networktime" }
 
 # Security
 androidx-security-crypto = { module = "androidx.security:security-crypto", version = "1.0.0" }

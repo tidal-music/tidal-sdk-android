@@ -6,12 +6,12 @@ import assertk.assertThat
 import assertk.assertions.hasCause
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isSameAs
+import com.tidal.networktime.SNTPClient
 import com.tidal.sdk.player.common.ForwardingMediaProduct
 import com.tidal.sdk.player.common.model.AudioQuality
 import com.tidal.sdk.player.common.model.ProductQuality
 import com.tidal.sdk.player.common.model.ProductType
 import com.tidal.sdk.player.common.model.VideoQuality
-import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
 import com.tidal.sdk.player.events.EventReporter
 import com.tidal.sdk.player.events.model.DrmLicenseFetch
 import com.tidal.sdk.player.events.model.EndReason
@@ -28,6 +28,7 @@ import com.tidal.sdk.player.streamingapi.drm.model.DrmLicenseRequest
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackMode
 import java.io.IOException
+import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
@@ -45,7 +46,7 @@ internal class StreamingApiRepositoryTest {
     private val audioQualityRepository = mock<AudioQualityRepository>()
     private val videoQualityRepository = mock<VideoQualityRepository>()
     private val audioModeRepository = mock<AudioModeRepository>()
-    private val trueTimeWrapper = mock<TrueTimeWrapper>()
+    private val sntpClient = mock<SNTPClient>()
     private val mediaDrmCallbackExceptionFactory = mock<MediaDrmCallbackExceptionFactory>()
     private val eventReporter = mock<EventReporter>()
     private val errorHandler = mock<ErrorHandler>()
@@ -54,7 +55,7 @@ internal class StreamingApiRepositoryTest {
         audioQualityRepository,
         videoQualityRepository,
         audioModeRepository,
-        trueTimeWrapper,
+        sntpClient,
         mediaDrmCallbackExceptionFactory,
         eventReporter,
         errorHandler,
@@ -62,14 +63,14 @@ internal class StreamingApiRepositoryTest {
 
     @Test
     fun getDrmLicenseOnSuccessCallReturnsAndReports() = runBlocking {
-        val startTimestamp = 1L
-        val endTimestamp = -2L
+        val startTimestamp = 1.milliseconds
+        val endTimestamp = -2.milliseconds
         val streamingSessionId = "streamingSessionId"
         val drmLicenseRequest = mock<DrmLicenseRequest> {
             on { it.streamingSessionId } doReturn streamingSessionId
         }
         val expectedDrmLicense = mock<DrmLicense>()
-        whenever(trueTimeWrapper.currentTimeMillis).thenReturn(startTimestamp, endTimestamp)
+        whenever(sntpClient.epochTime).thenReturn(startTimestamp, endTimestamp)
         whenever(streamingApi.getDrmLicense(drmLicenseRequest)).thenReturn(expectedDrmLicense)
 
         val actual = streamingApiRepository.getDrmLicense(drmLicenseRequest)
@@ -78,8 +79,8 @@ internal class StreamingApiRepositoryTest {
         verify(eventReporter).report(
             DrmLicenseFetch.Payload(
                 streamingSessionId,
-                startTimestamp,
-                endTimestamp,
+                startTimestamp.inWholeMilliseconds,
+                endTimestamp.inWholeMilliseconds,
                 EndReason.COMPLETE,
                 null,
                 null,
@@ -89,8 +90,8 @@ internal class StreamingApiRepositoryTest {
 
     @Test
     fun getDrmLicenseOnFailureThrowsAndReports() = runBlocking {
-        val startTimestamp = 1L
-        val endTimestamp = -2L
+        val startTimestamp = 1.milliseconds
+        val endTimestamp = -2.milliseconds
         val streamingSessionId = "streamingSessionId"
         val drmLicenseRequest = mock<DrmLicenseRequest> {
             on { it.streamingSessionId } doReturn streamingSessionId
@@ -101,7 +102,7 @@ internal class StreamingApiRepositoryTest {
         }
         val errorCode = "errorCode"
         val mediaDrmCallbackException = mock<MediaDrmCallbackException>()
-        whenever(trueTimeWrapper.currentTimeMillis).thenReturn(startTimestamp, endTimestamp)
+        whenever(sntpClient.epochTime).thenReturn(startTimestamp, endTimestamp)
         whenever(streamingApi.getDrmLicense(drmLicenseRequest)) doThrow runtimeException
         whenever(mediaDrmCallbackExceptionFactory.create(runtimeException))
             .thenReturn(mediaDrmCallbackException)
@@ -118,8 +119,8 @@ internal class StreamingApiRepositoryTest {
         verify(eventReporter).report(
             DrmLicenseFetch.Payload(
                 streamingSessionId,
-                startTimestamp,
-                endTimestamp,
+                startTimestamp.inWholeMilliseconds,
+                endTimestamp.inWholeMilliseconds,
                 EndReason.ERROR,
                 errorMessage,
                 errorCode,
@@ -132,8 +133,8 @@ internal class StreamingApiRepositoryTest {
     @EnumSource(ProductType::class)
     fun testGetPlaybackInfoForStreamingOnSuccessCallReturnsAndReports(productType: ProductType) =
         runBlocking {
-            val startTimestamp = 5L
-            val endTimestamp = 0L
+            val startTimestamp = 5.milliseconds
+            val endTimestamp = 0.milliseconds
             val streamingSessionId = "streamingSessionId"
             val productId = "33"
             val mediaProduct = mock<ForwardingMediaProduct<*>> {
@@ -194,7 +195,7 @@ internal class StreamingApiRepositoryTest {
                     ).thenReturn(expected)
                 }
             }
-            whenever(trueTimeWrapper.currentTimeMillis).thenReturn(startTimestamp, endTimestamp)
+            whenever(sntpClient.epochTime).thenReturn(startTimestamp, endTimestamp)
 
             val actual = streamingApiRepository.getPlaybackInfoForStreaming(
                 streamingSessionId,
@@ -205,8 +206,8 @@ internal class StreamingApiRepositoryTest {
             verify(eventReporter).report(
                 PlaybackInfoFetch.Payload(
                     streamingSessionId,
-                    startTimestamp,
-                    endTimestamp,
+                    startTimestamp.inWholeMilliseconds,
+                    endTimestamp.inWholeMilliseconds,
                     EndReason.COMPLETE,
                     null,
                     null,
@@ -235,11 +236,11 @@ internal class StreamingApiRepositoryTest {
     @EnumSource(ProductType::class)
     fun testGetPlaybackInfoForStreamingOnFailureCallReturnsAndReports(productType: ProductType) =
         runBlocking {
-            val startTimestamp = -9L
-            val endTimestamp = -4L
+            val startTimestamp = -9.milliseconds
+            val endTimestamp = -4.milliseconds
             val errorMessage = "errorMessage"
             val errorCode = "errorCode"
-            whenever(trueTimeWrapper.currentTimeMillis).thenReturn(startTimestamp, endTimestamp)
+            whenever(sntpClient.epochTime).thenReturn(startTimestamp, endTimestamp)
             val streamingSessionId = "streamingSessionId"
             val productId = "33"
             val mediaProduct = mock<ForwardingMediaProduct<*>> {
@@ -321,8 +322,8 @@ internal class StreamingApiRepositoryTest {
             verify(eventReporter).report(
                 PlaybackInfoFetch.Payload(
                     streamingSessionId,
-                    startTimestamp,
-                    endTimestamp,
+                    startTimestamp.inWholeMilliseconds,
+                    endTimestamp.inWholeMilliseconds,
                     EndReason.ERROR,
                     errorMessage,
                     errorCode,

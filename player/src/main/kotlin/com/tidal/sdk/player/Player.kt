@@ -2,6 +2,7 @@ package com.tidal.sdk.player
 
 import android.app.Application
 import android.os.Build
+import com.tidal.networktime.SNTPClient
 import com.tidal.sdk.auth.CredentialsProvider
 import com.tidal.sdk.eventproducer.EventSender
 import com.tidal.sdk.player.common.Configuration
@@ -88,9 +89,11 @@ class Player(
         )
     val configuration = playerComponent.configuration
     val playbackEngine = playerComponent.playbackEngine
+    private val sntpClient: SNTPClient = playerComponent.sntpClient
     private val streamingPrivileges = playerComponent.streamingPrivileges
 
     init {
+        sntpClient.enableSynchronization()
         configuration.addListener(this)
     }
 

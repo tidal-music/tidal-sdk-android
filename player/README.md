@@ -19,19 +19,19 @@ The Player module encapsulates the playback functionality of TIDAL media product
 
 ### Installation
 
-1. We are using the [TrueTime library](https://github.com/instacart/truetime-android) internally, so you need to add the following to your repositories list:
+1. Add the dependency to your `build.gradle.kts` file.
 ```kotlin
-maven {
-    url = uri("https://jitpack.io")
+repositories {
+    mavenCentral()
 }
 ```
 
-2. Add the dependency to your `build.gradle.kts` file.
 ```kotlin
 dependencies {
     implementation("com.tidal.sdk:player:<VERSION>")
 }
 ```
+
 ### Playing a TIDAL track
 The Player depends on the [Auth](https://github.com/tidal-music/tidal-sdk-android/blob/main/auth/README.md) and [EventProducer](https://github.com/tidal-music/tidal-sdk-android/tree/main/eventproducer) modules for authentication and event reporting handling. For detailed instructions on how to set them up, please refer to their guide. 
 

@@ -1,11 +1,12 @@
 package com.tidal.sdk.player.playbackengine.mediasource.streamingsession
 
+import com.tidal.networktime.SNTPClient
 import com.tidal.sdk.player.common.Configuration
 import com.tidal.sdk.player.common.model.ProductType
-import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
 import com.tidal.sdk.player.events.EventReporter
 import com.tidal.sdk.player.events.model.StreamingSessionStart
 import java.util.UUID
+import kotlin.time.Duration.Companion.milliseconds
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.doReturn
@@ -18,12 +19,12 @@ internal abstract class StreamingSessionCreatorTest<T : StreamingSession.Factory
 
     protected abstract val startReason: StreamingSessionStart.StartReason
     protected abstract val factory: T
-    protected val trueTimeWrapper = mock<TrueTimeWrapper>()
+    protected val sntpClient = mock<SNTPClient>()
     protected val eventReporter = mock<EventReporter>()
     abstract val streamingSessionCreator: StreamingSession.Creator<T>
 
     @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(factory, trueTimeWrapper, eventReporter)
+    fun afterEach() = verifyNoMoreInteractions(factory, sntpClient, eventReporter)
 
     @Test
     fun createAndReportStartCreatesAndReportsStart() {
@@ -37,22 +38,22 @@ internal abstract class StreamingSessionCreatorTest<T : StreamingSession.Factory
             on { it.configuration } doReturn configuration
         }
         whenever(factory.create()) doReturn streamingSession
-        val expectedCurrentTimeMillis = -8L
-        whenever(trueTimeWrapper.currentTimeMillis) doReturn expectedCurrentTimeMillis
+        val expectedCurrentTime = -8.milliseconds
+        whenever(sntpClient.epochTime) doReturn expectedCurrentTime
         val productType = ProductType.TRACK
         val productId = "123"
 
         streamingSessionCreator.createAndReportStart(productType, productId)
 
         verify(factory).create()
-        verify(trueTimeWrapper).currentTimeMillis
+        verify(sntpClient).epochTime
         verify(streamingSession).id
         verify(streamingSession).configuration
         verify(configuration).isOfflineMode
         verify(eventReporter).report(
             StreamingSessionStart.Payload(
                 id.toString(),
-                expectedCurrentTimeMillis,
+                expectedCurrentTime.inWholeMilliseconds,
                 startReason,
                 isOfflineModeStart,
                 productType,

@@ -27,7 +27,7 @@ dependencies {
     implementation(libs.tickaroo.annotation)
     implementation(libs.tickaroo.core)
     implementation(libs.tickaroo.retrofitConverter)
-    implementation(libs.truetime)
+    implementation(libs.tidal.networktime.singletons)
 
     ksp(libs.dagger.compiler)
     kapt(libs.room.compiler)

@@ -23,10 +23,10 @@ import androidx.media3.exoplayer.upstream.LoadErrorHandlingPolicy
 import androidx.media3.exoplayer.upstream.ParsingLoadable
 import androidx.media3.extractor.ExtractorsFactory
 import com.google.gson.Gson
+import com.tidal.networktime.SNTPClient
 import com.tidal.sdk.player.common.Configuration
 import com.tidal.sdk.player.common.UUIDWrapper
 import com.tidal.sdk.player.commonandroid.Base64Codec
-import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
 import com.tidal.sdk.player.events.EventReporter
 import com.tidal.sdk.player.playbackengine.Encryption
 import com.tidal.sdk.player.playbackengine.PlayerLoadErrorHandlingPolicy
@@ -392,7 +392,7 @@ internal object MediaSourcererModule {
         audioQualityRepository: AudioQualityRepository,
         videoQualityRepository: VideoQualityRepository,
         audioModeRepository: AudioModeRepository,
-        trueTimeWrapper: TrueTimeWrapper,
+        sntpClient: SNTPClient,
         mediaDrmCallbackExceptionFactory: MediaDrmCallbackExceptionFactory,
         eventReporter: EventReporter,
         errorHandler: ErrorHandler,
@@ -401,7 +401,7 @@ internal object MediaSourcererModule {
         audioQualityRepository,
         videoQualityRepository,
         audioModeRepository,
-        trueTimeWrapper,
+        sntpClient,
         mediaDrmCallbackExceptionFactory,
         eventReporter,
         errorHandler,
@@ -501,11 +501,11 @@ internal object MediaSourcererModule {
     @Reusable
     fun explicitStreamingSessionCreator(
         streamingSessionFactoryExplicit: StreamingSession.Factory.Explicit,
-        trueTimeWrapper: TrueTimeWrapper,
+        sntpClient: SNTPClient,
         eventReporter: EventReporter,
     ) = StreamingSession.Creator.Explicit(
         streamingSessionFactoryExplicit,
-        trueTimeWrapper,
+        sntpClient,
         eventReporter,
     )
 
@@ -521,11 +521,11 @@ internal object MediaSourcererModule {
     @Reusable
     fun implicitStreamingSessionCreator(
         streamingSessionFactoryImplicit: StreamingSession.Factory.Implicit,
-        trueTimeWrapper: TrueTimeWrapper,
+        sntpClient: SNTPClient,
         eventReporter: EventReporter,
     ) = StreamingSession.Creator.Implicit(
         streamingSessionFactoryImplicit,
-        trueTimeWrapper,
+        sntpClient,
         eventReporter,
     )
 
@@ -537,13 +537,13 @@ internal object MediaSourcererModule {
         explicitStreamingSessionFactory: StreamingSession.Creator.Explicit,
         implicitStreamingSessionFactory: StreamingSession.Creator.Implicit,
         eventReporter: EventReporter,
-        trueTimeWrapper: TrueTimeWrapper,
+        sntpClient: SNTPClient,
     ) = MediaSourcerer(
         exoPlayer,
         playbackInfoMediaSourceFactory,
         explicitStreamingSessionFactory,
         implicitStreamingSessionFactory,
         eventReporter,
-        trueTimeWrapper,
+        sntpClient,
     )
 }

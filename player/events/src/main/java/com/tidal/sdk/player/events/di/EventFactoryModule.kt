@@ -4,8 +4,8 @@ import android.content.Context
 import android.content.res.Resources
 import android.net.ConnectivityManager
 import android.os.Build
+import com.tidal.networktime.SNTPClient
 import com.tidal.sdk.player.common.UUIDWrapper
-import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
 import com.tidal.sdk.player.events.ClientSupplier
 import com.tidal.sdk.player.events.UserSupplier
 import com.tidal.sdk.player.events.converter.AudioDownloadStatisticsEventFactory
@@ -60,13 +60,13 @@ internal object EventFactoryModule {
     @IntoMap
     @EventFactoryKey(AudioDownloadStatistics.Payload::class)
     fun audioDownloadStatisticsEventFactory(
-        trueTimeWrapper: TrueTimeWrapper,
+        sntpClient: SNTPClient,
         uuidWrapper: UUIDWrapper,
         userSupplier: UserSupplier,
         clientSupplier: ClientSupplier,
         audioDownloadStatisticsFactory: AudioDownloadStatistics.Factory,
     ): EventFactory<out Event.Payload> = AudioDownloadStatisticsEventFactory(
-        trueTimeWrapper,
+        sntpClient,
         uuidWrapper,
         userSupplier,
         clientSupplier,
@@ -78,13 +78,13 @@ internal object EventFactoryModule {
     @IntoMap
     @EventFactoryKey(VideoDownloadStatistics.Payload::class)
     fun videoDownloadStatisticsEventFactory(
-        trueTimeWrapper: TrueTimeWrapper,
+        sntpClient: SNTPClient,
         uuidWrapper: UUIDWrapper,
         userSupplier: UserSupplier,
         clientSupplier: ClientSupplier,
         videoDownloadStatisticsFactory: VideoDownloadStatistics.Factory,
     ): EventFactory<out Event.Payload> = VideoDownloadStatisticsEventFactory(
-        trueTimeWrapper,
+        sntpClient,
         uuidWrapper,
         userSupplier,
         clientSupplier,
@@ -96,13 +96,13 @@ internal object EventFactoryModule {
     @IntoMap
     @EventFactoryKey(DrmLicenseFetch.Payload::class)
     fun drmLicenseFetchEventFactory(
-        trueTimeWrapper: TrueTimeWrapper,
+        sntpClient: SNTPClient,
         uuidWrapper: UUIDWrapper,
         userSupplier: UserSupplier,
         clientSupplier: ClientSupplier,
         drmLicenseFetchFactory: DrmLicenseFetch.Factory,
     ): EventFactory<out Event.Payload> = DrmLicenseFetchEventFactory(
-        trueTimeWrapper,
+        sntpClient,
         uuidWrapper,
         userSupplier,
         clientSupplier,
@@ -149,14 +149,14 @@ internal object EventFactoryModule {
     @IntoMap
     @EventFactoryKey(StreamingSessionStart.Payload::class)
     fun streamingSessionStartEventFactory(
-        trueTimeWrapper: TrueTimeWrapper,
+        sntpClient: SNTPClient,
         uuidWrapper: UUIDWrapper,
         userSupplier: UserSupplier,
         clientSupplier: ClientSupplier,
         streamingSessionStartPayloadDecorator: StreamingSessionStartPayloadDecorator,
         streamingSessionStartFactory: StreamingSessionStart.Factory,
     ): EventFactory<out Event.Payload> = StreamingSessionStartEventFactory(
-        trueTimeWrapper,
+        sntpClient,
         uuidWrapper,
         userSupplier,
         clientSupplier,
@@ -169,13 +169,13 @@ internal object EventFactoryModule {
     @IntoMap
     @EventFactoryKey(StreamingSessionEnd.Payload::class)
     fun streamingSessionEndEventFactory(
-        trueTimeWrapper: TrueTimeWrapper,
+        sntpClient: SNTPClient,
         uuidWrapper: UUIDWrapper,
         userSupplier: UserSupplier,
         clientSupplier: ClientSupplier,
         streamingSessionEndFactory: StreamingSessionEnd.Factory,
     ): EventFactory<out Event.Payload> = StreamingSessionEndEventFactory(
-        trueTimeWrapper,
+        sntpClient,
         uuidWrapper,
         userSupplier,
         clientSupplier,
@@ -187,13 +187,13 @@ internal object EventFactoryModule {
     @IntoMap
     @EventFactoryKey(PlaybackInfoFetch.Payload::class)
     fun playbackInfoFetchEventFactory(
-        trueTimeWrapper: TrueTimeWrapper,
+        sntpClient: SNTPClient,
         uuidWrapper: UUIDWrapper,
         userSupplier: UserSupplier,
         clientSupplier: ClientSupplier,
         playbackInfoFetchFactory: PlaybackInfoFetch.Factory,
     ): EventFactory<out Event.Payload> = PlaybackInfoFetchEventFactory(
-        trueTimeWrapper,
+        sntpClient,
         uuidWrapper,
         userSupplier,
         clientSupplier,
@@ -205,13 +205,13 @@ internal object EventFactoryModule {
     @IntoMap
     @EventFactoryKey(UCPlaybackSession.Payload::class)
     fun ucPlaybackSessionEventFactory(
-        trueTimeWrapper: TrueTimeWrapper,
+        sntpClient: SNTPClient,
         uuidWrapper: UUIDWrapper,
         userSupplier: UserSupplier,
         clientSupplier: ClientSupplier,
         ucPlaybackSessionFactory: UCPlaybackSession.Factory,
     ): EventFactory<out Event.Payload> = UCPlaybackSessionEventFactory(
-        trueTimeWrapper,
+        sntpClient,
         uuidWrapper,
         userSupplier,
         clientSupplier,
@@ -223,13 +223,13 @@ internal object EventFactoryModule {
     @IntoMap
     @EventFactoryKey(AudioPlaybackSession.Payload::class)
     fun audioPlaybackSessionEventFactory(
-        trueTimeWrapper: TrueTimeWrapper,
+        sntpClient: SNTPClient,
         uuidWrapper: UUIDWrapper,
         userSupplier: UserSupplier,
         clientSupplier: ClientSupplier,
         audioPlaybackSessionFactory: AudioPlaybackSession.Factory,
     ): EventFactory<out Event.Payload> = AudioPlaybackSessionEventFactory(
-        trueTimeWrapper,
+        sntpClient,
         uuidWrapper,
         userSupplier,
         clientSupplier,
@@ -241,13 +241,13 @@ internal object EventFactoryModule {
     @IntoMap
     @EventFactoryKey(BroadcastPlaybackSession.Payload::class)
     fun broadcastPlaybackSessionEventFactory(
-        trueTimeWrapper: TrueTimeWrapper,
+        sntpClient: SNTPClient,
         uuidWrapper: UUIDWrapper,
         userSupplier: UserSupplier,
         clientSupplier: ClientSupplier,
         broadcastPlaybackSessionFactory: BroadcastPlaybackSession.Factory,
     ): EventFactory<out Event.Payload> = BroadcastPlaybackSessionEventFactory(
-        trueTimeWrapper,
+        sntpClient,
         uuidWrapper,
         userSupplier,
         clientSupplier,
@@ -259,13 +259,13 @@ internal object EventFactoryModule {
     @IntoMap
     @EventFactoryKey(UCPlaybackStatistics.Payload::class)
     fun ucPlaybackStatisticsEventFactory(
-        trueTimeWrapper: TrueTimeWrapper,
+        sntpClient: SNTPClient,
         uuidWrapper: UUIDWrapper,
         userSupplier: UserSupplier,
         clientSupplier: ClientSupplier,
         ucPlaybackStatisticsFactory: UCPlaybackStatistics.Factory,
     ): EventFactory<out Event.Payload> = UCPlaybackStatisticsEventFactory(
-        trueTimeWrapper,
+        sntpClient,
         uuidWrapper,
         userSupplier,
         clientSupplier,
@@ -277,13 +277,13 @@ internal object EventFactoryModule {
     @IntoMap
     @EventFactoryKey(VideoPlaybackSession.Payload::class)
     fun videoPlaybackSessionEventFactory(
-        trueTimeWrapper: TrueTimeWrapper,
+        sntpClient: SNTPClient,
         uuidWrapper: UUIDWrapper,
         userSupplier: UserSupplier,
         clientSupplier: ClientSupplier,
         videoPlaybackSessionFactory: VideoPlaybackSession.Factory,
     ): EventFactory<out Event.Payload> = VideoPlaybackSessionEventFactory(
-        trueTimeWrapper,
+        sntpClient,
         uuidWrapper,
         userSupplier,
         clientSupplier,
@@ -295,13 +295,13 @@ internal object EventFactoryModule {
     @IntoMap
     @EventFactoryKey(AudioPlaybackStatistics.Payload::class)
     fun audioPlaybackStatisticsEventFactory(
-        trueTimeWrapper: TrueTimeWrapper,
+        sntpClient: SNTPClient,
         uuidWrapper: UUIDWrapper,
         userSupplier: UserSupplier,
         clientSupplier: ClientSupplier,
         audioPlaybackStatisticsFactory: AudioPlaybackStatistics.Factory,
     ): EventFactory<out Event.Payload> = AudioPlaybackStatisticsEventFactory(
-        trueTimeWrapper,
+        sntpClient,
         uuidWrapper,
         userSupplier,
         clientSupplier,
@@ -313,13 +313,13 @@ internal object EventFactoryModule {
     @IntoMap
     @EventFactoryKey(BroadcastPlaybackStatistics.Payload::class)
     fun broadcastPlaybackStatisticsEventFactory(
-        trueTimeWrapper: TrueTimeWrapper,
+        sntpClient: SNTPClient,
         uuidWrapper: UUIDWrapper,
         userSupplier: UserSupplier,
         clientSupplier: ClientSupplier,
         broadcastPlaybackStatisticsFactory: BroadcastPlaybackStatistics.Factory,
     ): EventFactory<out Event.Payload> = BroadcastPlaybackStatisticsEventFactory(
-        trueTimeWrapper,
+        sntpClient,
         uuidWrapper,
         userSupplier,
         clientSupplier,
@@ -331,13 +331,13 @@ internal object EventFactoryModule {
     @IntoMap
     @EventFactoryKey(VideoPlaybackStatistics.Payload::class)
     fun videoPlaybackStatisticsEventFactory(
-        trueTimeWrapper: TrueTimeWrapper,
+        sntpClient: SNTPClient,
         uuidWrapper: UUIDWrapper,
         userSupplier: UserSupplier,
         clientSupplier: ClientSupplier,
         videoPlaybackStatisticsFactory: VideoPlaybackStatistics.Factory,
     ): EventFactory<out Event.Payload> = VideoPlaybackStatisticsEventFactory(
-        trueTimeWrapper,
+        sntpClient,
         uuidWrapper,
         userSupplier,
         clientSupplier,
@@ -349,13 +349,13 @@ internal object EventFactoryModule {
     @IntoMap
     @EventFactoryKey(NotStartedPlaybackStatistics.Payload::class)
     fun errorPlaybackStatisticsEventFactory(
-        trueTimeWrapper: TrueTimeWrapper,
+        sntpClient: SNTPClient,
         uuidWrapper: UUIDWrapper,
         userSupplier: UserSupplier,
         clientSupplier: ClientSupplier,
         notStartedPlaybackStatisticsFactory: NotStartedPlaybackStatistics.Factory,
     ): EventFactory<out Event.Payload> = NotStartedPlaybackStatisticsEventFactory(
-        trueTimeWrapper,
+        sntpClient,
         uuidWrapper,
         userSupplier,
         clientSupplier,

@@ -19,6 +19,7 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
 import assertk.assertions.isSameAs
+import com.tidal.networktime.SNTPClient
 import com.tidal.sdk.player.common.ForwardingMediaProduct
 import com.tidal.sdk.player.common.model.AssetPresentation
 import com.tidal.sdk.player.common.model.AudioMode
@@ -27,7 +28,6 @@ import com.tidal.sdk.player.common.model.LoudnessNormalizationMode
 import com.tidal.sdk.player.common.model.MediaProduct
 import com.tidal.sdk.player.common.model.ProductType
 import com.tidal.sdk.player.common.model.VideoQuality
-import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
 import com.tidal.sdk.player.events.EventReporter
 import com.tidal.sdk.player.events.model.PlaybackSession.Payload.Action
 import com.tidal.sdk.player.events.model.PlaybackStatistics.Payload.Adaptation
@@ -111,7 +111,7 @@ internal class ExoPlayerPlaybackEngineTest {
     private val audioQualityRepository = mock<AudioQualityRepository>()
     private val audioModeRepository = mock<AudioModeRepository>()
     private val volumeHelper = mock<VolumeHelper>()
-    private val trueTimeWrapper = mock<TrueTimeWrapper>()
+    private val sntpClient = mock<SNTPClient>()
     private val eventReporter = mock<EventReporter>()
     private val errorHandler = mock<ErrorHandler>()
     private val djSessionManager = mock<DjSessionManager>()
@@ -140,7 +140,7 @@ internal class ExoPlayerPlaybackEngineTest {
             audioQualityRepository,
             audioModeRepository,
             volumeHelper,
-            trueTimeWrapper,
+            sntpClient,
             eventReporter,
             errorHandler,
             djSessionManager,
@@ -323,15 +323,15 @@ internal class ExoPlayerPlaybackEngineTest {
         playbackEngine.load(forwardingMediaProduct.delegate)
         val streamingSession = mock<StreamingSession.Explicit>()
         whenever(initialExtendedExoPlayer.currentStreamingSession) doReturn streamingSession
-        val idealStartTimestampMs = 8L
-        whenever(trueTimeWrapper.currentTimeMillis) doReturn idealStartTimestampMs
+        val idealStartTimestamp = 8.milliseconds
+        whenever(sntpClient.epochTime) doReturn idealStartTimestamp
 
         playbackEngine.play()
 
         verify(initialExtendedExoPlayer).currentStreamingSession
-        verify(trueTimeWrapper, atLeastOnce()).currentTimeMillis
+        verify(sntpClient, atLeastOnce()).epochTime
         verify(streamingSession).createUndeterminedPlaybackStatistics(
-            PlaybackStatistics.IdealStartTimestampMs.Known(idealStartTimestampMs),
+            PlaybackStatistics.IdealStartTimestampMs.Known(idealStartTimestamp.inWholeMilliseconds),
         )
         verify(initialExtendedExoPlayer).play()
     }
@@ -904,8 +904,8 @@ internal class ExoPlayerPlaybackEngineTest {
             on { it.actions } doReturn actions
         }
         playbackEngine.reflectionCurrentPlaybackSession = currentPlaybackSession
-        val currentTimeMills = -1L
-        whenever(trueTimeWrapper.currentTimeMillis) doReturn currentTimeMills
+        val currentTime = -1.milliseconds
+        whenever(sntpClient.epochTime) doReturn currentTime
         val actionType = if (reason == Player.PLAYBACK_SUPPRESSION_REASON_NONE) {
             Action.Type.PLAYBACK_START
         } else {
@@ -926,10 +926,10 @@ internal class ExoPlayerPlaybackEngineTest {
             verify(initialExtendedExoPlayer).currentPositionSinceEpochMs
         }
         verify(currentPlaybackSession).actions
-        verify(trueTimeWrapper).currentTimeMillis
+        verify(sntpClient).epochTime
         verify(actions).add(
             Action(
-                currentTimeMills,
+                currentTime.inWholeMilliseconds,
                 positionSeconds,
                 actionType,
             ),
@@ -1178,8 +1178,8 @@ internal class ExoPlayerPlaybackEngineTest {
             on { it.actions } doReturn actions
         }
         playbackEngine.reflectionCurrentPlaybackSession = currentPlaybackSession
-        val currentTimeMillis = 12345L
-        whenever(trueTimeWrapper.currentTimeMillis) doReturn currentTimeMillis
+        val currentTime = 12345.milliseconds
+        whenever(sntpClient.epochTime) doReturn currentTime
         val currentPlaybackPositionMs = -12314351234
 
         val mediaItem = MediaItem.Builder()
@@ -1258,7 +1258,7 @@ internal class ExoPlayerPlaybackEngineTest {
                 sourceType,
                 sourceId,
                 actions,
-                currentTimeMillis,
+                currentTime.inWholeMilliseconds,
                 currentPlaybackPositionMs.toDouble() / 1_000,
             ),
         )
@@ -1357,11 +1357,12 @@ internal class ExoPlayerPlaybackEngineTest {
         playbackEngine.testNextMediaSource = nextMediaSource
         playbackEngine.reflectionPlaybackContext = mock<PlaybackContext.Track>()
         playbackEngine.reflectionNextPlaybackContext = nextPlaybackContext
-        val startTimestampMs = -1L
-        whenever(trueTimeWrapper.currentTimeMillis) doReturn startTimestampMs
+        val startTimestamp = -1.milliseconds
+        whenever(sntpClient.epochTime) doReturn startTimestamp
         val startedPlaybackStatistics = mock<PlaybackStatistics.Success.Started>()
         val preparedPlaybackStatistics = mock<PlaybackStatistics.Success.Prepared.Audio> {
-            on { it.toStarted(startTimestampMs) } doReturn startedPlaybackStatistics
+            on { it.toStarted(startTimestamp.inWholeMilliseconds) }
+                .thenReturn(startedPlaybackStatistics)
         }
         val undeterminedPlaybackStatisticsWithIdealStartTimestampMs =
             mock<PlaybackStatistics.Undetermined>()
@@ -1369,7 +1370,9 @@ internal class ExoPlayerPlaybackEngineTest {
             on {
                 copy(
                     idealStartTimestampMs =
-                    PlaybackStatistics.IdealStartTimestampMs.Known(startTimestampMs),
+                    PlaybackStatistics.IdealStartTimestampMs.Known(
+                        startTimestamp.inWholeMilliseconds,
+                    ),
                 )
             }.thenReturn(undeterminedPlaybackStatisticsWithIdealStartTimestampMs)
         }
@@ -1478,11 +1481,11 @@ internal class ExoPlayerPlaybackEngineTest {
         verify(initialExtendedExoPlayer).onCurrentItemFinished()
         verify(volumeHelper).getVolume(playbackInfo)
         verify(initialExtendedExoPlayer).volume = 1.0F
-        verify(trueTimeWrapper).currentTimeMillis
+        verify(sntpClient).epochTime
         verify(undeterminedPlaybackSessionResolver)
             .invoke(undeterminedPlaybackStatisticsWithIdealStartTimestampMs, playbackInfo)
-        verify(preparedPlaybackStatistics).toStarted(startTimestampMs)
-        verify(nextPlaybackSession).startTimestamp = startTimestampMs
+        verify(preparedPlaybackStatistics).toStarted(startTimestamp.inWholeMilliseconds)
+        verify(nextPlaybackSession).startTimestamp = startTimestamp.inWholeMilliseconds
         verify(nextPlaybackSession).startAssetPosition = positionMs.toDouble() / 1_000
         verify(timeline).getWindow(eq(windowIndex), any())
         verifyNoMoreInteractions(
@@ -1534,8 +1537,8 @@ internal class ExoPlayerPlaybackEngineTest {
         )
         playbackEngine.testMediaSource = mediaSource
         playbackEngine.reflectionPlaybackContext = currentPlaybackContext
-        val startTimestampMs = -1L
-        whenever(trueTimeWrapper.currentTimeMillis) doReturn startTimestampMs
+        val startTimestamp = -1.milliseconds
+        whenever(sntpClient.epochTime) doReturn startTimestamp
         val eventPlaybackPositionMs = Long.MAX_VALUE
         val eventTime = EventTime(
             -1,
@@ -1585,7 +1588,8 @@ internal class ExoPlayerPlaybackEngineTest {
         val newStreamingSessionId = mock<UUID>()
         val startedPlaybackStatistics = mock<PlaybackStatistics.Success.Started>()
         val preparedPlaybackStatistics = mock<PlaybackStatistics.Success.Prepared.Audio> {
-            on { it.toStarted(startTimestampMs) } doReturn startedPlaybackStatistics
+            on { it.toStarted(startTimestamp.inWholeMilliseconds) }
+                .thenReturn(startedPlaybackStatistics)
         }
         val undeterminedPlaybackStatistics = mock<PlaybackStatistics.Undetermined>()
         whenever(undeterminedPlaybackSessionResolver(undeterminedPlaybackStatistics, playbackInfo))
@@ -1597,7 +1601,9 @@ internal class ExoPlayerPlaybackEngineTest {
             } doReturn currentPlaybackSession
             on {
                 createUndeterminedPlaybackStatistics(
-                    PlaybackStatistics.IdealStartTimestampMs.Known(startTimestampMs),
+                    PlaybackStatistics.IdealStartTimestampMs.Known(
+                        startTimestamp.inWholeMilliseconds,
+                    ),
                 )
             }.thenReturn(undeterminedPlaybackStatistics)
         }
@@ -1638,9 +1644,9 @@ internal class ExoPlayerPlaybackEngineTest {
         verify(initialExtendedExoPlayer).updatePosition(positionMs)
         verify(initialExtendedExoPlayer).onRepeatOne(currentForwardingMediaProduct)
         verify(volumeHelper).getVolume(playbackInfo)
-        verify(trueTimeWrapper).currentTimeMillis
-        verify(preparedPlaybackStatistics).toStarted(startTimestampMs)
-        verify(currentPlaybackSession).startTimestamp = startTimestampMs
+        verify(sntpClient).epochTime
+        verify(preparedPlaybackStatistics).toStarted(startTimestamp.inWholeMilliseconds)
+        verify(currentPlaybackSession).startTimestamp = startTimestamp.inWholeMilliseconds
         verify(currentPlaybackSession).startAssetPosition = positionMs.toDouble() / 1_000
         verifyNoMoreInteractions(
             startedPlaybackStatistics,
@@ -1717,8 +1723,8 @@ internal class ExoPlayerPlaybackEngineTest {
         val extendedExoPlayer = mock<ExtendedExoPlayer>()
         playbackEngine.reflectionExtendedExoPlayer = extendedExoPlayer
         whenever(extendedExoPlayer.shouldStartPlaybackAfterUserAction()) doReturn false
-        val currentTimeMills = -80L
-        whenever(trueTimeWrapper.currentTimeMillis) doReturn currentTimeMills
+        val currentTime = -80.milliseconds
+        whenever(sntpClient.epochTime) doReturn currentTime
         val actions = mock<MutableList<Action>>()
         val currentPlaybackSession = mock<PlaybackSession.Audio> {
             on { it.actions } doReturn actions
@@ -1734,19 +1740,19 @@ internal class ExoPlayerPlaybackEngineTest {
 
         verify(extendedExoPlayer).updatePosition(newPositionMs)
         verify(extendedExoPlayer).shouldStartPlaybackAfterUserAction()
-        verify(trueTimeWrapper).currentTimeMillis
+        verify(sntpClient).epochTime
         verify(currentPlaybackSession).actions
         inOrder(actions).apply {
             verify(actions).add(
                 Action(
-                    currentTimeMills,
+                    currentTime.inWholeMilliseconds,
                     oldPositionMs.toDouble() / 1_000,
                     Action.Type.PLAYBACK_STOP,
                 ),
             )
             verify(actions).add(
                 Action(
-                    currentTimeMills,
+                    currentTime.inWholeMilliseconds,
                     newPositionMs.toDouble() / 1_000,
                     Action.Type.PLAYBACK_START,
                 ),
@@ -1756,7 +1762,7 @@ internal class ExoPlayerPlaybackEngineTest {
             StartedStall(
                 Reason.SEEK,
                 currentPlaybackPositionMs.toDouble() / 1_000,
-                currentTimeMills,
+                currentTime.inWholeMilliseconds,
             ),
         )
         verifyNoMoreInteractions(
@@ -1801,8 +1807,8 @@ internal class ExoPlayerPlaybackEngineTest {
         val extendedExoPlayer = mock<ExtendedExoPlayer>()
         playbackEngine.reflectionExtendedExoPlayer = extendedExoPlayer
         whenever(extendedExoPlayer.shouldStartPlaybackAfterUserAction()) doReturn true
-        val currentTimeMills = -80L
-        whenever(trueTimeWrapper.currentTimeMillis) doReturn currentTimeMills
+        val currentTime = -80.milliseconds
+        whenever(sntpClient.epochTime) doReturn currentTime
         val actions = mock<MutableList<Action>>()
         val currentPlaybackSession = mock<PlaybackSession.Audio> {
             on { it.actions } doReturn actions
@@ -1818,19 +1824,19 @@ internal class ExoPlayerPlaybackEngineTest {
 
         verify(extendedExoPlayer).updatePosition(newPositionMs)
         verify(extendedExoPlayer).shouldStartPlaybackAfterUserAction()
-        verify(trueTimeWrapper).currentTimeMillis
+        verify(sntpClient).epochTime
         verify(currentPlaybackSession).actions
         inOrder(actions).apply {
             verify(actions).add(
                 Action(
-                    currentTimeMills,
+                    currentTime.inWholeMilliseconds,
                     oldPositionMs.toDouble() / 1_000,
                     Action.Type.PLAYBACK_STOP,
                 ),
             )
             verify(actions).add(
                 Action(
-                    currentTimeMills,
+                    currentTime.inWholeMilliseconds,
                     newPositionMs.toDouble() / 1_000,
                     Action.Type.PLAYBACK_START,
                 ),
@@ -2196,11 +2202,11 @@ internal class ExoPlayerPlaybackEngineTest {
             -1,
             -1,
         )
-        val currentTimeMillis = 5L
-        whenever(trueTimeWrapper.currentTimeMillis) doReturn currentTimeMillis
+        val currentTime = 5.milliseconds
+        whenever(sntpClient.epochTime) doReturn currentTime
         val startedPlaybackStatistics = mock<PlaybackStatistics.Success.Started>()
         val preparedPlaybackStatistics = mock<PlaybackStatistics.Success.Prepared.Audio> {
-            on { toStarted(currentTimeMillis) } doReturn startedPlaybackStatistics
+            on { toStarted(currentTime.inWholeMilliseconds) } doReturn startedPlaybackStatistics
         }
         playbackEngine.reflectionCurrentPlaybackStatistics = preparedPlaybackStatistics
         val currentPlaybackSession = mock<PlaybackSession.Audio>()
@@ -2208,9 +2214,9 @@ internal class ExoPlayerPlaybackEngineTest {
 
         playbackEngine.onAudioPositionAdvancing(eventTime, Long.MAX_VALUE)
 
-        verify(trueTimeWrapper).currentTimeMillis
-        verify(preparedPlaybackStatistics).toStarted(currentTimeMillis)
-        verify(currentPlaybackSession).startTimestamp = currentTimeMillis
+        verify(sntpClient).epochTime
+        verify(preparedPlaybackStatistics).toStarted(currentTime.inWholeMilliseconds)
+        verify(currentPlaybackSession).startTimestamp = currentTime.inWholeMilliseconds
         assertThat(playbackEngine.reflectionCurrentPlaybackStatistics)
             .isSameAs(startedPlaybackStatistics)
         verifyNoMoreInteractions(
@@ -2262,8 +2268,8 @@ internal class ExoPlayerPlaybackEngineTest {
             -1,
             -1,
         )
-        val currentTimeMillis = -38L
-        whenever(trueTimeWrapper.currentTimeMillis) doReturn currentTimeMillis
+        val currentTime = -38.milliseconds
+        whenever(sntpClient.epochTime) doReturn currentTime
         val sampleMimeType = "sampleMimeType"
         val codecs = "codecs"
         val bitrate = Int.MAX_VALUE
@@ -2289,7 +2295,7 @@ internal class ExoPlayerPlaybackEngineTest {
         }
         val targetAdaptation = Adaptation(
             eventPlaybackPositionMs.toDouble() / 1_000,
-            currentTimeMillis,
+            currentTime.inWholeMilliseconds,
             sampleMimeType,
             codecs,
             bitrate,
@@ -2305,7 +2311,7 @@ internal class ExoPlayerPlaybackEngineTest {
 
         playbackEngine.call(eventTime, format)
 
-        verify(trueTimeWrapper).currentTimeMillis
+        verify(sntpClient).epochTime
         verify(targetPlaybackStatistics) + targetAdaptation
         assertThat(
             when (targetWindowIndex) {
@@ -2450,13 +2456,13 @@ internal class ExoPlayerPlaybackEngineTest {
             on { it.startTimestamp } doReturn startTimestamp
         }
         playbackEngine.reflectionCurrentStall = initialCurrentStartedStall
-        val currentTimeMillis = 2L
-        whenever(trueTimeWrapper.currentTimeMillis) doReturn currentTimeMillis
+        val currentTime = 2.milliseconds
+        whenever(sntpClient.epochTime) doReturn currentTime
         val completedStall = Stall(
             reason,
             assetPositionSeconds,
             startTimestamp,
-            currentTimeMillis,
+            currentTime.inWholeMilliseconds,
         )
         val updatedPlaybackStatistics = mock<PlaybackStatistics.Success.Started>()
         whenever(currentPlaybackStatistics + completedStall) doReturn updatedPlaybackStatistics
@@ -2466,7 +2472,7 @@ internal class ExoPlayerPlaybackEngineTest {
         verify(initialCurrentStartedStall).reason
         verify(initialCurrentStartedStall).assetPositionSeconds
         verify(initialCurrentStartedStall).startTimestamp
-        verify(trueTimeWrapper).currentTimeMillis
+        verify(sntpClient).epochTime
         verify(currentPlaybackStatistics) + completedStall
         assertThat(playbackEngine.reflectionCurrentStall).isNull()
         assertThat(playbackEngine.reflectionCurrentPlaybackStatistics)
@@ -2504,8 +2510,8 @@ internal class ExoPlayerPlaybackEngineTest {
             currentPlaybackPositionMs,
             -1,
         )
-        val currentTimeMillis = Long.MAX_VALUE
-        whenever(trueTimeWrapper.currentTimeMillis) doReturn currentTimeMillis
+        val currentTime = Long.MAX_VALUE.milliseconds
+        whenever(sntpClient.epochTime) doReturn currentTime
 
         playbackEngine.onAudioUnderrun(eventTime, -1, 0, Long.MIN_VALUE)
 
@@ -2513,7 +2519,7 @@ internal class ExoPlayerPlaybackEngineTest {
             StartedStall(
                 Reason.UNEXPECTED,
                 currentPlaybackPositionMs.toDouble() / 1_000,
-                currentTimeMillis,
+                currentTime.inWholeMilliseconds,
             ),
         )
     }

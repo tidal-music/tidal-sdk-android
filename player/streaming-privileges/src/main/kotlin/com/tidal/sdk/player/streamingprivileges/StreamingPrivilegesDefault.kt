@@ -1,7 +1,8 @@
 package com.tidal.sdk.player.streamingprivileges
 
 import android.os.Handler
-import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
+import com.tidal.networktime.SNTPClient
+import com.tidal.sdk.player.common.ntpOrLocalClockTime
 import com.tidal.sdk.player.streamingprivileges.acquire.AcquireRunnable
 
 @Suppress("LongParameterList", "MaxLineLength")
@@ -11,7 +12,7 @@ internal class StreamingPrivilegesDefault(
     private val setStreamingPrivilegesListenerRunnableFactory: SetStreamingPrivilegesListenerRunnable.Factory, // ktlint-disable max-line-length parameter-wrapping
     private val releaseRunnable: ReleaseRunnable,
     private val acquireRunnableFactory: AcquireRunnable.Factory,
-    private val trueTimeWrapper: TrueTimeWrapper,
+    private val sntpClient: SNTPClient,
     private val mutableState: MutableState,
 ) : StreamingPrivileges {
 
@@ -26,7 +27,7 @@ internal class StreamingPrivilegesDefault(
 
     override fun acquireStreamingPrivileges() = mutableState.connectionMutableState?.let {
         networkInteractionsHandler.post(
-            acquireRunnableFactory.create(trueTimeWrapper.currentTimeMillis, it),
+            acquireRunnableFactory.create(sntpClient.ntpOrLocalClockTime.inWholeMilliseconds, it),
         )
     } ?: false
 

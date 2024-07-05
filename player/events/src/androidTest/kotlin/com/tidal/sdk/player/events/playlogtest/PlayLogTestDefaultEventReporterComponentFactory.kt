@@ -3,9 +3,9 @@ package com.tidal.sdk.player.events.playlogtest
 import android.content.Context
 import android.net.ConnectivityManager
 import com.google.gson.Gson
+import com.tidal.networktime.SNTPClient
 import com.tidal.sdk.eventproducer.EventSender
 import com.tidal.sdk.player.common.UUIDWrapper
-import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
 import com.tidal.sdk.player.events.ClientSupplier
 import com.tidal.sdk.player.events.UserSupplier
 import com.tidal.sdk.player.events.di.DaggerDefaultEventReporterComponent
@@ -24,7 +24,7 @@ class PlayLogTestDefaultEventReporterComponentFactory(
         okHttpClient: OkHttpClient,
         gson: Gson,
         uuidWrapper: UUIDWrapper,
-        trueTimeWrapper: TrueTimeWrapper,
+        sntpClient: SNTPClient,
         eventSender: EventSender,
         coroutineScope: CoroutineScope,
     ) = DaggerDefaultEventReporterComponent.factory()
@@ -36,7 +36,7 @@ class PlayLogTestDefaultEventReporterComponentFactory(
             okHttpClient,
             gson,
             uuidWrapper,
-            trueTimeWrapper,
+            sntpClient,
             eventSender,
             coroutineScopeOverride,
         )

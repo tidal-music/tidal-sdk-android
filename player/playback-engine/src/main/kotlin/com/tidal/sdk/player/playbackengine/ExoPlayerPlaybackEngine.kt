@@ -14,12 +14,13 @@ import androidx.media3.exoplayer.analytics.AnalyticsListener
 import androidx.media3.exoplayer.analytics.AnalyticsListener.EventTime
 import androidx.media3.exoplayer.hls.HlsManifest
 import androidx.media3.exoplayer.source.ForwardingTimeline
+import com.tidal.networktime.SNTPClient
 import com.tidal.sdk.player.common.ForwardingMediaProduct
 import com.tidal.sdk.player.common.model.AudioQuality
 import com.tidal.sdk.player.common.model.LoudnessNormalizationMode
 import com.tidal.sdk.player.common.model.MediaProduct
 import com.tidal.sdk.player.common.model.ProductType
-import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
+import com.tidal.sdk.player.common.ntpOrLocalClockTime
 import com.tidal.sdk.player.events.EventReporter
 import com.tidal.sdk.player.events.model.AudioPlaybackSession
 import com.tidal.sdk.player.events.model.AudioPlaybackStatistics
@@ -85,7 +86,7 @@ internal class ExoPlayerPlaybackEngine(
     private val audioQualityRepository: AudioQualityRepository,
     private val audioModeRepository: AudioModeRepository,
     private val volumeHelper: VolumeHelper,
-    private val trueTimeWrapper: TrueTimeWrapper,
+    private val sntpClient: SNTPClient,
     private val eventReporter: EventReporter,
     private val errorHandler: ErrorHandler,
     private val djSessionManager: DjSessionManager,
@@ -295,7 +296,7 @@ internal class ExoPlayerPlaybackEngine(
                 extendedExoPlayer.currentStreamingSession!!
                     .createUndeterminedPlaybackStatistics(
                         PlaybackStatistics.IdealStartTimestampMs.Known(
-                            trueTimeWrapper.currentTimeMillis,
+                            sntpClient.ntpOrLocalClockTime.inWholeMilliseconds,
                         ),
                     )
         } else if (
@@ -304,8 +305,9 @@ internal class ExoPlayerPlaybackEngine(
             is PlaybackStatistics.IdealStartTimestampMs.Known
         ) {
             currentPlaybackStatistics = readCurrentPlaybackStatistics.copy(
-                idealStartTimestampMs =
-                PlaybackStatistics.IdealStartTimestampMs.Known(trueTimeWrapper.currentTimeMillis),
+                idealStartTimestampMs = PlaybackStatistics.IdealStartTimestampMs.Known(
+                    sntpClient.ntpOrLocalClockTime.inWholeMilliseconds,
+                ),
             )
         }
         extendedExoPlayer.play()
@@ -462,7 +464,7 @@ internal class ExoPlayerPlaybackEngine(
         }
         currentPlaybackSession?.actions?.add(
             Action(
-                trueTimeWrapper.currentTimeMillis,
+                sntpClient.ntpOrLocalClockTime.inWholeMilliseconds,
                 positionInSeconds,
                 actionType,
             ),
@@ -493,7 +495,7 @@ internal class ExoPlayerPlaybackEngine(
             playbackState = PlaybackState.STALLED
         } else if (state == Player.STATE_IDLE || state == Player.STATE_ENDED) {
             if (state == Player.STATE_ENDED) {
-                val currentTimeMillis = trueTimeWrapper.currentTimeMillis
+                val currentTimeMillis = sntpClient.ntpOrLocalClockTime.inWholeMilliseconds
                 val positionSeconds =
                     if (forwardingMediaProduct?.productType == ProductType.BROADCAST) {
                         extendedExoPlayer.currentPositionSinceEpochMs
@@ -547,7 +549,7 @@ internal class ExoPlayerPlaybackEngine(
             newPosition.positionMs
         }
 
-        val invokedAtMillis = trueTimeWrapper.currentTimeMillis
+        val invokedAtMillis = sntpClient.ntpOrLocalClockTime.inWholeMilliseconds
         val oldPositionSeconds = oldPositionMs.toDouble() / MS_IN_SECOND
         val newPositionSeconds = newPositionMs.toDouble() / MS_IN_SECOND
         if (reason == Player.DISCONTINUITY_REASON_AUTO_TRANSITION) {
@@ -676,7 +678,7 @@ internal class ExoPlayerPlaybackEngine(
         }.toDouble() / MS_IN_SECOND
         currentPlaybackSession?.actions?.add(
             Action(
-                trueTimeWrapper.currentTimeMillis,
+                sntpClient.ntpOrLocalClockTime.inWholeMilliseconds,
                 positionInSeconds,
                 if (playWhenReady) Action.Type.PLAYBACK_START else Action.Type.PLAYBACK_STOP,
             ),
@@ -782,7 +784,7 @@ internal class ExoPlayerPlaybackEngine(
         }
         val readCurrentPlaybackStatistics = currentPlaybackStatistics
         if (readCurrentPlaybackStatistics !is PlaybackStatistics.Success.Started) {
-            val startTimestamp = trueTimeWrapper.currentTimeMillis
+            val startTimestamp = sntpClient.ntpOrLocalClockTime.inWholeMilliseconds
             if (readCurrentPlaybackStatistics is PlaybackStatistics.Success.Prepared) {
                 currentPlaybackStatistics = readCurrentPlaybackStatistics.toStarted(startTimestamp)
                 currentPlaybackSession!!.apply {
@@ -806,7 +808,11 @@ internal class ExoPlayerPlaybackEngine(
         } else {
             eventTime.currentPlaybackPositionMs
         }.toDouble() / MS_IN_SECOND
-        startStall(Stall.Reason.UNEXPECTED, positionInSeconds, trueTimeWrapper.currentTimeMillis)
+        startStall(
+            Stall.Reason.UNEXPECTED,
+            positionInSeconds,
+            sntpClient.ntpOrLocalClockTime.inWholeMilliseconds,
+        )
     }
 
     @Suppress("LongMethod", "ComplexMethod")
@@ -885,7 +891,7 @@ internal class ExoPlayerPlaybackEngine(
                 }.toDouble() / MS_IN_SECOND
             playbackStatistics + Adaptation(
                 positionInSeconds,
-                trueTimeWrapper.currentTimeMillis,
+                sntpClient.ntpOrLocalClockTime.inWholeMilliseconds,
                 format.sampleMimeType ?: "",
                 format.codecs ?: "",
                 format.bitrate,
@@ -972,7 +978,7 @@ internal class ExoPlayerPlaybackEngine(
                     reason,
                     assetPositionSeconds,
                     startTimestamp,
-                    trueTimeWrapper.currentTimeMillis,
+                    sntpClient.ntpOrLocalClockTime.inWholeMilliseconds,
                 )
         }
     }
@@ -1168,7 +1174,7 @@ internal class ExoPlayerPlaybackEngine(
         errorMessage: String? = null,
         errorCode: String? = null,
         endPositionSeconds: Double,
-        endTimestamp: Long = trueTimeWrapper.currentTimeMillis,
+        endTimestamp: Long = sntpClient.ntpOrLocalClockTime.inWholeMilliseconds,
     ) {
         reportCurrentPlaybackStatistics(endReason, errorMessage, errorCode, endTimestamp)
         reportCurrentPlaybackSession(endTimestamp, endPositionSeconds)
@@ -1205,7 +1211,7 @@ internal class ExoPlayerPlaybackEngine(
                     streamingSessionId.toString(),
                     idealStartTimestampMs.timestamp,
                     requestedMediaProduct.productType,
-                    trueTimeWrapper.currentTimeMillis,
+                    sntpClient.ntpOrLocalClockTime.inWholeMilliseconds,
                     errorMessage,
                     errorCode,
                     when (this@report) {

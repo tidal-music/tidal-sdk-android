@@ -24,6 +24,7 @@ dependencies {
     implementation(libs.tidal.sdk.auth)
     implementation(libs.tidal.sdk.eventproducer)
     implementation(libs.kotlinxCoroutinesCore)
+    implementation(libs.tidal.networktime)
 
     testImplementation(libs.test.assertk)
     testImplementation(libs.test.junit5Api)

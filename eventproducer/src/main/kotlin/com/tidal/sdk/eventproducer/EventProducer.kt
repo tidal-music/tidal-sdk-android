@@ -1,6 +1,7 @@
 package com.tidal.sdk.eventproducer
 
 import android.content.Context
+import com.tidal.networktime.SNTPClient
 import com.tidal.sdk.auth.CredentialsProvider
 import com.tidal.sdk.eventproducer.di.DaggerEventsComponent
 import com.tidal.sdk.eventproducer.model.EventsConfig
@@ -42,6 +43,9 @@ class EventProducer private constructor(coroutineScope: CoroutineScope) {
 
     @Inject
     internal lateinit var monitoringScheduler: MonitoringScheduler
+
+    @Inject
+    internal lateinit var sntpClient: SNTPClient
 
     internal fun startOutage() {
         _outageState.value = OutageState.Outage()
@@ -91,6 +95,7 @@ class EventProducer private constructor(coroutineScope: CoroutineScope) {
                         )
                 EventProducer(coroutineScope).also {
                     eventsComponent.inject(it)
+                    it.sntpClient.enableSynchronization()
                     coroutineScope.launch(Dispatchers.IO) { it.scheduler.scheduleBatchAndSend() }
                     coroutineScope.launch(Dispatchers.IO) {
                         it.monitoringScheduler.scheduleSendMonitoringInfo()

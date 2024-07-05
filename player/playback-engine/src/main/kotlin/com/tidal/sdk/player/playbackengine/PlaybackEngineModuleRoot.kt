@@ -3,10 +3,10 @@ package com.tidal.sdk.player.playbackengine
 import android.content.Context
 import android.net.ConnectivityManager
 import com.google.gson.Gson
+import com.tidal.networktime.SNTPClient
 import com.tidal.sdk.player.common.Configuration
 import com.tidal.sdk.player.common.UUIDWrapper
 import com.tidal.sdk.player.commonandroid.Base64Codec
-import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
 import com.tidal.sdk.player.events.EventReporter
 import com.tidal.sdk.player.playbackengine.di.DaggerExoPlayerPlaybackEngineComponent
 import com.tidal.sdk.player.playbackengine.model.AssetTimeoutConfig
@@ -41,7 +41,7 @@ class PlaybackEngineModuleRoot(
     eventReporter: EventReporter,
     streamingPrivileges: StreamingPrivileges,
     uuidWrapper: UUIDWrapper,
-    trueTimeWrapper: TrueTimeWrapper,
+    sntpClient: SNTPClient,
     playbackPrivilegeProvider: PlaybackPrivilegeProvider,
     offlineCacheProvider: OfflineCacheProvider?,
     encryption: Encryption?,
@@ -67,7 +67,7 @@ class PlaybackEngineModuleRoot(
             eventReporter,
             streamingPrivileges,
             uuidWrapper,
-            trueTimeWrapper,
+            sntpClient,
             playbackPrivilegeProvider,
             offlineCacheProvider,
             encryption,

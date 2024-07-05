@@ -3,10 +3,10 @@ package com.tidal.sdk.player.di
 import android.content.Context
 import android.net.ConnectivityManager
 import com.google.gson.Gson
+import com.tidal.networktime.SNTPClient
 import com.tidal.sdk.player.common.Configuration
 import com.tidal.sdk.player.common.UUIDWrapper
 import com.tidal.sdk.player.commonandroid.Base64Codec
-import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
 import com.tidal.sdk.player.events.EventReporter
 import com.tidal.sdk.player.offlineplay.OfflinePlayProvider
 import com.tidal.sdk.player.playbackengine.PlaybackEngineModuleRoot
@@ -59,7 +59,7 @@ internal object PlaybackEngineModule {
         eventReporter: EventReporter,
         streamingPrivileges: StreamingPrivileges,
         uuidWrapper: UUIDWrapper,
-        trueTimeWrapper: TrueTimeWrapper,
+        sntpClient: SNTPClient,
         playbackPrivilegeProvider: PlaybackPrivilegeProvider,
         offlinePlayProvider: OfflinePlayProvider?,
         base64Codec: Base64Codec,
@@ -81,7 +81,7 @@ internal object PlaybackEngineModule {
         eventReporter,
         streamingPrivileges,
         uuidWrapper,
-        trueTimeWrapper,
+        sntpClient,
         playbackPrivilegeProvider,
         offlinePlayProvider?.offlineCacheProvider,
         offlinePlayProvider?.encryption,

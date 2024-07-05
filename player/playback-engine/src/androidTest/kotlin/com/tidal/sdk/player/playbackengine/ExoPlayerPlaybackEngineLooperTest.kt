@@ -4,10 +4,11 @@ import androidx.test.platform.app.InstrumentationRegistry
 import assertk.assertThat
 import assertk.assertions.isSameAs
 import com.google.gson.Gson
+import com.tidal.networktime.NTPServer
+import com.tidal.networktime.SNTPClient
 import com.tidal.sdk.player.common.Configuration
 import com.tidal.sdk.player.common.UUIDWrapper
 import com.tidal.sdk.player.commonandroid.Base64Codec
-import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
 import com.tidal.sdk.player.playbackengine.model.AssetTimeoutConfig
 import com.tidal.sdk.player.playbackengine.model.BufferConfiguration
 import com.tidal.sdk.player.playbackengine.player.CacheProvider
@@ -37,7 +38,7 @@ internal class ExoPlayerPlaybackEngineLooperTest {
         mock(),
         mock(),
         UUIDWrapper(),
-        TrueTimeWrapper(),
+        SNTPClient(NTPServer("time.google.com")),
         mock(),
         mock(),
         mock(),

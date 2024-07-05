@@ -2,7 +2,7 @@ package com.tidal.sdk.player.streamingprivileges
 
 import android.net.ConnectivityManager
 import com.google.gson.Gson
-import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
+import com.tidal.networktime.SNTPClient
 import com.tidal.sdk.player.streamingprivileges.di.DaggerStreamingPrivilegesComponent
 import okhttp3.OkHttpClient
 
@@ -10,7 +10,7 @@ class StreamingPrivilegesModuleRoot(
     connectivityManager: ConnectivityManager,
     okHttpClient: OkHttpClient,
     gson: Gson,
-    trueTimeWrapper: TrueTimeWrapper,
+    sntpClient: SNTPClient,
 ) {
 
     val streamingPrivileges = componentFactoryF()
@@ -18,7 +18,7 @@ class StreamingPrivilegesModuleRoot(
             connectivityManager,
             okHttpClient,
             gson,
-            trueTimeWrapper,
+            sntpClient,
         )
         .streamingPrivileges
 

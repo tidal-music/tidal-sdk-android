@@ -3,10 +3,10 @@ package com.tidal.sdk.player.playbackengine.di
 import android.content.Context
 import android.net.ConnectivityManager
 import com.google.gson.Gson
+import com.tidal.networktime.SNTPClient
 import com.tidal.sdk.player.common.Configuration
 import com.tidal.sdk.player.common.UUIDWrapper
 import com.tidal.sdk.player.commonandroid.Base64Codec
-import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
 import com.tidal.sdk.player.events.EventReporter
 import com.tidal.sdk.player.playbackengine.Encryption
 import com.tidal.sdk.player.playbackengine.PlaybackEngine
@@ -53,7 +53,7 @@ interface ExoPlayerPlaybackEngineComponent {
             @BindsInstance eventReporter: EventReporter,
             @BindsInstance streamingPrivileges: StreamingPrivileges,
             @BindsInstance uuidWrapper: UUIDWrapper,
-            @BindsInstance trueTimeWrapper: TrueTimeWrapper,
+            @BindsInstance sntpClient: SNTPClient,
             @BindsInstance playbackPrivilegeProvider: PlaybackPrivilegeProvider,
             @BindsInstance offlineCacheProvider: OfflineCacheProvider?,
             @BindsInstance encryption: Encryption?,

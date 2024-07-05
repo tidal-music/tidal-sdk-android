@@ -8,7 +8,7 @@ import android.os.HandlerThread
 import android.os.Looper
 import androidx.media3.exoplayer.drm.ExoMediaDrm
 import androidx.media3.exoplayer.drm.FrameworkMediaDrm
-import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
+import com.tidal.networktime.SNTPClient
 import com.tidal.sdk.player.events.EventReporter
 import com.tidal.sdk.player.playbackengine.ExoPlayerPlaybackEngine
 import com.tidal.sdk.player.playbackengine.PlaybackContextFactory
@@ -158,7 +158,7 @@ internal object ExoPlayerPlaybackEngineModule {
         audioQualityRepository: AudioQualityRepository,
         audioModeRepository: AudioModeRepository,
         volumeHelper: VolumeHelper,
-        trueTimeWrapper: TrueTimeWrapper,
+        sntpClient: SNTPClient,
         eventReporter: EventReporter,
         errorHandler: ErrorHandler,
         djSessionManager: DjSessionManager,
@@ -175,7 +175,7 @@ internal object ExoPlayerPlaybackEngineModule {
         audioQualityRepository,
         audioModeRepository,
         volumeHelper,
-        trueTimeWrapper,
+        sntpClient,
         eventReporter,
         errorHandler,
         djSessionManager,

@@ -34,6 +34,7 @@ dependencies {
     implementation(libs.tidal.exoPlayer.extension.flac)
     implementation(libs.tidal.exoPlayer.extension.okhttp)
     implementation(libs.dagger)
+    implementation(libs.tidal.networktime)
 
     testImplementation(libs.test.assertk)
     testImplementation(libs.test.junit5Api)

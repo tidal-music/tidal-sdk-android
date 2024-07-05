@@ -2,7 +2,7 @@ package com.tidal.sdk.player.streamingprivileges.di
 
 import android.net.ConnectivityManager
 import com.google.gson.Gson
-import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
+import com.tidal.networktime.SNTPClient
 import com.tidal.sdk.player.streamingprivileges.StreamingPrivileges
 import dagger.BindsInstance
 import dagger.Component
@@ -22,7 +22,7 @@ interface StreamingPrivilegesComponent {
             @BindsInstance connectivityManager: ConnectivityManager,
             @BindsInstance okHttpClient: OkHttpClient,
             @BindsInstance gson: Gson,
-            @BindsInstance trueTimeWrapper: TrueTimeWrapper,
+            @BindsInstance sntpClient: SNTPClient,
         ): StreamingPrivilegesComponent
     }
 }

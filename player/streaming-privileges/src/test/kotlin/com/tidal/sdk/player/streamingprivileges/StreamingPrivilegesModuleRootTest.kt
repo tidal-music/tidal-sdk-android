@@ -4,7 +4,7 @@ import android.net.ConnectivityManager
 import assertk.assertThat
 import assertk.assertions.isSameAs
 import com.google.gson.Gson
-import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
+import com.tidal.networktime.SNTPClient
 import com.tidal.sdk.player.streamingprivileges.di.StreamingPrivilegesComponent
 import okhttp3.OkHttpClient
 import org.junit.jupiter.api.AfterEach
@@ -20,13 +20,13 @@ internal class StreamingPrivilegesModuleRootTest {
     private val connectivityManager = mock<ConnectivityManager>()
     private val okHttpClient = mock<OkHttpClient>()
     private val gson = mock<Gson>()
-    private val trueTimeWrapper = mock<TrueTimeWrapper>()
+    private val sntpClient = mock<SNTPClient>()
     private val streamingPrivilegesModuleRoot by lazy {
         StreamingPrivilegesModuleRoot(
             connectivityManager,
             okHttpClient,
             gson,
-            trueTimeWrapper,
+            sntpClient,
         )
     }
 
@@ -58,7 +58,7 @@ internal class StreamingPrivilegesModuleRootTest {
                     connectivityManager,
                     okHttpClient,
                     gson,
-                    trueTimeWrapper,
+                    sntpClient,
                 )
             } doReturn component
         }
@@ -70,7 +70,7 @@ internal class StreamingPrivilegesModuleRootTest {
             connectivityManager,
             okHttpClient,
             gson,
-            trueTimeWrapper,
+            sntpClient,
         )
         verify(component).streamingPrivileges
         verifyNoMoreInteractions(expected, component, componentFactory)
