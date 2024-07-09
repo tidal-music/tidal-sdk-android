@@ -742,4 +742,34 @@ class TokenRepositoryTest {
         val numberOfRefreshCalls = fakeTokenService.calls.filter { it == CallType.Refresh }.size
         assertEquals(1, numberOfRefreshCalls)
     }
+
+    @Test
+    fun `credentials are not saved to the store again if they didn't change`() = runTest {
+        // given
+        val clientId = "someClientId"
+        val credentials = makeCredentials(
+            userId = "999",
+            isExpired = false,
+            token = "credentials",
+            clientId = clientId,
+        )
+        val tokens = Tokens(
+            credentials,
+            "refreshToken",
+        )
+        val tokenService = FakeTokenService()
+        createAuthConfig(clientId = clientId)
+        fakeTokensStore = FakeTokensStore(authConfig.credentialsKey).apply {
+            saveTokens(tokens)
+        }
+        createTokenRepository(tokenService, fakeTokensStore)
+
+        // when
+        tokenRepository.getCredentials(null)
+
+        // then
+        assert(fakeTokensStore.saves == 1) {
+            "No additional save to the store should have been made"
+        }
+    }
 }
