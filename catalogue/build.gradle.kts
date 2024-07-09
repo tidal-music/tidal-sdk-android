@@ -2,20 +2,23 @@ plugins {
     alias(libs.plugins.tidal.android.library)
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.android.junit5)
+    alias(libs.plugins.kotlin.plugin.serialization)
 }
 
 android {
     namespace = "com.tidal.sdk.catalogue"
 }
-
 dependencies {
 
     api(libs.tidal.sdk.common)
 
     implementation(libs.kotlinxCoroutinesCore)
-    implementation(libs.kotlinx.serialization.json)
+    api(libs.kotlinx.serialization.json)
     implementation(libs.okhttp.loggingInterceptor)
-    implementation(libs.retrofit)
+    api(libs.retrofit)
+    implementation(libs.converter.kotlinx.serialization)
+    implementation(libs.converter.scalars)
+    api(libs.tidal.sdk.auth)
 
     testApi(libs.test.androidx.junit)
     testApi(libs.test.junit5Api)
