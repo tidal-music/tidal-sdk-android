@@ -1,5 +1,6 @@
 [versions]
 activity-compose = "1.8.2"
+converter-kotlinx-serialization = "2.11.0"
 coroutines = "1.8.0"
 compose-compiler = "1.5.11"
 compose-libs = "1.6.5"
@@ -23,6 +24,8 @@ tidal-androidx-media = "1.1.1.2"
 plugins-tidal = "unspecified"
 
 [libraries]
+converter-kotlinx-serialization = { module = "com.squareup.retrofit2:converter-kotlinx-serialization", version.ref = "converter-kotlinx-serialization" }
+converter-scalars = { module = "com.squareup.retrofit2:converter-scalars", version.ref = "converter-kotlinx-serialization" }
 plugin-kotlin-android = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 plugin-android-tools-build = { group = "com.android.tools.build", name = "gradle", version.ref = "plugin-android" }
 plugin-dokka = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
