@@ -8,7 +8,7 @@ import com.tidal.sdk.catalogue.generated.apis.TrackJSONAPI
 import com.tidal.sdk.catalogue.generated.apis.VideoJSONAPI
 import com.tidal.sdk.catalogue.networking.RetrofitProvider
 
-class Catalogue(credentialsProvider: CredentialsProvider) {
+class Catalogue(credentialsProvider: CredentialsProvider, baseUrl: String = DEFAULT_BASE_URL) {
 
     private val retrofit by lazy {
         RetrofitProvider().provideRetrofit(
@@ -56,5 +56,9 @@ class Catalogue(credentialsProvider: CredentialsProvider) {
      */
     fun createVideoAPI(): VideoJSONAPI {
         return retrofit.create(VideoJSONAPI::class.java)
+    }
+
+    companion object {
+        const val DEFAULT_BASE_URL = "https://openapi.tidal.com/v2/"
     }
 }
