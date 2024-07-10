@@ -27,8 +27,8 @@ class RetrofitProvider {
             .addInterceptor(getLoggingInterceptor()).build()
     }
 
-    fun provideRetrofit(credentialsProvider: CredentialsProvider): Retrofit {
-        return Retrofit.Builder().baseUrl("https://openapi.tidal.com/v2/").client(
+    fun provideRetrofit(baseUrl: String, credentialsProvider: CredentialsProvider): Retrofit {
+        return Retrofit.Builder().baseUrl(baseUrl).client(
             provideOkHttpClientBuilder(credentialsProvider),
         )
             .apply {
