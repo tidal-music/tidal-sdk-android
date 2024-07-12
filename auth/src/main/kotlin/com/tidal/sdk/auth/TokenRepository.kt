@@ -132,7 +132,7 @@ internal class TokenRepository(
             val token = Credentials.create(
                 authConfig,
                 timeProvider,
-                expiresIn = it.expiresIn,
+                expiresIn = it.expiresIn ?: 0,
                 userId = it.userId.toString(),
                 token = it.accessToken,
             )
