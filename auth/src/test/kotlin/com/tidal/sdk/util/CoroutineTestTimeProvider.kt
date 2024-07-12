@@ -5,11 +5,11 @@ import com.tidal.sdk.util.CoroutineTestTimeProvider.Mode
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestDispatcher
-import kotlinx.datetime.Instant
 
 /**
  * [TimeProvider] implementation that can be used to control time flow inside a
@@ -27,13 +27,12 @@ class CoroutineTestTimeProvider(
 ) : TimeProvider {
 
     override val now
-        get() = Instant.fromEpochMilliseconds(getTime())
+        get() = getTimeSeconds()
 
     private var timeJob: Job? = null
 
-    private fun getTime(): Long {
-        return dispatcher.scheduler.currentTime
-    }
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private fun getTimeSeconds(): Long = (dispatcher.scheduler.currentTime) / 1000
 
     fun startTimeFor(scope: CoroutineScope, units: Int) {
         if (mode == Mode.SECONDS) {

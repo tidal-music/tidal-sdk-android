@@ -9,7 +9,7 @@ internal data class RefreshResponse(
     val accessToken: String,
     val clientName: String? = null,
     @JsonNames("expires_in")
-    val expiresIn: Int,
+    val expiresIn: Long,
     @JsonNames("token_type")
     val tokenType: String,
     @JsonNames("scope")

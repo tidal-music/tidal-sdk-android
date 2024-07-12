@@ -1,7 +1,6 @@
 package com.tidal.sdk.auth.storage
 
 import com.tidal.sdk.auth.model.Credentials
-import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 
 /**
@@ -15,7 +14,7 @@ internal data class LegacyCredentials(
     val clientUniqueKey: String?,
     val grantedScopes: Scopes,
     val userId: String?,
-    val expires: Instant?,
+    val expires: Long?,
     val token: String?,
 ) {
     fun toCredentials(): Credentials {

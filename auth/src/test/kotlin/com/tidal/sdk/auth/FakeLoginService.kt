@@ -128,7 +128,7 @@ internal class FakeLoginService(
         private val startTime = timeProvider.now
 
         fun isPending(): Boolean {
-            return startTime.epochSeconds + pendingForSeconds > timeProvider.now.epochSeconds
+            return startTime + pendingForSeconds > timeProvider.now
         }
     }
 }
