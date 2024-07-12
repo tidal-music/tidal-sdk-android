@@ -20,7 +20,6 @@ import com.tidal.sdk.common.TidalMessage
 import com.tidal.sdk.common.d
 import com.tidal.sdk.common.logger
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.datetime.Instant
 
 internal class LoginRepository constructor(
     private val authConfig: AuthConfig,
@@ -98,9 +97,7 @@ internal class LoginRepository constructor(
                 authConfig.clientUniqueKey,
                 response.scopesString.split(", ").toSet(),
                 response.userId?.toString(),
-                Instant.fromEpochSeconds(
-                    timeProvider.now.epochSeconds + response.expiresIn.toLong(),
-                ),
+                timeProvider.now + response.expiresIn.toLong(),
                 response.accessToken,
             ),
             refreshToken = response.refreshToken,

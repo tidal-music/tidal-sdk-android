@@ -13,7 +13,7 @@ class TestTimeProvider : TimeProvider {
     }
 
     override val now
-        get() = clock.now()
+        get() = clock.now().epochSeconds
 
     fun advanceSeconds(seconds: Int) =
         clock.advance(seconds.toDuration(DurationUnit.SECONDS)).also {

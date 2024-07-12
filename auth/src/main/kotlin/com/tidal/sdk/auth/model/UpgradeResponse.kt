@@ -12,7 +12,7 @@ internal data class UpgradeResponse(
     @JsonNames("token_type")
     val tokenType: String?,
     @JsonNames("expires_in")
-    val expiresIn: Int? = 0,
+    val expiresIn: Long? = 0,
     @JsonNames("user_id")
     val userId: Int? = null,
 )

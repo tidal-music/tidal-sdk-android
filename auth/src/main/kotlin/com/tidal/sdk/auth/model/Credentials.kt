@@ -1,13 +1,31 @@
 package com.tidal.sdk.auth.model
 
+import com.tidal.sdk.auth.model.Credentials.Level.BASIC
+import com.tidal.sdk.auth.model.Credentials.Level.CLIENT
+import com.tidal.sdk.auth.model.Credentials.Level.USER
 import com.tidal.sdk.auth.util.TimeProvider
-import com.tidal.sdk.common.d
-import com.tidal.sdk.common.logger
-import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 
 /**
  * Represents the credentials of a user or client.
+ *
+ * @property clientId The client ID.
+ * This identifies the type of client.
+ *
+ * @property requestedScopes The requested scopes.
+ *
+ * @property clientUniqueKey The client unique key.
+ *
+ * @property grantedScopes The granted scopes.
+ *
+ * @property userId The user ID.
+ * the unique Id attributed to one user.
+ *
+ * @property expires The expiration time of the token.
+ * This is a Unix timestamp in seconds since Epoch.
+ *
+ * @property token The token.
+ * This is the OAuth2 token to authenticate API calls with.
  */
 @Serializable
 data class Credentials(
@@ -16,7 +34,7 @@ data class Credentials(
     val clientUniqueKey: String?,
     val grantedScopes: Set<String>,
     val userId: String?,
-    val expires: Instant?,
+    val expires: Long?,
     val token: String?,
 ) {
 
@@ -37,18 +55,12 @@ data class Credentials(
      * Checks if the token is expired.
      */
     internal fun isExpired(timeProvider: TimeProvider): Boolean {
-        val now = timeProvider.now.epochSeconds
-        val validUntil = expires?.epochSeconds ?: null
-        logger.d {
-            "Checking if token is expired: Now: $now, valid until: $validUntil, " +
-                "limit: $EXPIRY_LIMIT_SECONDS"
-        }
+        val now = timeProvider.now
+        val validUntil = expires
         val isExpired = validUntil?.let {
             now > validUntil - EXPIRY_LIMIT_SECONDS
         } ?: true
-        return isExpired.also {
-            logger.d { "Token is expired: $it" }
-        }
+        return isExpired
     }
 
     /**
@@ -71,17 +83,15 @@ data class Credentials(
 
         internal fun createBasic(
             authConfig: AuthConfig,
-        ): Credentials {
-            return Credentials(
-                clientId = authConfig.clientId,
-                requestedScopes = authConfig.scopes,
-                clientUniqueKey = authConfig.clientUniqueKey,
-                grantedScopes = setOf(),
-                userId = null,
-                expires = null,
-                token = null,
-            )
-        }
+        ): Credentials = Credentials(
+            clientId = authConfig.clientId,
+            requestedScopes = authConfig.scopes,
+            clientUniqueKey = authConfig.clientUniqueKey,
+            grantedScopes = setOf(),
+            userId = null,
+            expires = null,
+            token = null,
+        )
 
         internal fun create(
             authConfig: AuthConfig,
@@ -103,16 +113,14 @@ data class Credentials(
             grantedScopes: Set<String>? = null,
             userId: String?,
             token: String?,
-            expiresIn: Int?,
+            expiresIn: Long,
         ) = Credentials(
             clientId = authConfig.clientId,
             requestedScopes = authConfig.scopes,
             clientUniqueKey = authConfig.clientUniqueKey,
             grantedScopes = grantedScopes ?: setOf(),
             userId = userId,
-            expires = expiresIn?.let {
-                Instant.fromEpochSeconds(timeProvider.now.epochSeconds + it.toLong())
-            },
+            expires = timeProvider.now + expiresIn,
             token = token,
         )
     }

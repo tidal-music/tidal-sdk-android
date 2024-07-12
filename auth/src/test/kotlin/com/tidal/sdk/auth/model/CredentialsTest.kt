@@ -1,9 +1,6 @@
 package com.tidal.sdk.auth.model
 
 import com.tidal.sdk.util.TestTimeProvider
-import kotlin.time.DurationUnit
-import kotlin.time.toDuration
-import kotlinx.datetime.Clock.System.now
 import org.junit.jupiter.api.Test
 
 class CredentialsTest {
@@ -13,8 +10,8 @@ class CredentialsTest {
     @Test
     fun `An access token expiring in more than a minute is valid`() {
         // given
-        val time = now()
-        val expiry = time.plus(2.toDuration(DurationUnit.MINUTES))
+        val time = System.currentTimeMillis() / 1000
+        val expiry = time + 120
         val token = Credentials(
             "",
             setOf(),
@@ -37,8 +34,8 @@ class CredentialsTest {
     @Test
     fun `An access token expiring in less than a minute is not valid`() {
         // given
-        val time = now()
-        val expiry = time.plus(30.toDuration(DurationUnit.SECONDS))
+        val time = System.currentTimeMillis() / 1000
+        val expiry = time + 30
         val token = Credentials(
             "",
             setOf(),
