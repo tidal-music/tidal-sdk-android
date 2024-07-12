@@ -70,3 +70,12 @@ internal suspend fun <T> retryWithPolicyUnwrapped(
     }
     throw (throwable!!)
 }
+
+/**
+ * Convenience function get the current time in seconds.
+ */
+internal fun currentTimeSeconds(): Long {
+    return System.currentTimeMillis() / MILLISECONDS
+}
+
+private const val MILLISECONDS = 1000
