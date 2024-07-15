@@ -7,6 +7,7 @@ import com.tidal.sdk.common.NetworkError
 import com.tidal.sdk.common.TidalMessage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.datetime.Instant
 
 class FakeCredentialsProvider(
     private val isSuccessResult: Boolean = true,
