@@ -7,7 +7,6 @@ import com.tidal.sdk.common.NetworkError
 import com.tidal.sdk.common.TidalMessage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.datetime.Instant
 
 class FakeCredentialsProvider(
     private val isSuccessResult: Boolean = true,
@@ -23,14 +22,12 @@ class FakeCredentialsProvider(
 
     override suspend fun getCredentials(
         apiErrorSubStatus: String?,
-    ): AuthResult<Credentials> {
-        return if (isSuccessResult) {
-            accessToken = refreshToken
-            clientId = refreshClientId
-            AuthResult.Success(getDefaultCredentials(accessToken, clientId))
-        } else {
-            AuthResult.Failure(NetworkError("404"))
-        }
+    ): AuthResult<Credentials> = if (isSuccessResult) {
+        accessToken = refreshToken
+        clientId = refreshClientId
+        AuthResult.Success(getDefaultCredentials(accessToken, clientId))
+    } else {
+        AuthResult.Failure(NetworkError("404"))
     }
 
     override fun isUserLoggedIn() = true
@@ -41,7 +38,7 @@ class FakeCredentialsProvider(
         clientUniqueKey = "",
         grantedScopes = emptySet(),
         userId = "",
-        expires = Instant.DISTANT_FUTURE,
+        expires = Long.MAX_VALUE,
         token = accessToken,
     )
 }
