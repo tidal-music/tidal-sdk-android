@@ -44,7 +44,7 @@ internal class PlaybackInfoLoadable(
         try {
             coroutineScopeF().also {
                 coroutineScope = it
-                playbackInfo = runBlocking(it.coroutineContext) {
+                runBlocking(it.coroutineContext) {
                     when (playbackPrivilegeProvider.get(forwardingMediaProduct.delegate)) {
                         PlaybackPrivilege.OK_ONLINE ->
                             streamingApiRepository.getPlaybackInfoForStreaming(
@@ -60,6 +60,7 @@ internal class PlaybackInfoLoadable(
 
                         PlaybackPrivilege.OFFLINE_EXPIRED -> throw OfflineExpiredException()
                     }.also {
+                        playbackInfo = it
                         extendedExoPlayerState.playbackInfoListener?.onPlaybackInfoFetched(
                             streamingSession,
                             forwardingMediaProduct,
