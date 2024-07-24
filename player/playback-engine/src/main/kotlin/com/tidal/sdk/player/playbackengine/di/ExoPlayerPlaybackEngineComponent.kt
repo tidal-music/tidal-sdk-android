@@ -22,6 +22,7 @@ import com.tidal.sdk.player.streamingprivileges.StreamingPrivileges
 import dagger.BindsInstance
 import dagger.Component
 import java.io.File
+import javax.inject.Named
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -46,6 +47,7 @@ interface ExoPlayerPlaybackEngineComponent {
             @BindsInstance cacheProvider: CacheProvider,
             @BindsInstance configuration: Configuration,
             @BindsInstance audioDecodingMode: AudioDecodingMode,
+            @BindsInstance @Named("useLibflacAudioRenderer") useLibflacAudioRenderer: Boolean,
             @BindsInstance appSpecificCacheDir: File,
             @BindsInstance streamingApi: StreamingApi,
             @BindsInstance okHttpClient: OkHttpClient,

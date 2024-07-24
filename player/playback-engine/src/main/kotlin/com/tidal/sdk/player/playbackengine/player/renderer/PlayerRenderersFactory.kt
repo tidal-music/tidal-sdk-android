@@ -12,7 +12,7 @@ import com.tidal.sdk.player.playbackengine.player.renderer.video.MediaCodecVideo
 
 internal class PlayerRenderersFactory(
     private val mediaCodecVideoRendererFactory: MediaCodecVideoRendererFactory,
-    private val libflacAudioRendererFactory: LibflacAudioRendererFactory,
+    private val libflacAudioRendererFactory: LibflacAudioRendererFactory?,
     private val fallbackAudioRendererFactory: FallbackAudioRendererFactory,
 ) : RenderersFactory {
 
@@ -25,7 +25,7 @@ internal class PlayerRenderersFactory(
         metadataRendererOutput: MetadataOutput,
     ) = arrayOf(
         mediaCodecVideoRendererFactory.create(eventHandler, videoRendererEventListener),
-        libflacAudioRendererFactory.create(eventHandler, audioRendererEventListener),
+        libflacAudioRendererFactory?.create(eventHandler, audioRendererEventListener),
         fallbackAudioRendererFactory.create(eventHandler, audioRendererEventListener),
     ).filterNotNull()
         .toTypedArray()

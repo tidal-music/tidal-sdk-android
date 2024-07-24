@@ -14,6 +14,7 @@ import com.tidal.sdk.player.playbackengine.player.renderer.video.MediaCodecVideo
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
+import javax.inject.Named
 import kotlin.time.DurationUnit
 
 @Module
@@ -26,7 +27,12 @@ internal object RendererModule {
 
     @Provides
     @Reusable
-    fun libflacAudioRendererFactory() = LibflacAudioRendererFactory()
+    fun libflacAudioRendererFactory(
+        @Named("useLibflacAudioRenderer") useLibflacAudioRenderer: Boolean,
+    ) = when (useLibflacAudioRenderer) {
+        true -> LibflacAudioRendererFactory()
+        false -> null
+    }
 
     @Provides
     @Reusable
@@ -71,7 +77,7 @@ internal object RendererModule {
     @Suppress("SpreadOperator")
     fun renderersFactory(
         mediaCodecVideoRendererFactory: MediaCodecVideoRendererFactory,
-        libflacAudioRendererFactory: LibflacAudioRendererFactory,
+        libflacAudioRendererFactory: LibflacAudioRendererFactory?,
         fallbackAudioRendererFactory: FallbackAudioRendererFactory,
     ): RenderersFactory = PlayerRenderersFactory(
         mediaCodecVideoRendererFactory,

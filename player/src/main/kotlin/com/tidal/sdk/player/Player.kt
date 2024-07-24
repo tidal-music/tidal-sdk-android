@@ -54,6 +54,7 @@ class Player(
     } else {
         AudioDecodingMode.NATIVE
     },
+    useLibflacAudioRenderer: Boolean = true,
     userClientIdSupplier: (() -> Int)? = null,
     bufferConfiguration: BufferConfiguration = BufferConfiguration(),
     assetTimeoutConfig: AssetTimeoutConfig = AssetTimeoutConfig(),
@@ -74,6 +75,7 @@ class Player(
             credentialsProvider,
             eventSender,
             audioDecodingMode,
+            useLibflacAudioRenderer,
             userClientIdSupplier,
             version,
             bufferConfiguration,

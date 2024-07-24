@@ -1,6 +1,5 @@
 package com.tidal.sdk.player.playbackengine.player.renderer.audio.flac
 
-import android.os.Build
 import android.os.Handler
 import androidx.media3.decoder.flac.LibflacAudioRenderer
 import androidx.media3.exoplayer.audio.AudioRendererEventListener
@@ -11,9 +10,5 @@ internal class LibflacAudioRendererFactory : AudioRendererFactory {
     override fun create(
         eventHandler: Handler,
         audioRendererEventListener: AudioRendererEventListener,
-    ) = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O_MR1) {
-        LibflacAudioRenderer(eventHandler, audioRendererEventListener)
-    } else {
-        null
-    }
+    ) = LibflacAudioRenderer(eventHandler, audioRendererEventListener)
 }

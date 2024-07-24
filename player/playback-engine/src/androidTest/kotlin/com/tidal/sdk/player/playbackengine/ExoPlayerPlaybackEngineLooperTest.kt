@@ -25,6 +25,7 @@ internal class ExoPlayerPlaybackEngineLooperTest {
         InstrumentationRegistry.getInstrumentation().targetContext,
         mock(),
         AudioDecodingMode.NATIVE,
+        true,
         MutableSharedFlow(),
         BufferConfiguration(),
         AssetTimeoutConfig(),
