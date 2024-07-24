@@ -1,7 +1,6 @@
 package com.tidal.sdk.player
 
 import android.app.Application
-import android.os.Build
 import com.tidal.sdk.auth.CredentialsProvider
 import com.tidal.sdk.eventproducer.EventSender
 import com.tidal.sdk.player.common.Configuration
@@ -14,7 +13,6 @@ import com.tidal.sdk.player.playbackengine.model.BufferConfiguration
 import com.tidal.sdk.player.playbackengine.playbackprivilege.PlaybackPrivilege
 import com.tidal.sdk.player.playbackengine.playbackprivilege.PlaybackPrivilegeProvider
 import com.tidal.sdk.player.playbackengine.player.CacheProvider
-import com.tidal.sdk.player.playbackengine.player.renderer.audio.AudioDecodingMode
 import com.tidal.sdk.player.streamingapi.StreamingApiTimeoutConfig
 import okhttp3.OkHttpClient
 
@@ -24,8 +22,6 @@ import okhttp3.OkHttpClient
  * @param application An [Application] to use.
  * @param[credentialsProvider] A [CredentialsProvider] from the Auth SDK.
  * @param[eventSender] An [EventSender] from the EventProducer SDK.
- * @param audioDecodingMode The decoding mode to use for audio. See [AudioDecodingMode] for more
- * info.
  * @param userClientIdSupplier A function that supplies a userClientId used for event tracking.
  * This value needs to be taken from the session. Internal use only.
  * @param bufferConfiguration The parameters to configure different values for player buffer
@@ -49,11 +45,6 @@ class Player(
     application: Application,
     credentialsProvider: CredentialsProvider,
     eventSender: EventSender,
-    audioDecodingMode: AudioDecodingMode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-        AudioDecodingMode.BIT_PERFECT
-    } else {
-        AudioDecodingMode.NATIVE
-    },
     useLibflacAudioRenderer: Boolean = true,
     userClientIdSupplier: (() -> Int)? = null,
     bufferConfiguration: BufferConfiguration = BufferConfiguration(),
@@ -74,7 +65,6 @@ class Player(
             application,
             credentialsProvider,
             eventSender,
-            audioDecodingMode,
             useLibflacAudioRenderer,
             userClientIdSupplier,
             version,

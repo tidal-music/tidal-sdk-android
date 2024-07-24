@@ -16,7 +16,6 @@ import com.tidal.sdk.player.playbackengine.model.Event
 import com.tidal.sdk.player.playbackengine.offline.cache.OfflineCacheProvider
 import com.tidal.sdk.player.playbackengine.playbackprivilege.PlaybackPrivilegeProvider
 import com.tidal.sdk.player.playbackengine.player.CacheProvider
-import com.tidal.sdk.player.playbackengine.player.renderer.audio.AudioDecodingMode
 import com.tidal.sdk.player.streamingapi.StreamingApi
 import com.tidal.sdk.player.streamingprivileges.StreamingPrivileges
 import dagger.BindsInstance
@@ -46,7 +45,6 @@ interface ExoPlayerPlaybackEngineComponent {
             @BindsInstance assetTimeoutConfig: AssetTimeoutConfig,
             @BindsInstance cacheProvider: CacheProvider,
             @BindsInstance configuration: Configuration,
-            @BindsInstance audioDecodingMode: AudioDecodingMode,
             @BindsInstance @Named("useLibflacAudioRenderer") useLibflacAudioRenderer: Boolean,
             @BindsInstance appSpecificCacheDir: File,
             @BindsInstance streamingApi: StreamingApi,
