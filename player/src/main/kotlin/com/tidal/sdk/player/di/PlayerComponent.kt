@@ -10,7 +10,6 @@ import com.tidal.sdk.player.playbackengine.model.AssetTimeoutConfig
 import com.tidal.sdk.player.playbackengine.model.BufferConfiguration
 import com.tidal.sdk.player.playbackengine.playbackprivilege.PlaybackPrivilegeProvider
 import com.tidal.sdk.player.playbackengine.player.CacheProvider
-import com.tidal.sdk.player.playbackengine.player.renderer.audio.AudioDecodingMode
 import com.tidal.sdk.player.streamingapi.StreamingApiTimeoutConfig
 import com.tidal.sdk.player.streamingprivileges.StreamingPrivileges
 import dagger.BindsInstance
@@ -44,7 +43,6 @@ internal interface PlayerComponent {
             @BindsInstance context: Context,
             @BindsInstance credentialsProvider: CredentialsProvider,
             @BindsInstance eventSender: EventSender,
-            @BindsInstance audioDecodingMode: AudioDecodingMode,
             @BindsInstance @Named("useLibflacAudioRenderer") useLibflacAudioRenderer: Boolean,
             @BindsInstance userClientIdSupplier: (() -> Int)?,
             @BindsInstance version: String,

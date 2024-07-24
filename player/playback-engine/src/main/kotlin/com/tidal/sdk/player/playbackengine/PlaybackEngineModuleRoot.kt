@@ -15,7 +15,6 @@ import com.tidal.sdk.player.playbackengine.model.Event
 import com.tidal.sdk.player.playbackengine.offline.cache.OfflineCacheProvider
 import com.tidal.sdk.player.playbackengine.playbackprivilege.PlaybackPrivilegeProvider
 import com.tidal.sdk.player.playbackengine.player.CacheProvider
-import com.tidal.sdk.player.playbackengine.player.renderer.audio.AudioDecodingMode
 import com.tidal.sdk.player.streamingapi.StreamingApi
 import com.tidal.sdk.player.streamingprivileges.StreamingPrivileges
 import java.io.File
@@ -28,7 +27,6 @@ import okhttp3.OkHttpClient
 class PlaybackEngineModuleRoot(
     context: Context,
     connectivityManager: ConnectivityManager,
-    audioDecodingMode: AudioDecodingMode,
     useLibflacAudioRenderer: Boolean,
     events: MutableSharedFlow<Event>,
     bufferConfiguration: BufferConfiguration,
@@ -60,7 +58,6 @@ class PlaybackEngineModuleRoot(
             assetTimeoutConfig,
             cacheProvider,
             configuration,
-            audioDecodingMode,
             useLibflacAudioRenderer,
             appSpecificCacheDir,
             streamingApi,

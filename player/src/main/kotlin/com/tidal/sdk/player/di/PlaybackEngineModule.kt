@@ -15,7 +15,6 @@ import com.tidal.sdk.player.playbackengine.model.BufferConfiguration
 import com.tidal.sdk.player.playbackengine.model.Event
 import com.tidal.sdk.player.playbackengine.playbackprivilege.PlaybackPrivilegeProvider
 import com.tidal.sdk.player.playbackengine.player.CacheProvider
-import com.tidal.sdk.player.playbackengine.player.renderer.audio.AudioDecodingMode
 import com.tidal.sdk.player.streamingapi.StreamingApi
 import com.tidal.sdk.player.streamingprivileges.StreamingPrivileges
 import dagger.Module
@@ -44,7 +43,6 @@ internal object PlaybackEngineModule {
     fun playbackEngine(
         context: Context,
         connectivityManager: ConnectivityManager,
-        audioDecodingMode: AudioDecodingMode,
         @Named("useLibflacAudioRenderer") useLibflacAudioRenderer: Boolean,
         events: MutableSharedFlow<Event>,
         bufferConfiguration: BufferConfiguration,
@@ -69,7 +67,6 @@ internal object PlaybackEngineModule {
     ) = PlaybackEngineModuleRoot(
         context,
         connectivityManager,
-        audioDecodingMode,
         useLibflacAudioRenderer,
         events,
         bufferConfiguration,
