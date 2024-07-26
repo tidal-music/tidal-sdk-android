@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.46] - 2024-07-26
+### Fixed
+- Fixed loud volume issue
+
 ## [0.0.45] - 2024-07-25
 ### Added
 - Allow opt-out of LibflacAudioRenderer usage
