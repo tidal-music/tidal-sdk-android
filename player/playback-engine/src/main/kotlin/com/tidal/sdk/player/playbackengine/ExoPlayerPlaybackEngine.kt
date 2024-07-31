@@ -824,12 +824,17 @@ internal class ExoPlayerPlaybackEngine(
         }
 
         val eventError = errorHandler.getErrorEvent(error, forwardingMediaProduct?.productType)
+        coroutineScope.launch {
+            eventSink.emit(eventError)
+        }
         playbackInfoFetchException.report(errorMessage, eventError.errorCode)
         val matchingMediaProduct = eventTime.correspondingForwardingMediaProductIfMatching
         if (matchingMediaProduct === forwardingMediaProduct ||
             matchingMediaProduct === nextForwardingMediaProduct
         ) {
-            if (matchingMediaProduct === forwardingMediaProduct) {
+            if (playbackInfoFetchException != null) {
+                reset()
+            } else if (matchingMediaProduct === forwardingMediaProduct) {
                 val positionInSeconds =
                     if (forwardingMediaProduct?.productType == ProductType.BROADCAST) {
                         extendedExoPlayer.currentPositionSinceEpochMs
@@ -843,9 +848,6 @@ internal class ExoPlayerPlaybackEngine(
                     positionInSeconds,
                 )
             }
-        }
-        coroutineScope.launch {
-            eventSink.emit(eventError)
         }
     }
 
