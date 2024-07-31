@@ -33,6 +33,8 @@ internal class KotlinAndroidApplicationConventionPlugin : Plugin<Project> {
 
         val tidalClientId = "tidal.clientid"
         val clientId = localProperties[tidalClientId]
+        val tidalClientSecret = "tidal.clientsecret"
+        val clientSecret = localProperties[tidalClientSecret]
         val tidalClientRedirectUri = "tidal.clientredirecturi"
         val clientRedirectUri = localProperties[tidalClientRedirectUri]
         androidApplication {
@@ -49,7 +51,7 @@ internal class KotlinAndroidApplicationConventionPlugin : Plugin<Project> {
                 buildConfigField(
                     "String",
                     "TIDAL_CLIENT_SECRET",
-                    "${localProperties["tidal.clientsecret"]}",
+                    "$clientSecret",
                 )
                 buildConfigField(
                     "String",
@@ -84,6 +86,7 @@ internal class KotlinAndroidApplicationConventionPlugin : Plugin<Project> {
             doLast {
                 arrayOf(
                     tidalClientId to clientId,
+                    tidalClientSecret to clientSecret,
                     tidalClientRedirectUri to clientRedirectUri,
                 ).forEach { (key, value) ->
                     if (value == null && System.getenv("CI").isNullOrBlank()) {
