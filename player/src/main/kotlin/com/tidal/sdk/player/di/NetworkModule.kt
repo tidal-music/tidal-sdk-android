@@ -118,9 +118,7 @@ internal object NetworkModule {
         .addInterceptor(authorizationInterceptor)
         .authenticator(defaultAuthenticator)
         .apply {
-            if (isDebuggable) {
-                addNetworkInterceptor(httpLoggingInterceptor.get())
-            }
+            addNetworkInterceptor(httpLoggingInterceptor.get())
         }.build()
 
     @Provides
