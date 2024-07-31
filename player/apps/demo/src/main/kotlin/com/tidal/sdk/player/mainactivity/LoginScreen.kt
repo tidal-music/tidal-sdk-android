@@ -16,7 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.media3.common.util.UnstableApi
-import com.tidal.sdk.player.BuildConfig
 import com.tidal.sdk.player.auth.weblogin.ComposeWebView
 
 @Composable
@@ -44,7 +43,7 @@ internal fun LoginScreen(
             dispatchSetSnackbarMessage(null)
         }
     }
-    if (state.isUserLoggedIn || !BuildConfig.TIDAL_CLIENT_SECRET.isNullOrBlank()) {
+    if (state.isUserLoggedIn) {
         LoadingScreen()
         val context = LocalContext.current
         LaunchedEffect(Unit) { dispatchFinalizeImplicitLoginFlow(context) }

@@ -32,6 +32,8 @@ internal class KotlinAndroidApplicationConventionPlugin : Plugin<Project> {
 
         val tidalClientId = "tidal.clientid"
         val clientId = localProperties[tidalClientId]
+        val tidalClientSecret = "tidal.clientsecret"
+        val clientSecret = localProperties[tidalClientSecret]
         androidApplication {
             compileSdk = Config.ANDROID_COMPILE_SDK
 
@@ -46,7 +48,7 @@ internal class KotlinAndroidApplicationConventionPlugin : Plugin<Project> {
                 buildConfigField(
                     "String",
                     "TIDAL_CLIENT_SECRET",
-                    "${localProperties["tidal.clientsecret"]}",
+                    "$clientSecret",
                 )
                 testInstrumentationRunner = Config.ANDROID_TEST_RUNNER_JUNIT
                 testInstrumentationRunnerArguments["clearPackageData"] = "true"
@@ -72,15 +74,19 @@ internal class KotlinAndroidApplicationConventionPlugin : Plugin<Project> {
                 compose = true
             }
         }
-        val ensureClientIdPresent: TaskProvider<*> = tasks.register("ensureClientIdPresent") {
-            doLast {
-                if (clientId == null && System.getenv("CI").isNullOrBlank()) {
-                    throw InvalidUserDataException(
-                        "$tidalClientId missing in ${localPropertiesFile.absolutePath}",
-                    )
+        val ensureClientIdPresent: TaskProvider<*> =
+            tasks.register("ensureClientPropertiesArePresent") {
+                doLast {
+                    arrayOf(tidalClientId to clientId, tidalClientSecret to clientSecret)
+                        .forEach { (key, value) ->
+                            if (value == null && System.getenv("CI").isNullOrBlank()) {
+                                throw InvalidUserDataException(
+                                    "$key missing in ${localPropertiesFile.absolutePath}",
+                                )
+                            }
+                        }
                 }
             }
-        }
         tasks.withType(KotlinCompile::class.java).configureEach {
             dependsOn(ensureClientIdPresent)
         }
