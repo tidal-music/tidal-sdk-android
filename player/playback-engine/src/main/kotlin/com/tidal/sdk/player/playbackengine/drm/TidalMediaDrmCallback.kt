@@ -35,6 +35,7 @@ internal class TidalMediaDrmCallback(
     private val okHttpClient: OkHttpClient,
     private val provisionRequestBuilder: Lazy<Request.Builder>,
     private val provisionRequestBody: Lazy<RequestBody>,
+    private val extras: Map<String, String?>?,
 ) : MediaDrmCallback {
 
     override fun executeKeyRequest(uuid: UUID, request: ExoMediaDrm.KeyRequest): ByteArray {
@@ -46,7 +47,7 @@ internal class TidalMediaDrmCallback(
 
         val drmLicense = when (mode) {
             DrmMode.Streaming -> runBlocking {
-                streamingApiRepository.getDrmLicense(drmLicenseRequest)
+                streamingApiRepository.getDrmLicense(drmLicenseRequest, extras)
             }
         }
 

@@ -55,10 +55,17 @@ internal class AudioDownloadStatisticsEventFactoryTest {
         val src = mock<AudioDownloadStatistics.Payload>()
         val expected = mock<AudioDownloadStatistics>()
         whenever(
-            audioDownloadStatisticsFactory.create(currentTimeMillis, randomUUID, user, client, src),
+            audioDownloadStatisticsFactory.create(
+                currentTimeMillis,
+                randomUUID,
+                user,
+                client,
+                src,
+                emptyMap(),
+            ),
         ).thenReturn(expected)
 
-        val actual = audioDownloadStatisticsEventFactory(src)
+        val actual = audioDownloadStatisticsEventFactory(src, emptyMap())
 
         verify(trueTimeWrapper).currentTimeMillis
         verify(uuidWrapper).randomUUID
@@ -70,6 +77,7 @@ internal class AudioDownloadStatisticsEventFactoryTest {
             user,
             client,
             src,
+            emptyMap(),
         )
         assertThat(actual).isSameAs(expected)
         verifyNoMoreInteractions(randomUUID, user, client, src, expected)

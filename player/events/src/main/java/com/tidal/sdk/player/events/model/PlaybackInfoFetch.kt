@@ -14,6 +14,7 @@ data class PlaybackInfoFetch @AssistedInject internal constructor(
     @Assisted override val user: User,
     @Assisted override val client: Client,
     @Assisted override val payload: Payload,
+    @Assisted override val extras: Map<String, String?>?,
 ) : StreamingMetrics<PlaybackInfoFetch.Payload>("playback_info_fetch") {
 
     @Keep
@@ -29,12 +30,14 @@ data class PlaybackInfoFetch @AssistedInject internal constructor(
     @AssistedFactory
     interface Factory {
 
+        @Suppress("LongParameterList")
         fun create(
             ts: Long,
             uuid: UUID,
             user: User,
             client: Client,
             payload: Payload,
+            extras: Map<String, String?>?,
         ): PlaybackInfoFetch
     }
 }

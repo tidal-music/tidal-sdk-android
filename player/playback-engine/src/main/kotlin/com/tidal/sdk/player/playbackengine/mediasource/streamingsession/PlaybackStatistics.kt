@@ -15,6 +15,7 @@ internal sealed interface PlaybackStatistics {
 
     val streamingSessionId: UUID
     val adaptations: List<Adaptation>
+    val extras: Map<String, String?>?
 
     operator fun plus(adaptation: Adaptation): PlaybackStatistics
 
@@ -36,6 +37,7 @@ internal sealed interface PlaybackStatistics {
         override val streamingSessionId: UUID,
         override val idealStartTimestampMs: IdealStartTimestampMs,
         override val adaptations: List<Adaptation>,
+        override val extras: Map<String, String?>?,
     ) : PlaybackStatistics {
 
         override fun plus(adaptation: Adaptation) =
@@ -68,6 +70,7 @@ internal sealed interface PlaybackStatistics {
                 override val adaptations: List<Adaptation>,
                 val actualAudioMode: AudioMode,
                 override val mediaStorage: MediaStorage,
+                override val extras: Map<String, String?>?,
             ) : Prepared {
 
                 override fun plus(adaptation: Adaptation) =
@@ -88,6 +91,7 @@ internal sealed interface PlaybackStatistics {
                 override val adaptations: List<Adaptation>,
                 val actualStreamType: StreamType,
                 override val mediaStorage: MediaStorage,
+                override val extras: Map<String, String?>?,
             ) : Prepared {
 
                 override fun plus(adaptation: Adaptation) =
@@ -105,6 +109,7 @@ internal sealed interface PlaybackStatistics {
                 override val versionedCdm: VersionedCdm,
                 override val adaptations: List<Adaptation>,
                 override val mediaStorage: MediaStorage,
+                override val extras: Map<String, String?>?,
             ) : Prepared {
 
                 override val actualQuality = AudioQuality.LOW
@@ -125,6 +130,7 @@ internal sealed interface PlaybackStatistics {
                 override val actualQuality: AudioQuality,
                 override val adaptations: List<Adaptation>,
                 override val mediaStorage: MediaStorage,
+                override val extras: Map<String, String?>?,
             ) : Prepared {
 
                 override fun plus(adaptation: Adaptation) =

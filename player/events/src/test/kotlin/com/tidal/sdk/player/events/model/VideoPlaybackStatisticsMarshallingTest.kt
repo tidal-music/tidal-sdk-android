@@ -43,5 +43,6 @@ internal class VideoPlaybackStatisticsMarshallingTest : PlaybackStatisticsMarsha
         user,
         client,
         payload,
+        emptyMap(),
     )
 }

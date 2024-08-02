@@ -11,6 +11,7 @@ internal class UndeterminedPlaybackSessionResolver(
     operator fun invoke(
         undetermined: PlaybackStatistics.Undetermined,
         playbackInfo: PlaybackInfo,
+        extras: Map<String, String?>?,
     ) = with(undetermined) {
         when (playbackInfo) {
             is PlaybackInfo.Track ->
@@ -24,6 +25,7 @@ internal class UndeterminedPlaybackSessionResolver(
                     adaptations,
                     actualAudioMode = playbackInfo.audioMode,
                     MediaStorage.INTERNET,
+                    extras,
                 )
 
             is PlaybackInfo.Video ->
@@ -37,6 +39,7 @@ internal class UndeterminedPlaybackSessionResolver(
                     adaptations,
                     actualStreamType = playbackInfo.streamType,
                     MediaStorage.INTERNET,
+                    extras,
                 )
 
             is PlaybackInfo.Broadcast ->
@@ -48,6 +51,7 @@ internal class UndeterminedPlaybackSessionResolver(
                     playbackInfo.audioQuality,
                     adaptations,
                     MediaStorage.INTERNET,
+                    extras,
                 )
 
             is PlaybackInfo.UC ->
@@ -58,6 +62,7 @@ internal class UndeterminedPlaybackSessionResolver(
                     versionedCdmCalculator(playbackInfo),
                     adaptations,
                     MediaStorage.INTERNET,
+                    extras,
                 )
 
             is PlaybackInfo.Offline.Track ->
@@ -71,6 +76,7 @@ internal class UndeterminedPlaybackSessionResolver(
                     adaptations,
                     actualAudioMode = playbackInfo.track.audioMode,
                     playbackInfo.mediaStorage,
+                    extras,
                 )
 
             is PlaybackInfo.Offline.Video ->
@@ -84,6 +90,7 @@ internal class UndeterminedPlaybackSessionResolver(
                     adaptations,
                     actualStreamType = playbackInfo.video.streamType,
                     playbackInfo.mediaStorage,
+                    extras,
                 )
         }
     }

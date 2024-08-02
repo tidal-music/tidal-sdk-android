@@ -39,6 +39,7 @@ internal class TidalMediaDrmCallbackTest {
         okHttpClient,
         lazy { provisionRequestBuilder },
         lazy { provisionRequestBody },
+        emptyMap(),
     )
 
     @Test
@@ -55,7 +56,7 @@ internal class TidalMediaDrmCallbackTest {
         whenever(base64Codec.encode(request.data))
             .thenReturn(encodedRequestData.toByteArray())
         whenever(drmLicenseRequestFactory.create(encodedRequestData)).thenReturn(drmLicenseRequest)
-        whenever(streamingApiRepository.getDrmLicense(drmLicenseRequest))
+        whenever(streamingApiRepository.getDrmLicense(drmLicenseRequest, emptyMap()))
             .thenReturn(drmLicense)
         whenever(base64Codec.decode(drmLicense.payload.toByteArray()))
             .thenReturn(expectedDrmLicensePayload)
@@ -76,7 +77,7 @@ internal class TidalMediaDrmCallbackTest {
         whenever(base64Codec.encode(request.data))
             .thenReturn(encodedRequestData.toByteArray())
         whenever(drmLicenseRequestFactory.create(encodedRequestData)).thenReturn(drmLicenseRequest)
-        whenever(streamingApiRepository.getDrmLicense(drmLicenseRequest))
+        whenever(streamingApiRepository.getDrmLicense(drmLicenseRequest, emptyMap()))
             .thenThrow(expected)
 
         val actual = assertThrows<RuntimeException> {

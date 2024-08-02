@@ -54,7 +54,10 @@ internal class StreamingApiRepository(
      * Get the drm license as [DrmLicense] for a given [DrmLicenseRequest].
      */
     @SuppressWarnings("TooGenericExceptionCaught") // We rethrow it, so no issue
-    suspend fun getDrmLicense(drmLicenseRequest: DrmLicenseRequest): DrmLicense {
+    suspend fun getDrmLicense(
+        drmLicenseRequest: DrmLicenseRequest,
+        extras: Map<String, String?>?,
+    ): DrmLicense {
         val startTimestamp = trueTimeWrapper.currentTimeMillis
         var errorMessage: String? = null
         var errorCode: String? = null
@@ -78,6 +81,7 @@ internal class StreamingApiRepository(
                     errorMessage,
                     errorCode,
                 ),
+                extras,
             )
         }
     }
@@ -140,6 +144,7 @@ internal class StreamingApiRepository(
                     errorMessage,
                     errorCode,
                 ),
+                forwardingMediaProduct.extras,
             )
         }
     }

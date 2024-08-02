@@ -6,4 +6,5 @@ interface BaseMediaProduct {
     val productId: String
     val sourceType: String?
     val sourceId: String?
+    val extras: Map<String, String?>?
 }

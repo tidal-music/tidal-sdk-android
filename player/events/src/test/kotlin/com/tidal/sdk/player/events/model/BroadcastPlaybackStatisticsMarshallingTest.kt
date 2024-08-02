@@ -39,5 +39,6 @@ internal class BroadcastPlaybackStatisticsMarshallingTest : PlaybackStatisticsMa
         user,
         client,
         payload,
+        emptyMap(),
     )
 }

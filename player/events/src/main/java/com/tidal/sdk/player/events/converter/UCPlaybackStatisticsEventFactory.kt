@@ -14,13 +14,15 @@ internal class UCPlaybackStatisticsEventFactory(
     private val ucPlaybackStatisticsFactory: UCPlaybackStatistics.Factory,
 ) : EventFactory<UCPlaybackStatistics.Payload> {
 
-    override suspend fun invoke(payload: UCPlaybackStatistics.Payload) =
-        ucPlaybackStatisticsFactory
-            .create(
-                trueTimeWrapper.currentTimeMillis,
-                uuidWrapper.randomUUID,
-                userSupplier(),
-                clientSupplier(),
-                payload,
-            )
+    override suspend fun invoke(
+        payload: UCPlaybackStatistics.Payload,
+        extras: Map<String, String?>?,
+    ) = ucPlaybackStatisticsFactory.create(
+        trueTimeWrapper.currentTimeMillis,
+        uuidWrapper.randomUUID,
+        userSupplier(),
+        clientSupplier(),
+        payload,
+        extras,
+    )
 }

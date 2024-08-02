@@ -11,28 +11,31 @@ internal class DrmSessionManagerFactory(
 
     fun createDrmSessionManagerForOnlinePlay(
         playbackInfo: PlaybackInfo,
+        extras: Map<String, String?>?,
     ): DrmSessionManager {
         if (playbackInfo.licenseSecurityToken.isNullOrEmpty()) {
             return DrmSessionManager.DRM_UNSUPPORTED
         }
-        return createDefaultDrmSessionManager(playbackInfo)
+        return createDefaultDrmSessionManager(playbackInfo, extras = extras)
     }
 
     fun createDrmSessionManagerForOfflinePlay(
         playbackInfo: PlaybackInfo.Offline,
+        extras: Map<String, String?>?,
     ): DrmSessionManager {
         if (playbackInfo.offlineLicense!!.isEmpty()) {
             return DrmSessionManager.DRM_UNSUPPORTED
         }
-        return createDefaultDrmSessionManager(playbackInfo.delegate)
+        return createDefaultDrmSessionManager(playbackInfo.delegate, extras = extras)
     }
 
     private fun createDefaultDrmSessionManager(
         playbackInfo: PlaybackInfo,
         drmMode: DrmMode = DrmMode.Streaming,
+        extras: Map<String, String?>?,
     ): DefaultDrmSessionManager {
         return defaultDrmSessionManagerBuilder
-            .build(tidalMediaDrmCallbackFactory.create(playbackInfo, drmMode))
+            .build(tidalMediaDrmCallbackFactory.create(playbackInfo, drmMode, extras))
     }
 
     private val PlaybackInfo.Offline.delegate: PlaybackInfo

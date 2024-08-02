@@ -14,12 +14,15 @@ internal class BroadcastPlaybackStatisticsEventFactory(
     private val broadcastPlaybackStatisticsFactory: BroadcastPlaybackStatistics.Factory,
 ) : EventFactory<BroadcastPlaybackStatistics.Payload> {
 
-    override suspend fun invoke(payload: BroadcastPlaybackStatistics.Payload) =
-        broadcastPlaybackStatisticsFactory.create(
-            trueTimeWrapper.currentTimeMillis,
-            uuidWrapper.randomUUID,
-            userSupplier(),
-            clientSupplier(),
-            payload,
-        )
+    override suspend fun invoke(
+        payload: BroadcastPlaybackStatistics.Payload,
+        extras: Map<String, String?>?,
+    ) = broadcastPlaybackStatisticsFactory.create(
+        trueTimeWrapper.currentTimeMillis,
+        uuidWrapper.randomUUID,
+        userSupplier(),
+        clientSupplier(),
+        payload,
+        extras,
+    )
 }

@@ -14,13 +14,15 @@ internal class TidalMediaDrmCallbackFactory(
     private val okHttpClient: OkHttpClient,
 ) {
 
-    fun create(playbackInfo: PlaybackInfo, mode: DrmMode) = TidalMediaDrmCallback(
-        streamingApiRepository,
-        base64Codec,
-        DrmLicenseRequestFactory(playbackInfo),
-        mode,
-        okHttpClient,
-        lazy(LazyThreadSafetyMode.NONE) { Request.Builder() },
-        lazy(LazyThreadSafetyMode.NONE) { RequestBody.create(null, Util.EMPTY_BYTE_ARRAY) },
-    )
+    fun create(playbackInfo: PlaybackInfo, mode: DrmMode, extras: Map<String, String?>?) =
+        TidalMediaDrmCallback(
+            streamingApiRepository,
+            base64Codec,
+            DrmLicenseRequestFactory(playbackInfo),
+            mode,
+            okHttpClient,
+            lazy(LazyThreadSafetyMode.NONE) { Request.Builder() },
+            lazy(LazyThreadSafetyMode.NONE) { RequestBody.create(null, Util.EMPTY_BYTE_ARRAY) },
+            extras,
+        )
 }

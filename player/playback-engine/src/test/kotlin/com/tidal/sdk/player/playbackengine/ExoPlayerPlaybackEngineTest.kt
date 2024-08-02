@@ -320,6 +320,9 @@ internal class ExoPlayerPlaybackEngineTest {
 
     @Test
     fun playShouldSucceedIfPlaybackStateIsNotIdle() {
+        whenever(
+            initialExtendedExoPlayer.load(argThat { delegate === forwardingMediaProduct.delegate })
+        ).thenReturn(mediaSource)
         playbackEngine.load(forwardingMediaProduct.delegate)
         val streamingSession = mock<StreamingSession.Explicit>()
         whenever(initialExtendedExoPlayer.currentStreamingSession) doReturn streamingSession
@@ -332,6 +335,7 @@ internal class ExoPlayerPlaybackEngineTest {
         verify(trueTimeWrapper, atLeastOnce()).currentTimeMillis
         verify(streamingSession).createUndeterminedPlaybackStatistics(
             PlaybackStatistics.IdealStartTimestampMs.Known(idealStartTimestampMs),
+            null,
         )
         verify(initialExtendedExoPlayer).play()
     }
@@ -707,8 +711,13 @@ internal class ExoPlayerPlaybackEngineTest {
         }
         val previousPlaybackStatistics = mock<PlaybackStatistics.Undetermined>()
         playbackEngine.reflectionCurrentPlaybackStatistics = previousPlaybackStatistics
-        whenever(undeterminedPlaybackSessionResolver(previousPlaybackStatistics, playbackInfo))
-            .thenReturn(playbackStatistics)
+        whenever(
+            undeterminedPlaybackSessionResolver(
+                previousPlaybackStatistics,
+                playbackInfo,
+                emptyMap(),
+            ),
+        ).thenReturn(playbackStatistics)
         val playbackSession = mock<PlaybackSession.Audio>()
         whenever(
             streamingSession.createPlaybackSession(playbackInfo, currentForwardingMediaProduct),
@@ -727,7 +736,11 @@ internal class ExoPlayerPlaybackEngineTest {
         assertThat(playbackEngine.reflectionCurrentPlaybackSession).isSameAs(playbackSession)
         verify(volumeHelper).getVolume(playbackInfo)
         verify(initialExtendedExoPlayer).volume = 1.0F
-        verify(undeterminedPlaybackSessionResolver)(previousPlaybackStatistics, playbackInfo)
+        verify(undeterminedPlaybackSessionResolver)(
+            previousPlaybackStatistics,
+            playbackInfo,
+            emptyMap(),
+        )
         verify(streamingSession).createPlaybackSession(playbackInfo, currentForwardingMediaProduct)
         verifyNoMoreInteractions(
             currentMediaProduct,
@@ -765,6 +778,7 @@ internal class ExoPlayerPlaybackEngineTest {
         whenever(
             streamingSession.createUndeterminedPlaybackStatistics(
                 PlaybackStatistics.IdealStartTimestampMs.NotYetKnown,
+                emptyMap(),
             ),
         ).thenReturn(playbackStatistics)
         whenever(internalHandler.post(any())).then {
@@ -782,8 +796,10 @@ internal class ExoPlayerPlaybackEngineTest {
         verify(playbackContextFactory).create(playbackInfo, referenceId)
         assertThat(playbackEngine.playbackContext).isNull()
         assertThat(playbackEngine.reflectionNextPlaybackContext).isEqualTo(playbackContext)
+        verify(nextForwardingMediaProduct).extras
         verify(streamingSession).createUndeterminedPlaybackStatistics(
             PlaybackStatistics.IdealStartTimestampMs.NotYetKnown,
+            emptyMap(),
         )
         verify(streamingSession).createPlaybackSession(playbackInfo, nextForwardingMediaProduct)
         verifyNoMoreInteractions(
@@ -1246,6 +1262,7 @@ internal class ExoPlayerPlaybackEngineTest {
         verify(currentPlaybackSession).sourceType
         verify(currentPlaybackSession).sourceId
         verify(currentPlaybackSession).actions
+        verify(currentPlaybackSession).extras
         verify(eventReporter).report(
             VideoPlaybackSession.Payload(
                 playbackSessionId,
@@ -1261,6 +1278,7 @@ internal class ExoPlayerPlaybackEngineTest {
                 currentTimeMillis,
                 currentPlaybackPositionMs.toDouble() / 1_000,
             ),
+            emptyMap(),
         )
         verify(internalHandler).removeCallbacksAndMessages(null)
         assertThat(playbackEngine.mediaProduct).isNull()
@@ -1377,6 +1395,7 @@ internal class ExoPlayerPlaybackEngineTest {
             undeterminedPlaybackSessionResolver(
                 undeterminedPlaybackStatisticsWithIdealStartTimestampMs,
                 playbackInfo,
+                emptyMap(),
             ),
         ).thenReturn(preparedPlaybackStatistics)
         playbackEngine.reflectionNextPlaybackStatistics = undeterminedPlaybackStatistics
@@ -1480,7 +1499,11 @@ internal class ExoPlayerPlaybackEngineTest {
         verify(initialExtendedExoPlayer).volume = 1.0F
         verify(trueTimeWrapper).currentTimeMillis
         verify(undeterminedPlaybackSessionResolver)
-            .invoke(undeterminedPlaybackStatisticsWithIdealStartTimestampMs, playbackInfo)
+            .invoke(
+                undeterminedPlaybackStatisticsWithIdealStartTimestampMs,
+                playbackInfo,
+                emptyMap(),
+            )
         verify(preparedPlaybackStatistics).toStarted(startTimestampMs)
         verify(nextPlaybackSession).startTimestamp = startTimestampMs
         verify(nextPlaybackSession).startAssetPosition = positionMs.toDouble() / 1_000
@@ -1588,8 +1611,13 @@ internal class ExoPlayerPlaybackEngineTest {
             on { it.toStarted(startTimestampMs) } doReturn startedPlaybackStatistics
         }
         val undeterminedPlaybackStatistics = mock<PlaybackStatistics.Undetermined>()
-        whenever(undeterminedPlaybackSessionResolver(undeterminedPlaybackStatistics, playbackInfo))
-            .thenReturn(preparedPlaybackStatistics)
+        whenever(
+            undeterminedPlaybackSessionResolver(
+                undeterminedPlaybackStatistics,
+                playbackInfo,
+                emptyMap(),
+            ),
+        ).thenReturn(preparedPlaybackStatistics)
         val newStreamingSession = mock<StreamingSession.Implicit> {
             on { it.id } doReturn newStreamingSessionId
             on {
@@ -1598,6 +1626,7 @@ internal class ExoPlayerPlaybackEngineTest {
             on {
                 createUndeterminedPlaybackStatistics(
                     PlaybackStatistics.IdealStartTimestampMs.Known(startTimestampMs),
+                    emptyMap(),
                 )
             }.thenReturn(undeterminedPlaybackStatistics)
         }
