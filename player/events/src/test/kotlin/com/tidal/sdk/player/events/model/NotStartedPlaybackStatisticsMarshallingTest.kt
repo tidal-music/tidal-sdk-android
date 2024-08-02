@@ -27,6 +27,7 @@ internal abstract class NotStartedPlaybackStatisticsMarshallingTest(
         user,
         client,
         payload,
+        emptyMap(),
     )
 
     sealed class ProductTypeAudio(endReason: EndReason) :

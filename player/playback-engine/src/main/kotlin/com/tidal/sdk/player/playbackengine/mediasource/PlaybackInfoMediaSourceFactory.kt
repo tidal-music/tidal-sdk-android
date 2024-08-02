@@ -57,5 +57,6 @@ internal class PlaybackInfoMediaSourceFactory(
             },
             Loader(LOADER_THREAD_NAME_SUFFIX),
             playbackInfoLoadableLoaderCallbackFactory,
+            forwardingMediaProduct.extras,
         )
 }

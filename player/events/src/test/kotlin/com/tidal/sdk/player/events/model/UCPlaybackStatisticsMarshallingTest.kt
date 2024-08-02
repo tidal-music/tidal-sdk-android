@@ -40,5 +40,6 @@ internal class UCPlaybackStatisticsMarshallingTest :
         user,
         client,
         payload,
+        emptyMap(),
     )
 }

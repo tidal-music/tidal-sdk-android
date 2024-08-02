@@ -52,8 +52,12 @@ internal class TidalMediaSourceCreatorTest {
         val expectedDashMediaSource = mock<DashMediaSource>()
         val drmSessionManager = mock<DrmSessionManager>()
         val drmSessionManagerProvider = mock<DrmSessionManagerProvider>()
-        whenever(drmSessionManagerFactory.createDrmSessionManagerForOnlinePlay(playbackInfo))
-            .thenReturn(drmSessionManager)
+        whenever(
+            drmSessionManagerFactory.createDrmSessionManagerForOnlinePlay(
+                playbackInfo,
+                emptyMap(),
+            ),
+        ).thenReturn(drmSessionManager)
         whenever(
             playerDashMediaSourceFactory.create(
                 mediaItem,
@@ -65,7 +69,7 @@ internal class TidalMediaSourceCreatorTest {
         whenever(drmSessionManagerProviderFactory.create(drmSessionManager))
             .thenReturn(drmSessionManagerProvider)
 
-        val actual = tidalMediaSourceCreator.invoke(mediaItem, playbackInfo)
+        val actual = tidalMediaSourceCreator.invoke(mediaItem, playbackInfo, emptyMap())
 
         assertThat(actual).isSameAs(expectedDashMediaSource)
     }
@@ -80,8 +84,12 @@ internal class TidalMediaSourceCreatorTest {
         val expectedHlsMediaSource = mock<HlsMediaSource>()
         val drmSessionManager = mock<DrmSessionManager>()
         val drmSessionManagerProvider = mock<DrmSessionManagerProvider>()
-        whenever(drmSessionManagerFactory.createDrmSessionManagerForOnlinePlay(playbackInfo))
-            .thenReturn(drmSessionManager)
+        whenever(
+            drmSessionManagerFactory.createDrmSessionManagerForOnlinePlay(
+                playbackInfo,
+                emptyMap(),
+            ),
+        ).thenReturn(drmSessionManager)
         whenever(
             playerHlsMediaSourceFactory.create(
                 mediaItem,
@@ -93,7 +101,7 @@ internal class TidalMediaSourceCreatorTest {
         whenever(drmSessionManagerProviderFactory.create(drmSessionManager))
             .thenReturn(drmSessionManagerProvider)
 
-        val actual = tidalMediaSourceCreator.invoke(mediaItem, playbackInfo)
+        val actual = tidalMediaSourceCreator.invoke(mediaItem, playbackInfo, emptyMap())
 
         assertThat(actual).isSameAs(expectedHlsMediaSource)
     }
@@ -107,8 +115,12 @@ internal class TidalMediaSourceCreatorTest {
         val expectedHlsMediaSource = mock<HlsMediaSource>()
         val drmSessionManager = mock<DrmSessionManager>()
         val drmSessionManagerProvider = mock<DrmSessionManagerProvider>()
-        whenever(drmSessionManagerFactory.createDrmSessionManagerForOnlinePlay(playbackInfo))
-            .thenReturn(drmSessionManager)
+        whenever(
+            drmSessionManagerFactory.createDrmSessionManagerForOnlinePlay(
+                playbackInfo,
+                emptyMap(),
+            ),
+        ).thenReturn(drmSessionManager)
         whenever(
             playerHlsMediaSourceFactory.createWithUrl(
                 mediaItem,
@@ -120,7 +132,7 @@ internal class TidalMediaSourceCreatorTest {
         whenever(drmSessionManagerProviderFactory.create(drmSessionManager))
             .thenReturn(drmSessionManagerProvider)
 
-        val actual = tidalMediaSourceCreator.invoke(mediaItem, playbackInfo)
+        val actual = tidalMediaSourceCreator.invoke(mediaItem, playbackInfo, emptyMap())
 
         assertThat(actual).isSameAs(expectedHlsMediaSource)
     }
@@ -136,7 +148,7 @@ internal class TidalMediaSourceCreatorTest {
         whenever(playerProgressiveMediaSourceFactory.create(mediaItem, playbackInfo.manifest))
             .thenReturn(expectedProgressiveMediaSource)
 
-        val actual = tidalMediaSourceCreator.invoke(mediaItem, playbackInfo)
+        val actual = tidalMediaSourceCreator.invoke(mediaItem, playbackInfo, emptyMap())
 
         assertThat(actual).isSameAs(expectedProgressiveMediaSource)
     }
@@ -162,7 +174,7 @@ internal class TidalMediaSourceCreatorTest {
             ),
         ).thenReturn(expectedProgressiveMediaSource)
 
-        val actual = tidalMediaSourceCreator.invoke(mediaItem, playbackInfoOfflineTrack)
+        val actual = tidalMediaSourceCreator.invoke(mediaItem, playbackInfoOfflineTrack, emptyMap())
 
         assertThat(actual).isSameAs(expectedProgressiveMediaSource)
     }
@@ -186,7 +198,7 @@ internal class TidalMediaSourceCreatorTest {
             ),
         ).thenReturn(expectedProgressiveMediaSource)
 
-        val actual = tidalMediaSourceCreator.invoke(mediaItem, playbackInfoOfflineTrack)
+        val actual = tidalMediaSourceCreator.invoke(mediaItem, playbackInfoOfflineTrack, emptyMap())
 
         assertThat(actual).isSameAs(expectedProgressiveMediaSource)
     }
@@ -199,7 +211,7 @@ internal class TidalMediaSourceCreatorTest {
         }
 
         assertThrows<IllegalArgumentException> {
-            tidalMediaSourceCreator.invoke(mediaItem, playbackInfoOfflineTrack)
+            tidalMediaSourceCreator.invoke(mediaItem, playbackInfoOfflineTrack, emptyMap())
         }
     }
 
@@ -221,6 +233,7 @@ internal class TidalMediaSourceCreatorTest {
         whenever(
             drmSessionManagerFactory.createDrmSessionManagerForOfflinePlay(
                 playbackInfoOfflineTrack,
+                emptyMap(),
             ),
         ).thenReturn(drmSessionManager)
         whenever(
@@ -236,7 +249,7 @@ internal class TidalMediaSourceCreatorTest {
             ),
         ).thenReturn(expectedDashMediaSource)
 
-        val actual = tidalMediaSourceCreator.invoke(mediaItem, playbackInfoOfflineTrack)
+        val actual = tidalMediaSourceCreator.invoke(mediaItem, playbackInfoOfflineTrack, emptyMap())
 
         assertThat(actual).isSameAs(expectedDashMediaSource)
     }

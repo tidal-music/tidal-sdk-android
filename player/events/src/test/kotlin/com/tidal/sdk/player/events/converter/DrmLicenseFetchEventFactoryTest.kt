@@ -55,10 +55,17 @@ internal class DrmLicenseFetchEventFactoryTest {
         val payload = mock<DrmLicenseFetch.Payload>()
         val expected = mock<DrmLicenseFetch>()
         whenever(
-            drmLicenseFetchFactory.create(currentTimeMillis, randomUUID, user, client, payload),
+            drmLicenseFetchFactory.create(
+                currentTimeMillis,
+                randomUUID,
+                user,
+                client,
+                payload,
+                emptyMap(),
+            ),
         ).thenReturn(expected)
 
-        val actual = drmLicenseFetchEventFactory(payload)
+        val actual = drmLicenseFetchEventFactory(payload, emptyMap())
 
         verify(trueTimeWrapper).currentTimeMillis
         verify(uuidWrapper).randomUUID
@@ -70,6 +77,7 @@ internal class DrmLicenseFetchEventFactoryTest {
             user,
             client,
             payload,
+            emptyMap(),
         )
         assertThat(actual).isSameAs(expected)
         verifyNoMoreInteractions(randomUUID, user, client, payload, expected)
