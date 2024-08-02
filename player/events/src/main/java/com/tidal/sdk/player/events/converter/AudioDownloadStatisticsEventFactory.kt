@@ -14,13 +14,15 @@ internal class AudioDownloadStatisticsEventFactory(
     private val audioDownloadStatisticsFactory: AudioDownloadStatistics.Factory,
 ) : EventFactory<AudioDownloadStatistics.Payload> {
 
-    override suspend fun invoke(payload: AudioDownloadStatistics.Payload) =
-        audioDownloadStatisticsFactory
-            .create(
-                trueTimeWrapper.currentTimeMillis,
-                uuidWrapper.randomUUID,
-                userSupplier(),
-                clientSupplier(),
-                payload,
-            )
+    override suspend fun invoke(
+        payload: AudioDownloadStatistics.Payload,
+        extras: Map<String, String?>?,
+    ) = audioDownloadStatisticsFactory.create(
+        trueTimeWrapper.currentTimeMillis,
+        uuidWrapper.randomUUID,
+        userSupplier(),
+        clientSupplier(),
+        payload,
+        extras,
+    )
 }

@@ -36,15 +36,15 @@ internal abstract class StreamingSessionCreatorTest<T : StreamingSession.Factory
             on { it.id } doReturn id
             on { it.configuration } doReturn configuration
         }
-        whenever(factory.create()) doReturn streamingSession
+        whenever(factory.create(emptyMap())) doReturn streamingSession
         val expectedCurrentTimeMillis = -8L
         whenever(trueTimeWrapper.currentTimeMillis) doReturn expectedCurrentTimeMillis
         val productType = ProductType.TRACK
         val productId = "123"
 
-        streamingSessionCreator.createAndReportStart(productType, productId)
+        streamingSessionCreator.createAndReportStart(productType, productId, emptyMap())
 
-        verify(factory).create()
+        verify(factory).create(emptyMap())
         verify(trueTimeWrapper).currentTimeMillis
         verify(streamingSession).id
         verify(streamingSession).configuration
@@ -58,6 +58,7 @@ internal abstract class StreamingSessionCreatorTest<T : StreamingSession.Factory
                 productType,
                 productId,
             ),
+            emptyMap(),
         )
         verifyNoMoreInteractions(id, configuration, streamingSession)
     }

@@ -18,6 +18,7 @@ data class UCPlaybackStatistics @AssistedInject internal constructor(
     @Assisted override val user: User,
     @Assisted override val client: Client,
     @Assisted override val payload: Payload,
+    @Assisted override val extras: Map<String, String?>?,
 ) : PlaybackStatistics<UCPlaybackStatistics.Payload>() {
 
     @Keep
@@ -48,12 +49,14 @@ data class UCPlaybackStatistics @AssistedInject internal constructor(
     @AssistedFactory
     internal interface Factory {
 
+        @Suppress("LongParameterList")
         fun create(
             ts: Long,
             uuid: UUID,
             user: User,
             client: Client,
             payload: Payload,
+            extras: Map<String, String?>?,
         ): UCPlaybackStatistics
     }
 }

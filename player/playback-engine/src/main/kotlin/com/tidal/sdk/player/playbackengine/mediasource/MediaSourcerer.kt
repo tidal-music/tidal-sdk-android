@@ -49,6 +49,7 @@ internal class MediaSourcerer(
         val currentStreamingSession = explicitStreamingSessionCreator.createAndReportStart(
             forwardingMediaProduct.productType,
             forwardingMediaProduct.productId,
+            forwardingMediaProduct.extras,
         )
         this.currentStreamingSession = currentStreamingSession
         return playbackInfoMediaSourceFactory.create(
@@ -74,6 +75,7 @@ internal class MediaSourcerer(
             val nextStreamingSession = implicitStreamingSessionCreator.createAndReportStart(
                 forwardingMediaProduct.productType,
                 forwardingMediaProduct.productId,
+                forwardingMediaProduct.extras,
             )
             this.nextStreamingSession = nextStreamingSession
             playbackInfoMediaSourceFactory.create(
@@ -109,6 +111,7 @@ internal class MediaSourcerer(
         currentStreamingSession = implicitStreamingSessionCreator.createAndReportStart(
             forwardingMediaProduct.productType,
             forwardingMediaProduct.productId,
+            forwardingMediaProduct.extras,
         )
     }
 
@@ -121,5 +124,6 @@ internal class MediaSourcerer(
 
     private fun StreamingSession.reportEnd() = eventReporter.report(
         StreamingSessionEnd.Payload(id.toString(), trueTimeWrapper.currentTimeMillis),
+        extras
     )
 }

@@ -36,5 +36,6 @@ internal class VideoPlaybackSessionMarshallingTest : PlaybackSessionMarshallingT
         user,
         client,
         payload,
+        emptyMap(),
     )
 }

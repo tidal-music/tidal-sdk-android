@@ -14,6 +14,7 @@ data class NotStartedPlaybackStatistics @AssistedInject internal constructor(
     @Assisted override val user: User,
     @Assisted override val client: Client,
     @Assisted override val payload: Payload,
+    @Assisted override val extras: Map<String, String?>?,
 ) : PlaybackStatistics<NotStartedPlaybackStatistics.Payload>() {
 
     @Keep
@@ -44,7 +45,14 @@ data class NotStartedPlaybackStatistics @AssistedInject internal constructor(
     @AssistedFactory
     internal interface Factory {
 
-        fun create(ts: Long, uuid: UUID, user: User, client: Client, payload: Payload):
-            NotStartedPlaybackStatistics
+        @Suppress("LongParameterList")
+        fun create(
+            ts: Long,
+            uuid: UUID,
+            user: User,
+            client: Client,
+            payload: Payload,
+            extras: Map<String, String?>?,
+        ): NotStartedPlaybackStatistics
     }
 }

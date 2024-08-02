@@ -7,5 +7,5 @@ import com.tidal.sdk.player.events.model.Event
  */
 interface EventReporter {
 
-    fun <T : Event.Payload> report(payload: T)
+    fun <T : Event.Payload> report(payload: T, extras: Map<String, String?>?)
 }

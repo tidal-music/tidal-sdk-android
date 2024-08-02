@@ -18,6 +18,7 @@ internal sealed class PlaybackSession {
     abstract val sourceType: String?
     abstract val sourceId: String?
     abstract val actions: MutableList<Action>
+    abstract val extras: Map<String, String?>?
 
     var startTimestamp = 0L
     var startAssetPosition by
@@ -35,6 +36,7 @@ internal sealed class PlaybackSession {
         override val actualQuality: AudioQuality,
         override val sourceType: String?,
         override val sourceId: String?,
+        override val extras: Map<String, String?>?,
     ) : PlaybackSession() {
 
         override val actions = mutableListOf<Action>()
@@ -49,11 +51,13 @@ internal sealed class PlaybackSession {
         override val actualQuality: VideoQuality,
         override val sourceType: String?,
         override val sourceId: String?,
+        override val extras: Map<String, String?>?,
     ) : PlaybackSession() {
 
         override val actions = mutableListOf<Action>()
     }
 
+    @Suppress("LongParameterList")
     class Broadcast(
         override val playbackSessionId: UUID,
         override val actualProductId: String,
@@ -61,6 +65,7 @@ internal sealed class PlaybackSession {
         override val actualQuality: AudioQuality,
         override val sourceType: String?,
         override val sourceId: String?,
+        override val extras: Map<String, String?>?,
     ) : PlaybackSession() {
 
         override val actions = mutableListOf<Action>()
@@ -73,6 +78,7 @@ internal sealed class PlaybackSession {
         override val requestedProductId: String,
         override val sourceType: String?,
         override val sourceId: String?,
+        override val extras: Map<String, String?>?,
     ) : PlaybackSession() {
 
         override val actualQuality = AudioQuality.LOW

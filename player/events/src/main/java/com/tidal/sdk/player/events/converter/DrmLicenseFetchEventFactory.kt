@@ -14,12 +14,13 @@ internal class DrmLicenseFetchEventFactory(
     private val drmLicenseFetchFactory: DrmLicenseFetch.Factory,
 ) : EventFactory<DrmLicenseFetch.Payload> {
 
-    override suspend fun invoke(payload: DrmLicenseFetch.Payload) = drmLicenseFetchFactory
-        .create(
+    override suspend fun invoke(payload: DrmLicenseFetch.Payload, extras: Map<String, String?>?) =
+        drmLicenseFetchFactory.create(
             trueTimeWrapper.currentTimeMillis,
             uuidWrapper.randomUUID,
             userSupplier(),
             clientSupplier(),
             payload,
+            extras,
         )
 }

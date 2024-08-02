@@ -23,6 +23,7 @@ internal class PlaybackInfoLoadableLoaderCallback(
     private val loadErrorInfoF: (LoadEventInfo, error: IOException, errorCount: Int) ->
     LoadErrorInfo,
     private val prepareChildSourceF: (MediaSource) -> Unit,
+    private val extras: Map<String, String?>?,
 ) : Loader.Callback<PlaybackInfoLoadable> {
 
     var selectedMediaSource: MediaSource? = null
@@ -40,7 +41,7 @@ internal class PlaybackInfoLoadableLoaderCallback(
         eventDispatcher.loadCompleted(loadEventInfo, dataType)
 
         loadable.also {
-            with(tidalMediaSourceCreator(mediaItem, it.playbackInfo!!)) {
+            with(tidalMediaSourceCreator(mediaItem, it.playbackInfo!!, extras)) {
                 selectedMediaSource = this
                 prepareChildSourceF(this)
             }

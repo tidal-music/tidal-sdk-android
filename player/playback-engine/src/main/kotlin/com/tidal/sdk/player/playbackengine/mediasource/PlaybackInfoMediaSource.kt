@@ -34,6 +34,7 @@ internal class PlaybackInfoMediaSource(
     LoadErrorInfo,
     private val loader: Loader,
     private val loaderCallbackFactory: PlaybackInfoLoadableLoaderCallbackFactory,
+    private val extras: Map<String, String?>?,
 ) : CompositeMediaSource<Void>() {
 
     val playbackInfo: PlaybackInfo? by loadable::playbackInfo
@@ -46,6 +47,7 @@ internal class PlaybackInfoMediaSource(
             loadEventInfoF,
             loadErrorInfoF,
             prepareChildSourceF,
+            extras,
         )
     }
 

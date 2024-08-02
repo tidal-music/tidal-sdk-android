@@ -14,12 +14,13 @@ internal class PlaybackInfoFetchEventFactory(
     private val playbackInfoFetchFactory: PlaybackInfoFetch.Factory,
 ) : EventFactory<PlaybackInfoFetch.Payload> {
 
-    override suspend fun invoke(payload: PlaybackInfoFetch.Payload) = playbackInfoFetchFactory
-        .create(
+    override suspend fun invoke(payload: PlaybackInfoFetch.Payload, extras: Map<String, String?>?) =
+        playbackInfoFetchFactory.create(
             trueTimeWrapper.currentTimeMillis,
             uuidWrapper.randomUUID,
             userSupplier(),
             clientSupplier(),
             payload,
+            extras,
         )
 }

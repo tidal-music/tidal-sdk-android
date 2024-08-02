@@ -17,6 +17,7 @@ sealed class Event<T : Event.Payload>(
     protected abstract val uuid: UUID
     protected abstract val user: User
     protected abstract val client: Client
+    protected abstract val extras: Map<String, String?>?
     abstract val payload: T
 
     val consentCategory: ConsentCategory

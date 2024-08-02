@@ -55,10 +55,17 @@ internal class PlaybackInfoFetchEventFactoryTest {
         val payload = mock<PlaybackInfoFetch.Payload>()
         val expected = mock<PlaybackInfoFetch>()
         whenever(
-            playbackInfoFetchFactory.create(currentTimeMillis, randomUUID, user, client, payload),
+            playbackInfoFetchFactory.create(
+                currentTimeMillis,
+                randomUUID,
+                user,
+                client,
+                payload,
+                emptyMap(),
+            ),
         ).thenReturn(expected)
 
-        val actual = playbackInfoFetchEventFactory(payload)
+        val actual = playbackInfoFetchEventFactory(payload, emptyMap())
 
         verify(trueTimeWrapper).currentTimeMillis
         verify(uuidWrapper).randomUUID
@@ -70,6 +77,7 @@ internal class PlaybackInfoFetchEventFactoryTest {
             user,
             client,
             payload,
+            emptyMap(),
         )
         assertThat(actual).isSameAs(expected)
         verifyNoMoreInteractions(randomUUID, user, client, payload, expected)

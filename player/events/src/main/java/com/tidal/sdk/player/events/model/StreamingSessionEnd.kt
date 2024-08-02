@@ -14,6 +14,7 @@ data class StreamingSessionEnd @AssistedInject internal constructor(
     @Assisted override val user: User,
     @Assisted override val client: Client,
     @Assisted override val payload: Payload,
+    @Assisted override val extras: Map<String, String?>?,
 ) : StreamingMetrics<StreamingSessionEnd.Payload>("streaming_session_end") {
 
     @Keep
@@ -23,12 +24,14 @@ data class StreamingSessionEnd @AssistedInject internal constructor(
     @AssistedFactory
     internal interface Factory {
 
+        @Suppress("LongParameterList")
         fun create(
             ts: Long,
             uuid: UUID,
             user: User,
             client: Client,
             payload: Payload,
+            extras: Map<String, String?>?,
         ): StreamingSessionEnd
     }
 }

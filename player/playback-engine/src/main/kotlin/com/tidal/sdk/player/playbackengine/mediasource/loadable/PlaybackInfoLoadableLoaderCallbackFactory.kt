@@ -22,6 +22,7 @@ internal class PlaybackInfoLoadableLoaderCallbackFactory(
         loadErrorInfoF: (LoadEventInfo, error: IOException, errorCount: Int) ->
         LoadErrorHandlingPolicy.LoadErrorInfo,
         prepareChildSourceF: (MediaSource) -> Unit,
+        extras: Map<String, String?>?,
     ) = PlaybackInfoLoadableLoaderCallback(
         mediaItem,
         tidalMediaSourceCreator,
@@ -31,5 +32,6 @@ internal class PlaybackInfoLoadableLoaderCallbackFactory(
         loadEventInfoF,
         loadErrorInfoF,
         prepareChildSourceF,
+        extras,
     )
 }

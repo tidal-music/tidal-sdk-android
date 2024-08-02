@@ -27,11 +27,11 @@ internal class DefaultEventReporter(
      * Can be used to report events inheriting from [Event.Payload]. Extra event information not
      * defined in the payload type will be filled in automatically.
      */
-    override fun <T : Event.Payload> report(payload: T) {
+    override fun <T : Event.Payload> report(payload: T, extras: Map<String, String?>?) {
         @Suppress("UNCHECKED_CAST")
         val eventFactory = eventFactories[payload::class.java]!! as EventFactory<T>
         coroutineScope.launch {
-            val event = eventFactory(payload)
+            val event = eventFactory(payload, extras)
             eventSender.sendEvent(
                 event.name,
                 event.consentCategory,

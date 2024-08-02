@@ -24,6 +24,7 @@ internal class DrmSessionManagerFactoryTest {
     fun createDrmSessionManagerForOnlinePlayWithNullLicenseSecurityToken() {
         val actual = drmSessionManagerFactory.createDrmSessionManagerForOnlinePlay(
             mock<PlaybackInfo.Track>(),
+            emptyMap()
         )
 
         assertThat(actual).isEqualTo(DrmSessionManager.DRM_UNSUPPORTED)
@@ -35,7 +36,8 @@ internal class DrmSessionManagerFactoryTest {
             on { licenseSecurityToken } doReturn ""
         }
 
-        val actual = drmSessionManagerFactory.createDrmSessionManagerForOnlinePlay(playbackInfo)
+        val actual =
+            drmSessionManagerFactory.createDrmSessionManagerForOnlinePlay(playbackInfo, emptyMap())
 
         assertThat(actual).isEqualTo(DrmSessionManager.DRM_UNSUPPORTED)
     }
@@ -48,12 +50,13 @@ internal class DrmSessionManagerFactoryTest {
         val drmMode = DrmMode.Streaming
         val tidalMediaDrmCallback = mock<TidalMediaDrmCallback>()
         val defaultDrmSessionManager = mock<DefaultDrmSessionManager>()
-        whenever(tidalMediaDrmCallbackFactory.create(playbackInfo, drmMode))
+        whenever(tidalMediaDrmCallbackFactory.create(playbackInfo, drmMode, emptyMap()))
             .thenReturn(tidalMediaDrmCallback)
         whenever(defaultDrmSessionManagerBuilder.build(tidalMediaDrmCallback))
             .thenReturn(defaultDrmSessionManager)
 
-        val actual = drmSessionManagerFactory.createDrmSessionManagerForOnlinePlay(playbackInfo)
+        val actual =
+            drmSessionManagerFactory.createDrmSessionManagerForOnlinePlay(playbackInfo, emptyMap())
 
         assertThat(actual).isSameAs(defaultDrmSessionManager)
     }
@@ -64,7 +67,8 @@ internal class DrmSessionManagerFactoryTest {
             on { offlineLicense } doReturn ""
         }
 
-        val actual = drmSessionManagerFactory.createDrmSessionManagerForOfflinePlay(playbackInfo)
+        val actual =
+            drmSessionManagerFactory.createDrmSessionManagerForOfflinePlay(playbackInfo, emptyMap())
 
         assertThat(actual).isEqualTo(DrmSessionManager.DRM_UNSUPPORTED)
     }
@@ -77,12 +81,13 @@ internal class DrmSessionManagerFactoryTest {
         val drmMode = DrmMode.Streaming
         val tidalMediaDrmCallback = mock<TidalMediaDrmCallback>()
         val defaultDrmSessionManager = mock<DefaultDrmSessionManager>()
-        whenever(tidalMediaDrmCallbackFactory.create(playbackInfo.track, drmMode))
+        whenever(tidalMediaDrmCallbackFactory.create(playbackInfo.track, drmMode, emptyMap()))
             .thenReturn(tidalMediaDrmCallback)
         whenever(defaultDrmSessionManagerBuilder.build(tidalMediaDrmCallback))
             .thenReturn(defaultDrmSessionManager)
 
-        val actual = drmSessionManagerFactory.createDrmSessionManagerForOfflinePlay(playbackInfo)
+        val actual =
+            drmSessionManagerFactory.createDrmSessionManagerForOfflinePlay(playbackInfo, emptyMap())
 
         assertThat(actual).isSameAs(defaultDrmSessionManager)
     }

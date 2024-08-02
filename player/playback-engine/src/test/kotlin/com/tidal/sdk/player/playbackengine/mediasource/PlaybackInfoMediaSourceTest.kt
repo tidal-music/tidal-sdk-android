@@ -61,6 +61,7 @@ internal class PlaybackInfoMediaSourceTest {
             loadErrorInfoF,
             loader,
             callbackFactory,
+            emptyMap(),
         )
 
     @Test
@@ -90,6 +91,7 @@ internal class PlaybackInfoMediaSourceTest {
                 loadEventInfoF,
                 loadErrorInfoF,
                 playbackInfoMediaSource.reflectionPrepareChildSourceF,
+                emptyMap(),
             ),
         ).thenReturn(callback)
 
@@ -132,6 +134,7 @@ internal class PlaybackInfoMediaSourceTest {
                 loadEventInfoF,
                 loadErrorInfoF,
                 playbackInfoMediaSource.reflectionPrepareChildSourceF,
+                emptyMap(),
             ),
         ).thenReturn(callback)
 
@@ -156,6 +159,7 @@ internal class PlaybackInfoMediaSourceTest {
                 loadEventInfoF,
                 loadErrorInfoF,
                 playbackInfoMediaSource.reflectionPrepareChildSourceF,
+                emptyMap(),
             ),
         ).thenReturn(callback)
 

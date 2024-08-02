@@ -20,10 +20,14 @@ internal class TidalMediaSourceCreator(
     private val playerDashOfflineMediaSourceFactory: PlayerDashOfflineMediaSourceFactory,
     private val drmSessionManagerFactory: DrmSessionManagerFactory,
     private val drmSessionManagerProviderFactory: DrmSessionManagerProviderFactory,
-) : (MediaItem, PlaybackInfo) -> MediaSource {
+) : (MediaItem, PlaybackInfo, Map<String, String?>?) -> MediaSource {
 
     @Suppress("LongMethod")
-    override fun invoke(mediaItem: MediaItem, playbackInfo: PlaybackInfo): MediaSource {
+    override fun invoke(
+        mediaItem: MediaItem,
+        playbackInfo: PlaybackInfo,
+        extras: Map<String, String?>?,
+    ): MediaSource {
         return if (playbackInfo is PlaybackInfo.Offline) {
             when (playbackInfo.manifestMimeType) {
                 ManifestMimeType.BTS -> {
@@ -51,6 +55,7 @@ internal class TidalMediaSourceCreator(
                         drmSessionManagerProviderFactory.create(
                             drmSessionManagerFactory.createDrmSessionManagerForOfflinePlay(
                                 playbackInfo,
+                                extras,
                             ),
                         ),
                     )
@@ -70,7 +75,10 @@ internal class TidalMediaSourceCreator(
                     mediaItem,
                     playbackInfo.manifest,
                     drmSessionManagerProviderFactory.create(
-                        drmSessionManagerFactory.createDrmSessionManagerForOnlinePlay(playbackInfo),
+                        drmSessionManagerFactory.createDrmSessionManagerForOnlinePlay(
+                            playbackInfo,
+                            extras,
+                        ),
                     ),
                 )
 
@@ -82,6 +90,7 @@ internal class TidalMediaSourceCreator(
                             drmSessionManagerProviderFactory.create(
                                 drmSessionManagerFactory.createDrmSessionManagerForOnlinePlay(
                                     playbackInfo,
+                                    extras,
                                 ),
                             ),
                         )
@@ -92,6 +101,7 @@ internal class TidalMediaSourceCreator(
                             drmSessionManagerProviderFactory.create(
                                 drmSessionManagerFactory.createDrmSessionManagerForOnlinePlay(
                                     playbackInfo,
+                                    extras,
                                 ),
                             ),
                         )

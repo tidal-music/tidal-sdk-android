@@ -26,6 +26,7 @@ internal class PlaybackInfoFetchMarshallingTest {
         user,
         client,
         payload,
+        emptyMap(),
     )
     private val gson = Gson()
 

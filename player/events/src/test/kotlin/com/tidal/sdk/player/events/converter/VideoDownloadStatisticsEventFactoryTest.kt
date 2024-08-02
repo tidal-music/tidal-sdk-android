@@ -55,10 +55,17 @@ internal class VideoDownloadStatisticsEventFactoryTest {
         val src = mock<VideoDownloadStatistics.Payload>()
         val expected = mock<VideoDownloadStatistics>()
         whenever(
-            videoDownloadStatisticsFactory.create(currentTimeMillis, randomUUID, user, client, src),
+            videoDownloadStatisticsFactory.create(
+                currentTimeMillis,
+                randomUUID,
+                user,
+                client,
+                src,
+                emptyMap(),
+            ),
         ).thenReturn(expected)
 
-        val actual = videoDownloadStatisticsEventFactory(src)
+        val actual = videoDownloadStatisticsEventFactory(src, emptyMap())
 
         verify(trueTimeWrapper).currentTimeMillis
         verify(uuidWrapper).randomUUID
@@ -70,6 +77,7 @@ internal class VideoDownloadStatisticsEventFactoryTest {
             user,
             client,
             src,
+            emptyMap(),
         )
         assertThat(actual).isSameAs(expected)
         verifyNoMoreInteractions(randomUUID, user, client, src, expected)

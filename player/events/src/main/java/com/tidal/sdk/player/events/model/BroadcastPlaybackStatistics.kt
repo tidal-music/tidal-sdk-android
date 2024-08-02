@@ -18,6 +18,7 @@ data class BroadcastPlaybackStatistics @AssistedInject internal constructor(
     @Assisted override val user: User,
     @Assisted override val client: Client,
     @Assisted override val payload: Payload,
+    @Assisted override val extras: Map<String, String?>?,
 ) : PlaybackStatistics<BroadcastPlaybackStatistics.Payload>() {
 
     @Keep
@@ -48,7 +49,14 @@ data class BroadcastPlaybackStatistics @AssistedInject internal constructor(
     @AssistedFactory
     internal interface Factory {
 
-        fun create(ts: Long, uuid: UUID, user: User, client: Client, payload: Payload):
-            BroadcastPlaybackStatistics
+        @Suppress("LongParameterList")
+        fun create(
+            ts: Long,
+            uuid: UUID,
+            user: User,
+            client: Client,
+            payload: Payload,
+            extras: Map<String, String?>?,
+        ): BroadcastPlaybackStatistics
     }
 }
