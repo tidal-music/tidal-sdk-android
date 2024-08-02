@@ -55,10 +55,17 @@ internal class StreamingSessionEndEventFactoryTest {
         val payload = mock<StreamingSessionEnd.Payload>()
         val expected = mock<StreamingSessionEnd>()
         whenever(
-            streamingSessionEndFactory.create(currentTimeMillis, randomUUID, user, client, payload),
+            streamingSessionEndFactory.create(
+                currentTimeMillis,
+                randomUUID,
+                user,
+                client,
+                payload,
+                emptyMap(),
+            ),
         ).thenReturn(expected)
 
-        val actual = streamingSessionEndEventFactory(payload)
+        val actual = streamingSessionEndEventFactory(payload, emptyMap())
 
         verify(trueTimeWrapper).currentTimeMillis
         verify(uuidWrapper).randomUUID
@@ -70,6 +77,7 @@ internal class StreamingSessionEndEventFactoryTest {
             user,
             client,
             payload,
+            emptyMap(),
         )
         assertThat(actual).isSameAs(expected)
         verifyNoMoreInteractions(randomUUID, user, client, payload, expected)

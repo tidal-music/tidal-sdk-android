@@ -297,6 +297,7 @@ internal class ExoPlayerPlaybackEngine(
                         PlaybackStatistics.IdealStartTimestampMs.Known(
                             trueTimeWrapper.currentTimeMillis,
                         ),
+                        mediaProduct!!.extras,
                     )
         } else if (
             readCurrentPlaybackStatistics is PlaybackStatistics.Undetermined &&
@@ -369,6 +370,7 @@ internal class ExoPlayerPlaybackEngine(
         }
     }
 
+    @Suppress("LongMethod")
     override fun onPlaybackInfoFetched(
         streamingSession: StreamingSession,
         forwardingMediaProduct: ForwardingMediaProduct<*>,
@@ -393,9 +395,11 @@ internal class ExoPlayerPlaybackEngine(
                         } else {
                             streamingSession.createUndeterminedPlaybackStatistics(
                                 PlaybackStatistics.IdealStartTimestampMs.NotYetKnown,
+                                currentForwardingMediaProduct.extras,
                             )
                         },
                         playbackInfo,
+                        currentForwardingMediaProduct.extras,
                     )
                     currentPlaybackSession = streamingSession.createPlaybackSession(
                         playbackInfo,
@@ -411,6 +415,7 @@ internal class ExoPlayerPlaybackEngine(
                     nextPlaybackStatistics = extendedExoPlayer.nextStreamingSession!!
                         .createUndeterminedPlaybackStatistics(
                             PlaybackStatistics.IdealStartTimestampMs.NotYetKnown,
+                            nextForwardingMediaProduct.extras,
                         )
                     nextPlaybackSession = streamingSession.createPlaybackSession(
                         playbackInfo,
@@ -637,6 +642,7 @@ internal class ExoPlayerPlaybackEngine(
                 PlaybackStatistics.IdealStartTimestampMs.Known(invokedAtMillis),
             ),
             mediaSource!!.playbackInfo!!,
+            mediaProduct!!.extras,
         ).toStarted(invokedAtMillis)
         currentPlaybackSession = targetPlaybackSession?.apply {
             startTimestamp = invokedAtMillis
@@ -654,8 +660,10 @@ internal class ExoPlayerPlaybackEngine(
         currentPlaybackStatistics = undeterminedPlaybackSessionResolver(
             newStreamingSession.createUndeterminedPlaybackStatistics(
                 PlaybackStatistics.IdealStartTimestampMs.Known(invokedAtMillis),
+                forwardingMediaProduct!!.extras,
             ),
             mediaSource!!.playbackInfo!!,
+            mediaProduct!!.extras,
         ).toStarted(invokedAtMillis)
         currentPlaybackSession = newStreamingSession.createPlaybackSession(
             mediaSource!!.playbackInfo!!,
@@ -1078,6 +1086,7 @@ internal class ExoPlayerPlaybackEngine(
 
                     else -> error("Illegal delegate type ${this::class.simpleName}")
                 },
+                extras
             )
         }
     }
@@ -1159,6 +1168,7 @@ internal class ExoPlayerPlaybackEngine(
                         endPositionSeconds,
                     )
                 },
+                extras
             )
         }
     }
@@ -1182,6 +1192,7 @@ internal class ExoPlayerPlaybackEngine(
             StreamingSession.() -> PlaybackStatistics.Undetermined = {
                 createUndeterminedPlaybackStatistics(
                     PlaybackStatistics.IdealStartTimestampMs.NotYetKnown,
+                    extras,
                 )
             }
         val playbackStatisticsForReporting = when (requestedMediaProduct) {
@@ -1214,6 +1225,7 @@ internal class ExoPlayerPlaybackEngine(
                     },
                 )
             },
+            playbackStatisticsForReporting.extras,
         )
     }
 
