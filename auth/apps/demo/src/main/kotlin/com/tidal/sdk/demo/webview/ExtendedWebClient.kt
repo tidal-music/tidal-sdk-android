@@ -7,7 +7,7 @@ import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import com.tidal.sdk.demo.MainActivity.Companion.LOGIN_URI
+import com.tidal.sdk.auth.demo.BuildConfig
 
 class ExtendedWebClient(
     private val onRedirectUriReceived: (Uri) -> Unit,
@@ -29,7 +29,7 @@ class ExtendedWebClient(
     }
 
     private fun hasRedirectUri(uri: Uri): Boolean {
-        return if (uri.toString().startsWith(LOGIN_URI)) {
+        return if (uri.toString().startsWith(BuildConfig.TIDAL_CLIENT_REDIRECT_URI)) {
             onRedirectUriReceived(uri)
             true
         } else {

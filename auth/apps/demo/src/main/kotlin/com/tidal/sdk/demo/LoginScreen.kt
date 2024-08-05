@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import com.tidal.sdk.demo.MainActivity.Companion.LOGIN_URI
+import com.tidal.sdk.auth.demo.BuildConfig
 import com.tidal.sdk.demo.webview.ComposeWebView
 
 @Composable
@@ -20,7 +20,7 @@ fun LoginScreen() {
         val context = LocalContext.current
         val activity = (context.findActivity() as MainActivity)
         return activity.auth.initializeLogin(
-            LOGIN_URI,
+            BuildConfig.TIDAL_CLIENT_REDIRECT_URI,
             activity.loginConfig,
         )
     }
