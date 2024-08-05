@@ -27,11 +27,14 @@ internal class KotlinAndroidApplicationConventionPlugin : Plugin<Project> {
         configureApplication()
     }
 
+    @Suppress("LongMethod")
     private fun Project.configureApplication() {
         val localProperties = loadLocalProperties()
 
         val tidalClientId = "tidal.clientid"
         val clientId = localProperties[tidalClientId]
+        val tidalClientRedirectUri = "tidal.clientredirecturi"
+        val clientRedirectUri = localProperties[tidalClientRedirectUri]
         androidApplication {
             compileSdk = Config.ANDROID_COMPILE_SDK
 
@@ -47,6 +50,11 @@ internal class KotlinAndroidApplicationConventionPlugin : Plugin<Project> {
                     "String",
                     "TIDAL_CLIENT_SECRET",
                     "${localProperties["tidal.clientsecret"]}",
+                )
+                buildConfigField(
+                    "String",
+                    "TIDAL_CLIENT_REDIRECT_URI",
+                    "$clientRedirectUri",
                 )
                 testInstrumentationRunner = Config.ANDROID_TEST_RUNNER_JUNIT
                 testInstrumentationRunnerArguments["clearPackageData"] = "true"
@@ -72,17 +80,22 @@ internal class KotlinAndroidApplicationConventionPlugin : Plugin<Project> {
                 compose = true
             }
         }
-        val ensureClientIdPresent: TaskProvider<*> = tasks.register("ensureClientIdPresent") {
+        val ensureClientPropsPresent: TaskProvider<*> = tasks.register("ensureClientPropsPresent") {
             doLast {
-                if (clientId == null && System.getenv("CI").isNullOrBlank()) {
-                    throw InvalidUserDataException(
-                        "$tidalClientId missing in ${localPropertiesFile.absolutePath}",
-                    )
+                arrayOf(
+                    tidalClientId to clientId,
+                    tidalClientRedirectUri to clientRedirectUri,
+                ).forEach { (key, value) ->
+                    if (value == null && System.getenv("CI").isNullOrBlank()) {
+                        throw InvalidUserDataException(
+                            "$key missing in ${localPropertiesFile.absolutePath}",
+                        )
+                    }
                 }
             }
         }
         tasks.withType(KotlinCompile::class.java).configureEach {
-            dependsOn(ensureClientIdPresent)
+            dependsOn(ensureClientPropsPresent)
         }
     }
 }
