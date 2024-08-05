@@ -9,7 +9,7 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.media3.common.util.UnstableApi
-import com.tidal.sdk.player.mainactivity.MainActivityViewModel
+import com.tidal.sdk.player.BuildConfig
 
 @UnstableApi
 internal class ExtendedWebClient(
@@ -34,7 +34,7 @@ internal class ExtendedWebClient(
     }
 
     private fun hasRedirectUri(uri: Uri): Boolean {
-        return if (uri.toString().startsWith(MainActivityViewModel.LOGIN_URI)) {
+        return if (uri.toString().startsWith(BuildConfig.TIDAL_CLIENT_REDIRECT_URI)) {
             onRedirectUriReceived(context, uri)
             true
         } else {

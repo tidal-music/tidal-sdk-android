@@ -66,7 +66,7 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
     }
     private val authLoginUri: Uri
         get() = tidalAuth.auth.initializeLogin(
-            LOGIN_URI,
+            BuildConfig.TIDAL_CLIENT_REDIRECT_URI,
             LoginConfig(
                 customParams = setOf(
                     QueryParameter(
@@ -543,10 +543,6 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
                         .copy()
             }
         }
-    }
-
-    companion object {
-        const val LOGIN_URI = "https://tidal.com/android/login/auth"
     }
 }
 
