@@ -134,7 +134,6 @@ class MainActivity : ComponentActivity() {
     companion object {
 
         private const val STORAGE_KEY = "storage"
-        const val LOGIN_URI = "https://tidal.com/android/login/auth"
     }
 }
 
