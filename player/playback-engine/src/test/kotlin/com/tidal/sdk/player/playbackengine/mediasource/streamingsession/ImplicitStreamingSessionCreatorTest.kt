@@ -10,7 +10,7 @@ internal class ImplicitStreamingSessionCreatorTest :
     override val factory = mock<StreamingSession.Factory.Implicit>()
     override val streamingSessionCreator = StreamingSession.Creator.Implicit(
         factory,
-        trueTimeWrapper,
+        sntpClient,
         eventReporter,
     )
 }

@@ -21,6 +21,7 @@ dependencies {
     implementation(libs.gson)
     implementation(libs.retrofit.converter.gson)
     implementation(libs.retrofit)
+    implementation(libs.tidal.networktime)
 
     testImplementation(project(":player:testutil"))
     testImplementation(libs.test.assertk)

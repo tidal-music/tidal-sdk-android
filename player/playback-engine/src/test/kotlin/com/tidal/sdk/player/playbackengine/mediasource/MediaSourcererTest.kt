@@ -4,14 +4,15 @@ import androidx.media3.exoplayer.ExoPlayer
 import assertk.assertThat
 import assertk.assertions.isNull
 import assertk.assertions.isSameAs
+import com.tidal.networktime.SNTPClient
 import com.tidal.sdk.player.common.ForwardingMediaProduct
 import com.tidal.sdk.player.common.model.MediaProduct
 import com.tidal.sdk.player.common.model.ProductType
-import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
 import com.tidal.sdk.player.events.EventReporter
 import com.tidal.sdk.player.events.model.StreamingSessionEnd
 import com.tidal.sdk.player.playbackengine.mediasource.streamingsession.StreamingSession
 import java.util.UUID
+import kotlin.time.Duration.Companion.milliseconds
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.doReturn
@@ -28,14 +29,14 @@ internal class MediaSourcererTest {
     private val explicitStreamingSessionCreator = mock<StreamingSession.Creator.Explicit>()
     private val implicitStreamingSessionCreator = mock<StreamingSession.Creator.Implicit>()
     private val eventReporter = mock<EventReporter>()
-    private val trueTimeWrapper = mock<TrueTimeWrapper>()
+    private val sntpClient = mock<SNTPClient>()
     private val mediaSourcerer = MediaSourcerer(
         exoPlayer,
         playbackInfoMediaSourceFactory,
         explicitStreamingSessionCreator,
         implicitStreamingSessionCreator,
         eventReporter,
-        trueTimeWrapper,
+        sntpClient,
     )
 
     @AfterEach
@@ -46,7 +47,7 @@ internal class MediaSourcererTest {
             explicitStreamingSessionCreator,
             implicitStreamingSessionCreator,
             eventReporter,
-            trueTimeWrapper,
+            sntpClient,
         )
 
     @Test
@@ -167,16 +168,20 @@ internal class MediaSourcererTest {
         val nextStreamingSession = mock<StreamingSession.Implicit>().apply {
             mediaSourcerer.reflectionNextStreamingSession = this
         }
-        val endTimeMillis = -7L
-        whenever(trueTimeWrapper.currentTimeMillis) doReturn endTimeMillis
+        val endTime = -7.milliseconds
+        whenever(sntpClient.epochTime) doReturn endTime
 
         mediaSourcerer.onCurrentItemFinished()
 
         verify(exoPlayer).removeMediaItem(0)
         verify(currentStreamingSession).id
-        verify(trueTimeWrapper).currentTimeMillis
-        verify(eventReporter)
-            .report(StreamingSessionEnd.Payload(currentStreamingSessionIdString, endTimeMillis))
+        verify(sntpClient).epochTime
+        verify(eventReporter).report(
+            StreamingSessionEnd.Payload(
+                currentStreamingSessionIdString,
+                endTime.inWholeMilliseconds,
+            ),
+        )
         verifyNoMoreInteractions(
             currentStreamingSessionId,
             currentStreamingSession,
@@ -200,8 +205,8 @@ internal class MediaSourcererTest {
         val expectedNewStreamingSession = mock<StreamingSession.Implicit>()
         whenever(implicitStreamingSessionCreator.createAndReportStart(productType, productId))
             .thenReturn(expectedNewStreamingSession)
-        val endTimeMillis = 123L
-        whenever(trueTimeWrapper.currentTimeMillis).thenReturn(endTimeMillis)
+        val endTime = 123.milliseconds
+        whenever(sntpClient.epochTime).thenReturn(endTime)
         val mediaProduct = mock<ForwardingMediaProduct<*>> {
             on { it.productType } doReturn productType
             on { it.productId } doReturn productId
@@ -214,10 +219,10 @@ internal class MediaSourcererTest {
             .report(
                 StreamingSessionEnd.Payload(
                     currentStreamingSessionId.toString(),
-                    endTimeMillis,
+                    endTime.inWholeMilliseconds,
                 ),
             )
-        verify(trueTimeWrapper).currentTimeMillis
+        verify(sntpClient).epochTime
     }
 
     @Test
@@ -234,9 +239,9 @@ internal class MediaSourcererTest {
             on { id } doReturn nextStreamingSessionId
         }
         mediaSourcerer.reflectionNextStreamingSession = nextStreamingSession
-        val endTimeMillis0 = -7L
-        val endTimeMillis1 = Long.MIN_VALUE
-        whenever(trueTimeWrapper.currentTimeMillis).doReturn(endTimeMillis0, endTimeMillis1)
+        val endTime0 = -7.milliseconds
+        val endTime1 = Long.MIN_VALUE.milliseconds
+        whenever(sntpClient.epochTime).doReturn(endTime0, endTime1)
 
         mediaSourcerer.release()
 
@@ -245,11 +250,19 @@ internal class MediaSourcererTest {
         assertThat(mediaSourcerer.reflectionNextStreamingSession).isNull()
         verify(currentStreamingSession).id
         verify(nextStreamingSession).id
-        verify(trueTimeWrapper, times(2)).currentTimeMillis
-        verify(eventReporter)
-            .report(StreamingSessionEnd.Payload(currentStreamingSessionIdString, endTimeMillis0))
-        verify(eventReporter)
-            .report(StreamingSessionEnd.Payload(nextStreamingSessionIdString, endTimeMillis1))
+        verify(sntpClient, times(2)).epochTime
+        verify(eventReporter).report(
+            StreamingSessionEnd.Payload(
+                currentStreamingSessionIdString,
+                endTime0.inWholeMilliseconds,
+            ),
+        )
+        verify(eventReporter).report(
+            StreamingSessionEnd.Payload(
+                nextStreamingSessionIdString,
+                endTime1.inWholeMilliseconds,
+            ),
+        )
         verifyNoMoreInteractions(
             currentStreamingSessionId,
             currentStreamingSession,

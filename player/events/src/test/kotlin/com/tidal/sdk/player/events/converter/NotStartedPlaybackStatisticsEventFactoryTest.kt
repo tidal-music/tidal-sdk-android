@@ -2,14 +2,15 @@ package com.tidal.sdk.player.events.converter
 
 import assertk.assertThat
 import assertk.assertions.isSameAs
+import com.tidal.networktime.SNTPClient
 import com.tidal.sdk.player.common.UUIDWrapper
-import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
 import com.tidal.sdk.player.events.ClientSupplier
 import com.tidal.sdk.player.events.UserSupplier
 import com.tidal.sdk.player.events.model.Client
 import com.tidal.sdk.player.events.model.NotStartedPlaybackStatistics
 import com.tidal.sdk.player.events.model.User
 import java.util.UUID
+import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
@@ -20,13 +21,13 @@ import org.mockito.kotlin.whenever
 
 internal class NotStartedPlaybackStatisticsEventFactoryTest {
 
-    private val trueTimeWrapper = mock<TrueTimeWrapper>()
+    private val sntpClient = mock<SNTPClient>()
     private val uuidWrapper = mock<UUIDWrapper>()
     private val userSupplier = mock<UserSupplier>()
     private val clientSupplier = mock<ClientSupplier>()
     private val notStartedPlaybackStatisticsFactory = mock<NotStartedPlaybackStatistics.Factory>()
     private val notStartedPlaybackStatisticsEventFactory = NotStartedPlaybackStatisticsEventFactory(
-        trueTimeWrapper,
+        sntpClient,
         uuidWrapper,
         userSupplier,
         clientSupplier,
@@ -35,7 +36,7 @@ internal class NotStartedPlaybackStatisticsEventFactoryTest {
 
     @AfterEach
     fun afterEach() = verifyNoMoreInteractions(
-        trueTimeWrapper,
+        sntpClient,
         uuidWrapper,
         userSupplier,
         clientSupplier,
@@ -44,8 +45,8 @@ internal class NotStartedPlaybackStatisticsEventFactoryTest {
 
     @Test
     fun invoke() = runBlocking {
-        val currentTimeMillis = -3L
-        whenever(trueTimeWrapper.currentTimeMillis).thenReturn(currentTimeMillis)
+        val currentTime = -3.milliseconds
+        whenever(sntpClient.epochTime).thenReturn(currentTime)
         val randomUUID = mock<UUID>()
         whenever(uuidWrapper.randomUUID).thenReturn(randomUUID)
         val user = mock<User>()
@@ -56,7 +57,7 @@ internal class NotStartedPlaybackStatisticsEventFactoryTest {
         val expected = mock<NotStartedPlaybackStatistics>()
         whenever(
             notStartedPlaybackStatisticsFactory.create(
-                currentTimeMillis,
+                currentTime.inWholeMilliseconds,
                 randomUUID,
                 user,
                 client,
@@ -66,12 +67,12 @@ internal class NotStartedPlaybackStatisticsEventFactoryTest {
 
         val actual = notStartedPlaybackStatisticsEventFactory(payload)
 
-        verify(trueTimeWrapper).currentTimeMillis
+        verify(sntpClient).epochTime
         verify(uuidWrapper).randomUUID
         verify(userSupplier)()
         verify(clientSupplier)()
         verify(notStartedPlaybackStatisticsFactory).create(
-            currentTimeMillis,
+            currentTime.inWholeMilliseconds,
             randomUUID,
             user,
             client,

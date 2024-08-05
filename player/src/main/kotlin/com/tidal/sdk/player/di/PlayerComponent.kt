@@ -1,6 +1,7 @@
 package com.tidal.sdk.player.di
 
 import android.content.Context
+import com.tidal.networktime.SNTPClient
 import com.tidal.sdk.auth.CredentialsProvider
 import com.tidal.sdk.eventproducer.EventSender
 import com.tidal.sdk.player.common.Configuration
@@ -34,6 +35,7 @@ internal interface PlayerComponent {
 
     val configuration: Configuration
     val playbackEngine: PlaybackEngine
+    val sntpClient: SNTPClient
     val streamingPrivileges: StreamingPrivileges
 
     @Component.Factory

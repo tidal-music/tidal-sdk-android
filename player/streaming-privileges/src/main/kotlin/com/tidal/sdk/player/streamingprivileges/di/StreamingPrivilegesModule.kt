@@ -5,10 +5,10 @@ import android.os.Handler
 import android.os.HandlerThread
 import android.os.Looper
 import com.google.gson.Gson
+import com.tidal.networktime.SNTPClient
 import com.tidal.sdk.player.common.Common
 import com.tidal.sdk.player.common.RequestBuilderFactory
 import com.tidal.sdk.player.commonandroid.SystemClockWrapper
-import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
 import com.tidal.sdk.player.streamingprivileges.MutableState
 import com.tidal.sdk.player.streamingprivileges.RegisterDefaultNetworkCallbackRunnable
 import com.tidal.sdk.player.streamingprivileges.ReleaseRunnable
@@ -159,7 +159,7 @@ internal object StreamingPrivilegesModule {
         setKeepAliveRunnableFactory: SetKeepAliveRunnable.Factory,
         setStreamingPrivilegesListenerRunnableFactory: SetStreamingPrivilegesListenerRunnable.Factory, // ktlint-disable max-line-length parameter-wrapping
         acquireRunnableFactory: AcquireRunnable.Factory,
-        trueTimeWrapper: TrueTimeWrapper,
+        sntpClient: SNTPClient,
         mutableState: MutableState,
     ): StreamingPrivileges = StreamingPrivilegesDefault(
         networkInteractionsHandler,
@@ -167,7 +167,7 @@ internal object StreamingPrivilegesModule {
         setStreamingPrivilegesListenerRunnableFactory,
         releaseRunnable,
         acquireRunnableFactory,
-        trueTimeWrapper,
+        sntpClient,
         mutableState,
     )
 

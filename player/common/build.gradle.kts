@@ -7,6 +7,7 @@ dependencies {
 
     implementation(libs.gson)
     implementation(libs.okhttp.okhttp)
+    implementation(libs.tidal.networktime)
 
     testImplementation(libs.test.junit5Api)
     testRuntimeOnly(libs.test.junit5Engine)

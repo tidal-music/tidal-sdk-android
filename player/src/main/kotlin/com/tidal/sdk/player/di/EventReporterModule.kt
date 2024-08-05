@@ -4,11 +4,11 @@ import android.app.UiModeManager
 import android.content.Context
 import android.net.ConnectivityManager
 import com.google.gson.Gson
+import com.tidal.networktime.SNTPClient
 import com.tidal.sdk.auth.CredentialsProvider
 import com.tidal.sdk.eventproducer.EventSender
 import com.tidal.sdk.player.common.UUIDWrapper
 import com.tidal.sdk.player.commonandroid.Base64Codec
-import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
 import com.tidal.sdk.player.commonandroid.jwt.Base64JwtDecoder
 import com.tidal.sdk.player.events.ClientSupplier
 import com.tidal.sdk.player.events.EventReporterModuleRoot
@@ -72,7 +72,7 @@ internal object EventReporterModule {
         okHttpClient: OkHttpClient,
         gson: Gson,
         uuidWrapper: UUIDWrapper,
-        trueTimeWrapper: TrueTimeWrapper,
+        sntpClient: SNTPClient,
         eventSender: EventSender,
         coroutineScope: CoroutineScope,
     ) = EventReporterModuleRoot(
@@ -83,7 +83,7 @@ internal object EventReporterModule {
         okHttpClient,
         gson,
         uuidWrapper,
-        trueTimeWrapper,
+        sntpClient,
         eventSender,
         coroutineScope,
     ).eventReporter

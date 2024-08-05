@@ -3,9 +3,10 @@ package com.tidal.sdk.player.streamingprivileges
 import android.os.Handler
 import assertk.assertThat
 import assertk.assertions.isFalse
-import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
+import com.tidal.networktime.SNTPClient
 import com.tidal.sdk.player.streamingprivileges.acquire.AcquireRunnable
 import com.tidal.sdk.player.streamingprivileges.connection.ConnectionMutableState
+import kotlin.time.Duration.Companion.milliseconds
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.doReturn
@@ -23,7 +24,7 @@ internal class StreamingPrivilegesDefaultTest {
         mock<SetStreamingPrivilegesListenerRunnable.Factory>()
     private val releaseRunnable = mock<ReleaseRunnable>()
     private val acquireRunnableFactory = mock<AcquireRunnable.Factory>()
-    private val trueTimeWrapper = mock<TrueTimeWrapper>()
+    private val sntpClient = mock<SNTPClient>()
     private val mutableState = mock<MutableState>()
     private val streamingPrivilegesDefault = StreamingPrivilegesDefault(
         networkInteractionsHandler,
@@ -31,7 +32,7 @@ internal class StreamingPrivilegesDefaultTest {
         setStreamingPrivilegesListenerRunnableFactory,
         releaseRunnable,
         acquireRunnableFactory,
-        trueTimeWrapper,
+        sntpClient,
         mutableState,
     )
 
@@ -42,7 +43,7 @@ internal class StreamingPrivilegesDefaultTest {
         setStreamingPrivilegesListenerRunnableFactory,
         releaseRunnable,
         acquireRunnableFactory,
-        trueTimeWrapper,
+        sntpClient,
         mutableState,
     )
 
@@ -82,19 +83,22 @@ internal class StreamingPrivilegesDefaultTest {
 
     @Test
     fun acquirePostsRunnableHappyPath() {
-        val startedAtMillis = 7L
-        whenever(trueTimeWrapper.currentTimeMillis) doReturn startedAtMillis
+        val startedAt = 7.milliseconds
+        whenever(sntpClient.epochTime) doReturn startedAt
         val connectionMutableState = mock<ConnectionMutableState>()
         whenever(mutableState.connectionMutableState) doReturn connectionMutableState
         val acquireRunnable = mock<AcquireRunnable>()
-        whenever(acquireRunnableFactory.create(startedAtMillis, connectionMutableState))
+        whenever(
+            acquireRunnableFactory
+                .create(startedAt.inWholeMilliseconds, connectionMutableState),
+        )
             .thenReturn(acquireRunnable)
 
         streamingPrivilegesDefault.acquireStreamingPrivileges()
 
-        verify(trueTimeWrapper).currentTimeMillis
+        verify(sntpClient).epochTime
         verify(mutableState).connectionMutableState
-        verify(acquireRunnableFactory).create(startedAtMillis, connectionMutableState)
+        verify(acquireRunnableFactory).create(startedAt.inWholeMilliseconds, connectionMutableState)
         verify(networkInteractionsHandler).post(acquireRunnable)
         verifyNoInteractions(connectionMutableState, acquireRunnable)
     }

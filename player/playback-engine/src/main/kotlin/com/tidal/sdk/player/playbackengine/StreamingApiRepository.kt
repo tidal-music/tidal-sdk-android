@@ -1,11 +1,12 @@
 package com.tidal.sdk.player.playbackengine
 
 import androidx.media3.exoplayer.drm.MediaDrmCallbackException
+import com.tidal.networktime.SNTPClient
 import com.tidal.sdk.player.common.ForwardingMediaProduct
 import com.tidal.sdk.player.common.model.AudioQuality
 import com.tidal.sdk.player.common.model.ProductType
 import com.tidal.sdk.player.common.model.VideoQuality
-import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
+import com.tidal.sdk.player.common.ntpOrLocalClockTime
 import com.tidal.sdk.player.events.EventReporter
 import com.tidal.sdk.player.events.model.DrmLicenseFetch
 import com.tidal.sdk.player.events.model.EndReason
@@ -33,7 +34,7 @@ import java.io.IOException
  * [AudioQuality] to be used in the request.
  * @param[videoQualityRepository] An instance of [VideoQualityRepository] which decides the
  * [VideoQuality] to be used in the request.
- * @param[trueTimeWrapper] An instance of [TrueTimeWrapper] to get the time for event reporting.
+ * @param[sntpClient] An instance of [SNTPClient] to get the time for event reporting.
  * @param[mediaDrmCallbackExceptionFactory] An instance of [MediaDrmCallbackExceptionFactory] to
  * create a [MediaDrmCallbackException] for when the drm fails.
  * @param[eventReporter] An instance of [EventReporter] to report events to.
@@ -44,7 +45,7 @@ internal class StreamingApiRepository(
     private val audioQualityRepository: AudioQualityRepository,
     private val videoQualityRepository: VideoQualityRepository,
     private val audioModeRepository: AudioModeRepository,
-    private val trueTimeWrapper: TrueTimeWrapper,
+    private val sntpClient: SNTPClient,
     private val mediaDrmCallbackExceptionFactory: MediaDrmCallbackExceptionFactory,
     private val eventReporter: EventReporter,
     private val errorHandler: ErrorHandler,
@@ -55,7 +56,7 @@ internal class StreamingApiRepository(
      */
     @SuppressWarnings("TooGenericExceptionCaught") // We rethrow it, so no issue
     suspend fun getDrmLicense(drmLicenseRequest: DrmLicenseRequest): DrmLicense {
-        val startTimestamp = trueTimeWrapper.currentTimeMillis
+        val startTimestamp = sntpClient.ntpOrLocalClockTime.inWholeMilliseconds
         var errorMessage: String? = null
         var errorCode: String? = null
         lateinit var endReason: EndReason
@@ -73,7 +74,7 @@ internal class StreamingApiRepository(
                 DrmLicenseFetch.Payload(
                     drmLicenseRequest.streamingSessionId,
                     startTimestamp,
-                    trueTimeWrapper.currentTimeMillis,
+                    sntpClient.ntpOrLocalClockTime.inWholeMilliseconds,
                     endReason,
                     errorMessage,
                     errorCode,
@@ -90,7 +91,7 @@ internal class StreamingApiRepository(
         streamingSessionId: String,
         forwardingMediaProduct: ForwardingMediaProduct<*>,
     ): PlaybackInfo {
-        val startTimestamp = trueTimeWrapper.currentTimeMillis
+        val startTimestamp = sntpClient.ntpOrLocalClockTime.inWholeMilliseconds
         var errorMessage: String? = null
         var errorCode: String? = null
         lateinit var endReason: EndReason
@@ -135,7 +136,7 @@ internal class StreamingApiRepository(
                 PlaybackInfoFetch.Payload(
                     streamingSessionId,
                     startTimestamp,
-                    trueTimeWrapper.currentTimeMillis,
+                    sntpClient.ntpOrLocalClockTime.inWholeMilliseconds,
                     endReason,
                     errorMessage,
                     errorCode,

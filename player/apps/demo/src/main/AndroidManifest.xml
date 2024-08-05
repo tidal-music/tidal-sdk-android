@@ -3,7 +3,6 @@
     package="com.tidal.sdk.player">
 
     <application
-        android:name=".MyApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="Player"

@@ -1,13 +1,14 @@
 package com.tidal.sdk.player.events.converter
 
+import com.tidal.networktime.SNTPClient
 import com.tidal.sdk.player.common.UUIDWrapper
-import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
+import com.tidal.sdk.player.common.ntpOrLocalClockTime
 import com.tidal.sdk.player.events.ClientSupplier
 import com.tidal.sdk.player.events.UserSupplier
 import com.tidal.sdk.player.events.model.VideoPlaybackSession
 
 internal class VideoPlaybackSessionEventFactory(
-    private val trueTimeWrapper: TrueTimeWrapper,
+    private val sntpClient: SNTPClient,
     private val uuidWrapper: UUIDWrapper,
     private val userSupplier: UserSupplier,
     private val clientSupplier: ClientSupplier,
@@ -16,7 +17,7 @@ internal class VideoPlaybackSessionEventFactory(
 
     override suspend fun invoke(payload: VideoPlaybackSession.Payload) = videoPlaybackSessionFactory
         .create(
-            trueTimeWrapper.currentTimeMillis,
+            sntpClient.ntpOrLocalClockTime.inWholeMilliseconds,
             uuidWrapper.randomUUID,
             userSupplier(),
             clientSupplier(),

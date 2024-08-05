@@ -31,6 +31,7 @@ dependencies {
     implementation(libs.okhttp.loggingInterceptor)
     implementation(libs.gson)
     implementation(project(":player:streaming-privileges"))
+    implementation(libs.tidal.networktime.singletons)
 
     testImplementation(libs.test.assertk)
     testImplementation(libs.test.junit5Api)

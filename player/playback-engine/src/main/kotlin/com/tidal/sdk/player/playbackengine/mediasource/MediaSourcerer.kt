@@ -2,9 +2,10 @@ package com.tidal.sdk.player.playbackengine.mediasource
 
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.ConcatenatingMediaSource
+import com.tidal.networktime.SNTPClient
 import com.tidal.sdk.player.common.ForwardingMediaProduct
 import com.tidal.sdk.player.common.model.MediaProduct
-import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
+import com.tidal.sdk.player.common.ntpOrLocalClockTime
 import com.tidal.sdk.player.events.EventReporter
 import com.tidal.sdk.player.events.model.StreamingSessionEnd
 import com.tidal.sdk.player.playbackengine.mediasource.streamingsession.StreamingSession
@@ -26,7 +27,7 @@ internal class MediaSourcerer(
     private val explicitStreamingSessionCreator: StreamingSession.Creator.Explicit,
     private val implicitStreamingSessionCreator: StreamingSession.Creator.Implicit,
     private val eventReporter: EventReporter,
-    private val trueTimeWrapper: TrueTimeWrapper,
+    private val sntpClient: SNTPClient,
 ) {
 
     var currentStreamingSession: StreamingSession? by Delegates.observable(null) { _, oldValue, _ ->
@@ -120,6 +121,9 @@ internal class MediaSourcerer(
     }
 
     private fun StreamingSession.reportEnd() = eventReporter.report(
-        StreamingSessionEnd.Payload(id.toString(), trueTimeWrapper.currentTimeMillis),
+        StreamingSessionEnd.Payload(
+            id.toString(),
+            sntpClient.ntpOrLocalClockTime.inWholeMilliseconds,
+        ),
     )
 }

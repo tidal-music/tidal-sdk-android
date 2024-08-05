@@ -2,14 +2,15 @@ package com.tidal.sdk.player.events.converter
 
 import assertk.assertThat
 import assertk.assertions.isSameAs
+import com.tidal.networktime.SNTPClient
 import com.tidal.sdk.player.common.UUIDWrapper
-import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
 import com.tidal.sdk.player.events.ClientSupplier
 import com.tidal.sdk.player.events.UserSupplier
 import com.tidal.sdk.player.events.model.Client
 import com.tidal.sdk.player.events.model.User
 import com.tidal.sdk.player.events.model.VideoDownloadStatistics
 import java.util.UUID
+import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
@@ -20,13 +21,13 @@ import org.mockito.kotlin.whenever
 
 internal class VideoDownloadStatisticsEventFactoryTest {
 
-    private val trueTimeWrapper = mock<TrueTimeWrapper>()
+    private val sntpClient = mock<SNTPClient>()
     private val uuidWrapper = mock<UUIDWrapper>()
     private val userSupplier = mock<UserSupplier>()
     private val clientSupplier = mock<ClientSupplier>()
     private val videoDownloadStatisticsFactory = mock<VideoDownloadStatistics.Factory>()
     private val videoDownloadStatisticsEventFactory = VideoDownloadStatisticsEventFactory(
-        trueTimeWrapper,
+        sntpClient,
         uuidWrapper,
         userSupplier,
         clientSupplier,
@@ -35,7 +36,7 @@ internal class VideoDownloadStatisticsEventFactoryTest {
 
     @AfterEach
     fun afterEach() = verifyNoMoreInteractions(
-        trueTimeWrapper,
+        sntpClient,
         uuidWrapper,
         userSupplier,
         clientSupplier,
@@ -44,8 +45,8 @@ internal class VideoDownloadStatisticsEventFactoryTest {
 
     @Test
     fun invoke() = runBlocking {
-        val currentTimeMillis = -3L
-        whenever(trueTimeWrapper.currentTimeMillis).thenReturn(currentTimeMillis)
+        val currentTime = -3.milliseconds
+        whenever(sntpClient.epochTime).thenReturn(currentTime)
         val randomUUID = mock<UUID>()
         whenever(uuidWrapper.randomUUID).thenReturn(randomUUID)
         val user = mock<User>()
@@ -55,17 +56,23 @@ internal class VideoDownloadStatisticsEventFactoryTest {
         val src = mock<VideoDownloadStatistics.Payload>()
         val expected = mock<VideoDownloadStatistics>()
         whenever(
-            videoDownloadStatisticsFactory.create(currentTimeMillis, randomUUID, user, client, src),
+            videoDownloadStatisticsFactory.create(
+                currentTime.inWholeMilliseconds,
+                randomUUID,
+                user,
+                client,
+                src,
+            ),
         ).thenReturn(expected)
 
         val actual = videoDownloadStatisticsEventFactory(src)
 
-        verify(trueTimeWrapper).currentTimeMillis
+        verify(sntpClient).epochTime
         verify(uuidWrapper).randomUUID
         verify(userSupplier)()
         verify(clientSupplier)()
         verify(videoDownloadStatisticsFactory).create(
-            currentTimeMillis,
+            currentTime.inWholeMilliseconds,
             randomUUID,
             user,
             client,

@@ -1,10 +1,11 @@
 package com.tidal.sdk.player.playbackengine.mediasource.streamingsession
 
+import com.tidal.networktime.SNTPClient
 import com.tidal.sdk.player.common.Configuration
 import com.tidal.sdk.player.common.ForwardingMediaProduct
 import com.tidal.sdk.player.common.UUIDWrapper
 import com.tidal.sdk.player.common.model.ProductType
-import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
+import com.tidal.sdk.player.common.ntpOrLocalClockTime
 import com.tidal.sdk.player.events.EventReporter
 import com.tidal.sdk.player.events.model.StreamingSessionStart
 import com.tidal.sdk.player.playbackengine.mediasource.streamingsession.StreamingSession.Explicit
@@ -102,7 +103,7 @@ internal sealed class StreamingSession private constructor(
 
     sealed class Creator<T : Factory> private constructor(
         private val factory: T,
-        private val trueTimeWrapper: TrueTimeWrapper,
+        private val sntpClient: SNTPClient,
         private val eventReporter: EventReporter,
     ) {
 
@@ -115,7 +116,7 @@ internal sealed class StreamingSession private constructor(
             eventReporter.report(
                 StreamingSessionStart.Payload(
                     it.id.toString(),
-                    trueTimeWrapper.currentTimeMillis,
+                    sntpClient.ntpOrLocalClockTime.inWholeMilliseconds,
                     startReason,
                     it.configuration.isOfflineMode,
                     sessionProductType,
@@ -126,18 +127,18 @@ internal sealed class StreamingSession private constructor(
 
         class Explicit(
             factory: Factory.Explicit,
-            trueTimeWrapper: TrueTimeWrapper,
+            sntpClient: SNTPClient,
             eventReporter: EventReporter,
-        ) : Creator<Factory.Explicit>(factory, trueTimeWrapper, eventReporter) {
+        ) : Creator<Factory.Explicit>(factory, sntpClient, eventReporter) {
 
             override val startReason = StreamingSessionStart.StartReason.EXPLICIT
         }
 
         class Implicit(
             factory: Factory.Implicit,
-            trueTimeWrapper: TrueTimeWrapper,
+            sntpClient: SNTPClient,
             eventReporter: EventReporter,
-        ) : Creator<Factory.Implicit>(factory, trueTimeWrapper, eventReporter) {
+        ) : Creator<Factory.Implicit>(factory, sntpClient, eventReporter) {
 
             override val startReason = StreamingSessionStart.StartReason.IMPLICIT
         }

@@ -3,9 +3,11 @@ package com.tidal.sdk.player.di
 import android.content.Context
 import android.net.ConnectivityManager
 import com.google.gson.GsonBuilder
+import com.tidal.networktime.NTPServer
+import com.tidal.networktime.SNTPClient
+import com.tidal.networktime.singletons.singleton
 import com.tidal.sdk.player.common.UUIDWrapper
 import com.tidal.sdk.player.commonandroid.Base64Codec
-import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
@@ -28,7 +30,7 @@ internal object PlayerModule {
 
     @Provides
     @Reusable
-    fun trueTimeWrapper() = TrueTimeWrapper()
+    fun sntpClient() = SNTPClient(NTPServer("time.google.com")).singleton
 
     @Provides
     @Reusable

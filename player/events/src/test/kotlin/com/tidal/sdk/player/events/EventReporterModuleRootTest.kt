@@ -5,10 +5,10 @@ import android.net.ConnectivityManager
 import assertk.assertThat
 import assertk.assertions.isSameAs
 import com.google.gson.Gson
+import com.tidal.networktime.SNTPClient
 import com.tidal.sdk.eventproducer.EventSender
 import com.tidal.sdk.player.common.Configuration
 import com.tidal.sdk.player.common.UUIDWrapper
-import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
 import com.tidal.sdk.player.events.di.DefaultEventReporterComponent
 import kotlinx.coroutines.CoroutineScope
 import okhttp3.OkHttpClient
@@ -29,7 +29,7 @@ internal class EventReporterModuleRootTest {
     private val okHttpClient = mock<OkHttpClient>()
     private val gson = mock<Gson>()
     private val uuidWrapper = mock<UUIDWrapper>()
-    private val trueTimeWrapper = mock<TrueTimeWrapper>()
+    private val sntpClient = mock<SNTPClient>()
     private val eventSender = mock<EventSender>()
     private val configuration = mock<Configuration>()
     private val coroutineScope = mock<CoroutineScope>()
@@ -42,7 +42,7 @@ internal class EventReporterModuleRootTest {
             okHttpClient,
             gson,
             uuidWrapper,
-            trueTimeWrapper,
+            sntpClient,
             eventSender,
             coroutineScope
         )
@@ -69,7 +69,7 @@ internal class EventReporterModuleRootTest {
             okHttpClient,
             gson,
             uuidWrapper,
-            trueTimeWrapper,
+            sntpClient,
             eventSender,
             configuration,
         )
@@ -91,7 +91,7 @@ internal class EventReporterModuleRootTest {
                     okHttpClient,
                     gson,
                     uuidWrapper,
-                    trueTimeWrapper,
+                    sntpClient,
                     eventSender,
                     coroutineScope,
                 )
@@ -109,7 +109,7 @@ internal class EventReporterModuleRootTest {
             okHttpClient,
             gson,
             uuidWrapper,
-            trueTimeWrapper,
+            sntpClient,
             eventSender,
             coroutineScope,
         )
