@@ -11,7 +11,6 @@ import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
 import com.tidal.sdk.player.playbackengine.model.AssetTimeoutConfig
 import com.tidal.sdk.player.playbackengine.model.BufferConfiguration
 import com.tidal.sdk.player.playbackengine.player.CacheProvider
-import com.tidal.sdk.player.playbackengine.player.renderer.audio.AudioDecodingMode
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -24,7 +23,6 @@ internal class ExoPlayerPlaybackEngineLooperTest {
     private val singleHandlerPlaybackEngine = PlaybackEngineModuleRoot(
         InstrumentationRegistry.getInstrumentation().targetContext,
         mock(),
-        AudioDecodingMode.NATIVE,
         true,
         MutableSharedFlow(),
         BufferConfiguration(),
