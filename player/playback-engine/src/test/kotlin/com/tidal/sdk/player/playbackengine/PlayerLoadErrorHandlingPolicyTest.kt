@@ -11,7 +11,6 @@ import assertk.assertions.isEqualTo
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.tidal.sdk.player.common.model.ApiError
-import com.tidal.sdk.player.playbackengine.offline.OfflineExpiredException
 import com.tidal.sdk.player.playbackengine.offline.StorageException
 import java.io.FileNotFoundException
 import java.io.IOException
@@ -211,7 +210,6 @@ internal class PlayerLoadErrorHandlingPolicyTest {
             ParserException.createForUnsupportedContainerFeature(null),
             FileNotFoundException(),
             StorageException(),
-            OfflineExpiredException(),
         )
     }
 }
