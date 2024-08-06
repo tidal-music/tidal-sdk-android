@@ -17,9 +17,6 @@ import com.tidal.sdk.player.streamingapi.offline.Storage
  * @property[manifestMimeType] A mime type of the manifest.
  * @property[manifest] Base64 encoded manifest.
  * @property[licenseSecurityToken] Token used to fetch DRM license if needed.
- * @property[offlineRevalidateAt] Indicates the earliest time at which the client is allowed to
- * revalidate an offlined media product.
- * @property[offlineValidUntil] Indicates how long an offline is valid for.
  */
 sealed interface PlaybackInfo {
     val streamingSessionId: String
@@ -30,8 +27,6 @@ sealed interface PlaybackInfo {
     val albumPeakAmplitude: Float
     val trackReplayGain: Float
     val trackPeakAmplitude: Float
-    val offlineRevalidateAt: Long
-    val offlineValidUntil: Long
 
     /**
      * Playback info with track specific properties.
@@ -61,8 +56,6 @@ sealed interface PlaybackInfo {
         override val albumPeakAmplitude: Float,
         override val trackReplayGain: Float,
         override val trackPeakAmplitude: Float,
-        override val offlineRevalidateAt: Long,
-        override val offlineValidUntil: Long,
     ) : PlaybackInfo
 
     /**
@@ -89,8 +82,6 @@ sealed interface PlaybackInfo {
         override val albumPeakAmplitude: Float,
         override val trackReplayGain: Float,
         override val trackPeakAmplitude: Float,
-        override val offlineRevalidateAt: Long,
-        override val offlineValidUntil: Long,
     ) : PlaybackInfo
 
     /**
@@ -112,8 +103,6 @@ sealed interface PlaybackInfo {
         override val albumPeakAmplitude: Float,
         override val trackReplayGain: Float,
         override val trackPeakAmplitude: Float,
-        override val offlineRevalidateAt: Long,
-        override val offlineValidUntil: Long,
     ) : PlaybackInfo
 
     /**
@@ -134,8 +123,6 @@ sealed interface PlaybackInfo {
         override val albumPeakAmplitude: Float,
         override val trackReplayGain: Float,
         override val trackPeakAmplitude: Float,
-        override val offlineRevalidateAt: Long,
-        override val offlineValidUntil: Long,
     ) : PlaybackInfo
 
     /**

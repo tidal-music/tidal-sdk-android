@@ -147,7 +147,7 @@ internal class StreamingApiDefaultTest {
 
         val playbackInfo = getTrackPlaybackInfo()
 
-        assertThat(playbackInfo).isDataClassEqualTo(TrackPlaybackInfoFactory.OFFLINE)
+        assertThat(playbackInfo).isDataClassEqualTo(TrackPlaybackInfoFactory.DEFAULT)
     }
 
     private fun getTrackPlaybackInfo() = runBlocking {
@@ -250,7 +250,7 @@ internal class StreamingApiDefaultTest {
 
         val playbackInfo = getVideoPlaybackInfo()
 
-        assertThat(playbackInfo).isDataClassEqualTo(VideoPlaybackInfoFactory.OFFLINE)
+        assertThat(playbackInfo).isDataClassEqualTo(VideoPlaybackInfoFactory.DEFAULT)
     }
 
     private fun getVideoPlaybackInfo() = runBlocking {

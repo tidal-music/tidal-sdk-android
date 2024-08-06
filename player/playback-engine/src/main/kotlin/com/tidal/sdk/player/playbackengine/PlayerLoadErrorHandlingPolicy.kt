@@ -7,7 +7,6 @@ import androidx.media3.exoplayer.upstream.LoadErrorHandlingPolicy
 import androidx.media3.exoplayer.upstream.LoadErrorHandlingPolicy.LoadErrorInfo
 import androidx.media3.exoplayer.upstream.Loader.UnexpectedLoaderException
 import com.tidal.sdk.player.common.model.ApiError
-import com.tidal.sdk.player.playbackengine.offline.OfflineExpiredException
 import com.tidal.sdk.player.playbackengine.offline.StorageException
 import java.io.FileNotFoundException
 import java.io.IOException
@@ -48,7 +47,7 @@ internal class PlayerLoadErrorHandlingPolicy(
         return (responseCode in responseCode5xxRange && errorCount > MAX_5XX_RETRIES) ||
             isNonRetryable4xxResponse(responseCode) || exception is ParserException ||
             exception is FileNotFoundException || exception is UnexpectedLoaderException ||
-            exception is StorageException || exception is OfflineExpiredException
+            exception is StorageException
     }
 
     private fun isNonRetryable4xxResponse(responseCode: Int) =

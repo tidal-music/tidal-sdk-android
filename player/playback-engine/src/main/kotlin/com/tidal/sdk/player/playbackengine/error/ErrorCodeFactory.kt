@@ -64,6 +64,5 @@ internal class ErrorCodeFactory {
         object PlayerOtherError : Extra(5)
         object Broadcast : Extra(6)
         object Storage : Extra(7)
-        object OfflineExpired : Extra(8)
     }
 }

@@ -10,7 +10,6 @@ import androidx.media3.exoplayer.upstream.Loader
 import com.tidal.sdk.player.common.model.ApiError
 import com.tidal.sdk.player.common.model.ProductType
 import com.tidal.sdk.player.playbackengine.model.Event
-import com.tidal.sdk.player.playbackengine.offline.OfflineExpiredException
 import com.tidal.sdk.player.playbackengine.offline.StorageException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
@@ -52,16 +51,6 @@ internal class ErrorHandler(private val errorCodeFactory: ErrorCodeFactory) {
             errorEvent = when (cause) {
                 is ApiError ->
                     lazy { handleApiError(cause) }
-
-                is OfflineExpiredException -> lazy {
-                    Event.Error.NotAllowed(
-                        errorCodeFactory.createForOther(
-                            ErrorCodeFactory.Extra.OfflineExpired,
-                            playbackExceptionErrorCode,
-                        ),
-                        cause,
-                    )
-                }
 
                 is StorageException -> lazy {
                     Event.Error.NotAllowed(

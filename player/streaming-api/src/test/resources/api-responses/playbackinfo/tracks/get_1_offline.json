@@ -11,8 +11,6 @@
   "albumPeakAmplitude": 0.999923,
   "trackReplayGain": -9.8,
   "trackPeakAmplitude": 0.999923,
-  "offlineRevalidateAt": 1641113514,
-  "offlineValidUntil": 1641718314,
   "bitDepth": 16,
   "sampleRate": 44100
 }

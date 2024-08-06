@@ -26,8 +26,6 @@ object TrackPlaybackInfoFactory {
         0.999923F,
         -9.8F,
         0.999923F,
-        0,
-        0,
     )
 
     val EMPTY_STREAMING_SESSION_ID = DEFAULT.copy(streamingSessionId = "")
@@ -37,11 +35,6 @@ object TrackPlaybackInfoFactory {
     val REPLACEMENT_AUDIO_QUALITY = DEFAULT.copy(audioQuality = AudioQuality.HIGH)
 
     val PROTECTED = DEFAULT.copy(licenseSecurityToken = ApiConstants.LICENSE_SECURITY_TOKEN)
-
-    val OFFLINE = DEFAULT.copy(
-        offlineRevalidateAt = ApiConstants.OFFLINE_REVALIDATE_AT_SECONDS,
-        offlineValidUntil = ApiConstants.OFFLINE_VALID_UNTIL_SECONDS,
-    )
 
     val OFFLINE_PLAY = PlaybackInfo.Offline.Track(
         DEFAULT,
