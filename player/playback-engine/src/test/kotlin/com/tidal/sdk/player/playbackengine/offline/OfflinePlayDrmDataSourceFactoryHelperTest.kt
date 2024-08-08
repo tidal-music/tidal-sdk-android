@@ -31,11 +31,14 @@ internal class OfflinePlayDrmDataSourceFactoryHelperTest {
     fun create() {
         val cache = mock<Cache>()
         whenever(cacheDataSourceFactory.setCache(cache)).thenReturn(cacheDataSourceFactory)
+        whenever(cacheDataSourceFactory.setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR))
+            .thenReturn(cacheDataSourceFactory)
 
         val actualDataSourceFactory = offlinePlayDrmDataSourceFactoryHelper.create(cache)
 
         assertThat(actualDataSourceFactory).isSameAs(cacheDataSourceFactory)
         verify(cacheDataSourceFactory).setCache(cache)
+        verify(cacheDataSourceFactory).setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR)
         verifyNoMoreInteractions(
             cache,
             cacheDataSourceFactory,

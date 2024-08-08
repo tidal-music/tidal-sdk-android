@@ -17,4 +17,5 @@ internal class OfflinePlayDrmDataSourceFactoryHelper(
 ) : OfflineDataSourceFactoryHelper<DataSource.Factory>(offlineCacheProvider) {
 
     override fun create(cache: Cache) = cacheDataSourceFactory.setCache(cache)
+        .setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR)
 }
