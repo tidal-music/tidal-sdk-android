@@ -158,6 +158,7 @@ internal object MediaSourcererModule {
             .setUpstreamDataSourceFactory(okHttpDataSourceFactory)
             .setCacheReadDataSourceFactory(fileDataSourceFactory)
             .setCacheWriteDataSinkFactory(cacheDataSinkFactory)
+            .setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR)
     }
 
     @Provides
