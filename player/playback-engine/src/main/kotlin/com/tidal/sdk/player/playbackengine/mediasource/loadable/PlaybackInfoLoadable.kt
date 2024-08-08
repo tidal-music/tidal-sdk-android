@@ -69,9 +69,11 @@ internal class PlaybackInfoLoadable(
                     }
                 }
             }
-        } catch (ignored: CancellationException) {
         } catch (throwable: Throwable) {
-            throw PlaybackInfoFetchException.Error(forwardingMediaProduct, throwable)
+            when (throwable) {
+                is CancellationException, is InterruptedException -> Unit
+                else -> throw PlaybackInfoFetchException.Error(forwardingMediaProduct, throwable)
+            }
         }
     }
 }
