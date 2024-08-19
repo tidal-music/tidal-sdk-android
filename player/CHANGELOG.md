@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.47] - 2024-08-19
+### Fixed
+- Loading stuck when switching media products too quickly
+- Ignore caches after error (per process and media product)
+
 ## [0.0.46] - 2024-07-26
 ### Fixed
 - Fixed loud volume issue
