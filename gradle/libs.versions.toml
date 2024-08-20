@@ -84,7 +84,7 @@ kotlinx-serialization-retrofit-converter = { module = "com.jakewharton.retrofit:
 tidal-sdk-catalogue = { module = "com.tidal.sdk:catalogue", version = "0.1.0" }
 tidal-sdk-common = { module = "com.tidal.sdk:common", version = "0.2.5" }
 tidal-sdk-auth = { module = "com.tidal.sdk:auth", version = "0.9.1" }
-tidal-sdk-eventproducer = { module = "com.tidal.sdk:eventproducer", version = "0.3.1" }
+tidal-sdk-eventproducer = { module = "com.tidal.sdk:eventproducer", version = "0.3.2" }
 tidal-sdk-player = { module = "com.tidal.sdk:player", version = "0.0.39" }
 
 # Testing
