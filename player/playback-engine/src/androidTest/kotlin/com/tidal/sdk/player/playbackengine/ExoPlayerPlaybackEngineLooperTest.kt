@@ -40,7 +40,7 @@ internal class ExoPlayerPlaybackEngineLooperTest {
         TrueTimeWrapper(),
         mock(),
         mock(),
-        mock(),
+        null,
         Base64Codec(),
         Dispatchers.IO,
         CoroutineScope(Dispatchers.IO),

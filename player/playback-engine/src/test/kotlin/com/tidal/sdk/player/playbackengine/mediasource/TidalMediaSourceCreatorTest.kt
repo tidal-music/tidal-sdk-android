@@ -25,8 +25,6 @@ internal class TidalMediaSourceCreatorTest {
     private val playerDashMediaSourceFactory = mock<PlayerDashMediaSourceFactory>()
     private val playerHlsMediaSourceFactory = mock<PlayerHlsMediaSourceFactory>()
     private val playerAuthHlsMediaSourceFactory = mock<PlayerAuthHlsMediaSourceFactory>()
-    private val playerDecryptedHeaderProgressiveOfflineMediaSourceFactory =
-        mock<PlayerDecryptedHeaderProgressiveOfflineMediaSourceFactory>()
     private val playerProgressiveOfflineMediaSourceFactory =
         mock<PlayerProgressiveOfflineMediaSourceFactory>()
     private val playerDashOfflineMediaSourceFactory = mock<PlayerDashOfflineMediaSourceFactory>()
@@ -37,7 +35,6 @@ internal class TidalMediaSourceCreatorTest {
         playerDashMediaSourceFactory,
         playerHlsMediaSourceFactory,
         playerAuthHlsMediaSourceFactory,
-        playerDecryptedHeaderProgressiveOfflineMediaSourceFactory,
         playerProgressiveOfflineMediaSourceFactory,
         playerDashOfflineMediaSourceFactory,
         drmSessionManagerFactory,
@@ -156,39 +153,12 @@ internal class TidalMediaSourceCreatorTest {
     }
 
     @Test
-    fun invokeWithManifestMimeTypeBtsForOffline() {
-        val mediaItem = mock<MediaItem>()
-        val playbackInfoTrack = mock<PlaybackInfo.Track> {
-            on { it.trackId } doReturn 123
-        }
-        val playbackInfoOfflineTrack = mock<PlaybackInfo.Offline.Track> {
-            on { it.track } doReturn playbackInfoTrack
-            on { it.manifest } doReturn "btsManifest"
-            on { it.manifestMimeType } doReturn ManifestMimeType.BTS
-            on { it.partiallyEncrypted } doReturn true
-        }
-        val expectedProgressiveMediaSource = mock<ProgressiveMediaSource>()
-        whenever(
-            playerDecryptedHeaderProgressiveOfflineMediaSourceFactory.create(
-                mediaItem,
-                playbackInfoOfflineTrack.manifest,
-                playbackInfoOfflineTrack.track.trackId.toString(),
-            ),
-        ).thenReturn(expectedProgressiveMediaSource)
-
-        val actual = tidalMediaSourceCreator.invoke(mediaItem, playbackInfoOfflineTrack, emptyMap())
-
-        assertThat(actual).isSameAs(expectedProgressiveMediaSource)
-    }
-
-    @Test
     fun invokeWithManifestMimeTypeBtsForOfflineWithFullEncryption() {
         val mediaItem = mock<MediaItem>()
         val storage = mock<Storage>()
         val playbackInfoOfflineTrack = mock<PlaybackInfo.Offline.Track> {
             on { it.manifest } doReturn "btsManifest"
             on { it.manifestMimeType } doReturn ManifestMimeType.BTS
-            on { it.partiallyEncrypted } doReturn false
             on { it.storage } doReturn storage
         }
         val expectedProgressiveMediaSource = mock<ProgressiveMediaSource>()
@@ -225,7 +195,6 @@ internal class TidalMediaSourceCreatorTest {
         val playbackInfoOfflineTrack = mock<PlaybackInfo.Offline.Track> {
             on { it.manifest } doReturn "dashManifest"
             on { it.manifestMimeType } doReturn ManifestMimeType.DASH
-            on { it.partiallyEncrypted } doReturn false
             on { it.storage } doReturn storage
             on { it.offlineLicense } doReturn offlineLicense
         }

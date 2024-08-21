@@ -148,12 +148,10 @@ sealed interface PlaybackInfo {
      *
      * @property[offlineLicense] The stored offlineLicense in case it is protected.
      * @property[storage] Information about storage and path.
-     * @property[partiallyEncrypted] Information about legacy encryption strategy.
      */
     interface Offline {
         val offlineLicense: String?
         val storage: Storage?
-        val partiallyEncrypted: Boolean
 
         /**
          * Playback info with track specific properties for offline.
@@ -164,7 +162,6 @@ sealed interface PlaybackInfo {
             val track: PlaybackInfo.Track,
             override val offlineLicense: String? = null,
             override val storage: Storage? = null,
-            override val partiallyEncrypted: Boolean = false,
         ) : PlaybackInfo by track, Offline
 
         /**
@@ -176,7 +173,6 @@ sealed interface PlaybackInfo {
             val video: PlaybackInfo.Video,
             override val offlineLicense: String? = null,
             override val storage: Storage? = null,
-            override val partiallyEncrypted: Boolean = false,
         ) : PlaybackInfo by video, Offline
     }
 }

@@ -44,6 +44,5 @@ object VideoPlaybackInfoFactory {
         DEFAULT,
         "",
         Storage(false, ""),
-        false,
     )
 }

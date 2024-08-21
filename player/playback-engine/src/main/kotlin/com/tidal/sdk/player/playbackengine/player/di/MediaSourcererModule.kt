@@ -28,7 +28,6 @@ import com.tidal.sdk.player.common.UUIDWrapper
 import com.tidal.sdk.player.commonandroid.Base64Codec
 import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
 import com.tidal.sdk.player.events.EventReporter
-import com.tidal.sdk.player.playbackengine.Encryption
 import com.tidal.sdk.player.playbackengine.PlayerLoadErrorHandlingPolicy
 import com.tidal.sdk.player.playbackengine.StreamingApiRepository
 import com.tidal.sdk.player.playbackengine.TidalExtractorsFactory
@@ -51,7 +50,6 @@ import com.tidal.sdk.player.playbackengine.mediasource.PlaybackInfoMediaSourceFa
 import com.tidal.sdk.player.playbackengine.mediasource.PlayerAuthHlsMediaSourceFactory
 import com.tidal.sdk.player.playbackengine.mediasource.PlayerDashMediaSourceFactory
 import com.tidal.sdk.player.playbackengine.mediasource.PlayerDashOfflineMediaSourceFactory
-import com.tidal.sdk.player.playbackengine.mediasource.PlayerDecryptedHeaderProgressiveOfflineMediaSourceFactory
 import com.tidal.sdk.player.playbackengine.mediasource.PlayerHlsMediaSourceFactory
 import com.tidal.sdk.player.playbackengine.mediasource.PlayerProgressiveMediaSourceFactory
 import com.tidal.sdk.player.playbackengine.mediasource.PlayerProgressiveOfflineMediaSourceFactory
@@ -278,11 +276,11 @@ internal object MediaSourcererModule {
         @Named("cacheDataSourceFactoryForOfflinePlay")
         cacheDataSourceFactory: CacheDataSource.Factory,
         cacheKeyFactory: CacheKeyFactory,
-        encryption: Encryption?,
+        offlineSecretKey: ByteArray?,
     ) = CacheKeyAesCipherDataSourceFactoryFactory(
         cacheDataSourceFactory,
         cacheKeyFactory,
-        encryption,
+        offlineSecretKey,
     )
 
     @Provides
@@ -333,20 +331,6 @@ internal object MediaSourcererModule {
     fun decryptedHeaderFileDataSourceFactoryFactory(
         upstream: FileDataSource.Factory,
     ) = DecryptedHeaderFileDataSourceFactoryFactory(upstream)
-
-    @Provides
-    @Reusable
-    fun playerDecryptedHeaderProgressiveOfflineMediaSourceFactory(
-        progressiveMediaSourceFactoryFactory: ProgressiveMediaSourceFactoryFactory,
-        decryptedHeaderFileDataSourceFactoryFactory: DecryptedHeaderFileDataSourceFactoryFactory,
-        encryption: Encryption?,
-        btsManifestFactory: DefaultBtsManifestFactory,
-    ) = PlayerDecryptedHeaderProgressiveOfflineMediaSourceFactory(
-        progressiveMediaSourceFactoryFactory,
-        decryptedHeaderFileDataSourceFactoryFactory,
-        encryption,
-        btsManifestFactory,
-    )
 
     @Provides
     @Reusable
@@ -488,7 +472,6 @@ internal object MediaSourcererModule {
         playerDashMediaSourceFactory: PlayerDashMediaSourceFactory,
         playerHlsMediaSourceFactory: PlayerHlsMediaSourceFactory,
         playerAuthHlsMediaSourceFactory: PlayerAuthHlsMediaSourceFactory,
-        @Suppress("MaxLineLength") playerDecryptedHeaderProgressiveOfflineMediaSourceFactory: PlayerDecryptedHeaderProgressiveOfflineMediaSourceFactory, // ktlint-disable max-line-length parameter-wrapping
         playerProgressiveOfflineMediaSourceFactory: PlayerProgressiveOfflineMediaSourceFactory,
         playerDashOfflineMediaSourceFactory: PlayerDashOfflineMediaSourceFactory,
         drmSessionManagerFactory: DrmSessionManagerFactory,
@@ -498,7 +481,6 @@ internal object MediaSourcererModule {
         playerDashMediaSourceFactory,
         playerHlsMediaSourceFactory,
         playerAuthHlsMediaSourceFactory,
-        playerDecryptedHeaderProgressiveOfflineMediaSourceFactory,
         playerProgressiveOfflineMediaSourceFactory,
         playerDashOfflineMediaSourceFactory,
         drmSessionManagerFactory,

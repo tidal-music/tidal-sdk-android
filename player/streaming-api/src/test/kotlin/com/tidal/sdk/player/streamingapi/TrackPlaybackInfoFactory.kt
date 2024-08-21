@@ -47,6 +47,5 @@ object TrackPlaybackInfoFactory {
         DEFAULT,
         "",
         Storage(false, ""),
-        false,
     )
 }
