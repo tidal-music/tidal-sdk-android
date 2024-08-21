@@ -1,4 +1,4 @@
-package com.tidal.sdk.auth.storage
+package com.tidal.sdk.auth.storage.legacycredentials
 
 import kotlinx.serialization.Serializable
 
@@ -14,9 +14,7 @@ data class Scopes(val scopes: Set<String>) {
      * Returns a string representation of the scopes that is readable by the TIDAL API backend.
      * @return The string representation of the scopes.
      */
-    override fun toString(): String {
-        return scopes.joinToString(" ")
-    }
+    override fun toString(): String = scopes.joinToString(" ")
 
     companion object {
 
@@ -25,8 +23,6 @@ data class Scopes(val scopes: Set<String>) {
          * @param joinedString The string representation of the scopes.
          * @return The Scopes object.
          */
-        fun fromString(joinedString: String): Scopes {
-            return Scopes(joinedString.split(" ").toSet())
-        }
+        fun fromString(joinedString: String): Scopes = Scopes(joinedString.split(" ").toSet())
     }
 }

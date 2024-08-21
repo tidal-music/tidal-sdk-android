@@ -3,8 +3,7 @@ package com.tidal.sdk.auth.storage
 import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import com.tidal.sdk.auth.model.Tokens
-import com.tidal.sdk.common.logger
-import com.tidal.sdk.common.w
+import com.tidal.sdk.auth.storage.legacycredentials.LegacyCredentialsMigrator
 import javax.inject.Inject
 import kotlinx.serialization.decodeFromString as decode
 import kotlinx.serialization.encodeToString as encode
@@ -35,25 +34,17 @@ internal class DefaultTokensStore @Inject constructor(
     }
 
     @Suppress("TooGenericExceptionCaught", "SwallowedException")
-    private fun loadTokens(): Tokens? {
-        return encryptedSharedPreferences.getString(credentialsKey, null)?.let {
-            try {
-                Json.decode<Tokens>(it)
-            } catch (e: Exception) {
-                logger.w { " Failed to decode tokens. Attempting to decode legacy tokens" }
-                decodeLegacyTokens(it).also { convertedLegacyTokens ->
-                    saveTokens(convertedLegacyTokens)
-                }
-            }
+    private fun loadTokens(): Tokens? = encryptedSharedPreferences.getString(
+        credentialsKey,
+        null,
+    )?.let {
+        try {
+            Json.decode<Tokens>(it)
+        } catch (e: Exception) {
+            LegacyCredentialsMigrator().migrateCredentials(it)
+        }.also { tokens ->
+            saveTokens(tokens)
         }
-    }
-
-    /**
-     * This method is used to decode tokens that were stored in the old format, using [Scopes].
-     * This is used to ensure backwards compatibility.
-     */
-    private fun decodeLegacyTokens(jsonString: String): Tokens {
-        return Json.decode<LegacyTokens>(jsonString).toTokens()
     }
 
     override fun saveTokens(tokens: Tokens) {
