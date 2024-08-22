@@ -16,7 +16,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.datetime.Instant
 
 class MainActivity : ComponentActivity() {
 
@@ -49,7 +48,7 @@ class MainActivity : ComponentActivity() {
             clientUniqueKey = "clientUniqueKey",
             grantedScopes = emptySet(),
             userId = "123",
-            expires = Instant.DISTANT_FUTURE,
+            expires = Long.MAX_VALUE,
             token = null,
         )
         return object : CredentialsProvider {
