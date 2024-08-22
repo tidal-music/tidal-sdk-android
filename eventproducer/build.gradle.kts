@@ -20,7 +20,6 @@ dependencies {
 
     implementation(libs.dagger)
     implementation(libs.kotlinxCoroutinesCore)
-    implementation(libs.kotlinx.datetime)
     implementation(libs.retrofit)
     implementation(libs.room.runtime)
     implementation(libs.moshi)
