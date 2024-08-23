@@ -7,7 +7,6 @@ import com.tidal.sdk.auth.model.Credentials
 import com.tidal.sdk.player.auth.AuthorizationInterceptor
 import com.tidal.sdk.player.auth.DefaultAuthenticator
 import com.tidal.sdk.player.auth.RequestAuthorizationDelegate
-import com.tidal.sdk.player.auth.ShouldAddAuthorizationHeader
 import com.tidal.sdk.player.common.Common
 import com.tidal.sdk.player.interceptor.NonIntrusiveHttpLoggingInterceptor
 import dagger.Lazy
@@ -57,18 +56,12 @@ internal object NetworkModule {
 
     @Provides
     @Reusable
-    fun shouldAddAuthorizationHeader() = ShouldAddAuthorizationHeader()
-
-    @Provides
-    @Reusable
     fun authorizationInterceptor(
         credentialsProvider: CredentialsProvider,
         requestAuthorizationDelegate: RequestAuthorizationDelegate,
-        shouldAddAuthorizationHeader: ShouldAddAuthorizationHeader,
     ) = AuthorizationInterceptor(
         credentialsProvider,
         requestAuthorizationDelegate,
-        shouldAddAuthorizationHeader,
     )
 
     @Provides
@@ -107,8 +100,23 @@ internal object NetworkModule {
 
     @Provides
     @Singleton
-    @LocalWithAuth
+    @Local
     fun okHttpClient(
+        okHttpClient: OkHttpClient,
+        @Named("isDebuggable") isDebuggable: Boolean,
+        httpLoggingInterceptor: Lazy<NonIntrusiveHttpLoggingInterceptor>,
+    ) = okHttpClient.newBuilder()
+        .apply {
+            if (isDebuggable) {
+                addNetworkInterceptor(httpLoggingInterceptor.get())
+            }
+        }.build()
+
+    @Provides
+    @Singleton
+    @LocalWithAuth
+    fun okHttpClientWithAuth(
+        @Local
         okHttpClient: OkHttpClient,
         authorizationInterceptor: AuthorizationInterceptor,
         defaultAuthenticator: DefaultAuthenticator,
@@ -137,6 +145,10 @@ internal object NetworkModule {
 
 private const val OKHTTP_CACHE_DIR = "okhttp"
 private const val OKHTTP_CACHE_SIZE = (1024 * 1024 * 50).toLong()
+
+@Qualifier
+@Retention(AnnotationRetention.RUNTIME)
+internal annotation class Local
 
 @Qualifier
 @Retention(AnnotationRetention.RUNTIME)

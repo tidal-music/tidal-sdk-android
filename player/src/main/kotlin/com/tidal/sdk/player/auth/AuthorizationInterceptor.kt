@@ -18,15 +18,11 @@ import okhttp3.ResponseBody.Companion.toResponseBody
 internal class AuthorizationInterceptor(
     private val credentialsProvider: CredentialsProvider,
     private val requestAuthorizationDelegate: RequestAuthorizationDelegate,
-    private val shouldAddAuthorizationHeader: ShouldAddAuthorizationHeader,
 ) : Interceptor {
 
     @Suppress("ReturnCount")
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
-        if (!shouldAddAuthorizationHeader(request.url.host)) {
-            return chain.proceed(request)
-        }
         val credentials =
             runBlocking { credentialsProvider.getCredentials().successData }
                 ?: return chain.proceed(request)

@@ -24,6 +24,7 @@ internal class TidalMediaSourceCreatorTest {
     private val playerProgressiveMediaSourceFactory = mock<PlayerProgressiveMediaSourceFactory>()
     private val playerDashMediaSourceFactory = mock<PlayerDashMediaSourceFactory>()
     private val playerHlsMediaSourceFactory = mock<PlayerHlsMediaSourceFactory>()
+    private val playerAuthHlsMediaSourceFactory = mock<PlayerAuthHlsMediaSourceFactory>()
     private val playerDecryptedHeaderProgressiveOfflineMediaSourceFactory =
         mock<PlayerDecryptedHeaderProgressiveOfflineMediaSourceFactory>()
     private val playerProgressiveOfflineMediaSourceFactory =
@@ -35,6 +36,7 @@ internal class TidalMediaSourceCreatorTest {
         playerProgressiveMediaSourceFactory,
         playerDashMediaSourceFactory,
         playerHlsMediaSourceFactory,
+        playerAuthHlsMediaSourceFactory,
         playerDecryptedHeaderProgressiveOfflineMediaSourceFactory,
         playerProgressiveOfflineMediaSourceFactory,
         playerDashOfflineMediaSourceFactory,
@@ -110,7 +112,7 @@ internal class TidalMediaSourceCreatorTest {
         whenever(drmSessionManagerFactory.createDrmSessionManagerForOnlinePlay(playbackInfo))
             .thenReturn(drmSessionManager)
         whenever(
-            playerHlsMediaSourceFactory.createWithUrl(
+            playerAuthHlsMediaSourceFactory.create(
                 mediaItem,
                 playbackInfo.url,
                 drmSessionManagerProvider,

@@ -52,8 +52,10 @@ internal object PlaybackEngineModule {
         @Named("appSpecificCacheDir")
         appSpecificCacheDir: File,
         streamingApi: StreamingApi,
-        @LocalWithAuth
+        @Local
         okHttpClient: OkHttpClient,
+        @LocalWithAuth
+        okHttpClientWithAuth: OkHttpClient,
         gson: Gson,
         eventReporter: EventReporter,
         streamingPrivileges: StreamingPrivileges,
@@ -76,6 +78,7 @@ internal object PlaybackEngineModule {
         appSpecificCacheDir,
         streamingApi,
         okHttpClient,
+        okHttpClientWithAuth,
         gson,
         eventReporter,
         streamingPrivileges,

@@ -38,6 +38,7 @@ import com.tidal.sdk.player.playbackengine.cache.DefaultCacheKeyFactory
 import com.tidal.sdk.player.playbackengine.dash.DashManifestFactory
 import com.tidal.sdk.player.playbackengine.datasource.CacheKeyAesCipherDataSourceFactoryFactory
 import com.tidal.sdk.player.playbackengine.datasource.DecryptedHeaderFileDataSourceFactoryFactory
+import com.tidal.sdk.player.playbackengine.di.ExoPlayerPlaybackEngineComponent
 import com.tidal.sdk.player.playbackengine.drm.DrmSessionManagerFactory
 import com.tidal.sdk.player.playbackengine.drm.DrmSessionManagerProviderFactory
 import com.tidal.sdk.player.playbackengine.drm.MediaDrmCallbackExceptionFactory
@@ -47,6 +48,7 @@ import com.tidal.sdk.player.playbackengine.error.ErrorHandler
 import com.tidal.sdk.player.playbackengine.mediasource.DashMediaSourceFactoryFactory
 import com.tidal.sdk.player.playbackengine.mediasource.MediaSourcerer
 import com.tidal.sdk.player.playbackengine.mediasource.PlaybackInfoMediaSourceFactory
+import com.tidal.sdk.player.playbackengine.mediasource.PlayerAuthHlsMediaSourceFactory
 import com.tidal.sdk.player.playbackengine.mediasource.PlayerDashMediaSourceFactory
 import com.tidal.sdk.player.playbackengine.mediasource.PlayerDashOfflineMediaSourceFactory
 import com.tidal.sdk.player.playbackengine.mediasource.PlayerDecryptedHeaderProgressiveOfflineMediaSourceFactory
@@ -114,6 +116,7 @@ internal object MediaSourcererModule {
     @Reusable
     @ExtendedExoPlayerComponent.Local
     fun okHttpClient(
+        @ExoPlayerPlaybackEngineComponent.Local
         okHttpClient: OkHttpClient,
         assetTimeoutConfig: AssetTimeoutConfig,
     ) = okHttpClient.newBuilder()
@@ -123,9 +126,30 @@ internal object MediaSourcererModule {
         .build()
 
     @Provides
-    @ExtendedExoPlayerComponent.Scoped
+    @Reusable
+    @ExtendedExoPlayerComponent.LocalWithAuth
+    fun okHttpClientWithAuth(
+        @ExoPlayerPlaybackEngineComponent.LocalWithAuth
+        okHttpClient: OkHttpClient,
+        assetTimeoutConfig: AssetTimeoutConfig,
+    ) = okHttpClient.newBuilder()
+        .connectTimeout(assetTimeoutConfig.connectTimeout.toJavaDuration())
+        .readTimeout(assetTimeoutConfig.readTimeout.toJavaDuration())
+        .writeTimeout(assetTimeoutConfig.writeTimeout.toJavaDuration())
+        .build()
+
+    @Provides
+    @ExtendedExoPlayerComponent.Local
     fun okHttpDataSourceFactory(
         @ExtendedExoPlayerComponent.Local okHttpClient: OkHttpClient,
+    ): OkHttpDataSource.Factory {
+        return OkHttpDataSource.Factory(okHttpClient)
+    }
+
+    @Provides
+    @ExtendedExoPlayerComponent.LocalWithAuth
+    fun okHttpDataSourceFactoryWithAuth(
+        @ExtendedExoPlayerComponent.LocalWithAuth okHttpClient: OkHttpClient,
     ): OkHttpDataSource.Factory {
         return OkHttpDataSource.Factory(okHttpClient)
     }
@@ -147,6 +171,7 @@ internal object MediaSourcererModule {
     @Reusable
     fun provideCacheDataSourceFactoryForOnline(
         playerCache: PlayerCache,
+        @ExtendedExoPlayerComponent.Local
         okHttpDataSourceFactory: OkHttpDataSource.Factory,
         fileDataSourceFactory: FileDataSource.Factory,
         cacheKeyFactory: CacheKeyFactory,
@@ -197,7 +222,21 @@ internal object MediaSourcererModule {
 
     @Provides
     @Reusable
+    @ExtendedExoPlayerComponent.Local
     fun hlsMediaSourceFactory(
+        @ExtendedExoPlayerComponent.Local
+        okHttpDataSourceFactory: OkHttpDataSource.Factory,
+        loadErrorHandlingPolicy: LoadErrorHandlingPolicy,
+    ): HlsMediaSource.Factory {
+        return HlsMediaSource.Factory(okHttpDataSourceFactory)
+            .setLoadErrorHandlingPolicy(loadErrorHandlingPolicy)
+    }
+
+    @Provides
+    @Reusable
+    @ExtendedExoPlayerComponent.LocalWithAuth
+    fun authHlsMediaSourceFactory(
+        @ExtendedExoPlayerComponent.LocalWithAuth
         okHttpDataSourceFactory: OkHttpDataSource.Factory,
         loadErrorHandlingPolicy: LoadErrorHandlingPolicy,
     ): HlsMediaSource.Factory {
@@ -361,9 +400,17 @@ internal object MediaSourcererModule {
     @Provides
     @Reusable
     fun playerHlsMediaSourceFactory(
+        @ExtendedExoPlayerComponent.Local
         hlsMediaSourceFactory: HlsMediaSource.Factory,
         emuManifestFactory: EmuManifestFactory,
     ) = PlayerHlsMediaSourceFactory(hlsMediaSourceFactory, emuManifestFactory)
+
+    @Provides
+    @Reusable
+    fun playerAuthHlsMediaSourceFactory(
+        @ExtendedExoPlayerComponent.LocalWithAuth
+        hlsMediaSourceFactory: HlsMediaSource.Factory,
+    ) = PlayerAuthHlsMediaSourceFactory(hlsMediaSourceFactory)
 
     @Provides
     @Reusable
@@ -440,6 +487,7 @@ internal object MediaSourcererModule {
         playerProgressiveMediaSourceFactory: PlayerProgressiveMediaSourceFactory,
         playerDashMediaSourceFactory: PlayerDashMediaSourceFactory,
         playerHlsMediaSourceFactory: PlayerHlsMediaSourceFactory,
+        playerAuthHlsMediaSourceFactory: PlayerAuthHlsMediaSourceFactory,
         @Suppress("MaxLineLength") playerDecryptedHeaderProgressiveOfflineMediaSourceFactory: PlayerDecryptedHeaderProgressiveOfflineMediaSourceFactory, // ktlint-disable max-line-length parameter-wrapping
         playerProgressiveOfflineMediaSourceFactory: PlayerProgressiveOfflineMediaSourceFactory,
         playerDashOfflineMediaSourceFactory: PlayerDashOfflineMediaSourceFactory,
@@ -449,6 +497,7 @@ internal object MediaSourcererModule {
         playerProgressiveMediaSourceFactory,
         playerDashMediaSourceFactory,
         playerHlsMediaSourceFactory,
+        playerAuthHlsMediaSourceFactory,
         playerDecryptedHeaderProgressiveOfflineMediaSourceFactory,
         playerProgressiveOfflineMediaSourceFactory,
         playerDashOfflineMediaSourceFactory,
