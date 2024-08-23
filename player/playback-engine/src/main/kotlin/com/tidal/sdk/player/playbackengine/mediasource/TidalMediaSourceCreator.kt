@@ -15,6 +15,7 @@ internal class TidalMediaSourceCreator(
     private val playerProgressiveMediaSourceFactory: PlayerProgressiveMediaSourceFactory,
     private val playerDashMediaSourceFactory: PlayerDashMediaSourceFactory,
     private val playerHlsMediaSourceFactory: PlayerHlsMediaSourceFactory,
+    private val playerAuthHlsMediaSourceFactory: PlayerAuthHlsMediaSourceFactory,
     @Suppress("MaxLineLength") private val playerDecryptedHeaderProgressiveOfflineMediaSourceFactory: PlayerDecryptedHeaderProgressiveOfflineMediaSourceFactory, // ktlint-disable max-line-length parameter-wrapping
     @Suppress("MaxLineLength") private val playerProgressiveOfflineMediaSourceFactory: PlayerProgressiveOfflineMediaSourceFactory, // ktlint-disable max-line-length parameter-wrapping
     private val playerDashOfflineMediaSourceFactory: PlayerDashOfflineMediaSourceFactory,
@@ -76,7 +77,7 @@ internal class TidalMediaSourceCreator(
 
                 ManifestMimeType.EMU ->
                     if (playbackInfo is PlaybackInfo.UC) {
-                        playerHlsMediaSourceFactory.createWithUrl(
+                        playerAuthHlsMediaSourceFactory.create(
                             mediaItem,
                             playbackInfo.url,
                             drmSessionManagerProviderFactory.create(

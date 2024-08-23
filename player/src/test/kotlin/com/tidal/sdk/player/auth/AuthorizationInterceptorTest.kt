@@ -2,7 +2,6 @@ package com.tidal.sdk.player.auth
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import assertk.assertions.isNull
 import com.tidal.sdk.auth.CredentialsProvider
 import com.tidal.sdk.auth.model.AuthResult
 import com.tidal.sdk.auth.model.Credentials
@@ -15,8 +14,6 @@ import okhttp3.mockwebserver.MockWebServer
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.whenever
 
 /**
  * Test that the [AuthorizationInterceptor] sets correct Authorization header on the request.
@@ -48,12 +45,9 @@ internal class AuthorizationInterceptorTest {
         override fun isUserLoggedIn() = throw IllegalAccessException("Not supported")
     }
 
-    private val shouldAddAuthorizationHeader = mock<ShouldAddAuthorizationHeader>()
-
     private val authorizationInterceptor = AuthorizationInterceptor(
         credentialsProvider,
         RequestAuthorizationDelegate(emptyMap()),
-        shouldAddAuthorizationHeader,
     )
 
     private val okHttpClient = OkHttpClient.Builder()
@@ -73,8 +67,6 @@ internal class AuthorizationInterceptorTest {
     fun `Should add correct authorization header to the request`() {
         server.enqueue(MockResponse())
 
-        whenever(shouldAddAuthorizationHeader("localhost")).thenReturn(true)
-
         okHttpClient.newCall(request).execute().use {
             assertThat(it.request.header("Authorization"))
                 .isEqualTo("Bearer accessToken")
@@ -82,23 +74,9 @@ internal class AuthorizationInterceptorTest {
     }
 
     @Test
-    fun `Should not add authorization header to the request`() {
-        server.enqueue(MockResponse())
-
-        whenever(shouldAddAuthorizationHeader("localhost")).thenReturn(false)
-
-        okHttpClient.newCall(request).execute().use {
-            assertThat(it.request.header("Authorization"))
-                .isNull()
-        }
-    }
-
-    @Test
     fun `Should add correct authorization header to the request after it has changed`() {
         server.enqueue(MockResponse())
         server.enqueue(MockResponse())
-
-        whenever(shouldAddAuthorizationHeader("localhost")).thenReturn(true)
 
         okHttpClient.newCall(request).execute().use {
             assertThat(it.request.header("Authorization"))

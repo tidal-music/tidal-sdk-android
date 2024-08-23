@@ -32,6 +32,7 @@ internal class ExoPlayerPlaybackEngineLooperTest {
         InstrumentationRegistry.getInstrumentation().targetContext.cacheDir,
         mock(),
         OkHttpClient(),
+        OkHttpClient(),
         Gson(),
         mock(),
         mock(),

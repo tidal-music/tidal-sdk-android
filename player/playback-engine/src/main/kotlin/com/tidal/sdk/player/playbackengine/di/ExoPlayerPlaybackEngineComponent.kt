@@ -22,6 +22,7 @@ import dagger.BindsInstance
 import dagger.Component
 import java.io.File
 import javax.inject.Named
+import javax.inject.Qualifier
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -48,7 +49,8 @@ interface ExoPlayerPlaybackEngineComponent {
             @BindsInstance @Named("useLibflacAudioRenderer") useLibflacAudioRenderer: Boolean,
             @BindsInstance appSpecificCacheDir: File,
             @BindsInstance streamingApi: StreamingApi,
-            @BindsInstance okHttpClient: OkHttpClient,
+            @BindsInstance @Local okHttpClient: OkHttpClient,
+            @BindsInstance @LocalWithAuth okHttpClientWithAuth: OkHttpClient,
             @BindsInstance gson: Gson,
             @BindsInstance eventReporter: EventReporter,
             @BindsInstance streamingPrivileges: StreamingPrivileges,
@@ -62,4 +64,12 @@ interface ExoPlayerPlaybackEngineComponent {
             @BindsInstance coroutineScope: CoroutineScope,
         ): ExoPlayerPlaybackEngineComponent
     }
+
+    @Qualifier
+    @Retention(AnnotationRetention.RUNTIME)
+    annotation class Local
+
+    @Qualifier
+    @Retention(AnnotationRetention.RUNTIME)
+    annotation class LocalWithAuth
 }

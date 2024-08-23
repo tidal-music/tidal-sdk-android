@@ -35,4 +35,8 @@ internal interface ExtendedExoPlayerComponent {
     @Qualifier
     @Retention(AnnotationRetention.RUNTIME)
     annotation class Local
+
+    @Qualifier
+    @Retention(AnnotationRetention.RUNTIME)
+    annotation class LocalWithAuth
 }
