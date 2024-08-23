@@ -7,7 +7,6 @@ import com.tidal.sdk.auth.model.Credentials
 import com.tidal.sdk.player.auth.AuthorizationInterceptor
 import com.tidal.sdk.player.auth.DefaultAuthenticator
 import com.tidal.sdk.player.auth.RequestAuthorizationDelegate
-import com.tidal.sdk.player.auth.ShouldAddAuthorizationHeader
 import com.tidal.sdk.player.common.Common
 import com.tidal.sdk.player.interceptor.NonIntrusiveHttpLoggingInterceptor
 import dagger.Lazy
@@ -57,18 +56,12 @@ internal object NetworkModule {
 
     @Provides
     @Reusable
-    fun shouldAddAuthorizationHeader() = ShouldAddAuthorizationHeader()
-
-    @Provides
-    @Reusable
     fun authorizationInterceptor(
         credentialsProvider: CredentialsProvider,
         requestAuthorizationDelegate: RequestAuthorizationDelegate,
-        shouldAddAuthorizationHeader: ShouldAddAuthorizationHeader,
     ) = AuthorizationInterceptor(
         credentialsProvider,
         requestAuthorizationDelegate,
-        shouldAddAuthorizationHeader,
     )
 
     @Provides
@@ -77,7 +70,11 @@ internal object NetworkModule {
         gson: Gson,
         credentialsProvider: CredentialsProvider,
         requestAuthorizationDelegate: RequestAuthorizationDelegate,
-    ) = DefaultAuthenticator(gson, credentialsProvider, requestAuthorizationDelegate)
+    ) = DefaultAuthenticator(
+        gson,
+        credentialsProvider,
+        requestAuthorizationDelegate,
+    )
 
     @Provides
     @Reusable
