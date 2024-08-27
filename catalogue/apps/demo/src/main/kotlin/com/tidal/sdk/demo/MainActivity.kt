@@ -19,8 +19,8 @@ import com.tidal.sdk.auth.model.Credentials
 import com.tidal.sdk.auth.model.CredentialsUpdatedMessage
 import com.tidal.sdk.auth.network.NetworkLogLevel
 import com.tidal.sdk.auth.util.isLoggedIn
-import com.tidal.sdk.catalogue.Catalogue
 import com.tidal.sdk.catalogue.demo.BuildConfig
+import com.tidal.sdk.catalogue.generated.Catalogue
 import com.tidal.sdk.common.d
 import com.tidal.sdk.common.logger
 import com.tidal.sdk.demo.ui.NavigationHost
