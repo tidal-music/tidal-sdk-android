@@ -1,1 +1,1 @@
-openapi-generator generate -i catalogue/catalogue_openapi.json -g kotlin -o ./catalogue/ -c catalogue/openapi-config/openapi-config.yml --global-property models,apis,supportingFiles=src/main/kotlin/com/tidal/sdk/catalogue/generated/Catalogue.kt,apiTests=false,apiDocs=false
+openapi-generator generate -i ../catalogue_openapi.json -g kotlin -o ../catalogue/ -c ../openapi-config/openapi-config.yml --global-property models,apis,supportingFiles=src/main/kotlin/com/tidal/sdk/catalogue/generated/Catalogue.kt,apiTests=false,apiDocs=fals

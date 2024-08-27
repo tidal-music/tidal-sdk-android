@@ -1,4 +1,4 @@
-templateDir: catalogue/openapi-config/templates
+templateDir: ../openapi-config/templates
 additionalProperties:
   artifactId: catalogue.generated
   packageName: com.tidal.sdk.catalogue.generated
