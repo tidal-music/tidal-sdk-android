@@ -1,3 +1,4 @@
+templateDir: catalogue/openapi-config/templates
 additionalProperties:
   artifactId: catalogue.generated
   packageName: com.tidal.sdk.catalogue.generated
@@ -8,3 +9,7 @@ additionalProperties:
   serializationLibrary: kotlinx_serialization
   supportAndroidApiLevel25AndBelow: true
   useCoroutines: true
+files:
+  Catalogue.kt.mustache:
+    templateType: SupportingFiles
+    destinationFilename: src/main/kotlin/com/tidal/sdk/catalogue/generated/Catalogue.kt

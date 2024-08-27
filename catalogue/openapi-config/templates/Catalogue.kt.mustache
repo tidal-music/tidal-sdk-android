@@ -1,0 +1,37 @@
+package com.tidal.sdk.catalogue.generated
+
+import com.tidal.sdk.auth.CredentialsProvider
+import com.tidal.sdk.catalogue.networking.RetrofitProvider
+
+{{#apiInfo}}
+    {{#apis}}
+import com.tidal.sdk.catalogue.generated.apis.{{classname}}
+    {{/apis}}
+{{/apiInfo}}
+
+class Catalogue(credentialsProvider: CredentialsProvider, baseUrl: String = DEFAULT_BASE_URL) {
+
+    private val retrofit by lazy {
+        RetrofitProvider().provideRetrofit(
+            baseUrl,
+            credentialsProvider,
+        )
+    }
+
+{{#apiInfo}}
+    {{#apis}}
+    /**
+    * Returns an instance of the [{{classname}}] which can be used
+    * to make API calls to the {{apiDescription}}
+    */
+    fun create{{classname}}(): {{classname}} {
+        return retrofit.create({{classname}}::class.java)
+    }
+    {{/apis}}
+{{/apiInfo}}
+
+    companion object {
+        const val DEFAULT_BASE_URL = "https://openapi.tidal.com/v2/"
+    }
+
+}
