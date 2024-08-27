@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.49] - 2024-08-27
+### Fixed
+- Fix UC requests initially dispatched without credential header
+
 ## [0.0.48] - 2024-08-21
 ### Fixed
 - Reset PlaybackEngine in onPlayerError
