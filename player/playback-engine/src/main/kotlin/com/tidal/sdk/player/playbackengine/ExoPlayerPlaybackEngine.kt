@@ -345,6 +345,12 @@ internal class ExoPlayerPlaybackEngine(
     }
 
     override fun release() {
+        val positionInSeconds = if (forwardingMediaProduct?.productType == ProductType.BROADCAST) {
+            extendedExoPlayer.currentPositionSinceEpochMs
+        } else {
+            extendedExoPlayer.currentPositionMs
+        }.toDouble() / MS_IN_SECOND
+        reportEnd(EndReason.OTHER, endPositionSeconds = positionInSeconds)
         extendedExoPlayer.release()
         coroutineScope.launch {
             eventSink.emit(Event.Release)
