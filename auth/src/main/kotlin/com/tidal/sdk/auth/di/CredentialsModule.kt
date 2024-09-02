@@ -13,6 +13,7 @@ import dagger.Provides
 import javax.inject.Named
 import javax.inject.Singleton
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.sync.Mutex
 import retrofit2.Retrofit
 
 @Module
@@ -38,6 +39,7 @@ internal class CredentialsModule {
         tokenService: TokenService,
         @Named("default") defaultBackoffPolicy: RetryPolicy,
         @Named("upgrade") upgradeBackoffPolicy: RetryPolicy,
+        mutex: Mutex,
         bus: MutableSharedFlow<TidalMessage>,
     ) = TokenRepository(
         authConfig,
@@ -46,6 +48,7 @@ internal class CredentialsModule {
         tokenService,
         defaultBackoffPolicy,
         upgradeBackoffPolicy,
+        mutex,
         bus,
     )
 }

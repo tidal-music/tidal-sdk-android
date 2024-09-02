@@ -20,6 +20,7 @@ import com.tidal.sdk.util.makeCredentials
 import java.io.IOException
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
@@ -55,6 +56,7 @@ class TokenRepositoryTest {
             tokenService,
             defaultRetrypolicy,
             upgradeRetryPolicy,
+            Mutex(),
             bus,
         )
     }

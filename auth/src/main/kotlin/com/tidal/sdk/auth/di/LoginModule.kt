@@ -16,6 +16,7 @@ import dagger.Reusable
 import javax.inject.Named
 import javax.inject.Singleton
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.sync.Mutex
 import retrofit2.Retrofit
 
 @Module
@@ -58,6 +59,7 @@ internal class LoginModule {
         loginUriBuilder: LoginUriBuilder,
         loginService: LoginService,
         tokensStore: TokensStore,
+        mutex: Mutex,
         @Named("default") retryPolicy: RetryPolicy,
         bus: MutableSharedFlow<TidalMessage>,
     ): LoginRepository = LoginRepository(
@@ -68,6 +70,7 @@ internal class LoginModule {
         loginService,
         tokensStore,
         retryPolicy,
+        mutex,
         bus,
     )
 }

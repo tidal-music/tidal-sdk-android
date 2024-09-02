@@ -38,6 +38,7 @@ import io.mockk.mockk
 import io.mockk.mockkStatic
 import java.util.Locale
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeAll
@@ -80,10 +81,16 @@ class LoginRepositoryTest {
             authConfig,
             timeProvider,
             CodeChallengeBuilder(),
-            LoginUriBuilder(TEST_CLIENT_ID, TEST_CLIENT_UNIQUE_KEY, loginBaseUrl, authConfig.scopes),
+            LoginUriBuilder(
+                TEST_CLIENT_ID,
+                TEST_CLIENT_UNIQUE_KEY,
+                loginBaseUrl,
+                authConfig.scopes
+            ),
             loginService,
             tokensStore,
             retryPolicy,
+            Mutex(),
             bus,
         )
     }
@@ -503,7 +510,8 @@ class LoginRepositoryTest {
                 "In case of 5xx returns, initializeDeviceLogin should trigger retries as defined by the retryPolicy"
             }
             assert(
-                ((result as AuthResult.Failure).message as RetryableError).code == testErrorCode.toString(),
+                ((result as AuthResult.Failure).message as RetryableError).code ==
+                    testErrorCode.toString(),
             ) {
                 "When finished retrying, a RetryableError should be returned that cointains the correct error code."
             }
