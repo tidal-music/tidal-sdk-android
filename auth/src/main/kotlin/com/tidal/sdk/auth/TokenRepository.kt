@@ -32,13 +32,9 @@ internal class TokenRepository(
     private val tokenService: TokenService,
     private val defaultBackoffPolicy: RetryPolicy,
     private val upgradeBackoffPolicy: RetryPolicy,
+    private val tokenMutex: Mutex,
     private val bus: MutableSharedFlow<TidalMessage>,
 ) {
-
-    /**
-     * Mutex to ensure that only one thread at a time can update/upgrade the token.
-     */
-    private val tokenMutex = Mutex()
 
     private fun needsCredentialsUpgrade(): Boolean {
         val storedCredentials = getLatestTokens()?.credentials

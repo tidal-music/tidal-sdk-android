@@ -6,6 +6,7 @@ import com.tidal.sdk.auth.model.AuthConfig
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
+import kotlinx.coroutines.sync.Mutex
 
 @Singleton
 @Component(
@@ -27,6 +28,7 @@ interface AuthComponent {
         fun create(
             @BindsInstance context: Context,
             @BindsInstance config: AuthConfig,
+            @BindsInstance mutex: Mutex = Mutex(),
         ): AuthComponent
     }
 }

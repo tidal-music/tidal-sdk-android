@@ -20,6 +20,8 @@ import com.tidal.sdk.common.TidalMessage
 import com.tidal.sdk.common.d
 import com.tidal.sdk.common.logger
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 
 internal class LoginRepository constructor(
     private val authConfig: AuthConfig,
@@ -29,6 +31,7 @@ internal class LoginRepository constructor(
     private val loginService: LoginService,
     private val tokensStore: TokensStore,
     private val exponentialBackoffPolicy: RetryPolicy,
+    private val tokenMutex: Mutex,
     private val bus: MutableSharedFlow<TidalMessage>,
 ) {
 
@@ -78,14 +81,16 @@ internal class LoginRepository constructor(
     }
 
     suspend fun setCredentials(credentials: Credentials, refreshToken: String? = null) {
-        val storedTokens = tokensStore.getLatestTokens(authConfig.credentialsKey)
-        if (credentials != storedTokens?.credentials) {
-            val tokens = Tokens(
-                credentials,
-                refreshToken ?: storedTokens?.refreshToken,
-            )
-            tokensStore.saveTokens(tokens)
-            bus.emit(CredentialsUpdatedMessage(tokens.credentials))
+        tokenMutex.withLock {
+            val storedTokens = tokensStore.getLatestTokens(authConfig.credentialsKey)
+            if (credentials != storedTokens?.credentials) {
+                val tokens = Tokens(
+                    credentials,
+                    refreshToken ?: storedTokens?.refreshToken,
+                )
+                tokensStore.saveTokens(tokens)
+                bus.emit(CredentialsUpdatedMessage(tokens.credentials))
+            }
         }
     }
 
