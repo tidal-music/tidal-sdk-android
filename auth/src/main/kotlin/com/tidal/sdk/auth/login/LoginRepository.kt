@@ -19,9 +19,11 @@ import com.tidal.sdk.auth.util.toScopesString
 import com.tidal.sdk.common.TidalMessage
 import com.tidal.sdk.common.d
 import com.tidal.sdk.common.logger
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 
 internal class LoginRepository constructor(
     private val authConfig: AuthConfig,
@@ -81,15 +83,17 @@ internal class LoginRepository constructor(
     }
 
     suspend fun setCredentials(credentials: Credentials, refreshToken: String? = null) {
-        tokenMutex.withLock {
-            val storedTokens = tokensStore.getLatestTokens(authConfig.credentialsKey)
-            if (credentials != storedTokens?.credentials) {
-                val tokens = Tokens(
-                    credentials,
-                    refreshToken ?: storedTokens?.refreshToken,
-                )
-                tokensStore.saveTokens(tokens)
-                bus.emit(CredentialsUpdatedMessage(tokens.credentials))
+        withContext(Dispatchers.IO) {
+            tokenMutex.withLock {
+                val storedTokens = tokensStore.getLatestTokens(authConfig.credentialsKey)
+                if (credentials != storedTokens?.credentials) {
+                    val tokens = Tokens(
+                        credentials,
+                        refreshToken ?: storedTokens?.refreshToken,
+                    )
+                    tokensStore.saveTokens(tokens)
+                    bus.emit(CredentialsUpdatedMessage(tokens.credentials))
+                }
             }
         }
     }

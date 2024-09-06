@@ -21,9 +21,11 @@ import com.tidal.sdk.common.UnexpectedError
 import com.tidal.sdk.common.d
 import com.tidal.sdk.common.logger
 import java.net.HttpURLConnection
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 
 internal class TokenRepository(
     private val authConfig: AuthConfig,
@@ -62,24 +64,25 @@ internal class TokenRepository(
     @Suppress("UnusedPrivateMember")
     suspend fun getCredentials(apiErrorSubStatus: String?): AuthResult<Credentials> {
         logger.d { "Received subStatus: $apiErrorSubStatus" }
+        return withContext(Dispatchers.IO) {
+            tokenMutex.withLock {
+                var upgradedRefreshToken: String? = null
+                val credentials = getLatestTokens()
 
-        return tokenMutex.withLock {
-            var upgradedRefreshToken: String? = null
-            val credentials = getLatestTokens()
-
-            if (credentials != null && needsCredentialsUpgrade()) {
-                logger.d { "Upgrading credentials" }
-                val upgradeCredentials = upgradeTokens(credentials)
-                upgradeCredentials.successData?.let {
-                    upgradedRefreshToken = it.refreshToken
-                    success(it.credentials)
-                } ?: upgradeCredentials as AuthResult.Failure
-            } else {
-                logger.d { "Updating credentials" }
-                updateCredentials(credentials, apiErrorSubStatus)
-            }.also {
-                it.successData?.let { token ->
-                    saveTokensAndNotify(token, upgradedRefreshToken, credentials)
+                if (credentials != null && needsCredentialsUpgrade()) {
+                    logger.d { "Upgrading credentials" }
+                    val upgradeCredentials = upgradeTokens(credentials)
+                    upgradeCredentials.successData?.let {
+                        upgradedRefreshToken = it.refreshToken
+                        success(it.credentials)
+                    } ?: upgradeCredentials as AuthResult.Failure
+                } else {
+                    logger.d { "Updating credentials" }
+                    updateCredentials(credentials, apiErrorSubStatus)
+                }.also {
+                    it.successData?.let { token ->
+                        saveTokensAndNotify(token, upgradedRefreshToken, credentials)
+                    }
                 }
             }
         }
