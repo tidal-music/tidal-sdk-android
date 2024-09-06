@@ -9,6 +9,7 @@ internal class FakeTokenService : TokenService {
 
     var calls = mutableListOf<CallType>()
     var throwableToThrow: Throwable? = null
+    var responseDelay = 10L
 
     override suspend fun getTokenFromRefreshToken(
         clientId: String,
@@ -18,7 +19,7 @@ internal class FakeTokenService : TokenService {
         scope: String,
     ): RefreshResponse {
         calls.add(CallType.Refresh)
-        delay(10)
+        delay(responseDelay)
         throwableToThrow?.let {
             throw it
         } ?: run {
@@ -41,7 +42,7 @@ internal class FakeTokenService : TokenService {
         scope: String,
     ): RefreshResponse {
         calls.add(CallType.Secret)
-        delay(10)
+        delay(responseDelay)
         throwableToThrow?.let {
             throw it
         } ?: run {
@@ -65,7 +66,7 @@ internal class FakeTokenService : TokenService {
         grantType: String,
     ): UpgradeResponse {
         calls.add(CallType.Upgrade)
-        delay(10)
+        delay(responseDelay)
         throwableToThrow?.let {
             throw it
         } ?: run {
