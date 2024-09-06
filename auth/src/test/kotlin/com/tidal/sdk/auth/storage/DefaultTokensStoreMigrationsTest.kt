@@ -57,7 +57,6 @@ class DefaultTokensStoreMigrationsTest {
         val result = defaultTokensStore.getLatestTokens(testCredentialsKey)
 
         // then
-        println(result)
         assertEquals(expected, result)
     }
 
@@ -86,7 +85,6 @@ class DefaultTokensStoreMigrationsTest {
         val result = defaultTokensStore.getLatestTokens(testCredentialsKey)
 
         // then
-        println(result)
         assertEquals(expected, result)
     }
 }

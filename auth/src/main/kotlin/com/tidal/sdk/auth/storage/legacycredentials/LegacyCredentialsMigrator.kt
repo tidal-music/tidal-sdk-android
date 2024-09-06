@@ -24,12 +24,9 @@ internal class LegacyCredentialsMigrator {
         val exceptions = mutableListOf<Exception>()
         for (operation in operations) {
             try {
-                return operation().also {
-                    println("Successfully decoded using legacy types.")
-                }
+                return operation()
             } catch (e: Exception) {
                 logger.i { "Failed to decode using legacy types." }
-                println("Failed to decode using legacy types.")
                 exceptions.plus(e)
             }
         }
