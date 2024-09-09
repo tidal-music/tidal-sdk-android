@@ -21,6 +21,7 @@ import com.tidal.sdk.common.UnexpectedError
 import com.tidal.sdk.common.d
 import com.tidal.sdk.common.logger
 import java.net.HttpURLConnection
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.sync.Mutex
@@ -36,7 +37,10 @@ internal class TokenRepository(
     private val upgradeBackoffPolicy: RetryPolicy,
     private val tokenMutex: Mutex,
     private val bus: MutableSharedFlow<TidalMessage>,
+    coroutineDispatcher: CoroutineDispatcher? = null,
 ) {
+
+    private val dispatcher = coroutineDispatcher ?: Dispatchers.IO
 
     private fun needsCredentialsUpgrade(): Boolean {
         val storedCredentials = getLatestTokens()?.credentials
@@ -57,14 +61,12 @@ internal class TokenRepository(
         }
     }
 
-    internal fun getLatestTokens(): Tokens? {
-        return tokensStore.getLatestTokens(authConfig.credentialsKey)
-    }
+    internal fun getLatestTokens(): Tokens? = tokensStore.getLatestTokens(authConfig.credentialsKey)
 
     @Suppress("UnusedPrivateMember")
     suspend fun getCredentials(apiErrorSubStatus: String?): AuthResult<Credentials> {
         logger.d { "Received subStatus: $apiErrorSubStatus" }
-        return withContext(Dispatchers.IO) {
+        return withContext(dispatcher) {
             tokenMutex.withLock {
                 var upgradedRefreshToken: String? = null
                 val credentials = getLatestTokens()
@@ -91,26 +93,24 @@ internal class TokenRepository(
     private suspend fun updateCredentials(
         storedTokens: Tokens?,
         apiErrorSubStatus: String?,
-    ): AuthResult<Credentials> {
-        return when {
-            storedTokens?.credentials?.isExpired(timeProvider) == false &&
-                apiErrorSubStatus.shouldRefreshToken().not() -> {
-                success(storedTokens.credentials)
-            }
-            // if a refreshToken is available, we'll use it
-            storedTokens?.refreshToken != null -> {
-                val refreshToken = storedTokens.refreshToken
-                refreshCredentials { refreshUserCredentials(refreshToken) }
-            }
-
-            // if nothing is stored, we will try and refresh using a client secret
-            authConfig.clientSecret != null -> {
-                refreshCredentials { getClientCredentials(authConfig.clientSecret) }
-            }
-
-            // as a last resort we return a token-less Credentials, we're logged out
-            else -> logout()
+    ): AuthResult<Credentials> = when {
+        storedTokens?.credentials?.isExpired(timeProvider) == false &&
+            apiErrorSubStatus.shouldRefreshToken().not() -> {
+            success(storedTokens.credentials)
         }
+        // if a refreshToken is available, we'll use it
+        storedTokens?.refreshToken != null -> {
+            val refreshToken = storedTokens.refreshToken
+            refreshCredentials { refreshUserCredentials(refreshToken) }
+        }
+
+        // if nothing is stored, we will try and refresh using a client secret
+        authConfig.clientSecret != null -> {
+            refreshCredentials { getClientCredentials(authConfig.clientSecret) }
+        }
+
+        // as a last resort we return a token-less Credentials, we're logged out
+        else -> logout()
     }
 
     private suspend fun upgradeTokens(storedTokens: Tokens): AuthResult<Tokens> {
@@ -212,8 +212,10 @@ internal class TokenRepository(
         }
     }
 
-    private suspend fun getClientCredentials(clientSecret: String): AuthResult<RefreshResponse> {
-        return retryWithPolicy(defaultBackoffPolicy) {
+    private suspend fun getClientCredentials(clientSecret: String): AuthResult<RefreshResponse> =
+        retryWithPolicy(
+            defaultBackoffPolicy,
+        ) {
             tokenService.getTokenFromClientSecret(
                 authConfig.clientId,
                 clientSecret,
@@ -221,7 +223,6 @@ internal class TokenRepository(
                 authConfig.scopes.toScopesString(),
             )
         }
-    }
 
     companion object {
 
