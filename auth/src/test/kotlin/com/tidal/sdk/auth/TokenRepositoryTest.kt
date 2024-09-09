@@ -18,14 +18,18 @@ import com.tidal.sdk.util.TEST_CLIENT_UNIQUE_KEY
 import com.tidal.sdk.util.TEST_TIME_PROVIDER
 import com.tidal.sdk.util.makeCredentials
 import java.io.IOException
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class TokenRepositoryTest {
 
     private val messageBus: MutableSharedFlow<TidalMessage> = MutableSharedFlow()
@@ -46,6 +50,7 @@ class TokenRepositoryTest {
         defaultRetrypolicy: RetryPolicy = testRetryPolicy,
         upgradeRetryPolicy: RetryPolicy = testRetryPolicy,
         bus: MutableSharedFlow<TidalMessage> = messageBus,
+        scope: TestScope? = null,
     ) {
         fakeTokenService = tokenService
         fakeTokensStore = tokensStore
@@ -58,6 +63,7 @@ class TokenRepositoryTest {
             upgradeRetryPolicy,
             Mutex(),
             bus,
+            scope?.testScheduler?.let { UnconfinedTestDispatcher(it) },
         )
     }
 
@@ -93,7 +99,10 @@ class TokenRepositoryTest {
             credentials,
             "refreshToken",
         )
-        createTokenRepository(FakeTokenService())
+        createTokenRepository(
+            FakeTokenService(),
+            scope = this,
+        )
         fakeTokensStore.saveTokens(tokens)
 
         // when
@@ -112,7 +121,10 @@ class TokenRepositoryTest {
     fun `getCredentials returns Credentials without token if called when logged out and no clientSecret is set`() =
         runTest {
             // given
-            createTokenRepository(FakeTokenService())
+            createTokenRepository(
+                FakeTokenService(),
+                scope = this,
+            )
 
             // when
             val result = tokenRepository.getCredentials(null)
@@ -135,7 +147,10 @@ class TokenRepositoryTest {
                 credentials,
                 "refreshToken",
             )
-            createTokenRepository(FakeTokenService())
+            createTokenRepository(
+                FakeTokenService(),
+                scope = this,
+            )
             fakeTokensStore.saveTokens(tokens)
 
             // when
@@ -161,7 +176,11 @@ class TokenRepositoryTest {
             credentials,
             "refreshToken",
         )
-        createTokenRepository(FakeTokenService())
+        createTokenRepository(
+            FakeTokenService(),
+            scope = this,
+        )
+
         fakeTokensStore.saveTokens(tokens)
         ApiErrorSubStatus.entries.filter { it.shouldTriggerRefresh }.forEach { status ->
             // when
@@ -186,7 +205,11 @@ class TokenRepositoryTest {
                 credentials,
                 "refreshToken",
             )
-            createTokenRepository(FakeTokenService())
+            createTokenRepository(
+                FakeTokenService(),
+                scope = this,
+            )
+
             fakeTokensStore.saveTokens(tokens)
 
             // when
@@ -213,7 +236,10 @@ class TokenRepositoryTest {
                 throwableToThrow = buildTestHttpException(503)
             }
             val expectedCalls = testRetryPolicy.numberOfRetries + 1
-            createTokenRepository(service)
+            createTokenRepository(
+                service,
+                scope = this,
+            )
             fakeTokensStore.saveTokens(tokens)
 
             // when
@@ -246,7 +272,10 @@ class TokenRepositoryTest {
         val service = FakeTokenService().apply {
             throwableToThrow = buildTestHttpException(400)
         }
-        createTokenRepository(service)
+        createTokenRepository(
+            service,
+            scope = this,
+        )
         fakeTokensStore.saveTokens(tokens)
 
         // when
@@ -282,7 +311,10 @@ class TokenRepositoryTest {
         val service = FakeTokenService().apply {
             throwableToThrow = buildTestHttpException(401)
         }
-        createTokenRepository(service)
+        createTokenRepository(
+            service,
+            scope = this,
+        )
         fakeTokensStore.saveTokens(tokens)
 
         // when
@@ -315,7 +347,10 @@ class TokenRepositoryTest {
             credentials,
             "refreshToken",
         )
-        createTokenRepository(FakeTokenService())
+        createTokenRepository(
+            FakeTokenService(),
+            scope = this,
+        )
         fakeTokensStore.saveTokens(tokens)
 
         // when
@@ -340,7 +375,10 @@ class TokenRepositoryTest {
                     credentials,
                     "refreshToken",
                 )
-                createTokenRepository(FakeTokenService())
+                createTokenRepository(
+                    FakeTokenService(),
+                    scope = this@runTest,
+                )
                 fakeTokensStore.saveTokens(tokens)
 
                 // when
@@ -367,7 +405,10 @@ class TokenRepositoryTest {
             )
             val secret = "myLittleSecret"
             createAuthConfig(secret = secret)
-            createTokenRepository(FakeTokenService())
+            createTokenRepository(
+                FakeTokenService(),
+                scope = this,
+            )
             fakeTokensStore.saveTokens(tokens)
 
             // when
@@ -392,7 +433,10 @@ class TokenRepositoryTest {
             // given
             val secret = "myLittleSecret"
             createAuthConfig(secret = secret)
-            createTokenRepository(FakeTokenService())
+            createTokenRepository(
+                FakeTokenService(),
+                scope = this,
+            )
 
             // when
             tokenRepository.getCredentials(null)
@@ -424,7 +468,10 @@ class TokenRepositoryTest {
             )
             val secret = "myLittleSecret"
             createAuthConfig(secret = secret)
-            createTokenRepository(FakeTokenService())
+            createTokenRepository(
+                FakeTokenService(),
+                scope = this,
+            )
             fakeTokensStore.saveTokens(tokens)
 
             // when
@@ -457,7 +504,10 @@ class TokenRepositoryTest {
         )
         val secret = "myLittleSecret"
         createAuthConfig(secret = secret)
-        createTokenRepository(FakeTokenService())
+        createTokenRepository(
+            FakeTokenService(),
+            scope = this,
+        )
         fakeTokensStore.saveTokens(tokens)
 
         // when
@@ -506,6 +556,7 @@ class TokenRepositoryTest {
         createTokenRepository(
             tokenService = FakeTokenService(),
             tokensStore = fakeTokensStore,
+            scope = this,
         )
 
         val result = tokenRepository.getCredentials(null)
@@ -549,6 +600,7 @@ class TokenRepositoryTest {
             },
             tokensStore = fakeTokensStore,
             upgradeRetryPolicy = UpgradeTokenRetryPolicy(),
+            scope = this,
         )
         val expectedRetries = upgradeRetryPolicy.numberOfRetries + 1
         tokenRepository.getCredentials(null)
@@ -567,6 +619,7 @@ class TokenRepositoryTest {
             },
             tokensStore = fakeTokensStore,
             upgradeRetryPolicy = UpgradeTokenRetryPolicy(),
+            scope = this,
         )
         tokenRepository.getCredentials(null)
 
@@ -584,7 +637,9 @@ class TokenRepositoryTest {
             },
             tokensStore = fakeTokensStore,
             upgradeRetryPolicy = UpgradeTokenRetryPolicy(),
+            scope = this,
         )
+
         tokenRepository.getCredentials(null)
 
         // then
@@ -619,6 +674,7 @@ class TokenRepositoryTest {
             },
             tokensStore = fakeTokensStore,
             upgradeRetryPolicy = UpgradeTokenRetryPolicy(),
+            scope = this,
         )
         val result1 = tokenRepository.getCredentials(null)
 
@@ -629,6 +685,7 @@ class TokenRepositoryTest {
             },
             tokensStore = fakeTokensStore,
             upgradeRetryPolicy = UpgradeTokenRetryPolicy(),
+            scope = this,
         )
         fakeTokenService.throwableToThrow = buildTestHttpException(401)
         val result2 = tokenRepository.getCredentials(null)
@@ -640,6 +697,7 @@ class TokenRepositoryTest {
             },
             tokensStore = fakeTokensStore,
             upgradeRetryPolicy = UpgradeTokenRetryPolicy(),
+            scope = this,
         )
         fakeTokenService.throwableToThrow = buildTestHttpException(503)
         val result3 = tokenRepository.getCredentials(null)
@@ -663,7 +721,10 @@ class TokenRepositoryTest {
             credentials,
             "refreshToken",
         )
-        createTokenRepository(FakeTokenService())
+        createTokenRepository(
+            FakeTokenService(),
+            scope = this,
+        )
         fakeTokensStore.saveTokens(tokens)
 
         // when
@@ -698,6 +759,7 @@ class TokenRepositoryTest {
         createTokenRepository(
             FakeTokenService(),
             FakeTokensStore(authConfig.credentialsKey, tokens),
+            scope = this,
         )
 
         // when
@@ -731,6 +793,7 @@ class TokenRepositoryTest {
         createTokenRepository(
             FakeTokenService(),
             FakeTokensStore(authConfig.credentialsKey, tokens),
+            scope = this,
         )
 
         val numberOfThreads = 100
@@ -764,7 +827,11 @@ class TokenRepositoryTest {
         fakeTokensStore = FakeTokensStore(authConfig.credentialsKey).apply {
             saveTokens(tokens)
         }
-        createTokenRepository(tokenService, fakeTokensStore)
+        createTokenRepository(
+            tokenService,
+            fakeTokensStore,
+            scope = this,
+        )
 
         // when
         tokenRepository.getCredentials(null)
