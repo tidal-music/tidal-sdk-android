@@ -23,6 +23,7 @@ import com.tidal.sdk.common.d
 import com.tidal.sdk.common.logger
 import java.net.HttpURLConnection
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
@@ -61,59 +62,61 @@ internal class TokenRepository(
         }
     }
 
-    internal fun getLatestTokens(): Tokens? {
-        return tokensStore.getLatestTokens(authConfig.credentialsKey)
-    }
+    internal fun getLatestTokens(): Tokens? = tokensStore.getLatestTokens(authConfig.credentialsKey)
 
     @Suppress("UnusedPrivateMember")
     suspend fun getCredentials(apiErrorSubStatus: String?): AuthResult<Credentials> {
         logger.d { "Received subStatus: $apiErrorSubStatus" }
 
         return tokenMutex.withLock {
-            var upgradedRefreshToken: String? = null
-            val credentials = getLatestTokens()
+            lateinit var result: AuthResult<Credentials>
+            val job = networkingJobHandler.scope.launch {
+                logger.d { "getCredentials: ${Thread.currentThread().name}" }
+                var upgradedRefreshToken: String? = null
+                val credentials = getLatestTokens()
 
-            if (credentials != null && needsCredentialsUpgrade()) {
-                logger.d { "Upgrading credentials" }
-                val upgradeCredentials = upgradeTokens(credentials)
-                upgradeCredentials.successData?.let {
-                    upgradedRefreshToken = it.refreshToken
-                    success(it.credentials)
-                } ?: upgradeCredentials as AuthResult.Failure
-            } else {
-                logger.d { "Updating credentials" }
-                updateCredentials(credentials, apiErrorSubStatus)
-            }.also {
-                it.successData?.let { token ->
-                    saveTokensAndNotify(token, upgradedRefreshToken, credentials)
+                result = if (credentials != null && needsCredentialsUpgrade()) {
+                    logger.d { "Upgrading credentials" }
+                    val upgradeCredentials = upgradeTokens(credentials)
+                    upgradeCredentials.successData?.let {
+                        upgradedRefreshToken = it.refreshToken
+                        success(it.credentials)
+                    } ?: upgradeCredentials as AuthResult.Failure
+                } else {
+                    logger.d { "Updating credentials" }
+                    updateCredentials(credentials, apiErrorSubStatus)
+                }.also {
+                    it.successData?.let { token ->
+                        saveTokensAndNotify(token, upgradedRefreshToken, credentials)
+                    }
                 }
-            }
+            }.also { networkingJobHandler.jobs.add(it) }
+            job.join()
+            result
         }
     }
 
     private suspend fun updateCredentials(
         storedTokens: Tokens?,
         apiErrorSubStatus: String?,
-    ): AuthResult<Credentials> {
-        return when {
-            storedTokens?.credentials?.isExpired(timeProvider) == false &&
-                apiErrorSubStatus.shouldRefreshToken().not() -> {
-                success(storedTokens.credentials)
-            }
-            // if a refreshToken is available, we'll use it
-            storedTokens?.refreshToken != null -> {
-                val refreshToken = storedTokens.refreshToken
-                refreshCredentials { refreshUserCredentials(refreshToken) }
-            }
-
-            // if nothing is stored, we will try and refresh using a client secret
-            authConfig.clientSecret != null -> {
-                refreshCredentials { getClientCredentials(authConfig.clientSecret) }
-            }
-
-            // as a last resort we return a token-less Credentials, we're logged out
-            else -> logout()
+    ): AuthResult<Credentials> = when {
+        storedTokens?.credentials?.isExpired(timeProvider) == false &&
+            apiErrorSubStatus.shouldRefreshToken().not() -> {
+            success(storedTokens.credentials)
         }
+        // if a refreshToken is available, we'll use it
+        storedTokens?.refreshToken != null -> {
+            val refreshToken = storedTokens.refreshToken
+            refreshCredentials { refreshUserCredentials(refreshToken) }
+        }
+
+        // if nothing is stored, we will try and refresh using a client secret
+        authConfig.clientSecret != null -> {
+            refreshCredentials { getClientCredentials(authConfig.clientSecret) }
+        }
+
+        // as a last resort we return a token-less Credentials, we're logged out
+        else -> logout()
     }
 
     private suspend fun upgradeTokens(storedTokens: Tokens): AuthResult<Tokens> {
@@ -215,8 +218,10 @@ internal class TokenRepository(
         }
     }
 
-    private suspend fun getClientCredentials(clientSecret: String): AuthResult<RefreshResponse> {
-        return retryWithPolicy(defaultBackoffPolicy) {
+    private suspend fun getClientCredentials(clientSecret: String): AuthResult<RefreshResponse> =
+        retryWithPolicy(
+            defaultBackoffPolicy,
+        ) {
             tokenService.getTokenFromClientSecret(
                 authConfig.clientId,
                 clientSecret,
@@ -224,7 +229,6 @@ internal class TokenRepository(
                 authConfig.scopes.toScopesString(),
             )
         }
-    }
 
     companion object {
 

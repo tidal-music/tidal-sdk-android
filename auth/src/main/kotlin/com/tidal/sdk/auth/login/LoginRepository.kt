@@ -80,6 +80,7 @@ internal class LoginRepository constructor(
     }
 
     suspend fun setCredentials(credentials: Credentials, refreshToken: String? = null) {
+        networkingJobHandler.cancelAllJobs()
         val storedTokens = tokensStore.getLatestTokens(authConfig.credentialsKey)
         if (credentials != storedTokens?.credentials) {
             val tokens = Tokens(
@@ -113,14 +114,14 @@ internal class LoginRepository constructor(
         bus.emit(CredentialsUpdatedMessage())
     }
 
-    suspend fun initializeDeviceLogin(): AuthResult<DeviceAuthorizationResponse> {
-        return retryWithPolicy(retryPolicy = exponentialBackoffPolicy) {
-            loginService.getDeviceAuthorization(
-                authConfig.clientId,
-                authConfig.scopes.toScopesString(),
-            ).also {
-                deviceLoginPollHelper.prepareForPoll(it.interval, it.expiresIn)
-            }
+    suspend fun initializeDeviceLogin(): AuthResult<DeviceAuthorizationResponse> = retryWithPolicy(
+        retryPolicy = exponentialBackoffPolicy
+    ) {
+        loginService.getDeviceAuthorization(
+            authConfig.clientId,
+            authConfig.scopes.toScopesString(),
+        ).also {
+            deviceLoginPollHelper.prepareForPoll(it.interval, it.expiresIn)
         }
     }
 
