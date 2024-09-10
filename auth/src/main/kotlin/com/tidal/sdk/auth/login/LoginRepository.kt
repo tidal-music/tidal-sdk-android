@@ -11,6 +11,7 @@ import com.tidal.sdk.auth.model.LoginResponse
 import com.tidal.sdk.auth.model.Tokens
 import com.tidal.sdk.auth.model.failure
 import com.tidal.sdk.auth.network.LoginService
+import com.tidal.sdk.auth.network.NetworkingJobHandler
 import com.tidal.sdk.auth.storage.TokensStore
 import com.tidal.sdk.auth.util.RetryPolicy
 import com.tidal.sdk.auth.util.TimeProvider
@@ -30,6 +31,7 @@ internal class LoginRepository constructor(
     private val tokensStore: TokensStore,
     private val exponentialBackoffPolicy: RetryPolicy,
     private val bus: MutableSharedFlow<TidalMessage>,
+    private val networkingJobHandler: NetworkingJobHandler,
 ) {
 
     private var codeVerifier: String? = null

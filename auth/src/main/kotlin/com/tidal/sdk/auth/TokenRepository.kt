@@ -8,6 +8,7 @@ import com.tidal.sdk.auth.model.RefreshResponse
 import com.tidal.sdk.auth.model.Tokens
 import com.tidal.sdk.auth.model.failure
 import com.tidal.sdk.auth.model.success
+import com.tidal.sdk.auth.network.NetworkingJobHandler
 import com.tidal.sdk.auth.storage.TokensStore
 import com.tidal.sdk.auth.token.TokenService
 import com.tidal.sdk.auth.util.RetryPolicy
@@ -33,6 +34,7 @@ internal class TokenRepository(
     private val defaultBackoffPolicy: RetryPolicy,
     private val upgradeBackoffPolicy: RetryPolicy,
     private val bus: MutableSharedFlow<TidalMessage>,
+    private val networkingJobHandler: NetworkingJobHandler,
 ) {
 
     /**

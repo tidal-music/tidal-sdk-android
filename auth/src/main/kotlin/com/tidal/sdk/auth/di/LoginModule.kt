@@ -6,6 +6,7 @@ import com.tidal.sdk.auth.login.LoginRepository
 import com.tidal.sdk.auth.login.LoginUriBuilder
 import com.tidal.sdk.auth.model.AuthConfig
 import com.tidal.sdk.auth.network.LoginService
+import com.tidal.sdk.auth.network.NetworkingJobHandler
 import com.tidal.sdk.auth.storage.TokensStore
 import com.tidal.sdk.auth.util.RetryPolicy
 import com.tidal.sdk.auth.util.TimeProvider
@@ -60,6 +61,7 @@ internal class LoginModule {
         tokensStore: TokensStore,
         @Named("default") retryPolicy: RetryPolicy,
         bus: MutableSharedFlow<TidalMessage>,
+        networkingJobHandler: NetworkingJobHandler,
     ): LoginRepository = LoginRepository(
         authConfig,
         timeProvider,
@@ -69,5 +71,6 @@ internal class LoginModule {
         tokensStore,
         retryPolicy,
         bus,
+        networkingJobHandler,
     )
 }

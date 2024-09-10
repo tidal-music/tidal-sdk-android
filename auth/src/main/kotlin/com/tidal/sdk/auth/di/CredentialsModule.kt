@@ -2,6 +2,7 @@ package com.tidal.sdk.auth.di
 
 import com.tidal.sdk.auth.TokenRepository
 import com.tidal.sdk.auth.model.AuthConfig
+import com.tidal.sdk.auth.network.NetworkingJobHandler
 import com.tidal.sdk.auth.storage.TokensStore
 import com.tidal.sdk.auth.token.TokenService
 import com.tidal.sdk.auth.util.RetryPolicy
@@ -25,9 +26,9 @@ internal class CredentialsModule {
 
     @Provides
     @Singleton
-    fun provideTokenService(retrofit: Retrofit): TokenService {
-        return retrofit.create(TokenService::class.java)
-    }
+    fun provideTokenService(
+        retrofit: Retrofit,
+    ): TokenService = retrofit.create(TokenService::class.java)
 
     @Singleton
     @Provides
@@ -39,6 +40,7 @@ internal class CredentialsModule {
         @Named("default") defaultBackoffPolicy: RetryPolicy,
         @Named("upgrade") upgradeBackoffPolicy: RetryPolicy,
         bus: MutableSharedFlow<TidalMessage>,
+        networkingJobHandler: NetworkingJobHandler,
     ) = TokenRepository(
         authConfig,
         timeProvider,
@@ -47,5 +49,6 @@ internal class CredentialsModule {
         defaultBackoffPolicy,
         upgradeBackoffPolicy,
         bus,
+        networkingJobHandler
     )
 }

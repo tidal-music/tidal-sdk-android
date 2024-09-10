@@ -8,6 +8,7 @@ import com.tidal.sdk.auth.model.AuthConfig
 import com.tidal.sdk.auth.model.AuthResult
 import com.tidal.sdk.auth.model.CredentialsUpdatedMessage
 import com.tidal.sdk.auth.model.Tokens
+import com.tidal.sdk.auth.network.NetworkingJobHandler
 import com.tidal.sdk.auth.util.RetryPolicy
 import com.tidal.sdk.auth.util.UpgradeTokenRetryPolicy
 import com.tidal.sdk.auth.util.buildTestHttpException
@@ -56,6 +57,7 @@ class TokenRepositoryTest {
             defaultRetrypolicy,
             upgradeRetryPolicy,
             bus,
+            NetworkingJobHandler(),
         )
     }
 

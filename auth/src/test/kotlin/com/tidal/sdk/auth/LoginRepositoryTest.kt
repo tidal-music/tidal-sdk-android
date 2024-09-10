@@ -22,6 +22,7 @@ import com.tidal.sdk.auth.model.LoginResponse
 import com.tidal.sdk.auth.model.QueryParameter
 import com.tidal.sdk.auth.model.TokenResponseError
 import com.tidal.sdk.auth.model.Tokens
+import com.tidal.sdk.auth.network.NetworkingJobHandler
 import com.tidal.sdk.auth.util.RetryPolicy
 import com.tidal.sdk.auth.util.TimeProvider
 import com.tidal.sdk.common.NetworkError
@@ -80,11 +81,17 @@ class LoginRepositoryTest {
             authConfig,
             timeProvider,
             CodeChallengeBuilder(),
-            LoginUriBuilder(TEST_CLIENT_ID, TEST_CLIENT_UNIQUE_KEY, loginBaseUrl, authConfig.scopes),
+            LoginUriBuilder(
+                TEST_CLIENT_ID,
+                TEST_CLIENT_UNIQUE_KEY,
+                loginBaseUrl,
+                authConfig.scopes
+            ),
             loginService,
             tokensStore,
             retryPolicy,
             bus,
+            NetworkingJobHandler(),
         )
     }
 
