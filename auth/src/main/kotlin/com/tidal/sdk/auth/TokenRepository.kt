@@ -22,6 +22,7 @@ import com.tidal.sdk.common.UnexpectedError
 import com.tidal.sdk.common.d
 import com.tidal.sdk.common.logger
 import java.net.HttpURLConnection
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
@@ -68,32 +69,37 @@ internal class TokenRepository(
     suspend fun getCredentials(apiErrorSubStatus: String?): AuthResult<Credentials> {
         logger.d { "Received subStatus: $apiErrorSubStatus" }
 
-        return tokenMutex.withLock {
-            lateinit var result: AuthResult<Credentials>
-            val job = networkingJobHandler.scope.launch {
-                logger.d { "getCredentials: ${Thread.currentThread().name}" }
-                var upgradedRefreshToken: String? = null
-                val credentials = getLatestTokens()
+        lateinit var result: AuthResult<Credentials>
+        val job = networkingJobHandler.scope.launch {
+            try {
+                tokenMutex.withLock {
+                    logger.d { "getCredentials: ${Thread.currentThread().name}" }
+                    var upgradedRefreshToken: String? = null
+                    val credentials = getLatestTokens()
 
-                result = if (credentials != null && needsCredentialsUpgrade()) {
-                    logger.d { "Upgrading credentials" }
-                    val upgradeCredentials = upgradeTokens(credentials)
-                    upgradeCredentials.successData?.let {
-                        upgradedRefreshToken = it.refreshToken
-                        success(it.credentials)
-                    } ?: upgradeCredentials as AuthResult.Failure
-                } else {
-                    logger.d { "Updating credentials" }
-                    updateCredentials(credentials, apiErrorSubStatus)
-                }.also {
-                    it.successData?.let { token ->
-                        saveTokensAndNotify(token, upgradedRefreshToken, credentials)
+                    result = if (credentials != null && needsCredentialsUpgrade()) {
+                        logger.d { "Upgrading credentials" }
+                        val upgradeCredentials = upgradeTokens(credentials)
+                        upgradeCredentials.successData?.let {
+                            upgradedRefreshToken = it.refreshToken
+                            success(it.credentials)
+                        } ?: upgradeCredentials as AuthResult.Failure
+                    } else {
+                        logger.d { "Updating credentials" }
+                        updateCredentials(credentials, apiErrorSubStatus)
+                    }.also {
+                        it.successData?.let { token ->
+                            saveTokensAndNotify(token, upgradedRefreshToken, credentials)
+                        }
                     }
                 }
-            }.also { networkingJobHandler.jobs.add(it) }
-            job.join()
-            result
-        }
+            } catch (e: CancellationException) {
+                logger.d { "getCredentials execution was cancelled: ${e.message}" }
+                result = failure(null)
+            }
+        }.also { networkingJobHandler.jobs.add(it) }
+        job.join()
+        return result
     }
 
     private suspend fun updateCredentials(

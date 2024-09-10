@@ -1,12 +1,10 @@
 package com.tidal.sdk.auth.network
 
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 
-class NetworkingJobHandler(dispatcher: CoroutineDispatcher = Dispatchers.IO) {
-    val scope = CoroutineScope(dispatcher)
+class NetworkingJobHandler(val scope: CoroutineScope = CoroutineScope(Dispatchers.IO)) {
 
     val jobs = mutableListOf<Job>()
 
