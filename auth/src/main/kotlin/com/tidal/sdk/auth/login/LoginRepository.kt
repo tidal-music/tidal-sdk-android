@@ -1,5 +1,7 @@
 package com.tidal.sdk.auth.login
 
+import android.os.Handler
+import com.tidal.sdk.auth.SetCredentialsRunnable
 import com.tidal.sdk.auth.model.AuthConfig
 import com.tidal.sdk.auth.model.AuthResult
 import com.tidal.sdk.auth.model.AuthorizationError
@@ -20,6 +22,8 @@ import com.tidal.sdk.common.TidalMessage
 import com.tidal.sdk.common.d
 import com.tidal.sdk.common.logger
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.suspendCancellableCoroutine
+import okhttp3.OkHttpClient
 
 internal class LoginRepository constructor(
     private val authConfig: AuthConfig,
@@ -30,9 +34,14 @@ internal class LoginRepository constructor(
     private val tokensStore: TokensStore,
     private val exponentialBackoffPolicy: RetryPolicy,
     private val bus: MutableSharedFlow<TidalMessage>,
+    private val handler: Handler,
+    private val setCredentialsRunnableFactory: SetCredentialsRunnable.Factory,
+    private val okHttpClient: OkHttpClient,
+    private val lock: Any,
 ) {
 
     private var codeVerifier: String? = null
+    private var currentlyQueuedSetCredentialsRunnable: SetCredentialsRunnable? = null
     private val deviceLoginPollHelper: DeviceLoginPollHelper by lazy {
         DeviceLoginPollHelper(loginService)
     }
@@ -78,14 +87,26 @@ internal class LoginRepository constructor(
     }
 
     suspend fun setCredentials(credentials: Credentials, refreshToken: String? = null) {
-        val storedTokens = tokensStore.getLatestTokens(authConfig.credentialsKey)
-        if (credentials != storedTokens?.credentials) {
-            val tokens = Tokens(
-                credentials,
-                refreshToken ?: storedTokens?.refreshToken,
-            )
-            tokensStore.saveTokens(tokens)
-            bus.emit(CredentialsUpdatedMessage(tokens.credentials))
+       return suspendCancellableCoroutine { continuation ->
+            synchronized(lock) {
+                currentlyQueuedSetCredentialsRunnable?.let { handler.removeCallbacks(it) }
+                val newRunnable = setCredentialsRunnableFactory.create(credentials) {
+                    synchronized(lock) {
+                        if (it === currentlyQueuedSetCredentialsRunnable) {
+                            currentlyQueuedSetCredentialsRunnable = null
+                        }
+                        continuation.resumeWith(Unit)
+                    }
+                }
+                currentlyQueuedSetCredentialsRunnable = newRunnable
+                handler.postAtFrontOfQueue(newRunnable)
+                // I'm cancelling every request here. If there are some that a setCredentials call
+                // shouldn't cancel, filter them out by adding a line after the .run call, as such:
+                // .filter { it.request().... }
+                okHttpClient.dispatcher
+                    .run { runningCalls() + queuedCalls() }
+                    .forEach { it.cancel() }
+            }
         }
     }
 

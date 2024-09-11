@@ -1,5 +1,7 @@
 package com.tidal.sdk.auth
 
+import android.os.Handler
+import android.os.HandlerThread
 import com.tidal.sdk.auth.model.AuthConfig
 import com.tidal.sdk.auth.model.AuthResult
 import com.tidal.sdk.auth.model.Credentials
@@ -22,8 +24,17 @@ import com.tidal.sdk.common.d
 import com.tidal.sdk.common.logger
 import java.net.HttpURLConnection
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.suspendCancellableCoroutine
+
+// You put these on your DI graph scoped to AuthComponent so the same instance is injected here
+// and in LoginRepository
+private val handler = Handler(
+    HandlerThread("AuthLoopThread").apply {
+        start()
+    }.looper
+)
+
+private val lock = Unit
 
 internal class TokenRepository(
     private val authConfig: AuthConfig,
@@ -33,12 +44,10 @@ internal class TokenRepository(
     private val defaultBackoffPolicy: RetryPolicy,
     private val upgradeBackoffPolicy: RetryPolicy,
     private val bus: MutableSharedFlow<TidalMessage>,
+    private val handler: Handler,
+    private val getCredentialsRunnableFactory: GetCredentialsRunnable.Factory,
+    private val lock: Any,
 ) {
-
-    /**
-     * Mutex to ensure that only one thread at a time can update/upgrade the token.
-     */
-    private val tokenMutex = Mutex()
 
     private fun needsCredentialsUpgrade(): Boolean {
         val storedCredentials = getLatestTokens()?.credentials
@@ -65,26 +74,13 @@ internal class TokenRepository(
 
     @Suppress("UnusedPrivateMember")
     suspend fun getCredentials(apiErrorSubStatus: String?): AuthResult<Credentials> {
-        logger.d { "Received subStatus: $apiErrorSubStatus" }
-
-        return tokenMutex.withLock {
-            var upgradedRefreshToken: String? = null
-            val credentials = getLatestTokens()
-
-            if (credentials != null && needsCredentialsUpgrade()) {
-                logger.d { "Upgrading credentials" }
-                val upgradeCredentials = upgradeTokens(credentials)
-                upgradeCredentials.successData?.let {
-                    upgradedRefreshToken = it.refreshToken
-                    success(it.credentials)
-                } ?: upgradeCredentials as AuthResult.Failure
-            } else {
-                logger.d { "Updating credentials" }
-                updateCredentials(credentials, apiErrorSubStatus)
-            }.also {
-                it.successData?.let { token ->
-                    saveTokensAndNotify(token, upgradedRefreshToken, credentials)
-                }
+        return suspendCancellableCoroutine { continuation ->
+            synchronized(lock) {
+                handler.post(
+                    getCredentialsRunnableFactory.create(apiErrorSubStatus) {
+                        continuation.resumeWith(it)
+                    }
+                )
             }
         }
     }
