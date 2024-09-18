@@ -57,6 +57,7 @@ import com.tidal.sdk.player.playbackengine.player.ExtendedExoPlayerFactory
 import com.tidal.sdk.player.playbackengine.player.PlayerCache
 import com.tidal.sdk.player.playbackengine.quality.AudioQualityRepository
 import com.tidal.sdk.player.playbackengine.util.SynchronousSurfaceHolder
+import com.tidal.sdk.player.playbackengine.util.clear
 import com.tidal.sdk.player.playbackengine.view.AspectRatioAdjustingSurfaceView
 import com.tidal.sdk.player.playbackengine.volume.VolumeHelper
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
@@ -810,11 +811,7 @@ internal class ExoPlayerPlaybackEngine(
         while (crawler?.cause != null) {
             @Suppress("MagicNumber")
             if ((crawler as? InvalidResponseCodeException)?.responseCode == 416) {
-                with(playerCache.cache) {
-                    keys.forEach {
-                        removeResource(it)
-                    }
-                }
+                playerCache.clear()
             }
             crawler = crawler.cause
             errorMessage += " -> ${crawler?.message}"
