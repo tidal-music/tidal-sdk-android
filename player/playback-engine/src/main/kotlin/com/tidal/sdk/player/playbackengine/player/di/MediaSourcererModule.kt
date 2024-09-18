@@ -1,15 +1,10 @@
 package com.tidal.sdk.player.playbackengine.player.di
 
-import android.content.Context
 import androidx.media3.common.C
-import androidx.media3.database.DatabaseProvider
-import androidx.media3.database.StandaloneDatabaseProvider
 import androidx.media3.datasource.FileDataSource
 import androidx.media3.datasource.cache.CacheDataSink
 import androidx.media3.datasource.cache.CacheDataSource
 import androidx.media3.datasource.cache.CacheKeyFactory
-import androidx.media3.datasource.cache.LeastRecentlyUsedCacheEvictor
-import androidx.media3.datasource.cache.SimpleCache
 import androidx.media3.datasource.okhttp.OkHttpDataSource
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.dash.DashMediaSource
@@ -68,7 +63,6 @@ import com.tidal.sdk.player.playbackengine.offline.OfflineStorageProvider
 import com.tidal.sdk.player.playbackengine.offline.StorageDataSource
 import com.tidal.sdk.player.playbackengine.offline.cache.OfflineCacheProvider
 import com.tidal.sdk.player.playbackengine.playbackprivilege.PlaybackPrivilegeProvider
-import com.tidal.sdk.player.playbackengine.player.CacheProvider
 import com.tidal.sdk.player.playbackengine.player.ExtendedExoPlayerState
 import com.tidal.sdk.player.playbackengine.player.PlayerCache
 import com.tidal.sdk.player.playbackengine.quality.AudioQualityRepository
@@ -77,40 +71,16 @@ import com.tidal.sdk.player.streamingapi.StreamingApi
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
-import java.io.File
 import javax.inject.Named
 import kotlin.time.toJavaDuration
 import kotlinx.coroutines.CoroutineDispatcher
 import okhttp3.OkHttpClient
 
-private const val CACHE_DIR = "exoplayer-cache"
 private const val MINIMUM_LOADABLE_RETRY_COUNT = 10
 
 @Module
 @Suppress("TooManyFunctions")
 internal object MediaSourcererModule {
-
-    @Provides
-    @ExtendedExoPlayerComponent.Scoped
-    fun provideDatabaseProvider(context: Context): DatabaseProvider =
-        StandaloneDatabaseProvider(context)
-
-    @Provides
-    @ExtendedExoPlayerComponent.Scoped
-    fun cache(
-        appSpecificCacheDir: File,
-        databaseProvider: DatabaseProvider,
-        cacheProvider: CacheProvider,
-    ): PlayerCache {
-        return when (cacheProvider) {
-            is CacheProvider.External -> PlayerCache.Provided(cacheProvider.cache)
-            is CacheProvider.Internal -> {
-                val cacheDir = File(appSpecificCacheDir, CACHE_DIR)
-                val cacheEvictor = LeastRecentlyUsedCacheEvictor(cacheProvider.cacheSizeBytes.value)
-                PlayerCache.Internal(SimpleCache(cacheDir, cacheEvictor, databaseProvider))
-            }
-        }
-    }
 
     @Provides
     @Reusable

@@ -19,7 +19,6 @@ import com.tidal.sdk.player.playbackengine.model.BufferConfiguration
 import com.tidal.sdk.player.playbackengine.player.ExtendedExoPlayer
 import com.tidal.sdk.player.playbackengine.player.ExtendedExoPlayerState
 import com.tidal.sdk.player.playbackengine.player.ExtendedExoPlayerStateUpdateRunnable
-import com.tidal.sdk.player.playbackengine.player.PlayerCache
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
@@ -96,13 +95,11 @@ internal object ExtendedExoPlayerModule {
     @ExtendedExoPlayerComponent.Scoped
     fun extendedExoPlayer(
         exoPlayer: ExoPlayer,
-        playerCache: PlayerCache,
         loadControl: LoadControl,
         mediaSourcerer: MediaSourcerer,
         extendedExoPlayerState: ExtendedExoPlayerState,
     ) = ExtendedExoPlayer(
         exoPlayer,
-        playerCache,
         loadControl,
         mediaSourcerer,
         extendedExoPlayerState,

@@ -9,6 +9,7 @@ import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.common.Timeline
 import androidx.media3.common.VideoSize
+import androidx.media3.datasource.HttpDataSource.InvalidResponseCodeException
 import androidx.media3.exoplayer.DecoderReuseEvaluation
 import androidx.media3.exoplayer.analytics.AnalyticsListener
 import androidx.media3.exoplayer.analytics.AnalyticsListener.EventTime
@@ -53,6 +54,7 @@ import com.tidal.sdk.player.playbackengine.model.PlaybackState
 import com.tidal.sdk.player.playbackengine.outputdevice.OutputDevice
 import com.tidal.sdk.player.playbackengine.outputdevice.OutputDeviceManager
 import com.tidal.sdk.player.playbackengine.player.ExtendedExoPlayerFactory
+import com.tidal.sdk.player.playbackengine.player.PlayerCache
 import com.tidal.sdk.player.playbackengine.quality.AudioQualityRepository
 import com.tidal.sdk.player.playbackengine.util.SynchronousSurfaceHolder
 import com.tidal.sdk.player.playbackengine.view.AspectRatioAdjustingSurfaceView
@@ -91,6 +93,7 @@ internal class ExoPlayerPlaybackEngine(
     private val djSessionManager: DjSessionManager,
     private val undeterminedPlaybackSessionResolver: UndeterminedPlaybackSessionResolver,
     private val outputDeviceManager: OutputDeviceManager,
+    private val playerCache: PlayerCache,
 ) : PlaybackEngine,
     StreamingPrivilegesListener,
     PlaybackInfoListener,
@@ -356,6 +359,9 @@ internal class ExoPlayerPlaybackEngine(
 
     override fun release() {
         extendedExoPlayer.release()
+        if (playerCache is PlayerCache.Internal) {
+            playerCache.cache.release()
+        }
         coroutineScope.launch {
             eventSink.emit(Event.Release)
             cancel()
@@ -795,13 +801,21 @@ internal class ExoPlayerPlaybackEngine(
         startStall(Stall.Reason.UNEXPECTED, positionInSeconds, trueTimeWrapper.currentTimeMillis)
     }
 
-    @Suppress("LongMethod", "ComplexMethod")
+    @Suppress("LongMethod", "ComplexMethod", "NestedBlockDepth")
     override fun onPlayerError(eventTime: EventTime, error: PlaybackException) {
         var crawler: Throwable? = error
         var playbackInfoFetchException: PlaybackInfoFetchException? = null
 
         var errorMessage = "${error.errorCodeName}: ${crawler?.message}"
         while (crawler?.cause != null) {
+            @Suppress("MagicNumber")
+            if ((crawler as? InvalidResponseCodeException)?.responseCode == 416) {
+                with(playerCache.cache) {
+                    keys.forEach {
+                        removeResource(it)
+                    }
+                }
+            }
             crawler = crawler.cause
             errorMessage += " -> ${crawler?.message}"
             if (crawler is PlaybackInfoFetchException) {

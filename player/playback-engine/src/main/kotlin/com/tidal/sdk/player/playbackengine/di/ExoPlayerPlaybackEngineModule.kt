@@ -6,6 +6,10 @@ import android.net.ConnectivityManager
 import android.os.Handler
 import android.os.HandlerThread
 import android.os.Looper
+import androidx.media3.database.DatabaseProvider
+import androidx.media3.database.StandaloneDatabaseProvider
+import androidx.media3.datasource.cache.LeastRecentlyUsedCacheEvictor
+import androidx.media3.datasource.cache.SimpleCache
 import androidx.media3.exoplayer.drm.ExoMediaDrm
 import androidx.media3.exoplayer.drm.FrameworkMediaDrm
 import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
@@ -25,7 +29,9 @@ import com.tidal.sdk.player.playbackengine.mediasource.streamingsession.Versione
 import com.tidal.sdk.player.playbackengine.model.Event
 import com.tidal.sdk.player.playbackengine.network.NetworkTransportHelper
 import com.tidal.sdk.player.playbackengine.outputdevice.OutputDeviceManager
+import com.tidal.sdk.player.playbackengine.player.CacheProvider
 import com.tidal.sdk.player.playbackengine.player.ExtendedExoPlayerFactory
+import com.tidal.sdk.player.playbackengine.player.PlayerCache
 import com.tidal.sdk.player.playbackengine.quality.AudioQualityRepository
 import com.tidal.sdk.player.playbackengine.util.SynchronousSurfaceHolder
 import com.tidal.sdk.player.playbackengine.volume.LoudnessNormalizer
@@ -34,6 +40,7 @@ import com.tidal.sdk.player.streamingprivileges.StreamingPrivileges
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
+import java.io.File
 import javax.inject.Named
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
@@ -147,6 +154,28 @@ internal object ExoPlayerPlaybackEngineModule {
 
     @Provides
     @Singleton
+    fun provideDatabaseProvider(context: Context): DatabaseProvider =
+        StandaloneDatabaseProvider(context)
+
+    @Provides
+    @Singleton
+    fun cache(
+        appSpecificCacheDir: File,
+        databaseProvider: DatabaseProvider,
+        cacheProvider: CacheProvider,
+    ): PlayerCache {
+        return when (cacheProvider) {
+            is CacheProvider.External -> PlayerCache.Provided(cacheProvider.cache)
+            is CacheProvider.Internal -> {
+                val cacheDir = File(appSpecificCacheDir, CACHE_DIR)
+                val cacheEvictor = LeastRecentlyUsedCacheEvictor(cacheProvider.cacheSizeBytes.value)
+                PlayerCache.Internal(SimpleCache(cacheDir, cacheEvictor, databaseProvider))
+            }
+        }
+    }
+
+    @Provides
+    @Singleton
     fun exoPlayerPlaybackEngine(
         coroutineScope: CoroutineScope,
         extendedExoPlayerFactory: ExtendedExoPlayerFactory,
@@ -164,6 +193,7 @@ internal object ExoPlayerPlaybackEngineModule {
         djSessionManager: DjSessionManager,
         undeterminedPlaybackSessionResolver: UndeterminedPlaybackSessionResolver,
         outputDeviceManager: OutputDeviceManager,
+        playerCache: PlayerCache,
     ) = ExoPlayerPlaybackEngine(
         coroutineScope,
         extendedExoPlayerFactory,
@@ -181,6 +211,7 @@ internal object ExoPlayerPlaybackEngineModule {
         djSessionManager,
         undeterminedPlaybackSessionResolver,
         outputDeviceManager,
+        playerCache,
     )
 
     @Provides
@@ -190,3 +221,5 @@ internal object ExoPlayerPlaybackEngineModule {
         delegate: ExoPlayerPlaybackEngine,
     ): PlaybackEngine = SingleHandlerPlaybackEngine(handler, delegate)
 }
+
+private const val CACHE_DIR = "exoplayer-cache"
