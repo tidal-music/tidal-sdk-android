@@ -33,14 +33,12 @@ import org.mockito.kotlin.whenever
 internal class ExtendedExoPlayerTest {
 
     private val delegate = mock<ExoPlayer>()
-    private val playerCache = mock<PlayerCache.Internal>()
     private val loadControl = mock<LoadControl>()
     private val mediaSourcerer = mock<MediaSourcerer>()
     private val extendedExoPlayerState = mock<ExtendedExoPlayerState>()
     private val extendedExoPlayer by lazy {
         ExtendedExoPlayer(
             delegate,
-            playerCache,
             loadControl,
             mediaSourcerer,
             extendedExoPlayerState,
@@ -155,7 +153,6 @@ internal class ExtendedExoPlayerTest {
         }
         val extendedExoPlayer = ExtendedExoPlayer(
             delegate,
-            playerCache,
             loadControl,
             mediaSourcerer,
             extendedExoPlayerState,
@@ -170,13 +167,9 @@ internal class ExtendedExoPlayerTest {
     }
 
     @Test
-    fun releaseForwardsToDelegateAndReleasesCache() {
-        val playerCache = mock<PlayerCache.Internal> {
-            on { cache } doReturn mock()
-        }
+    fun releaseForwardsToDelegate() {
         val extendedExoPlayer = ExtendedExoPlayer(
             delegate,
-            playerCache,
             loadControl,
             mediaSourcerer,
             extendedExoPlayerState,
@@ -185,7 +178,6 @@ internal class ExtendedExoPlayerTest {
         extendedExoPlayer.release()
 
         verify(delegate).release()
-        verify(playerCache.cache).release()
         verify(mediaSourcerer).release()
         verify(extendedExoPlayerState).playbackInfoListener = null
     }

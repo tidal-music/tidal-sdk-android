@@ -16,7 +16,6 @@ import kotlin.properties.Delegates
  * A proxy to an [ExoPlayer] instance which defines requirements for additional functionality to
  * satisfy library capabilities.
  * @param delegate An [ExoPlayer] instance that all calls needing one will utilize.
- * @param playerCache A [PlayerCache] instance that will be used to cache assets.
  * @param loadControl A [LoadControl] instance that controls the buffering of media.
  * @param mediaSourcerer A [MediaSourcerer] instance that holds the MediaSource of what we play.
  * @param extendedExoPlayerState A [ExtendedExoPlayerState] instance that holds the some shared
@@ -24,7 +23,6 @@ import kotlin.properties.Delegates
  */
 internal class ExtendedExoPlayer(
     private val delegate: ExoPlayer,
-    private val playerCache: PlayerCache,
     private val loadControl: LoadControl,
     private val mediaSourcerer: MediaSourcerer,
     private val extendedExoPlayerState: ExtendedExoPlayerState,
@@ -80,9 +78,6 @@ internal class ExtendedExoPlayer(
 
     override fun release() {
         delegate.release()
-        if (playerCache is PlayerCache.Internal) {
-            playerCache.cache.release()
-        }
         mediaSourcerer.release()
         extendedExoPlayerState.playbackInfoListener = null
         analyticsListener = null

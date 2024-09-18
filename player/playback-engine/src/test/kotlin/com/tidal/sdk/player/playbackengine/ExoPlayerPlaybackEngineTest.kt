@@ -9,6 +9,7 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.common.Timeline
 import androidx.media3.common.VideoSize
+import androidx.media3.datasource.cache.Cache
 import androidx.media3.exoplayer.DecoderReuseEvaluation
 import androidx.media3.exoplayer.analytics.AnalyticsListener.EventTime
 import androidx.media3.exoplayer.hls.HlsManifest
@@ -51,6 +52,7 @@ import com.tidal.sdk.player.playbackengine.model.PlaybackState
 import com.tidal.sdk.player.playbackengine.outputdevice.OutputDeviceManager
 import com.tidal.sdk.player.playbackengine.player.ExtendedExoPlayer
 import com.tidal.sdk.player.playbackengine.player.ExtendedExoPlayerFactory
+import com.tidal.sdk.player.playbackengine.player.PlayerCache
 import com.tidal.sdk.player.playbackengine.quality.AudioQualityRepository
 import com.tidal.sdk.player.playbackengine.util.SynchronousSurfaceHolder
 import com.tidal.sdk.player.playbackengine.view.AspectRatioAdjustingSurfaceView
@@ -117,6 +119,7 @@ internal class ExoPlayerPlaybackEngineTest {
     private val djSessionManager = mock<DjSessionManager>()
     private val undeterminedPlaybackSessionResolver = mock<UndeterminedPlaybackSessionResolver>()
     private val outputDeviceManager = mock<OutputDeviceManager>()
+    private val playerCache = mock<PlayerCache.Internal>()
     private lateinit var playbackEngine: ExoPlayerPlaybackEngine
 
     private val forwardingMediaProduct =
@@ -146,6 +149,7 @@ internal class ExoPlayerPlaybackEngineTest {
             djSessionManager,
             undeterminedPlaybackSessionResolver,
             outputDeviceManager,
+            playerCache,
         )
     }
 
@@ -472,13 +476,17 @@ internal class ExoPlayerPlaybackEngineTest {
     }
 
     @Test
-    fun releaseReleasesExtendedExoPlayerAndQuitsTheLooper() {
+    fun releaseReleasesExtendedExoPlayerAndQuitsTheLooperAndReleasesTheCache() {
         val looper = mock<Looper>()
+        val cache = mock<Cache>()
+        whenever(playerCache.cache) doReturn cache
 
         playbackEngine.release()
 
         verify(initialExtendedExoPlayer).release()
-        verifyNoMoreInteractions(initialExtendedExoPlayer, looper)
+        verify(playerCache).cache
+        verify(cache).release()
+        verifyNoMoreInteractions(initialExtendedExoPlayer, looper, cache)
     }
 
     @Test
