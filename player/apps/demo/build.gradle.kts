@@ -1,3 +1,5 @@
+import com.tidal.sdk.plugins.extensions.loadLocalProperties
+
 plugins {
     alias(libs.plugins.tidal.android.application)
 }
@@ -12,6 +14,13 @@ android {
     }
 
     buildTypes {
+        defaultConfig {
+            buildConfigField(
+                "String",
+                "TIDAL_CLIENT_SCOPES",
+                "${loadLocalProperties()["tidal.clientscopes"]}",
+            )
+        }
         release {
             isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"))
