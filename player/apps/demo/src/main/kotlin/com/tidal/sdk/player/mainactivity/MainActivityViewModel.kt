@@ -53,6 +53,7 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
         AuthConfig(
             clientId = BuildConfig.TIDAL_CLIENT_ID,
             clientSecret = BuildConfig.TIDAL_CLIENT_SECRET,
+            scopes = BuildConfig.TIDAL_CLIENT_SCOPES.split(" ").toSet(),
             credentialsKey = "com.tidal.sdk.player",
             enableCertificatePinning = false,
         ),
