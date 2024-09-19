@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.51] - 2024-09-20
+### Added
+- Wipe cache on HTTP 416 response code
+
 ## [0.0.50] - 2024-08-28
 ### Added
 - Add MediaProduct.extras
