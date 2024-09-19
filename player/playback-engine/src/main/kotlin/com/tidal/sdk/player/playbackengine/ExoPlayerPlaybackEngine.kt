@@ -807,14 +807,15 @@ internal class ExoPlayerPlaybackEngine(
         var crawler: Throwable? = error
         var playbackInfoFetchException: PlaybackInfoFetchException? = null
 
-        var errorMessage = "${error.errorCodeName}: ${crawler?.message}"
+        var errorMessage =
+            "${error.errorCodeName}: ${crawler?.message} (${crawler?.javaClass?.name})"
         while (crawler?.cause != null) {
             @Suppress("MagicNumber")
             if ((crawler as? InvalidResponseCodeException)?.responseCode == 416) {
                 playerCache.clear()
             }
             crawler = crawler.cause
-            errorMessage += " -> ${crawler?.message}"
+            errorMessage += " -> ${crawler?.message} (${crawler?.javaClass?.name})"
             if (crawler is PlaybackInfoFetchException) {
                 playbackInfoFetchException = crawler
             }
