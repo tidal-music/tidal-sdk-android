@@ -15,11 +15,7 @@ internal class SendEventBatchScheduler @Inject constructor(
         while (true) {
             delay(SLEEP_DURATION_MS)
             val allEvents = repository.getAll()
-            if (allEvents.isNotEmpty()) {
-                allEvents.chunked(MAX_BATCH_SIZE).forEach { eventBatch ->
-                    sendEventBatch(eventBatch)
-                }
-            }
+            sendEventBatch(listOf(Event("testing1", "paulinatest2", mapOf(), "")))
         }
     }
 
@@ -32,6 +28,6 @@ internal class SendEventBatchScheduler @Inject constructor(
 
     companion object {
         const val MAX_BATCH_SIZE = 10
-        const val SLEEP_DURATION_MS = 30000L
+        const val SLEEP_DURATION_MS = 480000L
     }
 }

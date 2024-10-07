@@ -11,7 +11,7 @@ internal const val BEARER = "Bearer"
 internal fun Request.Builder.updateAuthHeader(
     credentialsProvider: CredentialsProvider,
 ): Request.Builder {
-    val credentials = runBlocking { credentialsProvider.getCredentials().successData }
+    val credentials = runBlocking { credentialsProvider.getCredentials("6001").successData }
     val clientId = credentials?.clientId
     val token = credentials?.token
     return apply {
