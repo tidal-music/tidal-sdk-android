@@ -22,7 +22,7 @@ import java.io.IOException
  * A [CompositeMediaSource] that fetches Playback info with the help of a [PlaybackInfoLoadable],
  * and then creates a [MediaSource] with the help of a [PlaybackInfoLoadableLoaderCallback].
  */
-@Suppress("LongParameterList")
+@Suppress("LongParameterList", "UnsafeOptInUsageError")
 internal class PlaybackInfoMediaSource(
     val forwardingMediaProduct: ForwardingMediaProduct<MediaProduct>,
     private val loadErrorHandlingPolicy: LoadErrorHandlingPolicy,

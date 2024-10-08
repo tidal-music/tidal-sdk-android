@@ -38,7 +38,7 @@ internal class ErrorHandler(private val errorCodeFactory: ErrorCodeFactory) {
             else -> errorCodeFactory.createForOther(extra)
         }
 
-    @Suppress("ComplexMethod", "LongMethod")
+    @Suppress("ComplexMethod", "LongMethod", "UnsafeOptInUsageError")
     fun getErrorEvent(throwable: Throwable?, productType: ProductType? = null): Event.Error {
         var crawler: Throwable? = throwable
         var errorEvent: Lazy<Event.Error?>? = null
@@ -285,6 +285,7 @@ internal class ErrorHandler(private val errorCodeFactory: ErrorCodeFactory) {
         }
     }
 
+    @Suppress("UnsafeOptInUsageError")
     private fun Int?.toErrorCodeExtra() =
         when (this) {
             ExoPlaybackException.TYPE_SOURCE -> ErrorCodeFactory.Extra.PlayerSourceError

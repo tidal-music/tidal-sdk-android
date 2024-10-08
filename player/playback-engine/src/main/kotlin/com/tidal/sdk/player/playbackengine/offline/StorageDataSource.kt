@@ -20,6 +20,7 @@ import androidx.media3.datasource.TransferListener
  * Note: If we don't set this as upstream, it will use the [DummyDataSource] which just sends a
  * default [IOException], but we want to control this and use our own [StorageException].
  */
+@Suppress("UnsafeOptInUsageError")
 internal class StorageDataSource : DataSource {
 
     class Factory(private val storageDataSource: StorageDataSource) : DataSource.Factory {

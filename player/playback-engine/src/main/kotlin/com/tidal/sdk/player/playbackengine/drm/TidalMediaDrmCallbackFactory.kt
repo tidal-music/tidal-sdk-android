@@ -14,6 +14,7 @@ internal class TidalMediaDrmCallbackFactory(
     private val okHttpClient: OkHttpClient,
 ) {
 
+    @Suppress("UnsafeOptInUsageError")
     fun create(playbackInfo: PlaybackInfo, mode: DrmMode, extras: Map<String, String?>?) =
         TidalMediaDrmCallback(
             streamingApiRepository,

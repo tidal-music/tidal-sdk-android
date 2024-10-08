@@ -5,6 +5,7 @@ import androidx.media3.exoplayer.dash.DashMediaSource
 import androidx.media3.exoplayer.drm.DrmSessionManagerProvider
 import com.tidal.sdk.player.playbackengine.dash.DashManifestFactory
 
+@Suppress("UnsafeOptInUsageError")
 internal class PlayerDashMediaSourceFactory(
     private val dashMediaSourceFactory: DashMediaSource.Factory,
     private val dashManifestFactory: DashManifestFactory,

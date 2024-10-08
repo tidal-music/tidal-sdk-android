@@ -12,7 +12,7 @@ import com.tidal.sdk.player.playbackengine.mediasource.TidalMediaSourceCreator
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
 import java.io.IOException
 
-@Suppress("LongParameterList")
+@Suppress("LongParameterList", "UnsafeOptInUsageError")
 internal class PlaybackInfoLoadableLoaderCallback(
     private val mediaItem: MediaItem,
     private val tidalMediaSourceCreator: TidalMediaSourceCreator,

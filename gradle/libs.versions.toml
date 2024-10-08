@@ -20,7 +20,7 @@ retrofit = "2.11.0"
 room = "2.6.1"
 slf4j-api = "2.0.12"
 tickaroo = "0.8.13"
-tidal-androidx-media = "1.1.1.2"
+tidal-androidx-media = "1.2.1.1"
 plugins-tidal = "unspecified"
 
 [libraries]

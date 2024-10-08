@@ -30,15 +30,18 @@ internal object ExtendedExoPlayerModule {
 
     @Provides
     @Reusable
+    @Suppress("UnsafeOptInUsageError")
     fun trackSelectionFactory(): ExoTrackSelection.Factory = AdaptiveTrackSelection.Factory()
 
     @Provides
     @Reusable
+    @Suppress("UnsafeOptInUsageError")
     fun trackSelector(context: Context, trackSelectionFactory: ExoTrackSelection.Factory):
         TrackSelector = DefaultTrackSelector(context, trackSelectionFactory)
 
     @Provides
     @ExtendedExoPlayerComponent.Scoped
+    @Suppress("UnsafeOptInUsageError")
     fun loadControl(bufferConfiguration: BufferConfiguration): LoadControl =
         bufferConfiguration.run {
             DefaultLoadControl.Builder()
@@ -58,6 +61,7 @@ internal object ExtendedExoPlayerModule {
 
     @Provides
     @ExtendedExoPlayerComponent.Scoped
+    @Suppress("UnsafeOptInUsageError")
     fun priorityTaskManager() = PriorityTaskManager()
 
     @Provides
@@ -69,6 +73,7 @@ internal object ExtendedExoPlayerModule {
 
     @Provides
     @ExtendedExoPlayerComponent.Scoped
+    @Suppress("UnsafeOptInUsageError")
     fun exoPlayer(
         context: Context,
         renderersFactory: RenderersFactory,
@@ -93,6 +98,7 @@ internal object ExtendedExoPlayerModule {
 
     @Provides
     @ExtendedExoPlayerComponent.Scoped
+    @Suppress("UnsafeOptInUsageError")
     fun extendedExoPlayer(
         exoPlayer: ExoPlayer,
         loadControl: LoadControl,

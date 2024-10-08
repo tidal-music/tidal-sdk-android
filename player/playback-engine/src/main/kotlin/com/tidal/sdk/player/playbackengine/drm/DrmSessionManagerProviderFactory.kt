@@ -5,6 +5,7 @@ import androidx.media3.exoplayer.drm.DrmSessionManagerProvider
 
 internal class DrmSessionManagerProviderFactory {
 
+    @Suppress("UnsafeOptInUsageError")
     fun create(drmSessionManager: DrmSessionManager) =
         DrmSessionManagerProvider { drmSessionManager }
 }

@@ -27,6 +27,7 @@ import androidx.media3.datasource.cache.CacheKeyFactory
  * [androidx.media3.datasource.cache.CacheDataSource.Factory], depending on if your
  * content has been cached or offlined.
  */
+@Suppress("UnsafeOptInUsageError")
 class CacheKeyAesCipherDataSourceFactory(
     private val cacheKeyFactory: CacheKeyFactory,
     private val secretKey: ByteArray,

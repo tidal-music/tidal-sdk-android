@@ -6,6 +6,7 @@ import androidx.media3.exoplayer.drm.DrmSessionManagerProvider
 import androidx.media3.exoplayer.hls.HlsMediaSource
 import androidx.media3.exoplayer.source.MediaSource
 
+@Suppress("UnsafeOptInUsageError")
 internal class PlayerAuthHlsMediaSourceFactory(
     private val hlsMediaSourceFactory: HlsMediaSource.Factory,
 ) {

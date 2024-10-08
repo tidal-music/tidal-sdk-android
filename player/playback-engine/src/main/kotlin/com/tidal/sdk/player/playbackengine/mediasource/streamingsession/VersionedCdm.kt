@@ -13,6 +13,7 @@ internal class VersionedCdm private constructor(
     val version: String?,
 ) {
 
+    @Suppress("UnsafeOptInUsageError")
     class Calculator(exoMediaDrmProvider: ExoMediaDrm.Provider) {
 
         private val widevine by lazy(LazyThreadSafetyMode.NONE) {

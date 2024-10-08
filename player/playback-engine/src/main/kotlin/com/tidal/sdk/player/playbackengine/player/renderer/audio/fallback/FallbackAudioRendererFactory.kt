@@ -8,6 +8,7 @@ import androidx.media3.exoplayer.audio.MediaCodecAudioRenderer
 import androidx.media3.exoplayer.mediacodec.MediaCodecSelector
 import com.tidal.sdk.player.playbackengine.player.renderer.audio.AudioRendererFactory
 
+@Suppress("UnsafeOptInUsageError")
 internal class FallbackAudioRendererFactory(
     private val context: Context,
     private val defaultAudioSink: DefaultAudioSink,

@@ -136,10 +136,12 @@ internal object ExoPlayerPlaybackEngineModule {
 
     @Provides
     @Reusable
+    @Suppress("UnsafeOptInUsageError")
     fun exoMediaDrmProvider() = FrameworkMediaDrm.DEFAULT_PROVIDER
 
     @Provides
     @Reusable
+    @Suppress("UnsafeOptInUsageError")
     fun versionedCdmCalculator(exoMediaDrmProvider: ExoMediaDrm.Provider) =
         VersionedCdm.Calculator(exoMediaDrmProvider)
 
@@ -154,11 +156,13 @@ internal object ExoPlayerPlaybackEngineModule {
 
     @Provides
     @Singleton
+    @Suppress("UnsafeOptInUsageError")
     fun provideDatabaseProvider(context: Context): DatabaseProvider =
         StandaloneDatabaseProvider(context)
 
     @Provides
     @Singleton
+    @Suppress("UnsafeOptInUsageError")
     fun cache(
         appSpecificCacheDir: File,
         databaseProvider: DatabaseProvider,

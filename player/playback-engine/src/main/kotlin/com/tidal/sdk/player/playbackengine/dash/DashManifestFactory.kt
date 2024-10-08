@@ -11,6 +11,7 @@ import java.nio.charset.Charset
  * Create ExoPlayer's [DashManifest] from our encoded [String] manifest, decoded with the provided
  * [base64Codec], then parsed with the provided [dashManifestParser].
  */
+@Suppress("UnsafeOptInUsageError")
 internal class DashManifestFactory(
     private val base64Codec: Base64Codec,
     private val dashManifestParser: ParsingLoadable.Parser<DashManifest>,

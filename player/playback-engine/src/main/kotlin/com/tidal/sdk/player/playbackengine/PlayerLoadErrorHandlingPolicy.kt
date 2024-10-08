@@ -17,6 +17,7 @@ private const val MAX_5XX_RETRIES = 3
 private const val MAX_RETRY_INTERVAL_MS = 5_000L
 private const val TOO_MANY_REQUESTS_STATUS = 429
 
+@Suppress("UnsafeOptInUsageError")
 internal class PlayerLoadErrorHandlingPolicy(
     private val loadErrorHandlingPolicy: LoadErrorHandlingPolicy,
 ) : LoadErrorHandlingPolicy by loadErrorHandlingPolicy {

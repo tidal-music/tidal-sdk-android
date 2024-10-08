@@ -10,6 +10,7 @@ import com.tidal.sdk.player.playbackengine.player.renderer.audio.fallback.Fallba
 import com.tidal.sdk.player.playbackengine.player.renderer.audio.flac.LibflacAudioRendererFactory
 import com.tidal.sdk.player.playbackengine.player.renderer.video.MediaCodecVideoRendererFactory
 
+@Suppress("UnsafeOptInUsageError")
 internal class PlayerRenderersFactory(
     private val mediaCodecVideoRendererFactory: MediaCodecVideoRendererFactory,
     private val libflacAudioRendererFactory: LibflacAudioRendererFactory?,

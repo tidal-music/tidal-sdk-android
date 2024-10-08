@@ -20,6 +20,7 @@ import kotlin.properties.Delegates
  * @param[playbackInfoMediaSourceFactory] A [PlaybackInfoMediaSourceFactory] to create
  * [PlaybackInfoMediaSource]s from [ForwardingMediaProduct]s.
  */
+@Suppress("UnsafeOptInUsageError")
 internal class MediaSourcerer(
     private val exoPlayer: ExoPlayer,
     private val playbackInfoMediaSourceFactory: PlaybackInfoMediaSourceFactory,

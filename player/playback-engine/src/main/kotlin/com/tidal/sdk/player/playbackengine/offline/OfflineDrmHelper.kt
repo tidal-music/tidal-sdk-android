@@ -9,6 +9,7 @@ import com.tidal.sdk.player.commonandroid.Base64Codec
  */
 internal class OfflineDrmHelper(private val base64Codec: Base64Codec) {
 
+    @Suppress("UnsafeOptInUsageError")
     fun setOfflineLicense(offlineLicense: String, drmSessionManager: DrmSessionManager) {
         val decodedOfflineLicense = base64Codec.decode(offlineLicense.toByteArray(CHARSET))
         (drmSessionManager as? DefaultDrmSessionManager)?.setMode(

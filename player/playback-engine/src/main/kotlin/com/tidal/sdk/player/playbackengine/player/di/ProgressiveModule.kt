@@ -13,6 +13,7 @@ internal object ProgressiveModule {
 
     @Provides
     @Reusable
+    @Suppress("UnsafeOptInUsageError")
     fun playerProgressiveMediaSourceFactory(
         progressiveMediaSourceFactoryFactory: ProgressiveMediaSourceFactoryFactory,
         cacheDataSourceFactory: CacheDataSource.Factory,

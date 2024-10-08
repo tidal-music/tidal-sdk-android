@@ -7,6 +7,7 @@ import androidx.media3.extractor.mp3.Mp3Extractor
 import androidx.media3.extractor.mp4.FragmentedMp4Extractor
 import androidx.media3.extractor.mp4.Mp4Extractor
 
+@Suppress("UnsafeOptInUsageError")
 internal class TidalExtractorsFactory : ExtractorsFactory {
 
     override fun createExtractors(): Array<Extractor> {

@@ -16,5 +16,6 @@ internal class OfflinePlayDataSourceFactoryHelper(
     offlineCacheProvider: OfflineCacheProvider?,
 ) : OfflineDataSourceFactoryHelper<DataSource.Factory>(offlineCacheProvider) {
 
+    @Suppress("UnsafeOptInUsageError")
     override fun create(cache: Cache) = cacheKeyAesCipherDataSourceFactoryFactory.create(cache)
 }

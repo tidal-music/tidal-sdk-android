@@ -12,6 +12,7 @@ internal class PlayerProgressiveOfflineMediaSourceFactory(
     private val offlineStorageProvider: OfflineStorageProvider?,
 ) {
 
+    @Suppress("UnsafeOptInUsageError")
     fun create(
         mediaItem: MediaItem,
         encodedManifest: String,

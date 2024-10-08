@@ -11,6 +11,7 @@ import com.tidal.sdk.player.playbackengine.offline.cache.OfflineCacheProvider
  * @param[offlineCacheProvider] An instance of [OfflineCacheProvider]. Used to get the correct
  * [Cache] instance.
  */
+@Suppress("UnsafeOptInUsageError")
 internal class OfflinePlayDrmDataSourceFactoryHelper(
     private val cacheDataSourceFactory: CacheDataSource.Factory,
     offlineCacheProvider: OfflineCacheProvider?,

@@ -5,6 +5,7 @@ import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.exoplayer.upstream.LoadErrorHandlingPolicy
 import androidx.media3.extractor.ExtractorsFactory
 
+@Suppress("UnsafeOptInUsageError")
 internal class ProgressiveMediaSourceFactoryFactory(
     private val extractorsFactory: ExtractorsFactory,
     private val loadErrorHandlingPolicy: LoadErrorHandlingPolicy,

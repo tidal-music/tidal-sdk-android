@@ -5,6 +5,7 @@ import androidx.media3.datasource.cache.CacheDataSource
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import com.tidal.sdk.player.playbackengine.bts.BtsManifestFactory
 
+@Suppress("UnsafeOptInUsageError")
 internal class PlayerProgressiveMediaSourceFactory(
     private val progressiveMediaSourceFactoryFactory: ProgressiveMediaSourceFactoryFactory,
     private val cacheDataSourceFactory: CacheDataSource.Factory,

@@ -13,6 +13,7 @@ internal class PlayerDecryptedHeaderProgressiveOfflineMediaSourceFactory(
     private val btsManifestFactory: BtsManifestFactory,
 ) {
 
+    @Suppress("UnsafeOptInUsageError")
     fun create(
         mediaItem: MediaItem,
         encodedManifest: String,

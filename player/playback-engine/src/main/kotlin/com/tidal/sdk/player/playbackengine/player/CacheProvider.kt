@@ -19,5 +19,6 @@ sealed class CacheProvider private constructor() {
      * Use an external [Cache] instead of Player creating one of its own.
      * Reason for using this is to reuse a cache instance that is already in use.
      */
+    @Suppress("UnsafeOptInUsageError")
     data class External(val cache: Cache) : CacheProvider()
 }

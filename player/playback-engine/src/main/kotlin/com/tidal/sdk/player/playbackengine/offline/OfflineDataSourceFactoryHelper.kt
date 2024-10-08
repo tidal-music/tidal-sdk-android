@@ -27,5 +27,6 @@ internal abstract class OfflineDataSourceFactoryHelper<T : DataSource.Factory>(
         internalDataSourceFactory ?: create(offlineCacheProvider!!.getInternal(path))
             .also { internalDataSourceFactory = it }
 
+    @Suppress("UnsafeOptInUsageError")
     abstract fun create(cache: Cache): T
 }

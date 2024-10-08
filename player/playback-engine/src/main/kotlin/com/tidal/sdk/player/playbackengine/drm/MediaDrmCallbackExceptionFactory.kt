@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.media3.datasource.DataSpec
 import androidx.media3.exoplayer.drm.MediaDrmCallbackException
 
+@Suppress("UnsafeOptInUsageError")
 internal class MediaDrmCallbackExceptionFactory {
 
     private val dataSpec = DataSpec.Builder().setUri(Uri.EMPTY).build()

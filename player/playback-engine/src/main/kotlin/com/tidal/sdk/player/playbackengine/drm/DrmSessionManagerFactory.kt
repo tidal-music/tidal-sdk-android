@@ -4,6 +4,7 @@ import androidx.media3.exoplayer.drm.DefaultDrmSessionManager
 import androidx.media3.exoplayer.drm.DrmSessionManager
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
 
+@Suppress("UnsafeOptInUsageError")
 internal class DrmSessionManagerFactory(
     private val defaultDrmSessionManagerBuilder: DefaultDrmSessionManager.Builder,
     private val tidalMediaDrmCallbackFactory: TidalMediaDrmCallbackFactory,

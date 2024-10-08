@@ -7,6 +7,7 @@ import androidx.media3.exoplayer.hls.HlsMediaSource
 import androidx.media3.exoplayer.source.MediaSource
 import com.tidal.sdk.player.playbackengine.emu.EmuManifestFactory
 
+@Suppress("UnsafeOptInUsageError")
 internal class PlayerHlsMediaSourceFactory(
     private val hlsMediaSourceFactory: HlsMediaSource.Factory,
     private val emuManifestFactory: EmuManifestFactory,

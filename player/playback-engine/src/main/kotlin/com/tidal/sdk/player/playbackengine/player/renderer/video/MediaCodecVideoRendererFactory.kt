@@ -9,6 +9,7 @@ import androidx.media3.exoplayer.video.VideoRendererEventListener
 
 internal class MediaCodecVideoRendererFactory(private val context: Context) {
 
+    @Suppress("UnsafeOptInUsageError")
     fun create(
         eventHandler: Handler,
         videoRendererEventListener: VideoRendererEventListener,

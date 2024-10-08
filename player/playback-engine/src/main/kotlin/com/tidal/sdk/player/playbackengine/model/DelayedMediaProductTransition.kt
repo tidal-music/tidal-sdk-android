@@ -9,7 +9,7 @@ import com.tidal.sdk.player.playbackengine.mediasource.streamingsession.Playback
 internal data class DelayedMediaProductTransition(
     val from: PlaybackInfoMediaSource,
     val to: PlaybackInfoMediaSource,
-    val eventTime: EventTime,
+    @Suppress("UnsafeOptInUsageError") val eventTime: EventTime,
     val invokedAtMillis: Long,
     val newPositionSeconds: Double,
 ) {

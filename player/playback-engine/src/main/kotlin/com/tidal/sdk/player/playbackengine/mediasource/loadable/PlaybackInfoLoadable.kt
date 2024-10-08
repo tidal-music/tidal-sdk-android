@@ -18,6 +18,7 @@ import kotlinx.coroutines.runBlocking
 /**
  * A [Loader.Loadable] that loads [PlaybackInfo] with the help of our streaming api.
  */
+@Suppress("UnsafeOptInUsageError")
 internal class PlaybackInfoLoadable(
     private val streamingSession: StreamingSession,
     private val forwardingMediaProduct: ForwardingMediaProduct<MediaProduct>,

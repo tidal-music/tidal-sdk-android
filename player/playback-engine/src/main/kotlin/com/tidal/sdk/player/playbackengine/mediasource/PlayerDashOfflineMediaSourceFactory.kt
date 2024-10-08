@@ -15,6 +15,7 @@ internal class PlayerDashOfflineMediaSourceFactory(
     private val offlineDrmHelper: OfflineDrmHelper?,
 ) {
 
+    @Suppress("UnsafeOptInUsageError")
     fun create(
         mediaItem: MediaItem,
         encodedManifest: String,

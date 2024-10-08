@@ -8,6 +8,7 @@ import androidx.media3.exoplayer.upstream.LoadErrorHandlingPolicy
 import com.tidal.sdk.player.playbackengine.mediasource.TidalMediaSourceCreator
 import java.io.IOException
 
+@Suppress("UnsafeOptInUsageError")
 internal class PlaybackInfoLoadableLoaderCallbackFactory(
     private val tidalMediaSourceCreator: TidalMediaSourceCreator,
     private val loadErrorHandlingPolicy: LoadErrorHandlingPolicy,

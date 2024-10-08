@@ -6,6 +6,7 @@ import androidx.media3.datasource.cache.CacheKeyFactory
 import com.tidal.sdk.player.playbackengine.Encryption
 import com.tidal.sdk.player.playbackengine.offline.crypto.CacheKeyAesCipherDataSourceFactory
 
+@Suppress("UnsafeOptInUsageError")
 internal class CacheKeyAesCipherDataSourceFactoryFactory(
     private val cacheDataSourceFactory: CacheDataSource.Factory,
     private val cacheKeyFactory: CacheKeyFactory,

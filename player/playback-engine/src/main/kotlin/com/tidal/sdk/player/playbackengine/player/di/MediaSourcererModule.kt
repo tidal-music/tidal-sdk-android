@@ -126,19 +126,23 @@ internal object MediaSourcererModule {
 
     @Provides
     @Reusable
+    @Suppress("UnsafeOptInUsageError")
     fun fileDataSourceFactory() = FileDataSource.Factory()
 
     @Provides
     @Reusable
+    @Suppress("UnsafeOptInUsageError")
     fun cacheKeyFactory(): CacheKeyFactory = DefaultCacheKeyFactory()
 
     @Provides
     @Reusable
+    @Suppress("UnsafeOptInUsageError")
     fun cacheDataSinkFactory(playerCache: PlayerCache) =
         CacheDataSink.Factory().setCache(playerCache.cache)
 
     @Provides
     @Reusable
+    @Suppress("UnsafeOptInUsageError")
     fun provideCacheDataSourceFactoryForOnline(
         playerCache: PlayerCache,
         @ExtendedExoPlayerComponent.Local
@@ -158,10 +162,12 @@ internal object MediaSourcererModule {
 
     @Provides
     @Reusable
+    @Suppress("UnsafeOptInUsageError")
     fun extractorsFactory(): ExtractorsFactory = TidalExtractorsFactory()
 
     @Provides
     @Reusable
+    @Suppress("UnsafeOptInUsageError")
     fun progressiveMediaSourceFactoryFactory(
         extractorsFactory: ExtractorsFactory,
         loadErrorHandlingPolicy: LoadErrorHandlingPolicy,
@@ -170,11 +176,13 @@ internal object MediaSourcererModule {
     @Provides
     @Reusable
     @Named("defaultLoadErrorHandlingPolicy")
+    @Suppress("UnsafeOptInUsageError")
     fun loadErrorHandlingPolicy(): LoadErrorHandlingPolicy =
         DefaultLoadErrorHandlingPolicy(MINIMUM_LOADABLE_RETRY_COUNT)
 
     @Provides
     @Reusable
+    @Suppress("UnsafeOptInUsageError")
     internal fun providePlayerLoadErrorHandlingPolicy(
         @Named("defaultLoadErrorHandlingPolicy")
         loadErrorHandlingPolicy: LoadErrorHandlingPolicy,
@@ -182,6 +190,7 @@ internal object MediaSourcererModule {
 
     @Provides
     @Reusable
+    @Suppress("UnsafeOptInUsageError")
     fun dashMediaSourceFactory(
         cacheDataSourceFactoryForOnline: CacheDataSource.Factory,
         loadErrorHandlingPolicy: LoadErrorHandlingPolicy,
@@ -193,6 +202,7 @@ internal object MediaSourcererModule {
     @Provides
     @Reusable
     @ExtendedExoPlayerComponent.Local
+    @Suppress("UnsafeOptInUsageError")
     fun hlsMediaSourceFactory(
         @ExtendedExoPlayerComponent.Local
         okHttpDataSourceFactory: OkHttpDataSource.Factory,
@@ -205,6 +215,7 @@ internal object MediaSourcererModule {
     @Provides
     @Reusable
     @ExtendedExoPlayerComponent.LocalWithAuth
+    @Suppress("UnsafeOptInUsageError")
     fun authHlsMediaSourceFactory(
         @ExtendedExoPlayerComponent.LocalWithAuth
         okHttpDataSourceFactory: OkHttpDataSource.Factory,
@@ -234,6 +245,7 @@ internal object MediaSourcererModule {
     @Provides
     @Reusable
     @Named("cacheDataSourceFactoryForOfflinePlay")
+    @Suppress("UnsafeOptInUsageError")
     fun cacheDataSourceFactory(
         storageDataSourceFactory: StorageDataSource.Factory,
         cacheKeyFactory: CacheKeyFactory,
@@ -244,6 +256,7 @@ internal object MediaSourcererModule {
 
     @Provides
     @Reusable
+    @Suppress("UnsafeOptInUsageError")
     fun cacheKeyAesCipherDataSourceFactoryFactory(
         @Named("cacheDataSourceFactoryForOfflinePlay")
         cacheDataSourceFactory: CacheDataSource.Factory,
@@ -267,6 +280,7 @@ internal object MediaSourcererModule {
 
     @Provides
     @Reusable
+    @Suppress("UnsafeOptInUsageError")
     fun offlinePlayDrmDataSourceFactoryHelper(
         @Named("cacheDataSourceFactoryForOfflinePlay")
         cacheDataSourceFactory: CacheDataSource.Factory,
@@ -300,6 +314,7 @@ internal object MediaSourcererModule {
 
     @Provides
     @Reusable
+    @Suppress("UnsafeOptInUsageError")
     fun decryptedHeaderFileDataSourceFactoryFactory(
         upstream: FileDataSource.Factory,
     ) = DecryptedHeaderFileDataSourceFactoryFactory(upstream)
@@ -320,10 +335,12 @@ internal object MediaSourcererModule {
 
     @Provides
     @Reusable
+    @Suppress("UnsafeOptInUsageError")
     fun dashManifestParser(): ParsingLoadable.Parser<DashManifest> = DashManifestParser()
 
     @Provides
     @Reusable
+    @Suppress("UnsafeOptInUsageError")
     fun dashManifestMapper(
         base64Codec: Base64Codec,
         dashManifestParser: ParsingLoadable.Parser<DashManifest>,
@@ -331,6 +348,7 @@ internal object MediaSourcererModule {
 
     @Provides
     @Reusable
+    @Suppress("UnsafeOptInUsageError")
     fun playerDashMediaSourceFactory(
         dashMediaSourceFactory: DashMediaSource.Factory,
         dashManifestFactory: DashManifestFactory,
@@ -338,6 +356,7 @@ internal object MediaSourcererModule {
 
     @Provides
     @Reusable
+    @Suppress("UnsafeOptInUsageError")
     fun dashMediaSourceFactoryFactory(
         loadErrorHandlingPolicy: LoadErrorHandlingPolicy,
     ) = DashMediaSourceFactoryFactory(loadErrorHandlingPolicy)
@@ -369,6 +388,7 @@ internal object MediaSourcererModule {
 
     @Provides
     @Reusable
+    @Suppress("UnsafeOptInUsageError")
     fun playerHlsMediaSourceFactory(
         @ExtendedExoPlayerComponent.Local
         hlsMediaSourceFactory: HlsMediaSource.Factory,
@@ -377,6 +397,7 @@ internal object MediaSourcererModule {
 
     @Provides
     @Reusable
+    @Suppress("UnsafeOptInUsageError")
     fun playerAuthHlsMediaSourceFactory(
         @ExtendedExoPlayerComponent.LocalWithAuth
         hlsMediaSourceFactory: HlsMediaSource.Factory,
@@ -384,6 +405,7 @@ internal object MediaSourcererModule {
 
     @Provides
     @Reusable
+    @Suppress("UnsafeOptInUsageError")
     fun defaultDrmSessionManagerBuilder(
         loadErrorHandlingPolicy: LoadErrorHandlingPolicy,
     ) = DefaultDrmSessionManager.Builder()
@@ -439,6 +461,7 @@ internal object MediaSourcererModule {
 
     @Provides
     @Reusable
+    @Suppress("UnsafeOptInUsageError")
     fun drmSessionManagerFactory(
         defaultDrmSessionManagerBuilder: DefaultDrmSessionManager.Builder,
         tidalMediaDrmCallbackFactory: TidalMediaDrmCallbackFactory,
@@ -491,6 +514,7 @@ internal object MediaSourcererModule {
 
     @Provides
     @Reusable
+    @Suppress("UnsafeOptInUsageError")
     fun playbackInfoLoadableLoaderCallbackFactory(
         tidalMediaSourceCreator: TidalMediaSourceCreator,
         loadErrorHandlingPolicy: LoadErrorHandlingPolicy,
@@ -499,7 +523,7 @@ internal object MediaSourcererModule {
     @Provides
     @Reusable
     fun playbackInfoMediaSourceFactory(
-        loadErrorHandlingPolicy: LoadErrorHandlingPolicy,
+        @Suppress("UnsafeOptInUsageError") loadErrorHandlingPolicy: LoadErrorHandlingPolicy,
         playbackInfoLoadableFactory: PlaybackInfoLoadableFactory,
         playbackInfoLoadableLoaderCallbackFactory: PlaybackInfoLoadableLoaderCallbackFactory,
     ) = PlaybackInfoMediaSourceFactory(

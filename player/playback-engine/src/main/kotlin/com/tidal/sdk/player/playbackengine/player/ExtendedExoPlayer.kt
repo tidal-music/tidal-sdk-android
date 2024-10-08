@@ -23,7 +23,7 @@ import kotlin.properties.Delegates
  */
 internal class ExtendedExoPlayer(
     private val delegate: ExoPlayer,
-    private val loadControl: LoadControl,
+    @Suppress("UnsafeOptInUsageError") private val loadControl: LoadControl,
     private val mediaSourcerer: MediaSourcerer,
     private val extendedExoPlayerState: ExtendedExoPlayerState,
 ) : ExoPlayer by delegate {
@@ -62,6 +62,7 @@ internal class ExtendedExoPlayer(
     fun setNext(forwardingMediaProduct: ForwardingMediaProduct<MediaProduct>?) =
         mediaSourcerer.setNext(forwardingMediaProduct)
 
+    @Suppress("UnsafeOptInUsageError")
     fun shouldStartPlaybackAfterUserAction() = loadControl.shouldStartPlayback(
         C.msToUs(delegate.totalBufferedDuration),
         delegate.playbackParameters.speed,

@@ -4,6 +4,7 @@ import androidx.media3.datasource.DataSource
 import androidx.media3.exoplayer.dash.DashMediaSource
 import androidx.media3.exoplayer.upstream.LoadErrorHandlingPolicy
 
+@Suppress("UnsafeOptInUsageError")
 internal class DashMediaSourceFactoryFactory(
     private val loadErrorHandlingPolicy: LoadErrorHandlingPolicy,
 ) {

@@ -7,6 +7,7 @@ import androidx.media3.datasource.cache.Cache
  * within. This is important because we should not e.g. release something that is provided from
  * the outside, because it might be in use in other places and will thus create problems.
  */
+@Suppress("UnsafeOptInUsageError")
 internal sealed class PlayerCache private constructor(val cache: Cache) {
 
     class Provided(cache: Cache) : PlayerCache(cache)

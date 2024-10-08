@@ -36,10 +36,12 @@ internal object RendererModule {
 
     @Provides
     @Reusable
+    @Suppress("UnsafeOptInUsageError")
     fun audioCapabilities(context: Context) = AudioCapabilities.getCapabilities(context)
 
     @Provides
     @Reusable
+    @Suppress("UnsafeOptInUsageError")
     fun defaultAudioTrackBufferSizeProvider(
         bufferConfiguration: BufferConfiguration,
     ) = DefaultAudioTrackBufferSizeProvider.Builder()
@@ -57,6 +59,7 @@ internal object RendererModule {
 
     @Provides
     @ExtendedExoPlayerComponent.Scoped
+    @Suppress("UnsafeOptInUsageError")
     fun defaultAudioSink(
         audioCapabilities: AudioCapabilities,
         audioProcessors: Array<AudioProcessor>,
@@ -69,12 +72,13 @@ internal object RendererModule {
 
     @Provides
     @Reusable
+    @Suppress("UnsafeOptInUsageError")
     fun fallbackAudioRendererFactory(context: Context, defaultAudioSink: DefaultAudioSink) =
         FallbackAudioRendererFactory(context, defaultAudioSink)
 
     @Provides
     @Reusable
-    @Suppress("SpreadOperator")
+    @Suppress("SpreadOperator", "UnsafeOptInUsageError")
     fun renderersFactory(
         mediaCodecVideoRendererFactory: MediaCodecVideoRendererFactory,
         libflacAudioRendererFactory: LibflacAudioRendererFactory?,

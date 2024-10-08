@@ -16,6 +16,7 @@ import androidx.media3.datasource.cache.CacheKeyFactory
  * for caching or offlining this piece of content.
  * @param[aesCipherDataSource] An instance of [AesCipherDataSource].
  */
+@Suppress("UnsafeOptInUsageError")
 internal class CacheKeyAesCipherDataSource(
     private val cacheKeyFactory: CacheKeyFactory,
     private val aesCipherDataSource: AesCipherDataSource,

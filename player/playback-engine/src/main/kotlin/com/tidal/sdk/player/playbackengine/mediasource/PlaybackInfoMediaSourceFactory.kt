@@ -14,9 +14,11 @@ import com.tidal.sdk.player.playbackengine.mediasource.loadable.PlaybackInfoLoad
 import com.tidal.sdk.player.playbackengine.mediasource.loadable.PlaybackInfoLoadableLoaderCallbackFactory
 import com.tidal.sdk.player.playbackengine.mediasource.streamingsession.StreamingSession
 
+@Suppress("UnsafeOptInUsageError")
 private const val DATA_TYPE = C.DATA_TYPE_MANIFEST
 private const val LOADER_THREAD_NAME_SUFFIX = "PlaybackInfoMediaSource"
 
+@Suppress("UnsafeOptInUsageError")
 internal class PlaybackInfoMediaSourceFactory(
     private val loadErrorHandlingPolicy: LoadErrorHandlingPolicy,
     private val playbackInfoLoadableFactory: PlaybackInfoLoadableFactory,

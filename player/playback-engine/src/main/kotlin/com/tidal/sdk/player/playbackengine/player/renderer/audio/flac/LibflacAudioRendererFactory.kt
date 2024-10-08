@@ -7,6 +7,7 @@ import com.tidal.sdk.player.playbackengine.player.renderer.audio.AudioRendererFa
 
 internal class LibflacAudioRendererFactory : AudioRendererFactory {
 
+    @Suppress("UnsafeOptInUsageError")
     override fun create(
         eventHandler: Handler,
         audioRendererEventListener: AudioRendererEventListener,

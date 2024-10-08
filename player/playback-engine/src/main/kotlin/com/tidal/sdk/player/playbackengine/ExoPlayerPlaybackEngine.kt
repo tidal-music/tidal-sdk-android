@@ -76,7 +76,7 @@ private const val MS_IN_SECOND = 1000L
 /**
  * The default implementation of [PlaybackEngine] that will use ExoPlayer to play media.
  */
-@Suppress("TooManyFunctions", "LargeClass", "LongParameterList")
+@Suppress("TooManyFunctions", "LargeClass", "LongParameterList", "UnsafeOptInUsageError")
 internal class ExoPlayerPlaybackEngine(
     private val coroutineScope: CoroutineScope,
     private val extendedExoPlayerFactory: ExtendedExoPlayerFactory,

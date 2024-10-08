@@ -5,6 +5,7 @@ import androidx.media3.datasource.DataSource
 import androidx.media3.datasource.DataSpec
 import kotlin.math.max
 
+@Suppress("UnsafeOptInUsageError")
 internal class DecryptedHeaderFileDataSource(
     private val decryptedHeader: ByteArray,
     private val upstream: DataSource,

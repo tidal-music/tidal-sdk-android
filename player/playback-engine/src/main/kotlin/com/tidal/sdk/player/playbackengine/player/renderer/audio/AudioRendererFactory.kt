@@ -6,6 +6,7 @@ import androidx.media3.exoplayer.audio.AudioRendererEventListener
 
 interface AudioRendererFactory {
 
+    @Suppress("UnsafeOptInUsageError")
     fun create(
         eventHandler: Handler,
         audioRendererEventListener: AudioRendererEventListener,

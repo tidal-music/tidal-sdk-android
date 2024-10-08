@@ -26,7 +26,7 @@ import okhttp3.RequestBody
  * @param[provisionRequestBody] The [RequestBody] to be used as body for the provisioning post
  * request.
  */
-@Suppress("LongParameterList")
+@Suppress("LongParameterList", "UnsafeOptInUsageError")
 internal class TidalMediaDrmCallback(
     private val streamingApiRepository: StreamingApiRepository,
     private val base64Codec: Base64Codec,
