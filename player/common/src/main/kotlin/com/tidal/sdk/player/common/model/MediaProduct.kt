@@ -1,5 +1,7 @@
 package com.tidal.sdk.player.common.model
 
+import com.tidal.sdk.player.common.model.BaseMediaProduct.Extras
+
 /**
  * A media product. The [productType] and the [productId] together determine what media product
  * this is. Source information is only used as extra information used for tracking purposes
@@ -17,6 +19,6 @@ data class MediaProduct(
     override val productId: String,
     override val sourceType: String? = null,
     override val sourceId: String? = null,
-    override val extras: Map<String, String?>? = null,
+    override val extras: Extras? = null,
     val referenceId: String? = null,
 ) : BaseMediaProduct

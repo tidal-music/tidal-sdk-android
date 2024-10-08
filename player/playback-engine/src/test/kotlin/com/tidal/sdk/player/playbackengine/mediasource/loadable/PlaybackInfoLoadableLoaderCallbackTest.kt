@@ -49,7 +49,7 @@ internal class PlaybackInfoLoadableLoaderCallbackTest {
         loadEventInfoF,
         loadErrorInfoF,
         prepareChildSourceF,
-        emptyMap(),
+        null,
     )
 
     @Test
@@ -60,7 +60,7 @@ internal class PlaybackInfoLoadableLoaderCallbackTest {
         val loadDurationMs = 2000L
 
         whenever(loadable.playbackInfo).thenReturn(playbackInfo)
-        whenever(tidalMediaSourceCreator(mediaItem, playbackInfo, emptyMap())).thenReturn(
+        whenever(tidalMediaSourceCreator(mediaItem, playbackInfo, null)).thenReturn(
             mediaSource,
         )
 

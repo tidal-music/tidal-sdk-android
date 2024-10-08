@@ -52,7 +52,7 @@ internal class UndeterminedPlaybackSessionResolverTest {
         val versionedCdm = mock<VersionedCdm>()
         whenever(versionedCdmCalculator(playbackInfo)) doReturn versionedCdm
 
-        val actual = undeterminedPlaybackSessionResolver(undetermined, playbackInfo, emptyMap())
+        val actual = undeterminedPlaybackSessionResolver(undetermined, playbackInfo, null)
 
         verify(undetermined).streamingSessionId
         verify(undetermined).idealStartTimestampMs
@@ -73,7 +73,7 @@ internal class UndeterminedPlaybackSessionResolverTest {
                 adaptations,
                 actualAudioMode = audioMode,
                 MediaStorage.INTERNET,
-                emptyMap(),
+                null,
             ),
         )
         verifyNoMoreInteractions(
@@ -111,7 +111,7 @@ internal class UndeterminedPlaybackSessionResolverTest {
         val versionedCdm = mock<VersionedCdm>()
         whenever(versionedCdmCalculator(playbackInfo)) doReturn versionedCdm
 
-        val actual = undeterminedPlaybackSessionResolver(undetermined, playbackInfo, emptyMap())
+        val actual = undeterminedPlaybackSessionResolver(undetermined, playbackInfo, null)
 
         verify(undetermined).streamingSessionId
         verify(undetermined).idealStartTimestampMs
@@ -132,7 +132,7 @@ internal class UndeterminedPlaybackSessionResolverTest {
                 adaptations,
                 actualStreamType = streamType,
                 MediaStorage.INTERNET,
-                emptyMap(),
+                null,
             ),
         )
         verifyNoMoreInteractions(
@@ -166,7 +166,7 @@ internal class UndeterminedPlaybackSessionResolverTest {
         val versionedCdm = mock<VersionedCdm>()
         whenever(versionedCdmCalculator(playbackInfo)) doReturn versionedCdm
 
-        val actual = undeterminedPlaybackSessionResolver(undetermined, playbackInfo, emptyMap())
+        val actual = undeterminedPlaybackSessionResolver(undetermined, playbackInfo, null)
 
         verify(undetermined).streamingSessionId
         verify(undetermined).idealStartTimestampMs
@@ -183,7 +183,7 @@ internal class UndeterminedPlaybackSessionResolverTest {
                 audioQuality,
                 adaptations,
                 MediaStorage.INTERNET,
-                emptyMap(),
+                null,
             ),
         )
         verifyNoMoreInteractions(
@@ -213,7 +213,7 @@ internal class UndeterminedPlaybackSessionResolverTest {
         val versionedCdm = mock<VersionedCdm>()
         whenever(versionedCdmCalculator(playbackInfo)) doReturn versionedCdm
 
-        val actual = undeterminedPlaybackSessionResolver(undetermined, playbackInfo, emptyMap())
+        val actual = undeterminedPlaybackSessionResolver(undetermined, playbackInfo, null)
 
         verify(undetermined).streamingSessionId
         verify(undetermined).idealStartTimestampMs
@@ -228,7 +228,7 @@ internal class UndeterminedPlaybackSessionResolverTest {
                 versionedCdm,
                 adaptations,
                 MediaStorage.INTERNET,
-                emptyMap(),
+                null,
             ),
         )
         verifyNoMoreInteractions(
@@ -268,7 +268,7 @@ internal class UndeterminedPlaybackSessionResolverTest {
         whenever(versionedCdmCalculator(playbackInfoOfflineTrack)) doReturn versionedCdm
 
         val actual =
-            undeterminedPlaybackSessionResolver(undetermined, playbackInfoOfflineTrack, emptyMap())
+            undeterminedPlaybackSessionResolver(undetermined, playbackInfoOfflineTrack, null)
 
         verify(undetermined).streamingSessionId
         verify(undetermined).idealStartTimestampMs
@@ -291,7 +291,7 @@ internal class UndeterminedPlaybackSessionResolverTest {
                 adaptations,
                 actualAudioMode = audioMode,
                 MediaStorage.DEVICE_INTERNAL,
-                emptyMap(),
+                null,
             ),
         )
         verifyNoMoreInteractions(
@@ -334,7 +334,7 @@ internal class UndeterminedPlaybackSessionResolverTest {
         whenever(versionedCdmCalculator(playbackInfoOfflineVideo)) doReturn versionedCdm
 
         val actual =
-            undeterminedPlaybackSessionResolver(undetermined, playbackInfoOfflineVideo, emptyMap())
+            undeterminedPlaybackSessionResolver(undetermined, playbackInfoOfflineVideo, null)
 
         verify(undetermined).streamingSessionId
         verify(undetermined).idealStartTimestampMs
@@ -356,7 +356,7 @@ internal class UndeterminedPlaybackSessionResolverTest {
                 adaptations,
                 actualStreamType = streamType,
                 MediaStorage.DEVICE_INTERNAL,
-                emptyMap(),
+                null,
             ),
         )
         verifyNoMoreInteractions(

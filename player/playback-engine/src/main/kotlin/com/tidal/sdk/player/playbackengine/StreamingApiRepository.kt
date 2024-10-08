@@ -3,6 +3,7 @@ package com.tidal.sdk.player.playbackengine
 import androidx.media3.exoplayer.drm.MediaDrmCallbackException
 import com.tidal.sdk.player.common.ForwardingMediaProduct
 import com.tidal.sdk.player.common.model.AudioQuality
+import com.tidal.sdk.player.common.model.BaseMediaProduct
 import com.tidal.sdk.player.common.model.ProductType
 import com.tidal.sdk.player.common.model.VideoQuality
 import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
@@ -56,7 +57,7 @@ internal class StreamingApiRepository(
     @SuppressWarnings("TooGenericExceptionCaught") // We rethrow it, so no issue
     suspend fun getDrmLicense(
         drmLicenseRequest: DrmLicenseRequest,
-        extras: Map<String, String?>?,
+        extras: BaseMediaProduct.Extras?,
     ): DrmLicense {
         val startTimestamp = trueTimeWrapper.currentTimeMillis
         var errorMessage: String? = null

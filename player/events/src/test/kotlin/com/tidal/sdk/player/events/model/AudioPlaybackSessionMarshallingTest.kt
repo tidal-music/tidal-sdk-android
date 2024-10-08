@@ -38,6 +38,6 @@ internal class AudioPlaybackSessionMarshallingTest : PlaybackSessionMarshallingT
         user,
         client,
         payload,
-        emptyMap(),
+        null,
     )
 }

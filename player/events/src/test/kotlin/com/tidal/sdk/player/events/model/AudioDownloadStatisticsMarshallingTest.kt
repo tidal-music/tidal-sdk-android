@@ -29,6 +29,6 @@ internal class AudioDownloadStatisticsMarshallingTest : DownloadStatisticsMarsha
         user,
         client,
         payload,
-        emptyMap(),
+        null,
     )
 }

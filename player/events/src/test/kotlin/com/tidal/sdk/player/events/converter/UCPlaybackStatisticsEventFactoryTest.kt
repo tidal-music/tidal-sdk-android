@@ -63,11 +63,11 @@ internal class UCPlaybackStatisticsEventFactoryTest {
                 user,
                 client,
                 payload,
-                emptyMap(),
+                null,
             ),
         ).thenReturn(expected)
 
-        val actual = ucPlaybackStatisticsEventFactory(payload, emptyMap())
+        val actual = ucPlaybackStatisticsEventFactory(payload, null)
 
         verify(trueTimeWrapper).currentTimeMillis
         verify(uuidWrapper).randomUUID
@@ -79,7 +79,7 @@ internal class UCPlaybackStatisticsEventFactoryTest {
             user,
             client,
             payload,
-            emptyMap(),
+            null,
         )
         assertThat(actual).isSameAs(expected)
         verifyNoMoreInteractions(randomUUID, user, client, payload, expected)

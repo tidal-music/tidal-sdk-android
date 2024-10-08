@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName
 import com.tidal.sdk.player.common.model.AssetPresentation
 import com.tidal.sdk.player.common.model.AudioMode
 import com.tidal.sdk.player.common.model.AudioQuality
+import com.tidal.sdk.player.common.model.BaseMediaProduct.Extras
 import com.tidal.sdk.player.common.model.ProductType
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -18,7 +19,7 @@ data class BroadcastPlaybackSession @AssistedInject internal constructor(
     @Assisted override val user: User,
     @Assisted override val client: Client,
     @Assisted override val payload: Payload,
-    @Assisted override val extras: Map<String, String?>?,
+    @Assisted override val extras: Extras?,
 ) : PlaybackSession<BroadcastPlaybackSession.Payload>() {
 
     @Keep
@@ -54,7 +55,7 @@ data class BroadcastPlaybackSession @AssistedInject internal constructor(
             user: User,
             client: Client,
             payload: Payload,
-            extras: Map<String, String?>?,
+            extras: Extras?,
         ): BroadcastPlaybackSession
     }
 }

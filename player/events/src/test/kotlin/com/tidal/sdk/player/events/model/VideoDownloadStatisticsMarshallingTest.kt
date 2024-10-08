@@ -29,6 +29,6 @@ internal class VideoDownloadStatisticsMarshallingTest : DownloadStatisticsMarsha
         user,
         client,
         payload,
-        emptyMap(),
+        null,
     )
 }

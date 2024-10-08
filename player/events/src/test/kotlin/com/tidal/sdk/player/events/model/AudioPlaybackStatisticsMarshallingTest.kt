@@ -43,6 +43,6 @@ internal class AudioPlaybackStatisticsMarshallingTest : PlaybackStatisticsMarsha
         user,
         client,
         payload,
-        emptyMap(),
+        null,
     )
 }

@@ -72,7 +72,7 @@ internal class StreamingApiRepositoryTest {
         whenever(trueTimeWrapper.currentTimeMillis).thenReturn(startTimestamp, endTimestamp)
         whenever(streamingApi.getDrmLicense(drmLicenseRequest)).thenReturn(expectedDrmLicense)
 
-        val actual = streamingApiRepository.getDrmLicense(drmLicenseRequest, emptyMap())
+        val actual = streamingApiRepository.getDrmLicense(drmLicenseRequest, null)
 
         assertThat(actual).isSameAs(expectedDrmLicense)
         verify(eventReporter).report(
@@ -84,7 +84,7 @@ internal class StreamingApiRepositoryTest {
                 null,
                 null,
             ),
-            emptyMap(),
+            null,
         )
     }
 
@@ -113,7 +113,7 @@ internal class StreamingApiRepositoryTest {
             ),
         ).thenReturn(errorCode)
 
-        assertFailure { streamingApiRepository.getDrmLicense(drmLicenseRequest, emptyMap()) }
+        assertFailure { streamingApiRepository.getDrmLicense(drmLicenseRequest, null) }
             .isSameAs(mediaDrmCallbackException)
 
         verify(eventReporter).report(
@@ -125,7 +125,7 @@ internal class StreamingApiRepositoryTest {
                 errorMessage,
                 errorCode,
             ),
-            emptyMap()
+            null
         )
     }
 
@@ -213,7 +213,7 @@ internal class StreamingApiRepositoryTest {
                     null,
                     null,
                 ),
-                emptyMap(),
+                null,
             )
             when (productType) {
                 ProductType.TRACK, ProductType.BROADCAST -> {
@@ -330,7 +330,7 @@ internal class StreamingApiRepositoryTest {
                     errorMessage,
                     errorCode,
                 ),
-                emptyMap(),
+                null,
             )
         }
 }

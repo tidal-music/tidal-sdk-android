@@ -61,11 +61,11 @@ internal class VideoDownloadStatisticsEventFactoryTest {
                 user,
                 client,
                 src,
-                emptyMap(),
+                null,
             ),
         ).thenReturn(expected)
 
-        val actual = videoDownloadStatisticsEventFactory(src, emptyMap())
+        val actual = videoDownloadStatisticsEventFactory(src, null)
 
         verify(trueTimeWrapper).currentTimeMillis
         verify(uuidWrapper).randomUUID
@@ -77,7 +77,7 @@ internal class VideoDownloadStatisticsEventFactoryTest {
             user,
             client,
             src,
-            emptyMap(),
+            null,
         )
         assertThat(actual).isSameAs(expected)
         verifyNoMoreInteractions(randomUUID, user, client, src, expected)

@@ -12,6 +12,7 @@ import androidx.media3.exoplayer.upstream.LoadErrorHandlingPolicy
 import androidx.media3.exoplayer.upstream.LoadErrorHandlingPolicy.LoadErrorInfo
 import androidx.media3.exoplayer.upstream.Loader
 import com.tidal.sdk.player.common.ForwardingMediaProduct
+import com.tidal.sdk.player.common.model.BaseMediaProduct
 import com.tidal.sdk.player.common.model.MediaProduct
 import com.tidal.sdk.player.playbackengine.mediasource.loadable.PlaybackInfoLoadable
 import com.tidal.sdk.player.playbackengine.mediasource.loadable.PlaybackInfoLoadableLoaderCallbackFactory
@@ -34,7 +35,7 @@ internal class PlaybackInfoMediaSource(
     LoadErrorInfo,
     private val loader: Loader,
     private val loaderCallbackFactory: PlaybackInfoLoadableLoaderCallbackFactory,
-    private val extras: Map<String, String?>?,
+    private val extras: BaseMediaProduct.Extras?,
 ) : CompositeMediaSource<Void>() {
 
     val playbackInfo: PlaybackInfo? by loadable::playbackInfo

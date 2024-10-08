@@ -1,6 +1,7 @@
 package com.tidal.sdk.player.events.model
 
 import androidx.annotation.Keep
+import com.tidal.sdk.player.common.model.BaseMediaProduct.Extras
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -14,7 +15,7 @@ data class DrmLicenseFetch @AssistedInject internal constructor(
     @Assisted override val user: User,
     @Assisted override val client: Client,
     @Assisted override val payload: Payload,
-    @Assisted override val extras: Map<String, String?>?,
+    @Assisted override val extras: Extras?,
 ) : StreamingMetrics<DrmLicenseFetch.Payload>("drm_license_fetch") {
 
     @Keep
@@ -37,7 +38,7 @@ data class DrmLicenseFetch @AssistedInject internal constructor(
             user: User,
             client: Client,
             payload: Payload,
-            extras: Map<String, String?>?,
+            extras: Extras?,
         ): DrmLicenseFetch
     }
 }

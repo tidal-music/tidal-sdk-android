@@ -2,10 +2,13 @@ package com.tidal.sdk.player.di
 
 import android.content.Context
 import android.net.ConnectivityManager
+import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.tidal.sdk.player.common.UUIDWrapper
+import com.tidal.sdk.player.common.model.BaseMediaProduct
 import com.tidal.sdk.player.commonandroid.Base64Codec
 import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
+import com.tidal.sdk.player.serialization.ExtrasSerializationAdapter
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
@@ -20,7 +23,15 @@ internal object PlayerModule {
 
     @Provides
     @Reusable
-    fun gson() = GsonBuilder().disableHtmlEscaping().create()
+    fun gson(): Gson {
+        return GsonBuilder()
+            .registerTypeHierarchyAdapter(
+                BaseMediaProduct.Extras::class.java,
+                ExtrasSerializationAdapter(),
+            )
+            .disableHtmlEscaping()
+            .create()
+    }
 
     @Provides
     @Reusable

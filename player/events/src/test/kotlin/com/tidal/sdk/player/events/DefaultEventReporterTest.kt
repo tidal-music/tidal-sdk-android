@@ -44,16 +44,16 @@ internal class DefaultEventReporterTest {
         whenever(gson.toJson(event)) doReturn jsonString
         val payload = mock<AudioPlaybackSession.Payload>()
         val eventFactory = mock<EventFactory<Event.Payload>> {
-            on { runBlocking { invoke(payload, emptyMap()) } } doReturn event
+            on { runBlocking { invoke(payload, null) } } doReturn event
         }
         whenever(eventFactories[payload::class.java]) doReturn eventFactory
 
-        defaultEventReporter.report(payload, emptyMap())
+        defaultEventReporter.report(payload, null)
 
         coroutineScope.testScheduler.advanceUntilIdle()
 
         verify(eventFactories)[payload::class.java]
-        verify(eventFactory)(payload, emptyMap())
+        verify(eventFactory)(payload, null)
         verify(event).name
         verify(event).consentCategory
         verify(gson).toJson(event)

@@ -61,11 +61,11 @@ internal class AudioPlaybackStatisticsEventFactoryTest {
                 user,
                 client,
                 payload,
-                emptyMap(),
+                null,
             ),
         ).thenReturn(expected)
 
-        val actual = audioPlaybackStatisticsEventFactory(payload, emptyMap())
+        val actual = audioPlaybackStatisticsEventFactory(payload, null)
 
         verify(trueTimeWrapper).currentTimeMillis
         verify(uuidWrapper).randomUUID
@@ -77,7 +77,7 @@ internal class AudioPlaybackStatisticsEventFactoryTest {
             user,
             client,
             payload,
-            emptyMap(),
+            null,
         )
         assertThat(actual).isSameAs(expected)
         verifyNoMoreInteractions(randomUUID, user, client, payload, expected)

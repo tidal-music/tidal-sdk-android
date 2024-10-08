@@ -3,6 +3,7 @@ package com.tidal.sdk.player.playbackengine.mediasource.streamingsession
 import com.tidal.sdk.player.common.Configuration
 import com.tidal.sdk.player.common.ForwardingMediaProduct
 import com.tidal.sdk.player.common.UUIDWrapper
+import com.tidal.sdk.player.common.model.BaseMediaProduct.Extras
 import com.tidal.sdk.player.common.model.ProductType
 import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
 import com.tidal.sdk.player.events.EventReporter
@@ -15,12 +16,12 @@ import java.util.UUID
 internal sealed class StreamingSession private constructor(
     val id: UUID,
     val configuration: Configuration,
-    val extras: Map<String, String?>?,
+    val extras: Extras?,
 ) {
 
     fun createUndeterminedPlaybackStatistics(
         idealStartTimestampMs: PlaybackStatistics.IdealStartTimestampMs,
-        extras: Map<String, String?>?,
+        extras: Extras?,
     ) = PlaybackStatistics.Undetermined(id, idealStartTimestampMs, emptyList(), extras)
 
     @Suppress("LongMethod")
@@ -94,10 +95,10 @@ internal sealed class StreamingSession private constructor(
         )
     }
 
-    class Explicit(id: UUID, configuration: Configuration, extras: Map<String, String?>?) :
+    class Explicit(id: UUID, configuration: Configuration, extras: Extras?) :
         StreamingSession(id, configuration, extras)
 
-    class Implicit(id: UUID, configuration: Configuration, extras: Map<String, String?>?) :
+    class Implicit(id: UUID, configuration: Configuration, extras: Extras?) :
         StreamingSession(id, configuration, extras)
 
     sealed class Creator<T : Factory> private constructor(
@@ -111,7 +112,7 @@ internal sealed class StreamingSession private constructor(
         fun createAndReportStart(
             sessionProductType: ProductType,
             sessionProductId: String,
-            extras: Map<String, String?>?,
+            extras: Extras?,
         ) = factory.create(extras).also {
             eventReporter.report(
                 StreamingSessionStart.Payload(
@@ -150,12 +151,12 @@ internal sealed class StreamingSession private constructor(
         protected val configuration: Configuration,
     ) {
 
-        abstract fun create(extras: Map<String, String?>?): StreamingSession
+        abstract fun create(extras: Extras?): StreamingSession
 
         class Explicit(uuidWrapper: UUIDWrapper, configuration: Configuration) :
             Factory(uuidWrapper, configuration) {
 
-            override fun create(extras: Map<String, String?>?): StreamingSession = Explicit(
+            override fun create(extras: Extras?): StreamingSession = Explicit(
                 uuidWrapper.randomUUID,
                 configuration,
                 extras,
@@ -165,7 +166,7 @@ internal sealed class StreamingSession private constructor(
         class Implicit(uuidWrapper: UUIDWrapper, configuration: Configuration) :
             Factory(uuidWrapper, configuration) {
 
-            override fun create(extras: Map<String, String?>?): StreamingSession = Implicit(
+            override fun create(extras: Extras?): StreamingSession = Implicit(
                 uuidWrapper.randomUUID,
                 configuration,
                 extras

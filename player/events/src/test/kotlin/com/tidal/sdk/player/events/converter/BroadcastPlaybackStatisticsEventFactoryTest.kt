@@ -63,11 +63,11 @@ internal class BroadcastPlaybackStatisticsEventFactoryTest {
                 user,
                 client,
                 payload,
-                emptyMap(),
+                null,
             ),
         ).thenReturn(expected)
 
-        val actual = broadcastPlaybackStatisticsEventFactory(payload, emptyMap())
+        val actual = broadcastPlaybackStatisticsEventFactory(payload, null)
 
         verify(trueTimeWrapper).currentTimeMillis
         verify(uuidWrapper).randomUUID
@@ -79,7 +79,7 @@ internal class BroadcastPlaybackStatisticsEventFactoryTest {
             user,
             client,
             payload,
-            emptyMap(),
+            null,
         )
         assertThat(actual).isSameAs(expected)
         verifyNoMoreInteractions(randomUUID, user, client, payload, expected)

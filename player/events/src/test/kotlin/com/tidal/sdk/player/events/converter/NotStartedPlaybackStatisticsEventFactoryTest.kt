@@ -61,11 +61,11 @@ internal class NotStartedPlaybackStatisticsEventFactoryTest {
                 user,
                 client,
                 payload,
-                emptyMap(),
+                null,
             ),
         ).thenReturn(expected)
 
-        val actual = notStartedPlaybackStatisticsEventFactory(payload, emptyMap())
+        val actual = notStartedPlaybackStatisticsEventFactory(payload, null)
 
         verify(trueTimeWrapper).currentTimeMillis
         verify(uuidWrapper).randomUUID
@@ -77,7 +77,7 @@ internal class NotStartedPlaybackStatisticsEventFactoryTest {
             user,
             client,
             payload,
-            emptyMap(),
+            null,
         )
         assertThat(actual).isSameAs(expected)
         verifyNoMoreInteractions(randomUUID, user, client, payload, expected)

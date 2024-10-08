@@ -35,7 +35,7 @@ internal class StreamingSessionStartMarshallingTest {
         user,
         client,
         decoratedPayload,
-        emptyMap(),
+        null,
     )
     private val gson = Gson()
 

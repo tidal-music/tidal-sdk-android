@@ -2,6 +2,7 @@ package com.tidal.sdk.player.events
 
 import com.google.gson.Gson
 import com.tidal.sdk.eventproducer.EventSender
+import com.tidal.sdk.player.common.model.BaseMediaProduct.Extras
 import com.tidal.sdk.player.events.converter.EventFactory
 import com.tidal.sdk.player.events.model.Event
 import kotlinx.coroutines.CoroutineScope
@@ -27,7 +28,7 @@ internal class DefaultEventReporter(
      * Can be used to report events inheriting from [Event.Payload]. Extra event information not
      * defined in the payload type will be filled in automatically.
      */
-    override fun <T : Event.Payload> report(payload: T, extras: Map<String, String?>?) {
+    override fun <T : Event.Payload> report(payload: T, extras: Extras?) {
         @Suppress("UNCHECKED_CAST")
         val eventFactory = eventFactories[payload::class.java]!! as EventFactory<T>
         coroutineScope.launch {

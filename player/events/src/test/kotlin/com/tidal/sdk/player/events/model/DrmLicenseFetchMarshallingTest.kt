@@ -26,7 +26,7 @@ internal class DrmLicenseFetchMarshallingTest {
         user,
         client,
         payload,
-        emptyMap(),
+        null,
     )
     private val gson = Gson()
 

@@ -206,7 +206,7 @@ internal class MediaSourcererTest {
         verify(eventReporter)
             .report(
                 StreamingSessionEnd.Payload(currentStreamingSessionIdString, endTimeMillis),
-                emptyMap(),
+                null,
             )
         verifyNoMoreInteractions(
             currentStreamingSessionId,
@@ -233,7 +233,7 @@ internal class MediaSourcererTest {
             implicitStreamingSessionCreator.createAndReportStart(
                 productType,
                 productId,
-                emptyMap(),
+                null,
             ),
         ).thenReturn(expectedNewStreamingSession)
         val endTimeMillis = 123L
@@ -248,7 +248,7 @@ internal class MediaSourcererTest {
         verify(implicitStreamingSessionCreator).createAndReportStart(
             productType,
             productId,
-            emptyMap(),
+            null,
         )
         verify(eventReporter)
             .report(
@@ -256,7 +256,7 @@ internal class MediaSourcererTest {
                     currentStreamingSessionId.toString(),
                     endTimeMillis,
                 ),
-                emptyMap()
+                null
             )
         verify(trueTimeWrapper).currentTimeMillis
     }
@@ -292,12 +292,12 @@ internal class MediaSourcererTest {
         verify(eventReporter)
             .report(
                 StreamingSessionEnd.Payload(currentStreamingSessionIdString, endTimeMillis0),
-                emptyMap(),
+                null,
             )
         verify(eventReporter)
             .report(
                 StreamingSessionEnd.Payload(nextStreamingSessionIdString, endTimeMillis1),
-                emptyMap(),
+                null,
             )
         verifyNoMoreInteractions(
             currentStreamingSessionId,

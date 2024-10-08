@@ -1,5 +1,6 @@
 package com.tidal.sdk.player.events
 
+import com.tidal.sdk.player.common.model.BaseMediaProduct.Extras
 import com.tidal.sdk.player.events.model.Event
 
 /**
@@ -7,5 +8,5 @@ import com.tidal.sdk.player.events.model.Event
  */
 interface EventReporter {
 
-    fun <T : Event.Payload> report(payload: T, extras: Map<String, String?>?)
+    fun <T : Event.Payload> report(payload: T, extras: Extras?)
 }

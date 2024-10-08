@@ -1,6 +1,7 @@
 package com.tidal.sdk.player.events.converter
 
 import com.tidal.sdk.player.common.UUIDWrapper
+import com.tidal.sdk.player.common.model.BaseMediaProduct.Extras
 import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
 import com.tidal.sdk.player.events.ClientSupplier
 import com.tidal.sdk.player.events.UserSupplier
@@ -16,7 +17,7 @@ internal class VideoPlaybackStatisticsEventFactory(
 
     override suspend fun invoke(
         payload: VideoPlaybackStatistics.Payload,
-        extras: Map<String, String?>?,
+        extras: Extras?,
     ) = videoPlaybackStatisticsFactory.create(
         trueTimeWrapper.currentTimeMillis,
         uuidWrapper.randomUUID,

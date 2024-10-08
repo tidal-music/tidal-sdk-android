@@ -2,6 +2,7 @@ package com.tidal.sdk.player.playbackengine.drm
 
 import androidx.media3.exoplayer.drm.DefaultDrmSessionManager
 import androidx.media3.exoplayer.drm.DrmSessionManager
+import com.tidal.sdk.player.common.model.BaseMediaProduct
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
 
 internal class DrmSessionManagerFactory(
@@ -11,7 +12,7 @@ internal class DrmSessionManagerFactory(
 
     fun createDrmSessionManagerForOnlinePlay(
         playbackInfo: PlaybackInfo,
-        extras: Map<String, String?>?,
+        extras: BaseMediaProduct.Extras?,
     ): DrmSessionManager {
         if (playbackInfo.licenseSecurityToken.isNullOrEmpty()) {
             return DrmSessionManager.DRM_UNSUPPORTED
@@ -21,7 +22,7 @@ internal class DrmSessionManagerFactory(
 
     fun createDrmSessionManagerForOfflinePlay(
         playbackInfo: PlaybackInfo.Offline,
-        extras: Map<String, String?>?,
+        extras: BaseMediaProduct.Extras?,
     ): DrmSessionManager {
         if (playbackInfo.offlineLicense!!.isEmpty()) {
             return DrmSessionManager.DRM_UNSUPPORTED
@@ -32,7 +33,7 @@ internal class DrmSessionManagerFactory(
     private fun createDefaultDrmSessionManager(
         playbackInfo: PlaybackInfo,
         drmMode: DrmMode = DrmMode.Streaming,
-        extras: Map<String, String?>?,
+        extras: BaseMediaProduct.Extras?,
     ): DefaultDrmSessionManager {
         return defaultDrmSessionManagerBuilder
             .build(tidalMediaDrmCallbackFactory.create(playbackInfo, drmMode, extras))

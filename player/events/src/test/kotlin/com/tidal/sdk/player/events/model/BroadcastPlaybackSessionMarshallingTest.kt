@@ -34,6 +34,6 @@ internal class BroadcastPlaybackSessionMarshallingTest : PlaybackSessionMarshall
         user,
         client,
         payload,
-        emptyMap(),
+        null,
     )
 }

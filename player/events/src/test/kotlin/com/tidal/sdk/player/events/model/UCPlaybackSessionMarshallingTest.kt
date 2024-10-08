@@ -34,6 +34,6 @@ internal class UCPlaybackSessionMarshallingTest : PlaybackSessionMarshallingTest
         user,
         client,
         payload,
-        emptyMap(),
+        null,
     )
 }

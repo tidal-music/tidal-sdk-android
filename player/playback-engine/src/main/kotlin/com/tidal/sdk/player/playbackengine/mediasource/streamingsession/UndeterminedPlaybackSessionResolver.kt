@@ -1,5 +1,6 @@
 package com.tidal.sdk.player.playbackengine.mediasource.streamingsession
 
+import com.tidal.sdk.player.common.model.BaseMediaProduct
 import com.tidal.sdk.player.common.model.MediaStorage
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
 
@@ -11,7 +12,7 @@ internal class UndeterminedPlaybackSessionResolver(
     operator fun invoke(
         undetermined: PlaybackStatistics.Undetermined,
         playbackInfo: PlaybackInfo,
-        extras: Map<String, String?>?,
+        extras: BaseMediaProduct.Extras?,
     ) = with(undetermined) {
         when (playbackInfo) {
             is PlaybackInfo.Track ->

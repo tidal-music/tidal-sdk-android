@@ -3,6 +3,7 @@ package com.tidal.sdk.player.events.model
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 import com.tidal.sdk.player.common.model.AssetPresentation
+import com.tidal.sdk.player.common.model.BaseMediaProduct.Extras
 import com.tidal.sdk.player.common.model.ProductType
 import com.tidal.sdk.player.common.model.VideoQuality
 import dagger.assisted.Assisted
@@ -17,7 +18,7 @@ data class VideoPlaybackSession @AssistedInject internal constructor(
     @Assisted override val user: User,
     @Assisted override val client: Client,
     @Assisted override val payload: Payload,
-    @Assisted override val extras: Map<String, String?>?,
+    @Assisted override val extras: Extras?,
 ) : PlaybackSession<VideoPlaybackSession.Payload>() {
 
     @Keep
@@ -53,7 +54,7 @@ data class VideoPlaybackSession @AssistedInject internal constructor(
             user: User,
             client: Client,
             payload: Payload,
-            extras: Map<String, String?>?,
+            extras: Extras?,
         ): VideoPlaybackSession
     }
 }
