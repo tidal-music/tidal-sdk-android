@@ -16,4 +16,4 @@ jobs:
           java-version: 17
           distribution: temurin
       - name: Run unit tests
-        run: ./gradlew test
+        run: ./gradlew test -i
