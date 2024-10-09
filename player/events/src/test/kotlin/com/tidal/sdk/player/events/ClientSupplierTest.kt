@@ -159,7 +159,7 @@ class ClientSupplierTest {
     }
 
     @Test
-    fun invokeWhenPhone() = runBlocking {
+    fun invokeWhenMobile() = runBlocking {
         val resources = mock<Resources> {
             on { getBoolean(R.bool.is_tablet) } doReturn false
         }
@@ -188,7 +188,7 @@ class ClientSupplierTest {
         val actualClient = clientSupplier.invoke()
 
         assertThat(actualClient.reflectionToken).isSameAs(clientIdString)
-        assertThat(actualClient.reflectionDeviceType).isEqualTo(Client.DeviceType.PHONE)
+        assertThat(actualClient.reflectionDeviceType).isEqualTo(Client.DeviceType.MOBILE)
         assertThat(actualClient.reflectionVersion).isSameAs(version)
         verify(credentialsProvider).getCredentials()
         verify(authResult).successData
@@ -202,7 +202,7 @@ class ClientSupplierTest {
     }
 
     @Test
-    fun invokeWhenPhoneWithEmptyToken() = runBlocking {
+    fun invokeWhenMobileWithEmptyToken() = runBlocking {
         val resources = mock<Resources> {
             on { getBoolean(R.bool.is_tablet) } doReturn false
         }
@@ -222,7 +222,7 @@ class ClientSupplierTest {
         val actualClient = clientSupplier.invoke()
 
         assertThat(actualClient.reflectionToken).isSameAs("")
-        assertThat(actualClient.reflectionDeviceType).isEqualTo(Client.DeviceType.PHONE)
+        assertThat(actualClient.reflectionDeviceType).isEqualTo(Client.DeviceType.MOBILE)
         assertThat(actualClient.reflectionVersion).isSameAs(version)
         verify(credentialsProvider).getCredentials()
         verify(authResult).successData

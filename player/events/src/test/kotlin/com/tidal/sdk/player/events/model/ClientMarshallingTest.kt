@@ -18,7 +18,7 @@ internal class ClientMarshallingTest {
             Client.DeviceType.ANDROID_AUTO -> "androidAuto"
             Client.DeviceType.TV -> "tv"
             Client.DeviceType.TABLET -> "tablet"
-            Client.DeviceType.PHONE -> "phone"
+            Client.DeviceType.MOBILE -> "mobile"
         }
         val version = "a version"
         val src = Client(token, deviceType, version)
