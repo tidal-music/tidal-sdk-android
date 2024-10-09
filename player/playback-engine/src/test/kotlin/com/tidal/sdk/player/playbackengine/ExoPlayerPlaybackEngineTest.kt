@@ -240,6 +240,13 @@ internal class ExoPlayerPlaybackEngineTest {
                         )
                     }",
                 )
+                assertThat(event)
+                    .isEqualTo(
+                        Event.MediaProductTransition(
+                            forwardingMediaProduct.delegate,
+                            updatedPlaybackContext,
+                        ),
+                    )
             }
         }
 
