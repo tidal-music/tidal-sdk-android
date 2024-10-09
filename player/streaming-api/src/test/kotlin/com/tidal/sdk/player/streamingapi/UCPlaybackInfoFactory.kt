@@ -16,7 +16,5 @@ object UCPlaybackInfoFactory {
         0F,
         0F,
         0F,
-        0,
-        0,
     )
 }
