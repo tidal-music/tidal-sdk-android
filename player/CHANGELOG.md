@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.52] - 2024-10-09
+### Added
+- Update media3 to version 1.2.1
+- Changed "phone" attribute to "mobile"
+
 ## [0.0.51] - 2024-09-20
 ### Added
 - Wipe cache on HTTP 416 response code
