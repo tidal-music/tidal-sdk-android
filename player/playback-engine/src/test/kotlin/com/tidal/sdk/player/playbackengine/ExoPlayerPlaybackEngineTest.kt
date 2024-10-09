@@ -228,7 +228,10 @@ internal class ExoPlayerPlaybackEngineTest {
                 )
             }
             withTimeout(3000) {
-                println("zzz playbackEngine.events.first()=${playbackEngine.events.first()}")
+                val event = playbackEngine.events.first()
+                val duration = (event as? Event.MediaProductTransition)?.playbackContext?.duration
+                println("zzz event=$event")
+                println("zzz duration=$duration")
                 println(
                     "zzz equal to=${
                         Event.MediaProductTransition(

@@ -727,6 +727,7 @@ internal class ExoPlayerPlaybackEngine(
             return
         }
         val durationMs = eventTime.windowDurationMs
+        println("zzz onTimelineChanged durationMs=$durationMs")
         if (durationMs == C.TIME_UNSET) {
             return
         }
