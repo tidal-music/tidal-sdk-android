@@ -32,8 +32,8 @@ data class Client(
         @SerializedName("tablet")
         TABLET,
 
-        @SerializedName("phone")
-        PHONE,
+        @SerializedName("mobile")
+        MOBILE,
 
         ;
 
@@ -43,7 +43,7 @@ data class Client(
                     uiModeManager.currentModeType == Configuration.UI_MODE_TYPE_TELEVISION -> TV
                     uiModeManager.currentModeType == Configuration.UI_MODE_TYPE_CAR -> ANDROID_AUTO
                     context.resources.getBoolean(R.bool.is_tablet) -> TABLET
-                    else -> PHONE
+                    else -> MOBILE
                 }
             }
         }
