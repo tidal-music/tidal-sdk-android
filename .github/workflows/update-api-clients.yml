@@ -1,0 +1,36 @@
+name: Update API clients
+
+on:
+  workflow_dispatch:
+    inputs:
+      catalogue:
+        description: 'Update Catalogue API Client'
+        required: true
+        default: 'false'
+        type: boolean
+      search:
+        description: 'Update Search API Client'
+        required: true
+        default: 'false'
+        type: boolean
+      user:
+        description: 'Update User API Client'
+        required: true
+        default: 'false'
+        type: boolean
+      playlist:
+        description: 'Update Playlist API Client'
+        required: true
+        default: 'false'
+        type: boolean
+
+jobs:
+  run-boolean-workflow:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check input values
+        run: |
+          echo "Input for catalogue is: ${{ github.event.inputs.catalogue }}"
+          echo "Input for Search is: ${{ github.event.inputs.search }}"
+          echo "Input for User is: ${{ github.event.inputs.user }}"
+          echo "Input for Playlist is: ${{ github.event.inputs.playlist }}"
