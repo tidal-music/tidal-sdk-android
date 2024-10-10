@@ -1,57 +1,36 @@
-name: Create release
+name: Update API clients
 
 on:
-  workflow_call:
+  workflow_dispatch:
     inputs:
-      module:
+      catalogue:
+        description: 'Update Catalogue API Client'
         required: true
-        type: string
-    secrets:
-      pat:
+        default: 'false'
+        type: boolean
+      search:
+        description: 'Update Search API Client'
         required: true
+        default: 'false'
+        type: boolean
+      user:
+        description: 'Update User API Client'
+        required: true
+        default: 'false'
+        type: boolean
+      playlist:
+        description: 'Update Playlist API Client'
+        required: true
+        default: 'false'
+        type: boolean
 
 jobs:
-  expose-tag:
-    name: Expose Tag
+  run-boolean-workflow:
     runs-on: ubuntu-latest
-    outputs:
-      module-tag: ${{ steps.expose-tag.outputs.tag }}
-      module-version: ${{ steps.expose-tag.outputs.version }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
-        with:
-          java-version: 17
-          distribution: temurin
-      - name: Expose tag and version
-        id: expose-tag
+      - name: Check input values
         run: |
-          version="$(./gradlew ${{ inputs.module }}:properties | grep "^version: " | awk '{print $2}')"
-          tag="${{ inputs.module }}-$version"
-          echo "version=$version" >> $GITHUB_OUTPUT
-          echo "tag=$tag" >> $GITHUB_OUTPUT
-  
-  create-release:
-    runs-on: ubuntu-latest
-    needs: [ expose-tag ]
-    permissions: 
-      contents: write
-    env: 
-      name: ${{ inputs.module}}
-      version: ${{ needs.expose-tag.outputs.module-version}}
-      tag: ${{ needs.expose-tag.outputs.module-tag}}
-    steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-java@v4
-      with:
-        java-version: 17
-        distribution: temurin
-
-    - name: Generate Release Draft
-      id: generate-release
-      uses: ncipollo/release-action@v1
-      with:
-        tag: ${{ env.tag }}  
-        allowUpdates: true
-        draft: true
-        body: "This is a release draft for ${{ env.tag }}"
+          echo "Input for catalogue is: ${{ github.event.inputs.catalogue }}"
+          echo "Input for Search is: ${{ github.event.inputs.search }}"
+          echo "Input for User is: ${{ github.event.inputs.user }}"
+          echo "Input for Playlist is: ${{ github.event.inputs.playlist }}"
