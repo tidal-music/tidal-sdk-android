@@ -1,6 +1,7 @@
 package com.tidal.sdk.player.events.model
 
 import androidx.annotation.Keep
+import com.tidal.sdk.player.common.model.Extras
 import com.tidal.sdk.player.common.model.ProductType
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -14,7 +15,7 @@ data class NotStartedPlaybackStatistics @AssistedInject internal constructor(
     @Assisted override val user: User,
     @Assisted override val client: Client,
     @Assisted override val payload: Payload,
-    @Assisted override val extras: Map<String, String?>?,
+    @Assisted override val extras: Extras?,
 ) : PlaybackStatistics<NotStartedPlaybackStatistics.Payload>() {
 
     @Keep
@@ -52,7 +53,7 @@ data class NotStartedPlaybackStatistics @AssistedInject internal constructor(
             user: User,
             client: Client,
             payload: Payload,
-            extras: Map<String, String?>?,
+            extras: Extras?,
         ): NotStartedPlaybackStatistics
     }
 }

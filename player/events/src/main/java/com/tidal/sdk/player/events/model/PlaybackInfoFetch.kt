@@ -1,6 +1,7 @@
 package com.tidal.sdk.player.events.model
 
 import androidx.annotation.Keep
+import com.tidal.sdk.player.common.model.Extras
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -14,7 +15,7 @@ data class PlaybackInfoFetch @AssistedInject internal constructor(
     @Assisted override val user: User,
     @Assisted override val client: Client,
     @Assisted override val payload: Payload,
-    @Assisted override val extras: Map<String, String?>?,
+    @Assisted override val extras: Extras?,
 ) : StreamingMetrics<PlaybackInfoFetch.Payload>("playback_info_fetch") {
 
     @Keep
@@ -37,7 +38,7 @@ data class PlaybackInfoFetch @AssistedInject internal constructor(
             user: User,
             client: Client,
             payload: Payload,
-            extras: Map<String, String?>?,
+            extras: Extras?,
         ): PlaybackInfoFetch
     }
 }

@@ -5,6 +5,7 @@ import androidx.media3.exoplayer.source.LoadEventInfo
 import androidx.media3.exoplayer.source.MediaSource
 import androidx.media3.exoplayer.source.MediaSourceEventListener
 import androidx.media3.exoplayer.upstream.LoadErrorHandlingPolicy
+import com.tidal.sdk.player.common.model.Extras
 import com.tidal.sdk.player.playbackengine.mediasource.TidalMediaSourceCreator
 import java.io.IOException
 
@@ -22,7 +23,7 @@ internal class PlaybackInfoLoadableLoaderCallbackFactory(
         loadErrorInfoF: (LoadEventInfo, error: IOException, errorCount: Int) ->
         LoadErrorHandlingPolicy.LoadErrorInfo,
         prepareChildSourceF: (MediaSource) -> Unit,
-        extras: Map<String, String?>?,
+        extras: Extras?,
     ) = PlaybackInfoLoadableLoaderCallback(
         mediaItem,
         tidalMediaSourceCreator,
