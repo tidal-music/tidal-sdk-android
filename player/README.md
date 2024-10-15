@@ -72,5 +72,7 @@ In order to run the test app, please declare your client credentials in the top-
 ```
 tidal.clientid="YOUR_CLIENT_ID"
 tidal.clientsecret="YOUR_CLIENT_SECRET"
+tidal.clientredirecturi="YOUR_REDIRECT_URI"
+tidal.clientscopes="YOUR_SCOPES"
 ```
 **Note**: you can obtain the ```client id``` and ```client secret``` after signing up and creating an application in the [TIDAL Developer Platform](https://developer.tidal.com/). 
