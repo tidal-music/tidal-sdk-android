@@ -8,6 +8,7 @@ import androidx.media3.exoplayer.source.MediaSourceEventListener
 import androidx.media3.exoplayer.upstream.LoadErrorHandlingPolicy
 import androidx.media3.exoplayer.upstream.LoadErrorHandlingPolicy.LoadErrorInfo
 import androidx.media3.exoplayer.upstream.Loader
+import com.tidal.sdk.player.common.model.Extras
 import com.tidal.sdk.player.playbackengine.mediasource.TidalMediaSourceCreator
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
 import java.io.IOException
@@ -23,7 +24,7 @@ internal class PlaybackInfoLoadableLoaderCallback(
     private val loadErrorInfoF: (LoadEventInfo, error: IOException, errorCount: Int) ->
     LoadErrorInfo,
     private val prepareChildSourceF: (MediaSource) -> Unit,
-    private val extras: Map<String, String?>?,
+    private val extras: Extras?,
 ) : Loader.Callback<PlaybackInfoLoadable> {
 
     var selectedMediaSource: MediaSource? = null
