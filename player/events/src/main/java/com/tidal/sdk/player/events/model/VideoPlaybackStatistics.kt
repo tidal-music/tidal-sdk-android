@@ -2,6 +2,7 @@ package com.tidal.sdk.player.events.model
 
 import androidx.annotation.Keep
 import com.tidal.sdk.player.common.model.AssetPresentation
+import com.tidal.sdk.player.common.model.Extras
 import com.tidal.sdk.player.common.model.MediaStorage
 import com.tidal.sdk.player.common.model.ProductType
 import com.tidal.sdk.player.common.model.StreamType
@@ -18,7 +19,7 @@ data class VideoPlaybackStatistics @AssistedInject internal constructor(
     @Assisted override val user: User,
     @Assisted override val client: Client,
     @Assisted override val payload: Payload,
-    @Assisted override val extras: Map<String, String?>?,
+    @Assisted override val extras: Extras?,
 ) : PlaybackStatistics<VideoPlaybackStatistics.Payload>() {
 
     @Keep
@@ -56,7 +57,7 @@ data class VideoPlaybackStatistics @AssistedInject internal constructor(
             user: User,
             client: Client,
             payload: Payload,
-            extras: Map<String, String?>?,
+            extras: Extras?,
         ): VideoPlaybackStatistics
     }
 }

@@ -1,6 +1,7 @@
 package com.tidal.sdk.player.events.converter
 
 import com.tidal.sdk.player.common.UUIDWrapper
+import com.tidal.sdk.player.common.model.Extras
 import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
 import com.tidal.sdk.player.events.ClientSupplier
 import com.tidal.sdk.player.events.UserSupplier
@@ -14,7 +15,7 @@ internal class UCPlaybackSessionEventFactory(
     private val ucPlaybackSessionFactory: UCPlaybackSession.Factory,
 ) : EventFactory<UCPlaybackSession.Payload> {
 
-    override suspend fun invoke(payload: UCPlaybackSession.Payload, extras: Map<String, String?>?) =
+    override suspend fun invoke(payload: UCPlaybackSession.Payload, extras: Extras?) =
         ucPlaybackSessionFactory.create(
             trueTimeWrapper.currentTimeMillis,
             uuidWrapper.randomUUID,

@@ -3,6 +3,7 @@ package com.tidal.sdk.player.events.model
 import androidx.annotation.Keep
 import com.tidal.sdk.player.common.model.AssetPresentation
 import com.tidal.sdk.player.common.model.AudioMode
+import com.tidal.sdk.player.common.model.Extras
 import com.tidal.sdk.player.common.model.ProductType
 import com.tidal.sdk.player.common.model.VideoQuality
 import dagger.assisted.Assisted
@@ -17,7 +18,7 @@ internal data class VideoDownloadStatistics @AssistedInject constructor(
     @Assisted override val user: User,
     @Assisted override val client: Client,
     @Assisted override val payload: Payload,
-    @Assisted override val extras: Map<String, String?>?,
+    @Assisted override val extras: Extras?,
 ) : DownloadStatistics<VideoDownloadStatistics.Payload>() {
 
     @Keep
@@ -47,7 +48,7 @@ internal data class VideoDownloadStatistics @AssistedInject constructor(
             user: User,
             client: Client,
             payload: Payload,
-            extras: Map<String, String?>?,
+            extras: Extras?,
         ): VideoDownloadStatistics
     }
 }

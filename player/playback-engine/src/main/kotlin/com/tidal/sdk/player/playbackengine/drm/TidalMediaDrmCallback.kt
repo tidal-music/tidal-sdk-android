@@ -3,6 +3,7 @@ package com.tidal.sdk.player.playbackengine.drm
 import androidx.media3.common.util.Util
 import androidx.media3.exoplayer.drm.ExoMediaDrm
 import androidx.media3.exoplayer.drm.MediaDrmCallback
+import com.tidal.sdk.player.common.model.Extras
 import com.tidal.sdk.player.commonandroid.Base64Codec
 import com.tidal.sdk.player.playbackengine.StreamingApiRepository
 import com.tidal.sdk.player.streamingapi.drm.model.DrmLicenseRequest
@@ -35,7 +36,7 @@ internal class TidalMediaDrmCallback(
     private val okHttpClient: OkHttpClient,
     private val provisionRequestBuilder: Lazy<Request.Builder>,
     private val provisionRequestBody: Lazy<RequestBody>,
-    private val extras: Map<String, String?>?,
+    private val extras: Extras?,
 ) : MediaDrmCallback {
 
     override fun executeKeyRequest(uuid: UUID, request: ExoMediaDrm.KeyRequest): ByteArray {
