@@ -17,6 +17,6 @@ data class MediaProduct(
     override val productId: String,
     override val sourceType: String? = null,
     override val sourceId: String? = null,
-    override val extras: Map<String, String?>? = null,
+    override val extras: Extras? = null,
     val referenceId: String? = null,
 ) : BaseMediaProduct

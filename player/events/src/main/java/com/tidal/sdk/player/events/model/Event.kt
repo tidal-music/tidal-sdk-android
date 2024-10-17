@@ -3,6 +3,7 @@ package com.tidal.sdk.player.events.model
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 import com.tidal.sdk.eventproducer.model.ConsentCategory
+import com.tidal.sdk.player.common.model.Extras
 import java.util.UUID
 
 @Suppress("UnusedPrivateMember")
@@ -17,7 +18,7 @@ sealed class Event<T : Event.Payload>(
     protected abstract val uuid: UUID
     protected abstract val user: User
     protected abstract val client: Client
-    protected abstract val extras: Map<String, String?>?
+    protected abstract val extras: Extras?
     abstract val payload: T
 
     val consentCategory: ConsentCategory

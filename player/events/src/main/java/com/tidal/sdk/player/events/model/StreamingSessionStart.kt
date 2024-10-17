@@ -2,6 +2,7 @@ package com.tidal.sdk.player.events.model
 
 import androidx.annotation.Keep
 import androidx.annotation.Px
+import com.tidal.sdk.player.common.model.Extras
 import com.tidal.sdk.player.common.model.ProductType
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -16,7 +17,7 @@ data class StreamingSessionStart @AssistedInject internal constructor(
     @Assisted override val user: User,
     @Assisted override val client: Client,
     @Assisted override val payload: DecoratedPayload,
-    @Assisted override val extras: Map<String, String?>?,
+    @Assisted override val extras: Extras?,
 ) : StreamingMetrics<StreamingSessionStart.DecoratedPayload>(
     name = "streaming_session_start",
 ) {
@@ -115,7 +116,7 @@ data class StreamingSessionStart @AssistedInject internal constructor(
             user: User,
             client: Client,
             decoratedPayload: DecoratedPayload,
-            extras: Map<String, String?>?,
+            extras: Extras?,
         ): StreamingSessionStart
     }
 }

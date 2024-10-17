@@ -1,6 +1,7 @@
 package com.tidal.sdk.player.events.converter
 
 import com.tidal.sdk.player.common.UUIDWrapper
+import com.tidal.sdk.player.common.model.Extras
 import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
 import com.tidal.sdk.player.events.ClientSupplier
 import com.tidal.sdk.player.events.UserSupplier
@@ -17,7 +18,7 @@ internal class StreamingSessionStartEventFactory(
 
     override suspend fun invoke(
         payload: StreamingSessionStart.Payload,
-        extras: Map<String, String?>?,
+        extras: Extras?,
     ) = streamingSessionStartFactory.create(
         trueTimeWrapper.currentTimeMillis,
         uuidWrapper.randomUUID,
