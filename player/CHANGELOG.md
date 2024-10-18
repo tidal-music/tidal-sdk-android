@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.53] - 2024-10-18
+### Added
+- Updated MediaProduct.extras
+
 ## [0.0.52] - 2024-10-09
 ### Added
 - Update media3 to version 1.2.1
