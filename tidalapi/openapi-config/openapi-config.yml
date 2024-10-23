@@ -1,0 +1,21 @@
+templateDir: openapi-config/templates
+globalProperties:
+  apiTests: false
+  modelTests: false
+  apiDocs: false
+  modelDocs: false
+additionalProperties:
+  artifactId: tidalapi.generated
+  packageName: com.tidal.sdk.tidalapi.generated
+  apiSuffix: ''
+  groupId: com.tidal.sdk
+  library: jvm-retrofit2
+  serializationLibrary: kotlinx_serialization
+  dateLibrary: string
+  supportAndroidApiLevel25AndBelow: true
+  useCoroutines: true
+  omitGradleWrapper: true
+files:
+  Client.kt.mustache:
+    templateType: SupportingFiles
+    destinationFilename: src/main/kotlin/com/tidal/sdk/tidalapi/generated/ApiClient.kt

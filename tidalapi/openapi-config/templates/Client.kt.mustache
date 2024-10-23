@@ -1,0 +1,36 @@
+package com.tidal.sdk.tidalapi.generated
+
+import com.tidal.sdk.auth.CredentialsProvider
+import com.tidal.sdk.tidalapi.networking.RetrofitProvider
+
+{{#apiInfo}}
+    {{#apis}}
+import com.tidal.sdk.tidalapi.generated.apis.{{classname}}
+    {{/apis}}
+{{/apiInfo}}
+
+class TidalApiClient(credentialsProvider: CredentialsProvider, baseUrl: String = DEFAULT_BASE_URL) {
+
+    private val retrofit by lazy {
+        RetrofitProvider().provideRetrofit(
+            baseUrl,
+            credentialsProvider,
+        )
+    }
+
+{{#apiInfo}}
+    {{#apis}}
+    /**
+    * Returns an instance of the [{{classname}}] which can be used
+    * to make API calls to the {{apiDescription}}
+    */
+    fun create{{classname}}(): {{classname}} {
+        return retrofit.create({{classname}}::class.java)
+    }
+    {{/apis}}
+{{/apiInfo}}
+
+    companion object {
+        const val DEFAULT_BASE_URL = "https://openapi.tidal.com/v2/"
+    }
+}
