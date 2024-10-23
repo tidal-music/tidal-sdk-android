@@ -174,6 +174,14 @@ def main():
         logging.error("Error: Failed to generate files.")
         sys.exit(result.returncode)
 
+    result = subprocess.run(
+        [f"{sdk_root}/static-analysis/run-ktlint.sh", "-F", "-g", "-d", f"{project_root}/src"])
+
+    if result.returncode != 0:
+        logging.error("ktlint failed, but continuing with the rest of the script.")
+
+    target_line = "import com.tidal.sdk.tidalapi.generated.infrastructure.CollectionFormats.*"
+    remove_specific_line_from_files(f"{project_root}/src", target_line)
 
     logging.info("Generation complete and cleaned up.")
 
