@@ -2,6 +2,7 @@ import json
 import logging
 import os
 import requests
+import shutil
 import subprocess
 import sys
 from collections import OrderedDict
@@ -158,7 +159,16 @@ def main():
     # Create the merged schema and get the path to the OpenAPI generator jar
     temp_json, source = create_merged_schema(config_file)
 
-    logging.info(f"Project root: {project_root}")
+    # Define the generated files path and clean the directory
+    generated_files_dir = os.path.join(project_root,
+                                       "src/main/kotlin/com/tidal/sdk/tidalapi/generated")
+
+    # Clean the directory
+    if os.path.exists(generated_files_dir):
+        shutil.rmtree(generated_files_dir)
+        logging.info(f"Cleaned up directory: {generated_files_dir}")
+
+    os.makedirs(generated_files_dir, exist_ok=True)
 
     result = subprocess.run([
         "java", "-jar", source, "generate",
