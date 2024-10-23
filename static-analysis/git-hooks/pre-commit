@@ -1,6 +1,6 @@
 #!/bin/bash
 
-STAGED_KOTLIN_FILES=($(git --no-pager diff --cached --name-only --diff-filter=ACM | grep "\.kt"))
+STAGED_KOTLIN_FILES=($(git --no-pager diff --cached --name-only --diff-filter=ACM | grep "\.kt$"))
 
 if [ -z "$STAGED_KOTLIN_FILES" ]; then
     echo "No Kotlin files staged."

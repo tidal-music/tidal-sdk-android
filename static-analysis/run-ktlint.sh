@@ -1,4 +1,5 @@
 #!/bin/bash
+
 ROOT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && cd .. && pwd )
 readonly ROOT_DIR
 readonly CONFIG_DIR="$ROOT_DIR/static-analysis/config"
@@ -24,22 +25,33 @@ getKtlint(){
   command="$INSTALL_TARGET"
 }
 
-# Analyze inputs
+# Initialize options
+auto_fix_flag=""
+scan_generated_files=false
+target_dir="$ROOT_DIR"
 input=()
-while getopts ":e:i:" opt; do
+
+# Analyze inputs
+while getopts ":e:i:Fd:g" opt; do
   case $opt in
     e) command="$OPTARG"
       ;;
-    i) input+=($OPTARG);
+    i) input+=($OPTARG)
+      ;;
+    F) auto_fix_flag="-F" # Enable auto-fix
+      ;;
+    d) target_dir="$OPTARG" # Set target directory
+      ;;
+    g) scan_generated_files=true # Include generated files
       ;;
     \?) echo "Invalid option -$OPTARG" >&2
-      exit 1
+        exit 1
       ;;
   esac
 
   case $OPTARG in
     -*) echo "Option $opt needs a valid argument"
-      exit 1
+        exit 1
       ;;
   esac
 done
@@ -65,20 +77,25 @@ fi
 # Specify which files to analyze
 files_argument=""
 for i in "${input[@]}"; do
-  if [[ "$i" != *'/generated/'* ]]; then
-    files_argument="$files_argument\"./$i\" "
-  else
+  if [ "$scan_generated_files" = false ] && [[ "$i" == *'/generated/'* ]]; then
     echo "Ignoring generated file: $i"
+  else
+    files_argument="$files_argument\"./$i\" "
   fi
 done
 
+# Set files to analyze based on whether input files or directory were provided
 if [ "$files_argument" == "" ]; then
-  echo "No input files specified. Analyzing all Kotlin files..."
-  files_argument="**/*.kt **/*.kts !**/build/** !**/generated/**"
+  echo "No input files specified. Analyzing all Kotlin files in $target_dir..."
+  if [ "$scan_generated_files" = true ]; then
+    files_argument="$target_dir/**/*.kt $target_dir/**/*.kts !**/build/** !**/*.mustache"
+  else
+    files_argument="$target_dir/**/*.kt $target_dir/**/*.kts !**/build/** !**/generated/** !**/*.mustache"
+  fi
 fi
 
-echo
+echo $files_argument
 echo "Running ktlint..."
-command="$command $files_argument --experimental --reporter plain --baseline=$CONFIG_DIR/ktlint-baseline.xml"
+command="$command $files_argument --experimental --reporter plain --baseline=$CONFIG_DIR/ktlint-baseline.xml $auto_fix_flag"
 eval "$command"
 echo "Done."
