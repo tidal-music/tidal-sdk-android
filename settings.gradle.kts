@@ -50,5 +50,4 @@ listOf(
 includeFromDefaultHierarchy("auth")
 includeFromDefaultHierarchy("common")
 includeFromDefaultHierarchy("eventproducer")
-includeFromDefaultHierarchy("catalogue")
 includeFromDefaultHierarchy("tidalapi")
