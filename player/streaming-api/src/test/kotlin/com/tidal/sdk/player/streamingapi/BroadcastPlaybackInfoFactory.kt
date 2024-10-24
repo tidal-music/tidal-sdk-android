@@ -17,8 +17,6 @@ object BroadcastPlaybackInfoFactory {
         0F,
         0F,
         0F,
-        0,
-        0,
     )
 
     val DEFAULT_MISSING_STREAMING_SESSION_ID = DEFAULT.copy(streamingSessionId = "")
