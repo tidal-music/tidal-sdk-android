@@ -173,7 +173,7 @@ def main():
     result = subprocess.run([
         "java", "-jar", source, "generate",
         "-i", temp_json,
-        "-g", "tidal-kotlin",
+        "-g", "kotlin",
         "-o", project_root,
         "-c", f"{project_root}/openapi-config/openapi-config.yml",
         "--global-property",
@@ -194,7 +194,6 @@ def main():
     remove_specific_line_from_files(f"{project_root}/src", target_line)
 
     logging.info("Generation complete and cleaned up.")
-
 
 if __name__ == "__main__":
     main()
