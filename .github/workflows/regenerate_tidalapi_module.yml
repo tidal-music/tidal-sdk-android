@@ -1,0 +1,47 @@
+name: Regenerate Tidal API module
+
+on:
+  push:
+  workflow_dispatch: # This workflow is manually triggered
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  download-artifact:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Set up a checkout for the current repository (optional)
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2: Use GITHUB_TOKEN or PAT to authenticate the API request
+      - name: Download artifact from another repo
+        run: |
+          # Set the repository, run ID, and artifact name
+          REPO_OWNER="tidal-music"
+          REPO_NAME="openapi-generator"
+          ARTIFACT_NAME="openapi-generator-cli.jar"
+          
+          # Get the latest workflow run ID
+          echo "first curl"
+          RUN_ID=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/actions/runs?per_page=1" | jq -r '.workflow_runs[0].id')
+          
+          echo $RUN_ID
+          echo "second curl"
+          RUN_ID="11496810890"
+          curl -v -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          "https://api.github.com/repos/tidal-music/openapi-generator/actions/runs/$RUN_ID/artifacts" -o response.json
+          cat response.json | jq '.'
+          # Get the artifact download URL
+          ARTIFACT_URL=$(curl -s -H -v "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/actions/runs/$RUN_ID/artifacts" | jq -r --arg ARTIFACT_NAME "$ARTIFACT_NAME" '.artifacts[] | select(.name == $ARTIFACT_NAME) | .archive_download_url') 
+          
+          # Download the artifact and extract it
+          echo $ARTIFACT_URL
+          echo "third curl"
+          curl -L -H -v "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -o artifact.zip "$ARTIFACT_URL"
+          unzip artifact.zip -d ./artifact
