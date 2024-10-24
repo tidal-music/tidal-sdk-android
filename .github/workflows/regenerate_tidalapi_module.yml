@@ -1,0 +1,53 @@
+name: Download Asset from Another Repo's Release
+
+on:
+  push:
+  workflow_dispatch: # This workflow is manually triggered
+
+
+jobs:
+  download-asset:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the current repository (optional)
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Step 2: Get the latest release information from another repository
+      - name: Get Release Info from Another Repo
+        id: get_release
+        run: |
+          REPO_OWNER="tidal-music"
+          REPO_NAME="openapi-generator"
+          
+          # Fetch the latest release information
+          curl -s -H -v "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/releases/latest" > release_info.json
+
+          cat release_info.json
+
+          # Extract the download URL for the desired asset (example: 'my-asset.zip')
+          ASSET_ID=$(jq -r '.assets[] | select(.name == "openapi-generator-cli.jar") | .id' release_info.json)
+          ASSET_URL=$(jq -r '.assets[] | select(.name == "openapi-generator-cli.jar") | .browser_download_url' release_info.json)
+
+          echo "Asset URL: $ASSET_ID"
+          
+          # Save asset URL for the next step
+          echo "::set-output name=asset_id::$ASSET_URL"
+
+      # Step 3: Download the asset from the release
+      - name: Download Asset
+        run: |
+          REPO_OWNER="organization"
+          REPO_NAME="another-repo"
+          ASSET_ID=${{ steps.get_release.outputs.asset_id }}
+
+          # Download the asset using the GitHub API
+          curl -L -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/octet-stream" \
+            -o generator.jar \
+            "$ASSET_ID"
+
+      - name: List Files
+        run: ls -l
