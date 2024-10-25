@@ -4,7 +4,8 @@ on:
   push:
   workflow_dispatch: # This workflow is manually triggered
 
-
+permissions:
+  contents: write
 jobs:
   download-asset:
     runs-on: ubuntu-latest
@@ -46,8 +47,38 @@ jobs:
           # Download the asset using the GitHub API
           curl -L -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             -H "Accept: application/octet-stream" \
-            -o generator.jar \
+            -o tidalapi/bin/openapi-generator-cli.jar \
             "$ASSET_ID"
 
-      - name: List Files
-        run: ls -l
+      - name: Regenerate the TidalAPI module
+        run: |
+          cd tidalapi
+          chmod +x ./bin/openapi-generator-cli.jar
+          python ./bin/generate-api-files.py ./bin/generate-api-config.json
+          git status
+        env:
+          JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
+
+
+      - name: Commit changes
+        run: |
+          git config user.email "svc-github-tidal-music-tools@block.xyz"
+          git config user.name "TIDAL Music Tools"
+          git checkout -b new-feature-branch  # Create a new branch
+          git add .
+          git commit -m "Add new file via GitHub Actions"
+
+      - name: Push changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git push origin new-feature-branch
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: new-feature-branch
+          base: main
+          title: "Hello, World!"
+          body: "This PR was created by GitHub Actions to apply automated changes. It is a test"

@@ -12,10 +12,7 @@
     {
       "inputURL": "https://developer.tidal.com/apiref/api-specifications/api-public-user-content/tidal-user-content-openapi-3.0.json"
     }
-
   ],
   "output": "./tidal-api-joined.json",
-  "openapi_generator_path": "tbd"
-
-
+  "openapi_generator_path": "bin/openapi-generator-cli.jar"
 }
