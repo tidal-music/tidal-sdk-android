@@ -2,7 +2,6 @@ name: Regenerate TidalApi Code
 
 on:
   push:
-  workflow_dispatch: # This workflow is manually triggered
 
 permissions:
   contents: write
@@ -13,12 +12,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the current repository (optional)
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      # Step 2: Get the latest release information from another repository
-      - name: Get Release Info from Another Repo
+      - name: Get link to released openapi-generator fork .jar
         id: get_release
         run: |
           REPO_OWNER="tidal-music"
@@ -39,8 +35,7 @@ jobs:
           # Save asset URL for the next step
           echo "::set-output name=asset_id::$ASSET_URL"
 
-      # Step 3: Download the asset from the release
-      - name: Download Asset
+      - name: Download generator binary
         run: |
           REPO_OWNER="organization"
           REPO_NAME="another-repo"
@@ -52,7 +47,7 @@ jobs:
             -o tidalapi/bin/openapi-generator-cli.jar \
             "$ASSET_ID"
 
-      - name: Regenerate the TidalAPI module
+      - name: Run the the TidalAPI code generation
         run: |
           cd tidalapi
           chmod +x ./bin/openapi-generator-cli.jar
@@ -61,20 +56,19 @@ jobs:
         env:
           JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
 
-
       - name: Commit changes
         run: |
           git config user.email "svc-github-tidal-music-tools@block.xyz"
           git config user.name "TIDAL Music Tools"
-          git checkout -b new-feature-branch  # Create a new branch
+          git checkout -b tidal-music-tools/Update-Tidal-Api
           git add .
-          git commit -m "Add new file via GitHub Actions"
+          git commit -m "Add new files via GitHub Actions"
 
       - name: Push changes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git push origin new-feature-branch
+          git push origin tidal-music-tools/Update-Tidal-Api
 
       - name: Create Pull Request via API
         env:
