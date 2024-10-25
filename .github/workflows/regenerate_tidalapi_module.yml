@@ -1,4 +1,4 @@
-name: Download Asset from Another Repo's Release
+name: Regenerate TidalApi Code
 
 on:
   push:
@@ -6,8 +6,10 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
+
 jobs:
-  download-asset:
+  openapi-code-generation:
     runs-on: ubuntu-latest
 
     steps:
@@ -74,11 +76,18 @@ jobs:
         run: |
           git push origin new-feature-branch
 
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v5
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          branch: new-feature-branch
-          base: main
-          title: "Hello, World!"
-          body: "This PR was created by GitHub Actions to apply automated changes. It is a test"
+      - name: Create Pull Request via API
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR_DATA=$(jq -n --arg title "DO NOT REVIEW - Testing :-)" \
+                            --arg head "new-feature-branch" \
+                            --arg base "main" \
+                            --arg body "This PR was created by GitHub Actions." \
+                            '{title: $title, head: $head, base: $base, body: $body}')
+
+          curl -X POST \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github.v3+json" \
+            -d "$PR_DATA" \
+            https://api.github.com/repos/${{ github.repository }}/pulls
