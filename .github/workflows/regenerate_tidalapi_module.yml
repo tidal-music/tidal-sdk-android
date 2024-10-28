@@ -27,27 +27,26 @@ jobs:
           cat release_info.json
 
           # Extract the download URL for the desired asset (example: 'my-asset.zip')
-          ASSET_ID=$(jq -r '.assets[] | select(.name == "openapi-generator-cli.jar") | .id' release_info.json)
           ASSET_URL=$(jq -r '.assets[] | select(.name == "openapi-generator-cli.jar") | .browser_download_url' release_info.json)
 
           echo "Asset URL: $ASSET_ID"
           
           # Save asset URL for the next step
-          echo "::set-output name=asset_id::$ASSET_URL"
+          echo "::set-output name=asset_url::$ASSET_URL"
 
       - name: Download generator binary
         run: |
           REPO_OWNER="organization"
           REPO_NAME="another-repo"
-          ASSET_ID=${{ steps.get_release.outputs.asset_id }}
+          ASSET_URL=${{ steps.get_release.outputs.asset_url }}
 
           # Download the asset using the GitHub API
           curl -L -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             -H "Accept: application/octet-stream" \
             -o tidalapi/bin/openapi-generator-cli.jar \
-            "$ASSET_ID"
+            "$ASSET_URL"
 
-      - name: Run the the TidalAPI code generation
+      - name: Run the TidalAPI code generation
         run: |
           cd tidalapi
           chmod +x ./bin/openapi-generator-cli.jar
@@ -56,29 +55,69 @@ jobs:
         env:
           JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
 
+      - name: List changed files in directory
+        id: check_changes
+        env:
+          DIRECTORY: "tidalapi/src/main/kotlin/com/tidal/sdk/tidalapi/generated"
+        run: |
+          CHANGED_FILES=$(git diff --name-only "${{ env.DIRECTORY }}")
+          CHANGED_FILE_COUNT=$(echo "$CHANGED_FILES" | grep -v '^$' | wc -l)
+          
+          if [ "$CHANGED_FILE_COUNT" -eq 0 ]; then
+            echo "No files changed in the specified directory."
+            echo "::set-output name=changes_detected::false"
+          else
+            echo "Files changed in the specified directory:"
+            echo "$CHANGED_FILES"
+            echo "::set-output name=changes_detected::true"
+            echo "::set-output name=changed_files::$changed_files"
+            echo "::set-output name=changed_file_count::$changed_file_count"
+          fi
+
       - name: Commit changes
+        id: commit_changes
+        if: steps.check_changes.outputs.changes_detected == 'true'
         run: |
           git config user.email "svc-github-tidal-music-tools@block.xyz"
           git config user.name "TIDAL Music Tools"
-          git checkout -b tidal-music-tools/Update-Tidal-Api
+          timestamp=$(date +"%Y-%m-%d-%H-%M-%S")
+          BRANCH_NAME="tidal-music-tools/Update-Tidal-Api-$timestamp"
+          git checkout -b $BRANCH_NAME
+          
+          # Generate commit message with the number of changed files in the title and the list in the body
+          COMMIT_TITLE="Add ${{ steps.check_changes.outputs.changed_file_count }} files via GitHub Actions"
+          COMMIT_BODY="Changed files:\n${{ steps.check_changes.outputs.changed_files }}"
+          
           git add .
-          git commit -m "Add new files via GitHub Actions"
+          git commit -m "$COMMIT_TITLE"$'\n\n'"$COMMIT_BODY"
+          echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
 
       - name: Push changes
+        if: steps.check_changes.outputs.changes_detected == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH_NAME: ${{ steps.commit_changes.outputs.branch_name }}
         run: |
-          git push origin tidal-music-tools/Update-Tidal-Api
+          git push --set-upstream origin "${{env.BRANCH_NAME}}"
 
       - name: Create Pull Request via API
+        if: steps.check_changes.outputs.changes_detected == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CHANGED_FILES: ${{ steps.check_changes.outputs.changed_files }}
+          CHANGED_FILE_COUNT: ${{ steps.check_changes.outputs.changed_file_count }}
+          BRANCH_NAME: ${{ steps.commit_changes.outputs.branch_name }}
         run: |
-          PR_DATA=$(jq -n --arg title "DO NOT REVIEW - Testing :-)" \
-                            --arg head "new-feature-branch" \
+          PR_TITLE="Update Tidal API - ${{env.CHANGED_FILE_COUNT}} files changed"
+          PR_BODY="Automatic PR to update TidalApi module.\n\nChanged files:\n${{ env.CHANGED_FILES }}"
+
+          PR_DATA=$(jq -n --arg title "$PR_TITLE" \
+                            --arg head "${{env.BRANCH_NAME}}" \
                             --arg base "main" \
-                            --arg body "This PR was created by GitHub Actions." \
+                            --arg body "$PR_BODY" \
                             '{title: $title, head: $head, base: $base, body: $body}')
+
+          echo $PR_DATA
 
           curl -X POST \
             -H "Authorization: token $GITHUB_TOKEN" \
