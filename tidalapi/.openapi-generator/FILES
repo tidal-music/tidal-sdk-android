@@ -122,7 +122,6 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UsersRelationshipDocumen
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UsersRelationships.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UsersResource.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UsersSingleDataDocument.kt
-src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/Utils.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/VideoLinkMeta.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/VideosAttributes.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/VideosMultiDataDocument.kt
