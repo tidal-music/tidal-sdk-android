@@ -94,7 +94,6 @@ jobs:
           commit_title="Add ${{ steps.check_changes.outputs.changed_file_count }} files via GitHub Actions"
           commit_body="Changed files:\n${{ steps.check_changes.outputs.changed_files }}"
           
-          git add .
           git commit -m "$commit_title"$'\n\n'"$commit_body"
           echo "branch_name=$branch_name" >> $GITHUB_OUTPUT
 
