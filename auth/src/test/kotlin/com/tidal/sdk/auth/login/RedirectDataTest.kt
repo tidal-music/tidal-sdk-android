@@ -7,10 +7,10 @@ class RedirectDataTest {
     @Test
     fun `instance creation with no code in the submitted string should return Error subclass`() {
         // given
-        val wrongUri = "https://tidal.com/android/login/auth?state=na&appMode=android&lang=en"
+        val wrongQuery = "state=na&appMode=android&lang=en"
 
         // when
-        val redirectData = RedirectData.fromQueryString(wrongUri)
+        val redirectData = RedirectData.fromQueryString(wrongQuery)
 
         // then
         assert(redirectData is RedirectData.Failure) {
@@ -21,11 +21,11 @@ class RedirectDataTest {
     @Test
     fun `instance creation with error in the submitted string should return Error subclass`() {
         // given
-        val wrongUri =
-            "https://tidal.com/android/login/auth?error=someMadeUpError?error_description=helloWorld&lang=en"
+        val wrongQuery =
+            "?error=someMadeUpError?error_description=helloWorld&lang=en"
 
         // when
-        val redirectData = RedirectData.fromQueryString(wrongUri)
+        val redirectData = RedirectData.fromQueryString(wrongQuery)
 
         // then
         assert(redirectData is RedirectData.Failure) {
@@ -37,13 +37,13 @@ class RedirectDataTest {
     }
 
     @Test
-    fun `instance creation satisfying the requirements should return a correct Correct subclass`() {
+    fun `instance creation satisfying the requirements should return a correct Success subclass`() {
         // given
-        val correctUri =
-            "https://tidal.com/android/login/auth?state=na&appMode=android&lang=en&code=HERE_BE_CODE"
+        val correctQuery =
+            "?state=na&appMode=android&lang=en&code=HERE_BE_CODE"
 
         // when
-        val redirectData = RedirectData.fromQueryString(correctUri)
+        val redirectData = RedirectData.fromQueryString(correctQuery)
 
         // then
         assert(redirectData is RedirectData.Success) {
