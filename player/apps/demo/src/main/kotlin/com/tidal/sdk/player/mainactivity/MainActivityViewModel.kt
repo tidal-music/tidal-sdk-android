@@ -202,8 +202,10 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
                 abstract val cacheProviderLazy: Lazy<CacheProvider>
                 abstract val isOfflineMode: Boolean
 
-                @Suppress("LongMethod", "MaxLineLength")
-                override suspend operator fun invoke(state: MainActivityViewModelState): PlayerInitializing { // ktlint-disable max-line-length
+                @Suppress("LongMethod", "MaxLineLength", "ktlint:standard:max-line-length")
+                override suspend operator fun invoke(
+                    state: MainActivityViewModelState,
+                ): PlayerInitializing {
                     mainActivityViewModel.viewModelScope
                         .launch(Dispatchers.IO) {
                             val player = Player(
@@ -371,9 +373,8 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
                 }
             }
 
-            class SetImmersiveAudio(
-                private val immersiveAudio: Boolean,
-            ) : Impure<PlayerInitialized, PlayerInitialized>() {
+            class SetImmersiveAudio(private val immersiveAudio: Boolean) :
+                Impure<PlayerInitialized, PlayerInitialized>() {
 
                 override suspend operator fun invoke(state: PlayerInitialized): PlayerInitialized {
                     state.player.playbackEngine.immersiveAudio = immersiveAudio
@@ -434,7 +435,7 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
                 ) : FinalizeLoginFlow(context, mainActivityViewModel) {
                     override suspend fun finalize() {
                         mainActivityViewModel.tidalAuth.auth.finalizeLogin(
-                            loginResponseUri.toString()
+                            requireNotNull(loginResponseUri.query),
                         )
                     }
                 }
@@ -454,23 +455,23 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
                 private val credentialsProvider: CredentialsProvider,
             ) : Impure<MainActivityViewModelState, MainActivityViewModelState>() {
 
-                @Suppress("MaxLineLength")
-                override suspend fun invoke(state: MainActivityViewModelState): MainActivityViewModelState { // ktlint-disable max-line-length
-                    return if (state is PlayerInitialized) {
-                        Release(state).run {
-                            PlayerReleasing.FromLogOut(
-                                snackbarMessage,
-                                eventCollectionJob,
-                                cacheProvider,
-                            )
-                        }
-                    } else {
-                        AwaitingLoginFlowChoice(
-                            state.snackbarMessage,
-                            credentialsProvider.isUserLoggedIn(),
-                            viewModel.authLoginUri,
+                @Suppress("MaxLineLength", "ktlint:standard:max-line-length")
+                override suspend fun invoke(
+                    state: MainActivityViewModelState,
+                ): MainActivityViewModelState = if (state is PlayerInitialized) {
+                    Release(state).run {
+                        PlayerReleasing.FromLogOut(
+                            snackbarMessage,
+                            eventCollectionJob,
+                            cacheProvider,
                         )
                     }
+                } else {
+                    AwaitingLoginFlowChoice(
+                        state.snackbarMessage,
+                        credentialsProvider.isUserLoggedIn(),
+                        viewModel.authLoginUri,
+                    )
                 }
             }
         }
