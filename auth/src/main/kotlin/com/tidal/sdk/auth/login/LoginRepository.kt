@@ -42,6 +42,8 @@ internal class LoginRepository constructor(
         DeviceLoginPollHelper(loginService)
     }
 
+    private lateinit var redirectUri: String
+
     fun getLoginUri(
         redirectUri: String,
         loginConfig: LoginConfig?,
@@ -50,6 +52,7 @@ internal class LoginRepository constructor(
             codeVerifier = createCodeVerifier()
             createCodeChallenge(codeVerifier!!)
         }
+        this@LoginRepository.redirectUri = redirectUri
         return loginUriBuilder.getLoginUri(
             redirectUri,
             loginConfig,
@@ -58,18 +61,18 @@ internal class LoginRepository constructor(
     }
 
     @Suppress("MagicNumber")
-    suspend fun getCredentialsFromLoginCode(uri: String): AuthResult<LoginResponse> {
-        val redirectUri = RedirectUri.fromUriString(uri)
-        if (redirectUri is RedirectUri.Failure || codeVerifier == null) {
+    suspend fun getCredentialsFromLoginCode(query: String): AuthResult<LoginResponse> {
+        val redirectData = RedirectData.fromQueryString(query)
+        if (redirectData is RedirectData.Failure || codeVerifier == null) {
             return failure(AuthorizationError("0"))
         }
-        with(redirectUri as RedirectUri.Success) {
+        with(redirectData as RedirectData.Success) {
             return retryWithPolicy(exponentialBackoffPolicy) {
                 loginService.getTokenWithCodeVerifier(
                     code = code,
                     clientId = authConfig.clientId,
                     grantType = GRANT_TYPE_AUTHORIZATION_CODE,
-                    redirectUri = url,
+                    redirectUri = this@LoginRepository.redirectUri,
                     scopes = authConfig.scopes.toScopesString(),
                     codeVerifier = requireNotNull(codeVerifier),
                     clientUniqueKey = authConfig.clientUniqueKey,
@@ -120,14 +123,14 @@ internal class LoginRepository constructor(
         bus.emit(CredentialsUpdatedMessage())
     }
 
-    suspend fun initializeDeviceLogin(): AuthResult<DeviceAuthorizationResponse> {
-        return retryWithPolicy(retryPolicy = exponentialBackoffPolicy) {
-            loginService.getDeviceAuthorization(
-                authConfig.clientId,
-                authConfig.scopes.toScopesString(),
-            ).also {
-                deviceLoginPollHelper.prepareForPoll(it.interval, it.expiresIn)
-            }
+    suspend fun initializeDeviceLogin(): AuthResult<DeviceAuthorizationResponse> = retryWithPolicy(
+        retryPolicy = exponentialBackoffPolicy
+    ) {
+        loginService.getDeviceAuthorization(
+            authConfig.clientId,
+            authConfig.scopes.toScopesString(),
+        ).also {
+            deviceLoginPollHelper.prepareForPoll(it.interval, it.expiresIn)
         }
     }
 
