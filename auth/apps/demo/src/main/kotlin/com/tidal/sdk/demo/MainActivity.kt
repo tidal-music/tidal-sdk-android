@@ -105,7 +105,7 @@ class MainActivity : ComponentActivity() {
     @Suppress("UnusedPrivateMember")
     fun onRedirectUriReceived(uri: Uri) {
         lifecycleScope.launch {
-            auth.finalizeLogin(uri.toString())
+            auth.finalizeLogin(requireNotNull(uri.query))
         }.invokeOnCompletion {
             if (navController.currentBackStackEntry.toString().contains("login")) {
                 navController.popBackStack()
