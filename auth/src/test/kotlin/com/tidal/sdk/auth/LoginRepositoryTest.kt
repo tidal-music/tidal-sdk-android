@@ -256,36 +256,6 @@ class LoginRepositoryTest {
     }
 
     @Test
-    fun `getTokenFromLoginCode fails with an AuthorizationError on wrong redirect uris`() =
-        runTest {
-            // given
-            createLoginRepository(FakeLoginService())
-            val firstWrongUri = "https://tidal.org/my-nonexistent-service/code=abcde"
-            val secondWrongUri =
-                "https://tidal.com/android/login/auth?error=someError&code=somecode"
-            val thirdWrongUri = "https://tidal.com/android/login/auth?someotherArg=someValue"
-
-            // when
-            val firstResult =
-                loginRepository.getCredentialsFromLoginCode(firstWrongUri) as AuthResult.Failure
-            val secondResult =
-                loginRepository.getCredentialsFromLoginCode(secondWrongUri) as AuthResult.Failure
-            val thirdResult =
-                loginRepository.getCredentialsFromLoginCode(thirdWrongUri) as AuthResult.Failure
-
-            // then
-            assert(firstResult.message is AuthorizationError) {
-                "A Uri pointing to the wrong domain should trigger the emission of an AuthorizationError"
-            }
-            assert(secondResult.message is AuthorizationError) {
-                "A Uri with an error parameter should trigger the emission of an AuthorizationError"
-            }
-            assert(thirdResult.message is AuthorizationError) {
-                "A Uri with no code parameter should trigger the emission of an AuthorizationError"
-            }
-        }
-
-    @Test
     fun `getTokenFromLoginCode returns an AuthResult Success if service returns a TokenResponse`() =
         runTest {
             // given
@@ -293,7 +263,7 @@ class LoginRepositoryTest {
 
             // when
             loginRepository.getLoginUri(loginUri, null)
-            val result = loginRepository.getCredentialsFromLoginCode(VALID_URI)
+            val result = loginRepository.getCredentialsFromLoginCode(VALID_REDIRECT_QUERY)
 
             // then
             assert(result is AuthResult.Success) {
@@ -319,7 +289,7 @@ class LoginRepositoryTest {
 
             // when
             loginRepository.getLoginUri(loginUri, null)
-            loginRepository.getCredentialsFromLoginCode(VALID_URI)
+            loginRepository.getCredentialsFromLoginCode(VALID_REDIRECT_QUERY)
 
             // then
             assert(
@@ -350,7 +320,7 @@ class LoginRepositoryTest {
 
             // when
             loginRepository.getLoginUri(loginUri, null)
-            val result = loginRepository.getCredentialsFromLoginCode(VALID_URI)
+            val result = loginRepository.getCredentialsFromLoginCode(VALID_REDIRECT_QUERY)
 
             // then
             assert(
@@ -387,7 +357,7 @@ class LoginRepositoryTest {
 
             // when
             loginRepository.getLoginUri(loginUri, null)
-            val result = loginRepository.getCredentialsFromLoginCode(VALID_URI)
+            val result = loginRepository.getCredentialsFromLoginCode(VALID_REDIRECT_QUERY)
 
             // then
             assert(
@@ -432,7 +402,7 @@ class LoginRepositoryTest {
             // when
             coroutineTimeProvider.startTimeFor(this, 10)
             loginRepository.getLoginUri(loginUri, null)
-            val result = loginRepository.getCredentialsFromLoginCode(VALID_URI)
+            val result = loginRepository.getCredentialsFromLoginCode(VALID_REDIRECT_QUERY)
 
             // then
             assert((result as AuthResult.Failure).message is NetworkError) {
@@ -454,7 +424,7 @@ class LoginRepositoryTest {
 
         // when
         loginRepository.getLoginUri(loginUri, null)
-        loginRepository.getCredentialsFromLoginCode(VALID_URI)
+        loginRepository.getCredentialsFromLoginCode(VALID_REDIRECT_QUERY)
 
         // then
         assert(fakeTokensStore.saves == 1) {
@@ -717,7 +687,7 @@ class LoginRepositoryTest {
 
         // when
         loginRepository.getLoginUri(loginUri, null)
-        loginRepository.getCredentialsFromLoginCode(VALID_URI)
+        loginRepository.getCredentialsFromLoginCode(VALID_REDIRECT_QUERY)
 
         // then
         assert(fakeTokensStore.last() != null) {
@@ -740,7 +710,7 @@ class LoginRepositoryTest {
 
             // when
             loginRepository.getLoginUri(loginUri, null)
-            loginRepository.getCredentialsFromLoginCode(VALID_URI)
+            loginRepository.getCredentialsFromLoginCode(VALID_REDIRECT_QUERY)
 
             // then
             assert(awaitItem() is CredentialsUpdatedMessage) {
@@ -837,7 +807,7 @@ class LoginRepositoryTest {
 
     companion object {
         private const val QUERY_PREFIX = "(&|\\?)"
-        private const val VALID_URI =
-            "https://tidal.com/android/login/auth&code=123&appMode=android"
+        private const val VALID_REDIRECT_QUERY =
+            "code=123&appMode=android"
     }
 }
