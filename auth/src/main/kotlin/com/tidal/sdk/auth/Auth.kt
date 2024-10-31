@@ -39,18 +39,20 @@ class Auth internal constructor(
 
     /**
      * Initializes a device login flow, providing the necessary information for user verification.
+     * @param loginResponseQuery The full, untouched, query component of the redirect URI returned
+     * by the TIDAL login service.
      * @return A response containing device and user verification information.
      * @throws NetworkError If a network error occurs during the process.
      */
-    suspend fun finalizeLogin(loginResponseUri: String): AuthResult<Nothing> {
-        with(loginRepository.getCredentialsFromLoginCode(loginResponseUri)) {
+    suspend fun finalizeLogin(loginResponseQuery: String): AuthResult<Nothing> {
+        with(loginRepository.getCredentialsFromLoginCode(loginResponseQuery)) {
             return if (this is AuthResult.Failure) {
                 failure(this.message)
             } else {
                 success(null)
             }.also {
                 logger.d {
-                    "finalizeLogin: loginResponseUri: $loginResponseUri, result: $this"
+                    "finalizeLogin: loginResponseQuery: $loginResponseQuery, result: $this"
                 }
             }
         }
