@@ -19,12 +19,12 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * relationships object describing relationships between the resource and other resources
+ *
  *
  * @param albums
  * @param artists
- * @param providers
  * @param similarTracks
+ * @param providers
  * @param radio
  */
 
@@ -37,11 +37,11 @@ data class TracksRelationships(
     @SerialName(value = "artists")
     val artists: MultiDataRelationshipDoc,
 
-    @SerialName(value = "providers")
-    val providers: MultiDataRelationshipDoc,
-
     @SerialName(value = "similarTracks")
     val similarTracks: MultiDataRelationshipDoc,
+
+    @SerialName(value = "providers")
+    val providers: MultiDataRelationshipDoc,
 
     @SerialName(value = "radio")
     val radio: MultiDataRelationshipDoc,

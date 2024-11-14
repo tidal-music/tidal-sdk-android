@@ -19,7 +19,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- *
+ * JSON:API error document object
  *
  * @param errors array of error objects
  * @param links

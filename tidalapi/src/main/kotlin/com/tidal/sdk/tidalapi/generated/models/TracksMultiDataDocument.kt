@@ -21,15 +21,13 @@ import kotlinx.serialization.Serializable
 /**
  *
  *
- * @param `data` array of primary resource data
+ * @param `data`
  * @param links
  * @param included
  */
 
 @Serializable
 data class TracksMultiDataDocument(
-
-    // array of primary resource data
 
     @SerialName(value = "data")
     val `data`: kotlin.collections.List<TracksResource>? = null,
@@ -38,5 +36,5 @@ data class TracksMultiDataDocument(
     val links: Links? = null,
 
     @SerialName(value = "included")
-    val included: kotlin.collections.List<TracksMultiDataDocumentIncludedInner>? = null,
+    val included: kotlin.collections.List<TracksSingleDataDocumentIncludedInner>? = null,
 )

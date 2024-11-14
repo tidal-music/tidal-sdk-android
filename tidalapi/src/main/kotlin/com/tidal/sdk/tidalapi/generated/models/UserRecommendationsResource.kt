@@ -25,7 +25,7 @@ import kotlinx.serialization.Transient
  *
  * @param id resource unique identifier
  * @param type resource unique type
- * @param attributes attributes object representing some of the resource's data
+ * @param attributes
  * @param relationships
  * @param links
  */
@@ -42,7 +42,6 @@ data class UserRecommendationsResource(
     @Transient
     @SerialName(value = "type")
     val type: kotlin.String = "",
-    // attributes object representing some of the resource's data
 
     @Contextual @SerialName(value = "attributes")
     val attributes: kotlin.Any? = null,
@@ -52,4 +51,4 @@ data class UserRecommendationsResource(
 
     @SerialName(value = "links")
     val links: Links? = null,
-) : PlaylistsMultiDataDocumentIncludedInner, UsersRecommendationsRelationshipDocumentIncludedInner, UsersMultiDataDocumentIncludedInner, UsersRelationshipDocumentIncludedInner, PlaylistsOwnersRelationshipDocumentIncludedInner, UserPublicProfilesMultiDataDocumentIncludedInner
+) : UsersSingleDataDocumentIncludedInner, UsersSingletonDataRelationshipDocumentIncludedInner, UserRecommendationsMultiDataRelationshipDocumentIncludedInner

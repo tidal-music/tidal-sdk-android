@@ -9,12 +9,12 @@ interface UserEntitlements {
      * Get the current users entitlements
      * Get the current users entitlements
      * Responses:
-     *  - 500: Internal Server Error. Something went wrong on the server party.
-     *  - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.
      *  - 404: Resource not found. The requested resource is not found.
-     *  - 406: Not acceptable. The server doesn't support any of the requested by client acceptable content types.
+     *  - 500: Internal Server Error. Something went wrong on the server party.
      *  - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
      *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
+     *  - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.
+     *  - 406: Not acceptable. The server doesn't support any of the requested by client acceptable content types.
      *  - 200: Successfully executed request.
      *
      * @param include Allows the client to customize which related resources should be returned (optional)
@@ -29,12 +29,12 @@ interface UserEntitlements {
      * Get user entitlements for user
      * Get user entitlements for user
      * Responses:
-     *  - 500: Internal Server Error. Something went wrong on the server party.
-     *  - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.
      *  - 404: Resource not found. The requested resource is not found.
-     *  - 406: Not acceptable. The server doesn't support any of the requested by client acceptable content types.
+     *  - 500: Internal Server Error. Something went wrong on the server party.
      *  - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
      *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
+     *  - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.
+     *  - 406: Not acceptable. The server doesn't support any of the requested by client acceptable content types.
      *  - 200: Successfully executed request.
      *
      * @param id User entitlements id

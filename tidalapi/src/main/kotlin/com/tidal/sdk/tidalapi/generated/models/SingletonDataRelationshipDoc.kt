@@ -19,7 +19,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * User recommendations
+ *
  *
  * @param `data`
  * @param links

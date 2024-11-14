@@ -15,7 +15,6 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
@@ -26,7 +25,6 @@ import kotlinx.serialization.Transient
  * @param id resource unique identifier
  * @param type resource unique type
  * @param attributes
- * @param relationships relationships object describing relationships between the resource and other resources
  * @param links
  */
 
@@ -45,11 +43,7 @@ data class ProvidersResource(
 
     @SerialName(value = "attributes")
     val attributes: ProvidersAttributes? = null,
-    // relationships object describing relationships between the resource and other resources
-
-    @Contextual @SerialName(value = "relationships")
-    val relationships: kotlin.Any? = null,
 
     @SerialName(value = "links")
     val links: Links? = null,
-) : AlbumsMultiDataDocumentIncludedInner, TracksRelationshipsDocumentIncludedInner, AlbumsRelationshipDocumentIncludedInner, PlaylistsMultiDataDocumentIncludedInner, ProvidersRelationshipDocumentIncludedInner, ArtistsRelationshipDocumentIncludedInner, AlbumsItemsRelationshipDocumentIncludedInner, ArtistsMultiDataDocumentIncludedInner, VideosRelationshipsDocumentIncludedInner, UserPublicProfilePicksMultiDataDocumentIncludedInner, PlaylistsOwnersRelationshipDocumentIncludedInner, VideosMultiDataDocumentIncludedInner, UserPublicProfilePicksItemRelationshipDocumentIncludedInner, TracksMultiDataDocumentIncludedInner
+) : ArtistsSingleDataDocumentIncludedInner, TracksSingleDataDocumentIncludedInner, VideosMultiDataRelationshipDocumentIncludedInner, AlbumsSingleDataDocumentIncludedInner, VideosSingleDataDocumentIncludedInner

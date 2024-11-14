@@ -19,18 +19,18 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * relationships object describing relationships between the resource and other resources
  *
- * @param item
+ *
  * @param userPublicProfile
+ * @param item
  */
 
 @Serializable
 data class UserPublicProfilePicksRelationships(
 
-    @SerialName(value = "item")
-    val item: SingletonDataRelationshipDoc,
-
     @SerialName(value = "userPublicProfile")
     val userPublicProfile: SingletonDataRelationshipDoc,
+
+    @SerialName(value = "item")
+    val item: SingletonDataRelationshipDoc,
 )

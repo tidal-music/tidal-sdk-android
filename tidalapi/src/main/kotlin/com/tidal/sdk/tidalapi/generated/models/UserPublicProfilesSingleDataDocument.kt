@@ -36,5 +36,5 @@ data class UserPublicProfilesSingleDataDocument(
     val links: Links? = null,
 
     @SerialName(value = "included")
-    val included: kotlin.collections.List<UserPublicProfilesMultiDataDocumentIncludedInner>? = null,
+    val included: kotlin.collections.List<UserPublicProfilesSingleDataDocumentIncludedInner>? = null,
 )

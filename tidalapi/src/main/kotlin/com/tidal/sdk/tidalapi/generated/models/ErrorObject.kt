@@ -19,7 +19,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- *
+ * JSON:API error object
  *
  * @param id unique identifier for this particular occurrence of the problem
  * @param status HTTP status code applicable to this problem
