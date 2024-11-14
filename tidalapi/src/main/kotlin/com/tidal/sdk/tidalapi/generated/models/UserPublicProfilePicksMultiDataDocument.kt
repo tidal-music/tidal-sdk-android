@@ -21,15 +21,13 @@ import kotlinx.serialization.Serializable
 /**
  *
  *
- * @param `data` array of primary resource data
+ * @param `data`
  * @param links
  * @param included
  */
 
 @Serializable
 data class UserPublicProfilePicksMultiDataDocument(
-
-    // array of primary resource data
 
     @SerialName(value = "data")
     val `data`: kotlin.collections.List<UserPublicProfilePicksResource>? = null,
@@ -38,5 +36,5 @@ data class UserPublicProfilePicksMultiDataDocument(
     val links: Links? = null,
 
     @SerialName(value = "included")
-    val included: kotlin.collections.List<UserPublicProfilePicksMultiDataDocumentIncludedInner>? = null,
+    val included: kotlin.collections.List<UserPublicProfilePicksSingleDataDocumentIncludedInner>? = null,
 )

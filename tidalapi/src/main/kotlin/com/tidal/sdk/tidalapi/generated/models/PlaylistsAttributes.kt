@@ -19,7 +19,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * attributes object representing some of the resource's data
+ *
  *
  * @param name Playlist name
  * @param bounded Indicates if the playlist has a duration and set number of tracks

@@ -1,12 +1,9 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
-import com.tidal.sdk.tidalapi.generated.models.AlbumsRelationshipDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistsMultiDataDocument
-import com.tidal.sdk.tidalapi.generated.models.ArtistsRelationshipDocument
+import com.tidal.sdk.tidalapi.generated.models.ArtistsMultiDataRelationshipDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistsSingleDataDocument
-import com.tidal.sdk.tidalapi.generated.models.ArtistsTrackProvidersRelationshipDocument
-import com.tidal.sdk.tidalapi.generated.models.TracksRelationshipsDocument
-import com.tidal.sdk.tidalapi.generated.models.VideosRelationshipsDocument
+import com.tidal.sdk.tidalapi.generated.models.ArtistsTrackProvidersMultiDataRelationshipDocument
 import kotlinx.serialization.SerialName
 import retrofit2.Response
 import retrofit2.http.*
@@ -16,19 +13,19 @@ interface Artists {
      * Relationship: albums
      * Retrieve album details of the related artist.
      * Responses:
-     *  - 406: Not acceptable. The server doesn't support any of the requested by client acceptable content types.
+     *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
      *  - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.
+     *  - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
      *  - 404: Resource not found. The requested resource is not found.
      *  - 500: Internal Server Error. Something went wrong on the server party.
-     *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
-     *  - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
+     *  - 406: Not acceptable. The server doesn't support any of the requested by client acceptable content types.
      *  - 200: Successfully executed request.
      *
      * @param id TIDAL artist id
      * @param countryCode ISO 3166-1 alpha-2 country code
      * @param include Allows the client to customize which related resources should be returned. Available options: albums (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     * @return [AlbumsRelationshipDocument]
+     * @return [ArtistsMultiDataRelationshipDocument]
      */
     @GET("artists/{id}/relationships/albums")
     suspend fun getArtistAlbumsRelationship(
@@ -36,18 +33,18 @@ interface Artists {
         @Query("countryCode") countryCode: kotlin.String,
         @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<AlbumsRelationshipDocument>
+    ): Response<ArtistsMultiDataRelationshipDocument>
 
     /**
      * Get single artist
      * Retrieve artist details by TIDAL artist id.
      * Responses:
-     *  - 406: Not acceptable. The server doesn't support any of the requested by client acceptable content types.
+     *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
      *  - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.
+     *  - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
      *  - 404: Resource not found. The requested resource is not found.
      *  - 500: Internal Server Error. Something went wrong on the server party.
-     *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
-     *  - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
+     *  - 406: Not acceptable. The server doesn't support any of the requested by client acceptable content types.
      *  - 200: Successfully executed request.
      *
      * @param id TIDAL artist id
@@ -66,19 +63,19 @@ interface Artists {
      * Relationship: radio
      * This endpoint can be used to retrieve a list of radios for the given artist.
      * Responses:
-     *  - 406: Not acceptable. The server doesn't support any of the requested by client acceptable content types.
+     *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
      *  - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.
+     *  - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
      *  - 404: Resource not found. The requested resource is not found.
      *  - 500: Internal Server Error. Something went wrong on the server party.
-     *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
-     *  - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
+     *  - 406: Not acceptable. The server doesn't support any of the requested by client acceptable content types.
      *  - 200: Successfully executed request.
      *
      * @param id TIDAL id of the artist
      * @param countryCode ISO 3166-1 alpha-2 country code
      * @param include Allows the client to customize which related resources should be returned. Available options: radio (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     * @return [ArtistsRelationshipDocument]
+     * @return [ArtistsMultiDataRelationshipDocument]
      */
     @GET("artists/{id}/relationships/radio")
     suspend fun getArtistRadioRelationship(
@@ -86,25 +83,25 @@ interface Artists {
         @Query("countryCode") countryCode: kotlin.String,
         @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<ArtistsRelationshipDocument>
+    ): Response<ArtistsMultiDataRelationshipDocument>
 
     /**
      * Relationship: similar artists
      * This endpoint can be used to retrieve a list of artists similar to the given artist.
      * Responses:
-     *  - 406: Not acceptable. The server doesn't support any of the requested by client acceptable content types.
+     *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
      *  - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.
+     *  - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
      *  - 404: Resource not found. The requested resource is not found.
      *  - 500: Internal Server Error. Something went wrong on the server party.
-     *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
-     *  - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
+     *  - 406: Not acceptable. The server doesn't support any of the requested by client acceptable content types.
      *  - 200: Successfully executed request.
      *
      * @param id TIDAL id of the artist
      * @param countryCode ISO 3166-1 alpha-2 country code
      * @param include Allows the client to customize which related resources should be returned. Available options: similarArtists (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     * @return [ArtistsRelationshipDocument]
+     * @return [ArtistsMultiDataRelationshipDocument]
      */
     @GET("artists/{id}/relationships/similarArtists")
     suspend fun getArtistSimilarArtistsRelationship(
@@ -112,31 +109,31 @@ interface Artists {
         @Query("countryCode") countryCode: kotlin.String,
         @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<ArtistsRelationshipDocument>
+    ): Response<ArtistsMultiDataRelationshipDocument>
 
     /**
      * Relationship: track providers
      * Retrieve providers that have released tracks for this artist
      * Responses:
-     *  - 406: Not acceptable. The server doesn't support any of the requested by client acceptable content types.
+     *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
      *  - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.
+     *  - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
      *  - 404: Resource not found. The requested resource is not found.
      *  - 500: Internal Server Error. Something went wrong on the server party.
-     *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
-     *  - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
+     *  - 406: Not acceptable. The server doesn't support any of the requested by client acceptable content types.
      *  - 200: Successfully executed request.
      *
      * @param id TIDAL id of the artist
      * @param include Allows the client to customize which related resources should be returned. Available options: trackProviders (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     * @return [ArtistsTrackProvidersRelationshipDocument]
+     * @return [ArtistsTrackProvidersMultiDataRelationshipDocument]
      */
     @GET("artists/{id}/relationships/trackProviders")
     suspend fun getArtistTrackProvidersRelationship(
         @Path("id") id: kotlin.String,
         @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<ArtistsTrackProvidersRelationshipDocument>
+    ): Response<ArtistsTrackProvidersMultiDataRelationshipDocument>
 
     /**
      * enum for parameter collapseBy
@@ -153,12 +150,12 @@ interface Artists {
      * Relationship: tracks
      * Retrieve track details by related artist.
      * Responses:
-     *  - 406: Not acceptable. The server doesn't support any of the requested by client acceptable content types.
+     *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
      *  - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.
+     *  - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
      *  - 404: Resource not found. The requested resource is not found.
      *  - 500: Internal Server Error. Something went wrong on the server party.
-     *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
-     *  - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
+     *  - 406: Not acceptable. The server doesn't support any of the requested by client acceptable content types.
      *  - 200: Successfully executed request.
      *
      * @param id TIDAL artist id
@@ -166,7 +163,7 @@ interface Artists {
      * @param collapseBy Collapse by options for getting artist tracks. Available options: FINGERPRINT, ID. FINGERPRINT option might collapse similar tracks based item fingerprints while collapsing by ID always returns all available items. (optional, default to FINGERPRINT)
      * @param include Allows the client to customize which related resources should be returned. Available options: tracks (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     * @return [TracksRelationshipsDocument]
+     * @return [ArtistsMultiDataRelationshipDocument]
      */
     @GET("artists/{id}/relationships/tracks")
     suspend fun getArtistTracksRelationship(
@@ -175,25 +172,25 @@ interface Artists {
         @Query("collapseBy") collapseBy: CollapseByGetArtistTracksRelationship? = CollapseByGetArtistTracksRelationship.FINGERPRINT,
         @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<TracksRelationshipsDocument>
+    ): Response<ArtistsMultiDataRelationshipDocument>
 
     /**
      * Relationship: videos
      * Retrieve video details by related artist.
      * Responses:
-     *  - 406: Not acceptable. The server doesn't support any of the requested by client acceptable content types.
+     *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
      *  - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.
+     *  - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
      *  - 404: Resource not found. The requested resource is not found.
      *  - 500: Internal Server Error. Something went wrong on the server party.
-     *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
-     *  - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
+     *  - 406: Not acceptable. The server doesn't support any of the requested by client acceptable content types.
      *  - 200: Successfully executed request.
      *
      * @param id TIDAL artist id
      * @param countryCode ISO 3166-1 alpha-2 country code
      * @param include Allows the client to customize which related resources should be returned. Available options: videos (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     * @return [VideosRelationshipsDocument]
+     * @return [ArtistsMultiDataRelationshipDocument]
      */
     @GET("artists/{id}/relationships/videos")
     suspend fun getArtistVideosRelationship(
@@ -201,18 +198,18 @@ interface Artists {
         @Query("countryCode") countryCode: kotlin.String,
         @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<VideosRelationshipsDocument>
+    ): Response<ArtistsMultiDataRelationshipDocument>
 
     /**
      * Get multiple artists
      * Retrieve multiple artist details.
      * Responses:
-     *  - 406: Not acceptable. The server doesn't support any of the requested by client acceptable content types.
+     *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
      *  - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.
+     *  - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
      *  - 404: Resource not found. The requested resource is not found.
      *  - 500: Internal Server Error. Something went wrong on the server party.
-     *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
-     *  - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
+     *  - 406: Not acceptable. The server doesn't support any of the requested by client acceptable content types.
      *  - 200: Successfully executed request.
      *
      * @param countryCode ISO 3166-1 alpha-2 country code

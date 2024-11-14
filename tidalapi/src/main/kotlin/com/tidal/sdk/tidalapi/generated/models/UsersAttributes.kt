@@ -19,7 +19,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * attributes object representing some of the resource's data
+ *
  *
  * @param username user name
  * @param country ISO 3166-1 alpha-2 country code

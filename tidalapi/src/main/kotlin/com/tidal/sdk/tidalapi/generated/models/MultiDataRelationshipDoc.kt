@@ -19,16 +19,14 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * Playlist owners relationship
  *
- * @param `data` array of relationship resource linkages
+ *
+ * @param `data`
  * @param links
  */
 
 @Serializable
 data class MultiDataRelationshipDoc(
-
-    // array of relationship resource linkages
 
     @SerialName(value = "data")
     val `data`: kotlin.collections.List<ResourceIdentifier>? = null,

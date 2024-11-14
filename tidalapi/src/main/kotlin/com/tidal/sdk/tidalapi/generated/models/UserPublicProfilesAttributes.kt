@@ -19,9 +19,10 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * attributes object representing some of the resource's data
+ *
  *
  * @param color
+ * @param handle A customizable handle for the user profile
  * @param profileName Public Name of the user profile
  * @param picture
  * @param externalLinks ExternalLinks for the user's profile
@@ -34,6 +35,10 @@ data class UserPublicProfilesAttributes(
 
     @SerialName(value = "color")
     val color: kotlin.collections.List<kotlin.String>,
+    // A customizable handle for the user profile
+
+    @SerialName(value = "handle")
+    val handle: kotlin.String? = null,
     // Public Name of the user profile
 
     @SerialName(value = "profileName")

@@ -19,7 +19,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * attributes object representing some of the resource's data
+ *
  *
  * @param title Original title
  * @param barcodeId Barcode id (EAN-13 or UPC-A)
@@ -29,6 +29,7 @@ import kotlinx.serialization.Serializable
  * @param explicit Indicates whether an album consist of any explicit content
  * @param popularity Album popularity (ranged in 0.00 ... 1.00). Conditionally visible
  * @param mediaTags
+ * @param type Album type, e.g. single, regular album, or extended play
  * @param releaseDate Release date (ISO-8601)
  * @param copyright Copyright information
  * @param availability Defines an album availability e.g. for streaming, DJs, stems
@@ -71,6 +72,10 @@ data class AlbumsAttributes(
 
     @SerialName(value = "mediaTags")
     val mediaTags: kotlin.collections.List<kotlin.String>,
+    // Album type, e.g. single, regular album, or extended play
+
+    @SerialName(value = "type")
+    val type: AlbumsAttributes.Type,
     // Release date (ISO-8601)
 
     @SerialName(value = "releaseDate")
@@ -96,6 +101,23 @@ data class AlbumsAttributes(
     @SerialName(value = "externalLinks")
     val externalLinks: kotlin.collections.List<CatalogueItemExternalLink>? = null,
 ) {
+
+    /**
+     * Album type, e.g. single, regular album, or extended play
+     *
+     * Values: ALBUM,EP,SINGLE
+     */
+    @Serializable
+    enum class Type(val value: kotlin.String) {
+        @SerialName(value = "ALBUM")
+        ALBUM("ALBUM"),
+
+        @SerialName(value = "EP")
+        EP("EP"),
+
+        @SerialName(value = "SINGLE")
+        SINGLE("SINGLE"),
+    }
 
     /**
      * Defines an album availability e.g. for streaming, DJs, stems

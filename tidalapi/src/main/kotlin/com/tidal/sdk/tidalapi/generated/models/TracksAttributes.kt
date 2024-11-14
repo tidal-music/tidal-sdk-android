@@ -19,7 +19,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * attributes object representing some of the resource's data
+ *
  *
  * @param title Album item's title
  * @param isrc ISRC code

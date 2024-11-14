@@ -19,12 +19,13 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * attributes object representing some of the resource's data
+ *
  *
  * @param name Artist name
  * @param popularity Artist popularity (ranged in 0.00 ... 1.00). Conditionally visible
  * @param imageLinks Represents available links to, and metadata about, an artist images
  * @param externalLinks Represents available links to something that is related to an artist resource, but external to the TIDAL API
+ * @param roles Artist roles
  */
 
 @Serializable
@@ -46,4 +47,8 @@ data class ArtistsAttributes(
 
     @SerialName(value = "externalLinks")
     val externalLinks: kotlin.collections.List<CatalogueItemExternalLink>? = null,
+    // Artist roles
+
+    @SerialName(value = "roles")
+    val roles: kotlin.collections.List<ArtistRole>? = null,
 )

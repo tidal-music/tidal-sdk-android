@@ -21,15 +21,13 @@ import kotlinx.serialization.Serializable
 /**
  *
  *
- * @param `data` array of primary resource data
+ * @param `data`
  * @param links
  * @param included
  */
 
 @Serializable
 data class PlaylistsMultiDataDocument(
-
-    // array of primary resource data
 
     @SerialName(value = "data")
     val `data`: kotlin.collections.List<PlaylistsResource>? = null,
@@ -38,5 +36,5 @@ data class PlaylistsMultiDataDocument(
     val links: Links? = null,
 
     @SerialName(value = "included")
-    val included: kotlin.collections.List<PlaylistsMultiDataDocumentIncludedInner>? = null,
+    val included: kotlin.collections.List<PlaylistsSingleDataDocumentIncludedInner>? = null,
 )

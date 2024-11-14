@@ -19,18 +19,18 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * relationships object describing relationships between the resource and other resources
  *
- * @param items
+ *
  * @param owners
+ * @param items
  */
 
 @Serializable
 data class PlaylistsRelationships(
 
-    @SerialName(value = "items")
-    val items: MultiDataRelationshipDoc,
-
     @SerialName(value = "owners")
     val owners: MultiDataRelationshipDoc,
+
+    @SerialName(value = "items")
+    val items: PlaylistsItemsMultiDataRelationshipDocument,
 )

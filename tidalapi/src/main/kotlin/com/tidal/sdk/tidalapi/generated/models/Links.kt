@@ -19,7 +19,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * links object
+ * Links JSON:API object
  *
  * @param self the link that generated the current response document
  * @param next the next page of data (pagination)

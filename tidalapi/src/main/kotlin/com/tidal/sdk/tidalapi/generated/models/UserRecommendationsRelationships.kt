@@ -19,22 +19,22 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * relationships object describing relationships between the resource and other resources
  *
- * @param myMixes
+ *
  * @param discoveryMixes
  * @param newArrivalMixes
+ * @param myMixes
  */
 
 @Serializable
 data class UserRecommendationsRelationships(
-
-    @SerialName(value = "myMixes")
-    val myMixes: MultiDataRelationshipDoc,
 
     @SerialName(value = "discoveryMixes")
     val discoveryMixes: MultiDataRelationshipDoc,
 
     @SerialName(value = "newArrivalMixes")
     val newArrivalMixes: MultiDataRelationshipDoc,
+
+    @SerialName(value = "myMixes")
+    val myMixes: MultiDataRelationshipDoc,
 )

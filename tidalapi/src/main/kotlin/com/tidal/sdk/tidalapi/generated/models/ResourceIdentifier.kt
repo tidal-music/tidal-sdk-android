@@ -19,7 +19,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * array of relationship resource linkages
+ * Resource identifier JSON:API object
  *
  * @param id resource unique identifier
  * @param type resource unique type
