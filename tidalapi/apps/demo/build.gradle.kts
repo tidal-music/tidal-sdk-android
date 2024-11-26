@@ -9,7 +9,7 @@ android {
     defaultConfig {
         applicationId = "com.tidal.sdk.tidalapi.demo"
         versionCode = 1
-        versionName = "0.2.0"
+        versionName = "0.1.0"
     }
 
     buildTypes {
