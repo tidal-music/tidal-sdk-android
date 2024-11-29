@@ -14,7 +14,6 @@ import assertk.assertions.isSameAs
 import com.tidal.sdk.player.common.model.ApiError
 import com.tidal.sdk.player.common.model.ProductType
 import com.tidal.sdk.player.playbackengine.model.Event
-import com.tidal.sdk.player.playbackengine.offline.OfflineExpiredException
 import com.tidal.sdk.player.playbackengine.offline.StorageException
 import com.tidal.sdk.player.playbackengine.reflectionSetErrorCode
 import com.tidal.sdk.player.playbackengine.reflectionSetType
@@ -682,21 +681,6 @@ internal class ErrorHandlerTest {
 
         verify(errorCodeFactory).createForNetwork(extra, null)
         assertThat(actualErrorEvent).isInstanceOf(Event.Error.Network::class)
-        assertThat(actualErrorEvent.errorCode).isSameAs(expectedErrorCode)
-        assertThat(actualErrorEvent.cause).isSameAs(throwable)
-    }
-
-    @Test
-    fun `getErrorEvent should return correct errorEvent for OfflineExpiredException`() {
-        val extra = ErrorCodeFactory.Extra.OfflineExpired
-        val throwable = mock<OfflineExpiredException>()
-        val expectedErrorCode = "errorCode"
-        whenever(errorCodeFactory.createForOther(extra, null)).thenReturn(expectedErrorCode)
-
-        val actualErrorEvent = errorHandler.getErrorEvent(throwable)
-
-        verify(errorCodeFactory).createForOther(extra, null)
-        assertThat(actualErrorEvent).isInstanceOf(Event.Error.NotAllowed::class)
         assertThat(actualErrorEvent.errorCode).isSameAs(expectedErrorCode)
         assertThat(actualErrorEvent.cause).isSameAs(throwable)
     }

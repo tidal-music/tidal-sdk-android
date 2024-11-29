@@ -5,7 +5,6 @@ import com.tidal.sdk.player.common.ForwardingMediaProduct
 import com.tidal.sdk.player.common.model.MediaProduct
 import com.tidal.sdk.player.playbackengine.StreamingApiRepository
 import com.tidal.sdk.player.playbackengine.mediasource.streamingsession.StreamingSession
-import com.tidal.sdk.player.playbackengine.offline.OfflineExpiredException
 import com.tidal.sdk.player.playbackengine.playbackprivilege.PlaybackPrivilege
 import com.tidal.sdk.player.playbackengine.playbackprivilege.PlaybackPrivilegeProvider
 import com.tidal.sdk.player.playbackengine.player.ExtendedExoPlayerState
@@ -57,8 +56,6 @@ internal class PlaybackInfoLoadable(
                                 streamingSession.id.toString(),
                                 forwardingMediaProduct,
                             )
-
-                        PlaybackPrivilege.OFFLINE_EXPIRED -> throw OfflineExpiredException()
                     }.also {
                         playbackInfo = it
                         extendedExoPlayerState.playbackInfoListener?.onPlaybackInfoFetched(
