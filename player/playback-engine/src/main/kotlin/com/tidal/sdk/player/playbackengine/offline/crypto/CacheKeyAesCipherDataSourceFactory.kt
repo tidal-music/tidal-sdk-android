@@ -29,12 +29,12 @@ import androidx.media3.datasource.cache.CacheKeyFactory
  */
 class CacheKeyAesCipherDataSourceFactory(
     private val cacheKeyFactory: CacheKeyFactory,
-    private val secretKey: ByteArray,
+    private val secretKey: ByteArray?,
     private val upstream: DataSource.Factory,
 ) : DataSource.Factory {
 
     override fun createDataSource(): DataSource {
-        val aesCipherDataSource = AesCipherDataSource(secretKey, upstream.createDataSource())
+        val aesCipherDataSource = AesCipherDataSource(secretKey!!, upstream.createDataSource())
         return CacheKeyAesCipherDataSource(cacheKeyFactory, aesCipherDataSource)
     }
 }
