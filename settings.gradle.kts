@@ -50,4 +50,17 @@ listOf(
 includeFromDefaultHierarchy("auth")
 includeFromDefaultHierarchy("common")
 includeFromDefaultHierarchy("eventproducer")
+includeFromDefaultHierarchy("flo")
+listOf(
+    "kotlincoroutines",
+    "rxjava",
+    "rxjava2",
+    "rxjava3",
+).forEach {
+    val projectName = "flo:extensions:$it"
+    include(projectName)
+    project(":$projectName").projectDir = project(":flo").projectDir
+        .resolve("extensions")
+        .resolve(it)
+}
 includeFromDefaultHierarchy("tidalapi")
