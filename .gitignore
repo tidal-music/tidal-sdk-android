@@ -13,3 +13,6 @@ gradle-user-home
 profile-out*/
 local.settings.gradle.kts
 static-analysis/bin
+
+.goosehints
+.goose
