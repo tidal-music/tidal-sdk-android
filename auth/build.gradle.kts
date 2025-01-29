@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.android.junit5)
     alias(libs.plugins.google.devtools.ksp)
     alias(libs.plugins.kotlin.plugin.serialization)
+    id("de.jensklingenberg.ktorfit") version "2.2.0"
+
 }
 
 android {
@@ -28,6 +30,9 @@ dependencies {
     implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.ktor.client.content.negotiation)
     implementation(libs.ktor.client.encoding)
+
+    implementation("de.jensklingenberg.ktorfit:ktorfit-lib:2.2.0")
+
 
     ksp(libs.dagger.compiler)
 
