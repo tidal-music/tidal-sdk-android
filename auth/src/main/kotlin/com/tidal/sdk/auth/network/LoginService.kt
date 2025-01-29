@@ -2,9 +2,9 @@ package com.tidal.sdk.auth.network
 
 import com.tidal.sdk.auth.model.DeviceAuthorizationResponse
 import com.tidal.sdk.auth.model.LoginResponse
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.POST
+import de.jensklingenberg.ktorfit.http.Field
+import de.jensklingenberg.ktorfit.http.FormUrlEncoded
+import de.jensklingenberg.ktorfit.http.POST
 
 internal interface LoginService {
 

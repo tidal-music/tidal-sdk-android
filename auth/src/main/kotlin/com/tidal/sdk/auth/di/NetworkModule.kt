@@ -8,6 +8,15 @@ import com.tidal.sdk.common.d
 import com.tidal.sdk.common.logger
 import dagger.Module
 import dagger.Provides
+import de.jensklingenberg.ktorfit.Ktorfit
+import io.ktor.client.HttpClient
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.logging.ANDROID
+import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logger
+import io.ktor.client.plugins.logging.Logging
+import io.ktor.client.plugins.logging.SIMPLE
+import io.ktor.serialization.kotlinx.json.json
 import javax.inject.Singleton
 import kotlinx.serialization.json.Json
 import okhttp3.CertificatePinner
@@ -26,31 +35,42 @@ internal class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(config: AuthConfig): OkHttpClient {
-        val builder = OkHttpClient.Builder()
-        with(config) {
-            if (logLevel != NetworkLogLevel.NONE) {
-                logger.d { "Adding logging interceptor with level $logLevel" }
-                builder.addInterceptor(getLoggingInterceptor(logLevel))
-            }
-            if (enableCertificatePinning) {
-                builder.certificatePinner(getCertificatePinner(config))
-            }
+    fun provideHttpClient(config: AuthConfig): HttpClient = HttpClient{
+        install(ContentNegotiation) {
+            json(
+                Json {
+                    isLenient = true
+                    ignoreUnknownKeys = true
+                }
+            )
         }
-        return builder.build()
+        install(Logging) {
+            logger = Logger.SIMPLE
+            level = LogLevel.ALL
+        }
+//        val builder = HttpClient.Builder()
+//        with(config) {
+//            if (logLevel != NetworkLogLevel.NONE) {
+//                logger.d { "Adding logging interceptor with level $logLevel" }
+//                builder.addInterceptor(getLoggingInterceptor(logLevel))
+//            }
+//            if (enableCertificatePinning) {
+//                builder.certificatePinner(getCertificatePinner(config))
+//            }
+//        }
+//        return builder.build()
     }
 
     @Provides
     @Singleton
-    fun provideRetrofit(config: AuthConfig, okHttpClient: OkHttpClient): Retrofit {
-        val contentType = "application/json".toMediaType()
-        val jsonConverter = Json {
-            ignoreUnknownKeys = true
-        }.asConverterFactory(contentType)
-        return Retrofit.Builder()
+    fun provideKtorfit(config: AuthConfig, httpClient: HttpClient): Ktorfit {
+//        val contentType = "application/json".toMediaType()
+//        val jsonConverter = Json {
+//            ignoreUnknownKeys = true
+//        }.asConverterFactory(contentType)
+        return Ktorfit.Builder()
             .baseUrl(config.tidalAuthServiceBaseUrl)
-            .client(okHttpClient)
-            .addConverterFactory(jsonConverter)
+            .httpClient(httpClient)
             .build()
     }
 

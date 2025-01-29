@@ -2,9 +2,9 @@ package com.tidal.sdk.auth.token
 
 import com.tidal.sdk.auth.model.RefreshResponse
 import com.tidal.sdk.auth.model.UpgradeResponse
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.POST
+import de.jensklingenberg.ktorfit.http.Field
+import de.jensklingenberg.ktorfit.http.FormUrlEncoded
+import de.jensklingenberg.ktorfit.http.POST
 
 internal interface TokenService {
 

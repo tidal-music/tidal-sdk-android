@@ -2,6 +2,9 @@ import com.tidal.sdk.plugins.extensions.loadLocalProperties
 
 plugins {
     alias(libs.plugins.tidal.android.application)
+    id("de.jensklingenberg.ktorfit") version "2.2.0"
+    alias(libs.plugins.compose.compiler)
+
 }
 
 android {

@@ -4,12 +4,14 @@ import com.tidal.sdk.auth.TokenRepository
 import com.tidal.sdk.auth.model.AuthConfig
 import com.tidal.sdk.auth.storage.TokensStore
 import com.tidal.sdk.auth.token.TokenService
+import com.tidal.sdk.auth.token.createTokenService
 import com.tidal.sdk.auth.util.RetryPolicy
 import com.tidal.sdk.auth.util.TimeProvider
 import com.tidal.sdk.auth.util.UpgradeTokenRetryPolicy
 import com.tidal.sdk.common.TidalMessage
 import dagger.Module
 import dagger.Provides
+import de.jensklingenberg.ktorfit.Ktorfit
 import javax.inject.Named
 import javax.inject.Singleton
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -26,8 +28,8 @@ internal class CredentialsModule {
 
     @Provides
     @Singleton
-    fun provideTokenService(retrofit: Retrofit): TokenService {
-        return retrofit.create(TokenService::class.java)
+    fun provideTokenService(ktorfit: Ktorfit): TokenService {
+        return ktorfit.createTokenService()
     }
 
     @Singleton

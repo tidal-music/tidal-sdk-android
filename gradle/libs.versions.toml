@@ -3,18 +3,18 @@ activity-compose = "1.8.2"
 converter-kotlinx-serialization = "2.11.0"
 coroutines = "1.8.0"
 compose-compiler = "1.5.11"
-compose-libs = "1.6.5"
-compose-navigation = "2.7.7"
+compose-libs = "1.7.6"
+compose-navigation = "2.8.5"
 core-ktx = "1.12.0"
 dagger = "2.55"
 dokka = "1.9.20"
 junit5 = "5.10.2"
-kotlin = "2.1.10"
+kotlin = "2.1.0"
 kotlin-logging = "6.0.3"
 mockito = "5.8.0"
 mockito-kotlin = "5.2.1"
 moshi = "1.15.1"
-ktor-client = "2.3.5"
+ktor-client = "3.0.1"
 okhttp3 = "4.12.0"
 plugin-android = "8.2.2"
 retrofit = "2.11.0"
@@ -73,6 +73,7 @@ retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit
 retrofit-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
 
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor-client" }
+ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor-client" }
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor-client" }
 ktor-client-encoding = { module = "io.ktor:ktor-client-encoding", version.ref = "ktor-client" }
 ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor-client" }
@@ -137,7 +138,7 @@ compose = [
 
 [plugins]
 android-junit5 = { id = "de.mannodermaus.android-junit5", version = "1.10.0.0" }
-google-devtools-ksp = { id = "com.google.devtools.ksp", version = "2.1.10-1.0.29" }
+google-devtools-ksp = { id = "com.google.devtools.ksp", version = "2.1.0-1.0.29" }
 gradle-maven-publish = { id = "com.vanniktech.maven.publish", version = "0.28.0" }
 kotlin-dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
@@ -146,3 +147,4 @@ tidal-android-application = { id = "com.tidal-sdk.android.application", version.
 tidal-android-library = { id = "com.tidal-sdk.android.library", version.ref = "plugins-tidal"  }
 tidal-kotlin-jvm = { id = "com.tidal-sdk.kotlin.jvm", version.ref = "plugins-tidal" }
 tidal-jvm-platform = { id = "com.tidal-sdk.jvm.platform", version.ref = "plugins-tidal" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
