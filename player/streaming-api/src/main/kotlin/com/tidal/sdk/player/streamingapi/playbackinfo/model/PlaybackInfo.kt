@@ -138,6 +138,22 @@ sealed interface PlaybackInfo {
         override val offlineValidUntil: Long,
     ) : PlaybackInfo
 
+    @Keep
+    data class LocalTrack(
+        val id: String,
+        val url: String,
+        override val streamingSessionId: String,
+        override val manifestMimeType: ManifestMimeType,
+        override val manifest: String,
+        override val licenseSecurityToken: String?,
+        override val albumReplayGain: Float,
+        override val albumPeakAmplitude: Float,
+        override val trackReplayGain: Float,
+        override val trackPeakAmplitude: Float,
+        override val offlineRevalidateAt: Long,
+        override val offlineValidUntil: Long,
+    ) : PlaybackInfo
+
     /**
      * Playback info with some extra information for offline content.
      * The extra information is needed to determine how the offline content was stored and how

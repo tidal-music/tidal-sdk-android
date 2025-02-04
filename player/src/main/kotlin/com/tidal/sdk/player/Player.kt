@@ -6,6 +6,7 @@ import com.tidal.sdk.eventproducer.EventSender
 import com.tidal.sdk.player.common.Configuration
 import com.tidal.sdk.player.common.ConfigurationListener
 import com.tidal.sdk.player.common.model.MediaProduct
+import com.tidal.sdk.player.common.model.ProductType
 import com.tidal.sdk.player.di.DaggerPlayerComponent
 import com.tidal.sdk.player.offlineplay.OfflinePlayProvider
 import com.tidal.sdk.player.playbackengine.model.AssetTimeoutConfig
@@ -55,7 +56,13 @@ class Player(
     isDebuggable: Boolean = false,
     okHttpClient: OkHttpClient = OkHttpClient(),
     playbackPrivilegeProvider: PlaybackPrivilegeProvider = object : PlaybackPrivilegeProvider {
-        override fun get(mediaProduct: MediaProduct) = PlaybackPrivilege.OK_ONLINE
+        override fun get(mediaProduct: MediaProduct) : PlaybackPrivilege {
+            return if (mediaProduct.productType == ProductType.LOCAL) {
+                PlaybackPrivilege.OK_LOCAL
+            } else{
+                PlaybackPrivilege.OK_ONLINE
+            }
+        }
     },
     offlinePlayProvider: OfflinePlayProvider? = null,
     version: String = "1.0.0",

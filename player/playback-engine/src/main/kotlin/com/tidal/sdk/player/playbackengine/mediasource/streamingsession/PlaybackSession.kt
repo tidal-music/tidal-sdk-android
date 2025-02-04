@@ -86,6 +86,20 @@ internal sealed class PlaybackSession {
         override val actions = mutableListOf<Action>()
     }
 
+    @Suppress("LongParameterList")
+    class LocalTrack(
+        override val playbackSessionId: UUID,
+        override val actualProductId: String,
+        override val requestedProductId: String,
+        override val sourceType: String?,
+        override val sourceId: String?,
+        override val extras: Extras?,
+    ) : PlaybackSession() {
+
+        override val actualQuality = AudioQuality.LOW
+        override val actions = mutableListOf<Action>()
+    }
+
     companion object {
 
         private const val START_ASSET_POSITION_UNASSIGNED = -1.0

@@ -3,6 +3,8 @@ package com.tidal.sdk.player.mainactivity
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
@@ -23,12 +25,58 @@ import androidx.media3.common.util.UnstableApi
 import com.tidal.sdk.player.mainactivity.MainActivityViewModel.Operation.Impure
 import com.tidal.sdk.player.ui.theme.PlayerTheme
 
+data class AudioFile(val uri: Uri, val title: String, val artist: String?, val duration: Long)
+
+fun getAudioFiles(context: Context): List<AudioFile> {
+    val audioList = mutableListOf<AudioFile>()
+
+    val projection = arrayOf(
+        MediaStore.Audio.Media._ID,
+        MediaStore.Audio.Media.TITLE,
+        MediaStore.Audio.Media.ARTIST,
+        MediaStore.Audio.Media.DURATION
+    )
+
+    val selection = "${MediaStore.Audio.Media.IS_MUSIC} != 0" // Filter out non-music files
+    val sortOrder = "${MediaStore.Audio.Media.DATE_ADDED} DESC"
+
+    context.contentResolver.query(
+        MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+        projection,
+        selection,
+        null,
+        sortOrder
+    )?.use { cursor ->
+        val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)
+        val titleColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)
+        val artistColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)
+        val durationColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)
+
+        while (cursor.moveToNext()) {
+            val id = cursor.getLong(idColumn)
+            val title = cursor.getString(titleColumn)
+            val artist = cursor.getString(artistColumn)
+            val duration = cursor.getLong(durationColumn)
+            val uri = Uri.withAppendedPath(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, id.toString())
+
+            audioList.add(AudioFile(uri, title, artist, duration))
+        }
+    }
+    return audioList
+}
+
 @UnstableApi
 internal class MainActivity : ComponentActivity() {
 
     @Suppress("LongMethod")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val listOfFiles = getAudioFiles(this)
+        listOfFiles.forEach {
+            Log.d("zzz", "file=$it")
+        }
+
         setContent {
             val snackbarHostState = remember { SnackbarHostState() }
             PlayerTheme {

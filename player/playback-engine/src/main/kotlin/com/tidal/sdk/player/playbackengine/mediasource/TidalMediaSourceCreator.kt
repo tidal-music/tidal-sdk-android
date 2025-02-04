@@ -1,5 +1,7 @@
 package com.tidal.sdk.player.playbackengine.mediasource
 
+import android.net.Uri
+import android.util.Log
 import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.source.MediaSource
 import com.tidal.sdk.player.common.model.Extras
@@ -22,6 +24,7 @@ internal class TidalMediaSourceCreator(
     private val playerDashOfflineMediaSourceFactory: PlayerDashOfflineMediaSourceFactory,
     private val drmSessionManagerFactory: DrmSessionManagerFactory,
     private val drmSessionManagerProviderFactory: DrmSessionManagerProviderFactory,
+    private val localProgressMediaSourceFactory: LocalProgressMediaSourceFactory,
 ) : (MediaItem, PlaybackInfo, Extras?) -> MediaSource {
 
     @Suppress("LongMethod")
@@ -30,6 +33,9 @@ internal class TidalMediaSourceCreator(
         playbackInfo: PlaybackInfo,
         extras: Extras?,
     ): MediaSource {
+        if (playbackInfo is PlaybackInfo.LocalTrack) {
+            return localProgressMediaSourceFactory.create(Uri.parse(playbackInfo.url))
+        }
         return if (playbackInfo is PlaybackInfo.Offline) {
             when (playbackInfo.manifestMimeType) {
                 ManifestMimeType.BTS -> {

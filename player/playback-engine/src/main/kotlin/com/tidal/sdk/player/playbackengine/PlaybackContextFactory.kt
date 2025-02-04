@@ -78,6 +78,23 @@ internal class PlaybackContextFactory {
                 )
             }
 
+            is PlaybackInfo.LocalTrack -> {
+                PlaybackContext.Track(
+                    AudioMode.STEREO,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    playbackInfo.id,
+                    AssetPresentation.FULL,
+                    0F,
+                    AssetSource.ONLINE,
+                    playbackInfo.streamingSessionId,
+                    referenceId
+                )
+            }
+
             is PlaybackInfo.Offline.Track -> PlaybackContext.Track(
                 playbackInfo.track.audioMode,
                 playbackInfo.track.audioQuality,

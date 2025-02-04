@@ -71,6 +71,15 @@ internal sealed class StreamingSession private constructor(
             extras,
         )
 
+        is PlaybackInfo.LocalTrack -> PlaybackSession.LocalTrack(
+            id,
+            playbackInfo.id,
+            requestedMediaProduct.productId,
+            requestedMediaProduct.sourceType,
+            requestedMediaProduct.sourceId,
+            extras,
+        )
+
         is PlaybackInfo.Offline.Track -> PlaybackSession.Audio(
             id,
             playbackInfo.track.trackId.toString(),

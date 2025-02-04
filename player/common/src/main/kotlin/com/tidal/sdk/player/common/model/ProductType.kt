@@ -26,4 +26,9 @@ enum class ProductType {
      * Used to mark this product as UC.
      */
     UC,
+
+    /**
+     * Used to mark this product as a local file.
+     */
+    LOCAL,
 }

@@ -20,6 +20,7 @@ import com.tidal.sdk.player.playbackengine.quality.VideoQualityRepository
 import com.tidal.sdk.player.streamingapi.StreamingApi
 import com.tidal.sdk.player.streamingapi.drm.model.DrmLicense
 import com.tidal.sdk.player.streamingapi.drm.model.DrmLicenseRequest
+import com.tidal.sdk.player.streamingapi.playbackinfo.model.ManifestMimeType
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackMode
 import java.io.IOException
@@ -126,6 +127,8 @@ internal class StreamingApiRepository(
                     forwardingMediaProduct.productId,
                     streamingSessionId,
                 )
+
+                ProductType.LOCAL -> throw java.lang.IllegalArgumentException()
             }
             endReason = EndReason.COMPLETE
             return ret
@@ -168,7 +171,7 @@ internal class StreamingApiRepository(
             streamingSessionId,
         )
 
-        ProductType.BROADCAST, ProductType.UC -> throw IllegalArgumentException(
+        ProductType.BROADCAST, ProductType.UC, ProductType.LOCAL -> throw IllegalArgumentException(
             "ProductType ${forwardingMediaProduct.productType} can't be offlined.",
         )
     }

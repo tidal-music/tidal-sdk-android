@@ -1159,6 +1159,20 @@ internal class ExoPlayerPlaybackEngine(
                         endTimestamp,
                         endPositionSeconds,
                     )
+
+                    is PlaybackSession.LocalTrack -> UCPlaybackSession.Payload(
+                        playbackSessionId,
+                        startTimestamp,
+                        startAssetPosition,
+                        requestedProductId,
+                        actualProductId,
+                        actualQuality,
+                        sourceType,
+                        sourceId,
+                        actions,
+                        endTimestamp,
+                        endPositionSeconds,
+                    )
                 },
                 extras
             )

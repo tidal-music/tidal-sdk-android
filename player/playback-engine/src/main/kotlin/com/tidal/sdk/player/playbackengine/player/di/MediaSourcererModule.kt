@@ -1,5 +1,6 @@
 package com.tidal.sdk.player.playbackengine.player.di
 
+import android.content.Context
 import androidx.media3.common.C
 import androidx.media3.datasource.FileDataSource
 import androidx.media3.datasource.cache.CacheDataSink
@@ -41,6 +42,7 @@ import com.tidal.sdk.player.playbackengine.drm.TidalMediaDrmCallbackFactory
 import com.tidal.sdk.player.playbackengine.emu.EmuManifestFactory
 import com.tidal.sdk.player.playbackengine.error.ErrorHandler
 import com.tidal.sdk.player.playbackengine.mediasource.DashMediaSourceFactoryFactory
+import com.tidal.sdk.player.playbackengine.mediasource.LocalProgressMediaSourceFactory
 import com.tidal.sdk.player.playbackengine.mediasource.MediaSourcerer
 import com.tidal.sdk.player.playbackengine.mediasource.PlaybackInfoMediaSourceFactory
 import com.tidal.sdk.player.playbackengine.mediasource.PlayerAuthHlsMediaSourceFactory
@@ -451,6 +453,11 @@ internal object MediaSourcererModule {
     @Reusable
     fun drmSessionManagerProviderFactory() = DrmSessionManagerProviderFactory()
 
+
+    @Provides
+    @Reusable
+    fun localProgressMediaSourceFactory(context: Context) = LocalProgressMediaSourceFactory(context)
+
     @Provides
     @Reusable
     fun tidalMediaSourceCreator(
@@ -463,6 +470,7 @@ internal object MediaSourcererModule {
         playerDashOfflineMediaSourceFactory: PlayerDashOfflineMediaSourceFactory,
         drmSessionManagerFactory: DrmSessionManagerFactory,
         drmSessionManagerProviderFactory: DrmSessionManagerProviderFactory,
+        localProgressMediaSourceFactory: LocalProgressMediaSourceFactory,
     ) = TidalMediaSourceCreator(
         playerProgressiveMediaSourceFactory,
         playerDashMediaSourceFactory,
@@ -473,6 +481,7 @@ internal object MediaSourcererModule {
         playerDashOfflineMediaSourceFactory,
         drmSessionManagerFactory,
         drmSessionManagerProviderFactory,
+        localProgressMediaSourceFactory
     )
 
     @Provides

@@ -19,6 +19,12 @@ internal data class DemoPlayableItem(
         val HARDCODED = arrayOf(
             DemoPlayableItem(
                 "Izzo",
+                ProductType.LOCAL,
+                "content://media/external/audio/media/1000008395",
+                setOf(Credentials.Level.USER, Credentials.Level.CLIENT),
+            ),
+            DemoPlayableItem(
+                "Izzo",
                 ProductType.TRACK,
                 "35738577",
                 setOf(Credentials.Level.USER, Credentials.Level.CLIENT),

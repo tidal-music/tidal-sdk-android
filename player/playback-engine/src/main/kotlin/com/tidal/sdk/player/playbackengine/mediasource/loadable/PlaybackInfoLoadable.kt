@@ -9,6 +9,7 @@ import com.tidal.sdk.player.playbackengine.offline.OfflineExpiredException
 import com.tidal.sdk.player.playbackengine.playbackprivilege.PlaybackPrivilege
 import com.tidal.sdk.player.playbackengine.playbackprivilege.PlaybackPrivilegeProvider
 import com.tidal.sdk.player.playbackengine.player.ExtendedExoPlayerState
+import com.tidal.sdk.player.streamingapi.playbackinfo.model.ManifestMimeType
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
@@ -57,6 +58,21 @@ internal class PlaybackInfoLoadable(
                                 streamingSession.id.toString(),
                                 forwardingMediaProduct,
                             )
+
+                        PlaybackPrivilege.OK_LOCAL -> PlaybackInfo.LocalTrack(
+                            id = forwardingMediaProduct.productId,
+                            url = forwardingMediaProduct.productId,
+                            streamingSessionId = streamingSession.id.toString(),
+                            manifestMimeType = ManifestMimeType.EMU,
+                            manifest = "",
+                            licenseSecurityToken = null,
+                            albumReplayGain = 0f,
+                            albumPeakAmplitude = 0f,
+                            trackReplayGain = 0f,
+                            trackPeakAmplitude = 0f,
+                            offlineRevalidateAt = -1L,
+                            offlineValidUntil = -1L,
+                        )
 
                         PlaybackPrivilege.OFFLINE_EXPIRED -> throw OfflineExpiredException()
                     }.also {

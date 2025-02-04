@@ -66,6 +66,17 @@ internal class UndeterminedPlaybackSessionResolver(
                     extras,
                 )
 
+            is PlaybackInfo.LocalTrack ->
+                PlaybackStatistics.Success.Prepared.UC(
+                    streamingSessionId,
+                    playbackInfo.id,
+                    idealStartTimestampMs,
+                    versionedCdmCalculator(playbackInfo),
+                    adaptations,
+                    MediaStorage.INTERNET,
+                    extras,
+                )
+
             is PlaybackInfo.Offline.Track ->
                 PlaybackStatistics.Success.Prepared.Audio(
                     streamingSessionId,
