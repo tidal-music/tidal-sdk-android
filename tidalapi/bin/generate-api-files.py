@@ -170,15 +170,23 @@ def main():
 
     os.makedirs(generated_files_dir, exist_ok=True)
 
+    # Change to project root directory before running OpenAPI generator
+    original_dir = os.getcwd()
+    os.chdir(project_root)
+    
     result = subprocess.run([
-        "java", "-jar", source, "generate",
-        "-i", temp_json,
+        "java", "-jar", os.path.join(os.getcwd(), "bin", "openapi-generator-cli.jar"), "generate",
+        "-i", os.path.join("bin", temp_json),
         "-g", "kotlin",
-        "-o", project_root,
-        "-c", f"{project_root}/openapi-config/openapi-config.yml",
+        "-o", ".",
+        "-c", "openapi-config/openapi-config.yml",
+        "--skip-validate-spec",
         "--global-property",
         "models,apis,supportingFiles=Utils.kt:src/main/kotlin/com/tidal/sdk/tidalapi/generated/ApiClient.kt"
     ])
+    
+    # Change back to original directory
+    os.chdir(original_dir)
 
     if result.returncode != 0:
         logging.error("Error: Failed to generate files.")

@@ -14,5 +14,5 @@
     }
   ],
   "output": "./tidal-api-joined.json",
-  "openapi_generator_path": "bin/openapi-generator-cli.jar"
+  "openapi_generator_path": "./openapi-generator-cli.jar"
 }
