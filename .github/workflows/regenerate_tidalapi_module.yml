@@ -21,6 +21,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
       - name: Get link to released openapi-generator fork .jar
         id: get_release
         run: |
@@ -29,7 +40,7 @@ jobs:
           
           curl -s -H -v "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             "https://api.github.com/repos/$repo_owner/$repo_name/releases/latest" > release_info.json
-          # Extract the download URL for the desired asset (example: 'my-asset.zip')
+          # Extract the download URL for the desired asset
           ASSET_URL=$(jq -r '.assets[] | select(.name == "openapi-generator-cli.jar") | .browser_download_url' release_info.json)
           
           echo "::set-output name=asset_url::$ASSET_URL"
@@ -44,13 +55,15 @@ jobs:
             -o tidalapi/bin/openapi-generator-cli.jar \
             "${{ env.ASSET_URL }}"
 
-      - name: Run the TidalAPI code generation
+      - name: Make scripts executable
         run: |
-          cd ${{ env.API_MODULE_DIR }}
-          chmod +x ./bin/openapi-generator-cli.jar
-          python ./bin/generate-api-files.py ./bin/generate-api-config.json
-        env:
-          JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
+          chmod +x ${{ env.API_MODULE_DIR }}/bin/generate-api.sh
+          chmod +x ${{ env.API_MODULE_DIR }}/bin/openapi-generator-cli.jar
+
+      - name: Generate TidalAPI code
+        run: |
+          cd ${{ env.API_MODULE_DIR }}/bin
+          ./generate-api.sh
 
       - name: Check for changes
         id: check_changes
@@ -68,7 +81,7 @@ jobs:
           else
             changes_detected="false"
             changed_file_count=0
-          echo "No new changes found."
+            echo "No new changes found."
           fi
           
           {
