@@ -6,14 +6,14 @@ import okhttp3.RequestBody
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+import com.tidal.sdk.tidalapi.generated.models.ArtistRolesMultiDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ArtistRolesSingleDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ErrorDocument
-import com.tidal.sdk.tidalapi.generated.models.ProvidersMultiDataDocument
-import com.tidal.sdk.tidalapi.generated.models.ProvidersSingleDataDocument
 
-interface Providers {
+interface ArtistRoles {
     /**
-     * Get all providers
-     * Retrieves all provider details by available filters or without (if applicable).
+     * Get all artistRoles
+     * Retrieves all artistRole details by available filters or without (if applicable).
      * Responses:
      *  - 200: 
      *  - 451: Unavailable For Legal Reasons
@@ -26,14 +26,14 @@ interface Providers {
      *  - 429: Too many HTTP requests have been made within the allowed time.
      *
      * @param filterId Allows to filter the collection of resources based on id attribute value (optional)
-     * @return [ProvidersMultiDataDocument]
+     * @return [ArtistRolesMultiDataDocument]
      */
-    @GET("providers")
-    suspend fun providersGet(@Query("filter[id]") filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null): Response<ProvidersMultiDataDocument>
+    @GET("artistRoles")
+    suspend fun artistRolesGet(@Query("filter[id]") filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null): Response<ArtistRolesMultiDataDocument>
 
     /**
-     * Get single provider
-     * Retrieves provider details by an unique id.
+     * Get single artistRole
+     * Retrieves artistRole details by an unique id.
      * Responses:
      *  - 200: 
      *  - 451: Unavailable For Legal Reasons
@@ -45,10 +45,10 @@ interface Providers {
      *  - 406: Not acceptable. The server doesn't support any of the requested by client acceptable content types.
      *  - 429: Too many HTTP requests have been made within the allowed time.
      *
-     * @param id TIDAL provider id
-     * @return [ProvidersSingleDataDocument]
+     * @param id TIDAL artist role id
+     * @return [ArtistRolesSingleDataDocument]
      */
-    @GET("providers/{id}")
-    suspend fun providersIdGet(@Path("id") id: kotlin.String): Response<ProvidersSingleDataDocument>
+    @GET("artistRoles/{id}")
+    suspend fun artistRolesIdGet(@Path("id") id: kotlin.String): Response<ArtistRolesSingleDataDocument>
 
 }

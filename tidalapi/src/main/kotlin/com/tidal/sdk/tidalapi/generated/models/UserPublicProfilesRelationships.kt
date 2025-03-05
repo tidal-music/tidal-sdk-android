@@ -15,30 +15,41 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+import com.tidal.sdk.tidalapi.generated.models.MultiDataRelationshipDoc
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
+ * 
  *
- *
- * @param followers
- * @param following
- * @param publicPlaylists
- * @param publicPicks
+ * @param followers 
+ * @param following 
+ * @param publicPlaylists 
+ * @param publicPicks 
  */
 
 @Serializable
-data class UserPublicProfilesRelationships(
 
+data class UserPublicProfilesRelationships (
+
+    
     @SerialName(value = "followers")
     val followers: MultiDataRelationshipDoc,
-
+    
     @SerialName(value = "following")
     val following: MultiDataRelationshipDoc,
-
+    
     @SerialName(value = "publicPlaylists")
     val publicPlaylists: MultiDataRelationshipDoc,
-
+    
     @SerialName(value = "publicPicks")
-    val publicPicks: MultiDataRelationshipDoc,
-)
+    val publicPicks: MultiDataRelationshipDoc
+) {
+
+
+}
+

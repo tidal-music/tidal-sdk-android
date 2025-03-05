@@ -15,24 +15,34 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+import com.tidal.sdk.tidalapi.generated.models.ExternalLinkMeta
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
  * Sharing links to the playlist
  *
  * @param href link to something that is related to a resource
- * @param meta
+ * @param meta 
  */
 
 @Serializable
-data class PlaylistsExternalLink(
 
-    // link to something that is related to a resource
+data class PlaylistsExternalLink (
 
+    /* link to something that is related to a resource */
+    
     @SerialName(value = "href")
     val href: kotlin.String,
-
+    
     @SerialName(value = "meta")
-    val meta: ExternalLinkMeta,
-)
+    val meta: ExternalLinkMeta
+) {
+
+
+}
+

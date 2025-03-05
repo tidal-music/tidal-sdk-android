@@ -1,11 +1,16 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import retrofit2.http.*
+import retrofit2.Response
+import okhttp3.RequestBody
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+import com.tidal.sdk.tidalapi.generated.models.ErrorDocument
 import com.tidal.sdk.tidalapi.generated.models.UpdateUserProfileBody
 import com.tidal.sdk.tidalapi.generated.models.UserPublicProfilesMultiDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserPublicProfilesMultiDataRelationshipDocument
 import com.tidal.sdk.tidalapi.generated.models.UserPublicProfilesSingleDataDocument
-import retrofit2.Response
-import retrofit2.http.*
 
 interface UserPublicProfiles {
     /**
@@ -25,10 +30,7 @@ interface UserPublicProfiles {
      * @return [UserPublicProfilesSingleDataDocument]
      */
     @GET("userPublicProfiles/me")
-    suspend fun getMyUserPublicProfile(
-        @Query("locale") locale: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<UserPublicProfilesSingleDataDocument>
+    suspend fun getMyUserPublicProfile(@Query("locale") locale: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null): Response<UserPublicProfilesSingleDataDocument>
 
     /**
      * Get user public profile by id
@@ -48,11 +50,7 @@ interface UserPublicProfiles {
      * @return [UserPublicProfilesSingleDataDocument]
      */
     @GET("userPublicProfiles/{id}")
-    suspend fun getUserPublicProfileById(
-        @Path("id") id: kotlin.String,
-        @Query("locale") locale: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<UserPublicProfilesSingleDataDocument>
+    suspend fun getUserPublicProfileById(@Path("id") id: kotlin.String, @Query("locale") locale: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null): Response<UserPublicProfilesSingleDataDocument>
 
     /**
      * Relationship: followers
@@ -72,11 +70,7 @@ interface UserPublicProfiles {
      * @return [UserPublicProfilesMultiDataRelationshipDocument]
      */
     @GET("userPublicProfiles/{id}/relationships/followers")
-    suspend fun getUserPublicProfileFollowersRelationship(
-        @Path("id") id: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<UserPublicProfilesMultiDataRelationshipDocument>
+    suspend fun getUserPublicProfileFollowersRelationship(@Path("id") id: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("page[cursor]") pageCursor: kotlin.String? = null): Response<UserPublicProfilesMultiDataRelationshipDocument>
 
     /**
      * Relationship: following
@@ -96,11 +90,7 @@ interface UserPublicProfiles {
      * @return [UserPublicProfilesMultiDataRelationshipDocument]
      */
     @GET("userPublicProfiles/{id}/relationships/following")
-    suspend fun getUserPublicProfileFollowingRelationship(
-        @Path("id") id: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<UserPublicProfilesMultiDataRelationshipDocument>
+    suspend fun getUserPublicProfileFollowingRelationship(@Path("id") id: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("page[cursor]") pageCursor: kotlin.String? = null): Response<UserPublicProfilesMultiDataRelationshipDocument>
 
     /**
      * Relationship: picks
@@ -120,11 +110,7 @@ interface UserPublicProfiles {
      * @return [UserPublicProfilesMultiDataRelationshipDocument]
      */
     @GET("userPublicProfiles/{id}/relationships/publicPicks")
-    suspend fun getUserPublicProfilePublicPicksRelationship(
-        @Path("id") id: kotlin.String,
-        @Query("locale") locale: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<UserPublicProfilesMultiDataRelationshipDocument>
+    suspend fun getUserPublicProfilePublicPicksRelationship(@Path("id") id: kotlin.String, @Query("locale") locale: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null): Response<UserPublicProfilesMultiDataRelationshipDocument>
 
     /**
      * Relationship: playlists
@@ -144,11 +130,7 @@ interface UserPublicProfiles {
      * @return [UserPublicProfilesMultiDataRelationshipDocument]
      */
     @GET("userPublicProfiles/{id}/relationships/publicPlaylists")
-    suspend fun getUserPublicProfilePublicPlaylistsRelationship(
-        @Path("id") id: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<UserPublicProfilesMultiDataRelationshipDocument>
+    suspend fun getUserPublicProfilePublicPlaylistsRelationship(@Path("id") id: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("page[cursor]") pageCursor: kotlin.String? = null): Response<UserPublicProfilesMultiDataRelationshipDocument>
 
     /**
      * Get user public profiles
@@ -168,12 +150,7 @@ interface UserPublicProfiles {
      * @return [UserPublicProfilesMultiDataDocument]
      */
     @GET("userPublicProfiles")
-    suspend fun getUserPublicProfilesByFilters(
-        @Query("locale") locale: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[id]") filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? =
-            null,
-    ): Response<UserPublicProfilesMultiDataDocument>
+    suspend fun getUserPublicProfilesByFilters(@Query("locale") locale: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("filter[id]") filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null): Response<UserPublicProfilesMultiDataDocument>
 
     /**
      * Update user public profile
@@ -188,14 +165,11 @@ interface UserPublicProfiles {
      *  - 200: Updated Public Profile successfully
      *
      * @param id ${public.usercontent.updateProfile.id.descr}
-     * @param updateUserProfileBody
+     * @param updateUserProfileBody 
      * @param include Allows the client to customize which related resources should be returned (optional)
      * @return [kotlin.Any]
      */
     @PATCH("userPublicProfiles/{id}")
-    suspend fun updateMyUserProfile(
-        @Path("id") id: kotlin.String,
-        @Body updateUserProfileBody: UpdateUserProfileBody,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<kotlin.Any>
+    suspend fun updateMyUserProfile(@Path("id") id: kotlin.String, @Body updateUserProfileBody: UpdateUserProfileBody, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null): Response<kotlin.Any>
+
 }

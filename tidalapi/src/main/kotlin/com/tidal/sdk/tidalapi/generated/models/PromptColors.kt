@@ -15,8 +15,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
  * Primary and Secondary color to visually render the pick
@@ -26,14 +30,19 @@ import kotlinx.serialization.Serializable
  */
 
 @Serializable
-data class PromptColors(
 
-    // Primary color to visually render the pick
+data class PromptColors (
 
+    /* Primary color to visually render the pick */
+    
     @SerialName(value = "primary")
     val primary: kotlin.String,
-    // Secondary color to visually render the pick
-
+    /* Secondary color to visually render the pick */
+    
     @SerialName(value = "secondary")
-    val secondary: kotlin.String,
-)
+    val secondary: kotlin.String
+) {
+
+
+}
+

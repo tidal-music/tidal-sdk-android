@@ -15,11 +15,17 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+import com.tidal.sdk.tidalapi.generated.models.PlaylistsExternalLink
+import com.tidal.sdk.tidalapi.generated.models.PlaylistsImageLink
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
- *
+ * 
  *
  * @param name Playlist name
  * @param bounded Indicates if the playlist has a duration and set number of tracks
@@ -35,50 +41,55 @@ import kotlinx.serialization.Serializable
  */
 
 @Serializable
-data class PlaylistsAttributes(
 
-    // Playlist name
+data class PlaylistsAttributes (
 
+    /* Playlist name */
+    
     @SerialName(value = "name")
     val name: kotlin.String,
-    // Indicates if the playlist has a duration and set number of tracks
-
+    /* Indicates if the playlist has a duration and set number of tracks */
+    
     @SerialName(value = "bounded")
     val bounded: kotlin.Boolean,
-    // Sharing links to the playlist
-
+    /* Sharing links to the playlist */
+    
     @SerialName(value = "externalLinks")
     val externalLinks: kotlin.collections.List<PlaylistsExternalLink>,
-    // Datetime of playlist creation (ISO 8601)
-
+    /* Datetime of playlist creation (ISO 8601) */
+    
     @SerialName(value = "createdAt")
     val createdAt: kotlin.String,
-    // Datetime of last modification of the playlist (ISO 8601)
-
+    /* Datetime of last modification of the playlist (ISO 8601) */
+    
     @SerialName(value = "lastModifiedAt")
     val lastModifiedAt: kotlin.String,
-    // Privacy setting of the playlist
-
+    /* Privacy setting of the playlist */
+    
     @SerialName(value = "privacy")
     val privacy: kotlin.String,
-    // The type of the playlist
-
+    /* The type of the playlist */
+    
     @SerialName(value = "playlistType")
     val playlistType: kotlin.String,
-    // Images associated with the playlist
-
+    /* Images associated with the playlist */
+    
     @SerialName(value = "imageLinks")
     val imageLinks: kotlin.collections.List<PlaylistsImageLink>,
-    // Playlist description
-
+    /* Playlist description */
+    
     @SerialName(value = "description")
     val description: kotlin.String? = null,
-    // Duration of the playlist expressed in accordance with ISO 8601
-
+    /* Duration of the playlist expressed in accordance with ISO 8601 */
+    
     @SerialName(value = "duration")
     val duration: kotlin.String? = null,
-    // Number of items in the playlist
-
+    /* Number of items in the playlist */
+    
     @SerialName(value = "numberOfItems")
-    val numberOfItems: kotlin.Int? = null,
-)
+    val numberOfItems: kotlin.Int? = null
+) {
+
+
+}
+

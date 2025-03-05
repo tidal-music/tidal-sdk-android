@@ -15,8 +15,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
  * Resource identifier JSON:API object
@@ -26,14 +30,19 @@ import kotlinx.serialization.Serializable
  */
 
 @Serializable
-data class ResourceIdentifier(
 
-    // resource unique identifier
+data class ResourceIdentifier (
 
+    /* resource unique identifier */
+    
     @SerialName(value = "id")
     val id: kotlin.String,
-    // resource unique type
-
+    /* resource unique type */
+    
     @SerialName(value = "type")
-    val type: kotlin.String,
-)
+    val type: kotlin.String
+) {
+
+
+}
+

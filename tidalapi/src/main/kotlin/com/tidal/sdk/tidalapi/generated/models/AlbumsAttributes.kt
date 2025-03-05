@@ -15,11 +15,18 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+import com.tidal.sdk.tidalapi.generated.models.CatalogueItemExternalLink
+import com.tidal.sdk.tidalapi.generated.models.CatalogueItemImageLink
+import com.tidal.sdk.tidalapi.generated.models.CatalogueItemVideoLink
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
- *
+ * 
  *
  * @param title Original title
  * @param barcodeId Barcode id (EAN-13 or UPC-A)
@@ -28,7 +35,7 @@ import kotlinx.serialization.Serializable
  * @param duration Duration (ISO-8601)
  * @param explicit Indicates whether an album consist of any explicit content
  * @param popularity Album popularity (ranged in 0.00 ... 1.00). Conditionally visible
- * @param mediaTags
+ * @param mediaTags 
  * @param type Album type, e.g. single, regular album, or extended play
  * @param releaseDate Release date (ISO-8601)
  * @param copyright Copyright information
@@ -39,67 +46,68 @@ import kotlinx.serialization.Serializable
  */
 
 @Serializable
-data class AlbumsAttributes(
 
-    // Original title
+data class AlbumsAttributes (
 
+    /* Original title */
+    
     @SerialName(value = "title")
     val title: kotlin.String,
-    // Barcode id (EAN-13 or UPC-A)
-
+    /* Barcode id (EAN-13 or UPC-A) */
+    
     @SerialName(value = "barcodeId")
     val barcodeId: kotlin.String,
-    // Number of volumes
-
+    /* Number of volumes */
+    
     @SerialName(value = "numberOfVolumes")
     val numberOfVolumes: kotlin.Int,
-    // Number of album items
-
+    /* Number of album items */
+    
     @SerialName(value = "numberOfItems")
     val numberOfItems: kotlin.Int,
-    // Duration (ISO-8601)
-
+    /* Duration (ISO-8601) */
+    
     @SerialName(value = "duration")
     val duration: kotlin.String,
-    // Indicates whether an album consist of any explicit content
-
+    /* Indicates whether an album consist of any explicit content */
+    
     @SerialName(value = "explicit")
     val explicit: kotlin.Boolean,
-    // Album popularity (ranged in 0.00 ... 1.00). Conditionally visible
-
+    /* Album popularity (ranged in 0.00 ... 1.00). Conditionally visible */
+    
     @SerialName(value = "popularity")
     val popularity: kotlin.Double,
-
+    
     @SerialName(value = "mediaTags")
     val mediaTags: kotlin.collections.List<kotlin.String>,
-    // Album type, e.g. single, regular album, or extended play
-
+    /* Album type, e.g. single, regular album, or extended play */
+    
     @SerialName(value = "type")
     val type: AlbumsAttributes.Type,
-    // Release date (ISO-8601)
-
+    /* Release date (ISO-8601) */
+    
     @SerialName(value = "releaseDate")
     val releaseDate: kotlin.String? = null,
-    // Copyright information
-
+    /* Copyright information */
+    
     @SerialName(value = "copyright")
     val copyright: kotlin.String? = null,
-    // Defines an album availability e.g. for streaming, DJs, stems
-
+    /* Defines an album availability e.g. for streaming, DJs, stems */
+    
     @SerialName(value = "availability")
     val availability: kotlin.collections.List<AlbumsAttributes.Availability>? = null,
-    // Represents available links to, and metadata about, an album cover images
-
+    /* Represents available links to, and metadata about, an album cover images */
+    
     @SerialName(value = "imageLinks")
     val imageLinks: kotlin.collections.List<CatalogueItemImageLink>? = null,
-    // Represents available links to, and metadata about, an album cover videos
-
+    /* Represents available links to, and metadata about, an album cover videos */
+    
     @SerialName(value = "videoLinks")
     val videoLinks: kotlin.collections.List<CatalogueItemVideoLink>? = null,
-    // Represents available links to something that is related to an album resource, but external to the TIDAL API
-
+    /* Represents available links to something that is related to an album resource, but external to the TIDAL API */
+    
     @SerialName(value = "externalLinks")
-    val externalLinks: kotlin.collections.List<CatalogueItemExternalLink>? = null,
+    val externalLinks: kotlin.collections.List<CatalogueItemExternalLink>? = null
 ) {
 
     /**
@@ -109,16 +117,10 @@ data class AlbumsAttributes(
      */
     @Serializable
     enum class Type(val value: kotlin.String) {
-        @SerialName(value = "ALBUM")
-        ALBUM("ALBUM"),
-
-        @SerialName(value = "EP")
-        EP("EP"),
-
-        @SerialName(value = "SINGLE")
-        SINGLE("SINGLE"),
+        @SerialName(value = "ALBUM") ALBUM("ALBUM"),
+        @SerialName(value = "EP") EP("EP"),
+        @SerialName(value = "SINGLE") SINGLE("SINGLE");
     }
-
     /**
      * Defines an album availability e.g. for streaming, DJs, stems
      *
@@ -126,13 +128,10 @@ data class AlbumsAttributes(
      */
     @Serializable
     enum class Availability(val value: kotlin.String) {
-        @SerialName(value = "STREAM")
-        STREAM("STREAM"),
-
-        @SerialName(value = "DJ")
-        DJ("DJ"),
-
-        @SerialName(value = "STEM")
-        STEM("STEM"),
+        @SerialName(value = "STREAM") STREAM("STREAM"),
+        @SerialName(value = "DJ") DJ("DJ"),
+        @SerialName(value = "STEM") STEM("STEM");
     }
+
 }
+

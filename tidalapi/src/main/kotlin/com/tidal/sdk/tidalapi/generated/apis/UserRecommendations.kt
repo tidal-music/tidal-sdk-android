@@ -1,10 +1,15 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import retrofit2.http.*
+import retrofit2.Response
+import okhttp3.RequestBody
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+import com.tidal.sdk.tidalapi.generated.models.ErrorDocument
 import com.tidal.sdk.tidalapi.generated.models.UserRecommendationsMultiDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserRecommendationsMultiDataRelationshipDocument
 import com.tidal.sdk.tidalapi.generated.models.UserRecommendationsSingleDataDocument
-import retrofit2.Response
-import retrofit2.http.*
 
 interface UserRecommendations {
     /**
@@ -23,9 +28,7 @@ interface UserRecommendations {
      * @return [UserRecommendationsSingleDataDocument]
      */
     @GET("userRecommendations/me")
-    suspend fun getMyUserRecommendations(
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<UserRecommendationsSingleDataDocument>
+    suspend fun getMyUserRecommendations(@Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null): Response<UserRecommendationsSingleDataDocument>
 
     /**
      * Get recommendations for users in batch
@@ -44,11 +47,7 @@ interface UserRecommendations {
      * @return [UserRecommendationsMultiDataDocument]
      */
     @GET("userRecommendations")
-    suspend fun getUserRecommendationsByFilters(
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[id]") filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? =
-            null,
-    ): Response<UserRecommendationsMultiDataDocument>
+    suspend fun getUserRecommendationsByFilters(@Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("filter[id]") filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null): Response<UserRecommendationsMultiDataDocument>
 
     /**
      * Get user recommendations for user
@@ -67,10 +66,7 @@ interface UserRecommendations {
      * @return [UserRecommendationsSingleDataDocument]
      */
     @GET("userRecommendations/{id}")
-    suspend fun getUserRecommendationsById(
-        @Path("id") id: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<UserRecommendationsSingleDataDocument>
+    suspend fun getUserRecommendationsById(@Path("id") id: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null): Response<UserRecommendationsSingleDataDocument>
 
     /**
      * Relationship: discovery mixes
@@ -90,11 +86,7 @@ interface UserRecommendations {
      * @return [UserRecommendationsMultiDataRelationshipDocument]
      */
     @GET("userRecommendations/{id}/relationships/discoveryMixes")
-    suspend fun getUserRecommendationsDiscoveryMixesRelationship(
-        @Path("id") id: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<UserRecommendationsMultiDataRelationshipDocument>
+    suspend fun getUserRecommendationsDiscoveryMixesRelationship(@Path("id") id: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("page[cursor]") pageCursor: kotlin.String? = null): Response<UserRecommendationsMultiDataRelationshipDocument>
 
     /**
      * Relationship: my mixes
@@ -114,11 +106,7 @@ interface UserRecommendations {
      * @return [UserRecommendationsMultiDataRelationshipDocument]
      */
     @GET("userRecommendations/{id}/relationships/myMixes")
-    suspend fun getUserRecommendationsMyMixesRelationship(
-        @Path("id") id: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<UserRecommendationsMultiDataRelationshipDocument>
+    suspend fun getUserRecommendationsMyMixesRelationship(@Path("id") id: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("page[cursor]") pageCursor: kotlin.String? = null): Response<UserRecommendationsMultiDataRelationshipDocument>
 
     /**
      * Relationship: new arrivals mixes
@@ -138,9 +126,6 @@ interface UserRecommendations {
      * @return [UserRecommendationsMultiDataRelationshipDocument]
      */
     @GET("userRecommendations/{id}/relationships/newArrivalMixes")
-    suspend fun getUserRecommendationsNewArrivalMixesRelationship(
-        @Path("id") id: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<UserRecommendationsMultiDataRelationshipDocument>
+    suspend fun getUserRecommendationsNewArrivalMixesRelationship(@Path("id") id: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("page[cursor]") pageCursor: kotlin.String? = null): Response<UserRecommendationsMultiDataRelationshipDocument>
+
 }

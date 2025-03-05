@@ -15,22 +15,27 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
- *
+ * 
  *
  * @param entitlements entitlements for user
  */
 
 @Serializable
-data class UserEntitlementsAttributes(
 
-    // entitlements for user
+data class UserEntitlementsAttributes (
 
+    /* entitlements for user */
+    
     @SerialName(value = "entitlements")
-    val entitlements: kotlin.collections.List<UserEntitlementsAttributes.Entitlements>,
+    val entitlements: kotlin.collections.List<UserEntitlementsAttributes.Entitlements>
 ) {
 
     /**
@@ -40,10 +45,9 @@ data class UserEntitlementsAttributes(
      */
     @Serializable
     enum class Entitlements(val value: kotlin.String) {
-        @SerialName(value = "MUSIC")
-        MUSIC("MUSIC"),
-
-        @SerialName(value = "DJ")
-        DJ("DJ"),
+        @SerialName(value = "MUSIC") MUSIC("MUSIC"),
+        @SerialName(value = "DJ") DJ("DJ");
     }
+
 }
+

@@ -15,25 +15,34 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
- *
+ * 
  *
  * @param trackingId search request unique tracking number
  * @param didYouMean 'did you mean' prompt
  */
 
 @Serializable
-data class SearchresultsAttributes(
 
-    // search request unique tracking number
+data class SearchresultsAttributes (
 
+    /* search request unique tracking number */
+    
     @SerialName(value = "trackingId")
     val trackingId: kotlin.String,
-    // 'did you mean' prompt
-
+    /* 'did you mean' prompt */
+    
     @SerialName(value = "didYouMean")
-    val didYouMean: kotlin.String? = null,
-)
+    val didYouMean: kotlin.String? = null
+) {
+
+
+}
+

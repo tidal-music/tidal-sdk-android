@@ -15,41 +15,47 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+import com.tidal.sdk.tidalapi.generated.models.PromptColors
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
- *
+ * 
  *
  * @param title Pick title
  * @param description Description of pick
  * @param supportedContentType CatalogueResourceType for supported item for the pick
- * @param colors
+ * @param colors 
  * @param lastModifiedAt Date of last modification of the pick (ISO 8601)
  */
 
 @Serializable
-data class UserPublicProfilePicksAttributes(
 
-    // Pick title
+data class UserPublicProfilePicksAttributes (
 
+    /* Pick title */
+    
     @SerialName(value = "title")
     val title: kotlin.String,
-    // Description of pick
-
+    /* Description of pick */
+    
     @SerialName(value = "description")
     val description: kotlin.String,
-    // CatalogueResourceType for supported item for the pick
-
+    /* CatalogueResourceType for supported item for the pick */
+    
     @SerialName(value = "supportedContentType")
     val supportedContentType: UserPublicProfilePicksAttributes.SupportedContentType,
-
+    
     @SerialName(value = "colors")
     val colors: PromptColors,
-    // Date of last modification of the pick (ISO 8601)
-
+    /* Date of last modification of the pick (ISO 8601) */
+    
     @SerialName(value = "lastModifiedAt")
-    val lastModifiedAt: kotlin.String? = null,
+    val lastModifiedAt: kotlin.String? = null
 ) {
 
     /**
@@ -59,19 +65,12 @@ data class UserPublicProfilePicksAttributes(
      */
     @Serializable
     enum class SupportedContentType(val value: kotlin.String) {
-        @SerialName(value = "TRACKS")
-        TRACKS("TRACKS"),
-
-        @SerialName(value = "VIDEOS")
-        VIDEOS("VIDEOS"),
-
-        @SerialName(value = "ALBUMS")
-        ALBUMS("ALBUMS"),
-
-        @SerialName(value = "ARTISTS")
-        ARTISTS("ARTISTS"),
-
-        @SerialName(value = "PROVIDERS")
-        PROVIDERS("PROVIDERS"),
+        @SerialName(value = "TRACKS") TRACKS("TRACKS"),
+        @SerialName(value = "VIDEOS") VIDEOS("VIDEOS"),
+        @SerialName(value = "ALBUMS") ALBUMS("ALBUMS"),
+        @SerialName(value = "ARTISTS") ARTISTS("ARTISTS"),
+        @SerialName(value = "PROVIDERS") PROVIDERS("PROVIDERS");
     }
+
 }
+

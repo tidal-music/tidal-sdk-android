@@ -15,38 +15,49 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+import com.tidal.sdk.tidalapi.generated.models.MultiDataRelationshipDoc
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
+ * 
  *
- *
- * @param albums
- * @param artists
- * @param playlists
- * @param videos
- * @param topHits
- * @param tracks
+ * @param albums 
+ * @param artists 
+ * @param playlists 
+ * @param videos 
+ * @param topHits 
+ * @param tracks 
  */
 
 @Serializable
-data class SearchresultsRelationships(
 
+data class SearchresultsRelationships (
+
+    
     @SerialName(value = "albums")
     val albums: MultiDataRelationshipDoc,
-
+    
     @SerialName(value = "artists")
     val artists: MultiDataRelationshipDoc,
-
+    
     @SerialName(value = "playlists")
     val playlists: MultiDataRelationshipDoc,
-
+    
     @SerialName(value = "videos")
     val videos: MultiDataRelationshipDoc,
-
+    
     @SerialName(value = "topHits")
     val topHits: MultiDataRelationshipDoc,
-
+    
     @SerialName(value = "tracks")
-    val tracks: MultiDataRelationshipDoc,
-)
+    val tracks: MultiDataRelationshipDoc
+) {
+
+
+}
+

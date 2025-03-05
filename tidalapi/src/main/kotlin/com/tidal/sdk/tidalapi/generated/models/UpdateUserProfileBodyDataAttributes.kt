@@ -15,26 +15,37 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+import com.tidal.sdk.tidalapi.generated.models.UserPublicProfilesExternalLink
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
+ * 
  *
- *
- * @param handle
- * @param profileName
- * @param externalLinks
+ * @param handle 
+ * @param profileName 
+ * @param externalLinks 
  */
 
 @Serializable
-data class UpdateUserProfileBodyDataAttributes(
 
+data class UpdateUserProfileBodyDataAttributes (
+
+    
     @SerialName(value = "handle")
     val handle: kotlin.String? = null,
-
+    
     @SerialName(value = "profileName")
     val profileName: kotlin.String? = null,
-
+    
     @SerialName(value = "externalLinks")
-    val externalLinks: kotlin.collections.List<UserPublicProfilesExternalLink>? = null,
-)
+    val externalLinks: kotlin.collections.List<UserPublicProfilesExternalLink>? = null
+) {
+
+
+}
+

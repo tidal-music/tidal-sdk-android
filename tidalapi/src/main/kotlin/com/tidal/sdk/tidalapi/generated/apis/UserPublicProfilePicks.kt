@@ -1,10 +1,15 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import retrofit2.http.*
+import retrofit2.Response
+import okhttp3.RequestBody
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+import com.tidal.sdk.tidalapi.generated.models.ErrorDocument
 import com.tidal.sdk.tidalapi.generated.models.UpdatePickRelationshipBody
 import com.tidal.sdk.tidalapi.generated.models.UserPublicProfilePicksMultiDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserPublicProfilePicksSingletonDataRelationshipDocument
-import retrofit2.Response
-import retrofit2.http.*
 
 interface UserPublicProfilePicks {
     /**
@@ -24,10 +29,7 @@ interface UserPublicProfilePicks {
      * @return [UserPublicProfilePicksMultiDataDocument]
      */
     @GET("userPublicProfilePicks/me")
-    suspend fun getMyUserPublicProfilePicks(
-        @Query("locale") locale: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<UserPublicProfilePicksMultiDataDocument>
+    suspend fun getMyUserPublicProfilePicks(@Query("locale") locale: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null): Response<UserPublicProfilePicksMultiDataDocument>
 
     /**
      * Relationship: item (read)
@@ -47,11 +49,7 @@ interface UserPublicProfilePicks {
      * @return [UserPublicProfilePicksSingletonDataRelationshipDocument]
      */
     @GET("userPublicProfilePicks/{id}/relationships/item")
-    suspend fun getUserPublicProfilePickItemRelationship(
-        @Path("id") id: kotlin.String,
-        @Query("locale") locale: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<UserPublicProfilePicksSingletonDataRelationshipDocument>
+    suspend fun getUserPublicProfilePickItemRelationship(@Path("id") id: kotlin.String, @Query("locale") locale: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null): Response<UserPublicProfilePicksSingletonDataRelationshipDocument>
 
     /**
      * Relationship: user public profile
@@ -70,10 +68,7 @@ interface UserPublicProfilePicks {
      * @return [UserPublicProfilePicksSingletonDataRelationshipDocument]
      */
     @GET("userPublicProfilePicks/{id}/relationships/userPublicProfile")
-    suspend fun getUserPublicProfilePickUserPublicProfileRelationship(
-        @Path("id") id: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<UserPublicProfilePicksSingletonDataRelationshipDocument>
+    suspend fun getUserPublicProfilePickUserPublicProfileRelationship(@Path("id") id: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null): Response<UserPublicProfilePicksSingletonDataRelationshipDocument>
 
     /**
      * Get picks
@@ -94,14 +89,7 @@ interface UserPublicProfilePicks {
      * @return [UserPublicProfilePicksMultiDataDocument]
      */
     @GET("userPublicProfilePicks")
-    suspend fun getUserPublicProfilePicksByFilters(
-        @Query("locale") locale: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[id]") filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? =
-            null,
-        @Query("filter[userPublicProfile.id]") filterUserPublicProfileId:
-        @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<UserPublicProfilePicksMultiDataDocument>
+    suspend fun getUserPublicProfilePicksByFilters(@Query("locale") locale: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("filter[id]") filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("filter[userPublicProfile.id]") filterUserPublicProfileId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null): Response<UserPublicProfilePicksMultiDataDocument>
 
     /**
      * Relationship: item (update)
@@ -116,14 +104,11 @@ interface UserPublicProfilePicks {
      *  - 202: Successfully executed request.
      *
      * @param id TIDAL pick id
-     * @param updatePickRelationshipBody
+     * @param updatePickRelationshipBody 
      * @param include Allows the client to customize which related resources should be returned (optional)
      * @return [kotlin.Any]
      */
     @PATCH("userPublicProfilePicks/{id}/relationships/item")
-    suspend fun setUserPublicProfilePickItemRelationship(
-        @Path("id") id: kotlin.String,
-        @Body updatePickRelationshipBody: UpdatePickRelationshipBody,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<kotlin.Any>
+    suspend fun setUserPublicProfilePickItemRelationship(@Path("id") id: kotlin.String, @Body updatePickRelationshipBody: UpdatePickRelationshipBody, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null): Response<kotlin.Any>
+
 }

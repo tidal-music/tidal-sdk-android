@@ -15,7 +15,6 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import com.tidal.sdk.tidalapi.generated.models.ImageLinkMeta
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName
@@ -24,23 +23,18 @@ import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.Transient
 
 /**
- * Images associated with the playlist
+ * 
  *
- * @param href link to an image
- * @param meta 
+ * @param name 
  */
 
 @Serializable
 
-data class PlaylistsImageLink (
+data class ArtistRolesAttributes (
 
-    /* link to an image */
     
-    @SerialName(value = "href")
-    val href: kotlin.String,
-    
-    @SerialName(value = "meta")
-    val meta: ImageLinkMeta? = null
+    @SerialName(value = "name")
+    val name: kotlin.String? = null
 ) {
 
 

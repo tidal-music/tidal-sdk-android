@@ -15,22 +15,33 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+import com.tidal.sdk.tidalapi.generated.models.SingletonDataRelationshipDoc
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
+ * 
  *
- *
- * @param userPublicProfile
- * @param item
+ * @param userPublicProfile 
+ * @param item 
  */
 
 @Serializable
-data class UserPublicProfilePicksRelationships(
 
+data class UserPublicProfilePicksRelationships (
+
+    
     @SerialName(value = "userPublicProfile")
     val userPublicProfile: SingletonDataRelationshipDoc,
-
+    
     @SerialName(value = "item")
-    val item: SingletonDataRelationshipDoc,
-)
+    val item: SingletonDataRelationshipDoc
+) {
+
+
+}
+

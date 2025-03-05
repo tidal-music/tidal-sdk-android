@@ -15,26 +15,39 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+import com.tidal.sdk.tidalapi.generated.models.Links
+import com.tidal.sdk.tidalapi.generated.models.UsersResource
+import com.tidal.sdk.tidalapi.generated.models.UsersSingleDataDocumentIncludedInner
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
+ * 
  *
- *
- * @param `data`
- * @param links
- * @param included
+ * @param `data` 
+ * @param links 
+ * @param included 
  */
 
 @Serializable
-data class UsersSingleDataDocument(
 
+data class UsersSingleDataDocument (
+
+    
     @SerialName(value = "data")
     val `data`: UsersResource? = null,
-
+    
     @SerialName(value = "links")
     val links: Links? = null,
-
+    
     @SerialName(value = "included")
-    val included: kotlin.collections.List<UsersSingleDataDocumentIncludedInner>? = null,
-)
+    val included: kotlin.collections.List<UsersSingleDataDocumentIncludedInner>? = null
+) {
+
+
+}
+

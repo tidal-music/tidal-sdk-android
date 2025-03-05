@@ -15,27 +15,39 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+import com.tidal.sdk.tidalapi.generated.models.Links
+import com.tidal.sdk.tidalapi.generated.models.ResourceIdentifier
+import com.tidal.sdk.tidalapi.generated.models.UserRecommendationsMultiDataRelationshipDocumentIncludedInner
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
+ * 
  *
- *
- * @param `data`
- * @param links
- * @param included
+ * @param `data` 
+ * @param links 
+ * @param included 
  */
 
 @Serializable
-data class UserRecommendationsMultiDataRelationshipDocument(
 
+data class UserRecommendationsMultiDataRelationshipDocument (
+
+    
     @SerialName(value = "data")
     val `data`: kotlin.collections.List<ResourceIdentifier>? = null,
-
+    
     @SerialName(value = "links")
     val links: Links? = null,
-
+    
     @SerialName(value = "included")
-    val included:
-    kotlin.collections.List<UserRecommendationsMultiDataRelationshipDocumentIncludedInner>? = null,
-)
+    val included: kotlin.collections.List<UserRecommendationsMultiDataRelationshipDocumentIncludedInner>? = null
+) {
+
+
+}
+

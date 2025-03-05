@@ -1,8 +1,13 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
-import com.tidal.sdk.tidalapi.generated.models.UserEntitlementsSingleDataDocument
-import retrofit2.Response
 import retrofit2.http.*
+import retrofit2.Response
+import okhttp3.RequestBody
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+import com.tidal.sdk.tidalapi.generated.models.ErrorDocument
+import com.tidal.sdk.tidalapi.generated.models.UserEntitlementsSingleDataDocument
 
 interface UserEntitlements {
     /**
@@ -21,9 +26,7 @@ interface UserEntitlements {
      * @return [UserEntitlementsSingleDataDocument]
      */
     @GET("userEntitlements/me")
-    suspend fun getMyUserEntitlements(
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<UserEntitlementsSingleDataDocument>
+    suspend fun getMyUserEntitlements(@Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null): Response<UserEntitlementsSingleDataDocument>
 
     /**
      * Get user entitlements for user
@@ -42,8 +45,6 @@ interface UserEntitlements {
      * @return [UserEntitlementsSingleDataDocument]
      */
     @GET("userEntitlements/{id}")
-    suspend fun getUserEntitlementsById(
-        @Path("id") id: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<UserEntitlementsSingleDataDocument>
+    suspend fun getUserEntitlementsById(@Path("id") id: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null): Response<UserEntitlementsSingleDataDocument>
+
 }

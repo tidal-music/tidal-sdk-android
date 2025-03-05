@@ -15,39 +15,50 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+import com.tidal.sdk.tidalapi.generated.models.Links
+import com.tidal.sdk.tidalapi.generated.models.UserPublicProfilesAttributes
+import com.tidal.sdk.tidalapi.generated.models.UserPublicProfilesRelationships
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.Transient
 
 /**
- *
+ * 
  *
  * @param id resource unique identifier
  * @param type resource unique type
- * @param attributes
- * @param relationships
- * @param links
+ * @param attributes 
+ * @param relationships 
+ * @param links 
  */
 
 @Serializable
 @SerialName(value = "userPublicProfiles")
-data class UserPublicProfilesResource(
 
-    // resource unique identifier
+data class UserPublicProfilesResource (
 
+    /* resource unique identifier */
+    
     @SerialName(value = "id")
     val id: kotlin.String,
-    // resource unique type
+    /* resource unique type */
     @Transient
     @SerialName(value = "type")
     val type: kotlin.String = "",
-
+    
     @SerialName(value = "attributes")
     val attributes: UserPublicProfilesAttributes? = null,
-
+    
     @SerialName(value = "relationships")
     val relationships: UserPublicProfilesRelationships? = null,
-
+    
     @SerialName(value = "links")
-    val links: Links? = null,
-) : UserPublicProfilePicksSingleDataDocumentIncludedInner, UserPublicProfilesMultiDataRelationshipDocumentIncludedInner, UsersSingleDataDocumentIncludedInner, UsersSingletonDataRelationshipDocumentIncludedInner, UserPublicProfilePicksSingletonDataRelationshipDocumentIncludedInner
+    val links: Links? = null
+): UserPublicProfilePicksSingleDataDocumentIncludedInner, UserPublicProfilesMultiDataRelationshipDocumentIncludedInner, UsersSingleDataDocumentIncludedInner, UsersSingletonDataRelationshipDocumentIncludedInner, UserPublicProfilePicksSingletonDataRelationshipDocumentIncludedInner {
+
+
+}
+
