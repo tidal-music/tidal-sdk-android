@@ -73,15 +73,6 @@ def download_api_spec(json_file_path):
     os.makedirs(temp_dir, exist_ok=True)
     logging.info(f"Created directory {temp_dir}")
 
-    try:
-        downloaded_file = download_file(input_url, temp_dir)
-        shutil.copy(downloaded_file, output_path)
-        os.remove(downloaded_file)
-        logging.info(f"API specification saved to {output_path}")
-    except Exception as e:
-        logging.error(f"Error downloading API specification: {e}")
-        sys.exit(1)
-
     return output_path, openapi_generator_path
 
 
