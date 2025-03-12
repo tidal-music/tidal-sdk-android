@@ -1,18 +1,5 @@
 {
-  "inputs": [
-    {
-      "inputURL": "https://developer.tidal.com/apiref/api-specifications/api-public-user-jsonapi/tidal-user-v2-openapi-3.0.json"
-    },
-    {
-      "inputURL": "https://developer.tidal.com/apiref/api-specifications/api-public-catalogue-jsonapi/tidal-catalog-v2-openapi-3.0.json"
-    },
-    {
-      "inputURL": "https://developer.tidal.com/apiref/api-specifications/api-public-search-jsonapi/tidal-search-v2-openapi-3.0.json"
-    },
-    {
-      "inputURL": "https://developer.tidal.com/apiref/api-specifications/api-public-user-content/tidal-user-content-openapi-3.0.json"
-    }
-  ],
-  "output": "./tidal-api-joined.json",
+  "input": "https://cautious-journey-plyk5rr.pages.github.io/tidal-api-oas.json",
+  "output": "./tidal-api.json",
   "openapi_generator_path": "./openapi-generator-cli.jar"
 }
