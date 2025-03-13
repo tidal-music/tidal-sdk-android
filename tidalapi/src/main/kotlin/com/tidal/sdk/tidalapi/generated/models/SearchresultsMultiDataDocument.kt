@@ -36,5 +36,5 @@ data class SearchresultsMultiDataDocument(
     val links: Links? = null,
 
     @SerialName(value = "included")
-    val included: kotlin.collections.List<SearchresultsSingleDataDocumentIncludedInner>? = null,
+    val included: kotlin.collections.List<SearchresultsMultiDataDocumentIncludedInner>? = null,
 )

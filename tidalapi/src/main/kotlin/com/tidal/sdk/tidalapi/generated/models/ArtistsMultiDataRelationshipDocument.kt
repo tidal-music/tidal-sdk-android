@@ -36,5 +36,5 @@ data class ArtistsMultiDataRelationshipDocument(
     val links: Links? = null,
 
     @SerialName(value = "included")
-    val included: kotlin.collections.List<ArtistsSingleDataDocumentIncludedInner>? = null,
+    val included: kotlin.collections.List<ArtistsMultiDataRelationshipDocumentIncludedInner>? = null,
 )

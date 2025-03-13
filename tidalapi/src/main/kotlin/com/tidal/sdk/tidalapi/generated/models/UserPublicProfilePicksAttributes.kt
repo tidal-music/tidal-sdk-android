@@ -55,23 +55,50 @@ data class UserPublicProfilePicksAttributes(
     /**
      * CatalogueResourceType for supported item for the pick
      *
-     * Values: TRACKS,VIDEOS,ALBUMS,ARTISTS,PROVIDERS
+     * Values: albums,artistRoles,artists,playlists,providers,searchresults,tracks,userCollections,userEntitlements,userPublicProfilePicks,userPublicProfiles,userRecommendations,users,videos
      */
     @Serializable
     enum class SupportedContentType(val value: kotlin.String) {
-        @SerialName(value = "TRACKS")
-        TRACKS("TRACKS"),
+        @SerialName(value = "albums")
+        albums("albums"),
 
-        @SerialName(value = "VIDEOS")
-        VIDEOS("VIDEOS"),
+        @SerialName(value = "artistRoles")
+        artistRoles("artistRoles"),
 
-        @SerialName(value = "ALBUMS")
-        ALBUMS("ALBUMS"),
+        @SerialName(value = "artists")
+        artists("artists"),
 
-        @SerialName(value = "ARTISTS")
-        ARTISTS("ARTISTS"),
+        @SerialName(value = "playlists")
+        playlists("playlists"),
 
-        @SerialName(value = "PROVIDERS")
-        PROVIDERS("PROVIDERS"),
+        @SerialName(value = "providers")
+        providers("providers"),
+
+        @SerialName(value = "searchresults")
+        searchresults("searchresults"),
+
+        @SerialName(value = "tracks")
+        tracks("tracks"),
+
+        @SerialName(value = "userCollections")
+        userCollections("userCollections"),
+
+        @SerialName(value = "userEntitlements")
+        userEntitlements("userEntitlements"),
+
+        @SerialName(value = "userPublicProfilePicks")
+        userPublicProfilePicks("userPublicProfilePicks"),
+
+        @SerialName(value = "userPublicProfiles")
+        userPublicProfiles("userPublicProfiles"),
+
+        @SerialName(value = "userRecommendations")
+        userRecommendations("userRecommendations"),
+
+        @SerialName(value = "users")
+        users("users"),
+
+        @SerialName(value = "videos")
+        videos("videos"),
     }
 }

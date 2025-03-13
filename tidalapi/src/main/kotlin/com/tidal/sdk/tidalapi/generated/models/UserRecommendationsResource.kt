@@ -51,4 +51,4 @@ data class UserRecommendationsResource(
 
     @SerialName(value = "links")
     val links: Links? = null,
-) : UsersSingleDataDocumentIncludedInner, UsersSingletonDataRelationshipDocumentIncludedInner, UserRecommendationsMultiDataRelationshipDocumentIncludedInner
+) : UsersMultiDataDocumentIncludedInner, UsersSingletonDataRelationshipDocumentIncludedInner, UserRecommendationsMultiDataRelationshipDocumentIncludedInner

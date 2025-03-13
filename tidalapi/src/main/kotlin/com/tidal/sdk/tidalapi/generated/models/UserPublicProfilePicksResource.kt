@@ -50,4 +50,4 @@ data class UserPublicProfilePicksResource(
 
     @SerialName(value = "links")
     val links: Links? = null,
-) : UserPublicProfilesMultiDataRelationshipDocumentIncludedInner, UserPublicProfilesSingleDataDocumentIncludedInner, UserPublicProfilePicksSingletonDataRelationshipDocumentIncludedInner
+) : UserPublicProfilesMultiDataRelationshipDocumentIncludedInner, UserPublicProfilePicksSingletonDataRelationshipDocumentIncludedInner, UserPublicProfilesMultiDataDocumentIncludedInner

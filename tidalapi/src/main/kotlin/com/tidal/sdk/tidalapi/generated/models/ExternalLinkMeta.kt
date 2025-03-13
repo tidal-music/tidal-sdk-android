@@ -21,20 +21,18 @@ import kotlinx.serialization.Serializable
 /**
  * metadata about an external link
  *
- * @param type external link type
+ * @param type
  */
 
 @Serializable
 data class ExternalLinkMeta(
-
-    // external link type
 
     @SerialName(value = "type")
     val type: ExternalLinkMeta.Type,
 ) {
 
     /**
-     * external link type
+     *
      *
      * Values: TIDAL_SHARING,TIDAL_AUTOPLAY_ANDROID,TIDAL_AUTOPLAY_IOS,TIDAL_AUTOPLAY_WEB,TWITTER,FACEBOOK,INSTAGRAM,TIKTOK,SNAPCHAT,HOMEPAGE
      */

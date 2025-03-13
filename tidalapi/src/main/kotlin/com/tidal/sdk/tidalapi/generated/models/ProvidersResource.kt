@@ -46,4 +46,4 @@ data class ProvidersResource(
 
     @SerialName(value = "links")
     val links: Links? = null,
-) : ArtistsSingleDataDocumentIncludedInner, TracksSingleDataDocumentIncludedInner, VideosMultiDataRelationshipDocumentIncludedInner, AlbumsSingleDataDocumentIncludedInner, VideosSingleDataDocumentIncludedInner
+) : AlbumsMultiDataDocumentIncludedInner, AlbumsMultiDataRelationshipDocumentIncludedInner, VideosMultiDataRelationshipDocumentIncludedInner, ArtistsMultiDataDocumentIncludedInner, ArtistsMultiDataRelationshipDocumentIncludedInner, VideosMultiDataDocumentIncludedInner, TracksMultiDataDocumentIncludedInner

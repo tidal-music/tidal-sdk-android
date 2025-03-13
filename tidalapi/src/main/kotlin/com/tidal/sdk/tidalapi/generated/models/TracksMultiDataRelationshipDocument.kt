@@ -36,5 +36,5 @@ data class TracksMultiDataRelationshipDocument(
     val links: Links? = null,
 
     @SerialName(value = "included")
-    val included: kotlin.collections.List<TracksSingleDataDocumentIncludedInner>? = null,
+    val included: kotlin.collections.List<TracksMultiDataDocumentIncludedInner>? = null,
 )

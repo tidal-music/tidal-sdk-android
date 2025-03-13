@@ -36,5 +36,5 @@ data class AlbumsMultiDataRelationshipDocument(
     val links: Links? = null,
 
     @SerialName(value = "included")
-    val included: kotlin.collections.List<AlbumsSingleDataDocumentIncludedInner>? = null,
+    val included: kotlin.collections.List<AlbumsMultiDataRelationshipDocumentIncludedInner>? = null,
 )

@@ -23,6 +23,7 @@ import kotlinx.serialization.Serializable
  *
  * @param similarArtists
  * @param albums
+ * @param roles
  * @param videos
  * @param trackProviders
  * @param tracks
@@ -37,6 +38,9 @@ data class ArtistsRelationships(
 
     @SerialName(value = "albums")
     val albums: MultiDataRelationshipDoc,
+
+    @SerialName(value = "roles")
+    val roles: MultiDataRelationshipDoc,
 
     @SerialName(value = "videos")
     val videos: MultiDataRelationshipDoc,

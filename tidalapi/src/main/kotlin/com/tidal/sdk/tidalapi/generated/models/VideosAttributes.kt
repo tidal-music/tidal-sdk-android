@@ -76,11 +76,11 @@ data class VideosAttributes(
     // Represents available links to, and metadata about, an album item images
 
     @SerialName(value = "imageLinks")
-    val imageLinks: kotlin.collections.List<CatalogueItemImageLink>? = null,
+    val imageLinks: kotlin.collections.List<ImageLink>? = null,
     // Represents available links to something that is related to a catalog item, but external to the TIDAL API
 
     @SerialName(value = "externalLinks")
-    val externalLinks: kotlin.collections.List<CatalogueItemExternalLink>? = null,
+    val externalLinks: kotlin.collections.List<ExternalLink>? = null,
 ) {
 
     /**

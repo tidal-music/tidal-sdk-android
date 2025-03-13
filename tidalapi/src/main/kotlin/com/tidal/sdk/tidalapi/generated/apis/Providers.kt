@@ -7,47 +7,45 @@ import retrofit2.http.*
 
 interface Providers {
     /**
-     * Get single provider
-     * Retrieve provider details by TIDAL provider id.
+     * Get all providers
+     * Retrieves all provider details by available filters or without (if applicable).
      * Responses:
+     *  - 200:
+     *  - 451: Unavailable For Legal Reasons
      *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
+     *  - 500: Internal Server Error. Something went wrong on the server party.
+     *  - 404: Resource not found. The requested resource is not found.
      *  - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.
      *  - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
-     *  - 404: Resource not found. The requested resource is not found.
-     *  - 500: Internal Server Error. Something went wrong on the server party.
      *  - 406: Not acceptable. The server doesn't support any of the requested by client acceptable content types.
-     *  - 200: Successfully executed request.
+     *  - 429: Too many HTTP requests have been made within the allowed time.
      *
-     * @param id TIDAL provider id
-     * @param include Allows the client to customize which related resources should be returned (optional)
-     * @return [ProvidersSingleDataDocument]
-     */
-    @GET("providers/{id}")
-    suspend fun getProviderById(
-        @Path("id") id: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<ProvidersSingleDataDocument>
-
-    /**
-     * Get multiple providers
-     * Retrieve multiple provider details.
-     * Responses:
-     *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
-     *  - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.
-     *  - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
-     *  - 404: Resource not found. The requested resource is not found.
-     *  - 500: Internal Server Error. Something went wrong on the server party.
-     *  - 406: Not acceptable. The server doesn't support any of the requested by client acceptable content types.
-     *  - 200: Successfully executed request.
-     *
-     * @param include Allows the client to customize which related resources should be returned (optional)
-     * @param filterId provider id (optional)
+     * @param filterId Allows to filter the collection of resources based on id attribute value (optional)
      * @return [ProvidersMultiDataDocument]
      */
     @GET("providers")
-    suspend fun getProvidersByFilters(
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+    suspend fun providersGet(
         @Query("filter[id]") filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? =
             null,
     ): Response<ProvidersMultiDataDocument>
+
+    /**
+     * Get single provider
+     * Retrieves provider details by an unique id.
+     * Responses:
+     *  - 200:
+     *  - 451: Unavailable For Legal Reasons
+     *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
+     *  - 500: Internal Server Error. Something went wrong on the server party.
+     *  - 404: Resource not found. The requested resource is not found.
+     *  - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.
+     *  - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
+     *  - 406: Not acceptable. The server doesn't support any of the requested by client acceptable content types.
+     *  - 429: Too many HTTP requests have been made within the allowed time.
+     *
+     * @param id Provider id
+     * @return [ProvidersSingleDataDocument]
+     */
+    @GET("providers/{id}")
+    suspend fun providersIdGet(@Path("id") id: kotlin.String): Response<ProvidersSingleDataDocument>
 }

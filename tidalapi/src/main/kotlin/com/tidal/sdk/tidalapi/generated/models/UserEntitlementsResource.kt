@@ -46,4 +46,4 @@ data class UserEntitlementsResource(
 
     @SerialName(value = "links")
     val links: Links? = null,
-) : UsersSingleDataDocumentIncludedInner, UsersSingletonDataRelationshipDocumentIncludedInner
+) : UsersMultiDataDocumentIncludedInner, UsersSingletonDataRelationshipDocumentIncludedInner

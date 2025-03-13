@@ -36,5 +36,5 @@ data class UserRecommendationsMultiDataDocument(
     val links: Links? = null,
 
     @SerialName(value = "included")
-    val included: kotlin.collections.List<UserRecommendationsSingleDataDocumentIncludedInner>? = null,
+    val included: kotlin.collections.List<UserRecommendationsMultiDataDocumentIncludedInner>? = null,
 )
