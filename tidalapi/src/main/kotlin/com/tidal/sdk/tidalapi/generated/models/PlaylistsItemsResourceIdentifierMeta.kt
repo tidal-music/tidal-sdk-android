@@ -21,18 +21,15 @@ import kotlinx.serialization.Serializable
 /**
  *
  *
- * @param itemId Unique identifier of the item in a playlist
- * @param addedAt When the item was added to the playlist
+ * @param itemId
+ * @param addedAt
  */
 
 @Serializable
 data class PlaylistsItemsResourceIdentifierMeta(
 
-    // Unique identifier of the item in a playlist
-
     @SerialName(value = "itemId")
     val itemId: kotlin.String? = null,
-    // When the item was added to the playlist
 
     @SerialName(value = "addedAt")
     val addedAt: kotlin.String? = null,

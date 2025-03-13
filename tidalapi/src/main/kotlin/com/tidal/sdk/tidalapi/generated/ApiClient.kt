@@ -2,11 +2,13 @@ package com.tidal.sdk.tidalapi.generated
 
 import com.tidal.sdk.auth.CredentialsProvider
 import com.tidal.sdk.tidalapi.generated.apis.Albums
+import com.tidal.sdk.tidalapi.generated.apis.ArtistRoles
 import com.tidal.sdk.tidalapi.generated.apis.Artists
 import com.tidal.sdk.tidalapi.generated.apis.Playlists
 import com.tidal.sdk.tidalapi.generated.apis.Providers
-import com.tidal.sdk.tidalapi.generated.apis.SearchResults
+import com.tidal.sdk.tidalapi.generated.apis.Searchresults
 import com.tidal.sdk.tidalapi.generated.apis.Tracks
+import com.tidal.sdk.tidalapi.generated.apis.UserCollections
 import com.tidal.sdk.tidalapi.generated.apis.UserEntitlements
 import com.tidal.sdk.tidalapi.generated.apis.UserPublicProfilePicks
 import com.tidal.sdk.tidalapi.generated.apis.UserPublicProfiles
@@ -30,6 +32,14 @@ class TidalApiClient(credentialsProvider: CredentialsProvider, baseUrl: String =
      */
     fun createAlbums(): Albums {
         return retrofit.create(Albums::class.java)
+    }
+
+    /**
+     * Returns an instance of the [ArtistRoles] which can be used
+     * to make API calls to the
+     */
+    fun createArtistRoles(): ArtistRoles {
+        return retrofit.create(ArtistRoles::class.java)
     }
 
     /**
@@ -57,11 +67,11 @@ class TidalApiClient(credentialsProvider: CredentialsProvider, baseUrl: String =
     }
 
     /**
-     * Returns an instance of the [SearchResults] which can be used
+     * Returns an instance of the [Searchresults] which can be used
      * to make API calls to the
      */
-    fun createSearchResults(): SearchResults {
-        return retrofit.create(SearchResults::class.java)
+    fun createSearchresults(): Searchresults {
+        return retrofit.create(Searchresults::class.java)
     }
 
     /**
@@ -70,6 +80,14 @@ class TidalApiClient(credentialsProvider: CredentialsProvider, baseUrl: String =
      */
     fun createTracks(): Tracks {
         return retrofit.create(Tracks::class.java)
+    }
+
+    /**
+     * Returns an instance of the [UserCollections] which can be used
+     * to make API calls to the
+     */
+    fun createUserCollections(): UserCollections {
+        return retrofit.create(UserCollections::class.java)
     }
 
     /**

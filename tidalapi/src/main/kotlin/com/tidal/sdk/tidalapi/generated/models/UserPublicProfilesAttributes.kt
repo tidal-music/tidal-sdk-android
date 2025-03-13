@@ -45,7 +45,7 @@ data class UserPublicProfilesAttributes(
     val profileName: kotlin.String? = null,
 
     @SerialName(value = "picture")
-    val picture: UserPublicProfilesImageLink? = null,
+    val picture: UserPublicProfilesAttributesPicture? = null,
     // ExternalLinks for the user's profile
 
     @SerialName(value = "externalLinks")

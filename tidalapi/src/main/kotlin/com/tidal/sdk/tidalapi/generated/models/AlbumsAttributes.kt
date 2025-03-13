@@ -91,15 +91,15 @@ data class AlbumsAttributes(
     // Represents available links to, and metadata about, an album cover images
 
     @SerialName(value = "imageLinks")
-    val imageLinks: kotlin.collections.List<CatalogueItemImageLink>? = null,
+    val imageLinks: kotlin.collections.List<ImageLink>? = null,
     // Represents available links to, and metadata about, an album cover videos
 
     @SerialName(value = "videoLinks")
-    val videoLinks: kotlin.collections.List<CatalogueItemVideoLink>? = null,
+    val videoLinks: kotlin.collections.List<VideoLink>? = null,
     // Represents available links to something that is related to an album resource, but external to the TIDAL API
 
     @SerialName(value = "externalLinks")
-    val externalLinks: kotlin.collections.List<CatalogueItemExternalLink>? = null,
+    val externalLinks: kotlin.collections.List<ExternalLink>? = null,
 ) {
 
     /**

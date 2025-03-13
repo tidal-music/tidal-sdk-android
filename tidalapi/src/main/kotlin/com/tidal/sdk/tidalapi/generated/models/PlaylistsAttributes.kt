@@ -24,11 +24,11 @@ import kotlinx.serialization.Serializable
  * @param name Playlist name
  * @param bounded Indicates if the playlist has a duration and set number of tracks
  * @param externalLinks Sharing links to the playlist
+ * @param imageLinks Images associated with the playlist
  * @param createdAt Datetime of playlist creation (ISO 8601)
  * @param lastModifiedAt Datetime of last modification of the playlist (ISO 8601)
  * @param privacy Privacy setting of the playlist
  * @param playlistType The type of the playlist
- * @param imageLinks Images associated with the playlist
  * @param description Playlist description
  * @param duration Duration of the playlist expressed in accordance with ISO 8601
  * @param numberOfItems Number of items in the playlist
@@ -48,7 +48,11 @@ data class PlaylistsAttributes(
     // Sharing links to the playlist
 
     @SerialName(value = "externalLinks")
-    val externalLinks: kotlin.collections.List<PlaylistsExternalLink>,
+    val externalLinks: kotlin.collections.List<ExternalLink>,
+    // Images associated with the playlist
+
+    @SerialName(value = "imageLinks")
+    val imageLinks: kotlin.collections.List<ImageLink>,
     // Datetime of playlist creation (ISO 8601)
 
     @SerialName(value = "createdAt")
@@ -60,15 +64,11 @@ data class PlaylistsAttributes(
     // Privacy setting of the playlist
 
     @SerialName(value = "privacy")
-    val privacy: kotlin.String,
+    val privacy: PlaylistsAttributes.Privacy,
     // The type of the playlist
 
     @SerialName(value = "playlistType")
-    val playlistType: kotlin.String,
-    // Images associated with the playlist
-
-    @SerialName(value = "imageLinks")
-    val imageLinks: kotlin.collections.List<PlaylistsImageLink>,
+    val playlistType: PlaylistsAttributes.PlaylistType,
     // Playlist description
 
     @SerialName(value = "description")
@@ -81,4 +81,39 @@ data class PlaylistsAttributes(
 
     @SerialName(value = "numberOfItems")
     val numberOfItems: kotlin.Int? = null,
-)
+) {
+
+    /**
+     * Privacy setting of the playlist
+     *
+     * Values: PUBLIC,PRIVATE
+     */
+    @Serializable
+    enum class Privacy(val value: kotlin.String) {
+        @SerialName(value = "PUBLIC")
+        PUBLIC("PUBLIC"),
+
+        @SerialName(value = "PRIVATE")
+        PRIVATE("PRIVATE"),
+    }
+
+    /**
+     * The type of the playlist
+     *
+     * Values: EDITORIAL,USER,MIX,ARTIST
+     */
+    @Serializable
+    enum class PlaylistType(val value: kotlin.String) {
+        @SerialName(value = "EDITORIAL")
+        EDITORIAL("EDITORIAL"),
+
+        @SerialName(value = "USER")
+        USER("USER"),
+
+        @SerialName(value = "MIX")
+        MIX("MIX"),
+
+        @SerialName(value = "ARTIST")
+        ARTIST("ARTIST"),
+    }
+}

@@ -36,5 +36,5 @@ data class VideosSingleDataDocument(
     val links: Links? = null,
 
     @SerialName(value = "included")
-    val included: kotlin.collections.List<VideosSingleDataDocumentIncludedInner>? = null,
+    val included: kotlin.collections.List<VideosMultiDataDocumentIncludedInner>? = null,
 )

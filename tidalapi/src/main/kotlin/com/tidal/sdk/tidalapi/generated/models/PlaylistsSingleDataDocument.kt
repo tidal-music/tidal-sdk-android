@@ -36,5 +36,5 @@ data class PlaylistsSingleDataDocument(
     val links: Links? = null,
 
     @SerialName(value = "included")
-    val included: kotlin.collections.List<PlaylistsSingleDataDocumentIncludedInner>? = null,
+    val included: kotlin.collections.List<PlaylistsMultiDataDocumentIncludedInner>? = null,
 )

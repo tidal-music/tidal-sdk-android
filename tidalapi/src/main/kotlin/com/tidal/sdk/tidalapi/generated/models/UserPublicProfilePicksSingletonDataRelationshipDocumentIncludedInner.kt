@@ -15,10 +15,7 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import com.tidal.sdk.tidalapi.generated.models.AlbumsResource
-import com.tidal.sdk.tidalapi.generated.models.ArtistsResource
 import com.tidal.sdk.tidalapi.generated.models.Links
-import com.tidal.sdk.tidalapi.generated.models.TracksResource
 import com.tidal.sdk.tidalapi.generated.models.UserPublicProfilePicksAttributes
 import com.tidal.sdk.tidalapi.generated.models.UserPublicProfilePicksRelationships
 import com.tidal.sdk.tidalapi.generated.models.UserPublicProfilePicksResource

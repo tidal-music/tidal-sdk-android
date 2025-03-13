@@ -26,6 +26,7 @@ import kotlinx.serialization.Serializable
  * @param imageLinks Represents available links to, and metadata about, an artist images
  * @param externalLinks Represents available links to something that is related to an artist resource, but external to the TIDAL API
  * @param roles Artist roles
+ * @param handle Artist handle
  */
 
 @Serializable
@@ -42,13 +43,13 @@ data class ArtistsAttributes(
     // Represents available links to, and metadata about, an artist images
 
     @SerialName(value = "imageLinks")
-    val imageLinks: kotlin.collections.List<CatalogueItemImageLink>? = null,
+    val imageLinks: kotlin.collections.List<ImageLink>? = null,
     // Represents available links to something that is related to an artist resource, but external to the TIDAL API
 
     @SerialName(value = "externalLinks")
-    val externalLinks: kotlin.collections.List<CatalogueItemExternalLink>? = null,
+    val externalLinks: kotlin.collections.List<ExternalLink>? = null,
     // Artist roles
 
-    @SerialName(value = "roles")
-    val roles: kotlin.collections.List<ArtistRole>? = null,
+    @SerialName(value = "handle")
+    val handle: kotlin.String? = null,
 )

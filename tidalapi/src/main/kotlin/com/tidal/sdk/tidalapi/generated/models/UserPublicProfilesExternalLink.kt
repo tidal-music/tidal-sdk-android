@@ -21,14 +21,12 @@ import kotlinx.serialization.Serializable
 /**
  *
  *
- * @param href link to something that is related to a resource
+ * @param href
  * @param meta
  */
 
 @Serializable
 data class UserPublicProfilesExternalLink(
-
-    // link to something that is related to a resource
 
     @SerialName(value = "href")
     val href: kotlin.String,

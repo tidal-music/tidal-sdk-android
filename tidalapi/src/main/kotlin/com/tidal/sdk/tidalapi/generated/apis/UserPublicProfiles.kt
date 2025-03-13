@@ -1,6 +1,5 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
-import com.tidal.sdk.tidalapi.generated.models.UpdateUserProfileBody
 import com.tidal.sdk.tidalapi.generated.models.UserPublicProfilesMultiDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserPublicProfilesMultiDataRelationshipDocument
 import com.tidal.sdk.tidalapi.generated.models.UserPublicProfilesSingleDataDocument
@@ -9,70 +8,79 @@ import retrofit2.http.*
 
 interface UserPublicProfiles {
     /**
-     * Get my user profile
-     * Retrieve the logged-in user&#39;s public profile details.
+     * Get all userPublicProfiles
+     * Retrieves all userPublicProfile details by available filters or without (if applicable).
      * Responses:
-     *  - 404: Resource not found. The requested resource is not found.
-     *  - 500: Internal Server Error. Something went wrong on the server party.
-     *  - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
+     *  - 200:
+     *  - 451: Unavailable For Legal Reasons
      *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
+     *  - 500: Internal Server Error. Something went wrong on the server party.
+     *  - 404: Resource not found. The requested resource is not found.
      *  - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.
+     *  - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
      *  - 406: Not acceptable. The server doesn't support any of the requested by client acceptable content types.
-     *  - 200: User profile retrieved successfully
+     *  - 429: Too many HTTP requests have been made within the allowed time.
      *
-     * @param locale Locale language tag (IETF BCP 47 Language Tag)
-     * @param include Allows the client to customize which related resources should be returned. Available options: publicPlaylists, publicPicks, followers, following (optional)
-     * @return [UserPublicProfilesSingleDataDocument]
+     * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param include Allows the client to customize which related resources should be returned. Available options: followers, following, publicPicks, publicPlaylists (optional)
+     * @param filterId Allows to filter the collection of resources based on id attribute value (optional)
+     * @return [UserPublicProfilesMultiDataDocument]
      */
-    @GET("userPublicProfiles/me")
-    suspend fun getMyUserPublicProfile(
-        @Query("locale") locale: kotlin.String,
+    @GET("userPublicProfiles")
+    suspend fun userPublicProfilesGet(
+        @Query("countryCode") countryCode: kotlin.String,
         @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<UserPublicProfilesSingleDataDocument>
+        @Query("filter[id]") filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? =
+            null,
+    ): Response<UserPublicProfilesMultiDataDocument>
 
     /**
-     * Get user public profile by id
-     * Retrieve user public profile details by TIDAL user id.
+     * Get single userPublicProfile
+     * Retrieves userPublicProfile details by an unique id.
      * Responses:
-     *  - 404: Resource not found. The requested resource is not found.
-     *  - 500: Internal Server Error. Something went wrong on the server party.
-     *  - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
+     *  - 200:
+     *  - 451: Unavailable For Legal Reasons
      *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
+     *  - 500: Internal Server Error. Something went wrong on the server party.
+     *  - 404: Resource not found. The requested resource is not found.
      *  - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.
+     *  - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
      *  - 406: Not acceptable. The server doesn't support any of the requested by client acceptable content types.
-     *  - 200: User profile retrieved successfully
+     *  - 429: Too many HTTP requests have been made within the allowed time.
      *
-     * @param id TIDAL user id
-     * @param locale Locale language tag (IETF BCP 47 Language Tag)
-     * @param include Allows the client to customize which related resources should be returned. Available options: publicPlaylists, publicPicks, followers, following (optional)
+     * @param id User public profile id
+     * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param include Allows the client to customize which related resources should be returned. Available options: followers, following, publicPicks, publicPlaylists (optional)
      * @return [UserPublicProfilesSingleDataDocument]
      */
     @GET("userPublicProfiles/{id}")
-    suspend fun getUserPublicProfileById(
+    suspend fun userPublicProfilesIdGet(
         @Path("id") id: kotlin.String,
-        @Query("locale") locale: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String,
         @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<UserPublicProfilesSingleDataDocument>
 
     /**
      * Relationship: followers
-     * Retrieve user&#39;s public followers
+     * Retrieves followers relationship details of the related userPublicProfile resource.
      * Responses:
-     *  - 404: Resource not found. The requested resource is not found.
-     *  - 500: Internal Server Error. Something went wrong on the server party.
-     *  - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
+     *  - 200:
+     *  - 451: Unavailable For Legal Reasons
      *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
+     *  - 500: Internal Server Error. Something went wrong on the server party.
+     *  - 404: Resource not found. The requested resource is not found.
      *  - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.
+     *  - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
      *  - 406: Not acceptable. The server doesn't support any of the requested by client acceptable content types.
-     *  - 200: Public followers retrieved successfully
+     *  - 429: Too many HTTP requests have been made within the allowed time.
      *
-     * @param id TIDAL user id
+     * @param id User public profile id
      * @param include Allows the client to customize which related resources should be returned. Available options: followers (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      * @return [UserPublicProfilesMultiDataRelationshipDocument]
      */
     @GET("userPublicProfiles/{id}/relationships/followers")
-    suspend fun getUserPublicProfileFollowersRelationship(
+    suspend fun userPublicProfilesIdRelationshipsFollowersGet(
         @Path("id") id: kotlin.String,
         @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
@@ -80,122 +88,109 @@ interface UserPublicProfiles {
 
     /**
      * Relationship: following
-     * Retrieve user&#39;s public followings
+     * Retrieves following relationship details of the related userPublicProfile resource.
      * Responses:
-     *  - 404: Resource not found. The requested resource is not found.
-     *  - 500: Internal Server Error. Something went wrong on the server party.
-     *  - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
+     *  - 200:
+     *  - 451: Unavailable For Legal Reasons
      *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
+     *  - 500: Internal Server Error. Something went wrong on the server party.
+     *  - 404: Resource not found. The requested resource is not found.
      *  - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.
+     *  - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
      *  - 406: Not acceptable. The server doesn't support any of the requested by client acceptable content types.
-     *  - 200: Public following retrieved successfully
+     *  - 429: Too many HTTP requests have been made within the allowed time.
      *
-     * @param id TIDAL user id
+     * @param id User public profile id
      * @param include Allows the client to customize which related resources should be returned. Available options: following (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      * @return [UserPublicProfilesMultiDataRelationshipDocument]
      */
     @GET("userPublicProfiles/{id}/relationships/following")
-    suspend fun getUserPublicProfileFollowingRelationship(
+    suspend fun userPublicProfilesIdRelationshipsFollowingGet(
         @Path("id") id: kotlin.String,
         @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
     ): Response<UserPublicProfilesMultiDataRelationshipDocument>
 
     /**
-     * Relationship: picks
-     * Retrieve user&#39;s public picks.
+     * Relationship: publicPicks
+     * Retrieves publicPicks relationship details of the related userPublicProfile resource.
      * Responses:
-     *  - 404: Resource not found. The requested resource is not found.
-     *  - 500: Internal Server Error. Something went wrong on the server party.
-     *  - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
+     *  - 200:
+     *  - 451: Unavailable For Legal Reasons
      *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
+     *  - 500: Internal Server Error. Something went wrong on the server party.
+     *  - 404: Resource not found. The requested resource is not found.
      *  - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.
+     *  - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
      *  - 406: Not acceptable. The server doesn't support any of the requested by client acceptable content types.
-     *  - 200: Public picks retrieved successfully
+     *  - 429: Too many HTTP requests have been made within the allowed time.
      *
-     * @param id TIDAL user id
-     * @param locale Locale language tag (IETF BCP 47 Language Tag)
+     * @param id User public profile id
+     * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param locale BCP47 locale code
      * @param include Allows the client to customize which related resources should be returned. Available options: publicPicks (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      * @return [UserPublicProfilesMultiDataRelationshipDocument]
      */
     @GET("userPublicProfiles/{id}/relationships/publicPicks")
-    suspend fun getUserPublicProfilePublicPicksRelationship(
+    suspend fun userPublicProfilesIdRelationshipsPublicPicksGet(
         @Path("id") id: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String,
         @Query("locale") locale: kotlin.String,
         @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
     ): Response<UserPublicProfilesMultiDataRelationshipDocument>
 
     /**
-     * Relationship: playlists
-     * Retrieves user&#39;s public playlists.
+     * Relationship: publicPlaylists
+     * Retrieves publicPlaylists relationship details of the related userPublicProfile resource.
      * Responses:
-     *  - 404: Resource not found. The requested resource is not found.
-     *  - 500: Internal Server Error. Something went wrong on the server party.
-     *  - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
+     *  - 200:
+     *  - 451: Unavailable For Legal Reasons
      *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
+     *  - 500: Internal Server Error. Something went wrong on the server party.
+     *  - 404: Resource not found. The requested resource is not found.
      *  - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.
+     *  - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
      *  - 406: Not acceptable. The server doesn't support any of the requested by client acceptable content types.
-     *  - 200: Public playlists retrieved successfully
+     *  - 429: Too many HTTP requests have been made within the allowed time.
      *
-     * @param id TIDAL user id
+     * @param id User public profile id
+     * @param countryCode ISO 3166-1 alpha-2 country code
      * @param include Allows the client to customize which related resources should be returned. Available options: publicPlaylists (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      * @return [UserPublicProfilesMultiDataRelationshipDocument]
      */
     @GET("userPublicProfiles/{id}/relationships/publicPlaylists")
-    suspend fun getUserPublicProfilePublicPlaylistsRelationship(
+    suspend fun userPublicProfilesIdRelationshipsPublicPlaylistsGet(
         @Path("id") id: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String,
         @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
     ): Response<UserPublicProfilesMultiDataRelationshipDocument>
 
     /**
-     * Get user public profiles
-     * Reads user public profile details by TIDAL user ids.
+     * Get current user&#39;s userPublicProfile data
+     * Retrieves current user&#39;s userPublicProfile details.
      * Responses:
-     *  - 404: Resource not found. The requested resource is not found.
-     *  - 500: Internal Server Error. Something went wrong on the server party.
-     *  - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
+     *  - 200:
+     *  - 451: Unavailable For Legal Reasons
      *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
-     *  - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.
-     *  - 406: Not acceptable. The server doesn't support any of the requested by client acceptable content types.
-     *  - 200: User profile retrieved successfully
-     *
-     * @param locale Locale language tag (IETF BCP 47 Language Tag)
-     * @param include Allows the client to customize which related resources should be returned. Available options: publicPlaylists, publicPicks, followers, following (optional)
-     * @param filterId TIDAL user id (optional)
-     * @return [UserPublicProfilesMultiDataDocument]
-     */
-    @GET("userPublicProfiles")
-    suspend fun getUserPublicProfilesByFilters(
-        @Query("locale") locale: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[id]") filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? =
-            null,
-    ): Response<UserPublicProfilesMultiDataDocument>
-
-    /**
-     * Update user public profile
-     * Update user public profile
-     * Responses:
-     *  - 404: Resource not found. The requested resource is not found.
      *  - 500: Internal Server Error. Something went wrong on the server party.
-     *  - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
-     *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
+     *  - 404: Resource not found. The requested resource is not found.
      *  - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.
+     *  - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
      *  - 406: Not acceptable. The server doesn't support any of the requested by client acceptable content types.
-     *  - 200: Updated Public Profile successfully
+     *  - 429: Too many HTTP requests have been made within the allowed time.
      *
-     * @param id ${public.usercontent.updateProfile.id.descr}
-     * @param updateUserProfileBody
-     * @param include Allows the client to customize which related resources should be returned (optional)
-     * @return [kotlin.Any]
+     * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param include Allows the client to customize which related resources should be returned. Available options: followers, following, publicPicks, publicPlaylists (optional)
+     * @return [UserPublicProfilesSingleDataDocument]
      */
-    @PATCH("userPublicProfiles/{id}")
-    suspend fun updateMyUserProfile(
-        @Path("id") id: kotlin.String,
-        @Body updateUserProfileBody: UpdateUserProfileBody,
+    @GET("userPublicProfiles/me")
+    suspend fun userPublicProfilesMeGet(
+        @Query("countryCode") countryCode: kotlin.String,
         @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<kotlin.Any>
+    ): Response<UserPublicProfilesSingleDataDocument>
 }

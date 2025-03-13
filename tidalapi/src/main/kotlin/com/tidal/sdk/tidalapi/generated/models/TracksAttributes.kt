@@ -74,7 +74,7 @@ data class TracksAttributes(
     // Represents available links to something that is related to a catalog item, but external to the TIDAL API
 
     @SerialName(value = "externalLinks")
-    val externalLinks: kotlin.collections.List<CatalogueItemExternalLink>? = null,
+    val externalLinks: kotlin.collections.List<ExternalLink>? = null,
 ) {
 
     /**

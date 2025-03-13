@@ -35,8 +35,8 @@ import kotlinx.serialization.Transient
  * @param id resource unique identifier
  * @param type resource unique type
  * @param attributes 
- * @param links 
  * @param relationships 
+ * @param links 
  */
 @Serializable
 @Polymorphic
