@@ -15,20 +15,29 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
- *
+ * 
  *
  * @param numberOfTracks total number of tracks released together with the provider
  */
 
 @Serializable
-data class ArtistsTrackProvidersResourceIdentifierMeta(
 
-    // total number of tracks released together with the provider
+data class ArtistsTrackProvidersResourceIdentifierMeta (
 
+    /* total number of tracks released together with the provider */
+    
     @SerialName(value = "numberOfTracks")
-    val numberOfTracks: kotlin.Long,
-)
+    val numberOfTracks: kotlin.Long
+) {
+
+
+}
+

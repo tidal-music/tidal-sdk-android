@@ -15,39 +15,50 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+import com.tidal.sdk.tidalapi.generated.models.Links
+import com.tidal.sdk.tidalapi.generated.models.TracksAttributes
+import com.tidal.sdk.tidalapi.generated.models.TracksRelationships
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.Transient
 
 /**
- *
+ * 
  *
  * @param id resource unique identifier
  * @param type resource unique type
- * @param attributes
- * @param relationships
- * @param links
+ * @param attributes 
+ * @param relationships 
+ * @param links 
  */
 
 @Serializable
 @SerialName(value = "tracks")
-data class TracksResource(
 
-    // resource unique identifier
+data class TracksResource (
 
+    /* resource unique identifier */
+    
     @SerialName(value = "id")
     val id: kotlin.String,
-    // resource unique type
+    /* resource unique type */
     @Transient
     @SerialName(value = "type")
     val type: kotlin.String = "",
-
+    
     @SerialName(value = "attributes")
     val attributes: TracksAttributes? = null,
-
+    
     @SerialName(value = "relationships")
     val relationships: TracksRelationships? = null,
-
+    
     @SerialName(value = "links")
-    val links: Links? = null,
-) : ArtistsSingleDataDocumentIncludedInner, TracksSingleDataDocumentIncludedInner, UserPublicProfilePicksSingleDataDocumentIncludedInner, SearchresultsSingleDataDocumentIncludedInner, UserPublicProfilePicksSingletonDataRelationshipDocumentIncludedInner, AlbumsSingleDataDocumentIncludedInner, SearchresultsMultiDataRelationshipDocumentIncludedInner, PlaylistsSingleDataDocumentIncludedInner, PlaylistsMultiDataRelationshipDocumentIncludedInner
+    val links: Links? = null
+): ArtistsSingleDataDocumentIncludedInner, TracksSingleDataDocumentIncludedInner, UserPublicProfilePicksSingleDataDocumentIncludedInner, SearchresultsSingleDataDocumentIncludedInner, UserPublicProfilePicksSingletonDataRelationshipDocumentIncludedInner, AlbumsSingleDataDocumentIncludedInner, SearchresultsMultiDataRelationshipDocumentIncludedInner, PlaylistsSingleDataDocumentIncludedInner, PlaylistsMultiDataRelationshipDocumentIncludedInner {
+
+
+}
+

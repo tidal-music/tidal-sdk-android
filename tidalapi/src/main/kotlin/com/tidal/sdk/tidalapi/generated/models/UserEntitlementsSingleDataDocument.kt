@@ -15,22 +15,34 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+import com.tidal.sdk.tidalapi.generated.models.Links
+import com.tidal.sdk.tidalapi.generated.models.UserEntitlementsResource
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
+ * 
  *
- *
- * @param `data`
- * @param links
+ * @param `data` 
+ * @param links 
  */
 
 @Serializable
-data class UserEntitlementsSingleDataDocument(
 
+data class UserEntitlementsSingleDataDocument (
+
+    
     @SerialName(value = "data")
     val `data`: UserEntitlementsResource? = null,
-
+    
     @SerialName(value = "links")
-    val links: Links? = null,
-)
+    val links: Links? = null
+) {
+
+
+}
+

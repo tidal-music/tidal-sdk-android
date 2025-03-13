@@ -15,22 +15,32 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
+ * 
  *
- *
- * @param id
- * @param name
+ * @param id 
+ * @param name 
  */
 
 @Serializable
-data class ArtistRole(
 
+data class ArtistRole (
+
+    
     @SerialName(value = "id")
     val id: kotlin.String? = null,
-
+    
     @SerialName(value = "name")
-    val name: kotlin.String? = null,
-)
+    val name: kotlin.String? = null
+) {
+
+
+}
+

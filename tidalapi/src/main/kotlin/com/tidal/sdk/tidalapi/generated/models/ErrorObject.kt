@@ -15,8 +15,13 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+import com.tidal.sdk.tidalapi.generated.models.ErrorObjectSource
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
  * JSON:API error object
@@ -25,29 +30,34 @@ import kotlinx.serialization.Serializable
  * @param status HTTP status code applicable to this problem
  * @param code application-specific error code
  * @param detail human-readable explanation specific to this occurrence of the problem
- * @param source
+ * @param source 
  */
 
 @Serializable
-data class ErrorObject(
 
-    // unique identifier for this particular occurrence of the problem
+data class ErrorObject (
 
+    /* unique identifier for this particular occurrence of the problem */
+    
     @SerialName(value = "id")
     val id: kotlin.String? = null,
-    // HTTP status code applicable to this problem
-
+    /* HTTP status code applicable to this problem */
+    
     @SerialName(value = "status")
     val status: kotlin.String? = null,
-    // application-specific error code
-
+    /* application-specific error code */
+    
     @SerialName(value = "code")
     val code: kotlin.String? = null,
-    // human-readable explanation specific to this occurrence of the problem
-
+    /* human-readable explanation specific to this occurrence of the problem */
+    
     @SerialName(value = "detail")
     val detail: kotlin.String? = null,
-
+    
     @SerialName(value = "source")
-    val source: ErrorObjectSource? = null,
-)
+    val source: ErrorObjectSource? = null
+) {
+
+
+}
+

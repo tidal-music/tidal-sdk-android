@@ -1,10 +1,15 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import retrofit2.http.*
+import retrofit2.Response
+import okhttp3.RequestBody
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+import com.tidal.sdk.tidalapi.generated.models.ErrorDocument
 import com.tidal.sdk.tidalapi.generated.models.UsersMultiDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UsersSingleDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UsersSingletonDataRelationshipDocument
-import retrofit2.Response
-import retrofit2.http.*
 
 interface Users {
     /**
@@ -23,9 +28,7 @@ interface Users {
      * @return [UsersSingleDataDocument]
      */
     @GET("users/me")
-    suspend fun getMyUser(
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<UsersSingleDataDocument>
+    suspend fun getMyUser(@Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null): Response<UsersSingleDataDocument>
 
     /**
      * Get a single user by id
@@ -44,10 +47,7 @@ interface Users {
      * @return [UsersSingleDataDocument]
      */
     @GET("users/{id}")
-    suspend fun getUserById(
-        @Path("id") id: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<UsersSingleDataDocument>
+    suspend fun getUserById(@Path("id") id: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null): Response<UsersSingleDataDocument>
 
     /**
      * Relationship: entitlements
@@ -66,10 +66,7 @@ interface Users {
      * @return [UsersSingletonDataRelationshipDocument]
      */
     @GET("users/{id}/relationships/entitlements")
-    suspend fun getUserEntitlementsRelationship(
-        @Path("id") id: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<UsersSingletonDataRelationshipDocument>
+    suspend fun getUserEntitlementsRelationship(@Path("id") id: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null): Response<UsersSingletonDataRelationshipDocument>
 
     /**
      * Relationship: public profile
@@ -89,11 +86,7 @@ interface Users {
      * @return [UsersSingletonDataRelationshipDocument]
      */
     @GET("users/{id}/relationships/publicProfile")
-    suspend fun getUserPublicProfileRelationship(
-        @Path("id") id: kotlin.String,
-        @Query("locale") locale: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<UsersSingletonDataRelationshipDocument>
+    suspend fun getUserPublicProfileRelationship(@Path("id") id: kotlin.String, @Query("locale") locale: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null): Response<UsersSingletonDataRelationshipDocument>
 
     /**
      * Relationship: user recommendations
@@ -112,10 +105,7 @@ interface Users {
      * @return [UsersSingletonDataRelationshipDocument]
      */
     @GET("users/{id}/relationships/recommendations")
-    suspend fun getUserRecommendationsRelationship(
-        @Path("id") id: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<UsersSingletonDataRelationshipDocument>
+    suspend fun getUserRecommendationsRelationship(@Path("id") id: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null): Response<UsersSingletonDataRelationshipDocument>
 
     /**
      * Get multiple users by id
@@ -134,9 +124,6 @@ interface Users {
      * @return [UsersMultiDataDocument]
      */
     @GET("users")
-    suspend fun getUsersByFilters(
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[id]") filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? =
-            null,
-    ): Response<UsersMultiDataDocument>
+    suspend fun getUsersByFilters(@Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("filter[id]") filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null): Response<UsersMultiDataDocument>
+
 }

@@ -15,8 +15,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
  * object containing references to the primary source of the error
@@ -27,18 +31,23 @@ import kotlinx.serialization.Serializable
  */
 
 @Serializable
-data class ErrorObjectSource(
 
-    // a JSON Pointer [RFC6901] to the value in the request document that caused the error
+data class ErrorObjectSource (
 
+    /* a JSON Pointer [RFC6901] to the value in the request document that caused the error */
+    
     @SerialName(value = "pointer")
     val pointer: kotlin.String? = null,
-    // string indicating which URI query parameter caused the error.
-
+    /* string indicating which URI query parameter caused the error. */
+    
     @SerialName(value = "parameter")
     val parameter: kotlin.String? = null,
-    // string indicating the name of a single request header which caused the error
-
+    /* string indicating the name of a single request header which caused the error */
+    
     @SerialName(value = "header")
-    val header: kotlin.String? = null,
-)
+    val header: kotlin.String? = null
+) {
+
+
+}
+

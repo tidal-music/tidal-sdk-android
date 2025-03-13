@@ -15,29 +15,39 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+import com.tidal.sdk.tidalapi.generated.models.AlbumsItemsResourceIdentifierMeta
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
  * Resource identifier JSON:API object
  *
  * @param id resource unique identifier
  * @param type resource unique type
- * @param meta
+ * @param meta 
  */
 
 @Serializable
-data class AlbumsItemsResourceIdentifier(
 
-    // resource unique identifier
+data class AlbumsItemsResourceIdentifier (
 
+    /* resource unique identifier */
+    
     @SerialName(value = "id")
     val id: kotlin.String,
-    // resource unique type
-
+    /* resource unique type */
+    
     @SerialName(value = "type")
     val type: kotlin.String,
-
+    
     @SerialName(value = "meta")
-    val meta: AlbumsItemsResourceIdentifierMeta? = null,
-)
+    val meta: AlbumsItemsResourceIdentifierMeta? = null
+) {
+
+
+}
+

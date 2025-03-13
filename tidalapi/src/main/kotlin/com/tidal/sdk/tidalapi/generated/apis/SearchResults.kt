@@ -1,9 +1,14 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import retrofit2.http.*
+import retrofit2.Response
+import okhttp3.RequestBody
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+import com.tidal.sdk.tidalapi.generated.models.ErrorDocument
 import com.tidal.sdk.tidalapi.generated.models.SearchresultsMultiDataRelationshipDocument
 import com.tidal.sdk.tidalapi.generated.models.SearchresultsSingleDataDocument
-import retrofit2.Response
-import retrofit2.http.*
 
 interface SearchResults {
     /**
@@ -25,12 +30,7 @@ interface SearchResults {
      * @return [SearchresultsMultiDataRelationshipDocument]
      */
     @GET("searchresults/{query}/relationships/albums")
-    suspend fun getSearchResultsAlbumsRelationship(
-        @Path("query") query: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<SearchresultsMultiDataRelationshipDocument>
+    suspend fun getSearchResultsAlbumsRelationship(@Path("query") query: kotlin.String, @Query("countryCode") countryCode: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("page[cursor]") pageCursor: kotlin.String? = null): Response<SearchresultsMultiDataRelationshipDocument>
 
     /**
      * Relationship: artists
@@ -51,12 +51,7 @@ interface SearchResults {
      * @return [SearchresultsMultiDataRelationshipDocument]
      */
     @GET("searchresults/{query}/relationships/artists")
-    suspend fun getSearchResultsArtistsRelationship(
-        @Path("query") query: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<SearchresultsMultiDataRelationshipDocument>
+    suspend fun getSearchResultsArtistsRelationship(@Path("query") query: kotlin.String, @Query("countryCode") countryCode: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("page[cursor]") pageCursor: kotlin.String? = null): Response<SearchresultsMultiDataRelationshipDocument>
 
     /**
      * Search for music metadata by a query
@@ -76,11 +71,7 @@ interface SearchResults {
      * @return [SearchresultsSingleDataDocument]
      */
     @GET("searchresults/{query}")
-    suspend fun getSearchResultsByQuery(
-        @Path("query") query: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<SearchresultsSingleDataDocument>
+    suspend fun getSearchResultsByQuery(@Path("query") query: kotlin.String, @Query("countryCode") countryCode: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null): Response<SearchresultsSingleDataDocument>
 
     /**
      * Relationship: playlists
@@ -101,12 +92,7 @@ interface SearchResults {
      * @return [SearchresultsMultiDataRelationshipDocument]
      */
     @GET("searchresults/{query}/relationships/playlists")
-    suspend fun getSearchResultsPlaylistsRelationship(
-        @Path("query") query: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<SearchresultsMultiDataRelationshipDocument>
+    suspend fun getSearchResultsPlaylistsRelationship(@Path("query") query: kotlin.String, @Query("countryCode") countryCode: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("page[cursor]") pageCursor: kotlin.String? = null): Response<SearchresultsMultiDataRelationshipDocument>
 
     /**
      * Relationship: topHits
@@ -127,12 +113,7 @@ interface SearchResults {
      * @return [SearchresultsMultiDataRelationshipDocument]
      */
     @GET("searchresults/{query}/relationships/topHits")
-    suspend fun getSearchResultsTopHitsRelationship(
-        @Path("query") query: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<SearchresultsMultiDataRelationshipDocument>
+    suspend fun getSearchResultsTopHitsRelationship(@Path("query") query: kotlin.String, @Query("countryCode") countryCode: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("page[cursor]") pageCursor: kotlin.String? = null): Response<SearchresultsMultiDataRelationshipDocument>
 
     /**
      * Relationship: tracks
@@ -153,12 +134,7 @@ interface SearchResults {
      * @return [SearchresultsMultiDataRelationshipDocument]
      */
     @GET("searchresults/{query}/relationships/tracks")
-    suspend fun getSearchResultsTracksRelationship(
-        @Path("query") query: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<SearchresultsMultiDataRelationshipDocument>
+    suspend fun getSearchResultsTracksRelationship(@Path("query") query: kotlin.String, @Query("countryCode") countryCode: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("page[cursor]") pageCursor: kotlin.String? = null): Response<SearchresultsMultiDataRelationshipDocument>
 
     /**
      * Relationship: videos
@@ -179,10 +155,6 @@ interface SearchResults {
      * @return [SearchresultsMultiDataRelationshipDocument]
      */
     @GET("searchresults/{query}/relationships/videos")
-    suspend fun getSearchResultsVideosRelationship(
-        @Path("query") query: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<SearchresultsMultiDataRelationshipDocument>
+    suspend fun getSearchResultsVideosRelationship(@Path("query") query: kotlin.String, @Query("countryCode") countryCode: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("page[cursor]") pageCursor: kotlin.String? = null): Response<SearchresultsMultiDataRelationshipDocument>
+
 }

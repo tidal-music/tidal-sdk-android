@@ -1,5 +1,6 @@
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/ApiClient.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/Albums.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/ArtistRoles.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/Artists.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/Playlists.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/Providers.kt
@@ -22,6 +23,10 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumsResource.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumsSingleDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumsSingleDataDocumentIncludedInner.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistRole.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistRolesAttributes.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistRolesMultiDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistRolesResource.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistRolesSingleDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistsAttributes.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistsMultiDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistsMultiDataRelationshipDocument.kt

@@ -15,9 +15,8 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import com.tidal.sdk.tidalapi.generated.models.ArtistRolesAttributes
 import com.tidal.sdk.tidalapi.generated.models.Links
-import com.tidal.sdk.tidalapi.generated.models.UserPublicProfilesResource
-import com.tidal.sdk.tidalapi.generated.models.UserPublicProfilesSingleDataDocumentIncludedInner
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName
@@ -28,25 +27,32 @@ import kotlinx.serialization.Transient
 /**
  * 
  *
- * @param `data` 
+ * @param id resource unique identifier
+ * @param type resource unique type
+ * @param attributes 
  * @param links 
- * @param included 
  */
 
 @Serializable
+@SerialName(value = "artistRoles")
 
-data class UserPublicProfilesSingleDataDocument (
+data class ArtistRolesResource (
 
+    /* resource unique identifier */
     
-    @SerialName(value = "data")
-    val `data`: UserPublicProfilesResource? = null,
+    @SerialName(value = "id")
+    val id: kotlin.String,
+    /* resource unique type */
+    @Transient
+    @SerialName(value = "type")
+    val type: kotlin.String = "",
+    
+    @SerialName(value = "attributes")
+    val attributes: ArtistRolesAttributes? = null,
     
     @SerialName(value = "links")
-    val links: Links? = null,
-    
-    @SerialName(value = "included")
-    val included: kotlin.collections.List<UserPublicProfilesSingleDataDocumentIncludedInner>? = null
-) {
+    val links: Links? = null
+): ArtistsSingleDataDocumentIncludedInner {
 
 
 }

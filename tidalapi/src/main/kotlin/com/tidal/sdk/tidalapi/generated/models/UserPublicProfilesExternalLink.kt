@@ -15,24 +15,34 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+import com.tidal.sdk.tidalapi.generated.models.UserPublicProfilesExternalLinkMeta
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
- *
+ * 
  *
  * @param href link to something that is related to a resource
- * @param meta
+ * @param meta 
  */
 
 @Serializable
-data class UserPublicProfilesExternalLink(
 
-    // link to something that is related to a resource
+data class UserPublicProfilesExternalLink (
 
+    /* link to something that is related to a resource */
+    
     @SerialName(value = "href")
     val href: kotlin.String,
-
+    
     @SerialName(value = "meta")
-    val meta: UserPublicProfilesExternalLinkMeta,
-)
+    val meta: UserPublicProfilesExternalLinkMeta
+) {
+
+
+}
+

@@ -15,47 +15,59 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+import com.tidal.sdk.tidalapi.generated.models.UserPublicProfilesExternalLink
+import com.tidal.sdk.tidalapi.generated.models.UserPublicProfilesImageLink
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
+ * 
  *
- *
- * @param color
+ * @param color 
  * @param handle A customizable handle for the user profile
  * @param profileName Public Name of the user profile
- * @param picture
+ * @param picture 
  * @param externalLinks ExternalLinks for the user's profile
  * @param numberOfFollowers Number of followers for the user
  * @param numberOfFollows Number of users the user follows
  */
 
 @Serializable
-data class UserPublicProfilesAttributes(
 
+data class UserPublicProfilesAttributes (
+
+    
     @SerialName(value = "color")
     val color: kotlin.collections.List<kotlin.String>,
-    // A customizable handle for the user profile
-
+    /* A customizable handle for the user profile */
+    
     @SerialName(value = "handle")
     val handle: kotlin.String? = null,
-    // Public Name of the user profile
-
+    /* Public Name of the user profile */
+    
     @SerialName(value = "profileName")
     val profileName: kotlin.String? = null,
-
+    
     @SerialName(value = "picture")
     val picture: UserPublicProfilesImageLink? = null,
-    // ExternalLinks for the user's profile
-
+    /* ExternalLinks for the user's profile */
+    
     @SerialName(value = "externalLinks")
     val externalLinks: kotlin.collections.List<UserPublicProfilesExternalLink>? = null,
-    // Number of followers for the user
-
+    /* Number of followers for the user */
+    
     @SerialName(value = "numberOfFollowers")
     val numberOfFollowers: kotlin.Int? = null,
-    // Number of users the user follows
-
+    /* Number of users the user follows */
+    
     @SerialName(value = "numberOfFollows")
-    val numberOfFollows: kotlin.Int? = null,
-)
+    val numberOfFollows: kotlin.Int? = null
+) {
+
+
+}
+

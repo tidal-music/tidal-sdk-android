@@ -15,25 +15,34 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
- *
+ * 
  *
  * @param volumeNumber volume number
  * @param trackNumber track number
  */
 
 @Serializable
-data class AlbumsItemsResourceIdentifierMeta(
 
-    // volume number
+data class AlbumsItemsResourceIdentifierMeta (
 
+    /* volume number */
+    
     @SerialName(value = "volumeNumber")
     val volumeNumber: kotlin.Int,
-    // track number
-
+    /* track number */
+    
     @SerialName(value = "trackNumber")
-    val trackNumber: kotlin.Int,
-)
+    val trackNumber: kotlin.Int
+) {
+
+
+}
+

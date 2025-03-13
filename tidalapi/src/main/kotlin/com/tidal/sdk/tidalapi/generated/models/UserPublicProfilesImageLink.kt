@@ -15,24 +15,34 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+import com.tidal.sdk.tidalapi.generated.models.ImageLinkMeta
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
  * ImageLink to the users image
  *
  * @param href link to an image
- * @param meta
+ * @param meta 
  */
 
 @Serializable
-data class UserPublicProfilesImageLink(
 
-    // link to an image
+data class UserPublicProfilesImageLink (
 
+    /* link to an image */
+    
     @SerialName(value = "href")
     val href: kotlin.String,
-
+    
     @SerialName(value = "meta")
-    val meta: ImageLinkMeta? = null,
-)
+    val meta: ImageLinkMeta? = null
+) {
+
+
+}
+

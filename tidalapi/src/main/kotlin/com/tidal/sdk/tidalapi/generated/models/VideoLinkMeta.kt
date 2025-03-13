@@ -15,8 +15,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
  * metadata about a video
@@ -26,14 +30,19 @@ import kotlinx.serialization.Serializable
  */
 
 @Serializable
-data class VideoLinkMeta(
 
-    // video width (in pixels)
+data class VideoLinkMeta (
 
+    /* video width (in pixels) */
+    
     @SerialName(value = "width")
     val width: kotlin.Int,
-    // video height (in pixels)
-
+    /* video height (in pixels) */
+    
     @SerialName(value = "height")
-    val height: kotlin.Int,
-)
+    val height: kotlin.Int
+) {
+
+
+}
+

@@ -15,11 +15,17 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+import com.tidal.sdk.tidalapi.generated.models.CatalogueItemExternalLink
+import com.tidal.sdk.tidalapi.generated.models.CatalogueItemImageLink
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
- *
+ * 
  *
  * @param name Artist name
  * @param popularity Artist popularity (ranged in 0.00 ... 1.00). Conditionally visible
@@ -29,26 +35,46 @@ import kotlinx.serialization.Serializable
  */
 
 @Serializable
-data class ArtistsAttributes(
 
-    // Artist name
+data class ArtistsAttributes (
 
+    /* Artist name */
+    
     @SerialName(value = "name")
     val name: kotlin.String,
-    // Artist popularity (ranged in 0.00 ... 1.00). Conditionally visible
-
+    /* Artist popularity (ranged in 0.00 ... 1.00). Conditionally visible */
+    
     @SerialName(value = "popularity")
     val popularity: kotlin.Double,
-    // Represents available links to, and metadata about, an artist images
-
+    /* Represents available links to, and metadata about, an artist images */
+    
     @SerialName(value = "imageLinks")
     val imageLinks: kotlin.collections.List<CatalogueItemImageLink>? = null,
-    // Represents available links to something that is related to an artist resource, but external to the TIDAL API
-
+    /* Represents available links to something that is related to an artist resource, but external to the TIDAL API */
+    
     @SerialName(value = "externalLinks")
     val externalLinks: kotlin.collections.List<CatalogueItemExternalLink>? = null,
-    // Artist roles
-
+    /* Artist roles */
+    
     @SerialName(value = "roles")
-    val roles: kotlin.collections.List<ArtistRole>? = null,
-)
+    val roles: kotlin.collections.List<ArtistsAttributes.Roles>? = null
+) {
+
+    /**
+     * Artist roles
+     *
+     * Values: ARTIST,SONGWRITER,ENGINEER,PRODUCTION_TEAM,PERFORMER,PRODUCER,MISC
+     */
+    @Serializable
+    enum class Roles(val value: kotlin.String) {
+        @SerialName(value = "ARTIST") ARTIST("ARTIST"),
+        @SerialName(value = "SONGWRITER") SONGWRITER("SONGWRITER"),
+        @SerialName(value = "ENGINEER") ENGINEER("ENGINEER"),
+        @SerialName(value = "PRODUCTION_TEAM") PRODUCTION_TEAM("PRODUCTION_TEAM"),
+        @SerialName(value = "PERFORMER") PERFORMER("PERFORMER"),
+        @SerialName(value = "PRODUCER") PRODUCER("PRODUCER"),
+        @SerialName(value = "MISC") MISC("MISC");
+    }
+
+}
+

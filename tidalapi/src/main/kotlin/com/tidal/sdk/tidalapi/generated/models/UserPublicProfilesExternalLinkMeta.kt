@@ -15,8 +15,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
  * metadata about an external link
@@ -26,16 +30,17 @@ import kotlinx.serialization.Serializable
  */
 
 @Serializable
-data class UserPublicProfilesExternalLinkMeta(
 
-    // external link type
+data class UserPublicProfilesExternalLinkMeta (
 
+    /* external link type */
+    
     @SerialName(value = "type")
     val type: UserPublicProfilesExternalLinkMeta.Type,
-    // external link handle
-
+    /* external link handle */
+    
     @SerialName(value = "handle")
-    val handle: kotlin.String,
+    val handle: kotlin.String
 ) {
 
     /**
@@ -45,34 +50,17 @@ data class UserPublicProfilesExternalLinkMeta(
      */
     @Serializable
     enum class Type(val value: kotlin.String) {
-        @SerialName(value = "TIDAL_SHARING")
-        TIDAL_SHARING("TIDAL_SHARING"),
-
-        @SerialName(value = "TIDAL_AUTOPLAY_ANDROID")
-        TIDAL_AUTOPLAY_ANDROID("TIDAL_AUTOPLAY_ANDROID"),
-
-        @SerialName(value = "TIDAL_AUTOPLAY_IOS")
-        TIDAL_AUTOPLAY_IOS("TIDAL_AUTOPLAY_IOS"),
-
-        @SerialName(value = "TIDAL_AUTOPLAY_WEB")
-        TIDAL_AUTOPLAY_WEB("TIDAL_AUTOPLAY_WEB"),
-
-        @SerialName(value = "TWITTER")
-        TWITTER("TWITTER"),
-
-        @SerialName(value = "FACEBOOK")
-        FACEBOOK("FACEBOOK"),
-
-        @SerialName(value = "INSTAGRAM")
-        INSTAGRAM("INSTAGRAM"),
-
-        @SerialName(value = "TIKTOK")
-        TIKTOK("TIKTOK"),
-
-        @SerialName(value = "SNAPCHAT")
-        SNAPCHAT("SNAPCHAT"),
-
-        @SerialName(value = "HOMEPAGE")
-        HOMEPAGE("HOMEPAGE"),
+        @SerialName(value = "TIDAL_SHARING") TIDAL_SHARING("TIDAL_SHARING"),
+        @SerialName(value = "TIDAL_AUTOPLAY_ANDROID") TIDAL_AUTOPLAY_ANDROID("TIDAL_AUTOPLAY_ANDROID"),
+        @SerialName(value = "TIDAL_AUTOPLAY_IOS") TIDAL_AUTOPLAY_IOS("TIDAL_AUTOPLAY_IOS"),
+        @SerialName(value = "TIDAL_AUTOPLAY_WEB") TIDAL_AUTOPLAY_WEB("TIDAL_AUTOPLAY_WEB"),
+        @SerialName(value = "TWITTER") TWITTER("TWITTER"),
+        @SerialName(value = "FACEBOOK") FACEBOOK("FACEBOOK"),
+        @SerialName(value = "INSTAGRAM") INSTAGRAM("INSTAGRAM"),
+        @SerialName(value = "TIKTOK") TIKTOK("TIKTOK"),
+        @SerialName(value = "SNAPCHAT") SNAPCHAT("SNAPCHAT"),
+        @SerialName(value = "HOMEPAGE") HOMEPAGE("HOMEPAGE");
     }
+
 }
+

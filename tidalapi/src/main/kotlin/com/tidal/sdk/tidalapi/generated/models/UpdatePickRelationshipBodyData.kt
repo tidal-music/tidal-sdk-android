@@ -15,22 +15,32 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
+ * 
  *
- *
- * @param type
- * @param id
+ * @param type 
+ * @param id 
  */
 
 @Serializable
-data class UpdatePickRelationshipBodyData(
 
+data class UpdatePickRelationshipBodyData (
+
+    
     @SerialName(value = "type")
     val type: kotlin.String? = null,
-
+    
     @SerialName(value = "id")
-    val id: kotlin.String? = null,
-)
+    val id: kotlin.String? = null
+) {
+
+
+}
+

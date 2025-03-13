@@ -15,26 +15,37 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+import com.tidal.sdk.tidalapi.generated.models.MultiDataRelationshipDoc
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
+ * 
  *
- *
- * @param albums
- * @param artists
- * @param providers
+ * @param albums 
+ * @param artists 
+ * @param providers 
  */
 
 @Serializable
-data class VideosRelationships(
 
+data class VideosRelationships (
+
+    
     @SerialName(value = "albums")
     val albums: MultiDataRelationshipDoc,
-
+    
     @SerialName(value = "artists")
     val artists: MultiDataRelationshipDoc,
-
+    
     @SerialName(value = "providers")
-    val providers: MultiDataRelationshipDoc,
-)
+    val providers: MultiDataRelationshipDoc
+) {
+
+
+}
+

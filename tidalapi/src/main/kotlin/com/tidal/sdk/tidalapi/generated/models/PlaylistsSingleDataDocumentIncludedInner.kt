@@ -17,10 +17,10 @@ package com.tidal.sdk.tidalapi.generated.models
 
 import com.tidal.sdk.tidalapi.generated.models.ArtistsResource
 import com.tidal.sdk.tidalapi.generated.models.Links
-import com.tidal.sdk.tidalapi.generated.models.TracksAttributes
-import com.tidal.sdk.tidalapi.generated.models.TracksRelationships
 import com.tidal.sdk.tidalapi.generated.models.TracksResource
 import com.tidal.sdk.tidalapi.generated.models.UsersResource
+import com.tidal.sdk.tidalapi.generated.models.VideosAttributes
+import com.tidal.sdk.tidalapi.generated.models.VideosRelationships
 import com.tidal.sdk.tidalapi.generated.models.VideosResource
 
 import kotlinx.serialization.Serializable

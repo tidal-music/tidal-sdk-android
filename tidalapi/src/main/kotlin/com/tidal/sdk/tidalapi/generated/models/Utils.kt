@@ -13,6 +13,7 @@ fun getOneOfSerializer() = SerializersModule {
     }
     polymorphic(ArtistsSingleDataDocumentIncludedInner::class) {
         subclass(AlbumsResource::class, AlbumsResource.serializer())
+        subclass(ArtistRolesResource::class, ArtistRolesResource.serializer())
         subclass(ArtistsResource::class, ArtistsResource.serializer())
         subclass(PlaylistsResource::class, PlaylistsResource.serializer())
         subclass(ProvidersResource::class, ProvidersResource.serializer())
@@ -110,3 +111,4 @@ fun getOneOfSerializer() = SerializersModule {
         subclass(ProvidersResource::class, ProvidersResource.serializer())
     }
 }
+

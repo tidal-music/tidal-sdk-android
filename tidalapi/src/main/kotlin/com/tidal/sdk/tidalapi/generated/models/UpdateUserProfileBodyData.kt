@@ -15,18 +15,29 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+import com.tidal.sdk.tidalapi.generated.models.UpdateUserProfileBodyDataAttributes
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
+ * 
  *
- *
- * @param attributes
+ * @param attributes 
  */
 
 @Serializable
-data class UpdateUserProfileBodyData(
 
+data class UpdateUserProfileBodyData (
+
+    
     @SerialName(value = "attributes")
-    val attributes: UpdateUserProfileBodyDataAttributes? = null,
-)
+    val attributes: UpdateUserProfileBodyDataAttributes? = null
+) {
+
+
+}
+
