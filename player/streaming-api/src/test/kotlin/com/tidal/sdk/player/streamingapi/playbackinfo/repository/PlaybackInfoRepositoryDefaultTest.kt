@@ -53,7 +53,7 @@ internal class PlaybackInfoRepositoryDefaultTest {
         assertThat(playbackInfo).isEqualTo(TrackPlaybackInfoFactory.DEFAULT)
     }
 
-    private suspend fun getTrackPlaybackInfo(trackId: Int) =
+    private suspend fun getTrackPlaybackInfo(trackId: String) =
         playbackInfoRepository.getTrackPlaybackInfo(
             trackId,
             AudioQuality.LOW,
@@ -81,7 +81,7 @@ internal class PlaybackInfoRepositoryDefaultTest {
         assertThat(playbackInfo).isEqualTo(VideoPlaybackInfoFactory.DEFAULT)
     }
 
-    private suspend fun getVideoPlaybackInfo(videoId: Int) =
+    private suspend fun getVideoPlaybackInfo(videoId: String) =
         playbackInfoRepository.getVideoPlaybackInfo(
             videoId,
             VideoQuality.LOW,
@@ -95,7 +95,7 @@ internal class PlaybackInfoRepositoryDefaultTest {
         assertFailure {
             runBlocking {
                 getBroadcastPlaybackInfo(
-                    PlaybackInfoServiceStub.PLAYBACK_INFO_ID_FOR_UNCAUGHT_EXCEPTION.toString(),
+                    PlaybackInfoServiceStub.PLAYBACK_INFO_ID_FOR_UNCAUGHT_EXCEPTION,
                 )
             }
         }.hasClass(NullPointerException::class)
@@ -105,7 +105,7 @@ internal class PlaybackInfoRepositoryDefaultTest {
     fun getBroadcastPlaybackInfoShouldReturnCorrectAndFillMissingStreamingSessionIdWhenPlaybackInfoIsReturned() =
         runBlocking {
             val playbackInfo = getBroadcastPlaybackInfo(
-                PlaybackInfoServiceStub.PLAYBACK_INFO_ID_SUCCESS.toString(),
+                PlaybackInfoServiceStub.PLAYBACK_INFO_ID_SUCCESS,
             )
 
             assertThat(playbackInfo).isEqualTo(BroadcastPlaybackInfoFactory.DEFAULT)
@@ -122,7 +122,7 @@ internal class PlaybackInfoRepositoryDefaultTest {
     @Test
     fun getUCPlaybackInfoShouldReturnCorrectWhenPlaybackInfoIsReturned() = runBlocking {
         val playbackInfo = getUCPlaybackInfo(
-            ApiConstants.PLAYBACK_INFO_ID_FOR_DEFAULT.toString(),
+            ApiConstants.PLAYBACK_INFO_ID_FOR_DEFAULT,
         )
 
         assertThat(playbackInfo).isEqualTo(UCPlaybackInfoFactory.DEFAULT)
@@ -137,7 +137,7 @@ internal class PlaybackInfoRepositoryDefaultTest {
     @Test
     fun getOfflineTrackPlaybackInfo() = runBlocking {
         val playbackInfo =
-            playbackInfoRepository.getOfflineTrackPlaybackInfo(123, "streamingSessionId")
+            playbackInfoRepository.getOfflineTrackPlaybackInfo("123", "streamingSessionId")
 
         assertThat(playbackInfo).isEqualTo(TrackPlaybackInfoFactory.OFFLINE_PLAY)
     }
@@ -145,7 +145,7 @@ internal class PlaybackInfoRepositoryDefaultTest {
     @Test
     fun getOfflineVideoPlaybackInfo() = runBlocking {
         val playbackInfo =
-            playbackInfoRepository.getOfflineVideoPlaybackInfo(123, "streamingSessionId")
+            playbackInfoRepository.getOfflineVideoPlaybackInfo("123", "streamingSessionId")
 
         assertThat(playbackInfo).isEqualTo(VideoPlaybackInfoFactory.OFFLINE_PLAY)
     }

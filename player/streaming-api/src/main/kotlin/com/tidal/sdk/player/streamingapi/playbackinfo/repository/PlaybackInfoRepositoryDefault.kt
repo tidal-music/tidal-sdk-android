@@ -28,7 +28,7 @@ internal class PlaybackInfoRepositoryDefault(
 ) : PlaybackInfoRepository {
 
     override suspend fun getTrackPlaybackInfo(
-        trackId: Int,
+        trackId: String,
         audioQuality: AudioQuality,
         playbackMode: PlaybackMode,
         immersiveAudio: Boolean,
@@ -49,7 +49,7 @@ internal class PlaybackInfoRepositoryDefault(
     }
 
     override suspend fun getVideoPlaybackInfo(
-        videoId: Int,
+        videoId: String,
         videoQuality: VideoQuality,
         playbackMode: PlaybackMode,
         streamingSessionId: String,
@@ -97,13 +97,13 @@ internal class PlaybackInfoRepositoryDefault(
     )
 
     override suspend fun getOfflineTrackPlaybackInfo(
-        trackId: Int,
+        trackId: String,
         streamingSessionId: String,
     ) = offlinePlaybackInfoProvider?.getOfflineTrackPlaybackInfo(trackId, streamingSessionId)
         ?: throw NullPointerException("No OfflinePlaybackInfoProvider provided")
 
     override suspend fun getOfflineVideoPlaybackInfo(
-        videoId: Int,
+        videoId: String,
         streamingSessionId: String,
     ) = offlinePlaybackInfoProvider?.getOfflineVideoPlaybackInfo(videoId, streamingSessionId)
         ?: throw NullPointerException("No OfflinePlaybackInfoProvider provided")

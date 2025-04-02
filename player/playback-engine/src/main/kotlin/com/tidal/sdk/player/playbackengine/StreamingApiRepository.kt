@@ -102,7 +102,7 @@ internal class StreamingApiRepository(
         try {
             val ret = when (forwardingMediaProduct.productType) {
                 ProductType.TRACK -> streamingApi.getTrackPlaybackInfo(
-                    forwardingMediaProduct.productId.toInt(),
+                    forwardingMediaProduct.productId,
                     audioQualityRepository.streamingQuality,
                     PlaybackMode.STREAM,
                     audioModeRepository.immersiveAudio,
@@ -110,7 +110,7 @@ internal class StreamingApiRepository(
                 )
 
                 ProductType.VIDEO -> streamingApi.getVideoPlaybackInfo(
-                    forwardingMediaProduct.productId.toInt(),
+                    forwardingMediaProduct.productId,
                     videoQualityRepository.streamingQuality,
                     PlaybackMode.STREAM,
                     streamingSessionId,
@@ -159,12 +159,12 @@ internal class StreamingApiRepository(
         forwardingMediaProduct: ForwardingMediaProduct<*>,
     ) = when (forwardingMediaProduct.productType) {
         ProductType.TRACK -> streamingApi.getOfflineTrackPlaybackInfo(
-            forwardingMediaProduct.productId.toInt(),
+            forwardingMediaProduct.productId,
             streamingSessionId,
         )
 
         ProductType.VIDEO -> streamingApi.getOfflineVideoPlaybackInfo(
-            forwardingMediaProduct.productId.toInt(),
+            forwardingMediaProduct.productId,
             streamingSessionId,
         )
 

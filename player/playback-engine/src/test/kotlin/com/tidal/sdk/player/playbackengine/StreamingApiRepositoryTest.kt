@@ -151,7 +151,7 @@ internal class StreamingApiRepositoryTest {
                     whenever(audioQualityRepository.streamingQuality) doReturn productQuality
                     whenever(
                         streamingApi.getTrackPlaybackInfo(
-                            productId.toInt(),
+                            productId,
                             productQuality,
                             playbackMode,
                             false,
@@ -166,7 +166,7 @@ internal class StreamingApiRepositoryTest {
                     whenever(videoQualityRepository.streamingQuality) doReturn productQuality
                     whenever(
                         streamingApi.getVideoPlaybackInfo(
-                            productId.toInt(),
+                            productId,
                             productQuality,
                             playbackMode,
                             "streamingSessionId",
@@ -266,7 +266,7 @@ internal class StreamingApiRepositoryTest {
                     whenever(audioQualityRepository.streamingQuality) doReturn productQuality
                     whenever(
                         streamingApi.getTrackPlaybackInfo(
-                            productId.toInt(),
+                            productId,
                             productQuality,
                             playbackMode,
                             false,
@@ -281,7 +281,7 @@ internal class StreamingApiRepositoryTest {
                     whenever(videoQualityRepository.streamingQuality) doReturn productQuality
                     whenever(
                         streamingApi.getVideoPlaybackInfo(
-                            productId.toInt(),
+                            productId,
                             productQuality,
                             playbackMode,
                             "streamingSessionId",

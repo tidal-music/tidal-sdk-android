@@ -19,7 +19,7 @@ import org.junit.jupiter.api.fail
 internal class PlaybackInfoServiceStub : PlaybackInfoService {
 
     override suspend fun getTrackPlaybackInfo(
-        trackId: Int,
+        trackId: String,
         playbackMode: PlaybackMode,
         assetPresentation: AssetPresentation,
         audioQuality: AudioQuality,
@@ -33,7 +33,7 @@ internal class PlaybackInfoServiceStub : PlaybackInfoService {
     }
 
     override suspend fun getVideoPlaybackInfo(
-        videoId: Int,
+        videoId: String,
         playbackMode: PlaybackMode,
         assetPresentation: AssetPresentation,
         videoQuality: VideoQuality,
@@ -49,15 +49,15 @@ internal class PlaybackInfoServiceStub : PlaybackInfoService {
         djSessionId: String,
         audioQuality: AudioQuality,
     ) = when (djSessionId) {
-        PLAYBACK_INFO_ID_FOR_UNCAUGHT_EXCEPTION.toString() -> throw NullPointerException()
-        PLAYBACK_INFO_ID_SUCCESS.toString() ->
+        PLAYBACK_INFO_ID_FOR_UNCAUGHT_EXCEPTION -> throw NullPointerException()
+        PLAYBACK_INFO_ID_SUCCESS ->
             BroadcastPlaybackInfoFactory.DEFAULT_MISSING_STREAMING_SESSION_ID
 
         else -> fail("Unsupported call")
     }
 
     companion object {
-        const val PLAYBACK_INFO_ID_SUCCESS = 0
-        const val PLAYBACK_INFO_ID_FOR_UNCAUGHT_EXCEPTION = 1
+        const val PLAYBACK_INFO_ID_SUCCESS = "0"
+        const val PLAYBACK_INFO_ID_FOR_UNCAUGHT_EXCEPTION = "1"
     }
 }

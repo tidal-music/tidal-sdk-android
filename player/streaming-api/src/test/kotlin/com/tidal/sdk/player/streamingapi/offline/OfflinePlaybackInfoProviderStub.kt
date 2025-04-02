@@ -6,12 +6,12 @@ import com.tidal.sdk.player.streamingapi.playbackinfo.offline.OfflinePlaybackInf
 
 internal class OfflinePlaybackInfoProviderStub : OfflinePlaybackInfoProvider {
     override suspend fun getOfflineTrackPlaybackInfo(
-        trackId: Int,
+        trackId: String,
         streamingSessionId: String,
     ) = TrackPlaybackInfoFactory.OFFLINE_PLAY
 
     override suspend fun getOfflineVideoPlaybackInfo(
-        videoId: Int,
+        videoId: String,
         streamingSessionId: String,
     ) = VideoPlaybackInfoFactory.OFFLINE_PLAY
 }

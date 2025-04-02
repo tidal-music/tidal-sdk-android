@@ -368,7 +368,7 @@ internal class StreamingApiDefaultTest {
     @Test
     fun getOfflineTrackPlaybackInfoShouldReturnCorrectPlaybackInfo() {
         val playbackInfo = runBlocking {
-            streamingApi.getOfflineTrackPlaybackInfo(123, "streamingSessionId")
+            streamingApi.getOfflineTrackPlaybackInfo("123", "streamingSessionId")
         }
 
         assertThat(playbackInfo).isDataClassEqualTo(TrackPlaybackInfoFactory.OFFLINE_PLAY)
@@ -377,7 +377,7 @@ internal class StreamingApiDefaultTest {
     @Test
     fun getOfflineVideoPlaybackInfoShouldReturnCorrectPlaybackInfo() {
         val playbackInfo = runBlocking {
-            streamingApi.getOfflineVideoPlaybackInfo(123, "streamingSessionId")
+            streamingApi.getOfflineVideoPlaybackInfo("123", "streamingSessionId")
         }
 
         assertThat(playbackInfo).isDataClassEqualTo(VideoPlaybackInfoFactory.OFFLINE_PLAY)
