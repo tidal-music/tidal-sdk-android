@@ -20,7 +20,7 @@ internal interface PlaybackInfoService {
     /**
      * Returns a [PlaybackInfo.Track] which we can use for playback of a track.
      *
-     * @param[trackId] The requested track id as [Int].
+     * @param[trackId] The requested track id as [String].
      * @param[playbackMode] The requested playback mode as [PlaybackMode].
      * @param[assetPresentation] The requested asset presentation as [AssetPresentation].
      * @param[audioQuality] The requested audio quality as [AudioQuality].
@@ -30,7 +30,7 @@ internal interface PlaybackInfoService {
      */
     @GET("tracks/{id}/playbackinfo")
     suspend fun getTrackPlaybackInfo(
-        @Path("id") trackId: Int,
+        @Path("id") trackId: String,
         @Query("playbackmode") playbackMode: PlaybackMode,
         @Query("assetpresentation") assetPresentation: AssetPresentation,
         @Query("audioquality") audioQuality: AudioQuality,
@@ -42,7 +42,7 @@ internal interface PlaybackInfoService {
     /**
      * Returns a [PlaybackInfo.Video] which we can use for playback of a video.
      *
-     * @param[videoId] The requested video id as [Int].
+     * @param[videoId] The requested video id as [String].
      * @param[playbackMode] The requested playback mode as [PlaybackMode].
      * @param[assetPresentation] The requested asset presentation as [AssetPresentation].
      * @param[videoQuality] The requested video quality as [VideoQuality].
@@ -52,7 +52,7 @@ internal interface PlaybackInfoService {
      */
     @GET("videos/{id}/playbackinfo")
     suspend fun getVideoPlaybackInfo(
-        @Path("id") videoId: Int,
+        @Path("id") videoId: String,
         @Query("playbackmode") playbackMode: PlaybackMode,
         @Query("assetpresentation") assetPresentation: AssetPresentation,
         @Query("videoquality") videoQuality: VideoQuality,

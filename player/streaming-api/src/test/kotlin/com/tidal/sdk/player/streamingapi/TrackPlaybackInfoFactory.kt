@@ -11,7 +11,7 @@ import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
 object TrackPlaybackInfoFactory {
 
     val DEFAULT = PlaybackInfo.Track(
-        ApiConstants.PLAYBACK_INFO_ID_FOR_DEFAULT,
+        ApiConstants.PLAYBACK_INFO_ID_FOR_DEFAULT.toInt(),
         AudioQuality.LOW,
         AssetPresentation.FULL,
         AudioMode.STEREO,
@@ -32,7 +32,7 @@ object TrackPlaybackInfoFactory {
 
     val EMPTY_STREAMING_SESSION_ID = DEFAULT.copy(streamingSessionId = "")
 
-    val REPLACEMENT_TRACK_ID = DEFAULT.copy(ApiConstants.PLAYBACK_INFO_ID_FOR_DEFAULT_2)
+    val REPLACEMENT_TRACK_ID = DEFAULT.copy(ApiConstants.PLAYBACK_INFO_ID_FOR_DEFAULT_2.toInt())
 
     val REPLACEMENT_AUDIO_QUALITY = DEFAULT.copy(audioQuality = AudioQuality.HIGH)
 

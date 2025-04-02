@@ -10,7 +10,7 @@ import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
 object VideoPlaybackInfoFactory {
 
     val DEFAULT = PlaybackInfo.Video(
-        ApiConstants.PLAYBACK_INFO_ID_FOR_DEFAULT,
+        ApiConstants.PLAYBACK_INFO_ID_FOR_DEFAULT.toInt(),
         VideoQuality.LOW,
         AssetPresentation.FULL,
         StreamType.ON_DEMAND,
@@ -29,7 +29,7 @@ object VideoPlaybackInfoFactory {
 
     val EMPTY_STREAMING_SESSION_ID = DEFAULT.copy(streamingSessionId = "")
 
-    val REPLACEMENT_VIDEO_ID = DEFAULT.copy(ApiConstants.PLAYBACK_INFO_ID_FOR_DEFAULT_2)
+    val REPLACEMENT_VIDEO_ID = DEFAULT.copy(ApiConstants.PLAYBACK_INFO_ID_FOR_DEFAULT_2.toInt())
 
     val REPLACEMENT_VIDEO_QUALITY = DEFAULT.copy(videoQuality = VideoQuality.HIGH)
 

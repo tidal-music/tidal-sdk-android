@@ -20,7 +20,7 @@ internal class StreamingApiDefault(
 ) : StreamingApi {
 
     override suspend fun getTrackPlaybackInfo(
-        trackId: Int,
+        trackId: String,
         audioQuality: AudioQuality,
         playbackMode: PlaybackMode,
         immersiveAudio: Boolean,
@@ -36,7 +36,7 @@ internal class StreamingApiDefault(
     )
 
     override suspend fun getVideoPlaybackInfo(
-        videoId: Int,
+        videoId: String,
         videoQuality: VideoQuality,
         playbackMode: PlaybackMode,
         streamingSessionId: String,
@@ -65,12 +65,12 @@ internal class StreamingApiDefault(
     ) = playbackInfoRepository.getUC(itemId, streamingSessionId)
 
     override suspend fun getOfflineTrackPlaybackInfo(
-        trackId: Int,
+        trackId: String,
         streamingSessionId: String,
     ) = playbackInfoRepository.getOfflineTrackPlaybackInfo(trackId, streamingSessionId)
 
     override suspend fun getOfflineVideoPlaybackInfo(
-        videoId: Int,
+        videoId: String,
         streamingSessionId: String,
     ) = playbackInfoRepository.getOfflineVideoPlaybackInfo(videoId, streamingSessionId)
 

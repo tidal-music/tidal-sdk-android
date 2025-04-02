@@ -7,8 +7,8 @@ object ApiConstants {
     const val BROADCASTS_PATH = "playbackinfo/broadcasts/get_1"
     const val LICENSE_PATH = "drm/licenses/widevine/post"
 
-    const val PLAYBACK_INFO_ID_FOR_DEFAULT = 1
-    const val PLAYBACK_INFO_ID_FOR_DEFAULT_2 = 2
+    const val PLAYBACK_INFO_ID_FOR_DEFAULT = "1"
+    const val PLAYBACK_INFO_ID_FOR_DEFAULT_2 = "2"
 
     const val MANIFEST =
         "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz48TVBEIHhtbG5zPSJ1cm46bXBlZzpkYXNo" +
