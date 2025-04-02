@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.54] - 2024-04-02
+### Changed
+- Updated playbackInfo requests to use String for ids
+
 ## [0.0.53] - 2024-10-18
 ### Added
 - Updated MediaProduct.extras
