@@ -86,7 +86,7 @@ internal object PlaybackEngineModule {
         trueTimeWrapper,
         playbackPrivilegeProvider,
         offlinePlayProvider?.offlineCacheProvider,
-        offlinePlayProvider?.encryption,
+        offlinePlayProvider?.offlineSecretKey,
         base64Codec,
         coroutineDispatcher,
         coroutineScope,
