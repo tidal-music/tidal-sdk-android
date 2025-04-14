@@ -73,7 +73,17 @@ def download_api_spec(json_file_path):
     os.makedirs(temp_dir, exist_ok=True)
     logging.info(f"Created directory {temp_dir}")
 
-    return output_path, openapi_generator_path
+    # Download the API spec
+    try:
+        logging.info(f"Downloading API spec from {input_url}")
+        local_file = download_file(input_url, temp_dir)
+        logging.info(f"Successfully downloaded API spec to {local_file}")
+        shutil.copy2(local_file, output_path)
+        logging.info(f"Copied API spec to {output_path}")
+        return output_path, openapi_generator_path
+    except Exception as e:
+        logging.error(f"Failed to download API spec: {e}")
+        sys.exit(1)
 
 
 def main():
@@ -82,15 +92,21 @@ def main():
     project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
     sdk_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
 
+    logging.info(f"Project root: {project_root}")
+    logging.info(f"SDK root: {sdk_root}")
+
     if len(sys.argv) < 2:
-        logging.info("Error: You must provide the path to the config file.")
-        logging.info(f"Usage: {sys.argv[0]} <path to config.json>")
+        logging.error("Error: You must provide the path to the config file.")
+        logging.error(f"Usage: {sys.argv[0]} <path to config.json>")
         sys.exit(1)
 
     config_file = sys.argv[1]
+    logging.info(f"Using config file: {config_file}")
 
     # Download the API spec and get the path to the OpenAPI generator jar
     temp_json, source = download_api_spec(config_file)
+    logging.info(f"API spec downloaded to: {temp_json}")
+    logging.info(f"OpenAPI generator path: {source}")
 
     # Define the generated files path and clean the directory
     generated_files_dir = os.path.join(project_root,
@@ -102,13 +118,23 @@ def main():
         logging.info(f"Cleaned up directory: {generated_files_dir}")
 
     os.makedirs(generated_files_dir, exist_ok=True)
+    logging.info(f"Created generated files directory: {generated_files_dir}")
 
     # Change to project root directory before running OpenAPI generator
     original_dir = os.getcwd()
     os.chdir(project_root)
+    logging.info(f"Changed working directory to: {os.getcwd()}")
     
-    result = subprocess.run([
-        "java", "-jar", os.path.join(os.getcwd(), "bin", "openapi-generator-cli.jar"), "generate",
+    # Verify jar file exists
+    jar_path = os.path.join(os.getcwd(), "bin", "openapi-generator-cli.jar")
+    if not os.path.exists(jar_path):
+        logging.error(f"OpenAPI generator JAR not found at: {jar_path}")
+        sys.exit(1)
+    logging.info(f"Found OpenAPI generator JAR at: {jar_path}")
+
+    # Build the command
+    cmd = [
+        "java", "-jar", jar_path, "generate",
         "-i", os.path.join("bin", temp_json),
         "-g", "kotlin",
         "-o", ".",
@@ -116,20 +142,38 @@ def main():
         "--skip-validate-spec",
         "--global-property",
         "models,apis,supportingFiles=Utils.kt:src/main/kotlin/com/tidal/sdk/tidalapi/generated/ApiClient.kt"
-    ])
+    ]
+    logging.info(f"Executing command: {' '.join(cmd)}")
+    
+    try:
+        result = subprocess.run(cmd, capture_output=True, text=True)
+        logging.info(f"OpenAPI generator stdout: {result.stdout}")
+        if result.stderr:
+            logging.error(f"OpenAPI generator stderr: {result.stderr}")
+        
+        if result.returncode != 0:
+            logging.error(f"OpenAPI generator failed with return code: {result.returncode}")
+            sys.exit(result.returncode)
+    except Exception as e:
+        logging.error(f"Failed to execute OpenAPI generator: {e}")
+        sys.exit(1)
     
     # Change back to original directory
     os.chdir(original_dir)
+    logging.info(f"Changed working directory back to: {os.getcwd()}")
 
-    if result.returncode != 0:
-        logging.error("Error: Failed to generate files.")
-        sys.exit(result.returncode)
-
+    logging.info("Running ktlint...")
     result = subprocess.run(
-        [f"{sdk_root}/static-analysis/run-ktlint.sh", "-F", "-g", "-d", f"{project_root}/src"])
+        [f"{sdk_root}/static-analysis/run-ktlint.sh", "-F", "-g", "-d", f"{project_root}/src"],
+        capture_output=True,
+        text=True
+    )
 
     if result.returncode != 0:
-        logging.error("ktlint failed, but continuing with the rest of the script.")
+        logging.warning(f"ktlint failed with return code {result.returncode}")
+        logging.warning(f"ktlint stdout: {result.stdout}")
+        logging.warning(f"ktlint stderr: {result.stderr}")
+        logging.warning("Continuing with the rest of the script despite ktlint failure.")
 
     target_line = "import com.tidal.sdk.tidalapi.generated.infrastructure.CollectionFormats.*"
     remove_specific_line_from_files(f"{project_root}/src", target_line)
