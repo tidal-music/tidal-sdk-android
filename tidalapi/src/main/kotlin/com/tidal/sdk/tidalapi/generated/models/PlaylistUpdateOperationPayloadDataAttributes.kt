@@ -15,41 +15,46 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
+ * 
  *
- *
- * @param name
- * @param description
- * @param privacy
+ * @param name 
+ * @param description 
+ * @param privacy 
  */
 
 @Serializable
-data class PlaylistUpdateOperationPayloadDataAttributes(
 
+data class PlaylistUpdateOperationPayloadDataAttributes (
+
+    
     @SerialName(value = "name")
     val name: kotlin.String? = null,
-
+    
     @SerialName(value = "description")
     val description: kotlin.String? = null,
-
+    
     @SerialName(value = "privacy")
-    val privacy: PlaylistUpdateOperationPayloadDataAttributes.Privacy? = null,
+    val privacy: PlaylistUpdateOperationPayloadDataAttributes.Privacy? = null
 ) {
 
     /**
-     *
+     * 
      *
      * Values: PUBLIC,PRIVATE
      */
     @Serializable
     enum class Privacy(val value: kotlin.String) {
-        @SerialName(value = "PUBLIC")
-        PUBLIC("PUBLIC"),
-
-        @SerialName(value = "PRIVATE")
-        PRIVATE("PRIVATE"),
+        @SerialName(value = "PUBLIC") PUBLIC("PUBLIC"),
+        @SerialName(value = "PRIVATE") PRIVATE("PRIVATE");
     }
+
 }
+

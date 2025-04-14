@@ -19,7 +19,7 @@ import com.tidal.sdk.tidalapi.generated.models.AlbumsAttributes
 import com.tidal.sdk.tidalapi.generated.models.AlbumsRelationships
 import com.tidal.sdk.tidalapi.generated.models.AlbumsResource
 import com.tidal.sdk.tidalapi.generated.models.ArtistsResource
-import com.tidal.sdk.tidalapi.generated.models.Links
+import com.tidal.sdk.tidalapi.generated.models.ArtworksResource
 import com.tidal.sdk.tidalapi.generated.models.ProvidersResource
 import com.tidal.sdk.tidalapi.generated.models.TracksResource
 import com.tidal.sdk.tidalapi.generated.models.VideosResource
@@ -37,7 +37,6 @@ import kotlinx.serialization.Transient
  * @param type resource unique type
  * @param attributes 
  * @param relationships 
- * @param links 
  */
 @Serializable
 @Polymorphic

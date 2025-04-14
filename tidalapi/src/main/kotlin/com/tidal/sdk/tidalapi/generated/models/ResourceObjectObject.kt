@@ -15,38 +15,42 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.Contextual
-import kotlinx.serialization.SerialName
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
- *
+ * 
  *
  * @param id resource unique identifier
  * @param type resource unique type
- * @param attributes
- * @param relationships
- * @param links
+ * @param attributes 
+ * @param relationships 
  */
 
 @Serializable
-data class ResourceObjectObject(
 
-    // resource unique identifier
+data class ResourceObjectObject (
 
+    /* resource unique identifier */
+    
     @SerialName(value = "id")
     val id: kotlin.String,
-    // resource unique type
-
+    /* resource unique type */
+    
     @SerialName(value = "type")
     val type: kotlin.String,
-
+    
     @Contextual @SerialName(value = "attributes")
     val attributes: kotlin.Any? = null,
-
+    
     @Contextual @SerialName(value = "relationships")
-    val relationships: kotlin.Any? = null,
+    val relationships: kotlin.Any? = null
+) {
 
-    @SerialName(value = "links")
-    val links: Links? = null,
-)
+
+}
+

@@ -1,18 +1,24 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import retrofit2.http.*
+import retrofit2.Response
+import okhttp3.RequestBody
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
 import com.tidal.sdk.tidalapi.generated.models.ArtistUpdateBody
 import com.tidal.sdk.tidalapi.generated.models.ArtistsMultiDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistsMultiDataRelationshipDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistsSingleDataDocument
-import retrofit2.Response
-import retrofit2.http.*
+import com.tidal.sdk.tidalapi.generated.models.ArtistsTrackProvidersResourceIdentifier
+import com.tidal.sdk.tidalapi.generated.models.ErrorDocument
 
 interface Artists {
     /**
-     * Get all artists
-     * Retrieves all artist details by available filters or without (if applicable).
+     * Get multiple artists.
+     * Retrieves multiple artists by available filters, or without if applicable.
      * Responses:
-     *  - 200:
+     *  - 200: 
      *  - 451: Unavailable For Legal Reasons
      *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
      *  - 500: Internal Server Error. Something went wrong on the server party.
@@ -23,26 +29,19 @@ interface Artists {
      *  - 429: Too many HTTP requests have been made within the allowed time.
      *
      * @param countryCode ISO 3166-1 alpha-2 country code
-     * @param include Allows the client to customize which related resources should be returned. Available options: albums, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
+     * @param include Allows the client to customize which related resources should be returned. Available options: albums, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
      * @param filterHandle Allows to filter the collection of resources based on handle attribute value (optional)
      * @param filterId Allows to filter the collection of resources based on id attribute value (optional)
      * @return [ArtistsMultiDataDocument]
      */
     @GET("artists")
-    suspend fun artistsGet(
-        @Query("countryCode") countryCode: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[handle]") filterHandle:
-        @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[id]") filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? =
-            null,
-    ): Response<ArtistsMultiDataDocument>
+    suspend fun artistsGet(@Query("countryCode") countryCode: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("filter[handle]") filterHandle: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("filter[id]") filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null): Response<ArtistsMultiDataDocument>
 
     /**
-     * Get single artist
-     * Retrieves artist details by an unique id.
+     * Get single artist.
+     * Retrieves single artist by id.
      * Responses:
-     *  - 200:
+     *  - 200: 
      *  - 451: Unavailable For Legal Reasons
      *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
      *  - 500: Internal Server Error. Something went wrong on the server party.
@@ -54,19 +53,15 @@ interface Artists {
      *
      * @param id Artist id
      * @param countryCode ISO 3166-1 alpha-2 country code
-     * @param include Allows the client to customize which related resources should be returned. Available options: albums, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
+     * @param include Allows the client to customize which related resources should be returned. Available options: albums, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
      * @return [ArtistsSingleDataDocument]
      */
     @GET("artists/{id}")
-    suspend fun artistsIdGet(
-        @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<ArtistsSingleDataDocument>
+    suspend fun artistsIdGet(@Path("id") id: kotlin.String, @Query("countryCode") countryCode: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null): Response<ArtistsSingleDataDocument>
 
     /**
-     * Update single artist
-     * Updates the existing instance of artist&#39;s resource.
+     * Update single artist.
+     * Updates existing artist.
      * Responses:
      *  - 451: Unavailable For Legal Reasons
      *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
@@ -82,16 +77,13 @@ interface Artists {
      * @return [Unit]
      */
     @PATCH("artists/{id}")
-    suspend fun artistsIdPatch(
-        @Path("id") id: kotlin.String,
-        @Body artistUpdateBody: ArtistUpdateBody? = null,
-    ): Response<Unit>
+    suspend fun artistsIdPatch(@Path("id") id: kotlin.String, @Body artistUpdateBody: ArtistUpdateBody? = null): Response<Unit>
 
     /**
-     * Relationship: albums
-     * Retrieves albums relationship details of the related artist resource.
+     * Get albums relationship (\&quot;to-many\&quot;).
+     * Retrieves albums relationship.
      * Responses:
-     *  - 200:
+     *  - 200: 
      *  - 451: Unavailable For Legal Reasons
      *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
      *  - 500: Internal Server Error. Something went wrong on the server party.
@@ -108,18 +100,36 @@ interface Artists {
      * @return [ArtistsMultiDataRelationshipDocument]
      */
     @GET("artists/{id}/relationships/albums")
-    suspend fun artistsIdRelationshipsAlbumsGet(
-        @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<ArtistsMultiDataRelationshipDocument>
+    suspend fun artistsIdRelationshipsAlbumsGet(@Path("id") id: kotlin.String, @Query("countryCode") countryCode: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("page[cursor]") pageCursor: kotlin.String? = null): Response<ArtistsMultiDataRelationshipDocument>
 
     /**
-     * Relationship: radio
-     * Retrieves radio relationship details of the related artist resource.
+     * Get profileArt relationship (\&quot;to-many\&quot;).
+     * Retrieves profileArt relationship.
      * Responses:
-     *  - 200:
+     *  - 200: 
+     *  - 451: Unavailable For Legal Reasons
+     *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
+     *  - 500: Internal Server Error. Something went wrong on the server party.
+     *  - 404: Resource not found. The requested resource is not found.
+     *  - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.
+     *  - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
+     *  - 406: Not acceptable. The server doesn't support any of the requested by client acceptable content types.
+     *  - 429: Too many HTTP requests have been made within the allowed time.
+     *
+     * @param id Artist id
+     * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param include Allows the client to customize which related resources should be returned. Available options: profileArt (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     * @return [ArtistsMultiDataRelationshipDocument]
+     */
+    @GET("artists/{id}/relationships/profileArt")
+    suspend fun artistsIdRelationshipsProfileArtGet(@Path("id") id: kotlin.String, @Query("countryCode") countryCode: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("page[cursor]") pageCursor: kotlin.String? = null): Response<ArtistsMultiDataRelationshipDocument>
+
+    /**
+     * Get radio relationship (\&quot;to-many\&quot;).
+     * Retrieves radio relationship.
+     * Responses:
+     *  - 200: 
      *  - 451: Unavailable For Legal Reasons
      *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
      *  - 500: Internal Server Error. Something went wrong on the server party.
@@ -136,18 +146,13 @@ interface Artists {
      * @return [ArtistsMultiDataRelationshipDocument]
      */
     @GET("artists/{id}/relationships/radio")
-    suspend fun artistsIdRelationshipsRadioGet(
-        @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<ArtistsMultiDataRelationshipDocument>
+    suspend fun artistsIdRelationshipsRadioGet(@Path("id") id: kotlin.String, @Query("countryCode") countryCode: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("page[cursor]") pageCursor: kotlin.String? = null): Response<ArtistsMultiDataRelationshipDocument>
 
     /**
-     * Relationship: roles
-     * Retrieves roles relationship details of the related artist resource.
+     * Get roles relationship (\&quot;to-many\&quot;).
+     * Retrieves roles relationship.
      * Responses:
-     *  - 200:
+     *  - 200: 
      *  - 451: Unavailable For Legal Reasons
      *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
      *  - 500: Internal Server Error. Something went wrong on the server party.
@@ -163,17 +168,13 @@ interface Artists {
      * @return [ArtistsMultiDataRelationshipDocument]
      */
     @GET("artists/{id}/relationships/roles")
-    suspend fun artistsIdRelationshipsRolesGet(
-        @Path("id") id: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<ArtistsMultiDataRelationshipDocument>
+    suspend fun artistsIdRelationshipsRolesGet(@Path("id") id: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("page[cursor]") pageCursor: kotlin.String? = null): Response<ArtistsMultiDataRelationshipDocument>
 
     /**
-     * Relationship: similarArtists
-     * Retrieves similarArtists relationship details of the related artist resource.
+     * Get similarArtists relationship (\&quot;to-many\&quot;).
+     * Retrieves similarArtists relationship.
      * Responses:
-     *  - 200:
+     *  - 200: 
      *  - 451: Unavailable For Legal Reasons
      *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
      *  - 500: Internal Server Error. Something went wrong on the server party.
@@ -190,18 +191,13 @@ interface Artists {
      * @return [ArtistsMultiDataRelationshipDocument]
      */
     @GET("artists/{id}/relationships/similarArtists")
-    suspend fun artistsIdRelationshipsSimilarArtistsGet(
-        @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<ArtistsMultiDataRelationshipDocument>
+    suspend fun artistsIdRelationshipsSimilarArtistsGet(@Path("id") id: kotlin.String, @Query("countryCode") countryCode: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("page[cursor]") pageCursor: kotlin.String? = null): Response<ArtistsMultiDataRelationshipDocument>
 
     /**
-     * Relationship: trackProviders
-     * Retrieves trackProviders relationship details of the related artist resource.
+     * Get trackProviders relationship (\&quot;to-many\&quot;).
+     * Retrieves trackProviders relationship.
      * Responses:
-     *  - 200:
+     *  - 200: 
      *  - 451: Unavailable For Legal Reasons
      *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
      *  - 500: Internal Server Error. Something went wrong on the server party.
@@ -214,20 +210,16 @@ interface Artists {
      * @param id Artist id
      * @param include Allows the client to customize which related resources should be returned. Available options: trackProviders (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     * @return [ArtistsMultiDataRelationshipDocument]
+     * @return [ArtistsTrackProvidersResourceIdentifier]
      */
     @GET("artists/{id}/relationships/trackProviders")
-    suspend fun artistsIdRelationshipsTrackProvidersGet(
-        @Path("id") id: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<ArtistsMultiDataRelationshipDocument>
+    suspend fun artistsIdRelationshipsTrackProvidersGet(@Path("id") id: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("page[cursor]") pageCursor: kotlin.String? = null): Response<ArtistsTrackProvidersResourceIdentifier>
 
     /**
-     * Relationship: tracks
-     * Retrieves tracks relationship details of the related artist resource.
+     * Get tracks relationship (\&quot;to-many\&quot;).
+     * Retrieves tracks relationship.
      * Responses:
-     *  - 200:
+     *  - 200: 
      *  - 451: Unavailable For Legal Reasons
      *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
      *  - 500: Internal Server Error. Something went wrong on the server party.
@@ -245,19 +237,13 @@ interface Artists {
      * @return [ArtistsMultiDataRelationshipDocument]
      */
     @GET("artists/{id}/relationships/tracks")
-    suspend fun artistsIdRelationshipsTracksGet(
-        @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
-        @Query("collapseBy") collapseBy: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<ArtistsMultiDataRelationshipDocument>
+    suspend fun artistsIdRelationshipsTracksGet(@Path("id") id: kotlin.String, @Query("countryCode") countryCode: kotlin.String, @Query("collapseBy") collapseBy: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("page[cursor]") pageCursor: kotlin.String? = null): Response<ArtistsMultiDataRelationshipDocument>
 
     /**
-     * Relationship: videos
-     * Retrieves videos relationship details of the related artist resource.
+     * Get videos relationship (\&quot;to-many\&quot;).
+     * Retrieves videos relationship.
      * Responses:
-     *  - 200:
+     *  - 200: 
      *  - 451: Unavailable For Legal Reasons
      *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
      *  - 500: Internal Server Error. Something went wrong on the server party.
@@ -274,10 +260,6 @@ interface Artists {
      * @return [ArtistsMultiDataRelationshipDocument]
      */
     @GET("artists/{id}/relationships/videos")
-    suspend fun artistsIdRelationshipsVideosGet(
-        @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<ArtistsMultiDataRelationshipDocument>
+    suspend fun artistsIdRelationshipsVideosGet(@Path("id") id: kotlin.String, @Query("countryCode") countryCode: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("page[cursor]") pageCursor: kotlin.String? = null): Response<ArtistsMultiDataRelationshipDocument>
+
 }

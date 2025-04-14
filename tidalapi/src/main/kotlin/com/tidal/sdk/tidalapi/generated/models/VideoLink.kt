@@ -15,22 +15,33 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+import com.tidal.sdk.tidalapi.generated.models.VideoLinkMeta
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
+ * 
  *
- *
- * @param href
- * @param meta
+ * @param href 
+ * @param meta 
  */
 
 @Serializable
-data class VideoLink(
 
+data class VideoLink (
+
+    
     @SerialName(value = "href")
     val href: kotlin.String,
-
+    
     @SerialName(value = "meta")
-    val meta: VideoLinkMeta,
-)
+    val meta: VideoLinkMeta
+) {
+
+
+}
+

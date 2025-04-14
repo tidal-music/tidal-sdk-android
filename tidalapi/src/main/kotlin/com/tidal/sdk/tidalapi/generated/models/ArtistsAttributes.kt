@@ -15,41 +15,52 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+import com.tidal.sdk.tidalapi.generated.models.ExternalLink
+import com.tidal.sdk.tidalapi.generated.models.ImageLink
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
- *
+ * 
  *
  * @param name Artist name
- * @param popularity Artist popularity (ranged in 0.00 ... 1.00). Conditionally visible
- * @param imageLinks Represents available links to, and metadata about, an artist images
- * @param externalLinks Represents available links to something that is related to an artist resource, but external to the TIDAL API
- * @param roles Artist roles
+ * @param popularity Artist popularity (0.0 - 1.0)
+ * @param imageLinks Artist image links and metadata
+ * @param externalLinks Artist links external to TIDAL API
  * @param handle Artist handle
  */
 
 @Serializable
-data class ArtistsAttributes(
 
-    // Artist name
+data class ArtistsAttributes (
 
+    /* Artist name */
+    
     @SerialName(value = "name")
     val name: kotlin.String,
-    // Artist popularity (ranged in 0.00 ... 1.00). Conditionally visible
-
+    /* Artist popularity (0.0 - 1.0) */
+    
     @SerialName(value = "popularity")
     val popularity: kotlin.Double,
-    // Represents available links to, and metadata about, an artist images
-
+    /* Artist image links and metadata */
+    
     @SerialName(value = "imageLinks")
+    @Deprecated(message = "This property is deprecated.")
     val imageLinks: kotlin.collections.List<ImageLink>? = null,
-    // Represents available links to something that is related to an artist resource, but external to the TIDAL API
-
+    /* Artist links external to TIDAL API */
+    
     @SerialName(value = "externalLinks")
     val externalLinks: kotlin.collections.List<ExternalLink>? = null,
-    // Artist roles
-
+    /* Artist handle */
+    
     @SerialName(value = "handle")
-    val handle: kotlin.String? = null,
-)
+    val handle: kotlin.String? = null
+) {
+
+
+}
+

@@ -15,82 +15,85 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+import com.tidal.sdk.tidalapi.generated.models.ExternalLink
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
+ * 
  *
- *
- * @param title Album item's title
- * @param isrc ISRC code
- * @param duration Duration expressed in accordance with ISO 8601
- * @param explicit Indicates whether a catalog item consist of any explicit content
- * @param popularity Track or video popularity (ranged in 0.00 ... 1.00). Conditionally visible
- * @param mediaTags
- * @param version Version of the album's item; complements title
- * @param copyright Copyright information
- * @param availability Defines a catalog item availability e.g. for streaming, DJs, stems
- * @param externalLinks Represents available links to something that is related to a catalog item, but external to the TIDAL API
+ * @param title Track title
+ * @param isrc International Standard Recording Code (ISRC)
+ * @param duration Duration (ISO 8601)
+ * @param explicit Explicit content
+ * @param popularity Popularity (0.0 - 1.0)
+ * @param mediaTags 
+ * @param version Track version, complements title
+ * @param copyright Copyright
+ * @param availability Available usage for this track
+ * @param externalLinks Track links external to TIDAL API
  */
 
 @Serializable
-data class TracksAttributes(
 
-    // Album item's title
+data class TracksAttributes (
 
+    /* Track title */
+    
     @SerialName(value = "title")
     val title: kotlin.String,
-    // ISRC code
-
+    /* International Standard Recording Code (ISRC) */
+    
     @SerialName(value = "isrc")
     val isrc: kotlin.String,
-    // Duration expressed in accordance with ISO 8601
-
+    /* Duration (ISO 8601) */
+    
     @SerialName(value = "duration")
     val duration: kotlin.String,
-    // Indicates whether a catalog item consist of any explicit content
-
+    /* Explicit content */
+    
     @SerialName(value = "explicit")
     val explicit: kotlin.Boolean,
-    // Track or video popularity (ranged in 0.00 ... 1.00). Conditionally visible
-
+    /* Popularity (0.0 - 1.0) */
+    
     @SerialName(value = "popularity")
     val popularity: kotlin.Double,
-
+    
     @SerialName(value = "mediaTags")
     val mediaTags: kotlin.collections.List<kotlin.String>,
-    // Version of the album's item; complements title
-
+    /* Track version, complements title */
+    
     @SerialName(value = "version")
     val version: kotlin.String? = null,
-    // Copyright information
-
+    /* Copyright */
+    
     @SerialName(value = "copyright")
     val copyright: kotlin.String? = null,
-    // Defines a catalog item availability e.g. for streaming, DJs, stems
-
+    /* Available usage for this track */
+    
     @SerialName(value = "availability")
     val availability: kotlin.collections.List<TracksAttributes.Availability>? = null,
-    // Represents available links to something that is related to a catalog item, but external to the TIDAL API
-
+    /* Track links external to TIDAL API */
+    
     @SerialName(value = "externalLinks")
-    val externalLinks: kotlin.collections.List<ExternalLink>? = null,
+    val externalLinks: kotlin.collections.List<ExternalLink>? = null
 ) {
 
     /**
-     * Defines a catalog item availability e.g. for streaming, DJs, stems
+     * Available usage for this track
      *
      * Values: STREAM,DJ,STEM
      */
     @Serializable
     enum class Availability(val value: kotlin.String) {
-        @SerialName(value = "STREAM")
-        STREAM("STREAM"),
-
-        @SerialName(value = "DJ")
-        DJ("DJ"),
-
-        @SerialName(value = "STEM")
-        STEM("STEM"),
+        @SerialName(value = "STREAM") STREAM("STREAM"),
+        @SerialName(value = "DJ") DJ("DJ"),
+        @SerialName(value = "STEM") STEM("STEM");
     }
+
 }
+

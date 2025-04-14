@@ -15,7 +15,6 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import com.tidal.sdk.tidalapi.generated.models.Links
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsAttributes
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsRelationships
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsResource
@@ -33,7 +32,6 @@ import kotlinx.serialization.Transient
  * @param type resource unique type
  * @param attributes 
  * @param relationships 
- * @param links 
  */
 @Serializable
 @Polymorphic

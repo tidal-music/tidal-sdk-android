@@ -15,11 +15,15 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
- *
+ * 
  *
  * @param username user name
  * @param country ISO 3166-1 alpha-2 country code
@@ -27,33 +31,43 @@ import kotlinx.serialization.Serializable
  * @param emailVerified Is the email verified
  * @param firstName Users first name
  * @param lastName Users last name
+ * @param nostrPublicKey Users nostr public key
  */
 
 @Serializable
-data class UsersAttributes(
 
-    // user name
+data class UsersAttributes (
 
+    /* user name */
+    
     @SerialName(value = "username")
     val username: kotlin.String,
-    // ISO 3166-1 alpha-2 country code
-
+    /* ISO 3166-1 alpha-2 country code */
+    
     @SerialName(value = "country")
     val country: kotlin.String,
-    // email address
-
+    /* email address */
+    
     @SerialName(value = "email")
     val email: kotlin.String? = null,
-    // Is the email verified
-
+    /* Is the email verified */
+    
     @SerialName(value = "emailVerified")
     val emailVerified: kotlin.Boolean? = null,
-    // Users first name
-
+    /* Users first name */
+    
     @SerialName(value = "firstName")
     val firstName: kotlin.String? = null,
-    // Users last name
-
+    /* Users last name */
+    
     @SerialName(value = "lastName")
     val lastName: kotlin.String? = null,
-)
+    /* Users nostr public key */
+    
+    @SerialName(value = "nostrPublicKey")
+    val nostrPublicKey: kotlin.String? = null
+) {
+
+
+}
+

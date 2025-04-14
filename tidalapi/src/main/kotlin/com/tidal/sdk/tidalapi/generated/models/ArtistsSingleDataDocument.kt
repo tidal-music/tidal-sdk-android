@@ -15,26 +15,39 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+import com.tidal.sdk.tidalapi.generated.models.ArtistsMultiDataDocumentIncludedInner
+import com.tidal.sdk.tidalapi.generated.models.ArtistsResource
+import com.tidal.sdk.tidalapi.generated.models.Links
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
+ * 
  *
- *
- * @param `data`
- * @param links
- * @param included
+ * @param `data` 
+ * @param links 
+ * @param included 
  */
 
 @Serializable
-data class ArtistsSingleDataDocument(
 
+data class ArtistsSingleDataDocument (
+
+    
     @SerialName(value = "data")
     val `data`: ArtistsResource? = null,
-
+    
     @SerialName(value = "links")
     val links: Links? = null,
-
+    
     @SerialName(value = "included")
-    val included: kotlin.collections.List<ArtistsMultiDataDocumentIncludedInner>? = null,
-)
+    val included: kotlin.collections.List<ArtistsMultiDataDocumentIncludedInner>? = null
+) {
+
+
+}
+

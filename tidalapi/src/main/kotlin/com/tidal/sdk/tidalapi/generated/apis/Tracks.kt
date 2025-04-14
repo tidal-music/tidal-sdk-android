@@ -1,17 +1,22 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import retrofit2.http.*
+import retrofit2.Response
+import okhttp3.RequestBody
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+import com.tidal.sdk.tidalapi.generated.models.ErrorDocument
 import com.tidal.sdk.tidalapi.generated.models.TracksMultiDataDocument
 import com.tidal.sdk.tidalapi.generated.models.TracksMultiDataRelationshipDocument
 import com.tidal.sdk.tidalapi.generated.models.TracksSingleDataDocument
-import retrofit2.Response
-import retrofit2.http.*
 
 interface Tracks {
     /**
-     * Get all tracks
-     * Retrieves all track details by available filters or without (if applicable).
+     * Get multiple tracks.
+     * Retrieves multiple tracks by available filters, or without if applicable.
      * Responses:
-     *  - 200:
+     *  - 200: 
      *  - 451: Unavailable For Legal Reasons
      *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
      *  - 500: Internal Server Error. Something went wrong on the server party.
@@ -28,20 +33,13 @@ interface Tracks {
      * @return [TracksMultiDataDocument]
      */
     @GET("tracks")
-    suspend fun tracksGet(
-        @Query("countryCode") countryCode: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[isrc]") filterIsrc:
-        @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[id]") filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? =
-            null,
-    ): Response<TracksMultiDataDocument>
+    suspend fun tracksGet(@Query("countryCode") countryCode: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("filter[isrc]") filterIsrc: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("filter[id]") filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null): Response<TracksMultiDataDocument>
 
     /**
-     * Get single track
-     * Retrieves track details by an unique id.
+     * Get single track.
+     * Retrieves single track by id.
      * Responses:
-     *  - 200:
+     *  - 200: 
      *  - 451: Unavailable For Legal Reasons
      *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
      *  - 500: Internal Server Error. Something went wrong on the server party.
@@ -57,17 +55,13 @@ interface Tracks {
      * @return [TracksSingleDataDocument]
      */
     @GET("tracks/{id}")
-    suspend fun tracksIdGet(
-        @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<TracksSingleDataDocument>
+    suspend fun tracksIdGet(@Path("id") id: kotlin.String, @Query("countryCode") countryCode: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null): Response<TracksSingleDataDocument>
 
     /**
-     * Relationship: albums
-     * Retrieves albums relationship details of the related track resource.
+     * Get albums relationship (\&quot;to-many\&quot;).
+     * Retrieves albums relationship.
      * Responses:
-     *  - 200:
+     *  - 200: 
      *  - 451: Unavailable For Legal Reasons
      *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
      *  - 500: Internal Server Error. Something went wrong on the server party.
@@ -84,18 +78,13 @@ interface Tracks {
      * @return [TracksMultiDataRelationshipDocument]
      */
     @GET("tracks/{id}/relationships/albums")
-    suspend fun tracksIdRelationshipsAlbumsGet(
-        @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<TracksMultiDataRelationshipDocument>
+    suspend fun tracksIdRelationshipsAlbumsGet(@Path("id") id: kotlin.String, @Query("countryCode") countryCode: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("page[cursor]") pageCursor: kotlin.String? = null): Response<TracksMultiDataRelationshipDocument>
 
     /**
-     * Relationship: artists
-     * Retrieves artists relationship details of the related track resource.
+     * Get artists relationship (\&quot;to-many\&quot;).
+     * Retrieves artists relationship.
      * Responses:
-     *  - 200:
+     *  - 200: 
      *  - 451: Unavailable For Legal Reasons
      *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
      *  - 500: Internal Server Error. Something went wrong on the server party.
@@ -112,18 +101,13 @@ interface Tracks {
      * @return [TracksMultiDataRelationshipDocument]
      */
     @GET("tracks/{id}/relationships/artists")
-    suspend fun tracksIdRelationshipsArtistsGet(
-        @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<TracksMultiDataRelationshipDocument>
+    suspend fun tracksIdRelationshipsArtistsGet(@Path("id") id: kotlin.String, @Query("countryCode") countryCode: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("page[cursor]") pageCursor: kotlin.String? = null): Response<TracksMultiDataRelationshipDocument>
 
     /**
-     * Relationship: providers
-     * Retrieves providers relationship details of the related track resource.
+     * Get providers relationship (\&quot;to-many\&quot;).
+     * Retrieves providers relationship.
      * Responses:
-     *  - 200:
+     *  - 200: 
      *  - 451: Unavailable For Legal Reasons
      *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
      *  - 500: Internal Server Error. Something went wrong on the server party.
@@ -140,18 +124,13 @@ interface Tracks {
      * @return [TracksMultiDataRelationshipDocument]
      */
     @GET("tracks/{id}/relationships/providers")
-    suspend fun tracksIdRelationshipsProvidersGet(
-        @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<TracksMultiDataRelationshipDocument>
+    suspend fun tracksIdRelationshipsProvidersGet(@Path("id") id: kotlin.String, @Query("countryCode") countryCode: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("page[cursor]") pageCursor: kotlin.String? = null): Response<TracksMultiDataRelationshipDocument>
 
     /**
-     * Relationship: radio
-     * Retrieves radio relationship details of the related track resource.
+     * Get radio relationship (\&quot;to-many\&quot;).
+     * Retrieves radio relationship.
      * Responses:
-     *  - 200:
+     *  - 200: 
      *  - 451: Unavailable For Legal Reasons
      *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
      *  - 500: Internal Server Error. Something went wrong on the server party.
@@ -167,17 +146,13 @@ interface Tracks {
      * @return [TracksMultiDataRelationshipDocument]
      */
     @GET("tracks/{id}/relationships/radio")
-    suspend fun tracksIdRelationshipsRadioGet(
-        @Path("id") id: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<TracksMultiDataRelationshipDocument>
+    suspend fun tracksIdRelationshipsRadioGet(@Path("id") id: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("page[cursor]") pageCursor: kotlin.String? = null): Response<TracksMultiDataRelationshipDocument>
 
     /**
-     * Relationship: similarTracks
-     * Retrieves similarTracks relationship details of the related track resource.
+     * Get similarTracks relationship (\&quot;to-many\&quot;).
+     * Retrieves similarTracks relationship.
      * Responses:
-     *  - 200:
+     *  - 200: 
      *  - 451: Unavailable For Legal Reasons
      *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
      *  - 500: Internal Server Error. Something went wrong on the server party.
@@ -194,10 +169,6 @@ interface Tracks {
      * @return [TracksMultiDataRelationshipDocument]
      */
     @GET("tracks/{id}/relationships/similarTracks")
-    suspend fun tracksIdRelationshipsSimilarTracksGet(
-        @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
-        @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<TracksMultiDataRelationshipDocument>
+    suspend fun tracksIdRelationshipsSimilarTracksGet(@Path("id") id: kotlin.String, @Query("countryCode") countryCode: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("page[cursor]") pageCursor: kotlin.String? = null): Response<TracksMultiDataRelationshipDocument>
+
 }

@@ -15,37 +15,42 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
+ * 
  *
- *
- * @param id
- * @param type
+ * @param id 
+ * @param type 
  */
 
 @Serializable
-data class PlaylistItemsRelationshipAddOperationPayloadData(
 
+data class PlaylistItemsRelationshipAddOperationPayloadData (
+
+    
     @SerialName(value = "id")
     val id: kotlin.String,
-
+    
     @SerialName(value = "type")
-    val type: PlaylistItemsRelationshipAddOperationPayloadData.Type,
+    val type: PlaylistItemsRelationshipAddOperationPayloadData.Type
 ) {
 
     /**
-     *
+     * 
      *
      * Values: tracks,videos
      */
     @Serializable
     enum class Type(val value: kotlin.String) {
-        @SerialName(value = "tracks")
-        tracks("tracks"),
-
-        @SerialName(value = "videos")
-        videos("videos"),
+        @SerialName(value = "tracks") tracks("tracks"),
+        @SerialName(value = "videos") videos("videos");
     }
+
 }
+
