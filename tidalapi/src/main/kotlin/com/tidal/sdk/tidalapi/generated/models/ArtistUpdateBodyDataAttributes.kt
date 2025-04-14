@@ -15,26 +15,42 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+import com.tidal.sdk.tidalapi.generated.models.ExternalLink
+import com.tidal.sdk.tidalapi.generated.models.ImageLink
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
+ * 
  *
- *
- * @param name
- * @param handle
- * @param image
+ * @param name 
+ * @param handle 
+ * @param imageLinks 
+ * @param externalLinks 
  */
 
 @Serializable
-data class ArtistUpdateBodyDataAttributes(
 
+data class ArtistUpdateBodyDataAttributes (
+
+    
     @SerialName(value = "name")
     val name: kotlin.String? = null,
-
+    
     @SerialName(value = "handle")
     val handle: kotlin.String? = null,
+    
+    @SerialName(value = "imageLinks")
+    val imageLinks: kotlin.collections.List<ImageLink>? = null,
+    
+    @SerialName(value = "externalLinks")
+    val externalLinks: kotlin.collections.List<ExternalLink>? = null
+) {
 
-    @SerialName(value = "image")
-    val image: kotlin.collections.List<ImageLink>? = null,
-)
+
+}
+

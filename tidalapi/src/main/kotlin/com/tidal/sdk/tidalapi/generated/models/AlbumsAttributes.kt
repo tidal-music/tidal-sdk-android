@@ -15,124 +15,125 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+import com.tidal.sdk.tidalapi.generated.models.ExternalLink
+import com.tidal.sdk.tidalapi.generated.models.ImageLink
+import com.tidal.sdk.tidalapi.generated.models.VideoLink
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
+ * 
  *
- *
- * @param title Original title
+ * @param title Album title
  * @param barcodeId Barcode id (EAN-13 or UPC-A)
  * @param numberOfVolumes Number of volumes
- * @param numberOfItems Number of album items
- * @param duration Duration (ISO-8601)
- * @param explicit Indicates whether an album consist of any explicit content
- * @param popularity Album popularity (ranged in 0.00 ... 1.00). Conditionally visible
- * @param mediaTags
- * @param type Album type, e.g. single, regular album, or extended play
+ * @param numberOfItems Number of items in album
+ * @param duration Duration (ISO 8601)
+ * @param explicit Explicit content
+ * @param popularity Popularity (0.0 - 1.0)
+ * @param mediaTags 
+ * @param type Album type
  * @param releaseDate Release date (ISO-8601)
- * @param copyright Copyright information
- * @param availability Defines an album availability e.g. for streaming, DJs, stems
- * @param imageLinks Represents available links to, and metadata about, an album cover images
- * @param videoLinks Represents available links to, and metadata about, an album cover videos
- * @param externalLinks Represents available links to something that is related to an album resource, but external to the TIDAL API
+ * @param copyright Copyright
+ * @param availability Available usage for this album
+ * @param imageLinks Album image links and metadata
+ * @param videoLinks Album video links and metadata
+ * @param externalLinks Album links external to TIDAL API
  */
 
 @Serializable
-data class AlbumsAttributes(
 
-    // Original title
+data class AlbumsAttributes (
 
+    /* Album title */
+    
     @SerialName(value = "title")
     val title: kotlin.String,
-    // Barcode id (EAN-13 or UPC-A)
-
+    /* Barcode id (EAN-13 or UPC-A) */
+    
     @SerialName(value = "barcodeId")
     val barcodeId: kotlin.String,
-    // Number of volumes
-
+    /* Number of volumes */
+    
     @SerialName(value = "numberOfVolumes")
     val numberOfVolumes: kotlin.Int,
-    // Number of album items
-
+    /* Number of items in album */
+    
     @SerialName(value = "numberOfItems")
     val numberOfItems: kotlin.Int,
-    // Duration (ISO-8601)
-
+    /* Duration (ISO 8601) */
+    
     @SerialName(value = "duration")
     val duration: kotlin.String,
-    // Indicates whether an album consist of any explicit content
-
+    /* Explicit content */
+    
     @SerialName(value = "explicit")
     val explicit: kotlin.Boolean,
-    // Album popularity (ranged in 0.00 ... 1.00). Conditionally visible
-
+    /* Popularity (0.0 - 1.0) */
+    
     @SerialName(value = "popularity")
     val popularity: kotlin.Double,
-
+    
     @SerialName(value = "mediaTags")
     val mediaTags: kotlin.collections.List<kotlin.String>,
-    // Album type, e.g. single, regular album, or extended play
-
+    /* Album type */
+    
     @SerialName(value = "type")
     val type: AlbumsAttributes.Type,
-    // Release date (ISO-8601)
-
+    /* Release date (ISO-8601) */
+    
     @SerialName(value = "releaseDate")
     val releaseDate: kotlin.String? = null,
-    // Copyright information
-
+    /* Copyright */
+    
     @SerialName(value = "copyright")
     val copyright: kotlin.String? = null,
-    // Defines an album availability e.g. for streaming, DJs, stems
-
+    /* Available usage for this album */
+    
     @SerialName(value = "availability")
     val availability: kotlin.collections.List<AlbumsAttributes.Availability>? = null,
-    // Represents available links to, and metadata about, an album cover images
-
+    /* Album image links and metadata */
+    
     @SerialName(value = "imageLinks")
+    @Deprecated(message = "This property is deprecated.")
     val imageLinks: kotlin.collections.List<ImageLink>? = null,
-    // Represents available links to, and metadata about, an album cover videos
-
+    /* Album video links and metadata */
+    
     @SerialName(value = "videoLinks")
+    @Deprecated(message = "This property is deprecated.")
     val videoLinks: kotlin.collections.List<VideoLink>? = null,
-    // Represents available links to something that is related to an album resource, but external to the TIDAL API
-
+    /* Album links external to TIDAL API */
+    
     @SerialName(value = "externalLinks")
-    val externalLinks: kotlin.collections.List<ExternalLink>? = null,
+    val externalLinks: kotlin.collections.List<ExternalLink>? = null
 ) {
 
     /**
-     * Album type, e.g. single, regular album, or extended play
+     * Album type
      *
      * Values: ALBUM,EP,SINGLE
      */
     @Serializable
     enum class Type(val value: kotlin.String) {
-        @SerialName(value = "ALBUM")
-        ALBUM("ALBUM"),
-
-        @SerialName(value = "EP")
-        EP("EP"),
-
-        @SerialName(value = "SINGLE")
-        SINGLE("SINGLE"),
+        @SerialName(value = "ALBUM") ALBUM("ALBUM"),
+        @SerialName(value = "EP") EP("EP"),
+        @SerialName(value = "SINGLE") SINGLE("SINGLE");
     }
-
     /**
-     * Defines an album availability e.g. for streaming, DJs, stems
+     * Available usage for this album
      *
      * Values: STREAM,DJ,STEM
      */
     @Serializable
     enum class Availability(val value: kotlin.String) {
-        @SerialName(value = "STREAM")
-        STREAM("STREAM"),
-
-        @SerialName(value = "DJ")
-        DJ("DJ"),
-
-        @SerialName(value = "STEM")
-        STEM("STEM"),
+        @SerialName(value = "STREAM") STREAM("STREAM"),
+        @SerialName(value = "DJ") DJ("DJ"),
+        @SerialName(value = "STEM") STEM("STEM");
     }
+
 }
+

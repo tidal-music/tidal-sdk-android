@@ -15,8 +15,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
  * Links JSON:API object
@@ -26,14 +30,19 @@ import kotlinx.serialization.Serializable
  */
 
 @Serializable
-data class Links(
 
-    // the link that generated the current response document
+data class Links (
 
+    /* the link that generated the current response document */
+    
     @SerialName(value = "self")
     val self: kotlin.String,
-    // the next page of data (pagination)
-
+    /* the next page of data (pagination) */
+    
     @SerialName(value = "next")
-    val next: kotlin.String? = null,
-)
+    val next: kotlin.String? = null
+) {
+
+
+}
+

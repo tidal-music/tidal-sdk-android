@@ -15,26 +15,37 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+import com.tidal.sdk.tidalapi.generated.models.MultiDataRelationshipDoc
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
+ * 
  *
- *
- * @param discoveryMixes
- * @param newArrivalMixes
- * @param myMixes
+ * @param discoveryMixes 
+ * @param newArrivalMixes 
+ * @param myMixes 
  */
 
 @Serializable
-data class UserRecommendationsRelationships(
 
+data class UserRecommendationsRelationships (
+
+    
     @SerialName(value = "discoveryMixes")
     val discoveryMixes: MultiDataRelationshipDoc,
-
+    
     @SerialName(value = "newArrivalMixes")
     val newArrivalMixes: MultiDataRelationshipDoc,
-
+    
     @SerialName(value = "myMixes")
-    val myMixes: MultiDataRelationshipDoc,
-)
+    val myMixes: MultiDataRelationshipDoc
+) {
+
+
+}
+

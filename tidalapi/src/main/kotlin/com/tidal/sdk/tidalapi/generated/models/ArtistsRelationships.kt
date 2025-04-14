@@ -15,42 +15,58 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+import com.tidal.sdk.tidalapi.generated.models.ArtistsTrackProvidersMultiDataRelationshipDocument
+import com.tidal.sdk.tidalapi.generated.models.MultiDataRelationshipDoc
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
+ * 
  *
- *
- * @param similarArtists
- * @param albums
- * @param roles
- * @param videos
- * @param trackProviders
- * @param tracks
- * @param radio
+ * @param similarArtists 
+ * @param albums 
+ * @param roles 
+ * @param videos 
+ * @param profileArt 
+ * @param trackProviders 
+ * @param tracks 
+ * @param radio 
  */
 
 @Serializable
-data class ArtistsRelationships(
 
+data class ArtistsRelationships (
+
+    
     @SerialName(value = "similarArtists")
     val similarArtists: MultiDataRelationshipDoc,
-
+    
     @SerialName(value = "albums")
     val albums: MultiDataRelationshipDoc,
-
+    
     @SerialName(value = "roles")
     val roles: MultiDataRelationshipDoc,
-
+    
     @SerialName(value = "videos")
     val videos: MultiDataRelationshipDoc,
-
+    
+    @SerialName(value = "profileArt")
+    val profileArt: MultiDataRelationshipDoc,
+    
     @SerialName(value = "trackProviders")
     val trackProviders: ArtistsTrackProvidersMultiDataRelationshipDocument,
-
+    
     @SerialName(value = "tracks")
     val tracks: MultiDataRelationshipDoc,
-
+    
     @SerialName(value = "radio")
-    val radio: MultiDataRelationshipDoc,
-)
+    val radio: MultiDataRelationshipDoc
+) {
+
+
+}
+

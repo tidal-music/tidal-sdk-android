@@ -7,13 +7,13 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 import com.tidal.sdk.tidalapi.generated.models.ErrorDocument
-import com.tidal.sdk.tidalapi.generated.models.SearchresultsMultiDataRelationshipDocument
-import com.tidal.sdk.tidalapi.generated.models.SearchresultsSingleDataDocument
+import com.tidal.sdk.tidalapi.generated.models.SearchResultsMultiDataRelationshipDocument
+import com.tidal.sdk.tidalapi.generated.models.SearchResultsSingleDataDocument
 
-interface Searchresults {
+interface SearchResults {
     /**
-     * Get single searchresult
-     * Retrieves searchresult details by an unique id.
+     * Get single searchResult.
+     * Retrieves single searchResult by id.
      * Responses:
      *  - 200: 
      *  - 451: Unavailable For Legal Reasons
@@ -28,14 +28,14 @@ interface Searchresults {
      * @param id Search query
      * @param countryCode ISO 3166-1 alpha-2 country code
      * @param include Allows the client to customize which related resources should be returned. Available options: albums, artists, playlists, topHits, tracks, videos (optional)
-     * @return [SearchresultsSingleDataDocument]
+     * @return [SearchResultsSingleDataDocument]
      */
-    @GET("searchresults/{id}")
-    suspend fun searchresultsIdGet(@Path("id") id: kotlin.String, @Query("countryCode") countryCode: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null): Response<SearchresultsSingleDataDocument>
+    @GET("searchResults/{id}")
+    suspend fun searchResultsIdGet(@Path("id") id: kotlin.String, @Query("countryCode") countryCode: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null): Response<SearchResultsSingleDataDocument>
 
     /**
-     * Relationship: albums
-     * Retrieves albums relationship details of the related searchresult resource.
+     * Get albums relationship (\&quot;to-many\&quot;).
+     * Retrieves albums relationship.
      * Responses:
      *  - 200: 
      *  - 451: Unavailable For Legal Reasons
@@ -51,14 +51,14 @@ interface Searchresults {
      * @param countryCode ISO 3166-1 alpha-2 country code
      * @param include Allows the client to customize which related resources should be returned. Available options: albums (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     * @return [SearchresultsMultiDataRelationshipDocument]
+     * @return [SearchResultsMultiDataRelationshipDocument]
      */
-    @GET("searchresults/{id}/relationships/albums")
-    suspend fun searchresultsIdRelationshipsAlbumsGet(@Path("id") id: kotlin.String, @Query("countryCode") countryCode: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("page[cursor]") pageCursor: kotlin.String? = null): Response<SearchresultsMultiDataRelationshipDocument>
+    @GET("searchResults/{id}/relationships/albums")
+    suspend fun searchResultsIdRelationshipsAlbumsGet(@Path("id") id: kotlin.String, @Query("countryCode") countryCode: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("page[cursor]") pageCursor: kotlin.String? = null): Response<SearchResultsMultiDataRelationshipDocument>
 
     /**
-     * Relationship: artists
-     * Retrieves artists relationship details of the related searchresult resource.
+     * Get artists relationship (\&quot;to-many\&quot;).
+     * Retrieves artists relationship.
      * Responses:
      *  - 200: 
      *  - 451: Unavailable For Legal Reasons
@@ -74,14 +74,14 @@ interface Searchresults {
      * @param countryCode ISO 3166-1 alpha-2 country code
      * @param include Allows the client to customize which related resources should be returned. Available options: artists (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     * @return [SearchresultsMultiDataRelationshipDocument]
+     * @return [SearchResultsMultiDataRelationshipDocument]
      */
-    @GET("searchresults/{id}/relationships/artists")
-    suspend fun searchresultsIdRelationshipsArtistsGet(@Path("id") id: kotlin.String, @Query("countryCode") countryCode: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("page[cursor]") pageCursor: kotlin.String? = null): Response<SearchresultsMultiDataRelationshipDocument>
+    @GET("searchResults/{id}/relationships/artists")
+    suspend fun searchResultsIdRelationshipsArtistsGet(@Path("id") id: kotlin.String, @Query("countryCode") countryCode: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("page[cursor]") pageCursor: kotlin.String? = null): Response<SearchResultsMultiDataRelationshipDocument>
 
     /**
-     * Relationship: playlists
-     * Retrieves playlists relationship details of the related searchresult resource.
+     * Get playlists relationship (\&quot;to-many\&quot;).
+     * Retrieves playlists relationship.
      * Responses:
      *  - 200: 
      *  - 451: Unavailable For Legal Reasons
@@ -97,14 +97,14 @@ interface Searchresults {
      * @param countryCode ISO 3166-1 alpha-2 country code
      * @param include Allows the client to customize which related resources should be returned. Available options: playlists (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     * @return [SearchresultsMultiDataRelationshipDocument]
+     * @return [SearchResultsMultiDataRelationshipDocument]
      */
-    @GET("searchresults/{id}/relationships/playlists")
-    suspend fun searchresultsIdRelationshipsPlaylistsGet(@Path("id") id: kotlin.String, @Query("countryCode") countryCode: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("page[cursor]") pageCursor: kotlin.String? = null): Response<SearchresultsMultiDataRelationshipDocument>
+    @GET("searchResults/{id}/relationships/playlists")
+    suspend fun searchResultsIdRelationshipsPlaylistsGet(@Path("id") id: kotlin.String, @Query("countryCode") countryCode: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("page[cursor]") pageCursor: kotlin.String? = null): Response<SearchResultsMultiDataRelationshipDocument>
 
     /**
-     * Relationship: topHits
-     * Retrieves topHits relationship details of the related searchresult resource.
+     * Get topHits relationship (\&quot;to-many\&quot;).
+     * Retrieves topHits relationship.
      * Responses:
      *  - 200: 
      *  - 451: Unavailable For Legal Reasons
@@ -120,14 +120,14 @@ interface Searchresults {
      * @param countryCode ISO 3166-1 alpha-2 country code
      * @param include Allows the client to customize which related resources should be returned. Available options: topHits (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     * @return [SearchresultsMultiDataRelationshipDocument]
+     * @return [SearchResultsMultiDataRelationshipDocument]
      */
-    @GET("searchresults/{id}/relationships/topHits")
-    suspend fun searchresultsIdRelationshipsTopHitsGet(@Path("id") id: kotlin.String, @Query("countryCode") countryCode: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("page[cursor]") pageCursor: kotlin.String? = null): Response<SearchresultsMultiDataRelationshipDocument>
+    @GET("searchResults/{id}/relationships/topHits")
+    suspend fun searchResultsIdRelationshipsTopHitsGet(@Path("id") id: kotlin.String, @Query("countryCode") countryCode: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("page[cursor]") pageCursor: kotlin.String? = null): Response<SearchResultsMultiDataRelationshipDocument>
 
     /**
-     * Relationship: tracks
-     * Retrieves tracks relationship details of the related searchresult resource.
+     * Get tracks relationship (\&quot;to-many\&quot;).
+     * Retrieves tracks relationship.
      * Responses:
      *  - 200: 
      *  - 451: Unavailable For Legal Reasons
@@ -143,14 +143,14 @@ interface Searchresults {
      * @param countryCode ISO 3166-1 alpha-2 country code
      * @param include Allows the client to customize which related resources should be returned. Available options: tracks (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     * @return [SearchresultsMultiDataRelationshipDocument]
+     * @return [SearchResultsMultiDataRelationshipDocument]
      */
-    @GET("searchresults/{id}/relationships/tracks")
-    suspend fun searchresultsIdRelationshipsTracksGet(@Path("id") id: kotlin.String, @Query("countryCode") countryCode: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("page[cursor]") pageCursor: kotlin.String? = null): Response<SearchresultsMultiDataRelationshipDocument>
+    @GET("searchResults/{id}/relationships/tracks")
+    suspend fun searchResultsIdRelationshipsTracksGet(@Path("id") id: kotlin.String, @Query("countryCode") countryCode: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("page[cursor]") pageCursor: kotlin.String? = null): Response<SearchResultsMultiDataRelationshipDocument>
 
     /**
-     * Relationship: videos
-     * Retrieves videos relationship details of the related searchresult resource.
+     * Get videos relationship (\&quot;to-many\&quot;).
+     * Retrieves videos relationship.
      * Responses:
      *  - 200: 
      *  - 451: Unavailable For Legal Reasons
@@ -166,9 +166,9 @@ interface Searchresults {
      * @param countryCode ISO 3166-1 alpha-2 country code
      * @param include Allows the client to customize which related resources should be returned. Available options: videos (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     * @return [SearchresultsMultiDataRelationshipDocument]
+     * @return [SearchResultsMultiDataRelationshipDocument]
      */
-    @GET("searchresults/{id}/relationships/videos")
-    suspend fun searchresultsIdRelationshipsVideosGet(@Path("id") id: kotlin.String, @Query("countryCode") countryCode: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("page[cursor]") pageCursor: kotlin.String? = null): Response<SearchresultsMultiDataRelationshipDocument>
+    @GET("searchResults/{id}/relationships/videos")
+    suspend fun searchResultsIdRelationshipsVideosGet(@Path("id") id: kotlin.String, @Query("countryCode") countryCode: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("page[cursor]") pageCursor: kotlin.String? = null): Response<SearchResultsMultiDataRelationshipDocument>
 
 }

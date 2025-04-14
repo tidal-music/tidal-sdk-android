@@ -15,39 +15,45 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+import com.tidal.sdk.tidalapi.generated.models.ArtistsAttributes
+import com.tidal.sdk.tidalapi.generated.models.ArtistsRelationships
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.Transient
 
 /**
- *
+ * 
  *
  * @param id resource unique identifier
  * @param type resource unique type
- * @param attributes
- * @param relationships
- * @param links
+ * @param attributes 
+ * @param relationships 
  */
 
 @Serializable
 @SerialName(value = "artists")
-data class ArtistsResource(
 
-    // resource unique identifier
+data class ArtistsResource (
 
+    /* resource unique identifier */
+    
     @SerialName(value = "id")
     val id: kotlin.String,
-    // resource unique type
+    /* resource unique type */
     @Transient
     @SerialName(value = "type")
     val type: kotlin.String = "",
-
+    
     @SerialName(value = "attributes")
     val attributes: ArtistsAttributes? = null,
-
+    
     @SerialName(value = "relationships")
-    val relationships: ArtistsRelationships? = null,
+    val relationships: ArtistsRelationships? = null
+): AlbumsMultiDataDocumentIncludedInner, UserCollectionsMultiDataDocumentIncludedInner, SearchResultsMultiDataRelationshipDocumentIncludedInner, SearchSuggestionsMultiDataRelationshipDocumentIncludedInner, PlaylistsMultiDataDocumentIncludedInner, AlbumsMultiDataRelationshipDocumentIncludedInner, VideosMultiDataRelationshipDocumentIncludedInner, SearchResultsMultiDataDocumentIncludedInner, ArtistsMultiDataDocumentIncludedInner, SearchSuggestionsMultiDataDocumentIncludedInner, SearchresultsMultiDataRelationshipDocumentIncludedInner, ArtistsMultiDataRelationshipDocumentIncludedInner, PlaylistsMultiDataRelationshipDocumentIncludedInner, VideosMultiDataDocumentIncludedInner, TracksMultiDataDocumentIncludedInner {
 
-    @SerialName(value = "links")
-    val links: Links? = null,
-) : AlbumsMultiDataDocumentIncludedInner, UserCollectionsMultiDataDocumentIncludedInner, UserPublicProfilesMultiDataRelationshipDocumentIncludedInner, PlaylistsMultiDataDocumentIncludedInner, AlbumsMultiDataRelationshipDocumentIncludedInner, VideosMultiDataRelationshipDocumentIncludedInner, SearchresultsMultiDataDocumentIncludedInner, ArtistsMultiDataDocumentIncludedInner, SearchresultsMultiDataRelationshipDocumentIncludedInner, ArtistsMultiDataRelationshipDocumentIncludedInner, PlaylistsMultiDataRelationshipDocumentIncludedInner, VideosMultiDataDocumentIncludedInner, TracksMultiDataDocumentIncludedInner, UserPublicProfilesMultiDataDocumentIncludedInner, UserCollectionsMultiDataRelationshipDocumentIncludedInner
+
+}
+

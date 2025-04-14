@@ -15,35 +15,40 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+import com.tidal.sdk.tidalapi.generated.models.ProvidersAttributes
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.Transient
 
 /**
- *
+ * 
  *
  * @param id resource unique identifier
  * @param type resource unique type
- * @param attributes
- * @param links
+ * @param attributes 
  */
 
 @Serializable
 @SerialName(value = "providers")
-data class ProvidersResource(
 
-    // resource unique identifier
+data class ProvidersResource (
 
+    /* resource unique identifier */
+    
     @SerialName(value = "id")
     val id: kotlin.String,
-    // resource unique type
+    /* resource unique type */
     @Transient
     @SerialName(value = "type")
     val type: kotlin.String = "",
-
+    
     @SerialName(value = "attributes")
-    val attributes: ProvidersAttributes? = null,
+    val attributes: ProvidersAttributes? = null
+): AlbumsMultiDataDocumentIncludedInner, AlbumsMultiDataRelationshipDocumentIncludedInner, VideosMultiDataRelationshipDocumentIncludedInner, ArtistsMultiDataDocumentIncludedInner, ArtistsMultiDataRelationshipDocumentIncludedInner, VideosMultiDataDocumentIncludedInner, TracksMultiDataDocumentIncludedInner {
 
-    @SerialName(value = "links")
-    val links: Links? = null,
-) : AlbumsMultiDataDocumentIncludedInner, AlbumsMultiDataRelationshipDocumentIncludedInner, VideosMultiDataRelationshipDocumentIncludedInner, ArtistsMultiDataDocumentIncludedInner, ArtistsMultiDataRelationshipDocumentIncludedInner, VideosMultiDataDocumentIncludedInner, TracksMultiDataDocumentIncludedInner
+
+}
+

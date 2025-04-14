@@ -15,22 +15,32 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
+ * 
  *
- *
- * @param itemId
- * @param addedAt
+ * @param itemId 
+ * @param addedAt 
  */
 
 @Serializable
-data class PlaylistsItemsResourceIdentifierMeta(
 
+data class PlaylistsItemsResourceIdentifierMeta (
+
+    
     @SerialName(value = "itemId")
     val itemId: kotlin.String? = null,
-
+    
     @SerialName(value = "addedAt")
-    val addedAt: kotlin.String? = null,
-)
+    val addedAt: kotlin.String? = null
+) {
+
+
+}
+

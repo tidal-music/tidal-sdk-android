@@ -15,18 +15,29 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionArtistsRelationshipRemoveOperationPayloadData
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
+ * 
  *
- *
- * @param `data`
+ * @param `data` 
  */
 
 @Serializable
-data class UserCollectionArtistsRelationshipRemoveOperationPayload(
 
+data class UserCollectionArtistsRelationshipRemoveOperationPayload (
+
+    
     @SerialName(value = "data")
-    val `data`: kotlin.collections.List<UserCollectionArtistsRelationshipRemoveOperationPayloadData>,
-)
+    val `data`: kotlin.collections.List<UserCollectionArtistsRelationshipRemoveOperationPayloadData>
+) {
+
+
+}
+

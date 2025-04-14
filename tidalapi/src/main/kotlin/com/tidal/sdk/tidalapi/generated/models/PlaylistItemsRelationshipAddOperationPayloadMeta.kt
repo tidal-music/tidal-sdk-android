@@ -15,18 +15,28 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
+ * 
  *
- *
- * @param positionBefore
+ * @param positionBefore 
  */
 
 @Serializable
-data class PlaylistItemsRelationshipAddOperationPayloadMeta(
 
+data class PlaylistItemsRelationshipAddOperationPayloadMeta (
+
+    
     @SerialName(value = "positionBefore")
-    val positionBefore: kotlin.String,
-)
+    val positionBefore: kotlin.String
+) {
+
+
+}
+

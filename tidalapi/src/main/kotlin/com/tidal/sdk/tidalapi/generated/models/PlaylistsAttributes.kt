@@ -15,72 +15,77 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+import com.tidal.sdk.tidalapi.generated.models.ExternalLink
+import com.tidal.sdk.tidalapi.generated.models.ImageLink
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
- *
+ * 
  *
  * @param name Playlist name
  * @param bounded Indicates if the playlist has a duration and set number of tracks
- * @param externalLinks Sharing links to the playlist
- * @param imageLinks Images associated with the playlist
+ * @param externalLinks 
+ * @param imageLinks 
  * @param createdAt Datetime of playlist creation (ISO 8601)
  * @param lastModifiedAt Datetime of last modification of the playlist (ISO 8601)
  * @param privacy Privacy setting of the playlist
  * @param playlistType The type of the playlist
  * @param description Playlist description
- * @param duration Duration of the playlist expressed in accordance with ISO 8601
+ * @param duration Duration of playlist (ISO 8601)
  * @param numberOfItems Number of items in the playlist
  */
 
 @Serializable
-data class PlaylistsAttributes(
 
-    // Playlist name
+data class PlaylistsAttributes (
 
+    /* Playlist name */
+    
     @SerialName(value = "name")
     val name: kotlin.String,
-    // Indicates if the playlist has a duration and set number of tracks
-
+    /* Indicates if the playlist has a duration and set number of tracks */
+    
     @SerialName(value = "bounded")
     val bounded: kotlin.Boolean,
-    // Sharing links to the playlist
-
+    
     @SerialName(value = "externalLinks")
     val externalLinks: kotlin.collections.List<ExternalLink>,
-    // Images associated with the playlist
-
+    
     @SerialName(value = "imageLinks")
     val imageLinks: kotlin.collections.List<ImageLink>,
-    // Datetime of playlist creation (ISO 8601)
-
+    /* Datetime of playlist creation (ISO 8601) */
+    
     @SerialName(value = "createdAt")
     val createdAt: kotlin.String,
-    // Datetime of last modification of the playlist (ISO 8601)
-
+    /* Datetime of last modification of the playlist (ISO 8601) */
+    
     @SerialName(value = "lastModifiedAt")
     val lastModifiedAt: kotlin.String,
-    // Privacy setting of the playlist
-
+    /* Privacy setting of the playlist */
+    
     @SerialName(value = "privacy")
     val privacy: PlaylistsAttributes.Privacy,
-    // The type of the playlist
-
+    /* The type of the playlist */
+    
     @SerialName(value = "playlistType")
     val playlistType: PlaylistsAttributes.PlaylistType,
-    // Playlist description
-
+    /* Playlist description */
+    
     @SerialName(value = "description")
     val description: kotlin.String? = null,
-    // Duration of the playlist expressed in accordance with ISO 8601
-
+    /* Duration of playlist (ISO 8601) */
+    
     @SerialName(value = "duration")
     val duration: kotlin.String? = null,
-    // Number of items in the playlist
-
+    /* Number of items in the playlist */
+    
     @SerialName(value = "numberOfItems")
-    val numberOfItems: kotlin.Int? = null,
+    val numberOfItems: kotlin.Int? = null
 ) {
 
     /**
@@ -90,13 +95,9 @@ data class PlaylistsAttributes(
      */
     @Serializable
     enum class Privacy(val value: kotlin.String) {
-        @SerialName(value = "PUBLIC")
-        PUBLIC("PUBLIC"),
-
-        @SerialName(value = "PRIVATE")
-        PRIVATE("PRIVATE"),
+        @SerialName(value = "PUBLIC") PUBLIC("PUBLIC"),
+        @SerialName(value = "PRIVATE") PRIVATE("PRIVATE");
     }
-
     /**
      * The type of the playlist
      *
@@ -104,16 +105,11 @@ data class PlaylistsAttributes(
      */
     @Serializable
     enum class PlaylistType(val value: kotlin.String) {
-        @SerialName(value = "EDITORIAL")
-        EDITORIAL("EDITORIAL"),
-
-        @SerialName(value = "USER")
-        USER("USER"),
-
-        @SerialName(value = "MIX")
-        MIX("MIX"),
-
-        @SerialName(value = "ARTIST")
-        ARTIST("ARTIST"),
+        @SerialName(value = "EDITORIAL") EDITORIAL("EDITORIAL"),
+        @SerialName(value = "USER") USER("USER"),
+        @SerialName(value = "MIX") MIX("MIX"),
+        @SerialName(value = "ARTIST") ARTIST("ARTIST");
     }
+
 }
+

@@ -15,20 +15,29 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
+ * 
  *
- *
- * @param name Provider name. Conditionally visible.
+ * @param name Provider name
  */
 
 @Serializable
-data class ProvidersAttributes(
 
-    // Provider name. Conditionally visible.
+data class ProvidersAttributes (
 
+    /* Provider name */
+    
     @SerialName(value = "name")
-    val name: kotlin.String,
-)
+    val name: kotlin.String
+) {
+
+
+}
+

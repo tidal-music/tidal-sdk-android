@@ -15,38 +15,46 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+import com.tidal.sdk.tidalapi.generated.models.ArtistUpdateBodyDataAttributes
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
+ * 
  *
- *
- * @param id
- * @param type
- * @param attributes
+ * @param id 
+ * @param type 
+ * @param attributes 
  */
 
 @Serializable
-data class ArtistUpdateBodyData(
 
+data class ArtistUpdateBodyData (
+
+    
     @SerialName(value = "id")
     val id: kotlin.String,
-
+    
     @SerialName(value = "type")
     val type: ArtistUpdateBodyData.Type,
-
+    
     @SerialName(value = "attributes")
-    val attributes: ArtistUpdateBodyDataAttributes,
+    val attributes: ArtistUpdateBodyDataAttributes
 ) {
 
     /**
-     *
+     * 
      *
      * Values: artists
      */
     @Serializable
     enum class Type(val value: kotlin.String) {
-        @SerialName(value = "artists")
-        artists("artists"),
+        @SerialName(value = "artists") artists("artists");
     }
+
 }
+

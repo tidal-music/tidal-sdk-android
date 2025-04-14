@@ -1,16 +1,21 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import retrofit2.http.*
+import retrofit2.Response
+import okhttp3.RequestBody
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
 import com.tidal.sdk.tidalapi.generated.models.ArtistRolesMultiDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistRolesSingleDataDocument
-import retrofit2.Response
-import retrofit2.http.*
+import com.tidal.sdk.tidalapi.generated.models.ErrorDocument
 
 interface ArtistRoles {
     /**
-     * Get all artistRoles
-     * Retrieves all artistRole details by available filters or without (if applicable).
+     * Get multiple artistRoles.
+     * Retrieves multiple artistRoles by available filters, or without if applicable.
      * Responses:
-     *  - 200:
+     *  - 200: 
      *  - 451: Unavailable For Legal Reasons
      *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
      *  - 500: Internal Server Error. Something went wrong on the server party.
@@ -24,16 +29,13 @@ interface ArtistRoles {
      * @return [ArtistRolesMultiDataDocument]
      */
     @GET("artistRoles")
-    suspend fun artistRolesGet(
-        @Query("filter[id]") filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? =
-            null,
-    ): Response<ArtistRolesMultiDataDocument>
+    suspend fun artistRolesGet(@Query("filter[id]") filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null): Response<ArtistRolesMultiDataDocument>
 
     /**
-     * Get single artistRole
-     * Retrieves artistRole details by an unique id.
+     * Get single artistRole.
+     * Retrieves single artistRole by id.
      * Responses:
-     *  - 200:
+     *  - 200: 
      *  - 451: Unavailable For Legal Reasons
      *  - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).
      *  - 500: Internal Server Error. Something went wrong on the server party.
@@ -48,4 +50,5 @@ interface ArtistRoles {
      */
     @GET("artistRoles/{id}")
     suspend fun artistRolesIdGet(@Path("id") id: kotlin.String): Response<ArtistRolesSingleDataDocument>
+
 }

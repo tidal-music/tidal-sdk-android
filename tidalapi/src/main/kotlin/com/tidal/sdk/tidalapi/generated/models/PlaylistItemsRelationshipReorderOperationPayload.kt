@@ -15,22 +15,34 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+import com.tidal.sdk.tidalapi.generated.models.PlaylistItemsRelationshipReorderOperationPayloadData
+import com.tidal.sdk.tidalapi.generated.models.PlaylistItemsRelationshipReorderOperationPayloadMeta
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
+ * 
  *
- *
- * @param `data`
- * @param meta
+ * @param `data` 
+ * @param meta 
  */
 
 @Serializable
-data class PlaylistItemsRelationshipReorderOperationPayload(
 
+data class PlaylistItemsRelationshipReorderOperationPayload (
+
+    
     @SerialName(value = "data")
     val `data`: kotlin.collections.List<PlaylistItemsRelationshipReorderOperationPayloadData>,
-
+    
     @SerialName(value = "meta")
-    val meta: PlaylistItemsRelationshipReorderOperationPayloadMeta? = null,
-)
+    val meta: PlaylistItemsRelationshipReorderOperationPayloadMeta? = null
+) {
+
+
+}
+

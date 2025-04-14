@@ -15,39 +15,40 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+import com.tidal.sdk.tidalapi.generated.models.UsersAttributes
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.Transient
 
 /**
- *
+ * 
  *
  * @param id resource unique identifier
  * @param type resource unique type
- * @param attributes
- * @param relationships
- * @param links
+ * @param attributes 
  */
 
 @Serializable
 @SerialName(value = "users")
-data class UsersResource(
 
-    // resource unique identifier
+data class UsersResource (
 
+    /* resource unique identifier */
+    
     @SerialName(value = "id")
     val id: kotlin.String,
-    // resource unique type
+    /* resource unique type */
     @Transient
     @SerialName(value = "type")
     val type: kotlin.String = "",
-
+    
     @SerialName(value = "attributes")
-    val attributes: UsersAttributes? = null,
+    val attributes: UsersAttributes? = null
+): PlaylistsMultiDataDocumentIncludedInner, PlaylistsMultiDataRelationshipDocumentIncludedInner {
 
-    @SerialName(value = "relationships")
-    val relationships: UsersRelationships? = null,
 
-    @SerialName(value = "links")
-    val links: Links? = null,
-) : UserPublicProfilesMultiDataRelationshipDocumentIncludedInner, PlaylistsMultiDataDocumentIncludedInner, UsersSingletonDataRelationshipDocumentIncludedInner, PlaylistsMultiDataRelationshipDocumentIncludedInner, UserPublicProfilesMultiDataDocumentIncludedInner
+}
+

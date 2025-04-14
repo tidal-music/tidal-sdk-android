@@ -15,39 +15,45 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+import com.tidal.sdk.tidalapi.generated.models.AlbumsAttributes
+import com.tidal.sdk.tidalapi.generated.models.AlbumsRelationships
+
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.Transient
 
 /**
- *
+ * 
  *
  * @param id resource unique identifier
  * @param type resource unique type
- * @param attributes
- * @param relationships
- * @param links
+ * @param attributes 
+ * @param relationships 
  */
 
 @Serializable
 @SerialName(value = "albums")
-data class AlbumsResource(
 
-    // resource unique identifier
+data class AlbumsResource (
 
+    /* resource unique identifier */
+    
     @SerialName(value = "id")
     val id: kotlin.String,
-    // resource unique type
+    /* resource unique type */
     @Transient
     @SerialName(value = "type")
     val type: kotlin.String = "",
-
+    
     @SerialName(value = "attributes")
     val attributes: AlbumsAttributes? = null,
-
+    
     @SerialName(value = "relationships")
-    val relationships: AlbumsRelationships? = null,
+    val relationships: AlbumsRelationships? = null
+): AlbumsMultiDataDocumentIncludedInner, UserCollectionsMultiDataDocumentIncludedInner, SearchResultsMultiDataRelationshipDocumentIncludedInner, SearchSuggestionsMultiDataRelationshipDocumentIncludedInner, AlbumsMultiDataRelationshipDocumentIncludedInner, VideosMultiDataRelationshipDocumentIncludedInner, SearchResultsMultiDataDocumentIncludedInner, ArtistsMultiDataDocumentIncludedInner, SearchSuggestionsMultiDataDocumentIncludedInner, SearchresultsMultiDataRelationshipDocumentIncludedInner, ArtistsMultiDataRelationshipDocumentIncludedInner, VideosMultiDataDocumentIncludedInner, TracksMultiDataDocumentIncludedInner {
 
-    @SerialName(value = "links")
-    val links: Links? = null,
-) : AlbumsMultiDataDocumentIncludedInner, UserCollectionsMultiDataDocumentIncludedInner, AlbumsMultiDataRelationshipDocumentIncludedInner, VideosMultiDataRelationshipDocumentIncludedInner, SearchresultsMultiDataDocumentIncludedInner, ArtistsMultiDataDocumentIncludedInner, SearchresultsMultiDataRelationshipDocumentIncludedInner, ArtistsMultiDataRelationshipDocumentIncludedInner, VideosMultiDataDocumentIncludedInner, TracksMultiDataDocumentIncludedInner, UserCollectionsMultiDataRelationshipDocumentIncludedInner
+
+}
+
