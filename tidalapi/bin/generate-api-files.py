@@ -5,7 +5,6 @@ import requests
 import shutil
 import subprocess
 import sys
-from collections import OrderedDict
 
 
 def setup_logging():
@@ -47,46 +46,7 @@ def remove_specific_line_from_files(directory, target_string):
                         f"No lines starting with '{target_string}' found in file: {file_path}")
 
 
-def merge_openapi_schemas(file_paths, output_path):
-    merged_schema = None
-    seen_schemas = set()
-
-    for file_path in file_paths:
-        with open(file_path, 'r') as f:
-            schema = json.load(f, object_pairs_hook=OrderedDict)
-
-            if merged_schema is None:
-                logging.info(f"Initializing merged schema from {file_path}")
-                merged_schema = schema
-            else:
-                for component_type in ['schemas', 'responses', 'parameters', 'examples',
-                                       'requestBodies',
-                                       'headers', 'securitySchemes', 'links', 'callbacks']:
-                    if component_type in schema.get('components', {}):
-                        if component_type not in merged_schema['components']:
-                            merged_schema['components'][component_type] = OrderedDict()
-                        for key, value in schema['components'][component_type].items():
-                            if key not in seen_schemas:
-                                merged_schema['components'][component_type][key] = value
-                                seen_schemas.add(key)
-                            else:
-                                logging.info(f"Skipping duplicate schema {key} in {file_path}")
-
-                for path, path_item in schema.get('paths', {}).items():
-                    if 'paths' not in merged_schema:
-                        merged_schema['paths'] = OrderedDict()
-                    if path not in merged_schema['paths']:
-                        merged_schema['paths'][path] = path_item
-                        logging.info(f"Adding path {path} from {file_path}")
-
-    final_schema = json.loads(json.dumps(merged_schema))
-
-    with open(output_path, 'w') as f:
-        json.dump(final_schema, f, indent=2)
-        logging.info(f"Merged schema saved to {output_path}")
-
-
-def create_merged_schema(json_file_path):
+def download_api_spec(json_file_path):
     try:
         with open(json_file_path, 'r') as f:
             config = json.load(f)
@@ -94,9 +54,9 @@ def create_merged_schema(json_file_path):
         logging.error(f"Failed to read JSON file {json_file_path}: {e}")
         sys.exit(1)
 
-    inputs = config.get('inputs', [])
-    if not inputs:
-        logging.error("No input files specified in the configuration.")
+    input_url = config.get('input')
+    if not input_url:
+        logging.error("No input URL specified in the configuration.")
         sys.exit(1)
 
     output_path = config.get('output')
@@ -104,7 +64,6 @@ def create_merged_schema(json_file_path):
         logging.error("No output file specified in the configuration.")
         sys.exit(1)
 
-    # Extract openapi-generator-cli.jar path from JSON config
     openapi_generator_path = config.get('openapi_generator_path')
     if not openapi_generator_path:
         logging.error("No openapi-generator-cli.jar path specified in the configuration.")
@@ -114,33 +73,17 @@ def create_merged_schema(json_file_path):
     os.makedirs(temp_dir, exist_ok=True)
     logging.info(f"Created directory {temp_dir}")
 
-    downloaded_files = []
-
-    # Download each file
-    for input_info in inputs:
-        url = input_info.get('inputURL')
-        if url:
-            try:
-                local_file = download_file(url, temp_dir)
-                downloaded_files.append(local_file)
-            except Exception as e:
-                logging.error(f"Error downloading {url}: {e}")
-
-    # Merge downloaded OpenAPI schemas
+    # Download the API spec
     try:
-        merge_openapi_schemas(downloaded_files, output_path)
+        logging.info(f"Downloading API spec from {input_url}")
+        local_file = download_file(input_url, temp_dir)
+        logging.info(f"Successfully downloaded API spec to {local_file}")
+        shutil.copy2(local_file, output_path)
+        logging.info(f"Copied API spec to {output_path}")
+        return output_path, openapi_generator_path
     except Exception as e:
-        logging.error(f"Error merging schemas: {e}")
-
-    # Clean up downloaded files
-    for file_path in downloaded_files:
-        try:
-            os.remove(file_path)
-            logging.info(f"Deleted file: {file_path}")
-        except Exception as e:
-            logging.error(f"Failed to delete file {file_path}: {e}")
-
-    return output_path, openapi_generator_path  # Return the merged schema path and generator path
+        logging.error(f"Failed to download API spec: {e}")
+        sys.exit(1)
 
 
 def main():
@@ -149,19 +92,25 @@ def main():
     project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
     sdk_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
 
+    logging.info(f"Project root: {project_root}")
+    logging.info(f"SDK root: {sdk_root}")
+
     if len(sys.argv) < 2:
-        logging.info("Error: You must provide the path to the config file.")
-        logging.info(f"Usage: {sys.argv[0]} <path to config.json>")
+        logging.error("Error: You must provide the path to the config file.")
+        logging.error(f"Usage: {sys.argv[0]} <path to config.json>")
         sys.exit(1)
 
     config_file = sys.argv[1]
+    logging.info(f"Using config file: {config_file}")
 
-    # Create the merged schema and get the path to the OpenAPI generator jar
-    temp_json, source = create_merged_schema(config_file)
+    # Download the API spec and get the path to the OpenAPI generator jar
+    temp_json, source = download_api_spec(config_file)
+    logging.info(f"API spec downloaded to: {temp_json}")
+    logging.info(f"OpenAPI generator path: {source}")
 
     # Define the generated files path and clean the directory
     generated_files_dir = os.path.join(project_root,
-                                       "src/main/kotlin/com/tidal/sdk/tidalapi/generated")
+                                     "src/main/kotlin/com/tidal/sdk/tidalapi/generated")
 
     # Clean the directory
     if os.path.exists(generated_files_dir):
@@ -169,13 +118,23 @@ def main():
         logging.info(f"Cleaned up directory: {generated_files_dir}")
 
     os.makedirs(generated_files_dir, exist_ok=True)
+    logging.info(f"Created generated files directory: {generated_files_dir}")
 
     # Change to project root directory before running OpenAPI generator
     original_dir = os.getcwd()
     os.chdir(project_root)
+    logging.info(f"Changed working directory to: {os.getcwd()}")
     
-    result = subprocess.run([
-        "java", "-jar", os.path.join(os.getcwd(), "bin", "openapi-generator-cli.jar"), "generate",
+    # Verify jar file exists
+    jar_path = os.path.join(os.getcwd(), "bin", "openapi-generator-cli.jar")
+    if not os.path.exists(jar_path):
+        logging.error(f"OpenAPI generator JAR not found at: {jar_path}")
+        sys.exit(1)
+    logging.info(f"Found OpenAPI generator JAR at: {jar_path}")
+
+    # Build the command
+    cmd = [
+        "java", "-jar", jar_path, "generate",
         "-i", os.path.join("bin", temp_json),
         "-g", "kotlin",
         "-o", ".",
@@ -183,25 +142,44 @@ def main():
         "--skip-validate-spec",
         "--global-property",
         "models,apis,supportingFiles=Utils.kt:src/main/kotlin/com/tidal/sdk/tidalapi/generated/ApiClient.kt"
-    ])
+    ]
+    logging.info(f"Executing command: {' '.join(cmd)}")
+    
+    try:
+        result = subprocess.run(cmd, capture_output=True, text=True)
+        logging.info(f"OpenAPI generator stdout: {result.stdout}")
+        if result.stderr:
+            logging.error(f"OpenAPI generator stderr: {result.stderr}")
+        
+        if result.returncode != 0:
+            logging.error(f"OpenAPI generator failed with return code: {result.returncode}")
+            sys.exit(result.returncode)
+    except Exception as e:
+        logging.error(f"Failed to execute OpenAPI generator: {e}")
+        sys.exit(1)
     
     # Change back to original directory
     os.chdir(original_dir)
+    logging.info(f"Changed working directory back to: {os.getcwd()}")
 
-    if result.returncode != 0:
-        logging.error("Error: Failed to generate files.")
-        sys.exit(result.returncode)
-
+    logging.info("Running ktlint...")
     result = subprocess.run(
-        [f"{sdk_root}/static-analysis/run-ktlint.sh", "-F", "-g", "-d", f"{project_root}/src"])
+        [f"{sdk_root}/static-analysis/run-ktlint.sh", "-F", "-g", "-d", f"{project_root}/src"],
+        capture_output=True,
+        text=True
+    )
 
     if result.returncode != 0:
-        logging.error("ktlint failed, but continuing with the rest of the script.")
+        logging.warning(f"ktlint failed with return code {result.returncode}")
+        logging.warning(f"ktlint stdout: {result.stdout}")
+        logging.warning(f"ktlint stderr: {result.stderr}")
+        logging.warning("Continuing with the rest of the script despite ktlint failure.")
 
     target_line = "import com.tidal.sdk.tidalapi.generated.infrastructure.CollectionFormats.*"
     remove_specific_line_from_files(f"{project_root}/src", target_line)
 
     logging.info("Generation complete and cleaned up.")
+
 
 if __name__ == "__main__":
     main()
