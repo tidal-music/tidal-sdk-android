@@ -9212,7 +9212,7 @@
             "content" : {
               "application/vnd.api+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/Searchresults_Single_Data_Document"
+                  "$ref" : "#/components/schemas/SearchResults_Single_Data_Document"
                 }
               }
             }
@@ -9425,7 +9425,7 @@
             "content" : {
               "application/vnd.api+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/Searchresults_Multi_Data_Relationship_Document"
+                  "$ref" : "#/components/schemas/SearchResults_Multi_Data_Relationship_Document"
                 }
               }
             }
@@ -9638,7 +9638,7 @@
             "content" : {
               "application/vnd.api+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/Searchresults_Multi_Data_Relationship_Document"
+                  "$ref" : "#/components/schemas/SearchResults_Multi_Data_Relationship_Document"
                 }
               }
             }
@@ -9851,7 +9851,7 @@
             "content" : {
               "application/vnd.api+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/Searchresults_Multi_Data_Relationship_Document"
+                  "$ref" : "#/components/schemas/SearchResults_Multi_Data_Relationship_Document"
                 }
               }
             }
@@ -10064,7 +10064,7 @@
             "content" : {
               "application/vnd.api+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/Searchresults_Multi_Data_Relationship_Document"
+                  "$ref" : "#/components/schemas/SearchResults_Multi_Data_Relationship_Document"
                 }
               }
             }
@@ -10277,7 +10277,7 @@
             "content" : {
               "application/vnd.api+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/Searchresults_Multi_Data_Relationship_Document"
+                  "$ref" : "#/components/schemas/SearchResults_Multi_Data_Relationship_Document"
                 }
               }
             }
@@ -10490,7 +10490,7 @@
             "content" : {
               "application/vnd.api+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/Searchresults_Multi_Data_Relationship_Document"
+                  "$ref" : "#/components/schemas/SearchResults_Multi_Data_Relationship_Document"
                 }
               }
             }
@@ -18518,7 +18518,7 @@
         },
         "description" : "Suggested search queries"
       },
-      "Searchresults_Attributes" : {
+      "SearchResults_Attributes" : {
         "required" : [ "trackingId" ],
         "type" : "object",
         "properties" : {
@@ -18534,13 +18534,13 @@
           }
         }
       },
-      "Searchresults_Multi_Data_Document" : {
+      "SearchResults_Multi_Data_Document" : {
         "type" : "object",
         "properties" : {
           "data" : {
             "type" : "array",
             "items" : {
-              "$ref" : "#/components/schemas/Searchresults_Resource"
+              "$ref" : "#/components/schemas/SearchResults_Resource"
             }
           },
           "links" : {
@@ -18564,7 +18564,7 @@
           }
         }
       },
-      "Searchresults_Multi_Data_Relationship_Document" : {
+      "SearchResults_Multi_Data_Relationship_Document" : {
         "type" : "object",
         "properties" : {
           "data" : {
@@ -18590,13 +18590,13 @@
               }, {
                 "$ref" : "#/components/schemas/Videos_Resource"
               }, {
-                "$ref" : "#/components/schemas/Searchresults_Resource"
+                "$ref" : "#/components/schemas/SearchResults_Resource"
               } ]
             }
           }
         }
       },
-      "Searchresults_Relationships" : {
+      "SearchResults_Relationships" : {
         "required" : [ "albums", "artists", "playlists", "topHits", "tracks", "videos" ],
         "properties" : {
           "albums" : {
@@ -18619,7 +18619,7 @@
           }
         }
       },
-      "Searchresults_Resource" : {
+      "SearchResults_Resource" : {
         "required" : [ "id", "type" ],
         "type" : "object",
         "properties" : {
@@ -18634,18 +18634,18 @@
             "example" : "tracks"
           },
           "attributes" : {
-            "$ref" : "#/components/schemas/Searchresults_Attributes"
+            "$ref" : "#/components/schemas/SearchResults_Attributes"
           },
           "relationships" : {
-            "$ref" : "#/components/schemas/Searchresults_Relationships"
+            "$ref" : "#/components/schemas/SearchResults_Relationships"
           }
         }
       },
-      "Searchresults_Single_Data_Document" : {
+      "SearchResults_Single_Data_Document" : {
         "type" : "object",
         "properties" : {
           "data" : {
-            "$ref" : "#/components/schemas/Searchresults_Resource"
+            "$ref" : "#/components/schemas/SearchResults_Resource"
           },
           "links" : {
             "$ref" : "#/components/schemas/Links"
