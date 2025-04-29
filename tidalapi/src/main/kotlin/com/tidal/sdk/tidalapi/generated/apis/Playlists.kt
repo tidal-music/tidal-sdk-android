@@ -33,12 +33,14 @@ interface Playlists {
      *  - 429: Too many HTTP requests have been made within the allowed time.
      *
      * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned. Available options: coverArt, items, owners (optional)
+     * @param filterROwnersId User id (optional)
      * @param filterId Playlist id (optional)
      * @return [PlaylistsMultiDataDocument]
      */
     @GET("playlists")
-    suspend fun playlistsGet(@Query("countryCode") countryCode: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("filter[id]") filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null): Response<PlaylistsMultiDataDocument>
+    suspend fun playlistsGet(@Query("countryCode") countryCode: kotlin.String, @Query("page[cursor]") pageCursor: kotlin.String? = null, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("filter[r.owners.id]") filterROwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("filter[id]") filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null): Response<PlaylistsMultiDataDocument>
 
     /**
      * Delete single playlist.
@@ -234,7 +236,7 @@ interface Playlists {
 
     /**
      * Get current user&#39;s playlist(s).
-     * Retrieves current user&#39;s playlist(s).
+     * This operation is deprecated and will be removed shortly. Please switch to the filter endpoint: /playlists?filter[r.owners.id]&#x3D;&lt;userId&gt;  Retrieves current user&#39;s playlist(s).
      * Responses:
      *  - 200: 
      *  - 451: Unavailable For Legal Reasons
@@ -251,6 +253,7 @@ interface Playlists {
      * @param include Allows the client to customize which related resources should be returned. Available options: coverArt, items, owners (optional)
      * @return [PlaylistsMultiDataDocument]
      */
+    @Deprecated("This api was deprecated")
     @GET("playlists/me")
     suspend fun playlistsMeGet(@Query("countryCode") countryCode: kotlin.String, @Query("page[cursor]") pageCursor: kotlin.String? = null, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null): Response<PlaylistsMultiDataDocument>
 

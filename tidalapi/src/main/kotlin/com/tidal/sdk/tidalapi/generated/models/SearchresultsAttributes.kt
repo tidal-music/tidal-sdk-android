@@ -15,8 +15,6 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import com.tidal.sdk.tidalapi.generated.models.ArtistUpdateBodyData
-import com.tidal.sdk.tidalapi.generated.models.ArtistUpdateBodyMeta
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName
@@ -27,20 +25,22 @@ import kotlinx.serialization.Transient
 /**
  * 
  *
- * @param `data` 
- * @param meta 
+ * @param trackingId search request unique tracking number
+ * @param didYouMean 'did you mean' prompt
  */
 
 @Serializable
 
-data class ArtistUpdateBody (
+data class SearchresultsAttributes (
 
+    /* search request unique tracking number */
     
-    @SerialName(value = "data")
-    val `data`: ArtistUpdateBodyData,
+    @SerialName(value = "trackingId")
+    val trackingId: kotlin.String,
+    /* 'did you mean' prompt */
     
-    @SerialName(value = "meta")
-    val meta: ArtistUpdateBodyMeta? = null
+    @SerialName(value = "didYouMean")
+    val didYouMean: kotlin.String? = null
 ) {
 
 

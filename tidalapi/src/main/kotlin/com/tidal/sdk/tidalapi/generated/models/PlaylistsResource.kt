@@ -25,12 +25,12 @@ import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.Transient
 
 /**
- *
+ * 
  *
  * @param id resource unique identifier
  * @param type resource unique type
- * @param attributes
- * @param relationships
+ * @param attributes 
+ * @param relationships 
  */
 
 @Serializable
@@ -39,20 +39,20 @@ import kotlinx.serialization.Transient
 data class PlaylistsResource (
 
     /* resource unique identifier */
-
+    
     @SerialName(value = "id")
     val id: kotlin.String,
     /* resource unique type */
     @Transient
     @SerialName(value = "type")
     val type: kotlin.String = "",
-
+    
     @SerialName(value = "attributes")
     val attributes: PlaylistsAttributes? = null,
-
+    
     @SerialName(value = "relationships")
     val relationships: PlaylistsRelationships? = null
-): UserRecommendationsMultiDataDocumentIncludedInner, UserCollectionsMultiDataDocumentIncludedInner, SearchResultsMultiDataRelationshipDocumentIncludedInner, SearchSuggestionsMultiDataRelationshipDocumentIncludedInner, SearchResultsMultiDataDocumentIncludedInner, ArtistsMultiDataDocumentIncludedInner, SearchSuggestionsMultiDataDocumentIncludedInner, ArtistsMultiDataRelationshipDocumentIncludedInner, PlaylistsMultiDataRelationshipDocumentIncludedInner, UserRecommendationsMultiDataRelationshipDocumentIncludedInner, TracksMultiDataDocumentIncludedInner {
+): UserRecommendationsMultiDataDocumentIncludedInner, UserCollectionsMultiDataDocumentIncludedInner, SearchResultsMultiDataRelationshipDocumentIncludedInner, SearchSuggestionsMultiDataRelationshipDocumentIncludedInner, SearchResultsMultiDataDocumentIncludedInner, ArtistsMultiDataDocumentIncludedInner, SearchSuggestionsMultiDataDocumentIncludedInner, SearchresultsMultiDataRelationshipDocumentIncludedInner, ArtistsMultiDataRelationshipDocumentIncludedInner, PlaylistsMultiDataRelationshipDocumentIncludedInner, UserRecommendationsMultiDataRelationshipDocumentIncludedInner, TracksMultiDataDocumentIncludedInner {
 
 
 }

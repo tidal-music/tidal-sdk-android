@@ -16,7 +16,6 @@
 package com.tidal.sdk.tidalapi.generated.models
 
 import com.tidal.sdk.tidalapi.generated.models.ExternalLink
-import com.tidal.sdk.tidalapi.generated.models.ImageLink
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName
@@ -29,7 +28,6 @@ import kotlinx.serialization.Transient
  *
  * @param name 
  * @param handle 
- * @param imageLinks 
  * @param externalLinks 
  */
 
@@ -43,9 +41,6 @@ data class ArtistUpdateBodyDataAttributes (
     
     @SerialName(value = "handle")
     val handle: kotlin.String? = null,
-    
-    @SerialName(value = "imageLinks")
-    val imageLinks: kotlin.collections.List<ImageLink>? = null,
     
     @SerialName(value = "externalLinks")
     val externalLinks: kotlin.collections.List<ExternalLink>? = null

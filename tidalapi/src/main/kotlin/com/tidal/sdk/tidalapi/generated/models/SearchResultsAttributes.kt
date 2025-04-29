@@ -18,9 +18,12 @@ package com.tidal.sdk.tidalapi.generated.models
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Transient
 
 /**
- *
+ * 
  *
  * @param trackingId search request unique tracking number
  * @param didYouMean 'did you mean' prompt
@@ -31,11 +34,11 @@ import kotlinx.serialization.SerialName
 data class SearchResultsAttributes (
 
     /* search request unique tracking number */
-
+    
     @SerialName(value = "trackingId")
     val trackingId: kotlin.String,
     /* 'did you mean' prompt */
-
+    
     @SerialName(value = "didYouMean")
     val didYouMean: kotlin.String? = null
 ) {

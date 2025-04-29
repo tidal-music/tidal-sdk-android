@@ -25,12 +25,12 @@ import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.Transient
 
 /**
- *
+ * 
  *
  * @param id resource unique identifier
  * @param type resource unique type
- * @param attributes
- * @param relationships
+ * @param attributes 
+ * @param relationships 
  */
 
 @Serializable
@@ -39,20 +39,20 @@ import kotlinx.serialization.Transient
 data class ArtistsResource (
 
     /* resource unique identifier */
-
+    
     @SerialName(value = "id")
     val id: kotlin.String,
     /* resource unique type */
     @Transient
     @SerialName(value = "type")
     val type: kotlin.String = "",
-
+    
     @SerialName(value = "attributes")
     val attributes: ArtistsAttributes? = null,
-
+    
     @SerialName(value = "relationships")
     val relationships: ArtistsRelationships? = null
-): AlbumsMultiDataDocumentIncludedInner, UserCollectionsMultiDataDocumentIncludedInner, SearchResultsMultiDataRelationshipDocumentIncludedInner, SearchSuggestionsMultiDataRelationshipDocumentIncludedInner, PlaylistsMultiDataDocumentIncludedInner, AlbumsMultiDataRelationshipDocumentIncludedInner, VideosMultiDataRelationshipDocumentIncludedInner, SearchResultsMultiDataDocumentIncludedInner, ArtistsMultiDataDocumentIncludedInner, SearchSuggestionsMultiDataDocumentIncludedInner, ArtistsMultiDataRelationshipDocumentIncludedInner, PlaylistsMultiDataRelationshipDocumentIncludedInner, VideosMultiDataDocumentIncludedInner, TracksMultiDataDocumentIncludedInner {
+): AlbumsMultiDataDocumentIncludedInner, UserCollectionsMultiDataDocumentIncludedInner, SearchResultsMultiDataRelationshipDocumentIncludedInner, SearchSuggestionsMultiDataRelationshipDocumentIncludedInner, PlaylistsMultiDataDocumentIncludedInner, AlbumsMultiDataRelationshipDocumentIncludedInner, VideosMultiDataRelationshipDocumentIncludedInner, SearchResultsMultiDataDocumentIncludedInner, ArtistsMultiDataDocumentIncludedInner, SearchSuggestionsMultiDataDocumentIncludedInner, SearchresultsMultiDataRelationshipDocumentIncludedInner, ArtistsMultiDataRelationshipDocumentIncludedInner, PlaylistsMultiDataRelationshipDocumentIncludedInner, VideosMultiDataDocumentIncludedInner, TracksMultiDataDocumentIncludedInner {
 
 
 }

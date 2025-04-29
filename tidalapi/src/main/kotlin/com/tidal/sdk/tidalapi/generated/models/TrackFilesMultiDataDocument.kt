@@ -16,8 +16,7 @@
 package com.tidal.sdk.tidalapi.generated.models
 
 import com.tidal.sdk.tidalapi.generated.models.Links
-import com.tidal.sdk.tidalapi.generated.models.ResourceIdentifier
-import com.tidal.sdk.tidalapi.generated.models.SearchResultsMultiDataRelationshipDocumentIncludedInner
+import com.tidal.sdk.tidalapi.generated.models.TrackFilesResource
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName
@@ -30,22 +29,18 @@ import kotlinx.serialization.Transient
  *
  * @param `data` 
  * @param links 
- * @param included 
  */
 
 @Serializable
 
-data class SearchResultsMultiDataRelationshipDocument (
+data class TrackFilesMultiDataDocument (
 
     
     @SerialName(value = "data")
-    val `data`: kotlin.collections.List<ResourceIdentifier>? = null,
+    val `data`: kotlin.collections.List<TrackFilesResource>? = null,
     
     @SerialName(value = "links")
-    val links: Links? = null,
-    
-    @SerialName(value = "included")
-    val included: kotlin.collections.List<SearchResultsMultiDataRelationshipDocumentIncludedInner>? = null
+    val links: Links? = null
 ) {
 
 

@@ -36,7 +36,7 @@ import kotlinx.serialization.Transient
 
 @Serializable
 
-data class SearchResultsRelationships (
+data class SearchresultsRelationships (
 
     
     @SerialName(value = "albums")

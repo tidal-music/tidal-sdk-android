@@ -27,11 +27,12 @@ interface SearchSuggestions {
      *
      * @param id 
      * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param explicitFilter Explicit filter (optional)
      * @param include Allows the client to customize which related resources should be returned. Available options: directHits (optional)
      * @return [SearchSuggestionsSingleDataDocument]
      */
     @GET("searchSuggestions/{id}")
-    suspend fun searchSuggestionsIdGet(@Path("id") id: kotlin.String, @Query("countryCode") countryCode: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null): Response<SearchSuggestionsSingleDataDocument>
+    suspend fun searchSuggestionsIdGet(@Path("id") id: kotlin.String, @Query("countryCode") countryCode: kotlin.String, @Query("explicitFilter") explicitFilter: kotlin.String? = null, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null): Response<SearchSuggestionsSingleDataDocument>
 
     /**
      * Get directHits relationship (\&quot;to-many\&quot;).
@@ -49,11 +50,12 @@ interface SearchSuggestions {
      *
      * @param id 
      * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param explicitFilter Explicit filter (optional)
      * @param include Allows the client to customize which related resources should be returned. Available options: directHits (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      * @return [SearchSuggestionsMultiDataRelationshipDocument]
      */
     @GET("searchSuggestions/{id}/relationships/directHits")
-    suspend fun searchSuggestionsIdRelationshipsDirectHitsGet(@Path("id") id: kotlin.String, @Query("countryCode") countryCode: kotlin.String, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("page[cursor]") pageCursor: kotlin.String? = null): Response<SearchSuggestionsMultiDataRelationshipDocument>
+    suspend fun searchSuggestionsIdRelationshipsDirectHitsGet(@Path("id") id: kotlin.String, @Query("countryCode") countryCode: kotlin.String, @Query("explicitFilter") explicitFilter: kotlin.String? = null, @Query("include") include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null, @Query("page[cursor]") pageCursor: kotlin.String? = null): Response<SearchSuggestionsMultiDataRelationshipDocument>
 
 }
