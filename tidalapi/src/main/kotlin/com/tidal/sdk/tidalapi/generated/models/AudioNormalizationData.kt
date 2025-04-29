@@ -15,8 +15,6 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import com.tidal.sdk.tidalapi.generated.models.ArtistUpdateBodyData
-import com.tidal.sdk.tidalapi.generated.models.ArtistUpdateBodyMeta
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName
@@ -25,22 +23,22 @@ import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.Transient
 
 /**
- * 
+ * Track normalization data
  *
- * @param `data` 
- * @param meta 
+ * @param replayGain 
+ * @param peakAmplitude 
  */
 
 @Serializable
 
-data class ArtistUpdateBody (
+data class AudioNormalizationData (
 
     
-    @SerialName(value = "data")
-    val `data`: ArtistUpdateBodyData,
+    @SerialName(value = "replayGain")
+    val replayGain: kotlin.Float? = null,
     
-    @SerialName(value = "meta")
-    val meta: ArtistUpdateBodyMeta? = null
+    @SerialName(value = "peakAmplitude")
+    val peakAmplitude: kotlin.Float? = null
 ) {
 
 

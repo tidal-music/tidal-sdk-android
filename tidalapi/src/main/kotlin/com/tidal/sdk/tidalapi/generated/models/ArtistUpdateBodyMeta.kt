@@ -15,8 +15,6 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import com.tidal.sdk.tidalapi.generated.models.ArtistUpdateBodyData
-import com.tidal.sdk.tidalapi.generated.models.ArtistUpdateBodyMeta
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName
@@ -27,20 +25,16 @@ import kotlinx.serialization.Transient
 /**
  * 
  *
- * @param `data` 
- * @param meta 
+ * @param dryRun 
  */
 
 @Serializable
 
-data class ArtistUpdateBody (
+data class ArtistUpdateBodyMeta (
 
     
-    @SerialName(value = "data")
-    val `data`: ArtistUpdateBodyData,
-    
-    @SerialName(value = "meta")
-    val meta: ArtistUpdateBodyMeta? = null
+    @SerialName(value = "dryRun")
+    val dryRun: kotlin.Boolean? = null
 ) {
 
 

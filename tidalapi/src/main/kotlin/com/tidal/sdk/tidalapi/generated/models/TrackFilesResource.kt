@@ -15,8 +15,7 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import com.tidal.sdk.tidalapi.generated.models.ArtistUpdateBodyData
-import com.tidal.sdk.tidalapi.generated.models.ArtistUpdateBodyMeta
+import com.tidal.sdk.tidalapi.generated.models.TrackFilesAttributes
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName
@@ -27,20 +26,26 @@ import kotlinx.serialization.Transient
 /**
  * 
  *
- * @param `data` 
- * @param meta 
+ * @param id resource unique identifier
+ * @param type resource unique type
+ * @param attributes 
  */
 
 @Serializable
 
-data class ArtistUpdateBody (
+data class TrackFilesResource (
 
+    /* resource unique identifier */
     
-    @SerialName(value = "data")
-    val `data`: ArtistUpdateBodyData,
+    @SerialName(value = "id")
+    val id: kotlin.String,
+    /* resource unique type */
     
-    @SerialName(value = "meta")
-    val meta: ArtistUpdateBodyMeta? = null
+    @SerialName(value = "type")
+    val type: kotlin.String,
+    
+    @SerialName(value = "attributes")
+    val attributes: TrackFilesAttributes? = null
 ) {
 
 

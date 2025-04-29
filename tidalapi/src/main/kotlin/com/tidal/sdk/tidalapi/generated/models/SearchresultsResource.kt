@@ -15,8 +15,8 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import com.tidal.sdk.tidalapi.generated.models.TracksAttributes
-import com.tidal.sdk.tidalapi.generated.models.TracksRelationships
+import com.tidal.sdk.tidalapi.generated.models.SearchresultsAttributes
+import com.tidal.sdk.tidalapi.generated.models.SearchresultsRelationships
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName
@@ -34,9 +34,9 @@ import kotlinx.serialization.Transient
  */
 
 @Serializable
-@SerialName(value = "tracks")
+@SerialName(value = "searchresults")
 
-data class TracksResource (
+data class SearchresultsResource (
 
     /* resource unique identifier */
     
@@ -48,11 +48,11 @@ data class TracksResource (
     val type: kotlin.String = "",
     
     @SerialName(value = "attributes")
-    val attributes: TracksAttributes? = null,
+    val attributes: SearchresultsAttributes? = null,
     
     @SerialName(value = "relationships")
-    val relationships: TracksRelationships? = null
-): AlbumsMultiDataDocumentIncludedInner, SearchResultsMultiDataRelationshipDocumentIncludedInner, SearchSuggestionsMultiDataRelationshipDocumentIncludedInner, PlaylistsMultiDataDocumentIncludedInner, AlbumsMultiDataRelationshipDocumentIncludedInner, SearchResultsMultiDataDocumentIncludedInner, ArtistsMultiDataDocumentIncludedInner, SearchSuggestionsMultiDataDocumentIncludedInner, SearchresultsMultiDataRelationshipDocumentIncludedInner, ArtistsMultiDataRelationshipDocumentIncludedInner, PlaylistsMultiDataRelationshipDocumentIncludedInner, TracksMultiDataDocumentIncludedInner {
+    val relationships: SearchresultsRelationships? = null
+): SearchresultsMultiDataRelationshipDocumentIncludedInner {
 
 
 }

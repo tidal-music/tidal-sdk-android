@@ -15,12 +15,13 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import com.tidal.sdk.tidalapi.generated.models.ArtistsRelationships
+import com.tidal.sdk.tidalapi.generated.models.AlbumsResource
 import com.tidal.sdk.tidalapi.generated.models.ArtistsResource
-import com.tidal.sdk.tidalapi.generated.models.ArtworksResource
+import com.tidal.sdk.tidalapi.generated.models.PlaylistsResource
+import com.tidal.sdk.tidalapi.generated.models.SearchresultsAttributes
+import com.tidal.sdk.tidalapi.generated.models.SearchresultsRelationships
+import com.tidal.sdk.tidalapi.generated.models.SearchresultsResource
 import com.tidal.sdk.tidalapi.generated.models.TracksResource
-import com.tidal.sdk.tidalapi.generated.models.UsersAttributes
-import com.tidal.sdk.tidalapi.generated.models.UsersResource
 import com.tidal.sdk.tidalapi.generated.models.VideosResource
 
 import kotlinx.serialization.Serializable
@@ -39,5 +40,5 @@ import kotlinx.serialization.Transient
  */
 @Serializable
 @Polymorphic
-sealed interface PlaylistsMultiDataDocumentIncludedInner
+sealed interface SearchresultsMultiDataRelationshipDocumentIncludedInner
 

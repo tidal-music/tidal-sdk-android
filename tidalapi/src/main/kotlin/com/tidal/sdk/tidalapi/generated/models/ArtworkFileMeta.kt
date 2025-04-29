@@ -27,7 +27,6 @@ import kotlinx.serialization.Transient
  *
  * @param width Width (in pixels)
  * @param height Height (in pixels)
- * @param color Color, six-digit hex-triplet
  */
 
 @Serializable
@@ -41,11 +40,7 @@ data class ArtworkFileMeta (
     /* Height (in pixels) */
     
     @SerialName(value = "height")
-    val height: kotlin.Int,
-    /* Color, six-digit hex-triplet */
-    
-    @SerialName(value = "color")
-    val color: kotlin.String? = null
+    val height: kotlin.Int
 ) {
 
 

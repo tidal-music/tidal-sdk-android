@@ -17,9 +17,9 @@ package com.tidal.sdk.tidalapi.generated.models
 
 import com.tidal.sdk.tidalapi.generated.models.AlbumsResource
 import com.tidal.sdk.tidalapi.generated.models.ArtistsResource
+import com.tidal.sdk.tidalapi.generated.models.PlaylistsAttributes
+import com.tidal.sdk.tidalapi.generated.models.PlaylistsRelationships
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsResource
-import com.tidal.sdk.tidalapi.generated.models.TracksAttributes
-import com.tidal.sdk.tidalapi.generated.models.TracksRelationships
 import com.tidal.sdk.tidalapi.generated.models.TracksResource
 import com.tidal.sdk.tidalapi.generated.models.VideosResource
 
