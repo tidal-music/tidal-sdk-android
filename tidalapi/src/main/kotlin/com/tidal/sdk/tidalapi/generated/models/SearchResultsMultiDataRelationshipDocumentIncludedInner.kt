@@ -15,28 +15,16 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import com.tidal.sdk.tidalapi.generated.models.AlbumsResource
-import com.tidal.sdk.tidalapi.generated.models.ArtistsResource
-import com.tidal.sdk.tidalapi.generated.models.PlaylistsResource
-import com.tidal.sdk.tidalapi.generated.models.SearchResultsAttributes
-import com.tidal.sdk.tidalapi.generated.models.SearchResultsRelationships
-import com.tidal.sdk.tidalapi.generated.models.SearchResultsResource
-import com.tidal.sdk.tidalapi.generated.models.TracksResource
-import com.tidal.sdk.tidalapi.generated.models.VideosResource
-
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.Polymorphic
-import kotlinx.serialization.Transient
 
 /**
- * 
+ *
  *
  * @param id resource unique identifier
  * @param type resource unique type
- * @param attributes 
- * @param relationships 
+ * @param attributes
+ * @param relationships
  */
 @Serializable
 @Polymorphic
