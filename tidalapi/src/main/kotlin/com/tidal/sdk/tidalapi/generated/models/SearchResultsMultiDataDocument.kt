@@ -15,35 +15,28 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import com.tidal.sdk.tidalapi.generated.models.Links
-import com.tidal.sdk.tidalapi.generated.models.SearchResultsMultiDataDocumentIncludedInner
-import com.tidal.sdk.tidalapi.generated.models.SearchResultsResource
-
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName
-import kotlinx.serialization.Contextual
-import kotlinx.serialization.Polymorphic
-import kotlinx.serialization.Transient
 
 /**
- * 
  *
- * @param `data` 
- * @param links 
- * @param included 
+ *
+ * @param `data`
+ * @param links
+ * @param included
  */
 
 @Serializable
 
 data class SearchResultsMultiDataDocument (
 
-    
+
     @SerialName(value = "data")
     val `data`: kotlin.collections.List<SearchResultsResource>? = null,
-    
+
     @SerialName(value = "links")
     val links: Links? = null,
-    
+
     @SerialName(value = "included")
     val included: kotlin.collections.List<SearchResultsMultiDataDocumentIncludedInner>? = null
 ) {
