@@ -23,8 +23,6 @@ object VideoPlaybackInfoFactory {
         0.0F,
         0.0F,
         0.0F,
-        0,
-        0,
     )
 
     val EMPTY_STREAMING_SESSION_ID = DEFAULT.copy(streamingSessionId = "")
@@ -34,11 +32,6 @@ object VideoPlaybackInfoFactory {
     val REPLACEMENT_VIDEO_QUALITY = DEFAULT.copy(videoQuality = VideoQuality.HIGH)
 
     val PROTECTED = DEFAULT.copy(licenseSecurityToken = ApiConstants.LICENSE_SECURITY_TOKEN)
-
-    val OFFLINE = DEFAULT.copy(
-        offlineRevalidateAt = ApiConstants.OFFLINE_REVALIDATE_AT_SECONDS,
-        offlineValidUntil = ApiConstants.OFFLINE_VALID_UNTIL_SECONDS,
-    )
 
     val OFFLINE_PLAY = PlaybackInfo.Offline.Video(
         DEFAULT,
