@@ -8,7 +8,6 @@ import com.tidal.sdk.player.common.UUIDWrapper
 import com.tidal.sdk.player.commonandroid.Base64Codec
 import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
 import com.tidal.sdk.player.events.EventReporter
-import com.tidal.sdk.player.playbackengine.Encryption
 import com.tidal.sdk.player.playbackengine.PlaybackEngine
 import com.tidal.sdk.player.playbackengine.model.AssetTimeoutConfig
 import com.tidal.sdk.player.playbackengine.model.BufferConfiguration
@@ -58,7 +57,7 @@ interface ExoPlayerPlaybackEngineComponent {
             @BindsInstance trueTimeWrapper: TrueTimeWrapper,
             @BindsInstance playbackPrivilegeProvider: PlaybackPrivilegeProvider,
             @BindsInstance offlineCacheProvider: OfflineCacheProvider?,
-            @BindsInstance encryption: Encryption?,
+            @BindsInstance offlineSecretKey: ByteArray?,
             @BindsInstance base64Codec: Base64Codec,
             @BindsInstance coroutineDispatcher: CoroutineDispatcher,
             @BindsInstance coroutineScope: CoroutineScope,
