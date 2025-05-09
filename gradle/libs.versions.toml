@@ -62,6 +62,7 @@ truetime = "com.github.instacart.truetime-android:library-extension-rx:3.5"
 
 # Moshi
 moshi = { module = "com.squareup.moshi:moshi", version.ref ="moshi"}
+moshi-adapters = { module = "com.squareup.moshi:moshi-adapters", version.ref = "moshi" }
 moshi-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "moshi" }
 
 # Networking
@@ -80,10 +81,15 @@ kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version 
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.6.3" }
 kotlinx-serialization-retrofit-converter = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter", version = "1.0.0" }
 
+rxjava3 = { module = "io.reactivex.rxjava3:rxjava", version = "3.1.10" }
+rxjava2 = { module = "io.reactivex.rxjava2:rxjava", version = "2.2.21" }
+rxjava = { module = "io.reactivex:rxjava", version = "1.3.8" }
+
 # SDK
 tidal-sdk-common = { module = "com.tidal.sdk:common", version = "0.2.5" }
 tidal-sdk-auth = { module = "com.tidal.sdk:auth", version = "0.10.1" }
 tidal-sdk-eventproducer = { module = "com.tidal.sdk:eventproducer", version = "0.3.2" }
+tidal-sdk-flo = { module = "com.tidal.sdk:flo", version = "1.0.0" }
 tidal-sdk-player = { module = "com.tidal.sdk:player", version = "0.0.39" }
 tidal-sdk-tidalapi = { module = "com.tidal.sdk:tidalapi", version = "0.1.0" }
 
