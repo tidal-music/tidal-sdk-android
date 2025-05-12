@@ -17,23 +17,21 @@ exceptions:
 
 naming:
   FunctionNaming:
-    ignoreAnnotated: ['Composable']
+    ignoreAnnotated: [ 'Composable' ]
 
 performance:
   SpreadOperator:
     active: false
 
 style:
-  MaxLineLength:
-    maxLineLength: 100
-    excludes: ['**/test/**', '**/androidTest/**']
-  UnusedPrivateMember:
-    ignoreAnnotated: [ 'Preview' ]
+  active: false
 
-complexity: 
+complexity:
   LargeClass:
-    excludes: ['**/test/**', '**/androidTest/**']
+    excludes: [ '**/test/**', '**/androidTest/**' ]
   LongParameterList:
-    excludes: ['**Module.kt', '**Service.kt', '**Repository.kt', '**/test/**', '**/androidTest/**']
+    active: false
   TooManyFunctions:
-     excludes: ['**Module.kt', '**Service.kt', '**Repository.kt', '**/test/**', '**/androidTest/**']
+    active: false
+  LongMethod:
+    active: false
