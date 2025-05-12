@@ -38,7 +38,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 @Module
-@SuppressWarnings("MaxLineLength", "TooManyFunctions")
 internal object StreamingPrivilegesModule {
 
     @Provides @Reusable fun requestBuilderFactory() = RequestBuilderFactory()

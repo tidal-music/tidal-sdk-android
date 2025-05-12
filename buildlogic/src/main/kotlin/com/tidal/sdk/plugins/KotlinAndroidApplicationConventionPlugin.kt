@@ -29,7 +29,6 @@ internal class KotlinAndroidApplicationConventionPlugin : Plugin<Project> {
             configureApplication()
         }
 
-    @Suppress("LongMethod")
     private fun Project.configureApplication() {
         val localProperties = loadLocalProperties()
 

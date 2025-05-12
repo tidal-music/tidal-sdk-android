@@ -15,11 +15,10 @@ internal class TidalMediaSourceCreator(
     private val playerDashMediaSourceFactory: PlayerDashMediaSourceFactory,
     private val playerHlsMediaSourceFactory: PlayerHlsMediaSourceFactory,
     private val playerAuthHlsMediaSourceFactory: PlayerAuthHlsMediaSourceFactory,
-    @Suppress("MaxLineLength")
     private val playerDecryptedHeaderProgressiveOfflineMediaSourceFactory:
         PlayerDecryptedHeaderProgressiveOfflineMediaSourceFactory, // ktlint-disable max-line-length
     // parameter-wrapping
-    @Suppress("MaxLineLength")
+
     private val playerProgressiveOfflineMediaSourceFactory:
         PlayerProgressiveOfflineMediaSourceFactory, // ktlint-disable max-line-length
     // parameter-wrapping
@@ -28,7 +27,6 @@ internal class TidalMediaSourceCreator(
     private val drmSessionManagerProviderFactory: DrmSessionManagerProviderFactory,
 ) : (MediaItem, PlaybackInfo, Extras?) -> MediaSource {
 
-    @Suppress("LongMethod")
     override fun invoke(
         mediaItem: MediaItem,
         playbackInfo: PlaybackInfo,

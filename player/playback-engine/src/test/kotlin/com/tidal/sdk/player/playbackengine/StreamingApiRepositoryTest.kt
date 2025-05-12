@@ -126,7 +126,6 @@ internal class StreamingApiRepositoryTest {
             )
     }
 
-    @Suppress("LongMethod")
     @ParameterizedTest
     @EnumSource(ProductType::class)
     fun testGetPlaybackInfoForStreamingOnSuccessCallReturnsAndReports(productType: ProductType) =
@@ -228,7 +227,6 @@ internal class StreamingApiRepositoryTest {
             }
         }
 
-    @Suppress("LongMethod")
     @ParameterizedTest
     @EnumSource(ProductType::class)
     fun testGetPlaybackInfoForStreamingOnFailureCallReturnsAndReports(productType: ProductType) =

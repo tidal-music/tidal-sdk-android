@@ -188,7 +188,6 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
                 abstract val cacheProviderLazy: Lazy<CacheProvider>
                 abstract val isOfflineMode: Boolean
 
-                @Suppress("LongMethod", "MaxLineLength", "ktlint:standard:max-line-length")
                 override suspend operator fun invoke(
                     state: MainActivityViewModelState
                 ): PlayerInitializing {
@@ -437,7 +436,6 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
                 private val credentialsProvider: CredentialsProvider,
             ) : Impure<MainActivityViewModelState, MainActivityViewModelState>() {
 
-                @Suppress("MaxLineLength", "ktlint:standard:max-line-length")
                 override suspend fun invoke(
                     state: MainActivityViewModelState
                 ): MainActivityViewModelState =

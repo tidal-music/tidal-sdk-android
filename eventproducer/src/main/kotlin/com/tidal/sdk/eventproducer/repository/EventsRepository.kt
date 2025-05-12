@@ -18,7 +18,6 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-@Suppress("TooManyFunctions")
 internal class EventsRepository
 @Inject
 constructor(

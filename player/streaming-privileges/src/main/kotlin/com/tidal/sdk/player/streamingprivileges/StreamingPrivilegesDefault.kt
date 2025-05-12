@@ -4,7 +4,7 @@ import android.os.Handler
 import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
 import com.tidal.sdk.player.streamingprivileges.acquire.AcquireRunnable
 
-@Suppress("LongParameterList", "MaxLineLength")
+@Suppress("LongParameterList")
 internal class StreamingPrivilegesDefault(
     private val networkInteractionsHandler: Handler,
     private val setKeepAliveRunnableFactory: SetKeepAliveRunnable.Factory,

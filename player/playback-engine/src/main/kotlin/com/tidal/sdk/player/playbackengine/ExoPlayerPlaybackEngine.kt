@@ -74,7 +74,7 @@ import kotlinx.coroutines.launch
 private const val MS_IN_SECOND = 1000L
 
 /** The default implementation of [PlaybackEngine] that will use ExoPlayer to play media. */
-@Suppress("TooManyFunctions", "LargeClass", "LongParameterList")
+@Suppress("LargeClass", "LongParameterList")
 internal class ExoPlayerPlaybackEngine(
     private val coroutineScope: CoroutineScope,
     private val extendedExoPlayerFactory: ExtendedExoPlayerFactory,
@@ -381,7 +381,6 @@ internal class ExoPlayerPlaybackEngine(
         }
     }
 
-    @Suppress("LongMethod")
     override fun onPlaybackInfoFetched(
         streamingSession: StreamingSession,
         forwardingMediaProduct: ForwardingMediaProduct<*>,
@@ -546,7 +545,6 @@ internal class ExoPlayerPlaybackEngine(
         }
     }
 
-    @Suppress("LongMethod")
     override fun onPositionDiscontinuity(
         eventTime: EventTime,
         oldPosition: Player.PositionInfo,
@@ -810,7 +808,7 @@ internal class ExoPlayerPlaybackEngine(
         startStall(Stall.Reason.UNEXPECTED, positionInSeconds, trueTimeWrapper.currentTimeMillis)
     }
 
-    @Suppress("LongMethod", "ComplexMethod", "NestedBlockDepth")
+    @Suppress("ComplexMethod", "NestedBlockDepth")
     override fun onPlayerError(eventTime: EventTime, error: PlaybackException) {
         var crawler: Throwable? = error
         var playbackInfoFetchException: PlaybackInfoFetchException? = null
@@ -876,7 +874,7 @@ internal class ExoPlayerPlaybackEngine(
             playbackState == PlaybackState.PLAYING || playbackState == PlaybackState.STALLED
     }
 
-    @Suppress("LongMethod", "ReturnCount")
+    @Suppress("ReturnCount")
     private fun trackNewAdaptation(eventTime: EventTime, format: Format) {
         val updatedPlaybackStatisticsF = { playbackStatistics: PlaybackStatistics ->
             val positionInSeconds =
@@ -992,7 +990,6 @@ internal class ExoPlayerPlaybackEngine(
         extendedExoPlayer = extendedExoPlayerFactory.create(this, this)
     }
 
-    @Suppress("LongMethod")
     private fun reportCurrentPlaybackStatistics(
         endReason: EndReason,
         errorMessage: String?,
@@ -1102,7 +1099,6 @@ internal class ExoPlayerPlaybackEngine(
             else -> null
         }
 
-    @Suppress("LongMethod")
     private fun reportCurrentPlaybackSession(endTimestamp: Long, endPositionSeconds: Double) {
         val readPlaybackSession = currentPlaybackSession ?: return
         if (readPlaybackSession.startTimestamp <= 0L) return

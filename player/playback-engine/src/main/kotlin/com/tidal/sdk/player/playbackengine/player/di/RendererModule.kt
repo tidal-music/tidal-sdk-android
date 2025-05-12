@@ -18,7 +18,6 @@ import javax.inject.Named
 import kotlin.time.DurationUnit
 
 @Module
-@Suppress("TooManyFunctions")
 internal object RendererModule {
 
     @Provides

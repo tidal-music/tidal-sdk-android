@@ -242,7 +242,6 @@ internal class UndeterminedPlaybackSessionResolverTest {
         verifyNoMoreInteractions(id, undetermined, playbackInfo, versionedCdm, startTimestampMs)
     }
 
-    @Suppress("LongMethod")
     @Test
     fun preparePlaybackStatisticsOfflineTrack() {
         val id = mock<UUID>()
@@ -310,7 +309,6 @@ internal class UndeterminedPlaybackSessionResolverTest {
         )
     }
 
-    @Suppress("LongMethod")
     @Test
     fun preparePlaybackStatisticsOfflineVideo() {
         val id = mock<UUID>()

@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.tidal.sdk.player.common.model.MediaProduct
 
 @Composable
-@Suppress("LongMethod", "LongParameterList")
+@Suppress("LongParameterList")
 internal fun DemoPlayableItemComposable(
     item: DemoPlayableItem,
     isCurrent: Boolean,

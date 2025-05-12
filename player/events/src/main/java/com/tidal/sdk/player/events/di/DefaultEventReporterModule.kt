@@ -12,13 +12,11 @@ import dagger.Reusable
 import kotlinx.coroutines.CoroutineScope
 
 @Module
-@SuppressWarnings("TooManyFunctions")
 internal object DefaultEventReporterModule {
 
     @Provides
     @Reusable
     fun eventReporter(
-        @Suppress("MaxLineLength")
         eventFactories:
             Map<
                 Class<out Event.Payload>,

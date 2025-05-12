@@ -48,7 +48,6 @@ internal class StreamingSessionStartPayloadDecoratorTest {
         )
 
     @Test
-    @Suppress("LongMethod")
     fun decorate() {
         val payload = mock<StreamingSessionStart.Payload>()
         val streamingSessionId = "streamingSessionId"

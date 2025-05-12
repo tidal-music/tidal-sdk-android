@@ -40,7 +40,6 @@ import okhttp3.OkHttpClient
  *   use only.
  * @param version The version of the app, used for event tracking. Defaults to 1.0.0.
  */
-@Suppress("LongParameterList")
 class Player(
     application: Application,
     credentialsProvider: CredentialsProvider,

@@ -47,7 +47,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 
 @Module
-@Suppress("TooManyFunctions")
 internal object ExoPlayerPlaybackEngineModule {
 
     @Provides

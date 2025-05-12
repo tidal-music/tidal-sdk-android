@@ -188,7 +188,6 @@ internal class SingleMediaProductPlayLogTest {
             )
     }
 
-    @Suppress("LongMethod")
     @Test
     fun loadAndPlayThenPauseThenPlay() = runTest {
         val gson = Gson()
@@ -253,7 +252,6 @@ internal class SingleMediaProductPlayLogTest {
             )
     }
 
-    @Suppress("LongMethod")
     @Test
     fun loadAndPlayThenSeekForward() = runTest {
         val gson = Gson()

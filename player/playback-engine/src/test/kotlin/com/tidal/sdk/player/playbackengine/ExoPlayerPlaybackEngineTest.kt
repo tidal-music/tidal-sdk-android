@@ -529,7 +529,6 @@ internal class ExoPlayerPlaybackEngineTest {
         )
     }
 
-    @Suppress("LongMethod")
     @Test
     fun surfaceViewSetterRefreshesKeepScreenOnAndUpdatesSurfaceViewBindingToExoPlayer() {
         val extendedExoPlayer = mock<ExtendedExoPlayer>()
@@ -678,7 +677,6 @@ internal class ExoPlayerPlaybackEngineTest {
         verify(initialExtendedExoPlayer).pause()
     }
 
-    @Suppress("LongMethod")
     @Test
     fun onPlaybackInfoFetchedForCurrentMediaProduct() {
         val actualProductId = 123
@@ -868,7 +866,6 @@ internal class ExoPlayerPlaybackEngineTest {
         reason: Int
     ) = testOnPlaybackSuppressionReasonChanged(reason, ProductType.BROADCAST)
 
-    @Suppress("LongMethod")
     private fun testOnPlaybackSuppressionReasonChanged(reason: Int, productType: ProductType) {
         val forwardingMediaProduct =
             mock<ForwardingMediaProduct<MediaProduct>> {
@@ -968,7 +965,6 @@ internal class ExoPlayerPlaybackEngineTest {
 
     @ParameterizedTest
     @EnumSource(ProductType::class)
-    @Suppress("LongMethod")
     fun onIsPlayingChangedToTrueUpdatesPlaybackState(productType: ProductType) {
         val currentPlaybackPositionMs = -12314351234
         val eventTime =
@@ -1144,7 +1140,6 @@ internal class ExoPlayerPlaybackEngineTest {
         assertThat(playbackEngine.playbackState).isEqualTo(PlaybackState.IDLE)
     }
 
-    @Suppress("LongMethod")
     @Test
     fun onPlaybackStateChangedToEndedResetsToIdleAndReports() {
         playbackEngine.testMediaSource = mediaSource
@@ -1311,7 +1306,6 @@ internal class ExoPlayerPlaybackEngineTest {
         verifyNoMoreInteractions(initialExtendedExoPlayer, newPositionInfo)
     }
 
-    @Suppress("LongMethod")
     @ParameterizedTest
     @EnumSource(ProductType::class)
     fun onPositionDiscontinuityWhenAutoTransitionShouldEmitMediaProductTransitionAndUpdateEventInfoForRepeatModeOff(
@@ -1475,7 +1469,6 @@ internal class ExoPlayerPlaybackEngineTest {
         )
     }
 
-    @Suppress("LongMethod")
     @ParameterizedTest
     @EnumSource(ProductType::class)
     fun onPositionDiscontinuityWhenAutoTransitionShouldEmitMediaProductTransitionAndUpdateEventInfoForRepeatModeOne(
@@ -1640,7 +1633,6 @@ internal class ExoPlayerPlaybackEngineTest {
         verify(initialExtendedExoPlayer).updatePosition(any())
     }
 
-    @Suppress("LongMethod")
     @Test
     fun onPositionDiscontinuityDueToSeekShouldCreateStallIfShouldNotStartPlaybackAfterUserAction() {
         val currentPlaybackPositionMs = 5L
@@ -1717,7 +1709,6 @@ internal class ExoPlayerPlaybackEngineTest {
         )
     }
 
-    @Suppress("LongMethod")
     @Test
     fun onPositionDiscontinuityDueToSeekShouldNotCreateStallIfShouldStartPlaybackAfterUserAction() {
         val eventTime = mock<EventTime>()
@@ -1884,7 +1875,6 @@ internal class ExoPlayerPlaybackEngineTest {
         verifyNoInteractions(coroutineScope, events)
     }
 
-    @Suppress("LongMethod")
     @Test
     fun onTimelineChangedShouldEmitMediaProductTransition() {
         val duration = 24.seconds
@@ -2054,7 +2044,6 @@ internal class ExoPlayerPlaybackEngineTest {
         verifyNoMoreInteractions(currentPlaybackStatistics)
     }
 
-    @Suppress("LongMethod")
     @Test
     fun onAudioPositionAdvancingShouldRecordStartTimestampIfCurrentPlaybackStatisticsArePrepared() {
         val forwardingMediaProduct = mock<ForwardingMediaProduct<MediaProduct>>()
@@ -2138,7 +2127,7 @@ internal class ExoPlayerPlaybackEngineTest {
         verifyNoMoreInteractions(decoderReuseEvaluation)
     }
 
-    @Suppress("LongMethod", "ThrowsCount")
+    @Suppress("ThrowsCount")
     private fun testTrackAdaptationOnValidWindowIndex(
         targetWindowIndex: Int,
         call: ExoPlayerPlaybackEngine.(EventTime, Format) -> Unit,

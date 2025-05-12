@@ -7,7 +7,6 @@ import com.tidal.sdk.player.events.util.ActiveNetworkType
 import com.tidal.sdk.player.events.util.HardwarePlatform
 
 internal class StreamingSessionStartPayloadDecorator(
-    @Suppress("MaxLineLength")
     private val streamingSessionStartDecoratedPayloadFactory:
         StreamingSessionStart.DecoratedPayload.Factory, // ktlint-disable max-line-length
     // parameter-wrapping

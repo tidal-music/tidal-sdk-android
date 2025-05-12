@@ -45,7 +45,6 @@ internal class PlayerRenderersFactoryTest {
     fun createRenderersIncludesExpectedRenderersWhenLibflacAudioRendererFactoryReturnsNull() =
         testForRenderers(mock(), null, mock())
 
-    @Suppress("LongMethod")
     private fun testForRenderers(
         mediaCodecVideoRenderer: MediaCodecVideoRenderer,
         libflacAudioRenderer: LibflacAudioRenderer?,

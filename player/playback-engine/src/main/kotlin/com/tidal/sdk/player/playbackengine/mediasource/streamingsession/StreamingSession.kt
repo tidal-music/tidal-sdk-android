@@ -21,7 +21,6 @@ private constructor(val id: UUID, val configuration: Configuration, val extras: 
         extras: Extras?,
     ) = PlaybackStatistics.Undetermined(id, idealStartTimestampMs, emptyList(), extras)
 
-    @Suppress("LongMethod")
     fun createPlaybackSession(
         playbackInfo: PlaybackInfo,
         requestedMediaProduct: ForwardingMediaProduct<*>,

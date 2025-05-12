@@ -8,7 +8,6 @@ internal class UndeterminedPlaybackSessionResolver(
     private val versionedCdmCalculator: VersionedCdm.Calculator
 ) {
 
-    @Suppress("LongMethod")
     operator fun invoke(
         undetermined: PlaybackStatistics.Undetermined,
         playbackInfo: PlaybackInfo,

@@ -26,7 +26,6 @@ import com.tidal.sdk.player.ui.theme.PlayerTheme
 @UnstableApi
 internal class MainActivity : ComponentActivity() {
 
-    @Suppress("LongMethod")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
