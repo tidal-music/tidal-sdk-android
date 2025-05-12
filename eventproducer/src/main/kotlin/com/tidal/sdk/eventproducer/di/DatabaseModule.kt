@@ -17,11 +17,8 @@ internal class DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideEventsDatabase(context: Context): EventsDatabase = Room.databaseBuilder(
-        context,
-        EventsDatabase::class.java,
-        EVENTS_DATABASE_NAME,
-    ).build()
+    fun provideEventsDatabase(context: Context): EventsDatabase =
+        Room.databaseBuilder(context, EventsDatabase::class.java, EVENTS_DATABASE_NAME).build()
 
     @Provides
     @Singleton

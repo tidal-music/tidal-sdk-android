@@ -14,7 +14,7 @@ import kotlinx.coroutines.CoroutineScope
 import okhttp3.OkHttpClient
 
 class PlayLogTestDefaultEventReporterComponentFactory(
-    private val coroutineScopeOverride: CoroutineScope,
+    private val coroutineScopeOverride: CoroutineScope
 ) : DefaultEventReporterComponent.Factory {
     override fun create(
         context: Context,
@@ -27,17 +27,18 @@ class PlayLogTestDefaultEventReporterComponentFactory(
         trueTimeWrapper: TrueTimeWrapper,
         eventSender: EventSender,
         coroutineScope: CoroutineScope,
-    ) = DaggerDefaultEventReporterComponent.factory()
-        .create(
-            context,
-            connectivityManager,
-            userSupplier,
-            clientSupplier,
-            okHttpClient,
-            gson,
-            uuidWrapper,
-            trueTimeWrapper,
-            eventSender,
-            coroutineScopeOverride,
-        )
+    ) =
+        DaggerDefaultEventReporterComponent.factory()
+            .create(
+                context,
+                connectivityManager,
+                userSupplier,
+                clientSupplier,
+                okHttpClient,
+                gson,
+                uuidWrapper,
+                trueTimeWrapper,
+                eventSender,
+                coroutineScopeOverride,
+            )
 }

@@ -24,13 +24,12 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 /**
- * Test that the [DrmLicenseService] returns correct [DrmLicense] in various situations, or
- * that it fails with an exception.
+ * Test that the [DrmLicenseService] returns correct [DrmLicense] in various situations, or that it
+ * fails with an exception.
  */
 internal class DrmLicenseServiceTest {
 
-    @get:ExtendWith
-    val server = MockWebServer()
+    @get:ExtendWith val server = MockWebServer()
 
     private lateinit var drmLicenseService: DrmLicenseService
 
@@ -38,10 +37,11 @@ internal class DrmLicenseServiceTest {
 
     @BeforeEach
     fun setUp() {
-        val retrofit = Retrofit.Builder()
-            .baseUrl(server.url("/"))
-            .addConverterFactory(converterFactory)
-            .build()
+        val retrofit =
+            Retrofit.Builder()
+                .baseUrl(server.url("/"))
+                .addConverterFactory(converterFactory)
+                .build()
 
         drmLicenseService = retrofit.create(DrmLicenseService::class.java)
     }
@@ -50,8 +50,7 @@ internal class DrmLicenseServiceTest {
     fun getWidevineLicenseShouldFailWhenNetworkError() {
         server.enqueue(MockResponse().throttleBody(1024, 1, TimeUnit.SECONDS))
 
-        assertFailure { getWidevineLicense() }
-            .isInstanceOf(IOException::class.java)
+        assertFailure { getWidevineLicense() }.isInstanceOf(IOException::class.java)
     }
 
     @ParameterizedTest
@@ -59,8 +58,7 @@ internal class DrmLicenseServiceTest {
     fun getWidevineLicenseShouldFailWhenNonOkStatus(status: Int) {
         server.enqueue(MockResponse().setResponseCode(status))
 
-        assertFailure { getWidevineLicense() }
-            .isInstanceOf(HttpException::class.java)
+        assertFailure { getWidevineLicense() }.isInstanceOf(HttpException::class.java)
     }
 
     @Test
@@ -69,8 +67,7 @@ internal class DrmLicenseServiceTest {
 
         val widevineLicense = getWidevineLicense()
 
-        assertThat(widevineLicense)
-            .isDataClassEqualTo(DrmLicenseFactory.default())
+        assertThat(widevineLicense).isDataClassEqualTo(DrmLicenseFactory.default())
     }
 
     @Test
@@ -79,8 +76,7 @@ internal class DrmLicenseServiceTest {
 
         val widevineLicense = getWidevineLicense()
 
-        assertThat(widevineLicense)
-            .isDataClassEqualTo(DrmLicenseFactory.emptyStreamingSessionId())
+        assertThat(widevineLicense).isDataClassEqualTo(DrmLicenseFactory.emptyStreamingSessionId())
     }
 
     @Test
@@ -89,8 +85,7 @@ internal class DrmLicenseServiceTest {
 
         val widevineLicense = getWidevineLicense()
 
-        assertThat(widevineLicense)
-            .isDataClassEqualTo(DrmLicenseFactory.emptyPayload())
+        assertThat(widevineLicense).isDataClassEqualTo(DrmLicenseFactory.emptyPayload())
     }
 
     private fun getWidevineLicense() = runBlocking {
@@ -99,7 +94,7 @@ internal class DrmLicenseServiceTest {
                 ApiConstants.STREAMING_SESSION_ID,
                 ApiConstants.LICENSE_SECURITY_TOKEN,
                 ApiConstants.DRM_PAYLOAD_REQUEST,
-            ),
+            )
         )
     }
 }

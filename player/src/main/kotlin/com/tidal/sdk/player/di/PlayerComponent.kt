@@ -19,14 +19,15 @@ import javax.inject.Singleton
 import okhttp3.OkHttpClient
 
 @Component(
-    modules = [
-        PlayerModule::class,
-        EventReporterModule::class,
-        NetworkModule::class,
-        PlaybackEngineModule::class,
-        StreamingApiModule::class,
-        StreamingPrivilegesModule::class,
-    ],
+    modules =
+        [
+            PlayerModule::class,
+            EventReporterModule::class,
+            NetworkModule::class,
+            PlaybackEngineModule::class,
+            StreamingApiModule::class,
+            StreamingPrivilegesModule::class,
+        ]
 )
 @Singleton
 internal interface PlayerComponent {
@@ -50,11 +51,9 @@ internal interface PlayerComponent {
             @BindsInstance assetTimeoutConfig: AssetTimeoutConfig,
             @BindsInstance streamingApiTimeoutConfig: StreamingApiTimeoutConfig,
             @BindsInstance cacheProvider: CacheProvider,
-            @BindsInstance @Named("isOfflineMode")
-            isOfflineMode: Boolean,
+            @BindsInstance @Named("isOfflineMode") isOfflineMode: Boolean,
             @BindsInstance okHttpClient: OkHttpClient,
-            @BindsInstance @Named("isDebuggable")
-            isDebuggable: Boolean,
+            @BindsInstance @Named("isDebuggable") isDebuggable: Boolean,
             @BindsInstance playbackPrivilegeProvider: PlaybackPrivilegeProvider,
             @BindsInstance offlinePlayProvider: OfflinePlayProvider?,
         ): PlayerComponent

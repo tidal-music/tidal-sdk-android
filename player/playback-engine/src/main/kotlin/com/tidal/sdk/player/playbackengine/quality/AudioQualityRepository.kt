@@ -14,9 +14,10 @@ internal class AudioQualityRepository(
 ) {
 
     val streamingQuality: AudioQuality
-        get() = if (networkTransportHelper.isWifiOrEthernet()) {
-            streamingWifiAudioQuality
-        } else {
-            streamingCellularAudioQuality
-        }
+        get() =
+            if (networkTransportHelper.isWifiOrEthernet()) {
+                streamingWifiAudioQuality
+            } else {
+                streamingCellularAudioQuality
+            }
 }

@@ -18,10 +18,12 @@ internal class PlayerHlsMediaSourceFactory(
         drmSessionManagerProvider: DrmSessionManagerProvider,
     ): MediaSource {
         val emuManifest = emuManifestFactory.create(encodedManifest)
-        val newMediaItem = mediaItem.buildUpon()
-            .setUri(emuManifest.urls.firstOrNull())
-            .setMimeType(MimeTypes.APPLICATION_M3U8)
-            .build()
+        val newMediaItem =
+            mediaItem
+                .buildUpon()
+                .setUri(emuManifest.urls.firstOrNull())
+                .setMimeType(MimeTypes.APPLICATION_M3U8)
+                .build()
 
         return hlsMediaSourceFactory
             .setDrmSessionManagerProvider(drmSessionManagerProvider)

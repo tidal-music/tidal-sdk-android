@@ -22,9 +22,7 @@ internal class AuthModule {
     @Named("default")
     fun provideRetryPolicy(): RetryPolicy = DefaultRetryPolicy()
 
-    @Provides
-    @Singleton
-    fun provideTimeProvider(): TimeProvider = DefaultTimeProvider()
+    @Provides @Singleton fun provideTimeProvider(): TimeProvider = DefaultTimeProvider()
 
     @Provides
     @Singleton

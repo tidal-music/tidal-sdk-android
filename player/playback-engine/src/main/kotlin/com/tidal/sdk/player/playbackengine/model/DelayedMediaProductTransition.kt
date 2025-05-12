@@ -19,12 +19,13 @@ internal data class DelayedMediaProductTransition(
         playbackContext: PlaybackContext,
         playbackStatistics: PlaybackStatistics.Undetermined,
         playbackSession: PlaybackSession,
-    ) = exoPlayerPlaybackEngine.handleTransitionForRepeatOff(
-        eventTime,
-        invokedAtMillis,
-        newPositionSeconds,
-        playbackContext,
-        playbackStatistics,
-        playbackSession,
-    )
+    ) =
+        exoPlayerPlaybackEngine.handleTransitionForRepeatOff(
+            eventTime,
+            invokedAtMillis,
+            newPositionSeconds,
+            playbackContext,
+            playbackStatistics,
+            playbackSession,
+        )
 }

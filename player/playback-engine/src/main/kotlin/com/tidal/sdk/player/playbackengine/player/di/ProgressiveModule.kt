@@ -17,9 +17,10 @@ internal object ProgressiveModule {
         progressiveMediaSourceFactoryFactory: ProgressiveMediaSourceFactoryFactory,
         cacheDataSourceFactory: CacheDataSource.Factory,
         btsManifestFactory: DefaultBtsManifestFactory,
-    ) = PlayerProgressiveMediaSourceFactory(
-        progressiveMediaSourceFactoryFactory,
-        cacheDataSourceFactory,
-        btsManifestFactory,
-    )
+    ) =
+        PlayerProgressiveMediaSourceFactory(
+            progressiveMediaSourceFactoryFactory,
+            cacheDataSourceFactory,
+            btsManifestFactory,
+        )
 }

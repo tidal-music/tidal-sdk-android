@@ -21,18 +21,16 @@ internal class IncomingWebSocketMessageParserTest {
     private val gson = mock<Gson>()
     private val incomingWebSocketMessageParser = IncomingWebSocketMessageParser(gson)
 
-    @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(gson)
+    @AfterEach fun afterEach() = verifyNoMoreInteractions(gson)
 
     @Test
     fun parseTypeReconnectReturnsReconnect() {
         val msgString = "msg string"
-        val typeElement = mock<JsonElement> {
-            on { asString } doReturn WebSocketMessage.Incoming.Type.RECONNECT.string
-        }
-        val jsonObject = mock<JsonObject> {
-            on { get("type") } doReturn typeElement
-        }
+        val typeElement =
+            mock<JsonElement> {
+                on { asString } doReturn WebSocketMessage.Incoming.Type.RECONNECT.string
+            }
+        val jsonObject = mock<JsonObject> { on { get("type") } doReturn typeElement }
         whenever(gson.fromJson(msgString, JsonObject::class.java)) doReturn jsonObject
 
         val actual = incomingWebSocketMessageParser.parse(msgString)
@@ -47,12 +45,8 @@ internal class IncomingWebSocketMessageParserTest {
     @Test
     fun parseTypeUnknownThrowsIllegalArgumentException() {
         val msgString = "msg string"
-        val typeElement = mock<JsonElement> {
-            on { asString } doReturn "unknown type"
-        }
-        val jsonObject = mock<JsonObject> {
-            on { get("type") } doReturn typeElement
-        }
+        val typeElement = mock<JsonElement> { on { asString } doReturn "unknown type" }
+        val jsonObject = mock<JsonObject> { on { get("type") } doReturn typeElement }
         whenever(gson.fromJson(msgString, JsonObject::class.java)) doReturn jsonObject
 
         assertThrows<IllegalArgumentException> { incomingWebSocketMessageParser.parse(msgString) }
@@ -66,24 +60,22 @@ internal class IncomingWebSocketMessageParserTest {
     @Test
     fun parseTypeStreamingPrivilegesRevokedReturnsStreamingPrivilegesRevokedWithClientName() {
         val privilegedClientDisplayName = "privilegedClientDisplayName"
-        val clientDisplayNameElement = mock<JsonElement> {
-            on { asString } doReturn privilegedClientDisplayName
-        }
+        val clientDisplayNameElement =
+            mock<JsonElement> { on { asString } doReturn privilegedClientDisplayName }
         val msgString = "msg string"
-        val typeElement = mock<JsonElement> {
-            on { asString }
-                .thenReturn(WebSocketMessage.Incoming.Type.STREAMING_PRIVILEGES_REVOKED.string)
-        }
-        val payloadObject = mock<JsonObject> {
-            on { get("clientDisplayName") } doReturn clientDisplayNameElement
-        }
-        val payloadElement = mock<JsonElement> {
-            on { asJsonObject } doReturn payloadObject
-        }
-        val jsonObject = mock<JsonObject> {
-            on { get("type") } doReturn typeElement
-            on { get("payload") } doReturn payloadElement
-        }
+        val typeElement =
+            mock<JsonElement> {
+                on { asString }
+                    .thenReturn(WebSocketMessage.Incoming.Type.STREAMING_PRIVILEGES_REVOKED.string)
+            }
+        val payloadObject =
+            mock<JsonObject> { on { get("clientDisplayName") } doReturn clientDisplayNameElement }
+        val payloadElement = mock<JsonElement> { on { asJsonObject } doReturn payloadObject }
+        val jsonObject =
+            mock<JsonObject> {
+                on { get("type") } doReturn typeElement
+                on { get("payload") } doReturn payloadElement
+            }
         whenever(gson.fromJson(msgString, JsonObject::class.java)) doReturn jsonObject
 
         val actual = incomingWebSocketMessageParser.parse(msgString)
@@ -95,14 +87,10 @@ internal class IncomingWebSocketMessageParserTest {
         verify(payloadElement).asJsonObject
         verify(payloadObject)["clientDisplayName"]
         verify(clientDisplayNameElement).asString
-        assertThat(actual).isEqualTo(
-            WebSocketMessage.Incoming.StreamingPrivilegesRevoked(privilegedClientDisplayName),
-        )
-        verifyNoMoreInteractions(
-            clientDisplayNameElement,
-            typeElement,
-            payloadElement,
-            jsonObject,
-        )
+        assertThat(actual)
+            .isEqualTo(
+                WebSocketMessage.Incoming.StreamingPrivilegesRevoked(privilegedClientDisplayName)
+            )
+        verifyNoMoreInteractions(clientDisplayNameElement, typeElement, payloadElement, jsonObject)
     }
 }

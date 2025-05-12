@@ -27,9 +27,7 @@ fun LoginScreen() {
 
     val url = getLoginUri().toString()
 
-    Box(
-        modifier = Modifier.fillMaxSize().background(Color.Black),
-    ) {
+    Box(modifier = Modifier.fillMaxSize().background(Color.Black)) {
         ComposeWebView(activity = activity, url = url)
     }
 }

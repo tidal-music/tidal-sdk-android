@@ -49,25 +49,25 @@ internal class StreamingApiRepositoryTest {
     private val mediaDrmCallbackExceptionFactory = mock<MediaDrmCallbackExceptionFactory>()
     private val eventReporter = mock<EventReporter>()
     private val errorHandler = mock<ErrorHandler>()
-    private val streamingApiRepository = StreamingApiRepository(
-        streamingApi,
-        audioQualityRepository,
-        videoQualityRepository,
-        audioModeRepository,
-        trueTimeWrapper,
-        mediaDrmCallbackExceptionFactory,
-        eventReporter,
-        errorHandler,
-    )
+    private val streamingApiRepository =
+        StreamingApiRepository(
+            streamingApi,
+            audioQualityRepository,
+            videoQualityRepository,
+            audioModeRepository,
+            trueTimeWrapper,
+            mediaDrmCallbackExceptionFactory,
+            eventReporter,
+            errorHandler,
+        )
 
     @Test
     fun getDrmLicenseOnSuccessCallReturnsAndReports() = runBlocking {
         val startTimestamp = 1L
         val endTimestamp = -2L
         val streamingSessionId = "streamingSessionId"
-        val drmLicenseRequest = mock<DrmLicenseRequest> {
-            on { it.streamingSessionId } doReturn streamingSessionId
-        }
+        val drmLicenseRequest =
+            mock<DrmLicenseRequest> { on { it.streamingSessionId } doReturn streamingSessionId }
         val expectedDrmLicense = mock<DrmLicense>()
         whenever(trueTimeWrapper.currentTimeMillis).thenReturn(startTimestamp, endTimestamp)
         whenever(streamingApi.getDrmLicense(drmLicenseRequest)).thenReturn(expectedDrmLicense)
@@ -75,17 +75,18 @@ internal class StreamingApiRepositoryTest {
         val actual = streamingApiRepository.getDrmLicense(drmLicenseRequest, emptyMap())
 
         assertThat(actual).isSameAs(expectedDrmLicense)
-        verify(eventReporter).report(
-            DrmLicenseFetch.Payload(
-                streamingSessionId,
-                startTimestamp,
-                endTimestamp,
-                EndReason.COMPLETE,
-                null,
-                null,
-            ),
-            emptyMap(),
-        )
+        verify(eventReporter)
+            .report(
+                DrmLicenseFetch.Payload(
+                    streamingSessionId,
+                    startTimestamp,
+                    endTimestamp,
+                    EndReason.COMPLETE,
+                    null,
+                    null,
+                ),
+                emptyMap(),
+            )
     }
 
     @Test
@@ -93,13 +94,10 @@ internal class StreamingApiRepositoryTest {
         val startTimestamp = 1L
         val endTimestamp = -2L
         val streamingSessionId = "streamingSessionId"
-        val drmLicenseRequest = mock<DrmLicenseRequest> {
-            on { it.streamingSessionId } doReturn streamingSessionId
-        }
+        val drmLicenseRequest =
+            mock<DrmLicenseRequest> { on { it.streamingSessionId } doReturn streamingSessionId }
         val errorMessage = "errorMessage"
-        val runtimeException = mock<RuntimeException> {
-            on { it.message } doReturn errorMessage
-        }
+        val runtimeException = mock<RuntimeException> { on { it.message } doReturn errorMessage }
         val errorCode = "errorCode"
         val mediaDrmCallbackException = mock<MediaDrmCallbackException>()
         whenever(trueTimeWrapper.currentTimeMillis).thenReturn(startTimestamp, endTimestamp)
@@ -107,26 +105,25 @@ internal class StreamingApiRepositoryTest {
         whenever(mediaDrmCallbackExceptionFactory.create(runtimeException))
             .thenReturn(mediaDrmCallbackException)
         whenever(
-            errorHandler.getErrorCode(
-                runtimeException,
-                ErrorCodeFactory.Extra.DrmLicenseFetch,
-            ),
-        ).thenReturn(errorCode)
+                errorHandler.getErrorCode(runtimeException, ErrorCodeFactory.Extra.DrmLicenseFetch)
+            )
+            .thenReturn(errorCode)
 
         assertFailure { streamingApiRepository.getDrmLicense(drmLicenseRequest, emptyMap()) }
             .isSameAs(mediaDrmCallbackException)
 
-        verify(eventReporter).report(
-            DrmLicenseFetch.Payload(
-                streamingSessionId,
-                startTimestamp,
-                endTimestamp,
-                EndReason.ERROR,
-                errorMessage,
-                errorCode,
-            ),
-            emptyMap()
-        )
+        verify(eventReporter)
+            .report(
+                DrmLicenseFetch.Payload(
+                    streamingSessionId,
+                    startTimestamp,
+                    endTimestamp,
+                    EndReason.ERROR,
+                    errorMessage,
+                    errorCode,
+                ),
+                emptyMap(),
+            )
     }
 
     @Suppress("LongMethod")
@@ -138,10 +135,11 @@ internal class StreamingApiRepositoryTest {
             val endTimestamp = 0L
             val streamingSessionId = "streamingSessionId"
             val productId = "33"
-            val mediaProduct = mock<ForwardingMediaProduct<*>> {
-                on { it.productId } doReturn productId
-                on { it.productType } doReturn productType
-            }
+            val mediaProduct =
+                mock<ForwardingMediaProduct<*>> {
+                    on { it.productId } doReturn productId
+                    on { it.productType } doReturn productType
+                }
             val productQuality: ProductQuality
             val playbackMode = PlaybackMode.STREAM
             val expected = mock<PlaybackInfo.Track>()
@@ -150,14 +148,14 @@ internal class StreamingApiRepositoryTest {
                     productQuality = mock<AudioQuality>()
                     whenever(audioQualityRepository.streamingQuality) doReturn productQuality
                     whenever(
-                        streamingApi.getTrackPlaybackInfo(
-                            productId,
-                            productQuality,
-                            playbackMode,
-                            false,
-                            "streamingSessionId",
-                        ),
-                    )
+                            streamingApi.getTrackPlaybackInfo(
+                                productId,
+                                productQuality,
+                                playbackMode,
+                                false,
+                                "streamingSessionId",
+                            )
+                        )
                         .thenReturn(expected)
                 }
 
@@ -165,13 +163,13 @@ internal class StreamingApiRepositoryTest {
                     productQuality = mock<VideoQuality>()
                     whenever(videoQualityRepository.streamingQuality) doReturn productQuality
                     whenever(
-                        streamingApi.getVideoPlaybackInfo(
-                            productId,
-                            productQuality,
-                            playbackMode,
-                            "streamingSessionId",
-                        ),
-                    )
+                            streamingApi.getVideoPlaybackInfo(
+                                productId,
+                                productQuality,
+                                playbackMode,
+                                "streamingSessionId",
+                            )
+                        )
                         .thenReturn(expected)
                 }
 
@@ -179,44 +177,41 @@ internal class StreamingApiRepositoryTest {
                     productQuality = mock<AudioQuality>()
                     whenever(audioQualityRepository.streamingQuality) doReturn productQuality
                     whenever(
-                        streamingApi.getBroadcastPlaybackInfo(
-                            productId,
-                            streamingSessionId,
-                            productQuality,
-                        ),
-                    ).thenReturn(expected)
+                            streamingApi.getBroadcastPlaybackInfo(
+                                productId,
+                                streamingSessionId,
+                                productQuality,
+                            )
+                        )
+                        .thenReturn(expected)
                 }
 
                 ProductType.UC -> {
-                    whenever(
-                        streamingApi.getUCPlaybackInfo(
-                            productId,
-                            streamingSessionId,
-                        ),
-                    ).thenReturn(expected)
+                    whenever(streamingApi.getUCPlaybackInfo(productId, streamingSessionId))
+                        .thenReturn(expected)
                 }
             }
             whenever(trueTimeWrapper.currentTimeMillis).thenReturn(startTimestamp, endTimestamp)
 
-            val actual = streamingApiRepository.getPlaybackInfoForStreaming(
-                streamingSessionId,
-                mediaProduct,
-            )
+            val actual =
+                streamingApiRepository.getPlaybackInfoForStreaming(streamingSessionId, mediaProduct)
 
             assertThat(actual).isSameAs(expected)
-            verify(eventReporter).report(
-                PlaybackInfoFetch.Payload(
-                    streamingSessionId,
-                    startTimestamp,
-                    endTimestamp,
-                    EndReason.COMPLETE,
-                    null,
-                    null,
-                ),
-                emptyMap(),
-            )
+            verify(eventReporter)
+                .report(
+                    PlaybackInfoFetch.Payload(
+                        streamingSessionId,
+                        startTimestamp,
+                        endTimestamp,
+                        EndReason.COMPLETE,
+                        null,
+                        null,
+                    ),
+                    emptyMap(),
+                )
             when (productType) {
-                ProductType.TRACK, ProductType.BROADCAST -> {
+                ProductType.TRACK,
+                ProductType.BROADCAST -> {
                     verify(audioQualityRepository).streamingQuality
                     verifyNoInteractions(videoQualityRepository)
                 }
@@ -245,34 +240,35 @@ internal class StreamingApiRepositoryTest {
             whenever(trueTimeWrapper.currentTimeMillis).thenReturn(startTimestamp, endTimestamp)
             val streamingSessionId = "streamingSessionId"
             val productId = "33"
-            val mediaProduct = mock<ForwardingMediaProduct<*>> {
-                on { it.productId } doReturn productId
-                on { it.productType } doReturn productType
-            }
+            val mediaProduct =
+                mock<ForwardingMediaProduct<*>> {
+                    on { it.productId } doReturn productId
+                    on { it.productType } doReturn productType
+                }
             val productQuality: ProductQuality
             val playbackMode = PlaybackMode.STREAM
-            val runtimeException = mock<RuntimeException> {
-                on { it.message } doReturn errorMessage
-            }
+            val runtimeException =
+                mock<RuntimeException> { on { it.message } doReturn errorMessage }
             whenever(
-                errorHandler.getErrorCode(
-                    runtimeException,
-                    ErrorCodeFactory.Extra.PlaybackInfoFetch,
-                ),
-            ).thenReturn(errorCode)
+                    errorHandler.getErrorCode(
+                        runtimeException,
+                        ErrorCodeFactory.Extra.PlaybackInfoFetch,
+                    )
+                )
+                .thenReturn(errorCode)
             when (productType) {
                 ProductType.TRACK -> {
                     productQuality = mock<AudioQuality>()
                     whenever(audioQualityRepository.streamingQuality) doReturn productQuality
                     whenever(
-                        streamingApi.getTrackPlaybackInfo(
-                            productId,
-                            productQuality,
-                            playbackMode,
-                            false,
-                            "streamingSessionId",
-                        ),
-                    )
+                            streamingApi.getTrackPlaybackInfo(
+                                productId,
+                                productQuality,
+                                playbackMode,
+                                false,
+                                "streamingSessionId",
+                            )
+                        )
                         .thenThrow(runtimeException)
                 }
 
@@ -280,13 +276,13 @@ internal class StreamingApiRepositoryTest {
                     productQuality = mock<VideoQuality>()
                     whenever(videoQualityRepository.streamingQuality) doReturn productQuality
                     whenever(
-                        streamingApi.getVideoPlaybackInfo(
-                            productId,
-                            productQuality,
-                            playbackMode,
-                            "streamingSessionId",
-                        ),
-                    )
+                            streamingApi.getVideoPlaybackInfo(
+                                productId,
+                                productQuality,
+                                playbackMode,
+                                "streamingSessionId",
+                            )
+                        )
                         .thenThrow(runtimeException)
                 }
 
@@ -294,43 +290,41 @@ internal class StreamingApiRepositoryTest {
                     productQuality = mock<AudioQuality>()
                     whenever(audioQualityRepository.streamingQuality) doReturn productQuality
                     whenever(
-                        streamingApi.getBroadcastPlaybackInfo(
-                            productId,
-                            streamingSessionId,
-                            productQuality,
-                        ),
-                    ).thenThrow(runtimeException)
+                            streamingApi.getBroadcastPlaybackInfo(
+                                productId,
+                                streamingSessionId,
+                                productQuality,
+                            )
+                        )
+                        .thenThrow(runtimeException)
                 }
 
                 ProductType.UC -> {
-                    whenever(
-                        streamingApi.getUCPlaybackInfo(
-                            productId,
-                            streamingSessionId,
-                        ),
-                    ).thenThrow(runtimeException)
+                    whenever(streamingApi.getUCPlaybackInfo(productId, streamingSessionId))
+                        .thenThrow(runtimeException)
                 }
             }
 
             assertFailure {
-                streamingApiRepository.getPlaybackInfoForStreaming(
-                    streamingSessionId,
-                    mediaProduct,
-                )
-            }
+                    streamingApiRepository.getPlaybackInfoForStreaming(
+                        streamingSessionId,
+                        mediaProduct,
+                    )
+                }
                 .isInstanceOf(IOException::class)
                 .hasCause(runtimeException)
 
-            verify(eventReporter).report(
-                PlaybackInfoFetch.Payload(
-                    streamingSessionId,
-                    startTimestamp,
-                    endTimestamp,
-                    EndReason.ERROR,
-                    errorMessage,
-                    errorCode,
-                ),
-                emptyMap(),
-            )
+            verify(eventReporter)
+                .report(
+                    PlaybackInfoFetch.Payload(
+                        streamingSessionId,
+                        startTimestamp,
+                        endTimestamp,
+                        EndReason.ERROR,
+                        errorMessage,
+                        errorCode,
+                    ),
+                    emptyMap(),
+                )
         }
 }

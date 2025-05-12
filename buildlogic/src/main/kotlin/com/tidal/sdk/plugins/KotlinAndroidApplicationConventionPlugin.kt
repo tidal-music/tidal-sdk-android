@@ -15,17 +15,19 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 internal class KotlinAndroidApplicationConventionPlugin : Plugin<Project> {
 
-    override fun apply(target: Project) = target.run {
-        pluginManager.apply(PluginId.ANDROID_APPLICATION_PLUGIN_ID)
-        pluginManager.apply(KotlinAndroidConventionPlugin::class.java)
-        val libs = extensions.getByType(VersionCatalogsExtension::class.java).named("libs")
-        val testAndroidXRunnerLibrary = libs.findLibrary("test-androidx-runner").get()
-        dependencies.add("androidTestImplementation", testAndroidXRunnerLibrary)
-        val androidTestOrchestratorLibrary = libs.findLibrary("test-androidx-orchestrator").get()
-        dependencies.add("androidTestUtil", androidTestOrchestratorLibrary)
+    override fun apply(target: Project) =
+        target.run {
+            pluginManager.apply(PluginId.ANDROID_APPLICATION_PLUGIN_ID)
+            pluginManager.apply(KotlinAndroidConventionPlugin::class.java)
+            val libs = extensions.getByType(VersionCatalogsExtension::class.java).named("libs")
+            val testAndroidXRunnerLibrary = libs.findLibrary("test-androidx-runner").get()
+            dependencies.add("androidTestImplementation", testAndroidXRunnerLibrary)
+            val androidTestOrchestratorLibrary =
+                libs.findLibrary("test-androidx-orchestrator").get()
+            dependencies.add("androidTestUtil", androidTestOrchestratorLibrary)
 
-        configureApplication()
-    }
+            configureApplication()
+        }
 
     @Suppress("LongMethod")
     private fun Project.configureApplication() {
@@ -43,60 +45,44 @@ internal class KotlinAndroidApplicationConventionPlugin : Plugin<Project> {
             defaultConfig {
                 targetSdk = Config.ANDROID_TARGET_SDK
                 minSdk = Config.ANDROID_MIN_SDK
-                buildConfigField(
-                    "String",
-                    "TIDAL_CLIENT_ID",
-                    "$clientId",
-                )
-                buildConfigField(
-                    "String",
-                    "TIDAL_CLIENT_SECRET",
-                    "$clientSecret",
-                )
-                buildConfigField(
-                    "String",
-                    "TIDAL_CLIENT_REDIRECT_URI",
-                    "$clientRedirectUri",
-                )
+                buildConfigField("String", "TIDAL_CLIENT_ID", "$clientId")
+                buildConfigField("String", "TIDAL_CLIENT_SECRET", "$clientSecret")
+                buildConfigField("String", "TIDAL_CLIENT_REDIRECT_URI", "$clientRedirectUri")
                 testInstrumentationRunner = Config.ANDROID_TEST_RUNNER_JUNIT
                 testInstrumentationRunnerArguments["clearPackageData"] = "true"
             }
 
-            testOptions {
-                execution = "ANDROIDX_TEST_ORCHESTRATOR"
-            }
+            testOptions { execution = "ANDROIDX_TEST_ORCHESTRATOR" }
 
             compileOptions {
                 sourceCompatibility = JavaVersion.VERSION_17
                 targetCompatibility = JavaVersion.VERSION_17
             }
 
-            buildTypes {
-                release {
-                    isMinifyEnabled = false
-                }
-            }
+            buildTypes { release { isMinifyEnabled = false } }
 
             buildFeatures {
                 buildConfig = true
                 compose = true
             }
         }
-        val ensureClientPropsPresent: TaskProvider<*> = tasks.register("ensureClientPropsPresent") {
-            doLast {
-                arrayOf(
-                    tidalClientId to clientId,
-                    tidalClientSecret to clientSecret,
-                    tidalClientRedirectUri to clientRedirectUri,
-                ).forEach { (key, value) ->
-                    if (value == null && System.getenv("CI").isNullOrBlank()) {
-                        throw InvalidUserDataException(
-                            "$key missing in ${localPropertiesFile.absolutePath}",
+        val ensureClientPropsPresent: TaskProvider<*> =
+            tasks.register("ensureClientPropsPresent") {
+                doLast {
+                    arrayOf(
+                            tidalClientId to clientId,
+                            tidalClientSecret to clientSecret,
+                            tidalClientRedirectUri to clientRedirectUri,
                         )
-                    }
+                        .forEach { (key, value) ->
+                            if (value == null && System.getenv("CI").isNullOrBlank()) {
+                                throw InvalidUserDataException(
+                                    "$key missing in ${localPropertiesFile.absolutePath}"
+                                )
+                            }
+                        }
                 }
             }
-        }
         tasks.withType(KotlinCompile::class.java).configureEach {
             dependsOn(ensureClientPropsPresent)
         }

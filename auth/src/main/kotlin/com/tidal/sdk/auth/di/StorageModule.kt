@@ -21,15 +21,13 @@ internal class StorageModule {
     fun provideCredentialsStore(
         authConfig: AuthConfig,
         sharedPreferences: SharedPreferences,
-    ): TokensStore =
-        DefaultTokensStore(authConfig.credentialsKey, sharedPreferences)
+    ): TokensStore = DefaultTokensStore(authConfig.credentialsKey, sharedPreferences)
 
     @Provides
     @Singleton
     fun provideEncryptedSharedPreferences(
         context: Context,
         authConfig: AuthConfig,
-
     ): SharedPreferences {
         return EncryptedSharedPreferences.create(
             "${authConfig.credentialsKey}_$PREFS_FILE_NAME",

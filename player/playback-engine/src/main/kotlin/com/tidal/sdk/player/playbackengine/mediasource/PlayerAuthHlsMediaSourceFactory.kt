@@ -7,7 +7,7 @@ import androidx.media3.exoplayer.hls.HlsMediaSource
 import androidx.media3.exoplayer.source.MediaSource
 
 internal class PlayerAuthHlsMediaSourceFactory(
-    private val hlsMediaSourceFactory: HlsMediaSource.Factory,
+    private val hlsMediaSourceFactory: HlsMediaSource.Factory
 ) {
 
     fun create(
@@ -15,10 +15,8 @@ internal class PlayerAuthHlsMediaSourceFactory(
         url: String,
         drmSessionManagerProvider: DrmSessionManagerProvider,
     ): MediaSource {
-        val newMediaItem = mediaItem.buildUpon()
-            .setUri(url)
-            .setMimeType(MimeTypes.APPLICATION_M3U8)
-            .build()
+        val newMediaItem =
+            mediaItem.buildUpon().setUri(url).setMimeType(MimeTypes.APPLICATION_M3U8).build()
 
         return hlsMediaSourceFactory
             .setDrmSessionManagerProvider(drmSessionManagerProvider)

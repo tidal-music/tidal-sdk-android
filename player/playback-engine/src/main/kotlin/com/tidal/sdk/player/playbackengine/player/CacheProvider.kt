@@ -10,14 +10,12 @@ import com.tidal.sdk.player.playbackengine.model.ByteAmount.Companion.gigabytes
  */
 sealed class CacheProvider private constructor() {
 
-    /**
-     * Let Player create and use its own [Cache] instance with custom parameters.
-     */
+    /** Let Player create and use its own [Cache] instance with custom parameters. */
     data class Internal(val cacheSizeBytes: ByteAmount = 2.gigabytes) : CacheProvider()
 
     /**
-     * Use an external [Cache] instead of Player creating one of its own.
-     * Reason for using this is to reuse a cache instance that is already in use.
+     * Use an external [Cache] instead of Player creating one of its own. Reason for using this is
+     * to reuse a cache instance that is already in use.
      */
     data class External(val cache: Cache) : CacheProvider()
 }

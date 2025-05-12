@@ -15,48 +15,41 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
-/**
- * Test that the [AuthorizationInterceptor] sets correct Authorization header on the request.
- */
+/** Test that the [AuthorizationInterceptor] sets correct Authorization header on the request. */
 internal class AuthorizationInterceptorTest {
 
-    @get:ExtendWith
-    val server = MockWebServer()
+    @get:ExtendWith val server = MockWebServer()
 
     private var accessToken = ""
 
-    private val credentialsProvider = object : CredentialsProvider {
-        override val bus: Flow<TidalMessage>
-            get() = throw IllegalAccessException("Not supported")
+    private val credentialsProvider =
+        object : CredentialsProvider {
+            override val bus: Flow<TidalMessage>
+                get() = throw IllegalAccessException("Not supported")
 
-        override suspend fun getCredentials(apiErrorSubStatus: String?) =
-            AuthResult.Success(
-                Credentials(
-                    clientId = "clientId",
-                    requestedScopes = emptySet(),
-                    clientUniqueKey = null,
-                    grantedScopes = emptySet(),
-                    userId = null,
-                    expires = null,
-                    token = accessToken,
-                ),
-            )
+            override suspend fun getCredentials(apiErrorSubStatus: String?) =
+                AuthResult.Success(
+                    Credentials(
+                        clientId = "clientId",
+                        requestedScopes = emptySet(),
+                        clientUniqueKey = null,
+                        grantedScopes = emptySet(),
+                        userId = null,
+                        expires = null,
+                        token = accessToken,
+                    )
+                )
 
-        override fun isUserLoggedIn() = throw IllegalAccessException("Not supported")
-    }
+            override fun isUserLoggedIn() = throw IllegalAccessException("Not supported")
+        }
 
-    private val authorizationInterceptor = AuthorizationInterceptor(
-        credentialsProvider,
-        RequestAuthorizationDelegate(emptyMap()),
-    )
+    private val authorizationInterceptor =
+        AuthorizationInterceptor(credentialsProvider, RequestAuthorizationDelegate(emptyMap()))
 
-    private val okHttpClient = OkHttpClient.Builder()
-        .addInterceptor(authorizationInterceptor)
-        .build()
+    private val okHttpClient =
+        OkHttpClient.Builder().addInterceptor(authorizationInterceptor).build()
 
-    private val request = Request.Builder()
-        .url(server.url("/"))
-        .build()
+    private val request = Request.Builder().url(server.url("/")).build()
 
     @BeforeEach
     fun setUp() {
@@ -68,8 +61,7 @@ internal class AuthorizationInterceptorTest {
         server.enqueue(MockResponse())
 
         okHttpClient.newCall(request).execute().use {
-            assertThat(it.request.header("Authorization"))
-                .isEqualTo("Bearer accessToken")
+            assertThat(it.request.header("Authorization")).isEqualTo("Bearer accessToken")
         }
     }
 
@@ -79,15 +71,13 @@ internal class AuthorizationInterceptorTest {
         server.enqueue(MockResponse())
 
         okHttpClient.newCall(request).execute().use {
-            assertThat(it.request.header("Authorization"))
-                .isEqualTo("Bearer accessToken")
+            assertThat(it.request.header("Authorization")).isEqualTo("Bearer accessToken")
         }
 
         accessToken = "newAccessToken"
 
         okHttpClient.newCall(request).execute().use {
-            assertThat(it.request.header("Authorization"))
-                .isEqualTo("Bearer newAccessToken")
+            assertThat(it.request.header("Authorization")).isEqualTo("Bearer newAccessToken")
         }
     }
 }

@@ -28,25 +28,24 @@ internal fun DemoPlayableItemComposable(
     dispatchSkip: () -> Unit,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-            .clickable {
+        modifier =
+            Modifier.fillMaxWidth().padding(8.dp).clickable {
                 dispatchLoad(item.createMediaProduct())
                 dispatchSetNext(calculateFollowingHardcodedMediaProduct())
                 dispatchPlay()
-            },
+            }
     ) {
         Text(
-            text =
-            "${item.name} (${item.mediaProductId}, ${item.productType})",
-            style = LocalTextStyle.current.copy(
-                color = when {
-                    isCurrent -> MaterialTheme.colorScheme.primary
-                    isNext -> MaterialTheme.colorScheme.inversePrimary
-                    else -> Color.Unspecified
-                },
-            ),
+            text = "${item.name} (${item.mediaProductId}, ${item.productType})",
+            style =
+                LocalTextStyle.current.copy(
+                    color =
+                        when {
+                            isCurrent -> MaterialTheme.colorScheme.primary
+                            isNext -> MaterialTheme.colorScheme.inversePrimary
+                            else -> Color.Unspecified
+                        }
+                ),
         )
         Row {
             Column {

@@ -16,16 +16,11 @@ internal class OfflinePlayDrmDataSourceFactoryHelperTest {
 
     private val cacheDataSourceFactory = mock<CacheDataSource.Factory>()
     private val offlineCacheProvider = mock<OfflineCacheProvider>()
-    private val offlinePlayDrmDataSourceFactoryHelper = OfflinePlayDrmDataSourceFactoryHelper(
-        cacheDataSourceFactory,
-        offlineCacheProvider,
-    )
+    private val offlinePlayDrmDataSourceFactoryHelper =
+        OfflinePlayDrmDataSourceFactoryHelper(cacheDataSourceFactory, offlineCacheProvider)
 
     @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(
-        cacheDataSourceFactory,
-        offlineCacheProvider,
-    )
+    fun afterEach() = verifyNoMoreInteractions(cacheDataSourceFactory, offlineCacheProvider)
 
     @Test
     fun create() {
@@ -39,9 +34,6 @@ internal class OfflinePlayDrmDataSourceFactoryHelperTest {
         assertThat(actualDataSourceFactory).isSameAs(cacheDataSourceFactory)
         verify(cacheDataSourceFactory).setCache(cache)
         verify(cacheDataSourceFactory).setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR)
-        verifyNoMoreInteractions(
-            cache,
-            cacheDataSourceFactory,
-        )
+        verifyNoMoreInteractions(cache, cacheDataSourceFactory)
     }
 }

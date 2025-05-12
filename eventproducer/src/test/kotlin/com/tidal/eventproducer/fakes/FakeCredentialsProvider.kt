@@ -20,25 +20,25 @@ class FakeCredentialsProvider(
     override val bus: Flow<TidalMessage>
         get() = flowOf()
 
-    override suspend fun getCredentials(
-        apiErrorSubStatus: String?,
-    ): AuthResult<Credentials> = if (isSuccessResult) {
-        accessToken = refreshToken
-        clientId = refreshClientId
-        AuthResult.Success(getDefaultCredentials(accessToken, clientId))
-    } else {
-        AuthResult.Failure(NetworkError("404"))
-    }
+    override suspend fun getCredentials(apiErrorSubStatus: String?): AuthResult<Credentials> =
+        if (isSuccessResult) {
+            accessToken = refreshToken
+            clientId = refreshClientId
+            AuthResult.Success(getDefaultCredentials(accessToken, clientId))
+        } else {
+            AuthResult.Failure(NetworkError("404"))
+        }
 
     override fun isUserLoggedIn() = true
 
-    private fun getDefaultCredentials(accessToken: String, clientId: String) = Credentials(
-        clientId = clientId,
-        requestedScopes = emptySet(),
-        clientUniqueKey = "",
-        grantedScopes = emptySet(),
-        userId = "",
-        expires = Long.MAX_VALUE,
-        token = accessToken,
-    )
+    private fun getDefaultCredentials(accessToken: String, clientId: String) =
+        Credentials(
+            clientId = clientId,
+            requestedScopes = emptySet(),
+            clientUniqueKey = "",
+            grantedScopes = emptySet(),
+            userId = "",
+            expires = Long.MAX_VALUE,
+            token = accessToken,
+        )
 }

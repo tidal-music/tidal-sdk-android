@@ -1,8 +1,6 @@
 package com.tidal.sdk.player.playbackengine.drm
 
-/**
- * The mode for which drm operation we are doing.
- */
+/** The mode for which drm operation we are doing. */
 internal sealed class DrmMode {
 
     /**

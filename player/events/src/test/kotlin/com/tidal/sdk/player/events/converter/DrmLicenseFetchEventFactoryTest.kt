@@ -25,22 +25,24 @@ internal class DrmLicenseFetchEventFactoryTest {
     private val userSupplier = mock<UserSupplier>()
     private val clientSupplier = mock<ClientSupplier>()
     private val drmLicenseFetchFactory = mock<DrmLicenseFetch.Factory>()
-    private val drmLicenseFetchEventFactory = DrmLicenseFetchEventFactory(
-        trueTimeWrapper,
-        uuidWrapper,
-        userSupplier,
-        clientSupplier,
-        drmLicenseFetchFactory,
-    )
+    private val drmLicenseFetchEventFactory =
+        DrmLicenseFetchEventFactory(
+            trueTimeWrapper,
+            uuidWrapper,
+            userSupplier,
+            clientSupplier,
+            drmLicenseFetchFactory,
+        )
 
     @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(
-        trueTimeWrapper,
-        uuidWrapper,
-        userSupplier,
-        clientSupplier,
-        drmLicenseFetchFactory,
-    )
+    fun afterEach() =
+        verifyNoMoreInteractions(
+            trueTimeWrapper,
+            uuidWrapper,
+            userSupplier,
+            clientSupplier,
+            drmLicenseFetchFactory,
+        )
 
     @Test
     fun invoke() = runBlocking {
@@ -55,15 +57,16 @@ internal class DrmLicenseFetchEventFactoryTest {
         val payload = mock<DrmLicenseFetch.Payload>()
         val expected = mock<DrmLicenseFetch>()
         whenever(
-            drmLicenseFetchFactory.create(
-                currentTimeMillis,
-                randomUUID,
-                user,
-                client,
-                payload,
-                emptyMap(),
-            ),
-        ).thenReturn(expected)
+                drmLicenseFetchFactory.create(
+                    currentTimeMillis,
+                    randomUUID,
+                    user,
+                    client,
+                    payload,
+                    emptyMap(),
+                )
+            )
+            .thenReturn(expected)
 
         val actual = drmLicenseFetchEventFactory(payload, emptyMap())
 
@@ -71,14 +74,8 @@ internal class DrmLicenseFetchEventFactoryTest {
         verify(uuidWrapper).randomUUID
         verify(userSupplier)()
         verify(clientSupplier)()
-        verify(drmLicenseFetchFactory).create(
-            currentTimeMillis,
-            randomUUID,
-            user,
-            client,
-            payload,
-            emptyMap(),
-        )
+        verify(drmLicenseFetchFactory)
+            .create(currentTimeMillis, randomUUID, user, client, payload, emptyMap())
         assertThat(actual).isSameAs(expected)
         verifyNoMoreInteractions(randomUUID, user, client, payload, expected)
     }

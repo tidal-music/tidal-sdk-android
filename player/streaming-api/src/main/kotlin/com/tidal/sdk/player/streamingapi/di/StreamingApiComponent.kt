@@ -13,12 +13,13 @@ import okhttp3.OkHttpClient
 
 @Singleton
 @Component(
-    modules = [
-        StreamingApiModule::class,
-        PlaybackInfoModule::class,
-        DrmLicenseModule::class,
-        RetrofitModule::class,
-    ],
+    modules =
+        [
+            StreamingApiModule::class,
+            PlaybackInfoModule::class,
+            DrmLicenseModule::class,
+            RetrofitModule::class,
+        ]
 )
 interface StreamingApiComponent {
 
@@ -36,7 +37,5 @@ interface StreamingApiComponent {
         ): StreamingApiComponent
     }
 
-    @Qualifier
-    @Retention(AnnotationRetention.RUNTIME)
-    annotation class Local
+    @Qualifier @Retention(AnnotationRetention.RUNTIME) annotation class Local
 }

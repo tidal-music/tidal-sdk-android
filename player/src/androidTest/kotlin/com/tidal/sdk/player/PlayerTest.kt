@@ -18,35 +18,38 @@ import org.junit.Test
 
 class PlayerTest {
 
-    private val credentialsProvider = object : CredentialsProvider {
-        override val bus: Flow<TidalMessage>
-            get() = throw IllegalAccessException("Not supported")
+    private val credentialsProvider =
+        object : CredentialsProvider {
+            override val bus: Flow<TidalMessage>
+                get() = throw IllegalAccessException("Not supported")
 
-        override suspend fun getCredentials(apiErrorSubStatus: String?) =
-            throw IllegalAccessException("Not supported")
+            override suspend fun getCredentials(apiErrorSubStatus: String?) =
+                throw IllegalAccessException("Not supported")
 
-        override fun isUserLoggedIn() = false
-    }
+            override fun isUserLoggedIn() = false
+        }
 
-    private val eventSender = object : EventSender {
-        override fun sendEvent(
-            eventName: String,
-            consentCategory: ConsentCategory,
-            payload: String,
-            headers: Map<String, String>,
-        ) = throw IllegalAccessException("Not supported")
+    private val eventSender =
+        object : EventSender {
+            override fun sendEvent(
+                eventName: String,
+                consentCategory: ConsentCategory,
+                payload: String,
+                headers: Map<String, String>,
+            ) = throw IllegalAccessException("Not supported")
 
-        override fun setBlockedConsentCategories(blockedConsentCategories: Set<ConsentCategory>) =
-            throw IllegalAccessException("Not supported")
-    }
+            override fun setBlockedConsentCategories(
+                blockedConsentCategories: Set<ConsentCategory>
+            ) = throw IllegalAccessException("Not supported")
+        }
 
-    private val player = Player(
-        InstrumentationRegistry.getInstrumentation()
-            .targetContext
-            .applicationContext as Application,
-        credentialsProvider,
-        eventSender,
-    )
+    private val player =
+        Player(
+            InstrumentationRegistry.getInstrumentation().targetContext.applicationContext
+                as Application,
+            credentialsProvider,
+            eventSender,
+        )
 
     @After
     fun afterEach() = runBlocking {

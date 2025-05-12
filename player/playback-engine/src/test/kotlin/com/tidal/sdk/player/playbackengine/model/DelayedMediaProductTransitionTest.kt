@@ -18,16 +18,10 @@ internal class DelayedMediaProductTransitionTest {
     private val eventTime = mock<AnalyticsListener.EventTime>()
     private val invokedAtMillis = -1L
     private val newPositionSeconds = 3.6536345
-    private val delayedMediaProductTransition = DelayedMediaProductTransition(
-        from,
-        to,
-        eventTime,
-        invokedAtMillis,
-        newPositionSeconds,
-    )
+    private val delayedMediaProductTransition =
+        DelayedMediaProductTransition(from, to, eventTime, invokedAtMillis, newPositionSeconds)
 
-    @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(from, to, eventTime)
+    @AfterEach fun afterEach() = verifyNoMoreInteractions(from, to, eventTime)
 
     @Test
     fun invoke() {
@@ -43,14 +37,15 @@ internal class DelayedMediaProductTransitionTest {
             playbackSession,
         )
 
-        verify(exoPlayerPlaybackEngine).handleTransitionForRepeatOff(
-            eventTime,
-            invokedAtMillis,
-            newPositionSeconds,
-            playbackContext,
-            playbackStatistics,
-            playbackSession,
-        )
+        verify(exoPlayerPlaybackEngine)
+            .handleTransitionForRepeatOff(
+                eventTime,
+                invokedAtMillis,
+                newPositionSeconds,
+                playbackContext,
+                playbackStatistics,
+                playbackSession,
+            )
         verifyNoMoreInteractions(
             exoPlayerPlaybackEngine,
             playbackContext,

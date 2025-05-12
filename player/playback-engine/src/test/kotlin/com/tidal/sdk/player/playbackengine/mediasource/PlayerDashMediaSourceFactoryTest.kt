@@ -33,11 +33,12 @@ internal class PlayerDashMediaSourceFactoryTest {
         whenever(dashMediaSourceFactory.createMediaSource(dashManifest, mediaItem))
             .thenReturn(expectedDashMediaSource)
 
-        val actualDashMediaSource = playerDashMediaSourceFactory.create(
-            mediaItem,
-            ENCODED_MANIFEST,
-            drmSessionManagerProvider,
-        )
+        val actualDashMediaSource =
+            playerDashMediaSourceFactory.create(
+                mediaItem,
+                ENCODED_MANIFEST,
+                drmSessionManagerProvider,
+            )
 
         verify(dashMediaSourceFactory).setDrmSessionManagerProvider(drmSessionManagerProvider)
         assertThat(actualDashMediaSource).isSameAs(expectedDashMediaSource)

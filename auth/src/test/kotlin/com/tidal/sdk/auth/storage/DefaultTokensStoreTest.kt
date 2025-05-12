@@ -24,24 +24,24 @@ class DefaultTokensStoreTest {
     fun setUp() {
         sharedPreferences = mockk()
         editor = mockk(relaxed = true)
-        tokens = Tokens(
-            credentials = makeCredentials(isExpired = false),
-            refreshToken =
-            "refreshToken"
-        )
+        tokens =
+            Tokens(credentials = makeCredentials(isExpired = false), refreshToken = "refreshToken")
 
         every { sharedPreferences.edit() } returns editor
-        every { editor.putString(any(), any()) } answers {
-            isPrefsEmpty = false
-            editor
-        }
-        every { editor.clear() } answers {
-            isPrefsEmpty = true
-            editor
-        }
-        every { sharedPreferences.getString(any(), any()) } answers {
-            if (isPrefsEmpty) null else Json.encodeToString(tokens)
-        }
+        every { editor.putString(any(), any()) } answers
+            {
+                isPrefsEmpty = false
+                editor
+            }
+        every { editor.clear() } answers
+            {
+                isPrefsEmpty = true
+                editor
+            }
+        every { sharedPreferences.getString(any(), any()) } answers
+            {
+                if (isPrefsEmpty) null else Json.encodeToString(tokens)
+            }
 
         defaultTokensStore = DefaultTokensStore(testCredentialsKey, sharedPreferences)
     }
@@ -68,7 +68,7 @@ class DefaultTokensStoreTest {
         assertEquals(
             defaultTokensStore.getLatestTokens(testCredentialsKey),
             tokens,
-            "Tokens passed in for saving should be served when calling getLatestTokens."
+            "Tokens passed in for saving should be served when calling getLatestTokens.",
         )
     }
 
@@ -83,7 +83,7 @@ class DefaultTokensStoreTest {
         assertEquals(
             defaultTokensStore.getLatestTokens(testCredentialsKey),
             null,
-            "Tokens should be null after erasing."
+            "Tokens should be null after erasing.",
         )
     }
 }

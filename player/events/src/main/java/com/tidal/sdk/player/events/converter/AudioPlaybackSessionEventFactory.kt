@@ -15,15 +15,13 @@ internal class AudioPlaybackSessionEventFactory(
     private val audioPlaybackSessionFactory: AudioPlaybackSession.Factory,
 ) : EventFactory<AudioPlaybackSession.Payload> {
 
-    override suspend fun invoke(
-        payload: AudioPlaybackSession.Payload,
-        extras: Extras?,
-    ) = audioPlaybackSessionFactory.create(
-        trueTimeWrapper.currentTimeMillis,
-        uuidWrapper.randomUUID,
-        userSupplier(),
-        clientSupplier(),
-        payload,
-        extras,
-    )
+    override suspend fun invoke(payload: AudioPlaybackSession.Payload, extras: Extras?) =
+        audioPlaybackSessionFactory.create(
+            trueTimeWrapper.currentTimeMillis,
+            uuidWrapper.randomUUID,
+            userSupplier(),
+            clientSupplier(),
+            payload,
+            extras,
+        )
 }

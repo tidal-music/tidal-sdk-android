@@ -20,31 +20,33 @@ import org.mockito.kotlin.mock
 
 internal class ExoPlayerPlaybackEngineLooperTest {
 
-    private val singleHandlerPlaybackEngine = PlaybackEngineModuleRoot(
-        InstrumentationRegistry.getInstrumentation().targetContext,
-        mock(),
-        true,
-        MutableSharedFlow(),
-        BufferConfiguration(),
-        AssetTimeoutConfig(),
-        CacheProvider.Internal(),
-        Configuration(false),
-        InstrumentationRegistry.getInstrumentation().targetContext.cacheDir,
-        mock(),
-        OkHttpClient(),
-        OkHttpClient(),
-        Gson(),
-        mock(),
-        mock(),
-        UUIDWrapper(),
-        TrueTimeWrapper(),
-        mock(),
-        mock(),
-        mock(),
-        Base64Codec(),
-        Dispatchers.IO,
-        CoroutineScope(Dispatchers.IO),
-    ).playbackEngine as SingleHandlerPlaybackEngine
+    private val singleHandlerPlaybackEngine =
+        PlaybackEngineModuleRoot(
+                InstrumentationRegistry.getInstrumentation().targetContext,
+                mock(),
+                true,
+                MutableSharedFlow(),
+                BufferConfiguration(),
+                AssetTimeoutConfig(),
+                CacheProvider.Internal(),
+                Configuration(false),
+                InstrumentationRegistry.getInstrumentation().targetContext.cacheDir,
+                mock(),
+                OkHttpClient(),
+                OkHttpClient(),
+                Gson(),
+                mock(),
+                mock(),
+                UUIDWrapper(),
+                TrueTimeWrapper(),
+                mock(),
+                mock(),
+                mock(),
+                Base64Codec(),
+                Dispatchers.IO,
+                CoroutineScope(Dispatchers.IO),
+            )
+            .playbackEngine as SingleHandlerPlaybackEngine
 
     private val exoPlayerPlaybackEngine =
         singleHandlerPlaybackEngine.reflectionDelegate as ExoPlayerPlaybackEngine

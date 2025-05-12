@@ -35,7 +35,7 @@ internal class SocketConnectionStateTest {
     @Test
     fun failedAttemptsOrZeroOnNotConnectedReturnsHardcodedZero() =
         failedAttemptsOrZeroOnNonConnectingReturnsHardcodedZero(
-            spy(SocketConnectionState.NotConnected),
+            spy(SocketConnectionState.NotConnected)
         )
 
     @Test
@@ -43,7 +43,7 @@ internal class SocketConnectionStateTest {
         val webSocket = mock<WebSocket>()
 
         failedAttemptsOrZeroOnNonConnectingReturnsHardcodedZero(
-            spy(SocketConnectionState.Connected(webSocket)),
+            spy(SocketConnectionState.Connected(webSocket))
         )
 
         verifyNoInteractions(webSocket)
@@ -62,7 +62,7 @@ internal class SocketConnectionStateTest {
     }
 
     private fun failedAttemptsOrZeroOnNonConnectingReturnsHardcodedZero(
-        nonConnecting: SocketConnectionState,
+        nonConnecting: SocketConnectionState
     ) {
         whenever(nonConnecting.failedAttemptsOrZero).thenCallRealMethod()
         val actual = nonConnecting.failedAttemptsOrZero

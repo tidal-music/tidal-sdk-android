@@ -19,13 +19,13 @@ import okhttp3.RequestBody
  *
  * @param[streamingApiRepository] A repository for getting the drm license.
  * @param[base64Codec] A string codec for encoding the request data and decoding the response
- * payload.
+ *   payload.
  * @param[drmLicenseRequestFactory] A factory for creating [DrmLicenseRequest]s.
  * @param[mode] The [DrmMode] for what action this particular request is for.
  * @param[okHttpClient] The [OkHttpClient] to be used by the provisioning request.
  * @param[provisionRequestBuilder] The [Request.Builder] to be used to create the provision request.
  * @param[provisionRequestBody] The [RequestBody] to be used as body for the provisioning post
- * request.
+ *   request.
  */
 @Suppress("LongParameterList")
 internal class TidalMediaDrmCallback(
@@ -46,11 +46,11 @@ internal class TidalMediaDrmCallback(
         val drmLicenseRequest =
             drmLicenseRequestFactory.create(encodedRequestData.toString(charset))
 
-        val drmLicense = when (mode) {
-            DrmMode.Streaming -> runBlocking {
-                streamingApiRepository.getDrmLicense(drmLicenseRequest, extras)
+        val drmLicense =
+            when (mode) {
+                DrmMode.Streaming ->
+                    runBlocking { streamingApiRepository.getDrmLicense(drmLicenseRequest, extras) }
             }
-        }
 
         return base64Codec.decode(drmLicense.payload.toByteArray(charset))
     }
@@ -61,14 +61,10 @@ internal class TidalMediaDrmCallback(
     ): ByteArray {
         val url = request.defaultUrl + "&signedRequest=" + Util.fromUtf8Bytes(request.data)
 
-        val provisioningRequest = provisionRequestBuilder.value
-            .url(url)
-            .post(provisionRequestBody.value)
-            .build()
+        val provisioningRequest =
+            provisionRequestBuilder.value.url(url).post(provisionRequestBody.value).build()
 
-        val response = okHttpClient
-            .newCall(provisioningRequest)
-            .execute()
+        val response = okHttpClient.newCall(provisioningRequest).execute()
 
         return response.body?.bytes() ?: byteArrayOf()
     }

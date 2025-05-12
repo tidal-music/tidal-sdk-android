@@ -15,11 +15,8 @@ internal class ExtendedExoPlayerStateUpdateRunnableTest {
     private val extendedExoPlayerState = mock<ExtendedExoPlayerState>()
     private val exoPlayer = mock<ExoPlayer>()
     private val handler = mock<Handler>()
-    private val extendedExoPlayerStateUpdateRunnable = ExtendedExoPlayerStateUpdateRunnable(
-        extendedExoPlayerState,
-        exoPlayer,
-        handler,
-    )
+    private val extendedExoPlayerStateUpdateRunnable =
+        ExtendedExoPlayerStateUpdateRunnable(extendedExoPlayerState, exoPlayer, handler)
 
     @AfterEach
     fun afterEach() = verifyNoMoreInteractions(extendedExoPlayerState, exoPlayer, handler)
@@ -33,9 +30,10 @@ internal class ExtendedExoPlayerStateUpdateRunnableTest {
 
         verify(exoPlayer).currentPosition
         verify(extendedExoPlayerState).currentPositionMs = currentPosition
-        verify(handler).postDelayed(
-            extendedExoPlayerStateUpdateRunnable,
-            ExtendedExoPlayerStateUpdateRunnable.reflectionDELAY_MILLIS,
-        )
+        verify(handler)
+            .postDelayed(
+                extendedExoPlayerStateUpdateRunnable,
+                ExtendedExoPlayerStateUpdateRunnable.reflectionDELAY_MILLIS,
+            )
     }
 }

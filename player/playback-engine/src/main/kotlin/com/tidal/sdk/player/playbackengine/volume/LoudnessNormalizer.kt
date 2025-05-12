@@ -5,12 +5,13 @@ import kotlin.math.pow
 
 internal class LoudnessNormalizer {
 
-    fun getReducedGain(replayGain: Float, peakAmplitude: Float, preAmp: Int) = min(
-        REDUCED_GAIN_MULTIPLIER_CONSTANT.pow(
-            (replayGain + preAmp) / REDUCED_GAIN_DIVIDER_CONSTANT,
-        ),
-        1 / peakAmplitude,
-    )
+    fun getReducedGain(replayGain: Float, peakAmplitude: Float, preAmp: Int) =
+        min(
+            REDUCED_GAIN_MULTIPLIER_CONSTANT.pow(
+                (replayGain + preAmp) / REDUCED_GAIN_DIVIDER_CONSTANT
+            ),
+            1 / peakAmplitude,
+        )
 
     companion object {
         private const val REDUCED_GAIN_MULTIPLIER_CONSTANT = 10.0F

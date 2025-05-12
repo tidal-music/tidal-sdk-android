@@ -24,8 +24,8 @@ internal interface PlaybackInfoService {
      * @param[playbackMode] The requested playback mode as [PlaybackMode].
      * @param[assetPresentation] The requested asset presentation as [AssetPresentation].
      * @param[audioQuality] The requested audio quality as [AudioQuality].
-     * @param[streamingSessionId] The streaming session uuid as [String], created by the client,
-     * for this streaming session.
+     * @param[streamingSessionId] The streaming session uuid as [String], created by the client, for
+     *   this streaming session.
      * @param[playlistUuid] The playlistUuid this play originates from as [String]. May be null.
      */
     @GET("tracks/{id}/playbackinfo")
@@ -46,8 +46,8 @@ internal interface PlaybackInfoService {
      * @param[playbackMode] The requested playback mode as [PlaybackMode].
      * @param[assetPresentation] The requested asset presentation as [AssetPresentation].
      * @param[videoQuality] The requested video quality as [VideoQuality].
-     * @param[streamingSessionId] The streaming session uuid as [String], created by the client,
-     * for this streaming session.
+     * @param[streamingSessionId] The streaming session uuid as [String], created by the client, for
+     *   this streaming session.
      * @param[playlistUuid] The playlistUuid this play originates from as [String]. May be null.
      */
     @GET("videos/{id}/playbackinfo")

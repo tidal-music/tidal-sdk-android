@@ -18,7 +18,13 @@ internal object DefaultEventReporterModule {
     @Provides
     @Reusable
     fun eventReporter(
-        @Suppress("MaxLineLength") eventFactories: Map<Class<out Event.Payload>, @JvmSuppressWildcards EventFactory<out Event.Payload>>, // ktlint-disable max-line-length parameter-wrapping
+        @Suppress("MaxLineLength")
+        eventFactories:
+            Map<
+                Class<out Event.Payload>,
+                @JvmSuppressWildcards
+                EventFactory<out Event.Payload>,
+            >, // ktlint-disable max-line-length parameter-wrapping
         eventSender: EventSender,
         gson: Gson,
         coroutineScope: CoroutineScope,

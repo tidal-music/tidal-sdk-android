@@ -22,11 +22,12 @@ internal fun ComposeWebView(
     url: String,
 ) {
     val javaScriptInterface = JavaScriptInterface()
-    val extendedWebViewClient = ExtendedWebClient(
-        LocalContext.current,
-        dispatchSetSnackbarMessage,
-        dispatchFinalizeWebLogin,
-    )
+    val extendedWebViewClient =
+        ExtendedWebClient(
+            LocalContext.current,
+            dispatchSetSnackbarMessage,
+            dispatchFinalizeWebLogin,
+        )
 
     AndroidView(
         modifier = modifier,

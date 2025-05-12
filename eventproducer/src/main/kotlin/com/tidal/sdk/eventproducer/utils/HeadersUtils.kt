@@ -16,7 +16,9 @@ internal const val CLIENT_ID_KEY = "client-id"
 internal const val DEVICE_MODEL_KEY = "device-model"
 internal const val DEVICE_VENDOR_KEY = "device-vendor"
 
-internal class HeadersUtils @Inject constructor(
+internal class HeadersUtils
+@Inject
+constructor(
     private val appVersion: String,
     private val credentialsProvider: CredentialsProvider,
     private val trueTimeWrapper: TrueTimeWrapper,

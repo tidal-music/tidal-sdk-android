@@ -17,13 +17,9 @@ internal object StreamingPrivilegesModule {
     fun streamingPrivileges(
         connectivityManager: ConnectivityManager,
         gson: Gson,
-        @LocalWithCacheAndAuth
-        okHttpClient: OkHttpClient,
+        @LocalWithCacheAndAuth okHttpClient: OkHttpClient,
         trueTimeWrapper: TrueTimeWrapper,
-    ) = StreamingPrivilegesModuleRoot(
-        connectivityManager,
-        okHttpClient,
-        gson,
-        trueTimeWrapper,
-    ).streamingPrivileges
+    ) =
+        StreamingPrivilegesModuleRoot(connectivityManager, okHttpClient, gson, trueTimeWrapper)
+            .streamingPrivileges
 }

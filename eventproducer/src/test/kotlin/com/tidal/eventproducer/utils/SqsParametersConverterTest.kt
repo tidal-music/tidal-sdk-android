@@ -40,39 +40,36 @@ class SqsParametersConverterTest {
 
         val firstEventHeadersJson = firstEventHeaders.toString()
         val secondEventHeadersJson = secondEventHeaders.toString()
-        every { mapConverter.fromStringStringMap(firstEventHeaders) } returns
-            firstEventHeadersJson
+        every { mapConverter.fromStringStringMap(firstEventHeaders) } returns firstEventHeadersJson
         every { mapConverter.fromStringStringMap(secondEventHeaders) } returns
             secondEventHeadersJson
 
-        val expectedParametersStrings = mapOf(
-            "SendMessageBatchRequestEntry.1.Id" to firstEventId,
-            "SendMessageBatchRequestEntry.1.MessageBody" to firstEventPayload,
-            "SendMessageBatchRequestEntry.1.MessageAttribute.1.Name" to "Name",
-            "SendMessageBatchRequestEntry.1.MessageAttribute.1.Value.StringValue" to firstEventName,
-            "SendMessageBatchRequestEntry.1.MessageAttribute.1.Value.DataType" to "String",
-            "SendMessageBatchRequestEntry.1.MessageAttribute.2.Name" to "Headers",
-            "SendMessageBatchRequestEntry.1.MessageAttribute.2.Value.DataType" to "String",
-            "SendMessageBatchRequestEntry.1.MessageAttribute.2.Value.StringValue" to
-                firstEventHeadersJson,
-            "SendMessageBatchRequestEntry.2.Id" to secondEventId,
-            "SendMessageBatchRequestEntry.2.MessageBody" to payload2,
-            "SendMessageBatchRequestEntry.2.MessageAttribute.1.Name" to "Name",
-            "SendMessageBatchRequestEntry.2.MessageAttribute.1.Value.StringValue" to
-                secondEventName,
-            "SendMessageBatchRequestEntry.2.MessageAttribute.1.Value.DataType" to "String",
-            "SendMessageBatchRequestEntry.2.MessageAttribute.2.Name" to "Headers",
-            "SendMessageBatchRequestEntry.2.MessageAttribute.2.Value.DataType" to "String",
-            "SendMessageBatchRequestEntry.2.MessageAttribute.2.Value.StringValue" to
-                secondEventHeadersJson,
-        )
+        val expectedParametersStrings =
+            mapOf(
+                "SendMessageBatchRequestEntry.1.Id" to firstEventId,
+                "SendMessageBatchRequestEntry.1.MessageBody" to firstEventPayload,
+                "SendMessageBatchRequestEntry.1.MessageAttribute.1.Name" to "Name",
+                "SendMessageBatchRequestEntry.1.MessageAttribute.1.Value.StringValue" to
+                    firstEventName,
+                "SendMessageBatchRequestEntry.1.MessageAttribute.1.Value.DataType" to "String",
+                "SendMessageBatchRequestEntry.1.MessageAttribute.2.Name" to "Headers",
+                "SendMessageBatchRequestEntry.1.MessageAttribute.2.Value.DataType" to "String",
+                "SendMessageBatchRequestEntry.1.MessageAttribute.2.Value.StringValue" to
+                    firstEventHeadersJson,
+                "SendMessageBatchRequestEntry.2.Id" to secondEventId,
+                "SendMessageBatchRequestEntry.2.MessageBody" to payload2,
+                "SendMessageBatchRequestEntry.2.MessageAttribute.1.Name" to "Name",
+                "SendMessageBatchRequestEntry.2.MessageAttribute.1.Value.StringValue" to
+                    secondEventName,
+                "SendMessageBatchRequestEntry.2.MessageAttribute.1.Value.DataType" to "String",
+                "SendMessageBatchRequestEntry.2.MessageAttribute.2.Name" to "Headers",
+                "SendMessageBatchRequestEntry.2.MessageAttribute.2.Value.DataType" to "String",
+                "SendMessageBatchRequestEntry.2.MessageAttribute.2.Value.StringValue" to
+                    secondEventHeadersJson,
+            )
 
-        val convertedParameters = sqsParametersConverter.getSendEventsParameters(
-            listOf(
-                event1,
-                event2,
-            ),
-        )
+        val convertedParameters =
+            sqsParametersConverter.getSendEventsParameters(listOf(event1, event2))
         assertEquals(expectedParametersStrings, convertedParameters)
     }
 }

@@ -16,21 +16,20 @@ import org.mockito.kotlin.whenever
 internal class WebSocketConnectionRequestFactoryTest {
 
     private val requestBuilderFactory = mock<RequestBuilderFactory>()
-    private val webSocketConnectionRequestFactory = WebSocketConnectionRequestFactory(
-        requestBuilderFactory,
-    )
+    private val webSocketConnectionRequestFactory =
+        WebSocketConnectionRequestFactory(requestBuilderFactory)
 
-    @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(requestBuilderFactory)
+    @AfterEach fun afterEach() = verifyNoMoreInteractions(requestBuilderFactory)
 
     @Test
     fun createReturnsRequestWithUrl() {
         val url = "url"
         val expected = mock<Request>()
-        val requestBuilder = mock<Request.Builder> {
-            on { url(url) } doReturn it
-            on { build() } doReturn expected
-        }
+        val requestBuilder =
+            mock<Request.Builder> {
+                on { url(url) } doReturn it
+                on { build() } doReturn expected
+            }
         whenever(requestBuilderFactory.create()) doReturn requestBuilder
 
         val actual = webSocketConnectionRequestFactory.create(url)

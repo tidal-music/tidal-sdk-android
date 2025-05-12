@@ -12,19 +12,13 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven {
-            url = uri("https://jitpack.io")
-        }
+        maven { url = uri("https://jitpack.io") }
     }
 }
 
 rootProject.name = "tidal-sdk-android"
 
-buildCache {
-    local {
-        isEnabled = !System.getenv().containsKey("CI")
-    }
-}
+buildCache { local { isEnabled = !System.getenv().containsKey("CI") } }
 
 include("bom")
 
@@ -34,20 +28,26 @@ fun includeFromDefaultHierarchy(sdkModuleName: String) {
 }
 
 includeFromDefaultHierarchy("player")
+
 listOf(
-    "common",
-    "common-android",
-    "events",
-    "playback-engine",
-    "streaming-api",
-    "streaming-privileges",
-    "testutil"
-).forEach {
-    val projectName = "player:$it"
-    include(projectName)
-    project(":$projectName").projectDir = project(":player").projectDir.resolve(it)
-}
+        "common",
+        "common-android",
+        "events",
+        "playback-engine",
+        "streaming-api",
+        "streaming-privileges",
+        "testutil",
+    )
+    .forEach {
+        val projectName = "player:$it"
+        include(projectName)
+        project(":$projectName").projectDir = project(":player").projectDir.resolve(it)
+    }
+
 includeFromDefaultHierarchy("auth")
+
 includeFromDefaultHierarchy("common")
+
 includeFromDefaultHierarchy("eventproducer")
+
 includeFromDefaultHierarchy("tidalapi")

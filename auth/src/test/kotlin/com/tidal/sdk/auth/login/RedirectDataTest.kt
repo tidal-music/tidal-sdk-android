@@ -21,8 +21,7 @@ class RedirectDataTest {
     @Test
     fun `instance creation with error in the submitted string should return Error subclass`() {
         // given
-        val wrongQuery =
-            "?error=someMadeUpError?error_description=helloWorld&lang=en"
+        val wrongQuery = "?error=someMadeUpError?error_description=helloWorld&lang=en"
 
         // when
         val redirectData = RedirectData.fromQueryString(wrongQuery)
@@ -39,8 +38,7 @@ class RedirectDataTest {
     @Test
     fun `instance creation satisfying the requirements should return a correct Success subclass`() {
         // given
-        val correctQuery =
-            "?state=na&appMode=android&lang=en&code=HERE_BE_CODE"
+        val correctQuery = "?state=na&appMode=android&lang=en&code=HERE_BE_CODE"
 
         // when
         val redirectData = RedirectData.fromQueryString(correctQuery)

@@ -15,45 +15,43 @@ import javax.inject.Inject
  * operations with a consistent state.
  *
  * @constructor Private to prevent direct instantiation. Use [getInstance] to obtain the singleton
- * instance.
+ *   instance.
  */
 class TidalAuth private constructor() {
 
-    @Inject
-    lateinit var auth: Auth
+    @Inject lateinit var auth: Auth
 
-    @Inject
-    lateinit var credentialsProvider: CredentialsProvider
+    @Inject lateinit var credentialsProvider: CredentialsProvider
 
     companion object {
 
-        @Volatile
-        private var instance: TidalAuth? = null
+        @Volatile private var instance: TidalAuth? = null
 
         /**
          * Provides a global access point to the [TidalAuth] instance, ensuring that only one
-         * instance is created and used throughout the application lifecycle.
-         * If the instance has not been created yet, it initializes the [TidalAuth] instance
-         * with the provided configuration parameters.
-
-         * @return The single instance of [TidalAuth] that can be used to perform authentication
-         * and authorization operations.
+         * instance is created and used throughout the application lifecycle. If the instance has
+         * not been created yet, it initializes the [TidalAuth] instance with the provided
+         * configuration parameters.
+         *
+         * @return The single instance of [TidalAuth] that can be used to perform authentication and
+         *   authorization operations.
          */
         fun getInstance(
             config: AuthConfig,
             context: Context,
             authComponent: AuthComponent? = null,
         ): TidalAuth {
-            return instance ?: synchronized(this) {
-                TidalAuth().also {
-                    val component = authComponent ?: DaggerAuthComponent.factory().create(
-                        context = context,
-                        config = config,
-                    )
-                    component.inject(it)
-                    instance = it
+            return instance
+                ?: synchronized(this) {
+                    TidalAuth().also {
+                        val component =
+                            authComponent
+                                ?: DaggerAuthComponent.factory()
+                                    .create(context = context, config = config)
+                        component.inject(it)
+                        instance = it
+                    }
                 }
-            }
         }
     }
 }

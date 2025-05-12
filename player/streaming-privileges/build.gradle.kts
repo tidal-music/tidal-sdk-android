@@ -6,9 +6,7 @@ plugins {
 android {
     namespace = "com.tidal.sdk.player.streamingprivileges"
 
-    sourceSets {
-        getByName("test").java.srcDirs("src/testext/kotlin")
-    }
+    sourceSets { getByName("test").java.srcDirs("src/testext/kotlin") }
 }
 
 dependencies {

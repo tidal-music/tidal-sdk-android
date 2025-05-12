@@ -22,20 +22,19 @@ internal abstract class StreamingSessionCreatorTest<T : StreamingSession.Factory
     protected val eventReporter = mock<EventReporter>()
     abstract val streamingSessionCreator: StreamingSession.Creator<T>
 
-    @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(factory, trueTimeWrapper, eventReporter)
+    @AfterEach fun afterEach() = verifyNoMoreInteractions(factory, trueTimeWrapper, eventReporter)
 
     @Test
     fun createAndReportStartCreatesAndReportsStart() {
         val id = mock<UUID>()
         val isOfflineModeStart = true
-        val configuration = mock<Configuration> {
-            on { it.isOfflineMode } doReturn isOfflineModeStart
-        }
-        val streamingSession = mock<StreamingSession.Explicit> {
-            on { it.id } doReturn id
-            on { it.configuration } doReturn configuration
-        }
+        val configuration =
+            mock<Configuration> { on { it.isOfflineMode } doReturn isOfflineModeStart }
+        val streamingSession =
+            mock<StreamingSession.Explicit> {
+                on { it.id } doReturn id
+                on { it.configuration } doReturn configuration
+            }
         whenever(factory.create(emptyMap())) doReturn streamingSession
         val expectedCurrentTimeMillis = -8L
         whenever(trueTimeWrapper.currentTimeMillis) doReturn expectedCurrentTimeMillis
@@ -49,17 +48,18 @@ internal abstract class StreamingSessionCreatorTest<T : StreamingSession.Factory
         verify(streamingSession).id
         verify(streamingSession).configuration
         verify(configuration).isOfflineMode
-        verify(eventReporter).report(
-            StreamingSessionStart.Payload(
-                id.toString(),
-                expectedCurrentTimeMillis,
-                startReason,
-                isOfflineModeStart,
-                productType,
-                productId,
-            ),
-            emptyMap(),
-        )
+        verify(eventReporter)
+            .report(
+                StreamingSessionStart.Payload(
+                    id.toString(),
+                    expectedCurrentTimeMillis,
+                    startReason,
+                    isOfflineModeStart,
+                    productType,
+                    productId,
+                ),
+                emptyMap(),
+            )
         verifyNoMoreInteractions(id, configuration, streamingSession)
     }
 }

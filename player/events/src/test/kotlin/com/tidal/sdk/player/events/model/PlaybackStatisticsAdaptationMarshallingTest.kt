@@ -18,15 +18,16 @@ internal class PlaybackStatisticsAdaptationMarshallingTest {
         val bandwidthBps = 9
         val videoWidth = 1
         val videoHeight = 3
-        val adaptation = PlaybackStatistics.Payload.Adaptation(
-            assetPositionSeconds,
-            timestamp,
-            mimeType,
-            codecs,
-            bandwidthBps,
-            videoWidth,
-            videoHeight,
-        )
+        val adaptation =
+            PlaybackStatistics.Payload.Adaptation(
+                assetPositionSeconds,
+                timestamp,
+                mimeType,
+                codecs,
+                bandwidthBps,
+                videoWidth,
+                videoHeight,
+            )
 
         val actual = gson.toJsonTree(adaptation).asJsonObject
 
@@ -48,15 +49,16 @@ internal class PlaybackStatisticsAdaptationMarshallingTest {
         val bandwidthBps = 9
         val videoWidth = 1
         val videoHeight = 3
-        val expected = PlaybackStatistics.Payload.Adaptation(
-            assetPositionSeconds,
-            timestamp,
-            mimeType,
-            codecs,
-            bandwidthBps,
-            videoWidth,
-            videoHeight,
-        )
+        val expected =
+            PlaybackStatistics.Payload.Adaptation(
+                assetPositionSeconds,
+                timestamp,
+                mimeType,
+                codecs,
+                bandwidthBps,
+                videoWidth,
+                videoHeight,
+            )
         val src = gson.toJson(expected)
 
         val actual = gson.fromJson(src, PlaybackStatistics.Payload.Adaptation::class.java)

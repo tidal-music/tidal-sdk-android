@@ -5,9 +5,7 @@ plugins {
     alias(libs.plugins.kotlin.plugin.serialization)
 }
 
-android {
-    namespace = "com.tidal.sdk.auth"
-}
+android { namespace = "com.tidal.sdk.auth" }
 
 dependencies {
     api(libs.tidal.sdk.common)

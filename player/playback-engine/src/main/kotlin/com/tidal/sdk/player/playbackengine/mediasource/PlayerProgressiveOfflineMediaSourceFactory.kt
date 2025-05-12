@@ -18,13 +18,10 @@ internal class PlayerProgressiveOfflineMediaSourceFactory(
         storage: Storage,
     ): ProgressiveMediaSource {
         val btsManifest = btsManifestFactory.create(encodedManifest)
-        val newMediaItem = mediaItem
-            .buildUpon()
-            .setUri(btsManifest.urls.firstOrNull())
-            .build()
+        val newMediaItem = mediaItem.buildUpon().setUri(btsManifest.urls.firstOrNull()).build()
 
-        return progressiveMediaSourceFactoryFactory.create(
-            offlineStorageProvider!!.getDataSourceFactoryForOfflinePlay(storage),
-        ).createMediaSource(newMediaItem)
+        return progressiveMediaSourceFactoryFactory
+            .create(offlineStorageProvider!!.getDataSourceFactoryForOfflinePlay(storage))
+            .createMediaSource(newMediaItem)
     }
 }

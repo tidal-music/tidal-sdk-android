@@ -14,8 +14,7 @@ internal class DeriveUiState {
 
                 is MainActivityViewModelState.LoggingIn,
                 is MainActivityViewModelState.PlayerInitializing,
-                is MainActivityViewModelState.PlayerReleasing,
-                ->
+                is MainActivityViewModelState.PlayerReleasing ->
                     MainActivityState.Loading(snackbarMessage)
 
                 is MainActivityViewModelState.PlayerNotInitialized ->

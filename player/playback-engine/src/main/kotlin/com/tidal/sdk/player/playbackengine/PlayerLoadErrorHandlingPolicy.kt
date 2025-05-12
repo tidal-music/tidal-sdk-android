@@ -18,17 +18,14 @@ private const val MAX_RETRY_INTERVAL_MS = 5_000L
 private const val TOO_MANY_REQUESTS_STATUS = 429
 
 internal class PlayerLoadErrorHandlingPolicy(
-    private val loadErrorHandlingPolicy: LoadErrorHandlingPolicy,
+    private val loadErrorHandlingPolicy: LoadErrorHandlingPolicy
 ) : LoadErrorHandlingPolicy by loadErrorHandlingPolicy {
 
-    @Suppress("MagicNumber")
-    private val responseCode4xxRange = (400..499)
+    @Suppress("MagicNumber") private val responseCode4xxRange = (400..499)
 
-    @Suppress("MagicNumber")
-    private val responseCode5xxRange = (500..599)
+    @Suppress("MagicNumber") private val responseCode5xxRange = (500..599)
 
-    @Suppress("MagicNumber")
-    private val backoffIntervalsMs = listOf(500L, 1_000L, 2_000L)
+    @Suppress("MagicNumber") private val backoffIntervalsMs = listOf(500L, 1_000L, 2_000L)
 
     override fun getRetryDelayMsFor(loadErrorInfo: LoadErrorInfo): Long {
         if (shouldNotRetry(loadErrorInfo.exception, loadErrorInfo.errorCount)) {
@@ -46,9 +43,12 @@ internal class PlayerLoadErrorHandlingPolicy(
     private fun shouldNotRetry(exception: IOException, errorCount: Int): Boolean {
         val responseCode = getResponseCode(exception)
         return (responseCode in responseCode5xxRange && errorCount > MAX_5XX_RETRIES) ||
-            isNonRetryable4xxResponse(responseCode) || exception is ParserException ||
-            exception is FileNotFoundException || exception is UnexpectedLoaderException ||
-            exception is StorageException || exception is OfflineExpiredException
+            isNonRetryable4xxResponse(responseCode) ||
+            exception is ParserException ||
+            exception is FileNotFoundException ||
+            exception is UnexpectedLoaderException ||
+            exception is StorageException ||
+            exception is OfflineExpiredException
     }
 
     private fun isNonRetryable4xxResponse(responseCode: Int) =

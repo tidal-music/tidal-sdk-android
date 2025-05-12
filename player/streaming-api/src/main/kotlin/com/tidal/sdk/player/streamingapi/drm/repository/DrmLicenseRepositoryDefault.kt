@@ -10,8 +10,7 @@ import retrofit2.HttpException
  * Default implementation of DrmLicenseRepository.
  *
  * @property[drmLicenseService] A [DrmLicenseService] to retrieve drm license from backend.
- * @property[apiErrorMapperLazy] A [ApiErrorMapper] to transform exceptions
- * when applicable.
+ * @property[apiErrorMapperLazy] A [ApiErrorMapper] to transform exceptions when applicable.
  */
 internal class DrmLicenseRepositoryDefault(
     private val drmLicenseService: DrmLicenseService,

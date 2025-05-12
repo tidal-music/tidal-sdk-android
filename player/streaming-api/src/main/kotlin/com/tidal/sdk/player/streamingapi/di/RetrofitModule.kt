@@ -22,23 +22,25 @@ internal object RetrofitModule {
     fun okHttpClient(
         okHttpClient: OkHttpClient,
         streamingApiTimeoutConfig: StreamingApiTimeoutConfig,
-    ) = okHttpClient.newBuilder()
-        .connectTimeout(streamingApiTimeoutConfig.connectTimeout.toJavaDuration())
-        .readTimeout(streamingApiTimeoutConfig.readTimeout.toJavaDuration())
-        .writeTimeout(streamingApiTimeoutConfig.writeTimeout.toJavaDuration())
-        .build()
+    ) =
+        okHttpClient
+            .newBuilder()
+            .connectTimeout(streamingApiTimeoutConfig.connectTimeout.toJavaDuration())
+            .readTimeout(streamingApiTimeoutConfig.readTimeout.toJavaDuration())
+            .writeTimeout(streamingApiTimeoutConfig.writeTimeout.toJavaDuration())
+            .build()
 
     @Provides
     @Singleton
     fun provideRetrofit(
-        @StreamingApiComponent.Local
-        okHttpClient: OkHttpClient,
+        @StreamingApiComponent.Local okHttpClient: OkHttpClient,
         converterFactory: Converter.Factory,
-    ) = Retrofit.Builder()
-        .baseUrl(TIDAL_API_ENDPOINT_V1)
-        .client(okHttpClient)
-        .addConverterFactory(converterFactory)
-        .build()
+    ) =
+        Retrofit.Builder()
+            .baseUrl(TIDAL_API_ENDPOINT_V1)
+            .client(okHttpClient)
+            .addConverterFactory(converterFactory)
+            .build()
 
     @Provides
     @Singleton

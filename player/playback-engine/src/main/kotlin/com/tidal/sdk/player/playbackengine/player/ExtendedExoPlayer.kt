@@ -15,11 +15,12 @@ import kotlin.properties.Delegates
 /**
  * A proxy to an [ExoPlayer] instance which defines requirements for additional functionality to
  * satisfy library capabilities.
+ *
  * @param delegate An [ExoPlayer] instance that all calls needing one will utilize.
  * @param loadControl A [LoadControl] instance that controls the buffering of media.
  * @param mediaSourcerer A [MediaSourcerer] instance that holds the MediaSource of what we play.
  * @param extendedExoPlayerState A [ExtendedExoPlayerState] instance that holds the some shared
- * state for ExtendedExoPlayer.
+ *   state for ExtendedExoPlayer.
  */
 internal class ExtendedExoPlayer(
     private val delegate: ExoPlayer,
@@ -52,7 +53,7 @@ internal class ExtendedExoPlayer(
     }
 
     fun load(
-        forwardingMediaProduct: ForwardingMediaProduct<MediaProduct>,
+        forwardingMediaProduct: ForwardingMediaProduct<MediaProduct>
     ): PlaybackInfoMediaSource {
         val playbackInfoMediaSource = mediaSourcerer.load(forwardingMediaProduct)
         delegate.prepare()
@@ -62,12 +63,13 @@ internal class ExtendedExoPlayer(
     fun setNext(forwardingMediaProduct: ForwardingMediaProduct<MediaProduct>?) =
         mediaSourcerer.setNext(forwardingMediaProduct)
 
-    fun shouldStartPlaybackAfterUserAction() = loadControl.shouldStartPlayback(
-        C.msToUs(delegate.totalBufferedDuration),
-        delegate.playbackParameters.speed,
-        false,
-        C.TIME_UNSET,
-    )
+    fun shouldStartPlaybackAfterUserAction() =
+        loadControl.shouldStartPlayback(
+            C.msToUs(delegate.totalBufferedDuration),
+            delegate.playbackParameters.speed,
+            false,
+            C.TIME_UNSET,
+        )
 
     fun onCurrentItemFinished() {
         mediaSourcerer.onCurrentItemFinished()

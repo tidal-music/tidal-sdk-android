@@ -35,16 +35,20 @@ internal class PlaybackInfoLoadableTest {
     private val forwardingMediaProduct = ForwardingMediaProduct(mediaProduct)
     private val streamingApiRepository = mock<StreamingApiRepository>()
     private val extendedExoPlayerState = mock<ExtendedExoPlayerState>()
-    private val playbackPrivilegeProvider = mock<PlaybackPrivilegeProvider> {
-        on { this.get(mediaProduct) } doReturn PlaybackPrivilege.OK_ONLINE
-    }
-    private val playbackInfoLoadable = PlaybackInfoLoadable(
-        streamingSession,
-        forwardingMediaProduct,
-        streamingApiRepository,
-        extendedExoPlayerState,
-        playbackPrivilegeProvider,
-    ) { CoroutineScope(Dispatchers.Default) }
+    private val playbackPrivilegeProvider =
+        mock<PlaybackPrivilegeProvider> {
+            on { this.get(mediaProduct) } doReturn PlaybackPrivilege.OK_ONLINE
+        }
+    private val playbackInfoLoadable =
+        PlaybackInfoLoadable(
+            streamingSession,
+            forwardingMediaProduct,
+            streamingApiRepository,
+            extendedExoPlayerState,
+            playbackPrivilegeProvider,
+        ) {
+            CoroutineScope(Dispatchers.Default)
+        }
 
     @Test
     fun cancelLoadShouldNotInteractWithStreamingApiRepository() {
@@ -60,14 +64,14 @@ internal class PlaybackInfoLoadableTest {
         whenever(streamingSession.id) doReturn streamingSessionId
         val playbackInfo = mock<PlaybackInfo.Track>()
         whenever(
-            streamingApiRepository.getPlaybackInfoForStreaming(
-                streamingSessionIdString,
-                forwardingMediaProduct,
-            ),
-        ).thenReturn(playbackInfo)
+                streamingApiRepository.getPlaybackInfoForStreaming(
+                    streamingSessionIdString,
+                    forwardingMediaProduct,
+                )
+            )
+            .thenReturn(playbackInfo)
         val playbackInfoListener = mock<PlaybackInfoListener>()
-        whenever(extendedExoPlayerState.playbackInfoListener)
-            .thenReturn(playbackInfoListener)
+        whenever(extendedExoPlayerState.playbackInfoListener).thenReturn(playbackInfoListener)
 
         playbackInfoLoadable.load()
 
@@ -86,11 +90,12 @@ internal class PlaybackInfoLoadableTest {
         val streamingSessionIdString = streamingSessionId.toString()
         val thrown = mock<RuntimeException>()
         whenever(
-            streamingApiRepository.getPlaybackInfoForStreaming(
-                streamingSessionIdString,
-                forwardingMediaProduct,
-            ),
-        ).thenThrow(thrown)
+                streamingApiRepository.getPlaybackInfoForStreaming(
+                    streamingSessionIdString,
+                    forwardingMediaProduct,
+                )
+            )
+            .thenThrow(thrown)
 
         val actual = assertThrows<PlaybackInfoFetchException> { playbackInfoLoadable.load() }
 
@@ -105,11 +110,11 @@ internal class PlaybackInfoLoadableTest {
         val streamingSessionId = mock<UUID>()
         val streamingSessionIdString = streamingSessionId.toString()
         whenever(
-            streamingApiRepository.getPlaybackInfoForStreaming(
-                streamingSessionIdString,
-                forwardingMediaProduct,
-            ),
-        )
+                streamingApiRepository.getPlaybackInfoForStreaming(
+                    streamingSessionIdString,
+                    forwardingMediaProduct,
+                )
+            )
             .thenAnswer {
                 playbackInfoLoadable.cancelLoad()
                 mock<PlaybackInfo>()
@@ -129,11 +134,11 @@ internal class PlaybackInfoLoadableTest {
         val playbackInfo = mock<PlaybackInfo>()
         val playbackInfo2 = mock<PlaybackInfo>()
         whenever(
-            streamingApiRepository.getPlaybackInfoForStreaming(
-                streamingSessionIdString,
-                forwardingMediaProduct,
-            ),
-        )
+                streamingApiRepository.getPlaybackInfoForStreaming(
+                    streamingSessionIdString,
+                    forwardingMediaProduct,
+                )
+            )
             .thenReturn(playbackInfo, playbackInfo2)
 
         playbackInfoLoadable.load()

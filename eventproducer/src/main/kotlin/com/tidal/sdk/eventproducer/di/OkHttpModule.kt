@@ -35,12 +35,14 @@ internal class OkHttpModule {
         @Named("headerInterceptor") headerInterceptor: Interceptor,
         defaultAuthenticator: DefaultAuthenticator,
     ): OkHttpClient {
-        return OkHttpClient.Builder().apply {
-            addInterceptor(headerInterceptor)
-            authenticator(defaultAuthenticator)
-            if (BuildConfig.DEBUG) {
-                addInterceptor(loggingInterceptor)
+        return OkHttpClient.Builder()
+            .apply {
+                addInterceptor(headerInterceptor)
+                authenticator(defaultAuthenticator)
+                if (BuildConfig.DEBUG) {
+                    addInterceptor(loggingInterceptor)
+                }
             }
-        }.build()
+            .build()
     }
 }

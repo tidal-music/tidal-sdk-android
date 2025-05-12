@@ -16,16 +16,12 @@ internal class AudioQualityRepositoryTest {
 
     private val networkTransportHelper = mock<NetworkTransportHelper>()
 
-    @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(networkTransportHelper)
+    @AfterEach fun afterEach() = verifyNoMoreInteractions(networkTransportHelper)
 
     @ParameterizedTest
     @EnumSource(AudioQuality::class)
     fun getStreamingQualityShouldReturnCorrectWhenWifi(audioQuality: AudioQuality) {
-        val audioQualityRepository = AudioQualityRepository(
-            networkTransportHelper,
-            audioQuality,
-        )
+        val audioQualityRepository = AudioQualityRepository(networkTransportHelper, audioQuality)
         whenever(networkTransportHelper.isWifiOrEthernet()).thenReturn(true)
 
         val actual = audioQualityRepository.streamingQuality
@@ -37,10 +33,11 @@ internal class AudioQualityRepositoryTest {
     @ParameterizedTest
     @EnumSource(AudioQuality::class)
     fun getStreamingQualityShouldReturnCorrectWhenCellular(audioQuality: AudioQuality) {
-        val audioQualityRepository = AudioQualityRepository(
-            networkTransportHelper,
-            streamingCellularAudioQuality = audioQuality,
-        )
+        val audioQualityRepository =
+            AudioQualityRepository(
+                networkTransportHelper,
+                streamingCellularAudioQuality = audioQuality,
+            )
         whenever(networkTransportHelper.isWifiOrEthernet()).thenReturn(false)
 
         val actual = audioQualityRepository.streamingQuality

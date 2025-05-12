@@ -8,15 +8,11 @@ import kotlin.time.toDuration
 import kotlinx.datetime.Clock
 
 class TestTimeProvider : TimeProvider {
-    val clock = ManualClock().apply {
-        set(Clock.System.now())
-    }
+    val clock = ManualClock().apply { set(Clock.System.now()) }
 
     override val now
         get() = clock.now().epochSeconds
 
     fun advanceSeconds(seconds: Int) =
-        clock.advance(seconds.toDuration(DurationUnit.SECONDS)).also {
-            clock.set(it)
-        }
+        clock.advance(seconds.toDuration(DurationUnit.SECONDS)).also { clock.set(it) }
 }

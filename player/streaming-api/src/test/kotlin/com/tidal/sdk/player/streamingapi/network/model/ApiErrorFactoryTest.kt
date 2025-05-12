@@ -24,8 +24,7 @@ internal class ApiErrorFactoryTest {
     private val gson = mock<Gson>()
     private val apiErrorFactory = ApiError.Factory(gson)
 
-    @After
-    fun afterEach() = verifyNoMoreInteractions(gson)
+    @After fun afterEach() = verifyNoMoreInteractions(gson)
 
     @ParameterizedTest
     @MethodSource("apiErrorSubStatuses")
@@ -34,20 +33,15 @@ internal class ApiErrorFactoryTest {
         val json = "a valid json string"
         val status = 1
         val userMessage = "userMessage"
-        val statusElement = mock<JsonElement> {
-            on { asInt } doReturn status
-        }
-        val subStatusElement = mock<JsonElement> {
-            on { asInt } doReturn subStatus.code
-        }
-        val userMessageElement = mock<JsonElement> {
-            on { asString } doReturn userMessage
-        }
-        val jsonObject = mock<JsonObject> {
-            on { get("status") } doReturn statusElement
-            on { get("subStatus") } doReturn subStatusElement
-            on { get("userMessage") } doReturn userMessageElement
-        }
+        val statusElement = mock<JsonElement> { on { asInt } doReturn status }
+        val subStatusElement = mock<JsonElement> { on { asInt } doReturn subStatus.code }
+        val userMessageElement = mock<JsonElement> { on { asString } doReturn userMessage }
+        val jsonObject =
+            mock<JsonObject> {
+                on { get("status") } doReturn statusElement
+                on { get("subStatus") } doReturn subStatusElement
+                on { get("userMessage") } doReturn userMessageElement
+            }
         whenever(gson.fromJson(json, JsonObject::class.java)) doReturn jsonObject
 
         val actual = apiErrorFactory.fromJsonStringOrCause(json, cause) as ApiError
@@ -90,23 +84,24 @@ internal class ApiErrorFactoryTest {
 
         @JvmStatic
         @Suppress("UnusedPrivateMember")
-        private fun apiErrorSubStatuses() = setOf(
-            Arguments.of(ApiError.SubStatus.GenericPlaybackError),
-            Arguments.of(ApiError.SubStatus.NoStreamingPrivileges),
-            Arguments.of(ApiError.SubStatus.UserClientNotAuthorizedForOffline),
-            Arguments.of(ApiError.SubStatus.UserMonthlyStreamQuotaExceeded),
-            Arguments.of(ApiError.SubStatus.SessionNotFound),
-            Arguments.of(ApiError.SubStatus.UserNotFound),
-            Arguments.of(ApiError.SubStatus.ClientNotFound),
-            Arguments.of(ApiError.SubStatus.ProductNotFound),
-            Arguments.of(ApiError.SubStatus.NoContentAvailableInProduct),
-            Arguments.of(ApiError.SubStatus.NoContentMatchingRequest),
-            Arguments.of(ApiError.SubStatus.NoContentMatchingSubscriptionLocation),
-            Arguments.of(ApiError.SubStatus.NoContentMatchingSubscriptionConfiguration),
-            Arguments.of(ApiError.SubStatus.NoContentMatchingClient),
-            Arguments.of(ApiError.SubStatus.NoContentMatchingPrePaywallLocation),
-            Arguments.of(ApiError.SubStatus.Unknown(-1)),
-            Arguments.of(ApiError.SubStatus.Unknown(1234)),
-        )
+        private fun apiErrorSubStatuses() =
+            setOf(
+                Arguments.of(ApiError.SubStatus.GenericPlaybackError),
+                Arguments.of(ApiError.SubStatus.NoStreamingPrivileges),
+                Arguments.of(ApiError.SubStatus.UserClientNotAuthorizedForOffline),
+                Arguments.of(ApiError.SubStatus.UserMonthlyStreamQuotaExceeded),
+                Arguments.of(ApiError.SubStatus.SessionNotFound),
+                Arguments.of(ApiError.SubStatus.UserNotFound),
+                Arguments.of(ApiError.SubStatus.ClientNotFound),
+                Arguments.of(ApiError.SubStatus.ProductNotFound),
+                Arguments.of(ApiError.SubStatus.NoContentAvailableInProduct),
+                Arguments.of(ApiError.SubStatus.NoContentMatchingRequest),
+                Arguments.of(ApiError.SubStatus.NoContentMatchingSubscriptionLocation),
+                Arguments.of(ApiError.SubStatus.NoContentMatchingSubscriptionConfiguration),
+                Arguments.of(ApiError.SubStatus.NoContentMatchingClient),
+                Arguments.of(ApiError.SubStatus.NoContentMatchingPrePaywallLocation),
+                Arguments.of(ApiError.SubStatus.Unknown(-1)),
+                Arguments.of(ApiError.SubStatus.Unknown(1234)),
+            )
     }
 }

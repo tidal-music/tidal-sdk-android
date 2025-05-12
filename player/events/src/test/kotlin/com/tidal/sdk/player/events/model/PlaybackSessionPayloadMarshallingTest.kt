@@ -28,8 +28,8 @@ internal abstract class PlaybackSessionPayloadMarshallingTest {
     abstract val actions: List<PlaybackSession.Payload.Action>
     abstract val endTimestamp: Long
     abstract val endAssetPositionSeconds: Double
-    abstract val payloadFactory: (UUID, AssetPresentation, AudioMode, ProductQuality) ->
-    PlaybackSession.Payload
+    abstract val payloadFactory:
+        (UUID, AssetPresentation, AudioMode, ProductQuality) -> PlaybackSession.Payload
     private val uuidString = "123e4567-e89b-12d3-a456-426614174000"
     private val playbackSessionId = UUID.fromString(uuidString)
     private val gson = Gson()
@@ -41,31 +41,32 @@ internal abstract class PlaybackSessionPayloadMarshallingTest {
         audioMode: AudioMode,
         productQuality: ProductQuality,
     ) {
-        val productQualityString = when (productQuality) {
-            is AudioQuality -> {
-                assumeTrue(productType == ProductType.TRACK) // Skip known invalid combinations
-                productQuality.name
-            }
+        val productQualityString =
+            when (productQuality) {
+                is AudioQuality -> {
+                    assumeTrue(productType == ProductType.TRACK) // Skip known invalid combinations
+                    productQuality.name
+                }
 
-            is VideoQuality -> {
-                assumeTrue(productType == ProductType.VIDEO) // Skip known invalid combinations
-                productQuality.name
-            }
+                is VideoQuality -> {
+                    assumeTrue(productType == ProductType.VIDEO) // Skip known invalid combinations
+                    productQuality.name
+                }
 
-            else -> error(
-                "Missing branch for implementation of ProductQuality: ${productQuality::class.java}",
-            )
-        }
-        val audioModeString = when (productType) {
-            ProductType.TRACK, ProductType.BROADCAST -> audioMode.name
-            ProductType.VIDEO, ProductType.UC -> null
-        }
-        val payload = payloadFactory(
-            playbackSessionId,
-            assetPresentation,
-            audioMode,
-            productQuality,
-        )
+                else ->
+                    error(
+                        "Missing branch for implementation of ProductQuality: ${productQuality::class.java}"
+                    )
+            }
+        val audioModeString =
+            when (productType) {
+                ProductType.TRACK,
+                ProductType.BROADCAST -> audioMode.name
+                ProductType.VIDEO,
+                ProductType.UC -> null
+            }
+        val payload =
+            payloadFactory(playbackSessionId, assetPresentation, audioMode, productQuality)
 
         val actual = gson.toJsonTree(payload).asJsonObject
 
@@ -97,17 +98,14 @@ internal abstract class PlaybackSessionPayloadMarshallingTest {
         productQuality: ProductQuality,
     ) {
         when (productType) {
-            ProductType.TRACK, ProductType.BROADCAST, ProductType.UC ->
-                assumeTrue(productQuality is AudioQuality)
+            ProductType.TRACK,
+            ProductType.BROADCAST,
+            ProductType.UC -> assumeTrue(productQuality is AudioQuality)
 
             ProductType.VIDEO -> assumeTrue(productQuality is VideoQuality)
         }
-        val payload = payloadFactory(
-            playbackSessionId,
-            assetPresentation,
-            audioMode,
-            productQuality,
-        )
+        val payload =
+            payloadFactory(playbackSessionId, assetPresentation, audioMode, productQuality)
         val src = gson.toJson(payload)
 
         val actual = gson.fromJson(src, payload::class.java)
@@ -123,12 +121,10 @@ internal abstract class PlaybackSessionPayloadMarshallingTest {
             val arguments = mutableSetOf<Arguments>()
             AssetPresentation.values().forEach { assetPresentation ->
                 AudioMode.values().forEach { audioMode ->
-                    (AudioQuality.values().toList() + VideoQuality.values())
-                        .forEach { productQuality ->
-                            arguments.add(
-                                Arguments.of(assetPresentation, audioMode, productQuality),
-                            )
-                        }
+                    (AudioQuality.values().toList() + VideoQuality.values()).forEach {
+                        productQuality ->
+                        arguments.add(Arguments.of(assetPresentation, audioMode, productQuality))
+                    }
                 }
             }
             return arguments

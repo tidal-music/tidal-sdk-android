@@ -22,8 +22,9 @@ internal abstract class DownloadStatisticsPayloadMarshallingTest {
     abstract val endTimestamp: Long
     abstract val productType: ProductType
     abstract val payloadFactory:
-        (AssetPresentation, AudioMode, ProductQuality, EndReason, String?, String?) ->
-        DownloadStatistics.Payload
+        (
+            AssetPresentation, AudioMode, ProductQuality, EndReason, String?, String?,
+        ) -> DownloadStatistics.Payload
     private val gson = Gson()
 
     @ParameterizedTest
@@ -33,14 +34,15 @@ internal abstract class DownloadStatisticsPayloadMarshallingTest {
         audioMode: AudioMode,
         productQuality: ProductQuality,
         endReason: EndReason,
-    ) = testMarshallingPayload(
-        assetPresentation,
-        audioMode,
-        productQuality,
-        endReason,
-        "errorMessage",
-        "errorCode",
-    )
+    ) =
+        testMarshallingPayload(
+            assetPresentation,
+            audioMode,
+            productQuality,
+            endReason,
+            "errorMessage",
+            "errorCode",
+        )
 
     @ParameterizedTest
     @MethodSource("combinationsForEnumFieldsInPayloads")
@@ -60,29 +62,32 @@ internal abstract class DownloadStatisticsPayloadMarshallingTest {
         errorMessage: String?,
         errorCode: String?,
     ) {
-        val productQualityString = when (productQuality) {
-            is AudioQuality -> {
-                assumeTrue(productType == ProductType.TRACK) // Skip known invalid combinations
-                productQuality.name
-            }
+        val productQualityString =
+            when (productQuality) {
+                is AudioQuality -> {
+                    assumeTrue(productType == ProductType.TRACK) // Skip known invalid combinations
+                    productQuality.name
+                }
 
-            is VideoQuality -> {
-                assumeTrue(productType == ProductType.VIDEO) // Skip known invalid combinations
-                productQuality.name
-            }
+                is VideoQuality -> {
+                    assumeTrue(productType == ProductType.VIDEO) // Skip known invalid combinations
+                    productQuality.name
+                }
 
-            else -> error(
-                "Missing branch for implementation of ProductQuality: ${productQuality::class.java}",
+                else ->
+                    error(
+                        "Missing branch for implementation of ProductQuality: ${productQuality::class.java}"
+                    )
+            }
+        val src =
+            payloadFactory(
+                assetPresentation,
+                audioMode,
+                productQuality,
+                endReason,
+                errorMessage,
+                errorCode,
             )
-        }
-        val src = payloadFactory(
-            assetPresentation,
-            audioMode,
-            productQuality,
-            endReason,
-            errorMessage,
-            errorCode,
-        )
 
         val actual = gson.toJsonTree(src).asJsonObject
 
@@ -105,14 +110,15 @@ internal abstract class DownloadStatisticsPayloadMarshallingTest {
         audioMode: AudioMode,
         productQuality: ProductQuality,
         endReason: EndReason,
-    ) = testUnmarshallingPayload(
-        assetPresentation,
-        audioMode,
-        productQuality,
-        endReason,
-        "errorMessage",
-        "errorCode",
-    )
+    ) =
+        testUnmarshallingPayload(
+            assetPresentation,
+            audioMode,
+            productQuality,
+            endReason,
+            "errorMessage",
+            "errorCode",
+        )
 
     @ParameterizedTest
     @MethodSource("combinationsForEnumFieldsInPayloads")
@@ -121,14 +127,15 @@ internal abstract class DownloadStatisticsPayloadMarshallingTest {
         audioMode: AudioMode,
         productQuality: ProductQuality,
         endReason: EndReason,
-    ) = testUnmarshallingPayload(
-        assetPresentation,
-        audioMode,
-        productQuality,
-        endReason,
-        null,
-        null,
-    )
+    ) =
+        testUnmarshallingPayload(
+            assetPresentation,
+            audioMode,
+            productQuality,
+            endReason,
+            null,
+            null,
+        )
 
     private fun testUnmarshallingPayload(
         assetPresentation: AssetPresentation,
@@ -139,28 +146,33 @@ internal abstract class DownloadStatisticsPayloadMarshallingTest {
         errorCode: String?,
     ) {
         when (productType) {
-            ProductType.TRACK, ProductType.BROADCAST, ProductType.UC ->
-                assumeTrue(productQuality is AudioQuality)
+            ProductType.TRACK,
+            ProductType.BROADCAST,
+            ProductType.UC -> assumeTrue(productQuality is AudioQuality)
 
             ProductType.VIDEO -> assumeTrue(productQuality is VideoQuality)
         }
-        val expected = payloadFactory(
-            assetPresentation,
-            audioMode,
-            productQuality,
-            endReason,
-            errorMessage,
-            errorCode,
-        )
+        val expected =
+            payloadFactory(
+                assetPresentation,
+                audioMode,
+                productQuality,
+                endReason,
+                errorMessage,
+                errorCode,
+            )
         val src = gson.toJson(expected)
 
-        val actual = gson.fromJson(
-            src,
-            when (expected) {
-                is AudioDownloadStatistics.Payload -> AudioDownloadStatistics.Payload::class.java
-                is VideoDownloadStatistics.Payload -> VideoDownloadStatistics.Payload::class.java
-            },
-        )
+        val actual =
+            gson.fromJson(
+                src,
+                when (expected) {
+                    is AudioDownloadStatistics.Payload ->
+                        AudioDownloadStatistics.Payload::class.java
+                    is VideoDownloadStatistics.Payload ->
+                        VideoDownloadStatistics.Payload::class.java
+                },
+            )
 
         assertThat(actual).isEqualTo(expected)
     }
@@ -173,9 +185,8 @@ internal abstract class DownloadStatisticsPayloadMarshallingTest {
             val arguments = mutableSetOf<Arguments>()
             AssetPresentation.values().forEach { assetPresentation ->
                 AudioMode.values().forEach { audioMode ->
-                    (
-                        AudioQuality.values().toList() + VideoQuality.values()
-                        ).forEach { productQuality ->
+                    (AudioQuality.values().toList() + VideoQuality.values()).forEach {
+                        productQuality ->
                         EndReason.values().forEach { endReason ->
                             arguments.add(
                                 Arguments.of(
@@ -183,7 +194,7 @@ internal abstract class DownloadStatisticsPayloadMarshallingTest {
                                     audioMode,
                                     productQuality,
                                     endReason,
-                                ),
+                                )
                             )
                         }
                     }

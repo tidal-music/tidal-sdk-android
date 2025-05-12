@@ -21,10 +21,8 @@ internal class SynchronousSurfaceHolderTest {
     private val delegate = mock<SurfaceHolder>()
     private val synchronousSurfaceHolderCallbackFactory =
         mock<SynchronousSurfaceHolderCallback.Factory>()
-    private val synchronousSurfaceHolder = SynchronousSurfaceHolder(
-        delegate,
-        synchronousSurfaceHolderCallbackFactory,
-    )
+    private val synchronousSurfaceHolder =
+        SynchronousSurfaceHolder(delegate, synchronousSurfaceHolderCallbackFactory)
 
     @AfterEach
     fun afterEach() = verifyNoMoreInteractions(delegate, synchronousSurfaceHolderCallbackFactory)

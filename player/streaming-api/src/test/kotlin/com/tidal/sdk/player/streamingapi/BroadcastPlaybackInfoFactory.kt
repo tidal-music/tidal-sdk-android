@@ -6,20 +6,21 @@ import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
 
 object BroadcastPlaybackInfoFactory {
 
-    val DEFAULT = PlaybackInfo.Broadcast(
-        ApiConstants.PLAYBACK_INFO_ID_FOR_DEFAULT.toString(),
-        AudioQuality.LOW,
-        "streamingSessionId",
-        ManifestMimeType.EMU,
-        ApiConstants.MANIFEST_DJ_SESSION,
-        null,
-        0F,
-        0F,
-        0F,
-        0F,
-        0,
-        0,
-    )
+    val DEFAULT =
+        PlaybackInfo.Broadcast(
+            ApiConstants.PLAYBACK_INFO_ID_FOR_DEFAULT.toString(),
+            AudioQuality.LOW,
+            "streamingSessionId",
+            ManifestMimeType.EMU,
+            ApiConstants.MANIFEST_DJ_SESSION,
+            null,
+            0F,
+            0F,
+            0F,
+            0F,
+            0,
+            0,
+        )
 
     val DEFAULT_MISSING_STREAMING_SESSION_ID = DEFAULT.copy(streamingSessionId = "")
 

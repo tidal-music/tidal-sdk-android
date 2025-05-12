@@ -16,12 +16,13 @@ internal class PlaybackStatisticsStallMarshallingTest {
         val assetPositionSeconds = 1.0
         val startTimestamp = Long.MAX_VALUE
         val endTimestamp = Long.MIN_VALUE
-        val stall = PlaybackStatistics.Payload.Stall(
-            reason,
-            assetPositionSeconds,
-            startTimestamp,
-            endTimestamp,
-        )
+        val stall =
+            PlaybackStatistics.Payload.Stall(
+                reason,
+                assetPositionSeconds,
+                startTimestamp,
+                endTimestamp,
+            )
 
         val actual = gson.toJsonTree(stall).asJsonObject
 
@@ -37,12 +38,13 @@ internal class PlaybackStatisticsStallMarshallingTest {
         val assetPositionSeconds = 1.0
         val startTimestamp = Long.MAX_VALUE
         val endTimestamp = Long.MIN_VALUE
-        val expected = PlaybackStatistics.Payload.Stall(
-            reason,
-            assetPositionSeconds,
-            startTimestamp,
-            endTimestamp,
-        )
+        val expected =
+            PlaybackStatistics.Payload.Stall(
+                reason,
+                assetPositionSeconds,
+                startTimestamp,
+                endTimestamp,
+            )
         val src = gson.toJson(expected)
 
         val actual = gson.fromJson(src, PlaybackStatistics.Payload.Stall::class.java)

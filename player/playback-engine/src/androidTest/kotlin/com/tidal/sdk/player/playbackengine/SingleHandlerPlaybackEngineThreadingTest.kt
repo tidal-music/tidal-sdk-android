@@ -28,80 +28,87 @@ internal class SingleHandlerPlaybackEngineThreadingTest {
     private lateinit var executionThread: Thread
     private val handlerThread = HandlerThread("TestThread").apply { start() }
     private val handler = Handler(handlerThread.looper)
-    private val delegate = object : PlaybackEngine {
-        override val mediaProduct = MediaProduct(ProductType.TRACK, "123")
-        override val playbackContext = PlaybackContext.Track(
-            AudioMode.STEREO,
-            AudioQuality.HIGH,
-            320_000,
-            16,
-            "aac",
-            44100,
-            "123",
-            AssetPresentation.FULL,
-            100F,
-            AssetSource.ONLINE,
-            "playbackSessionId",
-            "uuid",
-        )
-        override val playbackState = PlaybackState.IDLE
-        override val assetPosition = 0f
-        override val outputDevice = OutputDevice.TYPE_BUILTIN_SPEAKER
-        override val events = MutableSharedFlow<Event>()
-        override var streamingWifiAudioQuality = AudioQuality.HIGH
-            set(_) = assignThreadAndReleaseLock()
-        override var streamingCellularAudioQuality = AudioQuality.LOW
-            set(_) = assignThreadAndReleaseLock()
-        override var immersiveAudio = true
-            set(_) = assignThreadAndReleaseLock()
-        override var loudnessNormalizationMode = LoudnessNormalizationMode.ALBUM
-            set(_) = assignThreadAndReleaseLock()
-        override var loudnessNormalizationPreAmp = LOUDNESS_NORMALIZATION_PRE_AMP_DEFAULT
-            set(_) = assignThreadAndReleaseLock()
-        override var videoSurfaceView: AspectRatioAdjustingSurfaceView? = null
-            set(_) = assignThreadAndReleaseLock()
+    private val delegate =
+        object : PlaybackEngine {
+            override val mediaProduct = MediaProduct(ProductType.TRACK, "123")
+            override val playbackContext =
+                PlaybackContext.Track(
+                    AudioMode.STEREO,
+                    AudioQuality.HIGH,
+                    320_000,
+                    16,
+                    "aac",
+                    44100,
+                    "123",
+                    AssetPresentation.FULL,
+                    100F,
+                    AssetSource.ONLINE,
+                    "playbackSessionId",
+                    "uuid",
+                )
+            override val playbackState = PlaybackState.IDLE
+            override val assetPosition = 0f
+            override val outputDevice = OutputDevice.TYPE_BUILTIN_SPEAKER
+            override val events = MutableSharedFlow<Event>()
+            override var streamingWifiAudioQuality = AudioQuality.HIGH
+                set(_) = assignThreadAndReleaseLock()
 
-        override fun load(mediaProduct: MediaProduct) {
-            assignThreadAndReleaseLock()
-        }
+            override var streamingCellularAudioQuality = AudioQuality.LOW
+                set(_) = assignThreadAndReleaseLock()
 
-        override fun setNext(mediaProduct: MediaProduct?) {
-            assignThreadAndReleaseLock()
-        }
+            override var immersiveAudio = true
+                set(_) = assignThreadAndReleaseLock()
 
-        override fun play() {
-            assignThreadAndReleaseLock()
-        }
+            override var loudnessNormalizationMode = LoudnessNormalizationMode.ALBUM
+                set(_) = assignThreadAndReleaseLock()
 
-        override fun pause() {
-            assignThreadAndReleaseLock()
-        }
+            override var loudnessNormalizationPreAmp = LOUDNESS_NORMALIZATION_PRE_AMP_DEFAULT
+                set(_) = assignThreadAndReleaseLock()
 
-        override fun seek(time: Float) {
-            assignThreadAndReleaseLock()
-        }
+            override var videoSurfaceView: AspectRatioAdjustingSurfaceView? = null
+                set(_) = assignThreadAndReleaseLock()
 
-        override fun skipToNext() {
-            assignThreadAndReleaseLock()
-        }
+            override fun load(mediaProduct: MediaProduct) {
+                assignThreadAndReleaseLock()
+            }
 
-        override fun setRepeatOne(enable: Boolean) {
-            assignThreadAndReleaseLock()
-        }
+            override fun setNext(mediaProduct: MediaProduct?) {
+                assignThreadAndReleaseLock()
+            }
 
-        override fun reset() {
-            assignThreadAndReleaseLock()
-        }
+            override fun play() {
+                assignThreadAndReleaseLock()
+            }
 
-        override fun release() {
-            assignThreadAndReleaseLock()
-        }
+            override fun pause() {
+                assignThreadAndReleaseLock()
+            }
 
-        private fun assignThreadAndReleaseLock() {
-            executionThread = Thread.currentThread()
-            lock.withLock { delegateWaitCondition.signal() }
+            override fun seek(time: Float) {
+                assignThreadAndReleaseLock()
+            }
+
+            override fun skipToNext() {
+                assignThreadAndReleaseLock()
+            }
+
+            override fun setRepeatOne(enable: Boolean) {
+                assignThreadAndReleaseLock()
+            }
+
+            override fun reset() {
+                assignThreadAndReleaseLock()
+            }
+
+            override fun release() {
+                assignThreadAndReleaseLock()
+            }
+
+            private fun assignThreadAndReleaseLock() {
+                executionThread = Thread.currentThread()
+                lock.withLock { delegateWaitCondition.signal() }
+            }
         }
-    }
     private val singleHandlerPlaybackEngine = SingleHandlerPlaybackEngine(handler, delegate)
 
     @Test

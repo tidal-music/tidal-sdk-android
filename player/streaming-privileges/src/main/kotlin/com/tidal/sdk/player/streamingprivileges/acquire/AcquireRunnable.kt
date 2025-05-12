@@ -8,12 +8,12 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 
-internal class AcquireRunnable @AssistedInject constructor(
-    @Assisted
-    private val connectionMutableState: ConnectionMutableState,
+internal class AcquireRunnable
+@AssistedInject
+constructor(
+    @Assisted private val connectionMutableState: ConnectionMutableState,
     private val gson: Gson,
-    @Assisted
-    private val startedAtMillis: Long,
+    @Assisted private val startedAtMillis: Long,
 ) : Runnable {
 
     override fun run() {
@@ -21,9 +21,10 @@ internal class AcquireRunnable @AssistedInject constructor(
             return
         }
         when (val connectionState = connectionMutableState.socketConnectionState) {
-            is SocketConnectionState.Connected -> connectionState.webSocket.send(
-                gson.toJson(WebSocketMessage.Outgoing.Acquire(startedAtMillis)),
-            )
+            is SocketConnectionState.Connected ->
+                connectionState.webSocket.send(
+                    gson.toJson(WebSocketMessage.Outgoing.Acquire(startedAtMillis))
+                )
 
             else -> Unit
         }

@@ -13,9 +13,10 @@ import org.junit.Test
 
 internal class AudioManagerExtensionsTest {
 
-    private val audioManager = InstrumentationRegistry.getInstrumentation()
-        .targetContext
-        .getSystemService(Context.AUDIO_SERVICE) as AudioManager
+    private val audioManager =
+        InstrumentationRegistry.getInstrumentation()
+            .targetContext
+            .getSystemService(Context.AUDIO_SERVICE) as AudioManager
     private var musicVolume = 0
 
     @Before
@@ -23,8 +24,7 @@ internal class AudioManagerExtensionsTest {
         musicVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
     }
 
-    @After
-    fun afterEach() = audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, musicVolume, 0)
+    @After fun afterEach() = audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, musicVolume, 0)
 
     @Test
     fun getScaledVolume() {
@@ -36,9 +36,8 @@ internal class AudioManagerExtensionsTest {
             val actualRelativeVolumeToSet = (it * maxMusicVolume).toInt()
             audioManager.apply {
                 setStreamVolume(AudioManager.STREAM_MUSIC, actualRelativeVolumeToSet, 0)
-                assertThat(scaledVolume).isEqualTo(
-                    actualRelativeVolumeToSet.toFloat() / maxMusicVolume,
-                )
+                assertThat(scaledVolume)
+                    .isEqualTo(actualRelativeVolumeToSet.toFloat() / maxMusicVolume)
             }
         }
 

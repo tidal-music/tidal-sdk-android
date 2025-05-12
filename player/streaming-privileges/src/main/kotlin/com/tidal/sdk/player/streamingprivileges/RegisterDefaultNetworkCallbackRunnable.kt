@@ -7,14 +7,15 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 
 @Suppress("LongParameterList", "TooGenericExceptionCaught", "SwallowedException")
-internal class RegisterDefaultNetworkCallbackRunnable @AssistedInject constructor(
+internal class RegisterDefaultNetworkCallbackRunnable
+@AssistedInject
+constructor(
     private val mutableState: MutableState,
     private val networkInteractionsHandler: Handler,
     private val connectivityManager: ConnectivityManager,
     private val factory: Factory,
     private val streamingPrivilegesNetworkCallback: StreamingPrivilegesNetworkCallback,
-    @Assisted
-    private val failureCount: Int,
+    @Assisted private val failureCount: Int,
 ) : Runnable {
 
     override fun run() {

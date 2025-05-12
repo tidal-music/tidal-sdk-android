@@ -2,7 +2,8 @@ package com.tidal.sdk.player.playbackengine.mediasource.loadable
 
 import com.tidal.sdk.player.common.ForwardingMediaProduct
 
-internal sealed class PlaybackInfoFetchException private constructor(
+internal sealed class PlaybackInfoFetchException
+private constructor(
     val requestedMediaProduct: ForwardingMediaProduct<*>,
     cause: Throwable?,
     message: String,

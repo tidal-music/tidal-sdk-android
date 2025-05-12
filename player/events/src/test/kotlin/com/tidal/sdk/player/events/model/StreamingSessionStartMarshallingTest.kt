@@ -13,30 +13,32 @@ internal class StreamingSessionStartMarshallingTest {
     private val uuidString = "123e4567-e89b-12d3-a456-426614174000"
     private val user = User(-3L, 0, "sessionId")
     private val client = Client("token", Client.DeviceType.TV, "version")
-    private val decoratedPayload = StreamingSessionStart.DecoratedPayload(
-        "streamingSessionId",
-        1L,
-        false,
-        StreamingSessionStart.StartReason.IMPLICIT,
-        "hardwarePlatform",
-        "operatingSystem",
-        "operatingSystemVersion",
-        -1,
-        -2,
-        StreamingSessionStart.NetworkType.ETHERNET,
-        "mobileNetworkType",
-        StreamingSessionStart.SessionType.PLAYBACK,
-        ProductType.TRACK,
-        "123",
-    )
-    private val streamingSessionStart = StreamingSessionStart(
-        ts,
-        UUID.fromString(uuidString),
-        user,
-        client,
-        decoratedPayload,
-        emptyMap(),
-    )
+    private val decoratedPayload =
+        StreamingSessionStart.DecoratedPayload(
+            "streamingSessionId",
+            1L,
+            false,
+            StreamingSessionStart.StartReason.IMPLICIT,
+            "hardwarePlatform",
+            "operatingSystem",
+            "operatingSystemVersion",
+            -1,
+            -2,
+            StreamingSessionStart.NetworkType.ETHERNET,
+            "mobileNetworkType",
+            StreamingSessionStart.SessionType.PLAYBACK,
+            ProductType.TRACK,
+            "123",
+        )
+    private val streamingSessionStart =
+        StreamingSessionStart(
+            ts,
+            UUID.fromString(uuidString),
+            user,
+            client,
+            decoratedPayload,
+            emptyMap(),
+        )
     private val gson = Gson()
 
     @Test
@@ -47,9 +49,8 @@ internal class StreamingSessionStartMarshallingTest {
         assertThat(actual["uuid"].asString).isEqualTo(uuidString)
         assertThat(gson.fromJson(actual["user"], User::class.java)).isEqualTo(user)
         assertThat(gson.fromJson(actual["client"], Client::class.java)).isEqualTo(client)
-        assertThat(
-            gson.fromJson(actual["payload"], decoratedPayload::class.java),
-        ).isEqualTo(decoratedPayload)
+        assertThat(gson.fromJson(actual["payload"], decoratedPayload::class.java))
+            .isEqualTo(decoratedPayload)
     }
 
     @Test

@@ -9,9 +9,7 @@ sealed class LegacyCredentials {
     abstract fun toCredentials(): Credentials
 }
 
-/**
- * Represents the credentials of a user or client.
- */
+/** Represents the credentials of a user or client. */
 @Deprecated("Use [Credentials] instead.")
 @Serializable
 data class LegacyCredentialsV1(
@@ -23,20 +21,19 @@ data class LegacyCredentialsV1(
     val expires: Instant?,
     val token: String?,
 ) : LegacyCredentials() {
-    override fun toCredentials(): Credentials = Credentials(
-        clientId,
-        requestedScopes.scopes,
-        clientUniqueKey,
-        grantedScopes.scopes,
-        userId,
-        expires?.epochSeconds,
-        token,
-    )
+    override fun toCredentials(): Credentials =
+        Credentials(
+            clientId,
+            requestedScopes.scopes,
+            clientUniqueKey,
+            grantedScopes.scopes,
+            userId,
+            expires?.epochSeconds,
+            token,
+        )
 }
 
-/**
- * Represents the credentials of a user or client.
- */
+/** Represents the credentials of a user or client. */
 @Deprecated("Use [Credentials] instead.")
 @Serializable
 data class LegacyCredentialsV2(
@@ -48,13 +45,14 @@ data class LegacyCredentialsV2(
     val expires: Instant?,
     val token: String?,
 ) : LegacyCredentials() {
-    override fun toCredentials(): Credentials = Credentials(
-        clientId,
-        requestedScopes,
-        clientUniqueKey,
-        grantedScopes,
-        userId,
-        expires?.epochSeconds,
-        token,
-    )
+    override fun toCredentials(): Credentials =
+        Credentials(
+            clientId,
+            requestedScopes,
+            clientUniqueKey,
+            grantedScopes,
+            userId,
+            expires?.epochSeconds,
+            token,
+        )
 }

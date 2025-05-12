@@ -30,9 +30,7 @@ import okhttp3.OkHttpClient
 @Module
 internal object PlaybackEngineModule {
 
-    @Provides
-    @Singleton
-    fun events() = MutableSharedFlow<Event>()
+    @Provides @Singleton fun events() = MutableSharedFlow<Event>()
 
     @Provides
     @Singleton
@@ -49,13 +47,10 @@ internal object PlaybackEngineModule {
         assetTimeoutConfig: AssetTimeoutConfig,
         cacheProvider: CacheProvider,
         configuration: Configuration,
-        @Named("appSpecificCacheDir")
-        appSpecificCacheDir: File,
+        @Named("appSpecificCacheDir") appSpecificCacheDir: File,
         streamingApi: StreamingApi,
-        @Local
-        okHttpClient: OkHttpClient,
-        @LocalWithAuth
-        okHttpClientWithAuth: OkHttpClient,
+        @Local okHttpClient: OkHttpClient,
+        @LocalWithAuth okHttpClientWithAuth: OkHttpClient,
         gson: Gson,
         eventReporter: EventReporter,
         streamingPrivileges: StreamingPrivileges,
@@ -66,29 +61,31 @@ internal object PlaybackEngineModule {
         base64Codec: Base64Codec,
         coroutineDispatcher: CoroutineDispatcher,
         coroutineScope: CoroutineScope,
-    ) = PlaybackEngineModuleRoot(
-        context,
-        connectivityManager,
-        useLibflacAudioRenderer,
-        events,
-        bufferConfiguration,
-        assetTimeoutConfig,
-        cacheProvider,
-        configuration,
-        appSpecificCacheDir,
-        streamingApi,
-        okHttpClient,
-        okHttpClientWithAuth,
-        gson,
-        eventReporter,
-        streamingPrivileges,
-        uuidWrapper,
-        trueTimeWrapper,
-        playbackPrivilegeProvider,
-        offlinePlayProvider?.offlineCacheProvider,
-        offlinePlayProvider?.encryption,
-        base64Codec,
-        coroutineDispatcher,
-        coroutineScope,
-    ).playbackEngine
+    ) =
+        PlaybackEngineModuleRoot(
+                context,
+                connectivityManager,
+                useLibflacAudioRenderer,
+                events,
+                bufferConfiguration,
+                assetTimeoutConfig,
+                cacheProvider,
+                configuration,
+                appSpecificCacheDir,
+                streamingApi,
+                okHttpClient,
+                okHttpClientWithAuth,
+                gson,
+                eventReporter,
+                streamingPrivileges,
+                uuidWrapper,
+                trueTimeWrapper,
+                playbackPrivilegeProvider,
+                offlinePlayProvider?.offlineCacheProvider,
+                offlinePlayProvider?.encryption,
+                base64Codec,
+                coroutineDispatcher,
+                coroutineScope,
+            )
+            .playbackEngine
 }

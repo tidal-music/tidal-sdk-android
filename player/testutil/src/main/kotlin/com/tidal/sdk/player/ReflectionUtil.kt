@@ -25,8 +25,7 @@ fun <T> CharSequence.reflectionGetTopLevelProperty(propertyName: String): T? =
     Class.forName("${this}Kt").getDeclaredField(propertyName).run {
         val wasAccessible = canAccess(null)
         isAccessible = true
-        @Suppress("UNCHECKED_CAST")
-        val value = get(null) as T?
+        @Suppress("UNCHECKED_CAST") val value = get(null) as T?
         isAccessible = wasAccessible
         value
     }
@@ -34,10 +33,11 @@ fun <T> CharSequence.reflectionGetTopLevelProperty(propertyName: String): T? =
 fun <T> Any.reflectionSetDelegatedInstanceMemberProperty(propertyName: CharSequence, newValue: T?) =
     reflectionSetDelegatedMemberProperty(propertyName, newValue, this)
 
-private fun <T> Any.reflectionGetMemberProperty(propertyName: CharSequence, receiver: Any? = null):
-    T? = memberProperty<KProperty<T?>>(propertyName)
-    .getter
-    .runAllowingAccess {
+private fun <T> Any.reflectionGetMemberProperty(
+    propertyName: CharSequence,
+    receiver: Any? = null,
+): T? =
+    memberProperty<KProperty<T?>>(propertyName).getter.runAllowingAccess {
         if (receiver != null) call(receiver) else call()
     }
 
@@ -45,9 +45,8 @@ private fun <T> Any.reflectionSetMemberProperty(
     propertyName: CharSequence,
     newValue: T?,
     receiver: Any? = null,
-) = memberProperty<KMutableProperty<T?>>(propertyName)
-    .setter
-    .runAllowingAccess {
+) =
+    memberProperty<KMutableProperty<T?>>(propertyName).setter.runAllowingAccess {
         if (receiver != null) call(receiver, newValue) else call(newValue)
     } ?: Unit
 
@@ -55,18 +54,15 @@ private fun <T> Any.reflectionSetFinalField(
     propertyName: CharSequence,
     newValue: T?,
     receiver: Any,
-) = memberField(propertyName)
-    .runAllowingAccess {
-        set(receiver, newValue)
-    }
+) = memberField(propertyName).runAllowingAccess { set(receiver, newValue) }
 
 @Suppress("UNCHECKED_CAST") // We want the exception if the type is not correct
 private fun <T, V> Any.reflectionSetDelegatedMemberProperty(
     propertyName: CharSequence,
     newValue: V?,
     receiver: T,
-) = memberProperty<KMutableProperty1<T, V?>>(propertyName)
-    .runAllowingAccess {
+) =
+    memberProperty<KMutableProperty1<T, V?>>(propertyName).runAllowingAccess {
         (getDelegate(receiver) as ReadWriteProperty<T, V?>).setValue(receiver, this, newValue)
     }
 

@@ -12,23 +12,25 @@ internal abstract class NotStartedPlaybackStatisticsMarshallingTest(
     final override val uuidString = "123e4567-e89b-12d3-a456-426614174000"
     final override val user = User(8L, 54, "sessionId")
     final override val client = Client("token", Client.DeviceType.TV, "version")
-    final override val payload = NotStartedPlaybackStatistics.Payload(
-        "streamingSessionId",
-        Long.MAX_VALUE,
-        productType,
-        Long.MAX_VALUE,
-        "errorMessage",
-        "errorCode",
-        endReason,
-    )
-    override val playbackStatistics = NotStartedPlaybackStatistics(
-        ts,
-        UUID.fromString(uuidString),
-        user,
-        client,
-        payload,
-        emptyMap(),
-    )
+    final override val payload =
+        NotStartedPlaybackStatistics.Payload(
+            "streamingSessionId",
+            Long.MAX_VALUE,
+            productType,
+            Long.MAX_VALUE,
+            "errorMessage",
+            "errorCode",
+            endReason,
+        )
+    override val playbackStatistics =
+        NotStartedPlaybackStatistics(
+            ts,
+            UUID.fromString(uuidString),
+            user,
+            client,
+            payload,
+            emptyMap(),
+        )
 
     sealed class ProductTypeAudio(endReason: EndReason) :
         NotStartedPlaybackStatisticsMarshallingTest(ProductType.TRACK, endReason) {

@@ -21,8 +21,7 @@ internal class DjSessionManagerTest {
     private val handler = mock<Handler>()
     private val djSessionManager = DjSessionManager(hlsTagsParser, dateParser, handler)
 
-    @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(hlsTagsParser, handler)
+    @AfterEach fun afterEach() = verifyNoMoreInteractions(hlsTagsParser, handler)
 
     @Test
     fun `cleanUp removes listener and cleans up even if no dateRange present`() {
@@ -67,15 +66,17 @@ internal class DjSessionManagerTest {
     fun `checkForUpdates when one tag and dateRange is in the past`() {
         val productId = "123abc"
         val status = DjSessionStatus.PLAYING
-        val dateRange = mock<DateRange> {
-            on { it.productId } doReturn productId
-            on { it.startDate } doReturn "123"
-            on { it.status } doReturn status
-        }
-        val dateRanges = mock<List<DateRange>> {
-            on { it[0] } doReturn dateRange
-            on { it.size } doReturn 1
-        }
+        val dateRange =
+            mock<DateRange> {
+                on { it.productId } doReturn productId
+                on { it.startDate } doReturn "123"
+                on { it.status } doReturn status
+            }
+        val dateRanges =
+            mock<List<DateRange>> {
+                on { it[0] } doReturn dateRange
+                on { it.size } doReturn 1
+            }
         whenever(dateParser.parseXsDateTime("123")).thenReturn(123)
         val tags = HlsTags.TAGS_WITH_SINGLE_DATE_RANGE
         whenever(hlsTagsParser.parse(tags)).thenReturn(dateRanges)
@@ -93,23 +94,26 @@ internal class DjSessionManagerTest {
     fun `checkForUpdates when multiple tags and dateRange is in the future`() {
         val productId = "123abc"
         val status = DjSessionStatus.PLAYING
-        val dateRange = mock<DateRange> {
-            on { it.productId } doReturn productId
-            on { it.startDate } doReturn "123"
-            on { it.status } doReturn status
-        }
+        val dateRange =
+            mock<DateRange> {
+                on { it.productId } doReturn productId
+                on { it.startDate } doReturn "123"
+                on { it.status } doReturn status
+            }
         val productIdNext = "456def"
         val statusNext = DjSessionStatus.PAUSED
-        val dateRangeNext = mock<DateRange> {
-            on { it.productId } doReturn productIdNext
-            on { it.startDate } doReturn "456"
-            on { it.status } doReturn statusNext
-        }
-        val dateRanges = mock<List<DateRange>> {
-            on { it[0] } doReturn dateRange
-            on { it[1] } doReturn dateRangeNext
-            on { it.size } doReturn 2
-        }
+        val dateRangeNext =
+            mock<DateRange> {
+                on { it.productId } doReturn productIdNext
+                on { it.startDate } doReturn "456"
+                on { it.status } doReturn statusNext
+            }
+        val dateRanges =
+            mock<List<DateRange>> {
+                on { it[0] } doReturn dateRange
+                on { it[1] } doReturn dateRangeNext
+                on { it.size } doReturn 2
+            }
         whenever(dateParser.parseXsDateTime("456")).thenReturn(456)
         val tags = HlsTags.TAGS_WITH_MULTIPLE_DATE_RANGE
         whenever(hlsTagsParser.parse(tags)).thenReturn(dateRanges)
@@ -129,23 +133,26 @@ internal class DjSessionManagerTest {
     fun `checkForUpdates when multiple tags and dateRange is in the past`() {
         val productId = "123abc"
         val status = DjSessionStatus.PLAYING
-        val dateRange = mock<DateRange> {
-            on { it.productId } doReturn productId
-            on { it.startDate } doReturn "123"
-            on { it.status } doReturn status
-        }
+        val dateRange =
+            mock<DateRange> {
+                on { it.productId } doReturn productId
+                on { it.startDate } doReturn "123"
+                on { it.status } doReturn status
+            }
         val productIdNext = "456def"
         val statusNext = DjSessionStatus.PAUSED
-        val dateRangeNext = mock<DateRange> {
-            on { it.productId } doReturn productIdNext
-            on { it.startDate } doReturn "41"
-            on { it.status } doReturn statusNext
-        }
-        val dateRanges = mock<List<DateRange>> {
-            on { it[0] } doReturn dateRange
-            on { it[1] } doReturn dateRangeNext
-            on { it.size } doReturn 2
-        }
+        val dateRangeNext =
+            mock<DateRange> {
+                on { it.productId } doReturn productIdNext
+                on { it.startDate } doReturn "41"
+                on { it.status } doReturn statusNext
+            }
+        val dateRanges =
+            mock<List<DateRange>> {
+                on { it[0] } doReturn dateRange
+                on { it[1] } doReturn dateRangeNext
+                on { it.size } doReturn 2
+            }
         whenever(dateParser.parseXsDateTime("41")).thenReturn(41)
         val tags = HlsTags.TAGS_WITH_MULTIPLE_DATE_RANGE
         whenever(hlsTagsParser.parse(tags)).thenReturn(dateRanges)

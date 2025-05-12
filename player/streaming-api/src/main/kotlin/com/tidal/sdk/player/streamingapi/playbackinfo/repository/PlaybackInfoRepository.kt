@@ -5,9 +5,7 @@ import com.tidal.sdk.player.common.model.VideoQuality
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackMode
 
-/**
- * A repository meant to give you track or video playback info.
- */
+/** A repository meant to give you track or video playback info. */
 internal interface PlaybackInfoRepository {
 
     /**
@@ -17,8 +15,8 @@ internal interface PlaybackInfoRepository {
      * @param[audioQuality] The requested audio quality as [AudioQuality].
      * @param[playbackMode] The requested playback mode as [PlaybackMode].
      * @param[immersiveAudio] The requested option to include immersive audio or not.
-     * @param[streamingSessionId] The streaming session uuid as [String], created by the client,
-     * for this streaming session.
+     * @param[streamingSessionId] The streaming session uuid as [String], created by the client, for
+     *   this streaming session.
      * @param[playlistUuid] The playlistUuid this play originates from as [String]. May be null.
      */
     suspend fun getTrackPlaybackInfo(
@@ -36,8 +34,8 @@ internal interface PlaybackInfoRepository {
      * @param[videoId] The requested video id as [String].
      * @param[videoQuality] The requested video quality as [VideoQuality].
      * @param[playbackMode] The requested playback mode as [PlaybackMode].
-     * @param[streamingSessionId] The streaming session uuid as [String], created by the client,
-     * for this streaming session.
+     * @param[streamingSessionId] The streaming session uuid as [String], created by the client, for
+     *   this streaming session.
      * @param[playlistUuid] The playlistUuid this play originates from as [String]. May be null.
      */
     suspend fun getVideoPlaybackInfo(
@@ -67,17 +65,14 @@ internal interface PlaybackInfoRepository {
      * @param[itemId] The requested item id as [String].
      * @param[streamingSessionId] The requested streaming session id as [String].
      */
-    suspend fun getUC(
-        itemId: String,
-        streamingSessionId: String,
-    ): PlaybackInfo
+    suspend fun getUC(itemId: String, streamingSessionId: String): PlaybackInfo
 
     /**
      * Returns a [PlaybackInfo] which we can use for offline playback of a track.
      *
      * @param[trackId] The requested track id as [String].
-     * @param[streamingSessionId] The streaming session uuid as [String], created by the client,
-     * for this streaming session.
+     * @param[streamingSessionId] The streaming session uuid as [String], created by the client, for
+     *   this streaming session.
      */
     suspend fun getOfflineTrackPlaybackInfo(
         trackId: String,
@@ -88,8 +83,8 @@ internal interface PlaybackInfoRepository {
      * Returns a [PlaybackInfo] which we can use for offline playback of a video.
      *
      * @param[videoId] The requested video id as [String].
-     * @param[streamingSessionId] The streaming session uuid as [String], created by the client,
-     * for this streaming session.
+     * @param[streamingSessionId] The streaming session uuid as [String], created by the client, for
+     *   this streaming session.
      */
     suspend fun getOfflineVideoPlaybackInfo(
         videoId: String,

@@ -23,20 +23,22 @@ internal class OnWebSocketMessageTest {
     private val connectRunnable = mock<ConnectRunnable>()
     private val incomingWebSocketMessageParser = mock<IncomingWebSocketMessageParser>()
     private val streamingPrivilegesEventDispatcher = mock<StreamingPrivilegesEventDispatcher>()
-    private val onWebSocketMessage = OnWebSocketMessage(
-        networkInteractionsHandler,
-        connectRunnable,
-        incomingWebSocketMessageParser,
-        streamingPrivilegesEventDispatcher,
-    )
+    private val onWebSocketMessage =
+        OnWebSocketMessage(
+            networkInteractionsHandler,
+            connectRunnable,
+            incomingWebSocketMessageParser,
+            streamingPrivilegesEventDispatcher,
+        )
 
     @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(
-        networkInteractionsHandler,
-        connectRunnable,
-        incomingWebSocketMessageParser,
-        streamingPrivilegesEventDispatcher,
-    )
+    fun afterEach() =
+        verifyNoMoreInteractions(
+            networkInteractionsHandler,
+            connectRunnable,
+            incomingWebSocketMessageParser,
+            streamingPrivilegesEventDispatcher,
+        )
 
     @Test
     fun invokeForReconnect() {
@@ -49,10 +51,11 @@ internal class OnWebSocketMessageTest {
         onWebSocketMessage(webSocket, text, connectionMutableState)
 
         verify(incomingWebSocketMessageParser).parse(text)
-        verify(webSocket).close(
-            CloseReason.REASON_REQUESTED_BY_PEER.code,
-            CloseReason.REASON_REQUESTED_BY_PEER.description,
-        )
+        verify(webSocket)
+            .close(
+                CloseReason.REASON_REQUESTED_BY_PEER.code,
+                CloseReason.REASON_REQUESTED_BY_PEER.description,
+            )
         verify(connectionMutableState).socketConnectionState = SocketConnectionState.NotConnected
         verify(networkInteractionsHandler).post(connectRunnable)
         verifyNoMoreInteractions(webSocket, message, connectionMutableState)
@@ -64,9 +67,10 @@ internal class OnWebSocketMessageTest {
         val connectionMutableState = mock<ConnectionMutableState>()
         val privilegedClientDisplayName = "privilegedClientDisplayName"
         val text = "text"
-        val message = mock<WebSocketMessage.Incoming.StreamingPrivilegesRevoked> {
-            on { it.privilegedClientDisplayName } doReturn privilegedClientDisplayName
-        }
+        val message =
+            mock<WebSocketMessage.Incoming.StreamingPrivilegesRevoked> {
+                on { it.privilegedClientDisplayName } doReturn privilegedClientDisplayName
+            }
         whenever(incomingWebSocketMessageParser.parse(text)) doReturn message
 
         onWebSocketMessage(webSocket, text, connectionMutableState)

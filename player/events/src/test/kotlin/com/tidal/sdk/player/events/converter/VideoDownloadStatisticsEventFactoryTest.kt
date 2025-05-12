@@ -25,22 +25,24 @@ internal class VideoDownloadStatisticsEventFactoryTest {
     private val userSupplier = mock<UserSupplier>()
     private val clientSupplier = mock<ClientSupplier>()
     private val videoDownloadStatisticsFactory = mock<VideoDownloadStatistics.Factory>()
-    private val videoDownloadStatisticsEventFactory = VideoDownloadStatisticsEventFactory(
-        trueTimeWrapper,
-        uuidWrapper,
-        userSupplier,
-        clientSupplier,
-        videoDownloadStatisticsFactory,
-    )
+    private val videoDownloadStatisticsEventFactory =
+        VideoDownloadStatisticsEventFactory(
+            trueTimeWrapper,
+            uuidWrapper,
+            userSupplier,
+            clientSupplier,
+            videoDownloadStatisticsFactory,
+        )
 
     @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(
-        trueTimeWrapper,
-        uuidWrapper,
-        userSupplier,
-        clientSupplier,
-        videoDownloadStatisticsFactory,
-    )
+    fun afterEach() =
+        verifyNoMoreInteractions(
+            trueTimeWrapper,
+            uuidWrapper,
+            userSupplier,
+            clientSupplier,
+            videoDownloadStatisticsFactory,
+        )
 
     @Test
     fun invoke() = runBlocking {
@@ -55,15 +57,16 @@ internal class VideoDownloadStatisticsEventFactoryTest {
         val src = mock<VideoDownloadStatistics.Payload>()
         val expected = mock<VideoDownloadStatistics>()
         whenever(
-            videoDownloadStatisticsFactory.create(
-                currentTimeMillis,
-                randomUUID,
-                user,
-                client,
-                src,
-                emptyMap(),
-            ),
-        ).thenReturn(expected)
+                videoDownloadStatisticsFactory.create(
+                    currentTimeMillis,
+                    randomUUID,
+                    user,
+                    client,
+                    src,
+                    emptyMap(),
+                )
+            )
+            .thenReturn(expected)
 
         val actual = videoDownloadStatisticsEventFactory(src, emptyMap())
 
@@ -71,14 +74,8 @@ internal class VideoDownloadStatisticsEventFactoryTest {
         verify(uuidWrapper).randomUUID
         verify(userSupplier)()
         verify(clientSupplier)()
-        verify(videoDownloadStatisticsFactory).create(
-            currentTimeMillis,
-            randomUUID,
-            user,
-            client,
-            src,
-            emptyMap(),
-        )
+        verify(videoDownloadStatisticsFactory)
+            .create(currentTimeMillis, randomUUID, user, client, src, emptyMap())
         assertThat(actual).isSameAs(expected)
         verifyNoMoreInteractions(randomUUID, user, client, src, expected)
     }

@@ -15,26 +15,23 @@ internal class DrmSessionManagerFactoryTest {
 
     private val tidalMediaDrmCallbackFactory = mock<TidalMediaDrmCallbackFactory>()
     private val defaultDrmSessionManagerBuilder = mock<DefaultDrmSessionManager.Builder>()
-    private val drmSessionManagerFactory = DrmSessionManagerFactory(
-        defaultDrmSessionManagerBuilder,
-        tidalMediaDrmCallbackFactory,
-    )
+    private val drmSessionManagerFactory =
+        DrmSessionManagerFactory(defaultDrmSessionManagerBuilder, tidalMediaDrmCallbackFactory)
 
     @Test
     fun createDrmSessionManagerForOnlinePlayWithNullLicenseSecurityToken() {
-        val actual = drmSessionManagerFactory.createDrmSessionManagerForOnlinePlay(
-            mock<PlaybackInfo.Track>(),
-            emptyMap()
-        )
+        val actual =
+            drmSessionManagerFactory.createDrmSessionManagerForOnlinePlay(
+                mock<PlaybackInfo.Track>(),
+                emptyMap(),
+            )
 
         assertThat(actual).isEqualTo(DrmSessionManager.DRM_UNSUPPORTED)
     }
 
     @Test
     fun createDrmSessionManagerForOnlinePlayWithEmptyLicenseSecurityToken() {
-        val playbackInfo = mock<PlaybackInfo.Track> {
-            on { licenseSecurityToken } doReturn ""
-        }
+        val playbackInfo = mock<PlaybackInfo.Track> { on { licenseSecurityToken } doReturn "" }
 
         val actual =
             drmSessionManagerFactory.createDrmSessionManagerForOnlinePlay(playbackInfo, emptyMap())
@@ -44,9 +41,8 @@ internal class DrmSessionManagerFactoryTest {
 
     @Test
     fun createDrmSessionManagerForOnlinePlayWithDrmModeStreaming() {
-        val playbackInfo = mock<PlaybackInfo.Track> {
-            on { licenseSecurityToken } doReturn "licenseSecurityToken"
-        }
+        val playbackInfo =
+            mock<PlaybackInfo.Track> { on { licenseSecurityToken } doReturn "licenseSecurityToken" }
         val drmMode = DrmMode.Streaming
         val tidalMediaDrmCallback = mock<TidalMediaDrmCallback>()
         val defaultDrmSessionManager = mock<DefaultDrmSessionManager>()
@@ -63,9 +59,7 @@ internal class DrmSessionManagerFactoryTest {
 
     @Test
     fun createDrmSessionManagerForOfflinePlayWithEmptyOfflineLicense() {
-        val playbackInfo = mock<PlaybackInfo.Offline> {
-            on { offlineLicense } doReturn ""
-        }
+        val playbackInfo = mock<PlaybackInfo.Offline> { on { offlineLicense } doReturn "" }
 
         val actual =
             drmSessionManagerFactory.createDrmSessionManagerForOfflinePlay(playbackInfo, emptyMap())
@@ -75,9 +69,8 @@ internal class DrmSessionManagerFactoryTest {
 
     @Test
     fun createDrmSessionManagerForOfflinePlayWithDrmModeStreaming() {
-        val playbackInfo = mock<PlaybackInfo.Offline.Track> {
-            on { offlineLicense } doReturn "offlineLicense"
-        }
+        val playbackInfo =
+            mock<PlaybackInfo.Offline.Track> { on { offlineLicense } doReturn "offlineLicense" }
         val drmMode = DrmMode.Streaming
         val tidalMediaDrmCallback = mock<TidalMediaDrmCallback>()
         val defaultDrmSessionManager = mock<DefaultDrmSessionManager>()

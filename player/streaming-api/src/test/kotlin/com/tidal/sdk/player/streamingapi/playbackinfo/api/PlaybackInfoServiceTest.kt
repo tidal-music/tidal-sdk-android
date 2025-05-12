@@ -32,31 +32,32 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 /**
- * Test that the [PlaybackInfoService] returns correct [PlaybackInfo] in various situations, or
- * that it fails with an exception.
+ * Test that the [PlaybackInfoService] returns correct [PlaybackInfo] in various situations, or that
+ * it fails with an exception.
  */
 internal class PlaybackInfoServiceTest {
 
-    @get:ExtendWith
-    val server = MockWebServer()
+    @get:ExtendWith val server = MockWebServer()
 
     private lateinit var playbackInfoService: PlaybackInfoService
 
-    private val gson = GsonBuilder()
-        .registerTypeAdapter(
-            ManifestMimeType::class.java,
-            ManifestMimeType.Converter.Deserializer(),
-        )
-        .create()
+    private val gson =
+        GsonBuilder()
+            .registerTypeAdapter(
+                ManifestMimeType::class.java,
+                ManifestMimeType.Converter.Deserializer(),
+            )
+            .create()
 
     private val converterFactory = GsonConverterFactory.create(gson)
 
     @BeforeEach
     fun setUp() {
-        val retrofit = Retrofit.Builder()
-            .baseUrl(server.url("/"))
-            .addConverterFactory(converterFactory)
-            .build()
+        val retrofit =
+            Retrofit.Builder()
+                .baseUrl(server.url("/"))
+                .addConverterFactory(converterFactory)
+                .build()
 
         playbackInfoService = retrofit.create(PlaybackInfoService::class.java)
     }
@@ -65,24 +66,21 @@ internal class PlaybackInfoServiceTest {
     fun getTrackPlaybackInfoShouldFailWhenNetworkError() {
         server.enqueue(MockResponse().throttleBody(1024, 1, TimeUnit.SECONDS))
 
-        assertFailure { getTrackPlaybackInfo() }
-            .isInstanceOf(IOException::class.java)
+        assertFailure { getTrackPlaybackInfo() }.isInstanceOf(IOException::class.java)
     }
 
     @Test
     fun getTrackPlaybackInfoShouldFailWhen404() {
         server.enqueue(MockResponse().setResponseCode(404))
 
-        assertFailure { getTrackPlaybackInfo() }
-            .isInstanceOf(HttpException::class.java)
+        assertFailure { getTrackPlaybackInfo() }.isInstanceOf(HttpException::class.java)
     }
 
     @Test
     fun getTrackPlaybackInfoShouldFailWhen500() {
         server.enqueue(MockResponse().setResponseCode(500))
 
-        assertFailure { getTrackPlaybackInfo() }
-            .isInstanceOf(HttpException::class.java)
+        assertFailure { getTrackPlaybackInfo() }.isInstanceOf(HttpException::class.java)
     }
 
     @Test
@@ -91,8 +89,7 @@ internal class PlaybackInfoServiceTest {
 
         val playbackInfo = getTrackPlaybackInfo()
 
-        assertThat(playbackInfo)
-            .isDataClassEqualTo(TrackPlaybackInfoFactory.DEFAULT)
+        assertThat(playbackInfo).isDataClassEqualTo(TrackPlaybackInfoFactory.DEFAULT)
     }
 
     @Test
@@ -111,8 +108,7 @@ internal class PlaybackInfoServiceTest {
 
         val playbackInfo = getTrackPlaybackInfo()
 
-        assertThat(playbackInfo)
-            .isDataClassEqualTo(TrackPlaybackInfoFactory.REPLACEMENT_TRACK_ID)
+        assertThat(playbackInfo).isDataClassEqualTo(TrackPlaybackInfoFactory.REPLACEMENT_TRACK_ID)
     }
 
     @Test
@@ -138,8 +134,7 @@ internal class PlaybackInfoServiceTest {
 
         val playbackInfo = getTrackPlaybackInfo()
 
-        assertThat(playbackInfo)
-            .isDataClassEqualTo(TrackPlaybackInfoFactory.PROTECTED)
+        assertThat(playbackInfo).isDataClassEqualTo(TrackPlaybackInfoFactory.PROTECTED)
     }
 
     @Test
@@ -148,8 +143,7 @@ internal class PlaybackInfoServiceTest {
 
         val playbackInfo = getTrackPlaybackInfo()
 
-        assertThat(playbackInfo)
-            .isDataClassEqualTo(TrackPlaybackInfoFactory.OFFLINE)
+        assertThat(playbackInfo).isDataClassEqualTo(TrackPlaybackInfoFactory.OFFLINE)
     }
 
     private fun getTrackPlaybackInfo() = runBlocking {
@@ -168,24 +162,21 @@ internal class PlaybackInfoServiceTest {
     fun getVideoPlaybackInfoShouldFailWhenNetworkError() {
         server.enqueue(MockResponse().throttleBody(1024, 1, TimeUnit.SECONDS))
 
-        assertFailure { getVideoPlaybackInfo() }
-            .isInstanceOf(IOException::class.java)
+        assertFailure { getVideoPlaybackInfo() }.isInstanceOf(IOException::class.java)
     }
 
     @Test
     fun getVideoPlaybackInfoShouldFailWhen404() {
         server.enqueue(MockResponse().setResponseCode(404))
 
-        assertFailure { getVideoPlaybackInfo() }
-            .isInstanceOf(HttpException::class.java)
+        assertFailure { getVideoPlaybackInfo() }.isInstanceOf(HttpException::class.java)
     }
 
     @Test
     fun getVideoPlaybackInfoShouldFailWhen500() {
         server.enqueue(MockResponse().setResponseCode(500))
 
-        assertFailure { getVideoPlaybackInfo() }
-            .isInstanceOf(HttpException::class.java)
+        assertFailure { getVideoPlaybackInfo() }.isInstanceOf(HttpException::class.java)
     }
 
     @Test
@@ -194,8 +185,7 @@ internal class PlaybackInfoServiceTest {
 
         val playbackInfo = getVideoPlaybackInfo()
 
-        assertThat(playbackInfo)
-            .isDataClassEqualTo(VideoPlaybackInfoFactory.DEFAULT)
+        assertThat(playbackInfo).isDataClassEqualTo(VideoPlaybackInfoFactory.DEFAULT)
     }
 
     @Test
@@ -214,8 +204,7 @@ internal class PlaybackInfoServiceTest {
 
         val playbackInfo = getVideoPlaybackInfo()
 
-        assertThat(playbackInfo)
-            .isDataClassEqualTo(VideoPlaybackInfoFactory.REPLACEMENT_VIDEO_ID)
+        assertThat(playbackInfo).isDataClassEqualTo(VideoPlaybackInfoFactory.REPLACEMENT_VIDEO_ID)
     }
 
     @Test
@@ -241,8 +230,7 @@ internal class PlaybackInfoServiceTest {
 
         val playbackInfo = getVideoPlaybackInfo()
 
-        assertThat(playbackInfo)
-            .isDataClassEqualTo(VideoPlaybackInfoFactory.PROTECTED)
+        assertThat(playbackInfo).isDataClassEqualTo(VideoPlaybackInfoFactory.PROTECTED)
     }
 
     @Test
@@ -251,8 +239,7 @@ internal class PlaybackInfoServiceTest {
 
         val playbackInfo = getVideoPlaybackInfo()
 
-        assertThat(playbackInfo)
-            .isDataClassEqualTo(VideoPlaybackInfoFactory.OFFLINE)
+        assertThat(playbackInfo).isDataClassEqualTo(VideoPlaybackInfoFactory.OFFLINE)
     }
 
     private fun getVideoPlaybackInfo() = runBlocking {
@@ -270,24 +257,21 @@ internal class PlaybackInfoServiceTest {
     fun getBroadcastPlaybackInfoShouldFailWhenNetworkError() {
         server.enqueue(MockResponse().throttleBody(1024, 1, TimeUnit.SECONDS))
 
-        assertFailure { getBroadcastPlaybackInfo() }
-            .isInstanceOf(IOException::class.java)
+        assertFailure { getBroadcastPlaybackInfo() }.isInstanceOf(IOException::class.java)
     }
 
     @Test
     fun getBroadcastPlaybackInfoShouldFailWhen404() {
         server.enqueue(MockResponse().setResponseCode(404))
 
-        assertFailure { getBroadcastPlaybackInfo() }
-            .isInstanceOf(HttpException::class.java)
+        assertFailure { getBroadcastPlaybackInfo() }.isInstanceOf(HttpException::class.java)
     }
 
     @Test
     fun getBroadcastPlaybackInfoShouldFailWhen500() {
         server.enqueue(MockResponse().setResponseCode(500))
 
-        assertFailure { getBroadcastPlaybackInfo() }
-            .isInstanceOf(HttpException::class.java)
+        assertFailure { getBroadcastPlaybackInfo() }.isInstanceOf(HttpException::class.java)
     }
 
     @Test

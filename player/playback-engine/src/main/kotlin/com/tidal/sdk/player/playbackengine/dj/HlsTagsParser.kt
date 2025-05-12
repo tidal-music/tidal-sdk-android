@@ -23,9 +23,10 @@ internal class HlsTagsParser {
                 "CLASS" -> clazz = value
                 "START-DATE" -> startDate = value
                 "X-COM-TIDAL-PRODUCT-ID" -> productId = value
-                "X-COM-TIDAL-STATUS" -> DjSessionStatus.values()
-                    .firstOrNull { it.name.contentEquals(value) }
-                    ?.let { status = it } ?: Unit
+                "X-COM-TIDAL-STATUS" ->
+                    DjSessionStatus.values()
+                        .firstOrNull { it.name.contentEquals(value) }
+                        ?.let { status = it } ?: Unit
 
                 "END-ON-NEXT" -> endOnNext = value
             }

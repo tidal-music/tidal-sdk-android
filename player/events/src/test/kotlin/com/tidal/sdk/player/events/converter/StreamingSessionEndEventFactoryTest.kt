@@ -25,22 +25,24 @@ internal class StreamingSessionEndEventFactoryTest {
     private val userSupplier = mock<UserSupplier>()
     private val clientSupplier = mock<ClientSupplier>()
     private val streamingSessionEndFactory = mock<StreamingSessionEnd.Factory>()
-    private val streamingSessionEndEventFactory = StreamingSessionEndEventFactory(
-        trueTimeWrapper,
-        uuidWrapper,
-        userSupplier,
-        clientSupplier,
-        streamingSessionEndFactory,
-    )
+    private val streamingSessionEndEventFactory =
+        StreamingSessionEndEventFactory(
+            trueTimeWrapper,
+            uuidWrapper,
+            userSupplier,
+            clientSupplier,
+            streamingSessionEndFactory,
+        )
 
     @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(
-        trueTimeWrapper,
-        uuidWrapper,
-        userSupplier,
-        clientSupplier,
-        streamingSessionEndFactory,
-    )
+    fun afterEach() =
+        verifyNoMoreInteractions(
+            trueTimeWrapper,
+            uuidWrapper,
+            userSupplier,
+            clientSupplier,
+            streamingSessionEndFactory,
+        )
 
     @Test
     fun invoke() = runBlocking {
@@ -55,15 +57,16 @@ internal class StreamingSessionEndEventFactoryTest {
         val payload = mock<StreamingSessionEnd.Payload>()
         val expected = mock<StreamingSessionEnd>()
         whenever(
-            streamingSessionEndFactory.create(
-                currentTimeMillis,
-                randomUUID,
-                user,
-                client,
-                payload,
-                emptyMap(),
-            ),
-        ).thenReturn(expected)
+                streamingSessionEndFactory.create(
+                    currentTimeMillis,
+                    randomUUID,
+                    user,
+                    client,
+                    payload,
+                    emptyMap(),
+                )
+            )
+            .thenReturn(expected)
 
         val actual = streamingSessionEndEventFactory(payload, emptyMap())
 
@@ -71,14 +74,8 @@ internal class StreamingSessionEndEventFactoryTest {
         verify(uuidWrapper).randomUUID
         verify(userSupplier)()
         verify(clientSupplier)()
-        verify(streamingSessionEndFactory).create(
-            currentTimeMillis,
-            randomUUID,
-            user,
-            client,
-            payload,
-            emptyMap(),
-        )
+        verify(streamingSessionEndFactory)
+            .create(currentTimeMillis, randomUUID, user, client, payload, emptyMap())
         assertThat(actual).isSameAs(expected)
         verifyNoMoreInteractions(randomUUID, user, client, payload, expected)
     }

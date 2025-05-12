@@ -4,12 +4,9 @@ plugins {
     alias(libs.plugins.android.junit5)
 }
 
-android {
-    namespace = "com.tidal.sdk.template"
-}
+android { namespace = "com.tidal.sdk.template" }
 
 dependencies {
-
     api(libs.tidal.sdk.common)
 
     testApi(libs.test.androidx.junit)

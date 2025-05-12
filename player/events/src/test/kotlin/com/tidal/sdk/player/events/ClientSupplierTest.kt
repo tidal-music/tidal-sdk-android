@@ -45,20 +45,14 @@ class ClientSupplierTest {
         val clientSupplier =
             ClientSupplier(context, uiModeManager, base64JwtDecoder, credentialsProvider, version)
         val token = "token"
-        val credentials = mock<Credentials> {
-            on { it.token } doReturn token
-        }
-        val authResult = mock<AuthResult.Success<Credentials>> {
-            on { it.successData } doReturn credentials
-        }
+        val credentials = mock<Credentials> { on { it.token } doReturn token }
+        val authResult =
+            mock<AuthResult.Success<Credentials>> { on { it.successData } doReturn credentials }
         val clientIdString = "123-abc"
-        val clientId = mock<JsonPrimitive> {
-            on { it.jsonPrimitive.content } doReturn clientIdString
-        }
+        val clientId =
+            mock<JsonPrimitive> { on { it.jsonPrimitive.content } doReturn clientIdString }
         val clientIdKey = "cid"
-        val claims = mock<JsonObject> {
-            on { it[clientIdKey] } doReturn clientId
-        }
+        val claims = mock<JsonObject> { on { it[clientIdKey] } doReturn clientId }
         whenever(credentialsProvider.getCredentials()).thenReturn(authResult)
         whenever(base64JwtDecoder.getClaims(token)).thenReturn(claims)
         whenever(uiModeManager.currentModeType) doReturn Configuration.UI_MODE_TYPE_TELEVISION
@@ -83,20 +77,14 @@ class ClientSupplierTest {
         val clientSupplier =
             ClientSupplier(context, uiModeManager, base64JwtDecoder, credentialsProvider, version)
         val token = "token"
-        val credentials = mock<Credentials> {
-            on { it.token } doReturn token
-        }
-        val authResult = mock<AuthResult.Success<Credentials>> {
-            on { it.successData } doReturn credentials
-        }
+        val credentials = mock<Credentials> { on { it.token } doReturn token }
+        val authResult =
+            mock<AuthResult.Success<Credentials>> { on { it.successData } doReturn credentials }
         val clientIdString = "123-abc"
-        val clientId = mock<JsonPrimitive> {
-            on { it.jsonPrimitive.content } doReturn clientIdString
-        }
+        val clientId =
+            mock<JsonPrimitive> { on { it.jsonPrimitive.content } doReturn clientIdString }
         val clientIdKey = "cid"
-        val claims = mock<JsonObject> {
-            on { it[clientIdKey] } doReturn clientId
-        }
+        val claims = mock<JsonObject> { on { it[clientIdKey] } doReturn clientId }
         whenever(credentialsProvider.getCredentials()).thenReturn(authResult)
         whenever(base64JwtDecoder.getClaims(token)).thenReturn(claims)
         whenever(uiModeManager.currentModeType) doReturn Configuration.UI_MODE_TYPE_CAR
@@ -117,28 +105,20 @@ class ClientSupplierTest {
 
     @Test
     fun invokeWhenTablet() = runBlocking {
-        val resources = mock<Resources> {
-            on { getBoolean(R.bool.is_tablet) } doReturn true
-        }
+        val resources = mock<Resources> { on { getBoolean(R.bool.is_tablet) } doReturn true }
         whenever(context.resources) doReturn resources
         val version = "version"
         val clientSupplier =
             ClientSupplier(context, uiModeManager, base64JwtDecoder, credentialsProvider, version)
         val token = "token"
-        val credentials = mock<Credentials> {
-            on { it.token } doReturn token
-        }
-        val authResult = mock<AuthResult.Success<Credentials>> {
-            on { it.successData } doReturn credentials
-        }
+        val credentials = mock<Credentials> { on { it.token } doReturn token }
+        val authResult =
+            mock<AuthResult.Success<Credentials>> { on { it.successData } doReturn credentials }
         val clientIdString = "123-abc"
-        val clientId = mock<JsonPrimitive> {
-            on { it.jsonPrimitive.content } doReturn clientIdString
-        }
+        val clientId =
+            mock<JsonPrimitive> { on { it.jsonPrimitive.content } doReturn clientIdString }
         val clientIdKey = "cid"
-        val claims = mock<JsonObject> {
-            on { it[clientIdKey] } doReturn clientId
-        }
+        val claims = mock<JsonObject> { on { it[clientIdKey] } doReturn clientId }
         whenever(credentialsProvider.getCredentials()).thenReturn(authResult)
         whenever(base64JwtDecoder.getClaims(token)).thenReturn(claims)
 
@@ -160,28 +140,20 @@ class ClientSupplierTest {
 
     @Test
     fun invokeWhenMobile() = runBlocking {
-        val resources = mock<Resources> {
-            on { getBoolean(R.bool.is_tablet) } doReturn false
-        }
+        val resources = mock<Resources> { on { getBoolean(R.bool.is_tablet) } doReturn false }
         whenever(context.resources) doReturn resources
         val version = "version"
         val clientSupplier =
             ClientSupplier(context, uiModeManager, base64JwtDecoder, credentialsProvider, version)
         val token = "token"
-        val credentials = mock<Credentials> {
-            on { it.token } doReturn token
-        }
-        val authResult = mock<AuthResult.Success<Credentials>> {
-            on { it.successData } doReturn credentials
-        }
+        val credentials = mock<Credentials> { on { it.token } doReturn token }
+        val authResult =
+            mock<AuthResult.Success<Credentials>> { on { it.successData } doReturn credentials }
         val clientIdString = "123-abc"
-        val clientId = mock<JsonPrimitive> {
-            on { it.jsonPrimitive.content } doReturn clientIdString
-        }
+        val clientId =
+            mock<JsonPrimitive> { on { it.jsonPrimitive.content } doReturn clientIdString }
         val clientIdKey = "cid"
-        val claims = mock<JsonObject> {
-            on { it[clientIdKey] } doReturn clientId
-        }
+        val claims = mock<JsonObject> { on { it[clientIdKey] } doReturn clientId }
         whenever(credentialsProvider.getCredentials()).thenReturn(authResult)
         whenever(base64JwtDecoder.getClaims(token)).thenReturn(claims)
 
@@ -203,20 +175,15 @@ class ClientSupplierTest {
 
     @Test
     fun invokeWhenMobileWithEmptyToken() = runBlocking {
-        val resources = mock<Resources> {
-            on { getBoolean(R.bool.is_tablet) } doReturn false
-        }
+        val resources = mock<Resources> { on { getBoolean(R.bool.is_tablet) } doReturn false }
         whenever(context.resources) doReturn resources
         val version = "version"
         val clientSupplier =
             ClientSupplier(context, uiModeManager, base64JwtDecoder, credentialsProvider, version)
         val token = ""
-        val credentials = mock<Credentials> {
-            on { it.token } doReturn token
-        }
-        val authResult = mock<AuthResult.Success<Credentials>> {
-            on { it.successData } doReturn credentials
-        }
+        val credentials = mock<Credentials> { on { it.token } doReturn token }
+        val authResult =
+            mock<AuthResult.Success<Credentials>> { on { it.successData } doReturn credentials }
         whenever(credentialsProvider.getCredentials()).thenReturn(authResult)
 
         val actualClient = clientSupplier.invoke()

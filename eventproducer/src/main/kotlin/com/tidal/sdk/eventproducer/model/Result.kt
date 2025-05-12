@@ -8,19 +8,17 @@ internal sealed class Result<out T> {
 
     data class Failure(val message: TidalMessage?) : Result<Nothing>()
 
-    /**
-     * Convenience function to quickly check if this result is a [Result.Success]
-     */
-    val isSuccess get() = this is Success<*>
+    /** Convenience function to quickly check if this result is a [Result.Success] */
+    val isSuccess
+        get() = this is Success<*>
+
+    /** Convenience function to quickly check if this result is a [Result.Failure] */
+    val isFailure
+        get() = this is Failure
 
     /**
-     * Convenience function to quickly check if this result is a [Result.Failure]
-     */
-    val isFailure get() = this is Failure
-
-    /**
-     * Helper property to directly access the data payload without having to
-     * safequard it in every call
+     * Helper property to directly access the data payload without having to safequard it in every
+     * call
      */
     val successData: T?
         get() {
@@ -28,12 +26,8 @@ internal sealed class Result<out T> {
         }
 }
 
-/**
- * Creates a [Result.Success] with data payload
- */
+/** Creates a [Result.Success] with data payload */
 internal fun <T> success(data: T?) = Result.Success(data)
 
-/**
- * Creates a [Result.Failure]
- */
+/** Creates a [Result.Failure] */
 internal fun failure(message: TidalMessage? = null) = Result.Failure(message)

@@ -22,11 +22,10 @@ internal class VideoPlaybackSessionPayloadMarshallingTest :
     override val endAssetPositionSeconds = 3.0
     override val payloadFactory =
         {
-                playbackSessionId: UUID,
-                assetPresentation: AssetPresentation,
-                _: AudioMode?,
-                productQuality: ProductQuality,
-            ->
+            playbackSessionId: UUID,
+            assetPresentation: AssetPresentation,
+            _: AudioMode?,
+            productQuality: ProductQuality ->
             VideoPlaybackSession.Payload(
                 playbackSessionId,
                 startTimestamp,

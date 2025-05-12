@@ -14,13 +14,14 @@ class StreamingApiModuleRoot(
     offlinePlaybackInfoProvider: OfflinePlaybackInfoProvider?,
 ) {
 
-    val streamingApi = DaggerStreamingApiComponent.factory()
-        .create(
-            okHttpClient,
-            streamingApiTimeoutConfig,
-            gson,
-            apiErrorFactory,
-            offlinePlaybackInfoProvider,
-        )
-        .streamingApi
+    val streamingApi =
+        DaggerStreamingApiComponent.factory()
+            .create(
+                okHttpClient,
+                streamingApiTimeoutConfig,
+                gson,
+                apiErrorFactory,
+                offlinePlaybackInfoProvider,
+            )
+            .streamingApi
 }

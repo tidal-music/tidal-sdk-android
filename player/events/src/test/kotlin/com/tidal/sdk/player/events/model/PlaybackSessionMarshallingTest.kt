@@ -30,15 +30,16 @@ internal abstract class PlaybackSessionMarshallingTest {
     fun testUnmarshallingPlaybackSession() {
         val src = gson.toJson(playbackSession)
 
-        val actual = gson.fromJson(
-            src,
-            when (playbackSession) {
-                is AudioPlaybackSession -> AudioPlaybackSession::class.java
-                is VideoPlaybackSession -> VideoPlaybackSession::class.java
-                is BroadcastPlaybackSession -> BroadcastPlaybackSession::class.java
-                is UCPlaybackSession -> UCPlaybackSession::class.java
-            },
-        )
+        val actual =
+            gson.fromJson(
+                src,
+                when (playbackSession) {
+                    is AudioPlaybackSession -> AudioPlaybackSession::class.java
+                    is VideoPlaybackSession -> VideoPlaybackSession::class.java
+                    is BroadcastPlaybackSession -> BroadcastPlaybackSession::class.java
+                    is UCPlaybackSession -> UCPlaybackSession::class.java
+                },
+            )
 
         assertThat(actual).isEqualTo(playbackSession)
     }

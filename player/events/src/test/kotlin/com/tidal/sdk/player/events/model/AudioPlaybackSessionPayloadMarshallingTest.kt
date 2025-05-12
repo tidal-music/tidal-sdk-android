@@ -17,27 +17,27 @@ internal class AudioPlaybackSessionPayloadMarshallingTest :
     override val actualProductId = "5"
     override val sourceType = "sourceType"
     override val sourceId = "sourceId"
-    override val actions = listOf(
-        PlaybackSession.Payload.Action(
-            1L,
-            1.0,
-            PlaybackSession.Payload.Action.Type.PLAYBACK_STOP,
-        ),
-        PlaybackSession.Payload.Action(
-            2L,
-            2.0,
-            PlaybackSession.Payload.Action.Type.PLAYBACK_START,
-        ),
-    )
+    override val actions =
+        listOf(
+            PlaybackSession.Payload.Action(
+                1L,
+                1.0,
+                PlaybackSession.Payload.Action.Type.PLAYBACK_STOP,
+            ),
+            PlaybackSession.Payload.Action(
+                2L,
+                2.0,
+                PlaybackSession.Payload.Action.Type.PLAYBACK_START,
+            ),
+        )
     override val endTimestamp = 3L
     override val endAssetPositionSeconds = 3.0
     override val payloadFactory =
         {
-                playbackSessionId: UUID,
-                assetPresentation: AssetPresentation,
-                audioMode: AudioMode,
-                productQuality: ProductQuality,
-            ->
+            playbackSessionId: UUID,
+            assetPresentation: AssetPresentation,
+            audioMode: AudioMode,
+            productQuality: ProductQuality ->
             AudioPlaybackSession.Payload(
                 playbackSessionId,
                 startTimestamp,

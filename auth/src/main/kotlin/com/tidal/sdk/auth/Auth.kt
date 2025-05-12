@@ -17,12 +17,11 @@ import com.tidal.sdk.common.logger
  * Main entry point for authentication and authorization operations. This class provides functions
  * to initialize and finalize login processes, handle device logins, and manage user credentials.
  */
-class Auth internal constructor(
-    private val loginRepository: LoginRepository,
-) {
+class Auth internal constructor(private val loginRepository: LoginRepository) {
 
     /**
      * Begins the login process by generating a URI to the login service.
+     *
      * @param redirectUri The URI to redirect to after successful login.
      * @param loginConfig Optional configuration for customizing the login process.
      * @return A URI to direct the user to for login.
@@ -39,29 +38,29 @@ class Auth internal constructor(
 
     /**
      * Initializes a device login flow, providing the necessary information for user verification.
+     *
      * @param loginResponseQuery The full, untouched, query component of the redirect URI returned
-     * by the TIDAL login service.
+     *   by the TIDAL login service.
      * @return A response containing device and user verification information.
      * @throws NetworkError If a network error occurs during the process.
      */
     suspend fun finalizeLogin(loginResponseQuery: String): AuthResult<Nothing> {
         with(loginRepository.getCredentialsFromLoginCode(loginResponseQuery)) {
             return if (this is AuthResult.Failure) {
-                failure(this.message)
-            } else {
-                success(null)
-            }.also {
-                logger.d {
-                    "finalizeLogin: loginResponseQuery: $loginResponseQuery, result: $this"
+                    failure(this.message)
+                } else {
+                    success(null)
                 }
-            }
+                .also {
+                    logger.d {
+                        "finalizeLogin: loginResponseQuery: $loginResponseQuery, result: $this"
+                    }
+                }
         }
     }
 
     suspend fun setCredentials(credentials: Credentials, refreshToken: String? = null) {
-        logger.d {
-            "setCredentials: credentials: $credentials, refreshToken: $refreshToken"
-        }
+        logger.d { "setCredentials: credentials: $credentials, refreshToken: $refreshToken" }
         loginRepository.setCredentials(credentials, refreshToken)
     }
 
@@ -72,8 +71,9 @@ class Auth internal constructor(
 
     /**
      * Initializes a device login flow, providing the necessary information for user verification.
+     *
      * @return [AuthResult] containing either a [DeviceAuthorizationResponse], or, if the operation
-     * was unsuccessful, a [NetworkError].
+     *   was unsuccessful, a [NetworkError].
      */
     suspend fun initializeDeviceLogin(): AuthResult<DeviceAuthorizationResponse> {
         return loginRepository.initializeDeviceLogin().also {
@@ -82,12 +82,12 @@ class Auth internal constructor(
     }
 
     /**
-     * Finalizes the device login flow. Polls until either a valid access token is received,
-     * or an unrecoverable error occurs.
+     * Finalizes the device login flow. Polls until either a valid access token is received, or an
+     * unrecoverable error occurs.
      *
-     * @returns [AuthResult] containing either [Nothing] when successful or a
-     * [TokenResponseError] in case the operation failed due to an unrecoverable error occurring
-     * when requesting the access token.
+     * @returns [AuthResult] containing either [Nothing] when successful or a [TokenResponseError]
+     *   in case the operation failed due to an unrecoverable error occurring when requesting the
+     *   access token.
      */
     suspend fun finalizeDeviceLogin(deviceCode: String): AuthResult<Nothing> {
         with(loginRepository.pollForDeviceLoginResponse(deviceCode)) {

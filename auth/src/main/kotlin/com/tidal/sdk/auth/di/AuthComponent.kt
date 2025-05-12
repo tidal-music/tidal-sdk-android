@@ -10,13 +10,14 @@ import kotlinx.coroutines.sync.Mutex
 
 @Singleton
 @Component(
-    modules = [
-        AuthModule::class,
-        StorageModule::class,
-        LoginModule::class,
-        NetworkModule::class,
-        CredentialsModule::class,
-    ],
+    modules =
+        [
+            AuthModule::class,
+            StorageModule::class,
+            LoginModule::class,
+            NetworkModule::class,
+            CredentialsModule::class,
+        ]
 )
 interface AuthComponent {
 

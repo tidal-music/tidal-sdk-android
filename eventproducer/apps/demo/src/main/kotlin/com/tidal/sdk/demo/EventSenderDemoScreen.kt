@@ -16,10 +16,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun EventSenderDemoScreen(onButtonClick: () -> Unit) {
     MaterialTheme {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colors.background,
-        ) {
+        Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
             Column(
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -31,9 +28,7 @@ fun EventSenderDemoScreen(onButtonClick: () -> Unit) {
                 )
                 Button(
                     modifier = Modifier.padding(vertical = 100.dp),
-                    onClick = {
-                        onButtonClick()
-                    },
+                    onClick = { onButtonClick() },
                 ) {
                     Text(text = "Generate new event")
                 }

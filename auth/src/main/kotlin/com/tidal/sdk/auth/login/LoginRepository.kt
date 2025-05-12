@@ -25,7 +25,8 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 
-internal class LoginRepository constructor(
+internal class LoginRepository
+constructor(
     private val authConfig: AuthConfig,
     private val timeProvider: TimeProvider,
     private val codeChallengeBuilder: CodeChallengeBuilder,
@@ -44,20 +45,14 @@ internal class LoginRepository constructor(
 
     private lateinit var redirectUri: String
 
-    fun getLoginUri(
-        redirectUri: String,
-        loginConfig: LoginConfig?,
-    ): String {
-        val codeChallenge = with(codeChallengeBuilder) {
-            codeVerifier = createCodeVerifier()
-            createCodeChallenge(codeVerifier!!)
-        }
+    fun getLoginUri(redirectUri: String, loginConfig: LoginConfig?): String {
+        val codeChallenge =
+            with(codeChallengeBuilder) {
+                codeVerifier = createCodeVerifier()
+                createCodeChallenge(codeVerifier!!)
+            }
         this@LoginRepository.redirectUri = redirectUri
-        return loginUriBuilder.getLoginUri(
-            redirectUri,
-            loginConfig,
-            codeChallenge,
-        )
+        return loginUriBuilder.getLoginUri(redirectUri, loginConfig, codeChallenge)
     }
 
     @Suppress("MagicNumber")
@@ -68,20 +63,17 @@ internal class LoginRepository constructor(
         }
         with(redirectData as RedirectData.Success) {
             return retryWithPolicy(exponentialBackoffPolicy) {
-                loginService.getTokenWithCodeVerifier(
-                    code = code,
-                    clientId = authConfig.clientId,
-                    grantType = GRANT_TYPE_AUTHORIZATION_CODE,
-                    redirectUri = this@LoginRepository.redirectUri,
-                    scopes = authConfig.scopes.toScopesString(),
-                    codeVerifier = requireNotNull(codeVerifier),
-                    clientUniqueKey = authConfig.clientUniqueKey,
-                )
-            }.also {
-                it.successData?.let { response ->
-                    saveTokensAndNotifyBus(response)
+                    loginService.getTokenWithCodeVerifier(
+                        code = code,
+                        clientId = authConfig.clientId,
+                        grantType = GRANT_TYPE_AUTHORIZATION_CODE,
+                        redirectUri = this@LoginRepository.redirectUri,
+                        scopes = authConfig.scopes.toScopesString(),
+                        codeVerifier = requireNotNull(codeVerifier),
+                        clientUniqueKey = authConfig.clientUniqueKey,
+                    )
                 }
-            }
+                .also { it.successData?.let { response -> saveTokensAndNotifyBus(response) } }
         }
     }
 
@@ -90,10 +82,7 @@ internal class LoginRepository constructor(
             tokenMutex.withLock {
                 val storedTokens = tokensStore.getLatestTokens(authConfig.credentialsKey)
                 if (credentials != storedTokens?.credentials) {
-                    val tokens = Tokens(
-                        credentials,
-                        refreshToken ?: storedTokens?.refreshToken,
-                    )
+                    val tokens = Tokens(credentials, refreshToken ?: storedTokens?.refreshToken)
                     tokensStore.saveTokens(tokens)
                     bus.emit(CredentialsUpdatedMessage(tokens.credentials))
                 }
@@ -102,18 +91,20 @@ internal class LoginRepository constructor(
     }
 
     private suspend fun saveTokensAndNotifyBus(response: LoginResponse) {
-        val tokens = Tokens(
-            credentials = Credentials(
-                authConfig.clientId,
-                authConfig.scopes,
-                authConfig.clientUniqueKey,
-                response.scopesString.split(", ").toSet(),
-                response.userId?.toString(),
-                timeProvider.now + response.expiresIn.toLong(),
-                response.accessToken,
-            ),
-            refreshToken = response.refreshToken,
-        )
+        val tokens =
+            Tokens(
+                credentials =
+                    Credentials(
+                        authConfig.clientId,
+                        authConfig.scopes,
+                        authConfig.clientUniqueKey,
+                        response.scopesString.split(", ").toSet(),
+                        response.userId?.toString(),
+                        timeProvider.now + response.expiresIn.toLong(),
+                        response.accessToken,
+                    ),
+                refreshToken = response.refreshToken,
+            )
         tokensStore.saveTokens(tokens)
         bus.emit(CredentialsUpdatedMessage(tokens.credentials))
     }
@@ -123,28 +114,18 @@ internal class LoginRepository constructor(
         bus.emit(CredentialsUpdatedMessage())
     }
 
-    suspend fun initializeDeviceLogin(): AuthResult<DeviceAuthorizationResponse> = retryWithPolicy(
-        retryPolicy = exponentialBackoffPolicy
-    ) {
-        loginService.getDeviceAuthorization(
-            authConfig.clientId,
-            authConfig.scopes.toScopesString(),
-        ).also {
-            deviceLoginPollHelper.prepareForPoll(it.interval, it.expiresIn)
+    suspend fun initializeDeviceLogin(): AuthResult<DeviceAuthorizationResponse> =
+        retryWithPolicy(retryPolicy = exponentialBackoffPolicy) {
+            loginService
+                .getDeviceAuthorization(authConfig.clientId, authConfig.scopes.toScopesString())
+                .also { deviceLoginPollHelper.prepareForPoll(it.interval, it.expiresIn) }
         }
-    }
 
     suspend fun pollForDeviceLoginResponse(deviceCode: String): AuthResult<Nothing> {
-        val pollResult = deviceLoginPollHelper.poll(
-            authConfig,
-            deviceCode,
-            GRANT_TYPE_DEVICE_CODE,
-            exponentialBackoffPolicy,
-        ).also {
-            it.successData?.let { response ->
-                saveTokensAndNotifyBus(response)
-            }
-        }
+        val pollResult =
+            deviceLoginPollHelper
+                .poll(authConfig, deviceCode, GRANT_TYPE_DEVICE_CODE, exponentialBackoffPolicy)
+                .also { it.successData?.let { response -> saveTokensAndNotifyBus(response) } }
         return when (pollResult) {
             is AuthResult.Success -> {
                 AuthResult.Success(null)
@@ -153,9 +134,7 @@ internal class LoginRepository constructor(
             is AuthResult.Failure -> {
                 AuthResult.Failure(pollResult.message)
             }
-        }.also {
-            logger.d { "finalizeDeviceLogin: deviceCode: $deviceCode, result: $it" }
-        }
+        }.also { logger.d { "finalizeDeviceLogin: deviceCode: $deviceCode, result: $it" } }
     }
 
     companion object {

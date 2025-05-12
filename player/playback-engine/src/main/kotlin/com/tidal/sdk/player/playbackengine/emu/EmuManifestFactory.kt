@@ -5,8 +5,8 @@ import com.tidal.sdk.player.commonandroid.Base64Codec
 import java.nio.charset.Charset
 
 /**
- * Create [EmuManifest] from our encoded [String] manifest, decoded with the provided
- * [base64Codec], then parsed with the provided [gson] instance.
+ * Create [EmuManifest] from our encoded [String] manifest, decoded with the provided [base64Codec],
+ * then parsed with the provided [gson] instance.
  */
 internal class EmuManifestFactory(private val gson: Gson, private val base64Codec: Base64Codec) {
 

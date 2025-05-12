@@ -11,7 +11,7 @@ import org.junit.jupiter.params.provider.NullSource
 import org.junit.jupiter.params.provider.ValueSource
 
 internal abstract class NotStartedPlaybackStatisticsPayloadMarshallingTest(
-    override val productType: ProductType,
+    override val productType: ProductType
 ) : PlaybackStatisticsPayloadMarshallingTest() {
 
     override val streamingSessionId = "streamingSessionId"
@@ -23,17 +23,16 @@ internal abstract class NotStartedPlaybackStatisticsPayloadMarshallingTest(
     override val endTimestamp = -1L
     override val payloadFactory =
         {
-                _: Long?,
-                _: StreamType?,
-                _: AssetPresentation?,
-                _: AudioMode?,
-                _: ProductQuality?,
-                _: MediaStorage?,
-                endReason: EndReason,
-                _: String?,
-                errorMessage: String?,
-                errorCode: String?,
-            ->
+            _: Long?,
+            _: StreamType?,
+            _: AssetPresentation?,
+            _: AudioMode?,
+            _: ProductQuality?,
+            _: MediaStorage?,
+            endReason: EndReason,
+            _: String?,
+            errorMessage: String?,
+            errorCode: String? ->
             NotStartedPlaybackStatistics.Payload(
                 streamingSessionId,
                 idealStartTimestamp,

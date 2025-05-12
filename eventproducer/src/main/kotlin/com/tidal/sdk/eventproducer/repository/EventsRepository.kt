@@ -19,7 +19,9 @@ import javax.inject.Singleton
 
 @Singleton
 @Suppress("TooManyFunctions")
-internal class EventsRepository @Inject constructor(
+internal class EventsRepository
+@Inject
+constructor(
     private val eventsLocalDataSource: EventsLocalDataSource,
     private val monitoringLocalDataSource: MonitoringLocalDataSource,
     private val repositoryHelper: RepositoryHelper,
@@ -27,9 +29,7 @@ internal class EventsRepository @Inject constructor(
     private val sqsService: SqsService,
 ) {
 
-    /**
-     * Adds event to local database only if database limit size hasn't been reached
-     */
+    /** Adds event to local database only if database limit size hasn't been reached */
     fun insertEvent(event: Event) {
         if (repositoryHelper.isDatabaseLimitReached()) {
             registerEventStoringFailed(event.name)
@@ -39,12 +39,7 @@ internal class EventsRepository @Inject constructor(
     }
 
     private fun registerEventStoringFailed(eventName: String) {
-        storeNewMonitoringEvent(
-            MonitoringEvent(
-                MonitoringEventType.EventStoringFailed,
-                eventName,
-            ),
-        )
+        storeNewMonitoringEvent(MonitoringEvent(MonitoringEventType.EventStoringFailed, eventName))
         EventProducer.instance?.startOutage()
     }
 
@@ -83,27 +78,32 @@ internal class EventsRepository @Inject constructor(
     }
 
     private fun MonitoringInfo.updateWithEvent(event: MonitoringEvent): MonitoringInfo {
-        val updatedInfo = when (event.type) {
-            MonitoringEventType.EventStoringFailed -> this.copy(
-                consentFilteredEvents = this.consentFilteredEvents,
-                validationFailedEvents = this.validationFailedEvents,
-                storingFailedEvents = this.storingFailedEvents.bumpValueForKeyByOne(event.name),
-            )
+        val updatedInfo =
+            when (event.type) {
+                MonitoringEventType.EventStoringFailed ->
+                    this.copy(
+                        consentFilteredEvents = this.consentFilteredEvents,
+                        validationFailedEvents = this.validationFailedEvents,
+                        storingFailedEvents =
+                            this.storingFailedEvents.bumpValueForKeyByOne(event.name),
+                    )
 
-            MonitoringEventType.EventValidationFailed -> this.copy(
-                consentFilteredEvents = this.consentFilteredEvents,
-                validationFailedEvents = this.validationFailedEvents.bumpValueForKeyByOne(
-                    event.name,
-                ),
-                storingFailedEvents = this.storingFailedEvents,
-            )
+                MonitoringEventType.EventValidationFailed ->
+                    this.copy(
+                        consentFilteredEvents = this.consentFilteredEvents,
+                        validationFailedEvents =
+                            this.validationFailedEvents.bumpValueForKeyByOne(event.name),
+                        storingFailedEvents = this.storingFailedEvents,
+                    )
 
-            MonitoringEventType.EventConsentFiltered -> this.copy(
-                consentFilteredEvents = this.consentFilteredEvents.bumpValueForKeyByOne(event.name),
-                validationFailedEvents = this.validationFailedEvents,
-                storingFailedEvents = this.storingFailedEvents,
-            )
-        }
+                MonitoringEventType.EventConsentFiltered ->
+                    this.copy(
+                        consentFilteredEvents =
+                            this.consentFilteredEvents.bumpValueForKeyByOne(event.name),
+                        validationFailedEvents = this.validationFailedEvents,
+                        storingFailedEvents = this.storingFailedEvents,
+                    )
+            }
         return updatedInfo
     }
 

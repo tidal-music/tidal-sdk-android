@@ -17,20 +17,16 @@ internal fun Int.toMilliseconds() = this * MILLIS_MULTIPLIER
 
 internal fun HttpException.isClientError(): Boolean {
     return (HTTP_CLIENT_ERROR_STATUS_START until HTTP_SERVER_ERROR_STATUS_START).contains(
-        this.code(),
+        this.code()
     )
 }
 
 internal fun HttpException.isServerError(): Boolean {
-    return (HTTP_SERVER_ERROR_STATUS_START until HTTP_STATUS_END).contains(
-        this.code(),
-    )
+    return (HTTP_SERVER_ERROR_STATUS_START until HTTP_STATUS_END).contains(this.code())
 }
 
 internal fun Int.isServerError(): Boolean {
-    return (HTTP_SERVER_ERROR_STATUS_START until HTTP_STATUS_END).contains(
-        this,
-    )
+    return (HTTP_SERVER_ERROR_STATUS_START until HTTP_STATUS_END).contains(this)
 }
 
 @Suppress("SwallowedException")

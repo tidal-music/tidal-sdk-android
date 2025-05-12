@@ -29,23 +29,24 @@ internal class DefaultEventReporterTest {
     private val defaultEventReporter =
         DefaultEventReporter(eventFactories, eventSender, gson, coroutineScope)
 
-    @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(eventFactories, eventSender, gson)
+    @AfterEach fun afterEach() = verifyNoMoreInteractions(eventFactories, eventSender, gson)
 
     @Test
     fun report() = runTest {
         val name = "eventName"
         val consentCategory = mock<ConsentCategory>()
-        val event = mock<AudioPlaybackSession> {
-            on { it.name } doReturn name
-            on { it.consentCategory } doReturn consentCategory
-        }
+        val event =
+            mock<AudioPlaybackSession> {
+                on { it.name } doReturn name
+                on { it.consentCategory } doReturn consentCategory
+            }
         val jsonString = "event json"
         whenever(gson.toJson(event)) doReturn jsonString
         val payload = mock<AudioPlaybackSession.Payload>()
-        val eventFactory = mock<EventFactory<Event.Payload>> {
-            on { runBlocking { invoke(payload, emptyMap()) } } doReturn event
-        }
+        val eventFactory =
+            mock<EventFactory<Event.Payload>> {
+                on { runBlocking { invoke(payload, emptyMap()) } } doReturn event
+            }
         whenever(eventFactories[payload::class.java]) doReturn eventFactory
 
         defaultEventReporter.report(payload, emptyMap())

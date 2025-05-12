@@ -49,39 +49,32 @@ import kotlinx.coroutines.launch
 @Suppress("MagicNumber")
 internal class MainActivityViewModel(context: Context) : ViewModel() {
 
-    private val tidalAuth = TidalAuth.getInstance(
-        AuthConfig(
-            clientId = BuildConfig.TIDAL_CLIENT_ID,
-            clientSecret = BuildConfig.TIDAL_CLIENT_SECRET,
-            scopes = BuildConfig.TIDAL_CLIENT_SCOPES.split(" ").toSet(),
-            credentialsKey = "com.tidal.sdk.player",
-            enableCertificatePinning = false,
-        ),
-        context.applicationContext,
-    )
+    private val tidalAuth =
+        TidalAuth.getInstance(
+            AuthConfig(
+                clientId = BuildConfig.TIDAL_CLIENT_ID,
+                clientSecret = BuildConfig.TIDAL_CLIENT_SECRET,
+                scopes = BuildConfig.TIDAL_CLIENT_SCOPES.split(" ").toSet(),
+                credentialsKey = "com.tidal.sdk.player",
+                enableCertificatePinning = false,
+            ),
+            context.applicationContext,
+        )
     val credentialsProvider by tidalAuth::credentialsProvider
     val uiState by lazy { _uiState.asStateFlow() }
     private val deriveUiState = DeriveUiState()
-    private val _uiState by lazy {
-        MutableStateFlow(deriveUiState(state))
-    }
+    private val _uiState by lazy { MutableStateFlow(deriveUiState(state)) }
     private val authLoginUri: Uri
-        get() = tidalAuth.auth.initializeLogin(
-            BuildConfig.TIDAL_CLIENT_REDIRECT_URI,
-            LoginConfig(
-                customParams = setOf(
-                    QueryParameter(
-                        key = "appMode",
-                        value = "android",
-                    ),
+        get() =
+            tidalAuth.auth.initializeLogin(
+                BuildConfig.TIDAL_CLIENT_REDIRECT_URI,
+                LoginConfig(
+                    customParams = setOf(QueryParameter(key = "appMode", value = "android"))
                 ),
-            ),
-        )
-    private var state: MainActivityViewModelState = AwaitingLoginFlowChoice(
-        null,
-        credentialsProvider.isUserLoggedIn(),
-        authLoginUri,
-    )
+            )
+
+    private var state: MainActivityViewModelState =
+        AwaitingLoginFlowChoice(null, credentialsProvider.isUserLoggedIn(), authLoginUri)
         set(value) {
             synchronized(this@MainActivityViewModel) {
                 if (field === value) {
@@ -99,10 +92,7 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
                 if (it !is CredentialsUpdatedMessage) return@collect
                 if (it.credentials == null) {
                     dispatch(
-                        Operation.Impure.LogOut(
-                            this@MainActivityViewModel,
-                            credentialsProvider,
-                        ),
+                        Operation.Impure.LogOut(this@MainActivityViewModel, credentialsProvider)
                     )
                 } else {
                     state = state.castAndCopy()
@@ -112,15 +102,13 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
     }
 
     fun <T : MainActivityViewModelState> dispatch(
-        operation: Operation<T, MainActivityViewModelState>,
+        operation: Operation<T, MainActivityViewModelState>
     ) {
         viewModelScope.launch(Dispatchers.IO) { state = operation(state as T) }
     }
 
-    sealed class Operation<
-        T : MainActivityViewModelState,
-        out V : MainActivityViewModelState,
-        > private constructor() {
+    sealed class Operation<T : MainActivityViewModelState, out V : MainActivityViewModelState>
+    private constructor() {
 
         abstract suspend operator fun invoke(state: T): V
 
@@ -143,9 +131,7 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
             sealed class Seek : Pure<PlayerInitialized>() {
 
                 override suspend fun invokePure(state: PlayerInitialized) {
-                    state.player.playbackEngine.apply {
-                        seek(targetPositionMs(this))
-                    }
+                    state.player.playbackEngine.apply { seek(targetPositionMs(this)) }
                 }
 
                 abstract fun targetPositionMs(playbackEngine: PlaybackEngine): Float
@@ -204,23 +190,24 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
 
                 @Suppress("LongMethod", "MaxLineLength", "ktlint:standard:max-line-length")
                 override suspend operator fun invoke(
-                    state: MainActivityViewModelState,
+                    state: MainActivityViewModelState
                 ): PlayerInitializing {
-                    mainActivityViewModel.viewModelScope
-                        .launch(Dispatchers.IO) {
-                            val player = Player(
+                    mainActivityViewModel.viewModelScope.launch(Dispatchers.IO) {
+                        val player =
+                            Player(
                                 context.applicationContext as Application,
                                 mainActivityViewModel.credentialsProvider,
                                 EventProducer.getInstance(
-                                    mainActivityViewModel.credentialsProvider,
-                                    EventsConfig(
-                                        Int.MAX_VALUE,
-                                        emptySet(),
-                                        "player-sample-${BuildConfig.VERSION_NAME}",
-                                    ),
-                                    context,
-                                    CoroutineScope(Dispatchers.IO)
-                                ).eventSender,
+                                        mainActivityViewModel.credentialsProvider,
+                                        EventsConfig(
+                                            Int.MAX_VALUE,
+                                            emptySet(),
+                                            "player-sample-${BuildConfig.VERSION_NAME}",
+                                        ),
+                                        context,
+                                        CoroutineScope(Dispatchers.IO),
+                                    )
+                                    .eventSender,
                                 userClientIdSupplier = { 1 },
                                 isOfflineMode = isOfflineMode,
                                 isDebuggable = BuildConfig.DEBUG,
@@ -228,19 +215,17 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
                                 version = "player-sample-${BuildConfig.VERSION_NAME}",
                             )
 
-                            mainActivityViewModel.state = PlayerInitialized(
+                        mainActivityViewModel.state =
+                            PlayerInitialized(
                                 player = player,
-                                eventCollectionJob = mainActivityViewModel.viewModelScope.launch {
-                                    player.playbackEngine
-                                        .events
-                                        .collect(
-                                            PlaybackEngineEventCollector(
-                                                mainActivityViewModel,
-                                            ),
+                                eventCollectionJob =
+                                    mainActivityViewModel.viewModelScope.launch {
+                                        player.playbackEngine.events.collect(
+                                            PlaybackEngineEventCollector(mainActivityViewModel)
                                         )
-                                },
-                                itemPositionPollingJob = mainActivityViewModel.viewModelScope
-                                    .launch {
+                                    },
+                                itemPositionPollingJob =
+                                    mainActivityViewModel.viewModelScope.launch {
                                         while (true) {
                                             mainActivityViewModel.state =
                                                 mainActivityViewModel.state.castAndCopy()
@@ -254,14 +239,14 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
                                 snackbarMessage = null,
                                 draggedPositionSeconds = null,
                                 streamingAudioQualityCellular =
-                                player.playbackEngine.streamingCellularAudioQuality,
+                                    player.playbackEngine.streamingCellularAudioQuality,
                                 streamingAudioQualityWifi =
-                                player.playbackEngine.streamingWifiAudioQuality,
-                                loudnessNormalizationMode = player.playbackEngine
-                                    .loudnessNormalizationMode,
-                                immersiveAudio = player.playbackEngine.immersiveAudio
+                                    player.playbackEngine.streamingWifiAudioQuality,
+                                loudnessNormalizationMode =
+                                    player.playbackEngine.loudnessNormalizationMode,
+                                immersiveAudio = player.playbackEngine.immersiveAudio,
                             )
-                        }
+                    }
 
                     return PlayerInitializing(state.snackbarMessage)
                 }
@@ -300,11 +285,7 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
 
                 override suspend operator fun invoke(state: PlayerInitialized): PlayerInitialized {
                     state.player.playbackEngine.reset()
-                    return state.copy(
-                        current = null,
-                        next = null,
-                        isRepeatOneEnabled = false,
-                    )
+                    return state.copy(current = null, next = null, isRepeatOneEnabled = false)
                 }
             }
 
@@ -363,7 +344,7 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
             }
 
             class SetLoudnessNormalizationMode(
-                private val loudnessNormalizationMode: LoudnessNormalizationMode,
+                private val loudnessNormalizationMode: LoudnessNormalizationMode
             ) : Impure<PlayerInitialized, PlayerInitialized>() {
 
                 override suspend operator fun invoke(state: PlayerInitialized): PlayerInitialized {
@@ -392,7 +373,7 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
             }
 
             class SetVideoSurfaceView(
-                private val aspectRatioAdjustingSurfaceView: AspectRatioAdjustingSurfaceView?,
+                private val aspectRatioAdjustingSurfaceView: AspectRatioAdjustingSurfaceView?
             ) : Impure<PlayerInitialized, PlayerInitialized>() {
 
                 override suspend operator fun invoke(state: PlayerInitialized): PlayerInitialized {
@@ -403,11 +384,12 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
 
             data object Release : Impure<PlayerInitialized, PlayerReleasing.FromRequest>() {
 
-                override suspend operator fun invoke(state: PlayerInitialized) = state.run {
-                    itemPositionPollingJob.cancel()
-                    player.release()
-                    PlayerReleasing.FromRequest(null, eventCollectionJob, cacheProvider)
-                }
+                override suspend operator fun invoke(state: PlayerInitialized) =
+                    state.run {
+                        itemPositionPollingJob.cancel()
+                        player.release()
+                        PlayerReleasing.FromRequest(null, eventCollectionJob, cacheProvider)
+                    }
             }
 
             sealed class FinalizeLoginFlow(
@@ -420,7 +402,7 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
                         finalize()
                         mainActivityViewModel.state =
                             CreatePlayer.WithInternalCache(context, mainActivityViewModel, false)(
-                                mainActivityViewModel.state,
+                                mainActivityViewModel.state
                             )
                     }
                     return LoggingIn(state.snackbarMessage)
@@ -435,7 +417,7 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
                 ) : FinalizeLoginFlow(context, mainActivityViewModel) {
                     override suspend fun finalize() {
                         mainActivityViewModel.tidalAuth.auth.finalizeLogin(
-                            requireNotNull(loginResponseUri.query),
+                            requireNotNull(loginResponseUri.query)
                         )
                     }
                 }
@@ -457,22 +439,23 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
 
                 @Suppress("MaxLineLength", "ktlint:standard:max-line-length")
                 override suspend fun invoke(
-                    state: MainActivityViewModelState,
-                ): MainActivityViewModelState = if (state is PlayerInitialized) {
-                    Release(state).run {
-                        PlayerReleasing.FromLogOut(
-                            snackbarMessage,
-                            eventCollectionJob,
-                            cacheProvider,
+                    state: MainActivityViewModelState
+                ): MainActivityViewModelState =
+                    if (state is PlayerInitialized) {
+                        Release(state).run {
+                            PlayerReleasing.FromLogOut(
+                                snackbarMessage,
+                                eventCollectionJob,
+                                cacheProvider,
+                            )
+                        }
+                    } else {
+                        AwaitingLoginFlowChoice(
+                            state.snackbarMessage,
+                            credentialsProvider.isUserLoggedIn(),
+                            viewModel.authLoginUri,
                         )
                     }
-                } else {
-                    AwaitingLoginFlowChoice(
-                        state.snackbarMessage,
-                        credentialsProvider.isUserLoggedIn(),
-                        viewModel.authLoginUri,
-                    )
-                }
             }
         }
     }
@@ -494,10 +477,8 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
                 is Event.MediaProductTransition -> {
                     val state = mainActivityViewModel.state as PlayerInitialized
                     if (value.mediaProduct.referenceId != state.current?.referenceId) {
-                        mainActivityViewModel.state = state.copy(
-                            current = value.mediaProduct,
-                            next = null,
-                        )
+                        mainActivityViewModel.state =
+                            state.copy(current = value.mediaProduct, next = null)
                     }
                 }
 
@@ -510,52 +491,56 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
                     val state = mainActivityViewModel.state as PlayerReleasing
                     state.eventCollectionJob.cancel()
                     (state.cacheProvider as? CacheProvider.External)?.cache?.release()
-                    mainActivityViewModel.state = when (state) {
-                        is PlayerReleasing.FromRequest ->
-                            PlayerNotInitialized(state.snackbarMessage)
+                    mainActivityViewModel.state =
+                        when (state) {
+                            is PlayerReleasing.FromRequest ->
+                                PlayerNotInitialized(state.snackbarMessage)
 
-                        is PlayerReleasing.FromLogOut -> AwaitingLoginFlowChoice(
-                            state.snackbarMessage,
-                            mainActivityViewModel.credentialsProvider.isUserLoggedIn(),
-                            mainActivityViewModel.authLoginUri,
-                        )
-                    }
+                            is PlayerReleasing.FromLogOut ->
+                                AwaitingLoginFlowChoice(
+                                    state.snackbarMessage,
+                                    mainActivityViewModel.credentialsProvider.isUserLoggedIn(),
+                                    mainActivityViewModel.authLoginUri,
+                                )
+                        }
                 }
 
                 is Event.Error -> {
                     val state = mainActivityViewModel.state as PlayerInitialized
-                    mainActivityViewModel.state = state.copy(
-                        snackbarMessage =
-                        "${value.javaClass.simpleName}(${value::errorCode.name}=" +
-                            "${value.errorCode})",
-                    )
+                    mainActivityViewModel.state =
+                        state.copy(
+                            snackbarMessage =
+                                "${value.javaClass.simpleName}(${value::errorCode.name}=" +
+                                    "${value.errorCode})"
+                        )
                 }
 
                 is Event.StreamingPrivilegesRevoked,
-                is Event.DjSessionUpdate,
-                -> {
+                is Event.DjSessionUpdate -> {
                     val state = mainActivityViewModel.state as PlayerInitialized
                     mainActivityViewModel.state = state.copy(snackbarMessage = value.toString())
                 }
 
                 else ->
-                    mainActivityViewModel.state = (mainActivityViewModel.state as PlayerInitialized)
-                        .copy()
+                    mainActivityViewModel.state =
+                        (mainActivityViewModel.state as PlayerInitialized).copy()
             }
         }
     }
 }
 
 private fun <T : MainActivityViewModelState> T.castAndCopy(
-    snackbarMessage: String? = this.snackbarMessage,
-) = (this as MainActivityViewModelState).run {
-    when (this) {
-        is AwaitingLoginFlowChoice -> copy(snackbarMessage = snackbarMessage)
-        is LoggingIn -> copy(snackbarMessage = snackbarMessage)
-        is PlayerReleasing.FromRequest -> copy(snackbarMessage = snackbarMessage)
-        is PlayerReleasing.FromLogOut -> copy(snackbarMessage = snackbarMessage)
-        is PlayerNotInitialized -> copy(snackbarMessage = snackbarMessage)
-        is PlayerInitialized -> copy(snackbarMessage = snackbarMessage)
-        is PlayerInitializing -> copy(snackbarMessage = snackbarMessage)
-    } as T
-}
+    snackbarMessage: String? = this.snackbarMessage
+) =
+    (this as MainActivityViewModelState).run {
+        when (this) {
+            is AwaitingLoginFlowChoice -> copy(snackbarMessage = snackbarMessage)
+            is LoggingIn -> copy(snackbarMessage = snackbarMessage)
+            is PlayerReleasing.FromRequest -> copy(snackbarMessage = snackbarMessage)
+            is PlayerReleasing.FromLogOut -> copy(snackbarMessage = snackbarMessage)
+            is PlayerNotInitialized -> copy(snackbarMessage = snackbarMessage)
+            is PlayerInitialized -> copy(snackbarMessage = snackbarMessage)
+            is PlayerInitializing -> copy(snackbarMessage = snackbarMessage)
+        }
+            as T
+    }

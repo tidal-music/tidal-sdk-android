@@ -21,7 +21,9 @@ import kotlinx.coroutines.launch
 
 private sealed class State {
     data object Init : State()
+
     class Link(val response: DeviceAuthorizationResponse) : State()
+
     data object Done : State()
 }
 
@@ -31,9 +33,7 @@ fun DeviceLoginScreen() {
     val scope = rememberCoroutineScope()
     val state = remember { mutableStateOf<State>(State.Init) }
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.Black),
+        modifier = Modifier.fillMaxSize().background(Color.Black),
         contentAlignment = Alignment.Center,
     ) {
         when (state.value) {
@@ -43,9 +43,9 @@ fun DeviceLoginScreen() {
                         activity.initializeDeviceLogin().successData?.let {
                             state.value = State.Link(it)
                         }
-                            ?: getLoggerByName(
-                                "DeviceLoginScreen"
-                            ).d { "error initiating device login" }
+                            ?: getLoggerByName("DeviceLoginScreen").d {
+                                "error initiating device login"
+                            }
                     }
                 }
             }
@@ -54,39 +54,24 @@ fun DeviceLoginScreen() {
                 with((state.value as State.Link).response) {
                     LinkUI(this.verificationUri, this.userCode)
                     val deviceCode = this.deviceCode
-                    scope.launch {
-                        activity.finalizeDeviceLogin(deviceCode)
-                    }
+                    scope.launch { activity.finalizeDeviceLogin(deviceCode) }
                 }
             }
 
-            is State.Done -> {
-            }
+            is State.Done -> {}
         }
     }
 }
 
 @Composable
 fun InitUI(onClick: () -> Unit) {
-    Column {
-        Button(
-            onClick = onClick,
-        ) {
-            Text(text = "Start Device Login")
-        }
-    }
+    Column { Button(onClick = onClick) { Text(text = "Start Device Login") } }
 }
 
 @Composable
 fun LinkUI(uri: String, code: String) {
     Column {
-        Text(
-            text = "$code",
-            color = Color.White,
-        )
-        Text(
-            text = "$uri",
-            color = Color.White,
-        )
+        Text(text = "$code", color = Color.White)
+        Text(text = "$uri", color = Color.White)
     }
 }

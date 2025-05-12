@@ -13,7 +13,9 @@ import dagger.assisted.AssistedInject
 import java.util.UUID
 
 @Keep
-data class BroadcastPlaybackStatistics @AssistedInject internal constructor(
+data class BroadcastPlaybackStatistics
+@AssistedInject
+internal constructor(
     @Assisted override val ts: Long,
     @Assisted override val uuid: UUID,
     @Assisted override val user: User,

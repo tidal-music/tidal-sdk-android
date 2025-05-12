@@ -2,9 +2,7 @@ package com.tidal.sdk.player.commonandroid
 
 import android.util.Base64
 
-/**
- * This will decode a Base64-encoded byte array into a Base64-decoded byte array, or vice versa.
- */
+/** This will decode a Base64-encoded byte array into a Base64-decoded byte array, or vice versa. */
 class Base64Codec {
 
     fun decode(input: ByteArray, flags: Int = Base64.DEFAULT): ByteArray =

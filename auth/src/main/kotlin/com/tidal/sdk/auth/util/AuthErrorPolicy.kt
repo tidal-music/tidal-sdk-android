@@ -9,15 +9,12 @@ import com.tidal.sdk.common.UnexpectedError
 import retrofit2.HttpException
 
 /**
- * Implement this interface to create a handler to transform [Throwable] or [ErrorResponse]
- * thrown while executing [retryWithPolicy] into an [AuthResult]
+ * Implement this interface to create a handler to transform [Throwable] or [ErrorResponse] thrown
+ * while executing [retryWithPolicy] into an [AuthResult]
  */
 internal interface AuthErrorPolicy {
 
-    fun <T> handleError(
-        errorResponse: ErrorResponse?,
-        throwable: Throwable?,
-    ): AuthResult<T>
+    fun <T> handleError(errorResponse: ErrorResponse?, throwable: Throwable?): AuthResult<T>
 }
 
 internal class DefaultAuthErrorPolicy : AuthErrorPolicy {
@@ -31,21 +28,11 @@ internal class DefaultAuthErrorPolicy : AuthErrorPolicy {
                 is HttpException -> {
                     val subStatus = getErrorResponse()?.subStatus
                     when {
-                        isClientError() -> failure(
-                            UnexpectedError(
-                                code().toString(),
-                                subStatus,
-                                this,
-                            ),
-                        )
+                        isClientError() ->
+                            failure(UnexpectedError(code().toString(), subStatus, this))
 
-                        isServerError() -> failure(
-                            RetryableError(
-                                code().toString(),
-                                subStatus,
-                                this,
-                            ),
-                        )
+                        isServerError() ->
+                            failure(RetryableError(code().toString(), subStatus, this))
 
                         else -> failure(NetworkError("1", this))
                     }

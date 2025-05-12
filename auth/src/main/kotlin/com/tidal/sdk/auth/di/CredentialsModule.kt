@@ -41,14 +41,15 @@ internal class CredentialsModule {
         @Named("upgrade") upgradeBackoffPolicy: RetryPolicy,
         mutex: Mutex,
         bus: MutableSharedFlow<TidalMessage>,
-    ) = TokenRepository(
-        authConfig,
-        timeProvider,
-        tokensStore,
-        tokenService,
-        defaultBackoffPolicy,
-        upgradeBackoffPolicy,
-        mutex,
-        bus,
-    )
+    ) =
+        TokenRepository(
+            authConfig,
+            timeProvider,
+            tokensStore,
+            tokenService,
+            defaultBackoffPolicy,
+            upgradeBackoffPolicy,
+            mutex,
+            bus,
+        )
 }

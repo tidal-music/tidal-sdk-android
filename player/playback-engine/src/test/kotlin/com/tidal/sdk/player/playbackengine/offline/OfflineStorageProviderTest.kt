@@ -16,16 +16,18 @@ internal class OfflineStorageProviderTest {
     private val offlinePlayDataSourceFactoryHelper = mock<OfflinePlayDataSourceFactoryHelper>()
     private val offlinePlayDrmDataSourceFactoryHelper =
         mock<OfflinePlayDrmDataSourceFactoryHelper>()
-    private val offlineStorageProvider = OfflineStorageProvider(
-        offlinePlayDataSourceFactoryHelper,
-        offlinePlayDrmDataSourceFactoryHelper,
-    )
+    private val offlineStorageProvider =
+        OfflineStorageProvider(
+            offlinePlayDataSourceFactoryHelper,
+            offlinePlayDrmDataSourceFactoryHelper,
+        )
 
     @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(
-        offlinePlayDataSourceFactoryHelper,
-        offlinePlayDrmDataSourceFactoryHelper,
-    )
+    fun afterEach() =
+        verifyNoMoreInteractions(
+            offlinePlayDataSourceFactoryHelper,
+            offlinePlayDrmDataSourceFactoryHelper,
+        )
 
     @Test
     fun getDataSourceFactoryForOfflinePlayFromInternalAndNotProtected() {

@@ -33,30 +33,34 @@ import org.junit.jupiter.api.extension.ExtendWith
  */
 internal class StreamingApiDefaultTest {
 
-    @get:ExtendWith
-    val server = MockWebServer()
+    @get:ExtendWith val server = MockWebServer()
 
     private lateinit var streamingApi: StreamingApi
 
     @BeforeEach
     fun setUp() {
         val gson = Gson()
-        streamingApi = DaggerStreamingApiComponent.factory()
-            .create(
-                okHttpClient = OkHttpClient.Builder()
-                    .addInterceptor {
-                        val request = it.request()
-                        val newRequest = request.newBuilder()
-                            .url(server.url(request.url.encodedPath))
-                            .build()
-                        it.proceed(newRequest)
-                    }
-                    .build(),
-                apiErrorFactory = ApiError.Factory(gson),
-                streamingApiTimeoutConfig = StreamingApiTimeoutConfig(),
-                gson = gson,
-                offlinePlaybackInfoProvider = OfflinePlaybackInfoProviderStub(),
-            ).streamingApi
+        streamingApi =
+            DaggerStreamingApiComponent.factory()
+                .create(
+                    okHttpClient =
+                        OkHttpClient.Builder()
+                            .addInterceptor {
+                                val request = it.request()
+                                val newRequest =
+                                    request
+                                        .newBuilder()
+                                        .url(server.url(request.url.encodedPath))
+                                        .build()
+                                it.proceed(newRequest)
+                            }
+                            .build(),
+                    apiErrorFactory = ApiError.Factory(gson),
+                    streamingApiTimeoutConfig = StreamingApiTimeoutConfig(),
+                    gson = gson,
+                    offlinePlaybackInfoProvider = OfflinePlaybackInfoProviderStub(),
+                )
+                .streamingApi
     }
 
     @Test
@@ -101,9 +105,8 @@ internal class StreamingApiDefaultTest {
 
         val playbackInfo = getTrackPlaybackInfo()
 
-        assertThat(playbackInfo).isDataClassEqualTo(
-            TrackPlaybackInfoFactory.EMPTY_STREAMING_SESSION_ID,
-        )
+        assertThat(playbackInfo)
+            .isDataClassEqualTo(TrackPlaybackInfoFactory.EMPTY_STREAMING_SESSION_ID)
     }
 
     @Test
@@ -203,9 +206,8 @@ internal class StreamingApiDefaultTest {
 
         val playbackInfo = getVideoPlaybackInfo()
 
-        assertThat(playbackInfo).isDataClassEqualTo(
-            VideoPlaybackInfoFactory.EMPTY_STREAMING_SESSION_ID,
-        )
+        assertThat(playbackInfo)
+            .isDataClassEqualTo(VideoPlaybackInfoFactory.EMPTY_STREAMING_SESSION_ID)
     }
 
     @Test
@@ -223,9 +225,8 @@ internal class StreamingApiDefaultTest {
 
         val playbackInfo = getVideoPlaybackInfo()
 
-        assertThat(playbackInfo).isDataClassEqualTo(
-            VideoPlaybackInfoFactory.REPLACEMENT_VIDEO_QUALITY,
-        )
+        assertThat(playbackInfo)
+            .isDataClassEqualTo(VideoPlaybackInfoFactory.REPLACEMENT_VIDEO_QUALITY)
     }
 
     @Test
@@ -296,10 +297,11 @@ internal class StreamingApiDefaultTest {
 
         val playbackInfo = getBroadcastPlaybackInfo()
 
-        assertThat(playbackInfo).isEqualToIgnoringGivenProperties(
-            BroadcastPlaybackInfoFactory.DEFAULT,
-            PlaybackInfo.Broadcast::streamingSessionId,
-        )
+        assertThat(playbackInfo)
+            .isEqualToIgnoringGivenProperties(
+                BroadcastPlaybackInfoFactory.DEFAULT,
+                PlaybackInfo.Broadcast::streamingSessionId,
+            )
     }
 
     @Test
@@ -308,10 +310,11 @@ internal class StreamingApiDefaultTest {
 
         val playbackInfo = getBroadcastPlaybackInfo()
 
-        assertThat(playbackInfo).isEqualToIgnoringGivenProperties(
-            BroadcastPlaybackInfoFactory.REPLACEMENT_ID,
-            PlaybackInfo.Broadcast::streamingSessionId,
-        )
+        assertThat(playbackInfo)
+            .isEqualToIgnoringGivenProperties(
+                BroadcastPlaybackInfoFactory.REPLACEMENT_ID,
+                PlaybackInfo.Broadcast::streamingSessionId,
+            )
     }
 
     @Test
@@ -406,9 +409,10 @@ internal class StreamingApiDefaultTest {
 
         val drmLicense = getDrmLicense()
 
-        assertThat(drmLicense).isDataClassEqualTo(
-            DrmLicense(ApiConstants.STREAMING_SESSION_ID, ApiConstants.DRM_PAYLOAD_RESPONSE),
-        )
+        assertThat(drmLicense)
+            .isDataClassEqualTo(
+                DrmLicense(ApiConstants.STREAMING_SESSION_ID, ApiConstants.DRM_PAYLOAD_RESPONSE)
+            )
     }
 
     @Test
@@ -435,7 +439,7 @@ internal class StreamingApiDefaultTest {
                 ApiConstants.STREAMING_SESSION_ID,
                 ApiConstants.LICENSE_SECURITY_TOKEN,
                 ApiConstants.DRM_PAYLOAD_REQUEST,
-            ),
+            )
         )
     }
 }

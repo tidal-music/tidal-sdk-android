@@ -38,12 +38,13 @@ internal class PlayerDecryptedHeaderProgressiveOfflineMediaSourceFactoryTest {
         )
 
     @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(
-        progressiveMediaSourceFactoryFactory,
-        decryptedHeaderFileDataSourceFactoryFactory,
-        encryption,
-        btsManifestFactory,
-    )
+    fun afterEach() =
+        verifyNoMoreInteractions(
+            progressiveMediaSourceFactoryFactory,
+            decryptedHeaderFileDataSourceFactoryFactory,
+            encryption,
+            btsManifestFactory,
+        )
 
     @ParameterizedTest
     @MethodSource("btsManifests")
@@ -52,9 +53,10 @@ internal class PlayerDecryptedHeaderProgressiveOfflineMediaSourceFactoryTest {
         val productId = "123"
         val builtMediaItem = mock<MediaItem>()
         val expectedProgressiveMediaSource = mock<ProgressiveMediaSource>()
-        val progressiveMediaSourceFactory = mock<ProgressiveMediaSource.Factory> {
-            on { createMediaSource(builtMediaItem) } doReturn expectedProgressiveMediaSource
-        }
+        val progressiveMediaSourceFactory =
+            mock<ProgressiveMediaSource.Factory> {
+                on { createMediaSource(builtMediaItem) } doReturn expectedProgressiveMediaSource
+            }
         val decryptedHeaderFileDataSourceFactory = mock<DecryptedHeaderFileDataSourceFactory>()
         val decryptedHeader = "decryptedHeader".toByteArray()
         whenever(btsManifestFactory.create(ENCODED_MANIFEST)).thenReturn(btsManifest)
@@ -97,16 +99,17 @@ internal class PlayerDecryptedHeaderProgressiveOfflineMediaSourceFactoryTest {
 
         @JvmStatic
         @Suppress("UnusedPrivateMember")
-        private fun btsManifests() = setOf(
-            Arguments.of(BtsManifest("", listOf())),
-            Arguments.of(BtsManifest("", listOf("url"))),
-            Arguments.of(BtsManifest("", listOf("url", "url2"))),
-            Arguments.of(BtsManifest("codecs", listOf())),
-            Arguments.of(BtsManifest("codecs", listOf("url"))),
-            Arguments.of(BtsManifest("codecs", listOf("url", "url2"))),
-            Arguments.of(BtsManifest("codecs,codecs", listOf())),
-            Arguments.of(BtsManifest("codecs,codecs", listOf("url"))),
-            Arguments.of(BtsManifest("codecs,codecs", listOf("url", "url2"))),
-        )
+        private fun btsManifests() =
+            setOf(
+                Arguments.of(BtsManifest("", listOf())),
+                Arguments.of(BtsManifest("", listOf("url"))),
+                Arguments.of(BtsManifest("", listOf("url", "url2"))),
+                Arguments.of(BtsManifest("codecs", listOf())),
+                Arguments.of(BtsManifest("codecs", listOf("url"))),
+                Arguments.of(BtsManifest("codecs", listOf("url", "url2"))),
+                Arguments.of(BtsManifest("codecs,codecs", listOf())),
+                Arguments.of(BtsManifest("codecs,codecs", listOf("url"))),
+                Arguments.of(BtsManifest("codecs,codecs", listOf("url", "url2"))),
+            )
     }
 }

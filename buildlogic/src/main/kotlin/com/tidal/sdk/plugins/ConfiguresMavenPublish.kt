@@ -10,58 +10,54 @@ import org.gradle.kotlin.dsl.configure
 
 internal class ConfiguresMavenPublish : (Project) -> Unit {
 
-    override fun invoke(target: Project): Unit = with(target) {
-        pluginManager.apply(PluginId.GRADLE_MAVEN_PUBLISH_PLUGIN_ID)
-        ConfiguresGradleProjectVersion()(this)
+    override fun invoke(target: Project): Unit =
+        with(target) {
+            pluginManager.apply(PluginId.GRADLE_MAVEN_PUBLISH_PLUGIN_ID)
+            ConfiguresGradleProjectVersion()(this)
 
-        configure<MavenPublishBaseExtension> {
-            setPublishJavadoc(this@with, false)
-            publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL, automaticRelease = true)
+            configure<MavenPublishBaseExtension> {
+                setPublishJavadoc(this@with, false)
+                publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL, automaticRelease = true)
 
-            if (project.properties.hasGpgData()) {
-                signAllPublications()
-            }
-
-            val artifactId = this@with.path.toArtifactId()
-            val version = this@with.version as String
-            coordinates(SDK_GROUP_ID, artifactId, version)
-
-            pom {
-                name.set(artifactId)
-                inceptionYear.set(SDK_INCEPTION_YEAR)
-                url.set(SDK_GITHUB_URL)
-                licenses { license { apache() } }
-                scm {
-                    url.set(SDK_GITHUB_URL)
-                    connection.set(SCM_CONNECTION)
-                    developerConnection.set(
-                        SCM_DEVELOPER_CONNECTION,
-                    )
+                if (project.properties.hasGpgData()) {
+                    signAllPublications()
                 }
-                developers { developer { name.set("TIDAL") } }
-                project.gradle.projectsEvaluated {
-                    this@pom.description.set(project.properties[PROJECT_DESCRIPTION_KEY] as String?)
+
+                val artifactId = this@with.path.toArtifactId()
+                val version = this@with.version as String
+                coordinates(SDK_GROUP_ID, artifactId, version)
+
+                pom {
+                    name.set(artifactId)
+                    inceptionYear.set(SDK_INCEPTION_YEAR)
+                    url.set(SDK_GITHUB_URL)
+                    licenses { license { apache() } }
+                    scm {
+                        url.set(SDK_GITHUB_URL)
+                        connection.set(SCM_CONNECTION)
+                        developerConnection.set(SCM_DEVELOPER_CONNECTION)
+                    }
+                    developers { developer { name.set("TIDAL") } }
+                    project.gradle.projectsEvaluated {
+                        this@pom.description.set(
+                            project.properties[PROJECT_DESCRIPTION_KEY] as String?
+                        )
+                    }
                 }
             }
         }
-    }
 
-    private fun Map<String, Any?>.hasGpgData() = (
-        this.containsKey("signingInMemoryKeyId") &&
+    private fun Map<String, Any?>.hasGpgData() =
+        (this.containsKey("signingInMemoryKeyId") &&
             this.containsKey("signingInMemoryKeyPassword") &&
-            this.containsKey("signingInMemoryKey")
-        )
+            this.containsKey("signingInMemoryKey"))
 
     private fun MavenPublishBaseExtension.setPublishJavadoc(
         project: Project,
         shouldPublish: Boolean,
     ) {
         project.plugins.withId("com.android.library") {
-            configure(
-                AndroidSingleVariantLibrary(
-                    publishJavadocJar = shouldPublish,
-                ),
-            )
+            configure(AndroidSingleVariantLibrary(publishJavadocJar = shouldPublish))
         }
     }
 

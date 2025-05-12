@@ -12,9 +12,7 @@ internal class ConfiguresGradleProjectVersion : (Project) -> Unit {
         target.version = project.version
     }
 
-    /**
-     * @see [Project.getVersion]
-     */
+    /** @see [Project.getVersion] */
     private val Project.hasVersion
         get() = !(version as String).contentEquals("unspecified")
 }

@@ -41,9 +41,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 @SuppressWarnings("MaxLineLength", "TooManyFunctions")
 internal object StreamingPrivilegesModule {
 
-    @Provides
-    @Reusable
-    fun requestBuilderFactory() = RequestBuilderFactory()
+    @Provides @Reusable fun requestBuilderFactory() = RequestBuilderFactory()
 
     @Provides
     @Reusable
@@ -60,20 +58,17 @@ internal object StreamingPrivilegesModule {
 
     @Provides
     @Reusable
-    fun retrofit(
-        okHttpClient: OkHttpClient,
-        gsonConverterFactory: GsonConverterFactory,
-    ) = Retrofit.Builder()
-        .client(okHttpClient)
-        .baseUrl(Common.TIDAL_API_ENDPOINT_V1)
-        .addConverterFactory(gsonConverterFactory)
-        .build()!!
+    fun retrofit(okHttpClient: OkHttpClient, gsonConverterFactory: GsonConverterFactory) =
+        Retrofit.Builder()
+            .client(okHttpClient)
+            .baseUrl(Common.TIDAL_API_ENDPOINT_V1)
+            .addConverterFactory(gsonConverterFactory)
+            .build()!!
 
     @Provides
     @Reusable
-    fun streamingPrivilegeService(retrofit: Retrofit) = retrofit.create(
-        StreamingPrivilegesService::class.java,
-    )!!
+    fun streamingPrivilegeService(retrofit: Retrofit) =
+        retrofit.create(StreamingPrivilegesService::class.java)!!
 
     @Provides
     @Singleton
@@ -83,27 +78,18 @@ internal object StreamingPrivilegesModule {
             it.looper
         }
 
-    @Provides
-    @Reusable
-    fun networkInteractionsHandler(looper: Looper) = Handler(looper)
+    @Provides @Reusable fun networkInteractionsHandler(looper: Looper) = Handler(looper)
 
-    @Provides
-    @Reusable
-    fun systemClockWrapper() = SystemClockWrapper()
+    @Provides @Reusable fun systemClockWrapper() = SystemClockWrapper()
 
-    @Provides
-    @Singleton
-    fun mutableState() = MutableState()
+    @Provides @Singleton fun mutableState() = MutableState()
 
     @Provides
     @Reusable
     fun streamingPrivilegesNetworkCallback(
         networkInteractionsHandler: Handler,
         connectRunnable: ConnectRunnable,
-    ) = StreamingPrivilegesNetworkCallback(
-        networkInteractionsHandler,
-        connectRunnable,
-    )
+    ) = StreamingPrivilegesNetworkCallback(networkInteractionsHandler, connectRunnable)
 
     @Provides
     @Reusable
@@ -120,23 +106,31 @@ internal object StreamingPrivilegesModule {
         okHttpClient: OkHttpClient,
         streamingPrivilegesService: StreamingPrivilegesService,
         webSocketConnectionRequestFactory: WebSocketConnectionRequestFactory,
-        dumpCallbacksToHandlerWebSocketListenerFactory: DumpCallbacksToHandlerWebSocketListener.Factory, // ktlint-disable max-line-length parameter-wrapping
-        awaitingBackOffExpiryFactory: SocketConnectionState.Connecting.AwaitingBackOffExpiry.Factory, // ktlint-disable max-line-length parameter-wrapping
+        dumpCallbacksToHandlerWebSocketListenerFactory:
+            DumpCallbacksToHandlerWebSocketListener.Factory, // ktlint-disable max-line-length
+        // parameter-wrapping
+        awaitingBackOffExpiryFactory:
+            SocketConnectionState.Connecting.AwaitingBackOffExpiry.Factory, // ktlint-disable
+        // max-line-length
+        // parameter-wrapping
         forRealFactory: SocketConnectionState.Connecting.ForReal.Factory,
-        registerDefaultNetworkCallbackRunnableFactory: RegisterDefaultNetworkCallbackRunnable.Factory, // ktlint-disable max-line-length parameter-wrapping
-    ) = ConnectRunnable(
-        networkInteractionsHandler,
-        mutableState,
-        streamingPrivilegesEventDispatcher,
-        systemClockWrapper,
-        okHttpClient,
-        streamingPrivilegesService,
-        webSocketConnectionRequestFactory,
-        dumpCallbacksToHandlerWebSocketListenerFactory,
-        awaitingBackOffExpiryFactory,
-        forRealFactory,
-        registerDefaultNetworkCallbackRunnableFactory,
-    )
+        registerDefaultNetworkCallbackRunnableFactory:
+            RegisterDefaultNetworkCallbackRunnable.Factory, // ktlint-disable max-line-length
+        // parameter-wrapping
+    ) =
+        ConnectRunnable(
+            networkInteractionsHandler,
+            mutableState,
+            streamingPrivilegesEventDispatcher,
+            systemClockWrapper,
+            okHttpClient,
+            streamingPrivilegesService,
+            webSocketConnectionRequestFactory,
+            dumpCallbacksToHandlerWebSocketListenerFactory,
+            awaitingBackOffExpiryFactory,
+            forRealFactory,
+            registerDefaultNetworkCallbackRunnableFactory,
+        )
 
     @Provides
     @Reusable
@@ -157,19 +151,22 @@ internal object StreamingPrivilegesModule {
         networkInteractionsHandler: Handler,
         releaseRunnable: ReleaseRunnable,
         setKeepAliveRunnableFactory: SetKeepAliveRunnable.Factory,
-        setStreamingPrivilegesListenerRunnableFactory: SetStreamingPrivilegesListenerRunnable.Factory, // ktlint-disable max-line-length parameter-wrapping
+        setStreamingPrivilegesListenerRunnableFactory:
+            SetStreamingPrivilegesListenerRunnable.Factory, // ktlint-disable max-line-length
+        // parameter-wrapping
         acquireRunnableFactory: AcquireRunnable.Factory,
         trueTimeWrapper: TrueTimeWrapper,
         mutableState: MutableState,
-    ): StreamingPrivileges = StreamingPrivilegesDefault(
-        networkInteractionsHandler,
-        setKeepAliveRunnableFactory,
-        setStreamingPrivilegesListenerRunnableFactory,
-        releaseRunnable,
-        acquireRunnableFactory,
-        trueTimeWrapper,
-        mutableState,
-    )
+    ): StreamingPrivileges =
+        StreamingPrivilegesDefault(
+            networkInteractionsHandler,
+            setKeepAliveRunnableFactory,
+            setStreamingPrivilegesListenerRunnableFactory,
+            releaseRunnable,
+            acquireRunnableFactory,
+            trueTimeWrapper,
+            mutableState,
+        )
 
     @Provides
     @Reusable
@@ -183,12 +180,13 @@ internal object StreamingPrivilegesModule {
         connectRunnable: ConnectRunnable,
         incomingWebSocketMessageParser: IncomingWebSocketMessageParser,
         streamingPrivilegesEventDispatcher: StreamingPrivilegesEventDispatcher,
-    ) = OnWebSocketMessage(
-        networkInteractionsHandler,
-        connectRunnable,
-        incomingWebSocketMessageParser,
-        streamingPrivilegesEventDispatcher,
-    )
+    ) =
+        OnWebSocketMessage(
+            networkInteractionsHandler,
+            connectRunnable,
+            incomingWebSocketMessageParser,
+            streamingPrivilegesEventDispatcher,
+        )
 
     @Provides
     @Reusable

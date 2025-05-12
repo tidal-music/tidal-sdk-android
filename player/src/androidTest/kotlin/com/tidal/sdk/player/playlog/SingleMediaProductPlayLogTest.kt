@@ -63,8 +63,7 @@ import org.mockito.kotlin.verify
 
 internal class SingleMediaProductPlayLogTest {
 
-    @get:Rule
-    val server = MockWebServer()
+    @get:Rule val server = MockWebServer()
 
     private val eventReporterCoroutineScope =
         TestScope(StandardTestDispatcher(TestCoroutineScheduler()))
@@ -79,51 +78,53 @@ internal class SingleMediaProductPlayLogTest {
             PlayLogTestDefaultEventReporterComponentFactory(eventReporterCoroutineScope)
         }
         responseDispatcher[
-            "https://api.tidal.com/v1/tracks/${mediaProduct.productId}/playbackinfo?playbackmode=STREAM&assetpresentation=FULL&audioquality=LOW&immersiveaudio=true".toHttpUrl(),
-        ] = {
-            MockResponse().setBodyFromFile(
-                "api-responses/playbackinfo/tracks/playlogtest/get_1_bts.json",
-            )
-        }
+            "https://api.tidal.com/v1/tracks/${mediaProduct.productId}/playbackinfo?playbackmode=STREAM&assetpresentation=FULL&audioquality=LOW&immersiveaudio=true"
+                .toHttpUrl(),
+        ] =
+            {
+                MockResponse()
+                    .setBodyFromFile("api-responses/playbackinfo/tracks/playlogtest/get_1_bts.json")
+            }
         responseDispatcher["https://test.audio.tidal.com/1_bts.m4a".toHttpUrl()] = {
             MockResponse().setBodyFromFile("raw/playlogtest/1_bts.m4a")
         }
         server.dispatcher = responseDispatcher
 
-        player = Player(
-            InstrumentationRegistry.getInstrumentation().targetContext.applicationContext
-                as Application,
-            object : CredentialsProvider {
-                private val CREDENTIALS = Credentials(
-                    clientId = "a client id",
-                    requestedScopes = emptySet(),
-                    clientUniqueKey = null,
-                    grantedScopes = emptySet(),
-                    userId = "a non-null user id",
-                    expires = null,
-                    token = "a non-null token",
-                )
+        player =
+            Player(
+                InstrumentationRegistry.getInstrumentation().targetContext.applicationContext
+                    as Application,
+                object : CredentialsProvider {
+                    private val CREDENTIALS =
+                        Credentials(
+                            clientId = "a client id",
+                            requestedScopes = emptySet(),
+                            clientUniqueKey = null,
+                            grantedScopes = emptySet(),
+                            userId = "a non-null user id",
+                            expires = null,
+                            token = "a non-null token",
+                        )
 
-                override val bus: Flow<TidalMessage> = emptyFlow()
+                    override val bus: Flow<TidalMessage> = emptyFlow()
 
-                override suspend fun getCredentials(apiErrorSubStatus: String?) =
-                    AuthResult.Success(CREDENTIALS)
+                    override suspend fun getCredentials(apiErrorSubStatus: String?) =
+                        AuthResult.Success(CREDENTIALS)
 
-                override fun isUserLoggedIn() = CREDENTIALS.isLoggedIn()
-            },
-            eventSender = eventSender,
-            okHttpClient = OkHttpClient.Builder()
-                .addInterceptor {
-                    val request = it.request()
-                    val mockWebServerUrl = responseDispatcher.urlRecords[request.url]
-                        ?: return@addInterceptor it.proceed(request)
-                    it.proceed(
-                        request.newBuilder()
-                            .url(mockWebServerUrl)
-                            .build(),
-                    )
-                }.build(),
-        )
+                    override fun isUserLoggedIn() = CREDENTIALS.isLoggedIn()
+                },
+                eventSender = eventSender,
+                okHttpClient =
+                    OkHttpClient.Builder()
+                        .addInterceptor {
+                            val request = it.request()
+                            val mockWebServerUrl =
+                                responseDispatcher.urlRecords[request.url]
+                                    ?: return@addInterceptor it.proceed(request)
+                            it.proceed(request.newBuilder().url(mockWebServerUrl).build())
+                        }
+                        .build(),
+            )
     }
 
     companion object {
@@ -164,25 +165,27 @@ internal class SingleMediaProductPlayLogTest {
         }
 
         eventReporterCoroutineScope.advanceUntilIdle()
-        verify(eventSender).sendEvent(
-            eq("playback_session"),
-            eq(ConsentCategory.NECESSARY),
-            argThat {
-                with(Gson().fromJson(this, JsonObject::class.java)["payload"].asJsonObject) {
-                    // https://github.com/androidx/media/issues/1252
-                    assertThat(get("startAssetPosition").asDouble).isAssetPositionEqualTo(0.0)
-                    // https://github.com/androidx/media/issues/1253
-                    assertThat(get("endAssetPosition").asDouble)
-                        .isAssetPositionEqualTo(MEDIA_PRODUCT_DURATION_SECONDS)
-                    assertThat(get("actualProductId").asString).isEqualTo(mediaProduct.productId)
-                    assertThat(get("sourceType")?.asString).isEqualTo(mediaProduct.sourceType)
-                    assertThat(get("sourceId")?.asString).isEqualTo(mediaProduct.sourceId)
-                    assertThat(get("actions").asJsonArray.size()).isEqualTo(0)
-                }
-                true
-            },
-            eq(emptyMap()),
-        )
+        verify(eventSender)
+            .sendEvent(
+                eq("playback_session"),
+                eq(ConsentCategory.NECESSARY),
+                argThat {
+                    with(Gson().fromJson(this, JsonObject::class.java)["payload"].asJsonObject) {
+                        // https://github.com/androidx/media/issues/1252
+                        assertThat(get("startAssetPosition").asDouble).isAssetPositionEqualTo(0.0)
+                        // https://github.com/androidx/media/issues/1253
+                        assertThat(get("endAssetPosition").asDouble)
+                            .isAssetPositionEqualTo(MEDIA_PRODUCT_DURATION_SECONDS)
+                        assertThat(get("actualProductId").asString)
+                            .isEqualTo(mediaProduct.productId)
+                        assertThat(get("sourceType")?.asString).isEqualTo(mediaProduct.sourceType)
+                        assertThat(get("sourceId")?.asString).isEqualTo(mediaProduct.sourceId)
+                        assertThat(get("actions").asJsonArray.size()).isEqualTo(0)
+                    }
+                    true
+                },
+                eq(emptyMap()),
+            )
     }
 
     @Suppress("LongMethod")
@@ -209,40 +212,45 @@ internal class SingleMediaProductPlayLogTest {
         }
 
         eventReporterCoroutineScope.advanceUntilIdle()
-        verify(eventSender).sendEvent(
-            eq("playback_session"),
-            eq(ConsentCategory.NECESSARY),
-            argThat {
-                with(gson.fromJson(this, JsonObject::class.java)["payload"].asJsonObject) {
-                    assertThat(get("startAssetPosition").asDouble).isAssetPositionEqualTo(0.0)
-                    assertThat(get("endAssetPosition").asDouble)
-                        .isAssetPositionEqualTo(MEDIA_PRODUCT_DURATION_SECONDS)
-                    assertThat(get("actualProductId").asString).isEqualTo(mediaProduct.productId)
-                    assertThat(get("sourceType")?.asString).isEqualTo(mediaProduct.sourceType)
-                    assertThat(get("sourceId")?.asString).isEqualTo(mediaProduct.sourceId)
-                    with(get("actions").asJsonArray) {
-                        val stopAction =
-                            gson.fromJson(this[0], PlaybackSession.Payload.Action::class.java)
-                        assertThat(stopAction.actionType)
-                            .isEqualTo(PlaybackSession.Payload.Action.Type.PLAYBACK_STOP)
-                        assertThat(stopAction.assetPositionSeconds).isAssetPositionEqualTo(2.0)
-                        val startAction =
-                            gson.fromJson(this[1], PlaybackSession.Payload.Action::class.java)
-                        assertThat(startAction.actionType)
-                            .isEqualTo(PlaybackSession.Payload.Action.Type.PLAYBACK_START)
-                        assertThat(startAction.assetPositionSeconds)
-                            .isAssetPositionEqualTo(stopAction.assetPositionSeconds)
-                        assertThat(startAction.assetPositionSeconds).isAssetPositionEqualTo(2.0)
-                        val perfectResumeTimestamp = stopAction.timestamp +
-                            1.seconds.inWholeMilliseconds
-                        assertThat(startAction.timestamp)
-                            .isBetween(perfectResumeTimestamp - 500, perfectResumeTimestamp + 500)
+        verify(eventSender)
+            .sendEvent(
+                eq("playback_session"),
+                eq(ConsentCategory.NECESSARY),
+                argThat {
+                    with(gson.fromJson(this, JsonObject::class.java)["payload"].asJsonObject) {
+                        assertThat(get("startAssetPosition").asDouble).isAssetPositionEqualTo(0.0)
+                        assertThat(get("endAssetPosition").asDouble)
+                            .isAssetPositionEqualTo(MEDIA_PRODUCT_DURATION_SECONDS)
+                        assertThat(get("actualProductId").asString)
+                            .isEqualTo(mediaProduct.productId)
+                        assertThat(get("sourceType")?.asString).isEqualTo(mediaProduct.sourceType)
+                        assertThat(get("sourceId")?.asString).isEqualTo(mediaProduct.sourceId)
+                        with(get("actions").asJsonArray) {
+                            val stopAction =
+                                gson.fromJson(this[0], PlaybackSession.Payload.Action::class.java)
+                            assertThat(stopAction.actionType)
+                                .isEqualTo(PlaybackSession.Payload.Action.Type.PLAYBACK_STOP)
+                            assertThat(stopAction.assetPositionSeconds).isAssetPositionEqualTo(2.0)
+                            val startAction =
+                                gson.fromJson(this[1], PlaybackSession.Payload.Action::class.java)
+                            assertThat(startAction.actionType)
+                                .isEqualTo(PlaybackSession.Payload.Action.Type.PLAYBACK_START)
+                            assertThat(startAction.assetPositionSeconds)
+                                .isAssetPositionEqualTo(stopAction.assetPositionSeconds)
+                            assertThat(startAction.assetPositionSeconds).isAssetPositionEqualTo(2.0)
+                            val perfectResumeTimestamp =
+                                stopAction.timestamp + 1.seconds.inWholeMilliseconds
+                            assertThat(startAction.timestamp)
+                                .isBetween(
+                                    perfectResumeTimestamp - 500,
+                                    perfectResumeTimestamp + 500,
+                                )
+                        }
                     }
-                }
-                true
-            },
-            eq(emptyMap()),
-        )
+                    true
+                },
+                eq(emptyMap()),
+            )
     }
 
     @Suppress("LongMethod")
@@ -267,37 +275,42 @@ internal class SingleMediaProductPlayLogTest {
         }
 
         eventReporterCoroutineScope.advanceUntilIdle()
-        verify(eventSender).sendEvent(
-            eq("playback_session"),
-            eq(ConsentCategory.NECESSARY),
-            argThat {
-                with(gson.fromJson(this, JsonObject::class.java)["payload"].asJsonObject) {
-                    assertThat(get("startAssetPosition").asDouble).isAssetPositionEqualTo(0.0)
-                    assertThat(get("endAssetPosition").asDouble)
-                        .isAssetPositionEqualTo(MEDIA_PRODUCT_DURATION_SECONDS)
-                    assertThat(get("actualProductId").asString).isEqualTo(mediaProduct.productId)
-                    assertThat(get("sourceType")?.asString).isEqualTo(mediaProduct.sourceType)
-                    assertThat(get("sourceId")?.asString).isEqualTo(mediaProduct.sourceId)
-                    with(get("actions").asJsonArray) {
-                        val stopAction =
-                            gson.fromJson(this[0], PlaybackSession.Payload.Action::class.java)
-                        assertThat(stopAction.actionType)
-                            .isEqualTo(PlaybackSession.Payload.Action.Type.PLAYBACK_STOP)
-                        assertThat(stopAction.assetPositionSeconds).isAssetPositionEqualTo(2.0)
-                        val startAction =
-                            gson.fromJson(this[1], PlaybackSession.Payload.Action::class.java)
-                        assertThat(startAction.actionType)
-                            .isEqualTo(PlaybackSession.Payload.Action.Type.PLAYBACK_START)
-                        assertThat(startAction.assetPositionSeconds).isAssetPositionEqualTo(3.0)
-                        val perfectResumeTimestamp = stopAction.timestamp
-                        assertThat(startAction.timestamp)
-                            .isBetween(perfectResumeTimestamp - 500, perfectResumeTimestamp + 500)
+        verify(eventSender)
+            .sendEvent(
+                eq("playback_session"),
+                eq(ConsentCategory.NECESSARY),
+                argThat {
+                    with(gson.fromJson(this, JsonObject::class.java)["payload"].asJsonObject) {
+                        assertThat(get("startAssetPosition").asDouble).isAssetPositionEqualTo(0.0)
+                        assertThat(get("endAssetPosition").asDouble)
+                            .isAssetPositionEqualTo(MEDIA_PRODUCT_DURATION_SECONDS)
+                        assertThat(get("actualProductId").asString)
+                            .isEqualTo(mediaProduct.productId)
+                        assertThat(get("sourceType")?.asString).isEqualTo(mediaProduct.sourceType)
+                        assertThat(get("sourceId")?.asString).isEqualTo(mediaProduct.sourceId)
+                        with(get("actions").asJsonArray) {
+                            val stopAction =
+                                gson.fromJson(this[0], PlaybackSession.Payload.Action::class.java)
+                            assertThat(stopAction.actionType)
+                                .isEqualTo(PlaybackSession.Payload.Action.Type.PLAYBACK_STOP)
+                            assertThat(stopAction.assetPositionSeconds).isAssetPositionEqualTo(2.0)
+                            val startAction =
+                                gson.fromJson(this[1], PlaybackSession.Payload.Action::class.java)
+                            assertThat(startAction.actionType)
+                                .isEqualTo(PlaybackSession.Payload.Action.Type.PLAYBACK_START)
+                            assertThat(startAction.assetPositionSeconds).isAssetPositionEqualTo(3.0)
+                            val perfectResumeTimestamp = stopAction.timestamp
+                            assertThat(startAction.timestamp)
+                                .isBetween(
+                                    perfectResumeTimestamp - 500,
+                                    perfectResumeTimestamp + 500,
+                                )
+                        }
                     }
-                }
-                true
-            },
-            eq(emptyMap()),
-        )
+                    true
+                },
+                eq(emptyMap()),
+            )
     }
 
     private fun Assert<Double>.isAssetPositionEqualTo(targetPosition: Double) = run {

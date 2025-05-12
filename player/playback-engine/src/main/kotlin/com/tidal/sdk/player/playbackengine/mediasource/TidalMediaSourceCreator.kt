@@ -8,17 +8,21 @@ import com.tidal.sdk.player.playbackengine.drm.DrmSessionManagerProviderFactory
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.ManifestMimeType
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
 
-/**
- * Creates a [MediaSource] based on the [PlaybackInfo].
- */
+/** Creates a [MediaSource] based on the [PlaybackInfo]. */
 @Suppress("LongParameterList")
 internal class TidalMediaSourceCreator(
     private val playerProgressiveMediaSourceFactory: PlayerProgressiveMediaSourceFactory,
     private val playerDashMediaSourceFactory: PlayerDashMediaSourceFactory,
     private val playerHlsMediaSourceFactory: PlayerHlsMediaSourceFactory,
     private val playerAuthHlsMediaSourceFactory: PlayerAuthHlsMediaSourceFactory,
-    @Suppress("MaxLineLength") private val playerDecryptedHeaderProgressiveOfflineMediaSourceFactory: PlayerDecryptedHeaderProgressiveOfflineMediaSourceFactory, // ktlint-disable max-line-length parameter-wrapping
-    @Suppress("MaxLineLength") private val playerProgressiveOfflineMediaSourceFactory: PlayerProgressiveOfflineMediaSourceFactory, // ktlint-disable max-line-length parameter-wrapping
+    @Suppress("MaxLineLength")
+    private val playerDecryptedHeaderProgressiveOfflineMediaSourceFactory:
+        PlayerDecryptedHeaderProgressiveOfflineMediaSourceFactory, // ktlint-disable max-line-length
+    // parameter-wrapping
+    @Suppress("MaxLineLength")
+    private val playerProgressiveOfflineMediaSourceFactory:
+        PlayerProgressiveOfflineMediaSourceFactory, // ktlint-disable max-line-length
+    // parameter-wrapping
     private val playerDashOfflineMediaSourceFactory: PlayerDashOfflineMediaSourceFactory,
     private val drmSessionManagerFactory: DrmSessionManagerFactory,
     private val drmSessionManagerProviderFactory: DrmSessionManagerProviderFactory,
@@ -58,31 +62,33 @@ internal class TidalMediaSourceCreator(
                             drmSessionManagerFactory.createDrmSessionManagerForOfflinePlay(
                                 playbackInfo,
                                 extras,
-                            ),
+                            )
                         ),
                     )
                 }
 
-                else -> throw IllegalArgumentException(
-                    "No valid manifestMimeType for offline playback: " +
-                        "${playbackInfo.manifestMimeType}",
-                )
+                else ->
+                    throw IllegalArgumentException(
+                        "No valid manifestMimeType for offline playback: " +
+                            "${playbackInfo.manifestMimeType}"
+                    )
             }
         } else {
             when (playbackInfo.manifestMimeType) {
                 ManifestMimeType.BTS ->
                     playerProgressiveMediaSourceFactory.create(mediaItem, playbackInfo.manifest)
 
-                ManifestMimeType.DASH -> playerDashMediaSourceFactory.create(
-                    mediaItem,
-                    playbackInfo.manifest,
-                    drmSessionManagerProviderFactory.create(
-                        drmSessionManagerFactory.createDrmSessionManagerForOnlinePlay(
-                            playbackInfo,
-                            extras,
+                ManifestMimeType.DASH ->
+                    playerDashMediaSourceFactory.create(
+                        mediaItem,
+                        playbackInfo.manifest,
+                        drmSessionManagerProviderFactory.create(
+                            drmSessionManagerFactory.createDrmSessionManagerForOnlinePlay(
+                                playbackInfo,
+                                extras,
+                            )
                         ),
-                    ),
-                )
+                    )
 
                 ManifestMimeType.EMU ->
                     if (playbackInfo is PlaybackInfo.UC) {
@@ -93,7 +99,7 @@ internal class TidalMediaSourceCreator(
                                 drmSessionManagerFactory.createDrmSessionManagerForOnlinePlay(
                                     playbackInfo,
                                     extras,
-                                ),
+                                )
                             ),
                         )
                     } else {
@@ -104,7 +110,7 @@ internal class TidalMediaSourceCreator(
                                 drmSessionManagerFactory.createDrmSessionManagerForOnlinePlay(
                                     playbackInfo,
                                     extras,
-                                ),
+                                )
                             ),
                         )
                     }
@@ -113,9 +119,11 @@ internal class TidalMediaSourceCreator(
     }
 
     private val PlaybackInfo.Offline.productId: String
-        get() = when (this) {
-            is PlaybackInfo.Offline.Track -> track.trackId.toString()
-            is PlaybackInfo.Offline.Video -> video.videoId.toString()
-            else -> throw IllegalArgumentException("Not a valid delegate for PlaybackInfo.Offline")
-        }
+        get() =
+            when (this) {
+                is PlaybackInfo.Offline.Track -> track.trackId.toString()
+                is PlaybackInfo.Offline.Video -> video.videoId.toString()
+                else ->
+                    throw IllegalArgumentException("Not a valid delegate for PlaybackInfo.Offline")
+            }
 }

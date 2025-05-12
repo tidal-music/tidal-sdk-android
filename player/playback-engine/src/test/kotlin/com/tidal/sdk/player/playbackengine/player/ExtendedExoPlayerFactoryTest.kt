@@ -24,11 +24,12 @@ internal class ExtendedExoPlayerFactoryTest {
         val extendedExoPlayer = mock<ExtendedExoPlayer>()
         val handler = mock<Handler>()
         val stateUpdateRunnable = mock<ExtendedExoPlayerStateUpdateRunnable>()
-        val extendedExoPlayerComponent = mock<ExtendedExoPlayerComponent> {
-            on { it.extendedExoPlayer } doReturn extendedExoPlayer
-            on { it.handler } doReturn handler
-            on { it.stateUpdateRunnable } doReturn stateUpdateRunnable
-        }
+        val extendedExoPlayerComponent =
+            mock<ExtendedExoPlayerComponent> {
+                on { it.extendedExoPlayer } doReturn extendedExoPlayer
+                on { it.handler } doReturn handler
+                on { it.stateUpdateRunnable } doReturn stateUpdateRunnable
+            }
         whenever(extendedExoPlayerComponentFactory.create()) doReturn extendedExoPlayerComponent
 
         val actual = extendedExoPlayerFactory.create(playbackInfoListener, analyticsListener)
@@ -44,11 +45,12 @@ internal class ExtendedExoPlayerFactoryTest {
         val extendedExoPlayer = mock<ExtendedExoPlayer>()
         val handler = mock<Handler>()
         val stateUpdateRunnable = mock<ExtendedExoPlayerStateUpdateRunnable>()
-        val extendedExoPlayerComponent = mock<ExtendedExoPlayerComponent> {
-            on { it.extendedExoPlayer } doReturn extendedExoPlayer
-            on { it.handler } doReturn handler
-            on { it.stateUpdateRunnable } doReturn stateUpdateRunnable
-        }
+        val extendedExoPlayerComponent =
+            mock<ExtendedExoPlayerComponent> {
+                on { it.extendedExoPlayer } doReturn extendedExoPlayer
+                on { it.handler } doReturn handler
+                on { it.stateUpdateRunnable } doReturn stateUpdateRunnable
+            }
         whenever(extendedExoPlayerComponentFactory.create()) doReturn extendedExoPlayerComponent
 
         val actual = extendedExoPlayerFactory.create(playbackInfoListener, analyticsListener)

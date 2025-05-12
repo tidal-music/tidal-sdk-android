@@ -26,9 +26,7 @@ internal class ManifestMimeTypeDeserializerTest {
 
     @Test
     fun deserializeNullJsonElement() {
-        assertThrows<JsonParseException> {
-            deserializer.deserialize(null, mock(), mock())
-        }
+        assertThrows<JsonParseException> { deserializer.deserialize(null, mock(), mock()) }
     }
 
     @Test

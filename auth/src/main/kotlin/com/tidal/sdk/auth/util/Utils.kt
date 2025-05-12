@@ -11,13 +11,11 @@ import kotlinx.coroutines.delay
 import retrofit2.HttpException
 
 /**
- * Lets a suspend fun retry on [IOException], following a [RetryPolicy] to define the
- * number and frequency of retries.
- * This means, when returning network calls , they can be retried automatically using
- * this function.
- * This function returns an [AuthResult], this means no exceptions are thrown.
- * [HttpExceptions] are handled acoording to specs, all other potentially caught exceptions
- * will lead to a [NetworkError] at this point.
+ * Lets a suspend fun retry on [IOException], following a [RetryPolicy] to define the number and
+ * frequency of retries. This means, when returning network calls , they can be retried
+ * automatically using this function. This function returns an [AuthResult], this means no
+ * exceptions are thrown. [HttpExceptions] are handled acoording to specs, all other potentially
+ * caught exceptions will lead to a [NetworkError] at this point.
  */
 @Suppress("TooGenericExceptionCaught")
 internal suspend fun <T> retryWithPolicy(
@@ -71,9 +69,7 @@ internal suspend fun <T> retryWithPolicyUnwrapped(
     throw (throwable!!)
 }
 
-/**
- * Convenience function get the current time in seconds.
- */
+/** Convenience function get the current time in seconds. */
 internal fun currentTimeSeconds(): Long {
     return System.currentTimeMillis() / MILLISECONDS
 }

@@ -43,15 +43,15 @@ internal object NetworkModule {
 
     @Provides
     @Reusable
-    fun endpointsRequiringCredentialLevels() = mapOf(
-        "${Common.TIDAL_API_ENDPOINT_V1}rt/connect" to setOf(Credentials.Level.USER),
-    )
+    fun endpointsRequiringCredentialLevels() =
+        mapOf("${Common.TIDAL_API_ENDPOINT_V1}rt/connect" to setOf(Credentials.Level.USER))
 
     @Provides
     @Reusable
     fun requestAuthorizationDelegate(
         endpointsRequiringCredentialLevels:
-        @JvmSuppressWildcards Map<String, Set<Credentials.Level>>,
+            @JvmSuppressWildcards
+            Map<String, Set<Credentials.Level>>
     ) = RequestAuthorizationDelegate(endpointsRequiringCredentialLevels)
 
     @Provides
@@ -59,10 +59,7 @@ internal object NetworkModule {
     fun authorizationInterceptor(
         credentialsProvider: CredentialsProvider,
         requestAuthorizationDelegate: RequestAuthorizationDelegate,
-    ) = AuthorizationInterceptor(
-        credentialsProvider,
-        requestAuthorizationDelegate,
-    )
+    ) = AuthorizationInterceptor(credentialsProvider, requestAuthorizationDelegate)
 
     @Provides
     @Reusable
@@ -75,16 +72,14 @@ internal object NetworkModule {
     @Provides
     @Reusable
     @Named("basicLevelHttpLoggingInterceptor")
-    fun basicLevelHttpLoggingInterceptor() = HttpLoggingInterceptor().setLevel(
-        HttpLoggingInterceptor.Level.BASIC,
-    )
+    fun basicLevelHttpLoggingInterceptor() =
+        HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC)
 
     @Provides
     @Reusable
     @Named("bodyLevelHttpLoggingInterceptor")
-    fun bodyLevelHttpLoggingInterceptor() = HttpLoggingInterceptor().setLevel(
-        HttpLoggingInterceptor.Level.BODY,
-    )
+    fun bodyLevelHttpLoggingInterceptor() =
+        HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
     @Provides
     @Reusable
@@ -93,10 +88,11 @@ internal object NetworkModule {
         basicLevelHttpLoggingInterceptor: HttpLoggingInterceptor,
         @Named("bodyLevelHttpLoggingInterceptor")
         bodyLevelHttpLoggingInterceptor: HttpLoggingInterceptor,
-    ) = NonIntrusiveHttpLoggingInterceptor(
-        basicLevelHttpLoggingInterceptor,
-        bodyLevelHttpLoggingInterceptor,
-    )
+    ) =
+        NonIntrusiveHttpLoggingInterceptor(
+            basicLevelHttpLoggingInterceptor,
+            bodyLevelHttpLoggingInterceptor,
+        )
 
     @Provides
     @Singleton
@@ -105,55 +101,51 @@ internal object NetworkModule {
         okHttpClient: OkHttpClient,
         @Named("isDebuggable") isDebuggable: Boolean,
         httpLoggingInterceptor: Lazy<NonIntrusiveHttpLoggingInterceptor>,
-    ) = okHttpClient.newBuilder()
-        .apply {
-            if (isDebuggable) {
-                addNetworkInterceptor(httpLoggingInterceptor.get())
+    ) =
+        okHttpClient
+            .newBuilder()
+            .apply {
+                if (isDebuggable) {
+                    addNetworkInterceptor(httpLoggingInterceptor.get())
+                }
             }
-        }.build()
+            .build()
 
     @Provides
     @Singleton
     @LocalWithAuth
     fun okHttpClientWithAuth(
-        @Local
-        okHttpClient: OkHttpClient,
+        @Local okHttpClient: OkHttpClient,
         authorizationInterceptor: AuthorizationInterceptor,
         defaultAuthenticator: DefaultAuthenticator,
         @Named("isDebuggable") isDebuggable: Boolean,
         httpLoggingInterceptor: Lazy<NonIntrusiveHttpLoggingInterceptor>,
-    ) = okHttpClient.newBuilder()
-        .addInterceptor(authorizationInterceptor)
-        .authenticator(defaultAuthenticator)
-        .apply {
-            if (isDebuggable) {
-                addNetworkInterceptor(httpLoggingInterceptor.get())
+    ) =
+        okHttpClient
+            .newBuilder()
+            .addInterceptor(authorizationInterceptor)
+            .authenticator(defaultAuthenticator)
+            .apply {
+                if (isDebuggable) {
+                    addNetworkInterceptor(httpLoggingInterceptor.get())
+                }
             }
-        }.build()
+            .build()
 
     @Provides
     @Singleton
     @LocalWithCacheAndAuth
     fun okHttpClientWithCacheAndAuth(
-        @LocalWithAuth
-        okHttpClient: OkHttpClient,
+        @LocalWithAuth okHttpClient: OkHttpClient,
         okHttpCache: Cache,
-    ) = okHttpClient.newBuilder()
-        .cache(okHttpCache)
-        .build()
+    ) = okHttpClient.newBuilder().cache(okHttpCache).build()
 }
 
 private const val OKHTTP_CACHE_DIR = "okhttp"
 private const val OKHTTP_CACHE_SIZE = (1024 * 1024 * 50).toLong()
 
-@Qualifier
-@Retention(AnnotationRetention.RUNTIME)
-internal annotation class Local
+@Qualifier @Retention(AnnotationRetention.RUNTIME) internal annotation class Local
 
-@Qualifier
-@Retention(AnnotationRetention.RUNTIME)
-internal annotation class LocalWithAuth
+@Qualifier @Retention(AnnotationRetention.RUNTIME) internal annotation class LocalWithAuth
 
-@Qualifier
-@Retention(AnnotationRetention.RUNTIME)
-internal annotation class LocalWithCacheAndAuth
+@Qualifier @Retention(AnnotationRetention.RUNTIME) internal annotation class LocalWithCacheAndAuth

@@ -19,10 +19,7 @@ internal class CodeChallengeBuilder {
     }
 
     private fun encodeToBase64String(value: ByteArray): String {
-        return Base64.encodeToString(
-            value,
-            Base64.NO_WRAP or Base64.URL_SAFE or Base64.NO_PADDING,
-        )
+        return Base64.encodeToString(value, Base64.NO_WRAP or Base64.URL_SAFE or Base64.NO_PADDING)
     }
 
     companion object {

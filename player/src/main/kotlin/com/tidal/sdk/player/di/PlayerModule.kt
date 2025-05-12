@@ -30,15 +30,9 @@ internal object PlayerModule {
             .create()
     }
 
-    @Provides
-    @Reusable
-    fun uuidWrapper() = UUIDWrapper()
+    @Provides @Reusable fun uuidWrapper() = UUIDWrapper()
 
-    @Provides
-    @Reusable
-    fun trueTimeWrapper() = TrueTimeWrapper()
+    @Provides @Reusable fun trueTimeWrapper() = TrueTimeWrapper()
 
-    @Provides
-    @Reusable
-    fun base64Codec() = Base64Codec()
+    @Provides @Reusable fun base64Codec() = Base64Codec()
 }

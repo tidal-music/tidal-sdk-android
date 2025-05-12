@@ -16,10 +16,10 @@ internal sealed interface SocketConnectionState {
 
         val failedAttempts: Int
 
-        data class AwaitingBackOffExpiry @AssistedInject constructor(
-            @Assisted val retryAtMillis: Long,
-            @Assisted override val failedAttempts: Int,
-        ) : Connecting {
+        data class AwaitingBackOffExpiry
+        @AssistedInject
+        constructor(@Assisted val retryAtMillis: Long, @Assisted override val failedAttempts: Int) :
+            Connecting {
 
             @AssistedFactory
             interface Factory {
@@ -28,9 +28,8 @@ internal sealed interface SocketConnectionState {
             }
         }
 
-        data class ForReal @AssistedInject constructor(
-            @Assisted override val failedAttempts: Int,
-        ) : Connecting {
+        data class ForReal @AssistedInject constructor(@Assisted override val failedAttempts: Int) :
+            Connecting {
 
             @AssistedFactory
             interface Factory {

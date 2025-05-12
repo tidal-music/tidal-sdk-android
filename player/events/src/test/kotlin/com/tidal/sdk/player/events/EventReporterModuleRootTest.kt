@@ -44,7 +44,7 @@ internal class EventReporterModuleRootTest {
             uuidWrapper,
             trueTimeWrapper,
             eventSender,
-            coroutineScope
+            coroutineScope,
         )
     }
 
@@ -78,41 +78,42 @@ internal class EventReporterModuleRootTest {
     @Test
     fun propertyReturnsEventReporterFromComponent() {
         val expected = mock<EventReporter>()
-        val component = mock<DefaultEventReporterComponent> {
-            on { eventReporter } doReturn expected
-        }
-        val componentFactory = mock<DefaultEventReporterComponent.Factory> {
-            on {
-                create(
-                    context,
-                    connectivityManager,
-                    userSupplier,
-                    clientSupplier,
-                    okHttpClient,
-                    gson,
-                    uuidWrapper,
-                    trueTimeWrapper,
-                    eventSender,
-                    coroutineScope,
-                )
-            } doReturn component
-        }
+        val component =
+            mock<DefaultEventReporterComponent> { on { eventReporter } doReturn expected }
+        val componentFactory =
+            mock<DefaultEventReporterComponent.Factory> {
+                on {
+                    create(
+                        context,
+                        connectivityManager,
+                        userSupplier,
+                        clientSupplier,
+                        okHttpClient,
+                        gson,
+                        uuidWrapper,
+                        trueTimeWrapper,
+                        eventSender,
+                        coroutineScope,
+                    )
+                } doReturn component
+            }
         EventReporterModuleRoot.reflectionComponentFactoryF = { componentFactory }
 
         val actual = eventReporterModuleRoot.eventReporter
 
-        verify(componentFactory).create(
-            context,
-            connectivityManager,
-            userSupplier,
-            clientSupplier,
-            okHttpClient,
-            gson,
-            uuidWrapper,
-            trueTimeWrapper,
-            eventSender,
-            coroutineScope,
-        )
+        verify(componentFactory)
+            .create(
+                context,
+                connectivityManager,
+                userSupplier,
+                clientSupplier,
+                okHttpClient,
+                gson,
+                uuidWrapper,
+                trueTimeWrapper,
+                eventSender,
+                coroutineScope,
+            )
         verify(component).eventReporter
         verifyNoMoreInteractions(expected, component, componentFactory)
         assertThat(actual).isSameAs(expected)

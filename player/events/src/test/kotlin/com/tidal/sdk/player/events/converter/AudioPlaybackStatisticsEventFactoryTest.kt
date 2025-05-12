@@ -25,22 +25,24 @@ internal class AudioPlaybackStatisticsEventFactoryTest {
     private val userSupplier = mock<UserSupplier>()
     private val clientSupplier = mock<ClientSupplier>()
     private val audioPlaybackStatisticsFactory = mock<AudioPlaybackStatistics.Factory>()
-    private val audioPlaybackStatisticsEventFactory = AudioPlaybackStatisticsEventFactory(
-        trueTimeWrapper,
-        uuidWrapper,
-        userSupplier,
-        clientSupplier,
-        audioPlaybackStatisticsFactory,
-    )
+    private val audioPlaybackStatisticsEventFactory =
+        AudioPlaybackStatisticsEventFactory(
+            trueTimeWrapper,
+            uuidWrapper,
+            userSupplier,
+            clientSupplier,
+            audioPlaybackStatisticsFactory,
+        )
 
     @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(
-        trueTimeWrapper,
-        uuidWrapper,
-        userSupplier,
-        clientSupplier,
-        audioPlaybackStatisticsFactory,
-    )
+    fun afterEach() =
+        verifyNoMoreInteractions(
+            trueTimeWrapper,
+            uuidWrapper,
+            userSupplier,
+            clientSupplier,
+            audioPlaybackStatisticsFactory,
+        )
 
     @Test
     fun invoke() = runBlocking {
@@ -55,15 +57,16 @@ internal class AudioPlaybackStatisticsEventFactoryTest {
         val payload = mock<AudioPlaybackStatistics.Payload>()
         val expected = mock<AudioPlaybackStatistics>()
         whenever(
-            audioPlaybackStatisticsFactory.create(
-                currentTimeMillis,
-                randomUUID,
-                user,
-                client,
-                payload,
-                emptyMap(),
-            ),
-        ).thenReturn(expected)
+                audioPlaybackStatisticsFactory.create(
+                    currentTimeMillis,
+                    randomUUID,
+                    user,
+                    client,
+                    payload,
+                    emptyMap(),
+                )
+            )
+            .thenReturn(expected)
 
         val actual = audioPlaybackStatisticsEventFactory(payload, emptyMap())
 
@@ -71,14 +74,8 @@ internal class AudioPlaybackStatisticsEventFactoryTest {
         verify(uuidWrapper).randomUUID
         verify(userSupplier)()
         verify(clientSupplier)()
-        verify(audioPlaybackStatisticsFactory).create(
-            currentTimeMillis,
-            randomUUID,
-            user,
-            client,
-            payload,
-            emptyMap(),
-        )
+        verify(audioPlaybackStatisticsFactory)
+            .create(currentTimeMillis, randomUUID, user, client, payload, emptyMap())
         assertThat(actual).isSameAs(expected)
         verifyNoMoreInteractions(randomUUID, user, client, payload, expected)
     }

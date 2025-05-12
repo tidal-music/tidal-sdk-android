@@ -9,7 +9,9 @@ import java.util.UUID
 
 @Keep
 @Suppress("UnusedPrivateMember")
-data class PlaybackInfoFetch @AssistedInject internal constructor(
+data class PlaybackInfoFetch
+@AssistedInject
+internal constructor(
     @Assisted override val ts: Long,
     @Assisted override val uuid: UUID,
     @Assisted override val user: User,

@@ -17,16 +17,17 @@ class Base64JwtDecoderTest {
 
     @Test
     fun getClaims() {
-        val expected = "{\n" +
-            "  \"type\": \"test\",\n" +
-            "  \"uid\": 123,\n" +
-            "  \"gVer\": 0,\n" +
-            "  \"sVer\": 0,\n" +
-            "  \"cid\": 123,\n" +
-            "  \"cuk\": \"abc\",\n" +
-            "  \"exp\": 123,\n" +
-            "  \"sid\": \"abd-123\"\n" +
-            "}"
+        val expected =
+            "{\n" +
+                "  \"type\": \"test\",\n" +
+                "  \"uid\": 123,\n" +
+                "  \"gVer\": 0,\n" +
+                "  \"sVer\": 0,\n" +
+                "  \"cid\": 123,\n" +
+                "  \"cuk\": \"abc\",\n" +
+                "  \"exp\": 123,\n" +
+                "  \"sid\": \"abd-123\"\n" +
+                "}"
 
         val actualClaim = base64JwtDecoder.getClaims(TOKEN)
 

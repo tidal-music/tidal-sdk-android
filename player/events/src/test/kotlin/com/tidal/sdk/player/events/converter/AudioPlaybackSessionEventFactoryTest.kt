@@ -25,22 +25,24 @@ internal class AudioPlaybackSessionEventFactoryTest {
     private val userSupplier = mock<UserSupplier>()
     private val clientSupplier = mock<ClientSupplier>()
     private val audioPlaybackSessionFactory = mock<AudioPlaybackSession.Factory>()
-    private val audioPlaybackSessionEventFactory = AudioPlaybackSessionEventFactory(
-        trueTimeWrapper,
-        uuidWrapper,
-        userSupplier,
-        clientSupplier,
-        audioPlaybackSessionFactory,
-    )
+    private val audioPlaybackSessionEventFactory =
+        AudioPlaybackSessionEventFactory(
+            trueTimeWrapper,
+            uuidWrapper,
+            userSupplier,
+            clientSupplier,
+            audioPlaybackSessionFactory,
+        )
 
     @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(
-        trueTimeWrapper,
-        uuidWrapper,
-        userSupplier,
-        clientSupplier,
-        audioPlaybackSessionFactory,
-    )
+    fun afterEach() =
+        verifyNoMoreInteractions(
+            trueTimeWrapper,
+            uuidWrapper,
+            userSupplier,
+            clientSupplier,
+            audioPlaybackSessionFactory,
+        )
 
     @Test
     fun invoke() = runBlocking {
@@ -55,15 +57,16 @@ internal class AudioPlaybackSessionEventFactoryTest {
         val payload = mock<AudioPlaybackSession.Payload>()
         val expected = mock<AudioPlaybackSession>()
         whenever(
-            audioPlaybackSessionFactory.create(
-                currentTimeMillis,
-                randomUUID,
-                user,
-                client,
-                payload,
-                emptyMap(),
-            ),
-        ).thenReturn(expected)
+                audioPlaybackSessionFactory.create(
+                    currentTimeMillis,
+                    randomUUID,
+                    user,
+                    client,
+                    payload,
+                    emptyMap(),
+                )
+            )
+            .thenReturn(expected)
 
         val actual = audioPlaybackSessionEventFactory(payload, emptyMap())
 
@@ -71,14 +74,8 @@ internal class AudioPlaybackSessionEventFactoryTest {
         verify(uuidWrapper).randomUUID
         verify(userSupplier)()
         verify(clientSupplier)()
-        verify(audioPlaybackSessionFactory).create(
-            currentTimeMillis,
-            randomUUID,
-            user,
-            client,
-            payload,
-            emptyMap(),
-        )
+        verify(audioPlaybackSessionFactory)
+            .create(currentTimeMillis, randomUUID, user, client, payload, emptyMap())
         assertThat(actual).isSameAs(expected)
         verifyNoMoreInteractions(randomUUID, user, client, payload, expected)
     }

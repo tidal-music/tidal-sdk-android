@@ -15,12 +15,7 @@ import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
 import okhttp3.OkHttpClient
 
-@Component(
-    modules = [
-        DefaultEventReporterModule::class,
-        EventFactoryModule::class,
-    ],
-)
+@Component(modules = [DefaultEventReporterModule::class, EventFactoryModule::class])
 @Singleton
 interface DefaultEventReporterComponent {
 

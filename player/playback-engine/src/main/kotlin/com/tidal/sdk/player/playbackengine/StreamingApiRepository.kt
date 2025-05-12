@@ -31,12 +31,12 @@ import java.io.IOException
  *
  * @param[streamingApi] An instance of the [StreamingApi]
  * @param[audioQualityRepository] An instance of [AudioQualityRepository] which decides the
- * [AudioQuality] to be used in the request.
+ *   [AudioQuality] to be used in the request.
  * @param[videoQualityRepository] An instance of [VideoQualityRepository] which decides the
- * [VideoQuality] to be used in the request.
+ *   [VideoQuality] to be used in the request.
  * @param[trueTimeWrapper] An instance of [TrueTimeWrapper] to get the time for event reporting.
  * @param[mediaDrmCallbackExceptionFactory] An instance of [MediaDrmCallbackExceptionFactory] to
- * create a [MediaDrmCallbackException] for when the drm fails.
+ *   create a [MediaDrmCallbackException] for when the drm fails.
  * @param[eventReporter] An instance of [EventReporter] to report events to.
  * @param[errorHandler] An instance of [ErrorHandler] to get the error code for reporting.
  */
@@ -51,14 +51,9 @@ internal class StreamingApiRepository(
     private val errorHandler: ErrorHandler,
 ) {
 
-    /**
-     * Get the drm license as [DrmLicense] for a given [DrmLicenseRequest].
-     */
+    /** Get the drm license as [DrmLicense] for a given [DrmLicenseRequest]. */
     @SuppressWarnings("TooGenericExceptionCaught") // We rethrow it, so no issue
-    suspend fun getDrmLicense(
-        drmLicenseRequest: DrmLicenseRequest,
-        extras: Extras?,
-    ): DrmLicense {
+    suspend fun getDrmLicense(drmLicenseRequest: DrmLicenseRequest, extras: Extras?): DrmLicense {
         val startTimestamp = trueTimeWrapper.currentTimeMillis
         var errorMessage: String? = null
         var errorCode: String? = null
@@ -100,33 +95,38 @@ internal class StreamingApiRepository(
         var errorCode: String? = null
         lateinit var endReason: EndReason
         try {
-            val ret = when (forwardingMediaProduct.productType) {
-                ProductType.TRACK -> streamingApi.getTrackPlaybackInfo(
-                    forwardingMediaProduct.productId,
-                    audioQualityRepository.streamingQuality,
-                    PlaybackMode.STREAM,
-                    audioModeRepository.immersiveAudio,
-                    streamingSessionId,
-                )
+            val ret =
+                when (forwardingMediaProduct.productType) {
+                    ProductType.TRACK ->
+                        streamingApi.getTrackPlaybackInfo(
+                            forwardingMediaProduct.productId,
+                            audioQualityRepository.streamingQuality,
+                            PlaybackMode.STREAM,
+                            audioModeRepository.immersiveAudio,
+                            streamingSessionId,
+                        )
 
-                ProductType.VIDEO -> streamingApi.getVideoPlaybackInfo(
-                    forwardingMediaProduct.productId,
-                    videoQualityRepository.streamingQuality,
-                    PlaybackMode.STREAM,
-                    streamingSessionId,
-                )
+                    ProductType.VIDEO ->
+                        streamingApi.getVideoPlaybackInfo(
+                            forwardingMediaProduct.productId,
+                            videoQualityRepository.streamingQuality,
+                            PlaybackMode.STREAM,
+                            streamingSessionId,
+                        )
 
-                ProductType.BROADCAST -> streamingApi.getBroadcastPlaybackInfo(
-                    forwardingMediaProduct.productId,
-                    streamingSessionId,
-                    audioQualityRepository.streamingQuality,
-                )
+                    ProductType.BROADCAST ->
+                        streamingApi.getBroadcastPlaybackInfo(
+                            forwardingMediaProduct.productId,
+                            streamingSessionId,
+                            audioQualityRepository.streamingQuality,
+                        )
 
-                ProductType.UC -> streamingApi.getUCPlaybackInfo(
-                    forwardingMediaProduct.productId,
-                    streamingSessionId,
-                )
-            }
+                    ProductType.UC ->
+                        streamingApi.getUCPlaybackInfo(
+                            forwardingMediaProduct.productId,
+                            streamingSessionId,
+                        )
+                }
             endReason = EndReason.COMPLETE
             return ret
         } catch (throwable: Throwable) {
@@ -151,25 +151,30 @@ internal class StreamingApiRepository(
     }
 
     /**
-     * Get the playback info as [PlaybackInfo] for a given [ForwardingMediaProduct],
-     * for offline playback.
+     * Get the playback info as [PlaybackInfo] for a given [ForwardingMediaProduct], for offline
+     * playback.
      */
     suspend fun getPlaybackInfoForOfflinePlayback(
         streamingSessionId: String,
         forwardingMediaProduct: ForwardingMediaProduct<*>,
-    ) = when (forwardingMediaProduct.productType) {
-        ProductType.TRACK -> streamingApi.getOfflineTrackPlaybackInfo(
-            forwardingMediaProduct.productId,
-            streamingSessionId,
-        )
+    ) =
+        when (forwardingMediaProduct.productType) {
+            ProductType.TRACK ->
+                streamingApi.getOfflineTrackPlaybackInfo(
+                    forwardingMediaProduct.productId,
+                    streamingSessionId,
+                )
 
-        ProductType.VIDEO -> streamingApi.getOfflineVideoPlaybackInfo(
-            forwardingMediaProduct.productId,
-            streamingSessionId,
-        )
+            ProductType.VIDEO ->
+                streamingApi.getOfflineVideoPlaybackInfo(
+                    forwardingMediaProduct.productId,
+                    streamingSessionId,
+                )
 
-        ProductType.BROADCAST, ProductType.UC -> throw IllegalArgumentException(
-            "ProductType ${forwardingMediaProduct.productType} can't be offlined.",
-        )
-    }
+            ProductType.BROADCAST,
+            ProductType.UC ->
+                throw IllegalArgumentException(
+                    "ProductType ${forwardingMediaProduct.productType} can't be offlined."
+                )
+        }
 }

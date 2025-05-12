@@ -1,5 +1,4 @@
 #!/usr/bin/env kotlin
-
 @file:DependsOn("com.fasterxml.jackson.module:jackson-module-kotlin:2.17.0")
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
@@ -24,4 +23,3 @@ for (module in modules) {
         System.exit(1)
     }
 }
-

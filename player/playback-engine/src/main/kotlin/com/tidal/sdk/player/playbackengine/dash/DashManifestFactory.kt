@@ -22,6 +22,7 @@ internal class DashManifestFactory(
         return dashManifestParser.parse(Uri.EMPTY, byteArrayInputStream)
     }
 
-    private var byteArrayInputStreamF: (ByteArray) -> ByteArrayInputStream =
-        { ByteArrayInputStream(it) }
+    private var byteArrayInputStreamF: (ByteArray) -> ByteArrayInputStream = {
+        ByteArrayInputStream(it)
+    }
 }

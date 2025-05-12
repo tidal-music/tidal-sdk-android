@@ -5,9 +5,7 @@ import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
-/**
- * A parameter bag for creating configurations for playback buffer logic.
- */
+/** A parameter bag for creating configurations for playback buffer logic. */
 data class BufferConfiguration(
     val backBufferDuration: Duration = 20.seconds,
     val minPlaybackBufferAudio: Duration = 2.minutes,

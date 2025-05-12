@@ -36,22 +36,24 @@ class DefaultTokensStoreMigrationsTest {
     fun `getLatestTokens saves and returns Tokens when SharedPrefs returns LegacyCredentialsV1`() {
         // given
         val scopes = Scopes.fromString(setOf("scope1", "scope2").joinToString(""))
-        val legacyCredentialsV1 = LegacyCredentialsV1(
-            clientId = "clientId",
-            requestedScopes = scopes,
-            clientUniqueKey = "clientUniqueKey",
-            grantedScopes = scopes,
-            userId = "userId",
-            expires = null,
-            token = "token",
-        )
+        val legacyCredentialsV1 =
+            LegacyCredentialsV1(
+                clientId = "clientId",
+                requestedScopes = scopes,
+                clientUniqueKey = "clientUniqueKey",
+                grantedScopes = scopes,
+                userId = "userId",
+                expires = null,
+                token = "token",
+            )
         val refreshToken = "refreshToken"
         val legacyTokens = TokensV1(legacyCredentialsV1, refreshToken)
         val expected = Tokens(legacyCredentialsV1.toCredentials(), refreshToken)
 
-        every { sharedPreferences.getString(any(), any()) } answers {
-            Json.encodeToString(legacyTokens)
-        }
+        every { sharedPreferences.getString(any(), any()) } answers
+            {
+                Json.encodeToString(legacyTokens)
+            }
 
         // when
         val result = defaultTokensStore.getLatestTokens(testCredentialsKey)
@@ -64,22 +66,24 @@ class DefaultTokensStoreMigrationsTest {
     fun `getLatestTokens saves and returns Tokens when SharedPrefs returns LegacyCredentialsV2`() {
         // given
         val scopes = setOf("scope1", "scope2")
-        val legacyCredentialsV2 = LegacyCredentialsV2(
-            clientId = "clientId",
-            requestedScopes = scopes,
-            clientUniqueKey = "clientUniqueKey",
-            grantedScopes = scopes,
-            userId = "userId",
-            expires = Instant.fromEpochSeconds(0),
-            token = "token",
-        )
+        val legacyCredentialsV2 =
+            LegacyCredentialsV2(
+                clientId = "clientId",
+                requestedScopes = scopes,
+                clientUniqueKey = "clientUniqueKey",
+                grantedScopes = scopes,
+                userId = "userId",
+                expires = Instant.fromEpochSeconds(0),
+                token = "token",
+            )
         val refreshToken = "refreshToken"
         val legacyTokens = TokensV2(legacyCredentialsV2, refreshToken)
         val expected = Tokens(legacyCredentialsV2.toCredentials(), refreshToken)
 
-        every { sharedPreferences.getString(any(), any()) } answers {
-            Json.encodeToString(legacyTokens)
-        }
+        every { sharedPreferences.getString(any(), any()) } answers
+            {
+                Json.encodeToString(legacyTokens)
+            }
 
         // when
         val result = defaultTokensStore.getLatestTokens(testCredentialsKey)

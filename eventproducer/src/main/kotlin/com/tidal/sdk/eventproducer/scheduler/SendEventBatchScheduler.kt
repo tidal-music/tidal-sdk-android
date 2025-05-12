@@ -7,9 +7,9 @@ import javax.inject.Singleton
 import kotlinx.coroutines.delay
 
 @Singleton
-internal class SendEventBatchScheduler @Inject constructor(
-    private val repository: EventsRepository,
-) {
+internal class SendEventBatchScheduler
+@Inject
+constructor(private val repository: EventsRepository) {
 
     suspend fun scheduleBatchAndSend() {
         while (true) {

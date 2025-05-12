@@ -65,11 +65,7 @@ interface ExoPlayerPlaybackEngineComponent {
         ): ExoPlayerPlaybackEngineComponent
     }
 
-    @Qualifier
-    @Retention(AnnotationRetention.RUNTIME)
-    annotation class Local
+    @Qualifier @Retention(AnnotationRetention.RUNTIME) annotation class Local
 
-    @Qualifier
-    @Retention(AnnotationRetention.RUNTIME)
-    annotation class LocalWithAuth
+    @Qualifier @Retention(AnnotationRetention.RUNTIME) annotation class LocalWithAuth
 }

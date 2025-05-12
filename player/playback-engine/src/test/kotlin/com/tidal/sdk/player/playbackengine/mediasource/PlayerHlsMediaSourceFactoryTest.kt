@@ -26,16 +26,10 @@ internal class PlayerHlsMediaSourceFactoryTest {
 
     private val hlsMediaSourceFactory = mock<HlsMediaSource.Factory>()
     private val emuManifestFactory = mock<EmuManifestFactory>()
-    private val playerHlsMediaSourceFactory = PlayerHlsMediaSourceFactory(
-        hlsMediaSourceFactory,
-        emuManifestFactory,
-    )
+    private val playerHlsMediaSourceFactory =
+        PlayerHlsMediaSourceFactory(hlsMediaSourceFactory, emuManifestFactory)
 
-    @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(
-        hlsMediaSourceFactory,
-        emuManifestFactory,
-    )
+    @AfterEach fun afterEach() = verifyNoMoreInteractions(hlsMediaSourceFactory, emuManifestFactory)
 
     @ParameterizedTest
     @MethodSource("emuManifests")
@@ -53,11 +47,12 @@ internal class PlayerHlsMediaSourceFactoryTest {
         whenever(hlsMediaSourceFactory.createMediaSource(builtMediaItem))
             .thenReturn(expectedHlsMediaSource)
 
-        val actualHlsMediaSource = playerHlsMediaSourceFactory.create(
-            mediaItem,
-            ENCODED_MANIFEST,
-            drmSessionManagerProvider,
-        )
+        val actualHlsMediaSource =
+            playerHlsMediaSourceFactory.create(
+                mediaItem,
+                ENCODED_MANIFEST,
+                drmSessionManagerProvider,
+            )
 
         assertThat(actualHlsMediaSource).isSameAs(expectedHlsMediaSource)
         verify(emuManifestFactory).create(ENCODED_MANIFEST)
@@ -80,10 +75,11 @@ internal class PlayerHlsMediaSourceFactoryTest {
 
         @JvmStatic
         @Suppress("UnusedPrivateMember")
-        private fun emuManifests() = setOf(
-            Arguments.of(EmuManifest(listOf())),
-            Arguments.of(EmuManifest(listOf("url"))),
-            Arguments.of(EmuManifest(listOf("url", "url2"))),
-        )
+        private fun emuManifests() =
+            setOf(
+                Arguments.of(EmuManifest(listOf())),
+                Arguments.of(EmuManifest(listOf("url"))),
+                Arguments.of(EmuManifest(listOf("url", "url2"))),
+            )
     }
 }

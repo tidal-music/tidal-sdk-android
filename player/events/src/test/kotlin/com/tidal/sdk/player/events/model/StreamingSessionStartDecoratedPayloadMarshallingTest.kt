@@ -21,28 +21,28 @@ internal class StreamingSessionStartDecoratedPayloadMarshallingTest {
     private val mobileNetworkType = "mobileNetworkType"
     private val sessionType = StreamingSessionStart.SessionType.PLAYBACK
     private val sessionProductId = "123"
-    private val payloadFactory: (
-        StreamingSessionStart.StartReason,
-        StreamingSessionStart.NetworkType,
-        ProductType,
-    ) -> StreamingSessionStart.DecoratedPayload = { startReason, networkType, sessionProductType ->
-        StreamingSessionStart.DecoratedPayload(
-            streamingSessionId,
-            timestamp,
-            isOfflineModeStart,
-            startReason,
-            hardwarePlatform,
-            operatingSystem,
-            operatingSystemVersion,
-            screenWidth,
-            screenHeight,
-            networkType,
-            mobileNetworkType,
-            sessionType,
-            sessionProductType,
-            sessionProductId,
-        )
-    }
+    private val payloadFactory:
+        (
+            StreamingSessionStart.StartReason, StreamingSessionStart.NetworkType, ProductType,
+        ) -> StreamingSessionStart.DecoratedPayload =
+        { startReason, networkType, sessionProductType ->
+            StreamingSessionStart.DecoratedPayload(
+                streamingSessionId,
+                timestamp,
+                isOfflineModeStart,
+                startReason,
+                hardwarePlatform,
+                operatingSystem,
+                operatingSystemVersion,
+                screenWidth,
+                screenHeight,
+                networkType,
+                mobileNetworkType,
+                sessionType,
+                sessionProductType,
+                sessionProductId,
+            )
+        }
     private val gson = Gson()
 
     @ParameterizedTest

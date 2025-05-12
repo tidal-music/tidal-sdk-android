@@ -28,11 +28,12 @@ internal object RendererModule {
     @Provides
     @Reusable
     fun libflacAudioRendererFactory(
-        @Named("useLibflacAudioRenderer") useLibflacAudioRenderer: Boolean,
-    ) = when (useLibflacAudioRenderer) {
-        true -> LibflacAudioRendererFactory()
-        false -> null
-    }
+        @Named("useLibflacAudioRenderer") useLibflacAudioRenderer: Boolean
+    ) =
+        when (useLibflacAudioRenderer) {
+            true -> LibflacAudioRendererFactory()
+            false -> null
+        }
 
     @Provides
     @Reusable
@@ -40,20 +41,17 @@ internal object RendererModule {
 
     @Provides
     @Reusable
-    fun defaultAudioTrackBufferSizeProvider(
-        bufferConfiguration: BufferConfiguration,
-    ) = DefaultAudioTrackBufferSizeProvider.Builder()
-        .setMinPcmBufferDurationUs(
-            bufferConfiguration.audioTrackBuffer.toInt(DurationUnit.MICROSECONDS),
-        )
-        .setMaxPcmBufferDurationUs(
-            bufferConfiguration.audioTrackBuffer.toInt(DurationUnit.MICROSECONDS),
-        )
-        .build()
+    fun defaultAudioTrackBufferSizeProvider(bufferConfiguration: BufferConfiguration) =
+        DefaultAudioTrackBufferSizeProvider.Builder()
+            .setMinPcmBufferDurationUs(
+                bufferConfiguration.audioTrackBuffer.toInt(DurationUnit.MICROSECONDS)
+            )
+            .setMaxPcmBufferDurationUs(
+                bufferConfiguration.audioTrackBuffer.toInt(DurationUnit.MICROSECONDS)
+            )
+            .build()
 
-    @Provides
-    @Reusable
-    fun audioProcessors() = emptyArray<AudioProcessor>()
+    @Provides @Reusable fun audioProcessors() = emptyArray<AudioProcessor>()
 
     @Provides
     @ExtendedExoPlayerComponent.Scoped
@@ -61,11 +59,12 @@ internal object RendererModule {
         audioCapabilities: AudioCapabilities,
         audioProcessors: Array<AudioProcessor>,
         defaultAudioTrackBufferSizeProvider: DefaultAudioTrackBufferSizeProvider,
-    ) = DefaultAudioSink.Builder()
-        .setAudioCapabilities(audioCapabilities)
-        .setAudioProcessors(audioProcessors)
-        .setAudioTrackBufferSizeProvider(defaultAudioTrackBufferSizeProvider)
-        .build()
+    ) =
+        DefaultAudioSink.Builder()
+            .setAudioCapabilities(audioCapabilities)
+            .setAudioProcessors(audioProcessors)
+            .setAudioTrackBufferSizeProvider(defaultAudioTrackBufferSizeProvider)
+            .build()
 
     @Provides
     @Reusable
@@ -79,9 +78,10 @@ internal object RendererModule {
         mediaCodecVideoRendererFactory: MediaCodecVideoRendererFactory,
         libflacAudioRendererFactory: LibflacAudioRendererFactory?,
         fallbackAudioRendererFactory: FallbackAudioRendererFactory,
-    ): RenderersFactory = PlayerRenderersFactory(
-        mediaCodecVideoRendererFactory,
-        libflacAudioRendererFactory,
-        fallbackAudioRendererFactory,
-    )
+    ): RenderersFactory =
+        PlayerRenderersFactory(
+            mediaCodecVideoRendererFactory,
+            libflacAudioRendererFactory,
+            fallbackAudioRendererFactory,
+        )
 }

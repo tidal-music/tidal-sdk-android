@@ -8,12 +8,13 @@ import javax.inject.Qualifier
 import javax.inject.Scope
 
 @Subcomponent(
-    modules = [
-        ExtendedExoPlayerModule::class,
-        MediaSourcererModule::class,
-        RendererModule::class,
-        ProgressiveModule::class,
-    ],
+    modules =
+        [
+            ExtendedExoPlayerModule::class,
+            MediaSourcererModule::class,
+            RendererModule::class,
+            ProgressiveModule::class,
+        ]
 )
 @ExtendedExoPlayerComponent.Scoped
 internal interface ExtendedExoPlayerComponent {
@@ -28,15 +29,9 @@ internal interface ExtendedExoPlayerComponent {
         fun create(): ExtendedExoPlayerComponent
     }
 
-    @Scope
-    @Retention(AnnotationRetention.RUNTIME)
-    annotation class Scoped
+    @Scope @Retention(AnnotationRetention.RUNTIME) annotation class Scoped
 
-    @Qualifier
-    @Retention(AnnotationRetention.RUNTIME)
-    annotation class Local
+    @Qualifier @Retention(AnnotationRetention.RUNTIME) annotation class Local
 
-    @Qualifier
-    @Retention(AnnotationRetention.RUNTIME)
-    annotation class LocalWithAuth
+    @Qualifier @Retention(AnnotationRetention.RUNTIME) annotation class LocalWithAuth
 }

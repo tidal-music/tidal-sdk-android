@@ -15,14 +15,15 @@ import okhttp3.WebSocketListener
  * [networkInteractionsHandler].
  */
 @Suppress("LongParameterList")
-internal class DumpCallbacksToHandlerWebSocketListener @AssistedInject constructor(
+internal class DumpCallbacksToHandlerWebSocketListener
+@AssistedInject
+constructor(
     private val networkInteractionsHandler: Handler,
     private val onWebSocketFailure: OnWebSocketFailure,
     private val onWebSocketMessage: OnWebSocketMessage,
     private val onWebSocketOpen: OnWebSocketOpen,
     private val ifRelevantOrCloseRunnableFactory: IfRelevantOrCloseRunnable.Factory,
-    @Assisted
-    private val connectionMutableState: ConnectionMutableState,
+    @Assisted private val connectionMutableState: ConnectionMutableState,
 ) : WebSocketListener() {
 
     override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) =
@@ -39,15 +40,16 @@ internal class DumpCallbacksToHandlerWebSocketListener @AssistedInject construct
     }
 
     private fun ifRelevantOrClose(block: () -> Unit) {
-        networkInteractionsHandler
-            .post(ifRelevantOrCloseRunnableFactory.create(connectionMutableState, block))
+        networkInteractionsHandler.post(
+            ifRelevantOrCloseRunnableFactory.create(connectionMutableState, block)
+        )
     }
 
     @AssistedFactory
     interface Factory {
 
         fun create(
-            connectionMutableState: ConnectionMutableState,
+            connectionMutableState: ConnectionMutableState
         ): DumpCallbacksToHandlerWebSocketListener
     }
 }

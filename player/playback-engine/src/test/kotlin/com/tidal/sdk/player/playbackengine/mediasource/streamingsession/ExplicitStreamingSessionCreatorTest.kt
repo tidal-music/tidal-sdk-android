@@ -8,9 +8,6 @@ internal class ExplicitStreamingSessionCreatorTest :
 
     override val startReason = StreamingSessionStart.StartReason.EXPLICIT
     override val factory = mock<StreamingSession.Factory.Explicit>()
-    override val streamingSessionCreator = StreamingSession.Creator.Explicit(
-        factory,
-        trueTimeWrapper,
-        eventReporter,
-    )
+    override val streamingSessionCreator =
+        StreamingSession.Creator.Explicit(factory, trueTimeWrapper, eventReporter)
 }

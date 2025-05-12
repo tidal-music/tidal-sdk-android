@@ -30,51 +30,45 @@ internal class ErrorCodeFactoryTest {
 
     @Test
     fun `createForInvalidResponseCode should return correct errorCode`() =
-        assertThat(errorCodeFactory.createForInvalidResponseCode(403, -1))
-            .isEqualTo("3:403:-1")
+        assertThat(errorCodeFactory.createForInvalidResponseCode(403, -1)).isEqualTo("3:403:-1")
 
     @Test
     fun `createForHttpDataSource should return correct errorCode`() =
-        assertThat(
-            errorCodeFactory.createForHttpDataSource(
-                HttpDataSourceException.TYPE_OPEN,
-                -1,
-            ),
-        ).isEqualTo("4:1:-1")
+        assertThat(errorCodeFactory.createForHttpDataSource(HttpDataSourceException.TYPE_OPEN, -1))
+            .isEqualTo("4:1:-1")
 
     @Test
     fun `createForDrmSession should return correct errorCode`() =
-        assertThat(
-            errorCodeFactory.createForDrmSession(
-                ErrorCodeFactory.Extra.DrmLicenseFetch,
-                -1,
-            ),
-        ).isEqualTo("5:1:-1")
+        assertThat(errorCodeFactory.createForDrmSession(ErrorCodeFactory.Extra.DrmLicenseFetch, -1))
+            .isEqualTo("5:1:-1")
 
     @Test
     fun `createForUnexpectedLoader should return correct errorCode`() =
         assertThat(
-            errorCodeFactory.createForUnexpectedLoader(
-                ErrorCodeFactory.Extra.DrmLicenseFetch,
-                -1,
-            ),
-        ).isEqualTo("6:1:-1")
+                errorCodeFactory.createForUnexpectedLoader(
+                    ErrorCodeFactory.Extra.DrmLicenseFetch,
+                    -1,
+                )
+            )
+            .isEqualTo("6:1:-1")
 
     @Test
     fun `createForBehindLiveWindow should return correct errorCode`() =
         assertThat(
-            errorCodeFactory.createForBehindLiveWindow(
-                ErrorCodeFactory.Extra.DrmLicenseFetch,
-                -1,
-            ),
-        ).isEqualTo("7:1:-1")
+                errorCodeFactory.createForBehindLiveWindow(
+                    ErrorCodeFactory.Extra.DrmLicenseFetch,
+                    -1,
+                )
+            )
+            .isEqualTo("7:1:-1")
 
     @Test
     fun `createForAudioSinkInitialization should return correct errorCode`() =
         assertThat(
-            errorCodeFactory.createForAudioSinkInitialization(
-                ErrorCodeFactory.Extra.DrmLicenseFetch,
-                -1,
-            ),
-        ).isEqualTo("8:1:-1")
+                errorCodeFactory.createForAudioSinkInitialization(
+                    ErrorCodeFactory.Extra.DrmLicenseFetch,
+                    -1,
+                )
+            )
+            .isEqualTo("8:1:-1")
 }

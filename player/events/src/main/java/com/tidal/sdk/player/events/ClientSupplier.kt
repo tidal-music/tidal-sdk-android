@@ -17,11 +17,12 @@ class ClientSupplier(
     private val version: String,
 ) {
 
-    private var accessToken: String by Delegates.observable("") { _, oldValue, newValue ->
-        if (oldValue != newValue) {
-            claims = base64JwtDecoder.getClaims(newValue)
+    private var accessToken: String by
+        Delegates.observable("") { _, oldValue, newValue ->
+            if (oldValue != newValue) {
+                claims = base64JwtDecoder.getClaims(newValue)
+            }
         }
-    }
 
     private var claims: JsonObject? = null
 

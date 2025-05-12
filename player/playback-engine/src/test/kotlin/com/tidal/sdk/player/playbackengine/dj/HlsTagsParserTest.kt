@@ -7,23 +7,25 @@ import org.junit.jupiter.api.Test
 
 internal class HlsTagsParserTest {
 
-    private val dateRange1 = DateRange(
-        "p14",
-        "com.tidal.period.metadata",
-        "2023-06-20T22:15:22.778794981Z",
-        "78067540",
-        DjSessionStatus.PLAYING,
-        "YES",
-    )
+    private val dateRange1 =
+        DateRange(
+            "p14",
+            "com.tidal.period.metadata",
+            "2023-06-20T22:15:22.778794981Z",
+            "78067540",
+            DjSessionStatus.PLAYING,
+            "YES",
+        )
 
-    private val dateRange2 = DateRange(
-        "p15",
-        "com.tidal.period.metadata",
-        "2023-06-20T22:18:22.778794981Z",
-        "78067541",
-        DjSessionStatus.PAUSED,
-        "YES",
-    )
+    private val dateRange2 =
+        DateRange(
+            "p15",
+            "com.tidal.period.metadata",
+            "2023-06-20T22:18:22.778794981Z",
+            "78067541",
+            DjSessionStatus.PAUSED,
+            "YES",
+        )
 
     private val hlsTagsParser = HlsTagsParser()
 

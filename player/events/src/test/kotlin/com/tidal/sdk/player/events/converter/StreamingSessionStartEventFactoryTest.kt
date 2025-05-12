@@ -27,24 +27,26 @@ internal class StreamingSessionStartEventFactoryTest {
     private val streamingSessionStartPayloadDecorator =
         mock<StreamingSessionStartPayloadDecorator>()
     private val streamingSessionStartFactory = mock<StreamingSessionStart.Factory>()
-    private val streamingSessionStartEventFactory = StreamingSessionStartEventFactory(
-        trueTimeWrapper,
-        uuidWrapper,
-        userSupplier,
-        clientSupplier,
-        streamingSessionStartPayloadDecorator,
-        streamingSessionStartFactory,
-    )
+    private val streamingSessionStartEventFactory =
+        StreamingSessionStartEventFactory(
+            trueTimeWrapper,
+            uuidWrapper,
+            userSupplier,
+            clientSupplier,
+            streamingSessionStartPayloadDecorator,
+            streamingSessionStartFactory,
+        )
 
     @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(
-        trueTimeWrapper,
-        uuidWrapper,
-        userSupplier,
-        clientSupplier,
-        streamingSessionStartPayloadDecorator,
-        streamingSessionStartFactory,
-    )
+    fun afterEach() =
+        verifyNoMoreInteractions(
+            trueTimeWrapper,
+            uuidWrapper,
+            userSupplier,
+            clientSupplier,
+            streamingSessionStartPayloadDecorator,
+            streamingSessionStartFactory,
+        )
 
     @Test
     fun invoke() = runBlocking {
@@ -62,9 +64,16 @@ internal class StreamingSessionStartEventFactoryTest {
             .thenReturn(decoratedPayload)
         val expected = mock<StreamingSessionStart>()
         whenever(
-            streamingSessionStartFactory
-                .create(currentTimeMillis, randomUUID, user, client, decoratedPayload, emptyMap()),
-        ).thenReturn(expected)
+                streamingSessionStartFactory.create(
+                    currentTimeMillis,
+                    randomUUID,
+                    user,
+                    client,
+                    decoratedPayload,
+                    emptyMap(),
+                )
+            )
+            .thenReturn(expected)
 
         val actual = streamingSessionStartEventFactory(payload, emptyMap())
 
@@ -73,14 +82,8 @@ internal class StreamingSessionStartEventFactoryTest {
         verify(userSupplier)()
         verify(clientSupplier)()
         verify(streamingSessionStartPayloadDecorator).decorate(payload)
-        verify(streamingSessionStartFactory).create(
-            currentTimeMillis,
-            randomUUID,
-            user,
-            client,
-            decoratedPayload,
-            emptyMap(),
-        )
+        verify(streamingSessionStartFactory)
+            .create(currentTimeMillis, randomUUID, user, client, decoratedPayload, emptyMap())
         assertThat(actual).isSameAs(expected)
         verifyNoMoreInteractions(randomUUID, user, client, payload, decoratedPayload, expected)
     }

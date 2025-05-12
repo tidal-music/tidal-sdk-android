@@ -13,7 +13,7 @@ import okhttp3.ResponseBody.Companion.toResponseBody
  * An [Interceptor] that adds an Authorization header to each request.
  *
  * @param[credentialsProvider] A [CredentialsProvider] that provides the access token used in the
- * Authorization header.
+ *   Authorization header.
  */
 internal class AuthorizationInterceptor(
     private val credentialsProvider: CredentialsProvider,

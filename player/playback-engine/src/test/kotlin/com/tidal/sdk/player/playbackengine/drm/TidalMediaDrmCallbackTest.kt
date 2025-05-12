@@ -31,30 +31,28 @@ internal class TidalMediaDrmCallbackTest {
     private val okHttpClient = mock<OkHttpClient>()
     private val provisionRequestBuilder = mock<Request.Builder>()
     private val provisionRequestBody = mock<RequestBody>()
-    private val tidalMediaDrmCallback = TidalMediaDrmCallback(
-        streamingApiRepository,
-        base64Codec,
-        drmLicenseRequestFactory,
-        drmMode,
-        okHttpClient,
-        lazy { provisionRequestBuilder },
-        lazy { provisionRequestBody },
-        emptyMap(),
-    )
+    private val tidalMediaDrmCallback =
+        TidalMediaDrmCallback(
+            streamingApiRepository,
+            base64Codec,
+            drmLicenseRequestFactory,
+            drmMode,
+            okHttpClient,
+            lazy { provisionRequestBuilder },
+            lazy { provisionRequestBody },
+            emptyMap(),
+        )
 
     @Test
     fun executeKeyRequestWithDrmModeStreamingAndResponseSuccess() = runBlocking {
-        val request = mock<ExoMediaDrm.KeyRequest> {
-            on { data } doReturn "keyRequest".toByteArray()
-        }
+        val request =
+            mock<ExoMediaDrm.KeyRequest> { on { data } doReturn "keyRequest".toByteArray() }
         val encodedRequestData = "encodedRequestData"
         val drmLicenseRequest = mock<DrmLicenseRequest>()
         val expectedDrmLicensePayload = "expectedDrmLicensePayload".toByteArray()
-        val drmLicense = mock<DrmLicense> {
-            on { payload } doReturn String(expectedDrmLicensePayload)
-        }
-        whenever(base64Codec.encode(request.data))
-            .thenReturn(encodedRequestData.toByteArray())
+        val drmLicense =
+            mock<DrmLicense> { on { payload } doReturn String(expectedDrmLicensePayload) }
+        whenever(base64Codec.encode(request.data)).thenReturn(encodedRequestData.toByteArray())
         whenever(drmLicenseRequestFactory.create(encodedRequestData)).thenReturn(drmLicenseRequest)
         whenever(streamingApiRepository.getDrmLicense(drmLicenseRequest, emptyMap()))
             .thenReturn(drmLicense)
@@ -68,46 +66,39 @@ internal class TidalMediaDrmCallbackTest {
 
     @Test
     fun executeKeyRequestWithDrmModeStreamingAndResponseError() = runBlocking {
-        val request = mock<ExoMediaDrm.KeyRequest> {
-            on { data } doReturn "keyRequest".toByteArray()
-        }
+        val request =
+            mock<ExoMediaDrm.KeyRequest> { on { data } doReturn "keyRequest".toByteArray() }
         val encodedRequestData = "encodedRequestData"
         val drmLicenseRequest = mock<DrmLicenseRequest>()
         val expected = mock<RuntimeException>()
-        whenever(base64Codec.encode(request.data))
-            .thenReturn(encodedRequestData.toByteArray())
+        whenever(base64Codec.encode(request.data)).thenReturn(encodedRequestData.toByteArray())
         whenever(drmLicenseRequestFactory.create(encodedRequestData)).thenReturn(drmLicenseRequest)
         whenever(streamingApiRepository.getDrmLicense(drmLicenseRequest, emptyMap()))
             .thenThrow(expected)
 
-        val actual = assertThrows<RuntimeException> {
-            tidalMediaDrmCallback.executeKeyRequest(C.WIDEVINE_UUID, request)
-        }
+        val actual =
+            assertThrows<RuntimeException> {
+                tidalMediaDrmCallback.executeKeyRequest(C.WIDEVINE_UUID, request)
+            }
         assertThat(actual).isSameAs(expected)
     }
 
     @Test
     fun executeProvisionRequest() {
-        val request = mock<ExoMediaDrm.ProvisionRequest> {
-            on { defaultUrl } doReturn "http://example.com"
-            on { data } doReturn "keyRequest".toByteArray()
-        }
+        val request =
+            mock<ExoMediaDrm.ProvisionRequest> {
+                on { defaultUrl } doReturn "http://example.com"
+                on { data } doReturn "keyRequest".toByteArray()
+            }
         val url = request.defaultUrl + "&signedRequest=" + Util.fromUtf8Bytes(request.data)
         val expectedByteArray = "okHttpResponse".toByteArray()
-        val body = mock<ResponseBody> {
-            on { bytes() } doReturn expectedByteArray
-        }
-        val response = mock<Response> {
-            on { it.body } doReturn body
-        }
-        val call = mock<Call> {
-            on { execute() } doReturn response
-        }
+        val body = mock<ResponseBody> { on { bytes() } doReturn expectedByteArray }
+        val response = mock<Response> { on { it.body } doReturn body }
+        val call = mock<Call> { on { execute() } doReturn response }
         val provisioningRequest = mock<Request>()
         whenever(provisionRequestBuilder.url(url)).thenReturn(provisionRequestBuilder)
-        whenever(provisionRequestBuilder.post(provisionRequestBody)).thenReturn(
-            provisionRequestBuilder,
-        )
+        whenever(provisionRequestBuilder.post(provisionRequestBody))
+            .thenReturn(provisionRequestBuilder)
         whenever(provisionRequestBuilder.build()).thenReturn(provisioningRequest)
         whenever(okHttpClient.newCall(provisioningRequest)).thenReturn(call)
 

@@ -9,17 +9,11 @@ import javax.inject.Inject
 @Reusable
 internal class MapConverter @Inject constructor() {
 
-    private val mapStringStringType = Types.newParameterizedType(
-        Map::class.java,
-        String::class.java,
-        String::class.java,
-    )
+    private val mapStringStringType =
+        Types.newParameterizedType(Map::class.java, String::class.java, String::class.java)
 
-    private val mapStringIntType = Types.newParameterizedType(
-        Map::class.java,
-        String::class.java,
-        Int::class.javaObjectType,
-    )
+    private val mapStringIntType =
+        Types.newParameterizedType(Map::class.java, String::class.java, Int::class.javaObjectType)
 
     private val moshi = Moshi.Builder().build()
 

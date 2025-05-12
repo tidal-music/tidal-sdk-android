@@ -19,39 +19,40 @@ internal class AudioPlaybackStatisticsPayloadMarshallingTest :
     override val productType = ProductType.TRACK
     override val actualProductId = "actualProductId"
     override val cdm = PlaybackStatistics.Payload.Cdm.WIDEVINE
-    override val stalls = listOf(
-        PlaybackStatistics.Payload.Stall(
-            PlaybackStatistics.Payload.Stall.Reason.SEEK,
-            1.0,
-            Long.MAX_VALUE,
-            0L,
-        ),
-    )
-    override val adaptations = listOf(
-        PlaybackStatistics.Payload.Adaptation(
-            1.0,
-            Long.MIN_VALUE,
-            "mimeType",
-            "codecs",
-            0,
-            -1,
-            Int.MAX_VALUE,
-        ),
-    )
+    override val stalls =
+        listOf(
+            PlaybackStatistics.Payload.Stall(
+                PlaybackStatistics.Payload.Stall.Reason.SEEK,
+                1.0,
+                Long.MAX_VALUE,
+                0L,
+            )
+        )
+    override val adaptations =
+        listOf(
+            PlaybackStatistics.Payload.Adaptation(
+                1.0,
+                Long.MIN_VALUE,
+                "mimeType",
+                "codecs",
+                0,
+                -1,
+                Int.MAX_VALUE,
+            )
+        )
     override val endTimestamp = -1L
     override val payloadFactory =
         {
-                actualStartTimestamp: Long?,
-                _: StreamType?,
-                assetPresentation: AssetPresentation?,
-                audioMode: AudioMode?,
-                productQuality: ProductQuality?,
-                mediaStorage: MediaStorage?,
-                endReason: EndReason,
-                cdmVersion: String?,
-                errorMessage: String?,
-                errorCode: String?,
-            ->
+            actualStartTimestamp: Long?,
+            _: StreamType?,
+            assetPresentation: AssetPresentation?,
+            audioMode: AudioMode?,
+            productQuality: ProductQuality?,
+            mediaStorage: MediaStorage?,
+            endReason: EndReason,
+            cdmVersion: String?,
+            errorMessage: String?,
+            errorCode: String? ->
             AudioPlaybackStatistics.Payload(
                 streamingSessionId,
                 idealStartTimestamp,
@@ -152,7 +153,7 @@ internal class AudioPlaybackStatisticsPayloadMarshallingTest :
                                                         cdmVersion,
                                                         errorMessage,
                                                         errorCode,
-                                                    ),
+                                                    )
                                                 )
                                             }
                                         }

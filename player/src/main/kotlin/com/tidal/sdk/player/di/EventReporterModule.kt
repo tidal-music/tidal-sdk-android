@@ -52,9 +52,7 @@ internal object EventReporterModule {
         version: String,
     ) = ClientSupplier(context, uiModeManager, base64JwtDecoder, credentialsProvider, version)
 
-    @Provides
-    @Reusable
-    fun coroutineDispatcher() = Dispatchers.Default
+    @Provides @Reusable fun coroutineDispatcher() = Dispatchers.Default
 
     @Provides
     @Singleton
@@ -68,23 +66,24 @@ internal object EventReporterModule {
         connectivityManager: ConnectivityManager,
         userSupplier: UserSupplier,
         clientSupplier: ClientSupplier,
-        @LocalWithCacheAndAuth
-        okHttpClient: OkHttpClient,
+        @LocalWithCacheAndAuth okHttpClient: OkHttpClient,
         gson: Gson,
         uuidWrapper: UUIDWrapper,
         trueTimeWrapper: TrueTimeWrapper,
         eventSender: EventSender,
         coroutineScope: CoroutineScope,
-    ) = EventReporterModuleRoot(
-        context,
-        connectivityManager,
-        userSupplier,
-        clientSupplier,
-        okHttpClient,
-        gson,
-        uuidWrapper,
-        trueTimeWrapper,
-        eventSender,
-        coroutineScope,
-    ).eventReporter
+    ) =
+        EventReporterModuleRoot(
+                context,
+                connectivityManager,
+                userSupplier,
+                clientSupplier,
+                okHttpClient,
+                gson,
+                uuidWrapper,
+                trueTimeWrapper,
+                eventSender,
+                coroutineScope,
+            )
+            .eventReporter
 }

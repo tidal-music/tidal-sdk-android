@@ -13,24 +13,17 @@ internal class LoginUriBuilder(
 ) {
 
     fun getLoginUri(redirectUri: String, loginConfig: LoginConfig?, codeChallenge: String): String {
-        var builder = loginUri.toHttpUrl()
-            .newBuilder()
-            .addPathSegment(AUTH_PATH)
+        var builder = loginUri.toHttpUrl().newBuilder().addPathSegment(AUTH_PATH)
 
         with(builder) {
             addQueryParameter(QueryKeys.REDIRECT_URI_KEY, redirectUri)
             addQueryParameter(QueryKeys.SCOPES_KEY, scopes.joinToString(" "))
             buildBaseParameters(clientId, clientUniqueKey, codeChallenge).forEach {
-                addQueryParameter(
-                    it.key,
-                    it.value,
-                )
+                addQueryParameter(it.key, it.value)
             }
         }
 
-        loginConfig?.let {
-            builder = evaluateLoginConfig(builder, it)
-        }
+        loginConfig?.let { builder = evaluateLoginConfig(builder, it) }
         return builder.build().toString()
     }
 
@@ -40,12 +33,8 @@ internal class LoginUriBuilder(
     ): HttpUrl.Builder {
         with(builder) {
             addQueryParameter(QueryKeys.LANGUAGE_KEY, config.locale.toString())
-            config.email?.let {
-                addQueryParameter(QueryKeys.EMAIL_KEY, it)
-            }
-            config.customParams.forEach {
-                addQueryParameter(it.key, it.value)
-            }
+            config.email?.let { addQueryParameter(QueryKeys.EMAIL_KEY, it) }
+            config.customParams.forEach { addQueryParameter(it.key, it.value) }
         }
         return builder
     }
@@ -56,18 +45,13 @@ internal class LoginUriBuilder(
         codeChallenge: String,
     ): Set<QueryParameter> {
         return mutableSetOf(
-            QueryParameter(QueryKeys.CLIENT_ID_KEY, clientId),
-
-            QueryParameter(
-                QueryKeys.CODE_CHALLENGE_METHOD_KEY,
-                CODE_CHALLENGE_METHOD,
-            ),
-            QueryParameter(QueryKeys.CODE_CHALLENGE_KEY, codeChallenge),
-        ).apply {
-            clientUniqueKey?.let {
-                this.add(QueryParameter(QueryKeys.CLIENT_UNIQUE_KEY, it))
+                QueryParameter(QueryKeys.CLIENT_ID_KEY, clientId),
+                QueryParameter(QueryKeys.CODE_CHALLENGE_METHOD_KEY, CODE_CHALLENGE_METHOD),
+                QueryParameter(QueryKeys.CODE_CHALLENGE_KEY, codeChallenge),
+            )
+            .apply {
+                clientUniqueKey?.let { this.add(QueryParameter(QueryKeys.CLIENT_UNIQUE_KEY, it)) }
             }
-        }
     }
 
     object QueryKeys {

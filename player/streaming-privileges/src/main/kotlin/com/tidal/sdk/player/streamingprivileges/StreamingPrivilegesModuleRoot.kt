@@ -13,14 +13,10 @@ class StreamingPrivilegesModuleRoot(
     trueTimeWrapper: TrueTimeWrapper,
 ) {
 
-    val streamingPrivileges = componentFactoryF()
-        .create(
-            connectivityManager,
-            okHttpClient,
-            gson,
-            trueTimeWrapper,
-        )
-        .streamingPrivileges
+    val streamingPrivileges =
+        componentFactoryF()
+            .create(connectivityManager, okHttpClient, gson, trueTimeWrapper)
+            .streamingPrivileges
 
     companion object {
 

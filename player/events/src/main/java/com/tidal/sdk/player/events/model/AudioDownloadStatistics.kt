@@ -12,7 +12,9 @@ import dagger.assisted.AssistedInject
 import java.util.UUID
 
 @Keep
-internal data class AudioDownloadStatistics @AssistedInject constructor(
+internal data class AudioDownloadStatistics
+@AssistedInject
+constructor(
     @Assisted override val ts: Long,
     @Assisted override val uuid: UUID,
     @Assisted override val user: User,

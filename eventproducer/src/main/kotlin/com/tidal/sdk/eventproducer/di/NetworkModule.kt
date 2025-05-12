@@ -19,8 +19,12 @@ internal class NetworkModule {
         okhttpClient: OkHttpClient,
         xmlConverter: TikXmlConverterFactory,
     ): SqsService {
-        val retrofit = Retrofit.Builder().baseUrl(tlConsumerUri.toURL()).client(okhttpClient)
-            .addConverterFactory(xmlConverter).build()
+        val retrofit =
+            Retrofit.Builder()
+                .baseUrl(tlConsumerUri.toURL())
+                .client(okhttpClient)
+                .addConverterFactory(xmlConverter)
+                .build()
         return retrofit.create(SqsService::class.java)
     }
 }

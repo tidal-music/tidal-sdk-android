@@ -4,11 +4,11 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 
-internal class IfRelevantOrCloseRunnable @AssistedInject constructor(
-    @Assisted
-    private val connectionMutableState: ConnectionMutableState,
-    @Assisted
-    private val block: () -> Unit,
+internal class IfRelevantOrCloseRunnable
+@AssistedInject
+constructor(
+    @Assisted private val connectionMutableState: ConnectionMutableState,
+    @Assisted private val block: () -> Unit,
     private val disconnectRunnable: DisconnectRunnable,
 ) : Runnable {
 

@@ -43,16 +43,11 @@ internal fun <T> Selector(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = Modifier
-            .clickable { expanded = true }
-            .fillMaxWidth()
-            .padding(16.dp),
+        modifier = Modifier.clickable { expanded = true }.fillMaxWidth().padding(16.dp),
     ) {
         Text(
             text = title,
-            modifier = Modifier
-                .padding(PaddingValues(end = 8F.dp))
-                .weight(1F, fill = false),
+            modifier = Modifier.padding(PaddingValues(end = 8F.dp)).weight(1F, fill = false),
         )
         Text(text = selectedValue.toString())
     }
@@ -73,19 +68,20 @@ internal fun <T> Selector(
                     }
                     LazyColumn(state = listState) {
                         itemsIndexed(possibleValues) { index, item ->
-                            val contentColor = when (index) {
-                                selectedIndex -> MaterialTheme.colorScheme.primary
-                                else -> MaterialTheme.colorScheme.onSurface
-                            }
+                            val contentColor =
+                                when (index) {
+                                    selectedIndex -> MaterialTheme.colorScheme.primary
+                                    else -> MaterialTheme.colorScheme.onSurface
+                                }
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier
-                                    .clickable {
-                                        expanded = false
-                                        onSelectionUpdated(item)
-                                    }
-                                    .fillMaxWidth()
-                                    .padding(16.dp),
+                                modifier =
+                                    Modifier.clickable {
+                                            expanded = false
+                                            onSelectionUpdated(item)
+                                        }
+                                        .fillMaxWidth()
+                                        .padding(16.dp),
                             ) {
                                 CompositionLocalProvider(LocalContentColor provides contentColor) {
                                     Text(

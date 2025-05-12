@@ -16,12 +16,13 @@ internal class FallbackAudioRendererFactory(
     override fun create(
         eventHandler: Handler,
         audioRendererEventListener: AudioRendererEventListener,
-    ) = MediaCodecAudioRenderer(
-        context,
-        MediaCodecSelector.DEFAULT,
-        false,
-        eventHandler,
-        audioRendererEventListener,
-        defaultAudioSink,
-    )
+    ) =
+        MediaCodecAudioRenderer(
+            context,
+            MediaCodecSelector.DEFAULT,
+            false,
+            eventHandler,
+            audioRendererEventListener,
+            defaultAudioSink,
+        )
 }

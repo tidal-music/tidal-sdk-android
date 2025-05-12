@@ -10,25 +10,26 @@ import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
 @Suppress("MagicNumber")
 object TrackPlaybackInfoFactory {
 
-    val DEFAULT = PlaybackInfo.Track(
-        ApiConstants.PLAYBACK_INFO_ID_FOR_DEFAULT.toInt(),
-        AudioQuality.LOW,
-        AssetPresentation.FULL,
-        AudioMode.STEREO,
-        16,
-        44100,
-        ApiConstants.MANIFEST_HASH,
-        ApiConstants.STREAMING_SESSION_ID,
-        ManifestMimeType.DASH,
-        ApiConstants.MANIFEST,
-        null,
-        -9.8F,
-        0.999923F,
-        -9.8F,
-        0.999923F,
-        0,
-        0,
-    )
+    val DEFAULT =
+        PlaybackInfo.Track(
+            ApiConstants.PLAYBACK_INFO_ID_FOR_DEFAULT.toInt(),
+            AudioQuality.LOW,
+            AssetPresentation.FULL,
+            AudioMode.STEREO,
+            16,
+            44100,
+            ApiConstants.MANIFEST_HASH,
+            ApiConstants.STREAMING_SESSION_ID,
+            ManifestMimeType.DASH,
+            ApiConstants.MANIFEST,
+            null,
+            -9.8F,
+            0.999923F,
+            -9.8F,
+            0.999923F,
+            0,
+            0,
+        )
 
     val EMPTY_STREAMING_SESSION_ID = DEFAULT.copy(streamingSessionId = "")
 
@@ -38,15 +39,11 @@ object TrackPlaybackInfoFactory {
 
     val PROTECTED = DEFAULT.copy(licenseSecurityToken = ApiConstants.LICENSE_SECURITY_TOKEN)
 
-    val OFFLINE = DEFAULT.copy(
-        offlineRevalidateAt = ApiConstants.OFFLINE_REVALIDATE_AT_SECONDS,
-        offlineValidUntil = ApiConstants.OFFLINE_VALID_UNTIL_SECONDS,
-    )
+    val OFFLINE =
+        DEFAULT.copy(
+            offlineRevalidateAt = ApiConstants.OFFLINE_REVALIDATE_AT_SECONDS,
+            offlineValidUntil = ApiConstants.OFFLINE_VALID_UNTIL_SECONDS,
+        )
 
-    val OFFLINE_PLAY = PlaybackInfo.Offline.Track(
-        DEFAULT,
-        "",
-        Storage(false, ""),
-        false,
-    )
+    val OFFLINE_PLAY = PlaybackInfo.Offline.Track(DEFAULT, "", Storage(false, ""), false)
 }

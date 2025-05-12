@@ -7,8 +7,6 @@ import org.gradle.kotlin.dsl.withType
 internal class ConfiguresJUnit5 : (Project) -> Unit {
 
     override fun invoke(target: Project) {
-        target.tasks.withType<Test> {
-            useJUnitPlatform()
-        }
+        target.tasks.withType<Test> { useJUnitPlatform() }
     }
 }

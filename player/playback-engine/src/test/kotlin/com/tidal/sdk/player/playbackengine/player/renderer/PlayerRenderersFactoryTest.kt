@@ -24,22 +24,22 @@ internal class PlayerRenderersFactoryTest {
     private val mediaCodecVideoRendererFactory = mock<MediaCodecVideoRendererFactory>()
     private val libflacAudioRendererFactory = mock<LibflacAudioRendererFactory>()
     private val fallbackAudioRendererFactory = mock<FallbackAudioRendererFactory>()
-    private val playerRenderersFactory = PlayerRenderersFactory(
-        mediaCodecVideoRendererFactory,
-        libflacAudioRendererFactory,
-        fallbackAudioRendererFactory,
-    )
+    private val playerRenderersFactory =
+        PlayerRenderersFactory(
+            mediaCodecVideoRendererFactory,
+            libflacAudioRendererFactory,
+            fallbackAudioRendererFactory,
+        )
 
     @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(
-        mediaCodecVideoRendererFactory,
-        libflacAudioRendererFactory,
-        fallbackAudioRendererFactory,
-    )
+    fun afterEach() =
+        verifyNoMoreInteractions(
+            mediaCodecVideoRendererFactory,
+            libflacAudioRendererFactory,
+            fallbackAudioRendererFactory,
+        )
 
-    @Test
-    fun createRenderersIncludesExpectedRenderers() =
-        testForRenderers(mock(), mock(), mock())
+    @Test fun createRenderersIncludesExpectedRenderers() = testForRenderers(mock(), mock(), mock())
 
     @Test
     fun createRenderersIncludesExpectedRenderersWhenLibflacAudioRendererFactoryReturnsNull() =
@@ -61,22 +61,21 @@ internal class PlayerRenderersFactoryTest {
         whenever(fallbackAudioRendererFactory.create(eventHandler, audioRendererEventListener))
             .thenReturn(fallbackAudioRenderer)
 
-        val actual = playerRenderersFactory.createRenderers(
-            eventHandler,
-            videoRendererEventListener,
-            audioRendererEventListener,
-            mock(),
-            mock(),
-        )
+        val actual =
+            playerRenderersFactory.createRenderers(
+                eventHandler,
+                videoRendererEventListener,
+                audioRendererEventListener,
+                mock(),
+                mock(),
+            )
 
-        assertThat(actual).isEqualTo(
-            arrayOf(
-                mediaCodecVideoRenderer,
-                libflacAudioRenderer,
-                fallbackAudioRenderer,
-            ).filterNotNull()
-                .toTypedArray(),
-        )
+        assertThat(actual)
+            .isEqualTo(
+                arrayOf(mediaCodecVideoRenderer, libflacAudioRenderer, fallbackAudioRenderer)
+                    .filterNotNull()
+                    .toTypedArray()
+            )
         verify(mediaCodecVideoRendererFactory).create(eventHandler, videoRendererEventListener)
         verify(libflacAudioRendererFactory).create(eventHandler, audioRendererEventListener)
         verify(fallbackAudioRendererFactory).create(eventHandler, audioRendererEventListener)

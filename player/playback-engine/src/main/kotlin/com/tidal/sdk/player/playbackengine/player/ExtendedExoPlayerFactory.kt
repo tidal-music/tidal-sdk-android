@@ -5,7 +5,7 @@ import com.tidal.sdk.player.playbackengine.mediasource.loadable.PlaybackInfoList
 import com.tidal.sdk.player.playbackengine.player.di.ExtendedExoPlayerComponent
 
 internal class ExtendedExoPlayerFactory(
-    private val extendedExoPlayerComponentFactory: ExtendedExoPlayerComponent.Factory,
+    private val extendedExoPlayerComponentFactory: ExtendedExoPlayerComponent.Factory
 ) {
     fun create(
         playbackInfoListener: PlaybackInfoListener,

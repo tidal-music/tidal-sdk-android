@@ -8,8 +8,7 @@ import com.tidal.sdk.player.common.model.ProductQuality
 import com.tidal.sdk.player.common.model.ProductType
 import java.util.UUID
 
-sealed class PlaybackSession<T : PlaybackSession.Payload> :
-    PlayLog<T>(name = "playback_session") {
+sealed class PlaybackSession<T : PlaybackSession.Payload> : PlayLog<T>(name = "playback_session") {
 
     abstract override val payload: T
 
@@ -35,8 +34,7 @@ sealed class PlaybackSession<T : PlaybackSession.Payload> :
         @SuppressWarnings("UnusedPrivateMember")
         data class Action(
             val timestamp: Long,
-            @SerializedName("assetPosition")
-            val assetPositionSeconds: Double,
+            @SerializedName("assetPosition") val assetPositionSeconds: Double,
             val actionType: Type,
         ) {
 

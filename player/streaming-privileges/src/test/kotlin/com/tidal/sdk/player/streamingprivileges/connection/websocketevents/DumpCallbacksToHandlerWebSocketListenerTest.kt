@@ -25,24 +25,26 @@ internal class DumpCallbacksToHandlerWebSocketListenerTest {
     private val onWebSocketOpen = mock<OnWebSocketOpen>()
     private val ifRelevantOrCloseRunnableFactory = mock<IfRelevantOrCloseRunnable.Factory>()
     private val connectionMutableState = mock<ConnectionMutableState>()
-    private val dumpCallbacksToHandlerWebSocketListener = DumpCallbacksToHandlerWebSocketListener(
-        networkInteractionsHandler,
-        onWebSocketFailure,
-        onWebSocketMessage,
-        onWebSocketOpen,
-        ifRelevantOrCloseRunnableFactory,
-        connectionMutableState,
-    )
+    private val dumpCallbacksToHandlerWebSocketListener =
+        DumpCallbacksToHandlerWebSocketListener(
+            networkInteractionsHandler,
+            onWebSocketFailure,
+            onWebSocketMessage,
+            onWebSocketOpen,
+            ifRelevantOrCloseRunnableFactory,
+            connectionMutableState,
+        )
 
     @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(
-        networkInteractionsHandler,
-        onWebSocketFailure,
-        onWebSocketMessage,
-        onWebSocketOpen,
-        ifRelevantOrCloseRunnableFactory,
-        connectionMutableState,
-    )
+    fun afterEach() =
+        verifyNoMoreInteractions(
+            networkInteractionsHandler,
+            onWebSocketFailure,
+            onWebSocketMessage,
+            onWebSocketOpen,
+            ifRelevantOrCloseRunnableFactory,
+            connectionMutableState,
+        )
 
     @Test
     fun onFailurePostsRightRunnable() {

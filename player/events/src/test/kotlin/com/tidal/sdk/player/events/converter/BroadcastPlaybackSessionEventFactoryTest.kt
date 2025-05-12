@@ -25,22 +25,24 @@ internal class BroadcastPlaybackSessionEventFactoryTest {
     private val userSupplier = mock<UserSupplier>()
     private val clientSupplier = mock<ClientSupplier>()
     private val broadcastPlaybackSessionFactory = mock<BroadcastPlaybackSession.Factory>()
-    private val broadcastPlaybackSessionEventFactory = BroadcastPlaybackSessionEventFactory(
-        trueTimeWrapper,
-        uuidWrapper,
-        userSupplier,
-        clientSupplier,
-        broadcastPlaybackSessionFactory,
-    )
+    private val broadcastPlaybackSessionEventFactory =
+        BroadcastPlaybackSessionEventFactory(
+            trueTimeWrapper,
+            uuidWrapper,
+            userSupplier,
+            clientSupplier,
+            broadcastPlaybackSessionFactory,
+        )
 
     @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(
-        trueTimeWrapper,
-        uuidWrapper,
-        userSupplier,
-        clientSupplier,
-        broadcastPlaybackSessionFactory,
-    )
+    fun afterEach() =
+        verifyNoMoreInteractions(
+            trueTimeWrapper,
+            uuidWrapper,
+            userSupplier,
+            clientSupplier,
+            broadcastPlaybackSessionFactory,
+        )
 
     @Test
     fun invoke() = runBlocking {
@@ -55,15 +57,16 @@ internal class BroadcastPlaybackSessionEventFactoryTest {
         val payload = mock<BroadcastPlaybackSession.Payload>()
         val expected = mock<BroadcastPlaybackSession>()
         whenever(
-            broadcastPlaybackSessionFactory.create(
-                currentTimeMillis,
-                randomUUID,
-                user,
-                client,
-                payload,
-                emptyMap(),
-            ),
-        ).thenReturn(expected)
+                broadcastPlaybackSessionFactory.create(
+                    currentTimeMillis,
+                    randomUUID,
+                    user,
+                    client,
+                    payload,
+                    emptyMap(),
+                )
+            )
+            .thenReturn(expected)
 
         val actual = broadcastPlaybackSessionEventFactory(payload, emptyMap())
 
@@ -71,14 +74,8 @@ internal class BroadcastPlaybackSessionEventFactoryTest {
         verify(uuidWrapper).randomUUID
         verify(userSupplier)()
         verify(clientSupplier)()
-        verify(broadcastPlaybackSessionFactory).create(
-            currentTimeMillis,
-            randomUUID,
-            user,
-            client,
-            payload,
-            emptyMap(),
-        )
+        verify(broadcastPlaybackSessionFactory)
+            .create(currentTimeMillis, randomUUID, user, client, payload, emptyMap())
         assertThat(actual).isSameAs(expected)
         verifyNoMoreInteractions(randomUUID, user, client, payload, expected)
     }

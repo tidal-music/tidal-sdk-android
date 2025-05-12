@@ -9,7 +9,7 @@ internal const val X_TIDAL_TOKEN_HEADER_NAME = "X-Tidal-Token"
 internal const val BEARER = "Bearer"
 
 internal fun Request.Builder.updateAuthHeader(
-    credentialsProvider: CredentialsProvider,
+    credentialsProvider: CredentialsProvider
 ): Request.Builder {
     val credentials = runBlocking { credentialsProvider.getCredentials().successData }
     val clientId = credentials?.clientId

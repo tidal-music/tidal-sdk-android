@@ -5,8 +5,8 @@ import com.tidal.sdk.player.commonandroid.Base64Codec
 import java.nio.charset.Charset
 
 /**
- * Create [BtsManifest] from our encoded [String] manifest, decoded with the provided
- * [base64Codec], then parsed with the provided [gson] instance.
+ * Create [BtsManifest] from our encoded [String] manifest, decoded with the provided [base64Codec],
+ * then parsed with the provided [gson] instance.
  */
 internal class DefaultBtsManifestFactory(
     private val gson: Gson,

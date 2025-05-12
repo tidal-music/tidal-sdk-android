@@ -34,8 +34,10 @@ internal object ExtendedExoPlayerModule {
 
     @Provides
     @Reusable
-    fun trackSelector(context: Context, trackSelectionFactory: ExoTrackSelection.Factory):
-        TrackSelector = DefaultTrackSelector(context, trackSelectionFactory)
+    fun trackSelector(
+        context: Context,
+        trackSelectionFactory: ExoTrackSelection.Factory,
+    ): TrackSelector = DefaultTrackSelector(context, trackSelectionFactory)
 
     @Provides
     @ExtendedExoPlayerComponent.Scoped
@@ -56,16 +58,15 @@ internal object ExtendedExoPlayerModule {
                 .build()
         }
 
-    @Provides
-    @ExtendedExoPlayerComponent.Scoped
-    fun priorityTaskManager() = PriorityTaskManager()
+    @Provides @ExtendedExoPlayerComponent.Scoped fun priorityTaskManager() = PriorityTaskManager()
 
     @Provides
     @Reusable
-    fun audioAttributes() = AudioAttributes.Builder()
-        .setContentType(C.AUDIO_CONTENT_TYPE_MUSIC)
-        .setUsage(C.USAGE_MEDIA)
-        .build()
+    fun audioAttributes() =
+        AudioAttributes.Builder()
+            .setContentType(C.AUDIO_CONTENT_TYPE_MUSIC)
+            .setUsage(C.USAGE_MEDIA)
+            .build()
 
     @Provides
     @ExtendedExoPlayerComponent.Scoped
@@ -77,15 +78,16 @@ internal object ExtendedExoPlayerModule {
         looper: Looper,
         priorityTaskManager: PriorityTaskManager,
         audioAttributes: AudioAttributes,
-    ) = ExoPlayer.Builder(context, renderersFactory)
-        .setTrackSelector(trackSelector)
-        .setLoadControl(loadControl)
-        .setLooper(looper)
-        .setPriorityTaskManager(priorityTaskManager)
-        .setHandleAudioBecomingNoisy(true)
-        .setWakeMode(C.WAKE_MODE_NETWORK)
-        .setAudioAttributes(audioAttributes, true)
-        .build()
+    ) =
+        ExoPlayer.Builder(context, renderersFactory)
+            .setTrackSelector(trackSelector)
+            .setLoadControl(loadControl)
+            .setLooper(looper)
+            .setPriorityTaskManager(priorityTaskManager)
+            .setHandleAudioBecomingNoisy(true)
+            .setWakeMode(C.WAKE_MODE_NETWORK)
+            .setAudioAttributes(audioAttributes, true)
+            .build()
 
     @Provides
     @ExtendedExoPlayerComponent.Scoped
@@ -98,12 +100,7 @@ internal object ExtendedExoPlayerModule {
         loadControl: LoadControl,
         mediaSourcerer: MediaSourcerer,
         extendedExoPlayerState: ExtendedExoPlayerState,
-    ) = ExtendedExoPlayer(
-        exoPlayer,
-        loadControl,
-        mediaSourcerer,
-        extendedExoPlayerState,
-    )
+    ) = ExtendedExoPlayer(exoPlayer, loadControl, mediaSourcerer, extendedExoPlayerState)
 
     @Provides
     @Reusable

@@ -30,27 +30,31 @@ internal class PlaybackInfoLoadableLoaderCallbackTest {
     private val loadable = mock<PlaybackInfoLoadable>()
     private val eventDispatcher = mock<MediaSourceEventListener.EventDispatcher>()
     private val loadEventInfo = mock<LoadEventInfo>()
-    private val loadEventInfoF = mock<(Long, Long) -> LoadEventInfo> {
-        on { invoke(any(), any()) } doReturn loadEventInfo
-    }
+    private val loadEventInfoF =
+        mock<(Long, Long) -> LoadEventInfo> { on { invoke(any(), any()) } doReturn loadEventInfo }
     private val loadErrorInfo = mock<LoadErrorHandlingPolicy.LoadErrorInfo>()
 
     private val loadErrorInfoF =
-        mock<(LoadEventInfo, error: IOException, errorCount: Int) -> LoadErrorHandlingPolicy.LoadErrorInfo> {
+        mock<
+            (
+                LoadEventInfo, error: IOException, errorCount: Int,
+            ) -> LoadErrorHandlingPolicy.LoadErrorInfo
+        > {
             on { invoke(any(), any(), any()) } doReturn loadErrorInfo
         }
     private val prepareChildSourceF = mock<(MediaSource) -> Unit>()
-    private val playbackInfoLoadableLoaderCallback = PlaybackInfoLoadableLoaderCallback(
-        mediaItem,
-        tidalMediaSourceCreator,
-        loadErrorHandlingPolicy,
-        C.DATA_TYPE_MANIFEST,
-        eventDispatcher,
-        loadEventInfoF,
-        loadErrorInfoF,
-        prepareChildSourceF,
-        emptyMap(),
-    )
+    private val playbackInfoLoadableLoaderCallback =
+        PlaybackInfoLoadableLoaderCallback(
+            mediaItem,
+            tidalMediaSourceCreator,
+            loadErrorHandlingPolicy,
+            C.DATA_TYPE_MANIFEST,
+            eventDispatcher,
+            loadEventInfoF,
+            loadErrorInfoF,
+            prepareChildSourceF,
+            emptyMap(),
+        )
 
     @Test
     fun onLoadCompletedShouldUpdateSelectedMediaSourceAndPrepareChildSource() {
@@ -60,9 +64,8 @@ internal class PlaybackInfoLoadableLoaderCallbackTest {
         val loadDurationMs = 2000L
 
         whenever(loadable.playbackInfo).thenReturn(playbackInfo)
-        whenever(tidalMediaSourceCreator(mediaItem, playbackInfo, emptyMap())).thenReturn(
-            mediaSource,
-        )
+        whenever(tidalMediaSourceCreator(mediaItem, playbackInfo, emptyMap()))
+            .thenReturn(mediaSource)
 
         playbackInfoLoadableLoaderCallback.onLoadCompleted(
             loadable,
@@ -113,16 +116,16 @@ internal class PlaybackInfoLoadableLoaderCallbackTest {
         val error = IOException("")
         val errorCount = 1
 
-        whenever(loadErrorHandlingPolicy.getRetryDelayMsFor(loadErrorInfo))
-            .thenReturn(retryDelayMs)
+        whenever(loadErrorHandlingPolicy.getRetryDelayMsFor(loadErrorInfo)).thenReturn(retryDelayMs)
 
-        val actual = playbackInfoLoadableLoaderCallback.onLoadError(
-            loadable,
-            elapsedRealtimeMs,
-            loadDurationMs,
-            error,
-            errorCount,
-        )
+        val actual =
+            playbackInfoLoadableLoaderCallback.onLoadError(
+                loadable,
+                elapsedRealtimeMs,
+                loadDurationMs,
+                error,
+                errorCount,
+            )
 
         verify(loadEventInfoF).invoke(elapsedRealtimeMs, loadDurationMs)
         verify(loadErrorInfoF).invoke(loadEventInfo, error, errorCount)

@@ -14,11 +14,7 @@ import org.junit.jupiter.api.Test
 
 class HeadersUtilsTest {
 
-    private val headerUtils = HeadersUtils(
-        "",
-        FakeCredentialsProvider(),
-        mockk<TrueTimeWrapper>(),
-    )
+    private val headerUtils = HeadersUtils("", FakeCredentialsProvider(), mockk<TrueTimeWrapper>())
 
     @Test
     fun `verify that event headers contain both default and supplied headers`() {

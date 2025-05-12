@@ -25,22 +25,24 @@ internal class PlaybackInfoFetchEventFactoryTest {
     private val userSupplier = mock<UserSupplier>()
     private val clientSupplier = mock<ClientSupplier>()
     private val playbackInfoFetchFactory = mock<PlaybackInfoFetch.Factory>()
-    private val playbackInfoFetchEventFactory = PlaybackInfoFetchEventFactory(
-        trueTimeWrapper,
-        uuidWrapper,
-        userSupplier,
-        clientSupplier,
-        playbackInfoFetchFactory,
-    )
+    private val playbackInfoFetchEventFactory =
+        PlaybackInfoFetchEventFactory(
+            trueTimeWrapper,
+            uuidWrapper,
+            userSupplier,
+            clientSupplier,
+            playbackInfoFetchFactory,
+        )
 
     @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(
-        trueTimeWrapper,
-        uuidWrapper,
-        userSupplier,
-        clientSupplier,
-        playbackInfoFetchFactory,
-    )
+    fun afterEach() =
+        verifyNoMoreInteractions(
+            trueTimeWrapper,
+            uuidWrapper,
+            userSupplier,
+            clientSupplier,
+            playbackInfoFetchFactory,
+        )
 
     @Test
     fun invoke() = runBlocking {
@@ -55,15 +57,16 @@ internal class PlaybackInfoFetchEventFactoryTest {
         val payload = mock<PlaybackInfoFetch.Payload>()
         val expected = mock<PlaybackInfoFetch>()
         whenever(
-            playbackInfoFetchFactory.create(
-                currentTimeMillis,
-                randomUUID,
-                user,
-                client,
-                payload,
-                emptyMap(),
-            ),
-        ).thenReturn(expected)
+                playbackInfoFetchFactory.create(
+                    currentTimeMillis,
+                    randomUUID,
+                    user,
+                    client,
+                    payload,
+                    emptyMap(),
+                )
+            )
+            .thenReturn(expected)
 
         val actual = playbackInfoFetchEventFactory(payload, emptyMap())
 
@@ -71,14 +74,8 @@ internal class PlaybackInfoFetchEventFactoryTest {
         verify(uuidWrapper).randomUUID
         verify(userSupplier)()
         verify(clientSupplier)()
-        verify(playbackInfoFetchFactory).create(
-            currentTimeMillis,
-            randomUUID,
-            user,
-            client,
-            payload,
-            emptyMap(),
-        )
+        verify(playbackInfoFetchFactory)
+            .create(currentTimeMillis, randomUUID, user, client, payload, emptyMap())
         assertThat(actual).isSameAs(expected)
         verifyNoMoreInteractions(randomUUID, user, client, payload, expected)
     }

@@ -14,7 +14,9 @@ import javax.inject.Singleton
 import kotlinx.coroutines.runBlocking
 
 @Singleton
-internal class RepositoryHelper @Inject constructor(
+internal class RepositoryHelper
+@Inject
+constructor(
     private val credentialsProvider: CredentialsProvider,
     private val databaseSizeChecker: DatabaseSizeChecker,
     private val moshi: Moshi,

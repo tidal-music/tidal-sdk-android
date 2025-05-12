@@ -21,8 +21,7 @@ internal class EmuManifestFactoryTest {
     private val base64Codec = mock<Base64Codec>()
     private val emuManifestFactory = EmuManifestFactory(gson, base64Codec)
 
-    @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(gson, base64Codec)
+    @AfterEach fun afterEach() = verifyNoMoreInteractions(gson, base64Codec)
 
     @Test
     fun createShouldReturnParsedManifest() {
@@ -30,21 +29,14 @@ internal class EmuManifestFactoryTest {
         whenever(base64Codec.decode(ENCODED_MANIFEST.toByteArray(CHARSET)))
             .thenReturn(decodedManifest)
         val expectedEmuManifest = mock<EmuManifest>()
-        whenever(
-            gson.fromJson(
-                decodedManifest.toString(CHARSET),
-                EmuManifest::class.java,
-            ),
-        ).thenReturn(expectedEmuManifest)
+        whenever(gson.fromJson(decodedManifest.toString(CHARSET), EmuManifest::class.java))
+            .thenReturn(expectedEmuManifest)
 
         val actualEmuManifest = emuManifestFactory.create(ENCODED_MANIFEST, CHARSET)
 
         assertThat(actualEmuManifest).isSameAs(expectedEmuManifest)
         verify(base64Codec).decode(ENCODED_MANIFEST.toByteArray(CHARSET))
-        verify(gson).fromJson(
-            decodedManifest.toString(CHARSET),
-            EmuManifest::class.java,
-        )
+        verify(gson).fromJson(decodedManifest.toString(CHARSET), EmuManifest::class.java)
         verifyNoInteractions(expectedEmuManifest)
     }
 }

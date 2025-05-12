@@ -3,9 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.plugin.serialization)
 }
 
-android {
-    namespace = "com.tidal.sdk.player.commonandroid"
-}
+android { namespace = "com.tidal.sdk.player.commonandroid" }
 
 dependencies {
     implementation(libs.kotlinx.serialization.json)

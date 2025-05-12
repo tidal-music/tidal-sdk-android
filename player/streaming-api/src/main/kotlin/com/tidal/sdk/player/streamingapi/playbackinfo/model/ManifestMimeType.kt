@@ -12,20 +12,16 @@ import java.lang.reflect.Type
 /**
  * The mime type of a given [Manifest].
  *
- * [EMU] The corresponding manifest should be EmuManifest.
- * [BTS] The corresponding manifest should be BtsManifest.
- * [DASH] The corresponding manifest should be DashManifest.
+ * [EMU] The corresponding manifest should be EmuManifest. [BTS] The corresponding manifest should
+ * be BtsManifest. [DASH] The corresponding manifest should be DashManifest.
  */
 enum class ManifestMimeType(val mimeType: String = "") {
     EMU("application/vnd.tidal.emu"),
     BTS("application/vnd.tidal.bts"),
-    DASH("application/dash+xml"),
-    ;
+    DASH("application/dash+xml");
 
     object Converter {
-        /**
-         * A [JsonDeserializer] that helps deserializing [ManifestMimeType] using gson.
-         */
+        /** A [JsonDeserializer] that helps deserializing [ManifestMimeType] using gson. */
         class Deserializer : JsonDeserializer<ManifestMimeType> {
             override fun deserialize(
                 json: JsonElement?,
@@ -35,7 +31,7 @@ enum class ManifestMimeType(val mimeType: String = "") {
                 val src = json?.asString
                 return enumValues<ManifestMimeType>().find { it.mimeType.contentEquals(src) }
                     ?: throw JsonParseException(
-                        "Unsupported unmarshalling: $src as ${ManifestMimeType::class.simpleName}",
+                        "Unsupported unmarshalling: $src as ${ManifestMimeType::class.simpleName}"
                     )
             }
         }

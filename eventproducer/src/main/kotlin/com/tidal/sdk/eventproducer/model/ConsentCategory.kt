@@ -1,9 +1,8 @@
 package com.tidal.sdk.eventproducer.model
 
 /**
- * Consent categories allow the end user to control how the app can use information gathered
- * via events. Each event belongs to one consent category, and the user can opt out
- * a consent category.
+ * Consent categories allow the end user to control how the app can use information gathered via
+ * events. Each event belongs to one consent category, and the user can opt out a consent category.
  */
 enum class ConsentCategory {
     /**

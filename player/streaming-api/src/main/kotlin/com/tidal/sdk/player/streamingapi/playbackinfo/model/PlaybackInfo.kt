@@ -18,7 +18,7 @@ import com.tidal.sdk.player.streamingapi.offline.Storage
  * @property[manifest] Base64 encoded manifest.
  * @property[licenseSecurityToken] Token used to fetch DRM license if needed.
  * @property[offlineRevalidateAt] Indicates the earliest time at which the client is allowed to
- * revalidate an offlined media product.
+ *   revalidate an offlined media product.
  * @property[offlineValidUntil] Indicates how long an offline is valid for.
  */
 sealed interface PlaybackInfo {
@@ -104,8 +104,7 @@ sealed interface PlaybackInfo {
         val id: String,
         val audioQuality: AudioQuality,
         override val streamingSessionId: String,
-        @SerializedName("manifestType")
-        override val manifestMimeType: ManifestMimeType,
+        @SerializedName("manifestType") override val manifestMimeType: ManifestMimeType,
         override val manifest: String,
         override val licenseSecurityToken: String? = null,
         override val albumReplayGain: Float,
@@ -139,12 +138,11 @@ sealed interface PlaybackInfo {
     ) : PlaybackInfo
 
     /**
-     * Playback info with some extra information for offline content.
-     * The extra information is needed to determine how the offline content was stored and how
-     * it can be retrieved, but also to actually being able to play that content. We currently have
-     * three different ways to store offline content, not all information is necessary at all times,
-     * therefore they come with default values that needs to be filled differently in each different
-     * scenario.
+     * Playback info with some extra information for offline content. The extra information is
+     * needed to determine how the offline content was stored and how it can be retrieved, but also
+     * to actually being able to play that content. We currently have three different ways to store
+     * offline content, not all information is necessary at all times, therefore they come with
+     * default values that needs to be filled differently in each different scenario.
      *
      * @property[offlineLicense] The stored offlineLicense in case it is protected.
      * @property[storage] Information about storage and path.

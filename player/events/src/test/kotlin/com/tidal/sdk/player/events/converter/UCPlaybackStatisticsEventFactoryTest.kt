@@ -24,8 +24,7 @@ internal class UCPlaybackStatisticsEventFactoryTest {
     private val uuidWrapper = mock<UUIDWrapper>()
     private val userSupplier = mock<UserSupplier>()
     private val clientSupplier = mock<ClientSupplier>()
-    private val ucPlaybackStatisticsFactory =
-        mock<UCPlaybackStatistics.Factory>()
+    private val ucPlaybackStatisticsFactory = mock<UCPlaybackStatistics.Factory>()
     private val ucPlaybackStatisticsEventFactory =
         UCPlaybackStatisticsEventFactory(
             trueTimeWrapper,
@@ -36,13 +35,14 @@ internal class UCPlaybackStatisticsEventFactoryTest {
         )
 
     @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(
-        trueTimeWrapper,
-        uuidWrapper,
-        userSupplier,
-        clientSupplier,
-        ucPlaybackStatisticsFactory,
-    )
+    fun afterEach() =
+        verifyNoMoreInteractions(
+            trueTimeWrapper,
+            uuidWrapper,
+            userSupplier,
+            clientSupplier,
+            ucPlaybackStatisticsFactory,
+        )
 
     @Test
     fun invoke() = runBlocking {
@@ -57,15 +57,16 @@ internal class UCPlaybackStatisticsEventFactoryTest {
         val payload = mock<UCPlaybackStatistics.Payload>()
         val expected = mock<UCPlaybackStatistics>()
         whenever(
-            ucPlaybackStatisticsFactory.create(
-                currentTimeMillis,
-                randomUUID,
-                user,
-                client,
-                payload,
-                emptyMap(),
-            ),
-        ).thenReturn(expected)
+                ucPlaybackStatisticsFactory.create(
+                    currentTimeMillis,
+                    randomUUID,
+                    user,
+                    client,
+                    payload,
+                    emptyMap(),
+                )
+            )
+            .thenReturn(expected)
 
         val actual = ucPlaybackStatisticsEventFactory(payload, emptyMap())
 
@@ -73,14 +74,8 @@ internal class UCPlaybackStatisticsEventFactoryTest {
         verify(uuidWrapper).randomUUID
         verify(userSupplier)()
         verify(clientSupplier)()
-        verify(ucPlaybackStatisticsFactory).create(
-            currentTimeMillis,
-            randomUUID,
-            user,
-            client,
-            payload,
-            emptyMap(),
-        )
+        verify(ucPlaybackStatisticsFactory)
+            .create(currentTimeMillis, randomUUID, user, client, payload, emptyMap())
         assertThat(actual).isSameAs(expected)
         verifyNoMoreInteractions(randomUUID, user, client, payload, expected)
     }

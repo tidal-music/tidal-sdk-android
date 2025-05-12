@@ -5,6 +5,7 @@ import com.tidal.sdk.player.streamingprivileges.connection.ConnectionMutableStat
 
 /**
  * Dispatches StreamingPrivileges events to listeners.
+ *
  * @param networkInteractionsHandler The [Handler] to dispatch events on.
  * @param connectionMutableState The [ConnectionMutableState] for this StreamingPrivileges.
  */
@@ -21,8 +22,9 @@ internal class StreamingPrivilegesEventDispatcher(private val networkInteraction
         privilegedClientDisplayName: String?,
     ) {
         networkInteractionsHandler.post {
-            connectionMutableState.streamingPrivilegesListener
-                ?.onStreamingPrivilegesRevoked(privilegedClientDisplayName)
+            connectionMutableState.streamingPrivilegesListener?.onStreamingPrivilegesRevoked(
+                privilegedClientDisplayName
+            )
         }
     }
 }

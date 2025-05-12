@@ -10,8 +10,7 @@ import com.tidal.sdk.demo.MainActivity
 @Composable
 fun ComposeWebView(activity: MainActivity, url: String) {
     val javaScriptInterface = JavaScriptInterface()
-    val extendedWebViewClient =
-        ExtendedWebClient { activity.onRedirectUriReceived(it) }
+    val extendedWebViewClient = ExtendedWebClient { activity.onRedirectUriReceived(it) }
 
     AndroidView(
         factory = { context ->
@@ -30,6 +29,6 @@ fun ComposeWebView(activity: MainActivity, url: String) {
                 addJavascriptInterface(javaScriptInterface, "javascriptObject")
                 loadUrl(url)
             }
-        },
+        }
     )
 }

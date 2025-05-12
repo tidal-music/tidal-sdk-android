@@ -12,22 +12,17 @@ internal class DrmLicenseFetchMarshallingTest {
     private val uuidString = "123e4567-e89b-12d3-a456-426614174000"
     private val user = User(-3L, 0, "sessionId")
     private val client = Client("token", Client.DeviceType.TV, "version")
-    private val payload = DrmLicenseFetch.Payload(
-        "streamingSessionId",
-        1L,
-        1L,
-        EndReason.COMPLETE,
-        "errorMessage",
-        "errorCode",
-    )
-    private val drmLicenseFetch = DrmLicenseFetch(
-        ts,
-        UUID.fromString(uuidString),
-        user,
-        client,
-        payload,
-        emptyMap(),
-    )
+    private val payload =
+        DrmLicenseFetch.Payload(
+            "streamingSessionId",
+            1L,
+            1L,
+            EndReason.COMPLETE,
+            "errorMessage",
+            "errorCode",
+        )
+    private val drmLicenseFetch =
+        DrmLicenseFetch(ts, UUID.fromString(uuidString), user, client, payload, emptyMap())
     private val gson = Gson()
 
     @Test
