@@ -1,27 +1,66 @@
 #!/bin/bash
 
-STAGED_KOTLIN_FILES=($(git --no-pager diff --cached --name-only --diff-filter=ACM | grep "\.kt$"))
+set -e
 
-if [ -z "$STAGED_KOTLIN_FILES" ]; then
+# Get the staged content of a file and format it
+format_staged_content() {
+    local file="$1"
+    local object_hash
+    local new_hash
+    local temp_file
+
+    # Get the object hash of the staged version
+    object_hash=$(git ls-files --stage "$file" | cut -d' ' -f2)
+
+    if [ -z "$object_hash" ]; then
+        echo "Error: Could not get object hash for $file" >&2
+        return 1
+    fi
+
+    temp_file=$(mktemp)
+
+    git cat-file -p "$object_hash" > "$temp_file"
+    java -jar "$KTFMT_JAR" --kotlinlang-style "$temp_file"
+
+    new_hash=$(cat "$temp_file" | git hash-object -w --stdin)
+
+    rm "$temp_file"
+
+    # If content changed, update index and working tree
+    if [ "$object_hash" != "$new_hash" ]; then
+        local mode
+        mode=$(git ls-files --stage "$file" | cut -d' ' -f1)
+
+        git update-index --cacheinfo "${mode},${new_hash},${file}"
+
+        git diff --no-ext-diff --color=never "$object_hash" "$new_hash" | \
+            perl -pe "s#$object_hash#$file#g" | \
+            perl -pe "s#$new_hash#$file#g" | \
+            git apply -
+
+        return 0
+    fi
+
+    return 1
+}
+
+KTFMT_VERSION=$(<"static-analysis/config/ktfmt-cli-version.txt")
+KTFMT_JAR="static-analysis/bin/ktfmt-$KTFMT_VERSION"
+
+# Get staged Kotlin files
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep "\.kt$" || true)
+
+if [ -z "$STAGED_FILES" ]; then
     echo "No Kotlin files staged."
     exit 0
 fi
 
-FILES_ARGUMENT=""
-for i in "${STAGED_KOTLIN_FILES[@]}"; do
-    FILES_ARGUMENT="$FILES_ARGUMENT -i $i"
+for file in $STAGED_FILES; do
+    echo "Processing $file..."
+    if format_staged_content "$file"; then
+        echo "Formatted $file"
+    fi
 done
 
-./static-analysis/run-detekt.sh $FILES_ARGUMENT
-DETEKT_RESULT=$?
-
-./static-analysis/run-ktlint.sh $FILES_ARGUMENT
-KTLINT_RESULT=$?
-
-if [ $KTLINT_RESULT != "0" ] || [ $DETEKT_RESULT != "0" ]; then
-   echo
-   echo "Some checks failed!"
-   echo "ktlint exit code: $KTLINT_RESULT"
-   echo "Detekt exit code: $DETEKT_RESULT"
-   exit -1
-fi
+echo "Running detekt..."
+./static-analysis/run-detekt.sh $(for f in $STAGED_FILES; do echo "-i $f"; done)
