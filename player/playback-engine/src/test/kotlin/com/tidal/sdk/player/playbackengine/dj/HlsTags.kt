@@ -1,6 +1,5 @@
 package com.tidal.sdk.player.playbackengine.dj
 
-@Suppress("MaxLineLength")
 internal object HlsTags {
     val TAGS_WITHOUT_DATE_RANGE =
         listOf(

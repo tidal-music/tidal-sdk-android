@@ -16,7 +16,6 @@ internal class PlayerRenderersFactory(
     private val fallbackAudioRendererFactory: FallbackAudioRendererFactory,
 ) : RenderersFactory {
 
-    @Suppress("SpreadOperator")
     override fun createRenderers(
         eventHandler: Handler,
         videoRendererEventListener: VideoRendererEventListener,

@@ -22,7 +22,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 
 @Module
-@Suppress("TooManyFunctions")
 internal object NetworkModule {
 
     @Provides

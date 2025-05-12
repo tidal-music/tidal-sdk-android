@@ -1,5 +1,3 @@
-@file:Suppress("TooManyFunctions")
-
 package com.tidal.sdk.player
 
 import java.lang.reflect.Field

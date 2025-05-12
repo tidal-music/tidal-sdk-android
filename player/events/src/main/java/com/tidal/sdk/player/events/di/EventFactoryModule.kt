@@ -52,7 +52,6 @@ import dagger.multibindings.IntoMap
 import kotlin.reflect.KClass
 
 @Module
-@SuppressWarnings("TooManyFunctions")
 internal object EventFactoryModule {
 
     @Provides
@@ -129,7 +128,6 @@ internal object EventFactoryModule {
     @Provides
     @Reusable
     fun streamingSessionStartPayloadDecorator(
-        @Suppress("MaxLineLength")
         streamingSessionStartDecoratedPayloadFactory:
             StreamingSessionStart.DecoratedPayload.Factory, // ktlint-disable max-line-length
         // parameter-wrapping

@@ -12,7 +12,6 @@ import com.tidal.sdk.player.playbackengine.offline.cache.OfflineCacheProvider
  *   [Cache] instance.
  */
 internal class OfflinePlayDataSourceFactoryHelper(
-    @Suppress("MaxLineLength")
     private val cacheKeyAesCipherDataSourceFactoryFactory:
         CacheKeyAesCipherDataSourceFactoryFactory, // ktlint-disable max-line-length
     // parameter-wrapping

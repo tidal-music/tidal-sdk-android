@@ -11,7 +11,7 @@ import java.net.HttpURLConnection
 import kotlin.math.pow
 import okhttp3.OkHttpClient
 
-@Suppress("LongParameterList", "MaxLineLength")
+@Suppress("LongParameterList")
 internal class ConnectRunnable(
     private val networkInteractionsHandler: Handler,
     private val mutableState: MutableState,
@@ -24,7 +24,6 @@ internal class ConnectRunnable(
     private val dumpCallbacksToHandlerWebSocketListenerFactory:
         DumpCallbacksToHandlerWebSocketListener.Factory, // ktlint-disable max-line-length
     // parameter-wrapping
-    @Suppress("MaxLineLength")
     private val awaitingBackOffExpiryFactory:
         SocketConnectionState.Connecting.AwaitingBackOffExpiry.Factory, // ktlint-disable
     // max-line-length

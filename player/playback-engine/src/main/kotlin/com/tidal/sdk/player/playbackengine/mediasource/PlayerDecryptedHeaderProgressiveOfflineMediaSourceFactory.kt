@@ -8,7 +8,6 @@ import com.tidal.sdk.player.playbackengine.datasource.DecryptedHeaderFileDataSou
 
 internal class PlayerDecryptedHeaderProgressiveOfflineMediaSourceFactory(
     private val progressiveMediaSourceFactoryFactory: ProgressiveMediaSourceFactoryFactory,
-    @Suppress("MaxLineLength")
     private val decryptedHeaderFileDataSourceFactoryFactory:
         DecryptedHeaderFileDataSourceFactoryFactory, // ktlint-disable max-line-length
     // parameter-wrapping

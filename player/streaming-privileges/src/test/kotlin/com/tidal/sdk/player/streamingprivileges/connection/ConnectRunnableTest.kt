@@ -33,7 +33,6 @@ import org.mockito.kotlin.whenever
 import retrofit2.Call
 import retrofit2.Response
 
-@SuppressWarnings("LongMethod")
 internal class ConnectRunnableTest {
 
     private val networkInteractionsHandler = mock<Handler>()

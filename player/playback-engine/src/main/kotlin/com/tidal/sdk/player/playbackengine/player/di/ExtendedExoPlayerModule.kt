@@ -25,7 +25,6 @@ import dagger.Reusable
 import kotlin.time.DurationUnit
 
 @Module
-@Suppress("TooManyFunctions")
 internal object ExtendedExoPlayerModule {
 
     @Provides

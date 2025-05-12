@@ -79,7 +79,6 @@ import okhttp3.OkHttpClient
 private const val MINIMUM_LOADABLE_RETRY_COUNT = 10
 
 @Module
-@Suppress("TooManyFunctions")
 internal object MediaSourcererModule {
 
     @Provides
@@ -429,7 +428,6 @@ internal object MediaSourcererModule {
         playerDashMediaSourceFactory: PlayerDashMediaSourceFactory,
         playerHlsMediaSourceFactory: PlayerHlsMediaSourceFactory,
         playerAuthHlsMediaSourceFactory: PlayerAuthHlsMediaSourceFactory,
-        @Suppress("MaxLineLength")
         playerDecryptedHeaderProgressiveOfflineMediaSourceFactory:
             PlayerDecryptedHeaderProgressiveOfflineMediaSourceFactory, // ktlint-disable
         // max-line-length

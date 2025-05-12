@@ -42,7 +42,7 @@ import com.tidal.sdk.player.playbackengine.model.PlaybackState
 import com.tidal.sdk.player.playbackengine.view.AspectRatioAdjustingSurfaceView
 
 @Composable
-@Suppress("LongMethod", "MagicNumber", "ComplexMethod", "LongParameterList")
+@Suppress("MagicNumber", "ComplexMethod", "LongParameterList")
 internal fun PlayerInitializedScreen(
     state: MainActivityState.PlayerInitialized,
     paddingValues: PaddingValues = PaddingValues(),
@@ -153,7 +153,7 @@ private fun DemoPlayableItemsList(
     }
 }
 
-@Suppress("LongMethod", "LongParameterList")
+@Suppress("LongParameterList")
 @Composable
 private fun PlaybackControls(
     state: MainActivityState.PlayerInitialized,

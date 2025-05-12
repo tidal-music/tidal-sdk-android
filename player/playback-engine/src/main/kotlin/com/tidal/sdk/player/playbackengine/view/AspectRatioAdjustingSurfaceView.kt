@@ -44,7 +44,7 @@ class AspectRatioAdjustingSurfaceView : SurfaceView {
         defStyleRes: Int,
     ) : super(context, attrs, defStyleAttr, defStyleRes)
 
-    @Suppress("ComplexMethod", "LongMethod")
+    @Suppress("ComplexMethod")
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val toExactSizeOrZero = { measureSpec: Int ->
             if (MeasureSpec.getMode(measureSpec) == MeasureSpec.EXACTLY) {

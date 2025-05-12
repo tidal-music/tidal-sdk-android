@@ -31,7 +31,6 @@ import androidx.compose.ui.window.Dialog
 import com.tidal.sdk.player.common.model.AudioQuality
 
 @Composable
-@Suppress("LongMethod")
 internal fun <T> Selector(
     title: String,
     selectedValue: T,

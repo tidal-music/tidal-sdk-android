@@ -9,7 +9,6 @@ import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
 /** A helper for creating [PlaybackContext]s. */
 internal class PlaybackContextFactory {
 
-    @Suppress("LongMethod")
     fun create(playbackInfo: PlaybackInfo, referenceId: String?): PlaybackContext {
         return when (playbackInfo) {
             is PlaybackInfo.Track -> {

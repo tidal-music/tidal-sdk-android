@@ -6,7 +6,6 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 
 /** @see [Relevant ExoPlayer GitHub issue](https://github.com/google/ExoPlayer/issues/10880) */
-@Suppress("TooManyFunctions")
 internal class SynchronousSurfaceHolder
 @AssistedInject
 constructor(
