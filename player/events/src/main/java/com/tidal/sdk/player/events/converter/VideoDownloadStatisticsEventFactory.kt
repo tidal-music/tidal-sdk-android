@@ -15,15 +15,13 @@ internal class VideoDownloadStatisticsEventFactory(
     private val videoDownloadStatisticsFactory: VideoDownloadStatistics.Factory,
 ) : EventFactory<VideoDownloadStatistics.Payload> {
 
-    override suspend fun invoke(
-        payload: VideoDownloadStatistics.Payload,
-        extras: Extras?,
-    ) = videoDownloadStatisticsFactory.create(
-        trueTimeWrapper.currentTimeMillis,
-        uuidWrapper.randomUUID,
-        userSupplier(),
-        clientSupplier(),
-        payload,
-        extras,
-    )
+    override suspend fun invoke(payload: VideoDownloadStatistics.Payload, extras: Extras?) =
+        videoDownloadStatisticsFactory.create(
+            trueTimeWrapper.currentTimeMillis,
+            uuidWrapper.randomUUID,
+            userSupplier(),
+            clientSupplier(),
+            payload,
+            extras,
+        )
 }

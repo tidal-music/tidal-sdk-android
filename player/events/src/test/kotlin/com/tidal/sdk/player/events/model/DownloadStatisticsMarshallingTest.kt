@@ -30,13 +30,14 @@ internal abstract class DownloadStatisticsMarshallingTest {
     fun testUnmarshallingDownloadStatistics() {
         val src = gson.toJson(downloadStatistics)
 
-        val actual = gson.fromJson(
-            src,
-            when (downloadStatistics) {
-                is AudioDownloadStatistics -> AudioDownloadStatistics::class.java
-                is VideoDownloadStatistics -> VideoDownloadStatistics::class.java
-            },
-        )
+        val actual =
+            gson.fromJson(
+                src,
+                when (downloadStatistics) {
+                    is AudioDownloadStatistics -> AudioDownloadStatistics::class.java
+                    is VideoDownloadStatistics -> VideoDownloadStatistics::class.java
+                },
+            )
 
         assertThat(actual).isEqualTo(downloadStatistics)
     }

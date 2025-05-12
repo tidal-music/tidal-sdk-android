@@ -16,10 +16,9 @@ import retrofit2.HttpException
  * Default implementation of PlaybackInfoRepository.
  *
  * @property[offlinePlaybackInfoProvider] An optional [OfflinePlaybackInfoProvider] to retrieve
- * playback info from local storage, intended for offline playback.
+ *   playback info from local storage, intended for offline playback.
  * @property[playbackInfoService] A [PlaybackInfoService] to retrieve playback info from backend.
- * @property[apiErrorMapperLazy] A [ApiErrorMapper] to transform exceptions
- * when applicable.
+ * @property[apiErrorMapperLazy] A [ApiErrorMapper] to transform exceptions when applicable.
  */
 internal class PlaybackInfoRepositoryDefault(
     private val offlinePlaybackInfoProvider: OfflinePlaybackInfoProvider?,
@@ -34,19 +33,20 @@ internal class PlaybackInfoRepositoryDefault(
         immersiveAudio: Boolean,
         streamingSessionId: String,
         playlistUuid: String?,
-    ) = try {
-        playbackInfoService.getTrackPlaybackInfo(
-            trackId,
-            playbackMode,
-            AssetPresentation.FULL,
-            audioQuality,
-            immersiveAudio,
-            streamingSessionId,
-            playlistUuid,
-        )
-    } catch (e: HttpException) {
-        throw apiErrorMapperLazy.get().map(e)
-    }
+    ) =
+        try {
+            playbackInfoService.getTrackPlaybackInfo(
+                trackId,
+                playbackMode,
+                AssetPresentation.FULL,
+                audioQuality,
+                immersiveAudio,
+                streamingSessionId,
+                playlistUuid,
+            )
+        } catch (e: HttpException) {
+            throw apiErrorMapperLazy.get().map(e)
+        }
 
     override suspend fun getVideoPlaybackInfo(
         videoId: String,
@@ -54,57 +54,54 @@ internal class PlaybackInfoRepositoryDefault(
         playbackMode: PlaybackMode,
         streamingSessionId: String,
         playlistUuid: String?,
-    ) = try {
-        playbackInfoService.getVideoPlaybackInfo(
-            videoId,
-            playbackMode,
-            AssetPresentation.FULL,
-            videoQuality,
-            streamingSessionId,
-            playlistUuid,
-        )
-    } catch (e: HttpException) {
-        throw apiErrorMapperLazy.get().map(e)
-    }
+    ) =
+        try {
+            playbackInfoService.getVideoPlaybackInfo(
+                videoId,
+                playbackMode,
+                AssetPresentation.FULL,
+                videoQuality,
+                streamingSessionId,
+                playlistUuid,
+            )
+        } catch (e: HttpException) {
+            throw apiErrorMapperLazy.get().map(e)
+        }
 
     override suspend fun getBroadcastPlaybackInfo(
         djSessionId: String,
         streamingSessionId: String,
         audioQuality: AudioQuality,
-    ) = try {
-        playbackInfoService.getBroadcastPlaybackInfo(djSessionId, audioQuality)
-            .copy(streamingSessionId = streamingSessionId)
-    } catch (e: HttpException) {
-        throw apiErrorMapperLazy.get().map(e)
-    }
+    ) =
+        try {
+            playbackInfoService
+                .getBroadcastPlaybackInfo(djSessionId, audioQuality)
+                .copy(streamingSessionId = streamingSessionId)
+        } catch (e: HttpException) {
+            throw apiErrorMapperLazy.get().map(e)
+        }
 
-    override suspend fun getUC(
-        itemId: String,
-        streamingSessionId: String,
-    ) = PlaybackInfo.UC(
-        itemId,
-        "https://fsu.fa.tidal.com/storage/$itemId.m3u8",
-        streamingSessionId,
-        ManifestMimeType.EMU,
-        "",
-        null,
-        0f,
-        0f,
-        0f,
-        0f,
-        0,
-        0,
-    )
+    override suspend fun getUC(itemId: String, streamingSessionId: String) =
+        PlaybackInfo.UC(
+            itemId,
+            "https://fsu.fa.tidal.com/storage/$itemId.m3u8",
+            streamingSessionId,
+            ManifestMimeType.EMU,
+            "",
+            null,
+            0f,
+            0f,
+            0f,
+            0f,
+            0,
+            0,
+        )
 
-    override suspend fun getOfflineTrackPlaybackInfo(
-        trackId: String,
-        streamingSessionId: String,
-    ) = offlinePlaybackInfoProvider?.getOfflineTrackPlaybackInfo(trackId, streamingSessionId)
-        ?: throw NullPointerException("No OfflinePlaybackInfoProvider provided")
+    override suspend fun getOfflineTrackPlaybackInfo(trackId: String, streamingSessionId: String) =
+        offlinePlaybackInfoProvider?.getOfflineTrackPlaybackInfo(trackId, streamingSessionId)
+            ?: throw NullPointerException("No OfflinePlaybackInfoProvider provided")
 
-    override suspend fun getOfflineVideoPlaybackInfo(
-        videoId: String,
-        streamingSessionId: String,
-    ) = offlinePlaybackInfoProvider?.getOfflineVideoPlaybackInfo(videoId, streamingSessionId)
-        ?: throw NullPointerException("No OfflinePlaybackInfoProvider provided")
+    override suspend fun getOfflineVideoPlaybackInfo(videoId: String, streamingSessionId: String) =
+        offlinePlaybackInfoProvider?.getOfflineVideoPlaybackInfo(videoId, streamingSessionId)
+            ?: throw NullPointerException("No OfflinePlaybackInfoProvider provided")
 }

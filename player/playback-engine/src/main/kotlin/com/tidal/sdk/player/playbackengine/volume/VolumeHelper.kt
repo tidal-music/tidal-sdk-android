@@ -17,20 +17,23 @@ internal class VolumeHelper(
     var loudnessNormalizationPreAmp: Int = LOUDNESS_NORMALIZATION_PRE_AMP_DEFAULT,
 ) {
 
-    fun getVolume(playbackInfo: PlaybackInfo?) = playbackInfo?.let {
-        when (loudnessNormalizationMode) {
-            LoudnessNormalizationMode.NONE -> FULL_VOLUME
-            LoudnessNormalizationMode.TRACK -> loudnessNormalizer.getReducedGain(
-                it.trackReplayGain,
-                it.trackPeakAmplitude,
-                loudnessNormalizationPreAmp,
-            )
+    fun getVolume(playbackInfo: PlaybackInfo?) =
+        playbackInfo?.let {
+            when (loudnessNormalizationMode) {
+                LoudnessNormalizationMode.NONE -> FULL_VOLUME
+                LoudnessNormalizationMode.TRACK ->
+                    loudnessNormalizer.getReducedGain(
+                        it.trackReplayGain,
+                        it.trackPeakAmplitude,
+                        loudnessNormalizationPreAmp,
+                    )
 
-            LoudnessNormalizationMode.ALBUM -> loudnessNormalizer.getReducedGain(
-                it.albumReplayGain,
-                it.albumPeakAmplitude,
-                loudnessNormalizationPreAmp,
-            )
-        }
-    } ?: FULL_VOLUME
+                LoudnessNormalizationMode.ALBUM ->
+                    loudnessNormalizer.getReducedGain(
+                        it.albumReplayGain,
+                        it.albumPeakAmplitude,
+                        loudnessNormalizationPreAmp,
+                    )
+            }
+        } ?: FULL_VOLUME
 }

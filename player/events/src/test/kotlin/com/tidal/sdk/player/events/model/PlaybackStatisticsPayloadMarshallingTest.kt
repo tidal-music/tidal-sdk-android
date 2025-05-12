@@ -21,18 +21,19 @@ internal abstract class PlaybackStatisticsPayloadMarshallingTest {
     abstract val stalls: List<PlaybackStatistics.Payload.Stall>?
     abstract val adaptations: List<PlaybackStatistics.Payload.Adaptation>?
     abstract val endTimestamp: Long
-    abstract val payloadFactory: (
-        Long?,
-        StreamType?,
-        AssetPresentation?,
-        AudioMode?,
-        ProductQuality?,
-        MediaStorage?,
-        EndReason,
-        String?,
-        String?,
-        String?,
-    ) -> PlaybackStatistics.Payload
+    abstract val payloadFactory:
+        (
+            Long?,
+            StreamType?,
+            AssetPresentation?,
+            AudioMode?,
+            ProductQuality?,
+            MediaStorage?,
+            EndReason,
+            String?,
+            String?,
+            String?,
+        ) -> PlaybackStatistics.Payload
     private val gson = Gson()
 
     fun testMarshallingPayload(
@@ -47,18 +48,19 @@ internal abstract class PlaybackStatisticsPayloadMarshallingTest {
         errorMessage: String?,
         errorCode: String?,
     ) {
-        val payload = payloadFactory(
-            actualStartTimestamp,
-            streamType,
-            assetPresentation,
-            audioMode,
-            productQuality,
-            mediaStorage,
-            endReason,
-            cdmVersion,
-            errorMessage,
-            errorCode,
-        )
+        val payload =
+            payloadFactory(
+                actualStartTimestamp,
+                streamType,
+                assetPresentation,
+                audioMode,
+                productQuality,
+                mediaStorage,
+                endReason,
+                cdmVersion,
+                errorMessage,
+                errorCode,
+            )
 
         val actual = gson.toJsonTree(payload).asJsonObject
 
@@ -81,8 +83,9 @@ internal abstract class PlaybackStatisticsPayloadMarshallingTest {
         }
         actual["adaptations"]?.asJsonArray?.forEachIndexed { i, jsonElement ->
             assertThat(
-                gson.fromJson(jsonElement, PlaybackStatistics.Payload.Adaptation::class.java),
-            ).isEqualTo(adaptations!![i])
+                    gson.fromJson(jsonElement, PlaybackStatistics.Payload.Adaptation::class.java)
+                )
+                .isEqualTo(adaptations!![i])
         }
         assertThat(actual["endTimestamp"].asLong).isEqualTo(endTimestamp)
         assertThat(actual["endReason"].asString).isEqualTo(endReason.name)
@@ -102,18 +105,19 @@ internal abstract class PlaybackStatisticsPayloadMarshallingTest {
         errorMessage: String?,
         errorCode: String?,
     ) {
-        val payload = payloadFactory(
-            actualStartTimestamp,
-            streamType,
-            assetPresentation,
-            audioMode,
-            productQuality,
-            mediaStorage,
-            endReason,
-            cdmVersion,
-            errorMessage,
-            errorCode,
-        )
+        val payload =
+            payloadFactory(
+                actualStartTimestamp,
+                streamType,
+                assetPresentation,
+                audioMode,
+                productQuality,
+                mediaStorage,
+                endReason,
+                cdmVersion,
+                errorMessage,
+                errorCode,
+            )
         val src = gson.toJson(payload)
 
         val actual = gson.fromJson(src, payload::class.java)

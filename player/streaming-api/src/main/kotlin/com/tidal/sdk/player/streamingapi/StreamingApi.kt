@@ -20,8 +20,8 @@ interface StreamingApi {
      * @param[audioQuality] The requested audio quality as [AudioQuality].
      * @param[playbackMode] The requested playback mode as [PlaybackMode].
      * @param[immersiveAudio] The requested option to include immersive audio or not.
-     * @param[streamingSessionId] The streaming session uuid as [String], created by the client,
-     * for this streaming session.
+     * @param[streamingSessionId] The streaming session uuid as [String], created by the client, for
+     *   this streaming session.
      * @param[playlistUuid] The playlistUuid this play originates from as [String]. May be null.
      */
     @Suppress("LongParameterList")
@@ -40,8 +40,8 @@ interface StreamingApi {
      * @param[videoId] The requested video id as [String].
      * @param[videoQuality] The requested video quality as [VideoQuality].
      * @param[playbackMode] The requested playback mode as [PlaybackMode].
-     * @param[streamingSessionId] The streaming session uuid as [String], created by the client,
-     * for this streaming session.
+     * @param[streamingSessionId] The streaming session uuid as [String], created by the client, for
+     *   this streaming session.
      * @param[playlistUuid] The playlistUuid this play originates from as [String]. May be null.
      */
     suspend fun getVideoPlaybackInfo(
@@ -71,17 +71,14 @@ interface StreamingApi {
      * @param[itemId] The requested item id as [String].
      * @param[streamingSessionId] The streaming session id as [String].
      */
-    suspend fun getUCPlaybackInfo(
-        itemId: String,
-        streamingSessionId: String,
-    ): PlaybackInfo
+    suspend fun getUCPlaybackInfo(itemId: String, streamingSessionId: String): PlaybackInfo
 
     /**
      * Returns a [PlaybackInfo] which we can use for offline playback of a track.
      *
      * @param[trackId] The requested track id as [String].
-     * @param[streamingSessionId] The streaming session uuid as [String], created by the client,
-     * for this streaming session.
+     * @param[streamingSessionId] The streaming session uuid as [String], created by the client, for
+     *   this streaming session.
      */
     suspend fun getOfflineTrackPlaybackInfo(
         trackId: String,
@@ -92,8 +89,8 @@ interface StreamingApi {
      * Returns a [PlaybackInfo] which we can use for offline playback of a video.
      *
      * @param[videoId] The requested video id as [String].
-     * @param[streamingSessionId] The streaming session uuid as [String], created by the client,
-     * for this streaming session.
+     * @param[streamingSessionId] The streaming session uuid as [String], created by the client, for
+     *   this streaming session.
      */
     suspend fun getOfflineVideoPlaybackInfo(
         videoId: String,
@@ -104,7 +101,7 @@ interface StreamingApi {
      * Returns a [DrmLicense] which we can use for decrypting a protected track or video.
      *
      * @param[drmLicenseRequest] The request we send to backend for getting a drm license back, as
-     * [DrmLicenseRequest]
+     *   [DrmLicenseRequest]
      */
     suspend fun getDrmLicense(drmLicenseRequest: DrmLicenseRequest): DrmLicense
 }

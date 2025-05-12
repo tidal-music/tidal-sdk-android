@@ -19,51 +19,53 @@ import org.junit.Assert.fail
 import org.junit.Test
 
 internal class SingleHandlerPlaybackEngineHandlerPostOrThrowTest {
-    private val delegate = object : PlaybackEngine {
-        override val mediaProduct = MediaProduct(ProductType.TRACK, "123", referenceId = "fdsa")
-        override val playbackContext = PlaybackContext.Track(
-            AudioMode.STEREO,
-            AudioQuality.HIGH,
-            320_000,
-            16,
-            "aac",
-            44100,
-            "123",
-            AssetPresentation.FULL,
-            100F,
-            AssetSource.ONLINE,
-            "playbackSessionId",
-            "uuid",
-        )
-        override val playbackState = PlaybackState.IDLE
-        override val assetPosition = 0f
-        override val outputDevice = OutputDevice.TYPE_BUILTIN_SPEAKER
-        override val events = MutableSharedFlow<Event>()
-        override var streamingWifiAudioQuality = AudioQuality.HIGH
-        override var streamingCellularAudioQuality = AudioQuality.LOW
-        override var immersiveAudio = true
-        override var loudnessNormalizationMode = LoudnessNormalizationMode.ALBUM
-        override var loudnessNormalizationPreAmp = LOUDNESS_NORMALIZATION_PRE_AMP_DEFAULT
-        override var videoSurfaceView: AspectRatioAdjustingSurfaceView? = null
+    private val delegate =
+        object : PlaybackEngine {
+            override val mediaProduct = MediaProduct(ProductType.TRACK, "123", referenceId = "fdsa")
+            override val playbackContext =
+                PlaybackContext.Track(
+                    AudioMode.STEREO,
+                    AudioQuality.HIGH,
+                    320_000,
+                    16,
+                    "aac",
+                    44100,
+                    "123",
+                    AssetPresentation.FULL,
+                    100F,
+                    AssetSource.ONLINE,
+                    "playbackSessionId",
+                    "uuid",
+                )
+            override val playbackState = PlaybackState.IDLE
+            override val assetPosition = 0f
+            override val outputDevice = OutputDevice.TYPE_BUILTIN_SPEAKER
+            override val events = MutableSharedFlow<Event>()
+            override var streamingWifiAudioQuality = AudioQuality.HIGH
+            override var streamingCellularAudioQuality = AudioQuality.LOW
+            override var immersiveAudio = true
+            override var loudnessNormalizationMode = LoudnessNormalizationMode.ALBUM
+            override var loudnessNormalizationPreAmp = LOUDNESS_NORMALIZATION_PRE_AMP_DEFAULT
+            override var videoSurfaceView: AspectRatioAdjustingSurfaceView? = null
 
-        override fun load(mediaProduct: MediaProduct) = Unit
+            override fun load(mediaProduct: MediaProduct) = Unit
 
-        override fun setNext(mediaProduct: MediaProduct?) = Unit
+            override fun setNext(mediaProduct: MediaProduct?) = Unit
 
-        override fun play() = Unit
+            override fun play() = Unit
 
-        override fun pause() = Unit
+            override fun pause() = Unit
 
-        override fun seek(time: Float) = Unit
+            override fun seek(time: Float) = Unit
 
-        override fun skipToNext() = Unit
+            override fun skipToNext() = Unit
 
-        override fun setRepeatOne(enable: Boolean) = Unit
+            override fun setRepeatOne(enable: Boolean) = Unit
 
-        override fun reset() = Unit
+            override fun reset() = Unit
 
-        override fun release() = Unit
-    }
+            override fun release() = Unit
+        }
     private val handlerThread = HandlerThread("TestThread").apply { start() }
     private val handler = Handler(handlerThread.looper)
     private val singleHandlerPlaybackEngine = SingleHandlerPlaybackEngine(handler, delegate)
@@ -74,39 +76,25 @@ internal class SingleHandlerPlaybackEngineHandlerPostOrThrowTest {
     }
 
     @Test(expected = IllegalStateException::class)
-    fun nextThrowsIfReleased() = runAfterRelease {
-        setNext(MediaProduct(ProductType.TRACK, "123"))
-    }
+    fun nextThrowsIfReleased() = runAfterRelease { setNext(MediaProduct(ProductType.TRACK, "123")) }
 
     @Test(expected = IllegalStateException::class)
-    fun playThrowsIfReleased() = runAfterRelease {
-        play()
-    }
+    fun playThrowsIfReleased() = runAfterRelease { play() }
 
     @Test(expected = IllegalStateException::class)
-    fun pauseThrowsIfReleased() = runAfterRelease {
-        pause()
-    }
+    fun pauseThrowsIfReleased() = runAfterRelease { pause() }
 
     @Test(expected = IllegalStateException::class)
-    fun seekThrowsIfReleased() = runAfterRelease {
-        seek(-7F)
-    }
+    fun seekThrowsIfReleased() = runAfterRelease { seek(-7F) }
 
     @Test(expected = IllegalStateException::class)
-    fun resetThrowsIfReleased() = runAfterRelease {
-        reset()
-    }
+    fun resetThrowsIfReleased() = runAfterRelease { reset() }
 
     @Test(expected = IllegalStateException::class)
-    fun releaseThrowsIfReleased() = runAfterRelease {
-        release()
-    }
+    fun releaseThrowsIfReleased() = runAfterRelease { release() }
 
     @Test(expected = IllegalStateException::class)
-    fun setVideoSurfaceViewThrowsIfReleased() = runAfterRelease {
-        videoSurfaceView = null
-    }
+    fun setVideoSurfaceViewThrowsIfReleased() = runAfterRelease { videoSurfaceView = null }
 
     @Test(expected = IllegalStateException::class)
     fun setStreamingWifiAudioQualityThrowsIfReleased() = runAfterRelease {

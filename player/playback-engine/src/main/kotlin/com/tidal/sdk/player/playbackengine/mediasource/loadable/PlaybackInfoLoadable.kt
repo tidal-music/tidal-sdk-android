@@ -15,9 +15,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.runBlocking
 
-/**
- * A [Loader.Loadable] that loads [PlaybackInfo] with the help of our streaming api.
- */
+/** A [Loader.Loadable] that loads [PlaybackInfo] with the help of our streaming api. */
 internal class PlaybackInfoLoadable(
     private val streamingSession: StreamingSession,
     private val forwardingMediaProduct: ForwardingMediaProduct<MediaProduct>,
@@ -32,12 +30,13 @@ internal class PlaybackInfoLoadable(
     var playbackInfo: PlaybackInfo? = null
         private set
 
-    override fun cancelLoad() = coroutineScope?.cancel(
-        CancellationException(
-            null,
-            PlaybackInfoFetchException.Cancellation(forwardingMediaProduct)
-        ),
-    ) ?: Unit
+    override fun cancelLoad() =
+        coroutineScope?.cancel(
+            CancellationException(
+                null,
+                PlaybackInfoFetchException.Cancellation(forwardingMediaProduct),
+            )
+        ) ?: Unit
 
     @SuppressWarnings("TooGenericExceptionCaught")
     override fun load() {
@@ -71,7 +70,8 @@ internal class PlaybackInfoLoadable(
             }
         } catch (throwable: Throwable) {
             when (throwable) {
-                is CancellationException, is InterruptedException -> Unit
+                is CancellationException,
+                is InterruptedException -> Unit
                 else -> throw PlaybackInfoFetchException.Error(forwardingMediaProduct, throwable)
             }
         }

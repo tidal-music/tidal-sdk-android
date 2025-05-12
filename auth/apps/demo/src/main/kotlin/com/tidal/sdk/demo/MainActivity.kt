@@ -36,14 +36,13 @@ class MainActivity : ComponentActivity() {
     lateinit var auth: Auth
     lateinit var credentialsProvider: CredentialsProvider
 
-    val loginConfig = LoginConfig(
-        customParams = setOf(
-            QueryParameter(
-                key = "appMode",
-                value = "android",
-            ),
-        ), // Client has to inform the module about the appMode
-    )
+    val loginConfig =
+        LoginConfig(
+            customParams =
+                setOf(
+                    QueryParameter(key = "appMode", value = "android")
+                ) // Client has to inform the module about the appMode
+        )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,18 +50,18 @@ class MainActivity : ComponentActivity() {
         /**
          * This test app expects the following values in 'local.properties' to be set:
          * TIDAL_CLIENT_ID: The id of the app created by you in the TIDAL developer portal
-         * TIDAL_CLIENT_SECRET: The secret generated for this id
-         * TIDAL_CLIENT_SCOPES: The scopes you selected in the portal, entered as a single
-         * string, scopes separated by a space
+         * TIDAL_CLIENT_SECRET: The secret generated for this id TIDAL_CLIENT_SCOPES: The scopes you
+         * selected in the portal, entered as a single string, scopes separated by a space
          */
-        val authConfig = AuthConfig(
-            clientId = BuildConfig.TIDAL_CLIENT_ID,
-            clientSecret = BuildConfig.TIDAL_CLIENT_SECRET,
-            scopes = BuildConfig.TIDAL_CLIENT_SCOPES.split(" ").toSet(),
-            credentialsKey = STORAGE_KEY,
-            enableCertificatePinning = true,
-            logLevel = NetworkLogLevel.BODY,
-        )
+        val authConfig =
+            AuthConfig(
+                clientId = BuildConfig.TIDAL_CLIENT_ID,
+                clientSecret = BuildConfig.TIDAL_CLIENT_SECRET,
+                scopes = BuildConfig.TIDAL_CLIENT_SCOPES.split(" ").toSet(),
+                credentialsKey = STORAGE_KEY,
+                enableCertificatePinning = true,
+                logLevel = NetworkLogLevel.BODY,
+            )
         initAuthModule(authConfig)
         setContent {
             MaterialTheme {
@@ -70,9 +69,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background,
                 ) {
-                    val navController = rememberNavController().also {
-                        this@MainActivity.navController = it
-                    }
+                    val navController =
+                        rememberNavController().also { this@MainActivity.navController = it }
                     NavigationHost(navController = navController)
                 }
             }
@@ -80,20 +78,13 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun initAuthModule(authConfig: AuthConfig) {
-        with(
-            TidalAuth.getInstance(
-                authConfig,
-                this,
-            ),
-        ) {
+        with(TidalAuth.getInstance(authConfig, this)) {
             this@MainActivity.auth = this.auth
             this@MainActivity.credentialsProvider = this.credentialsProvider
 
             // This watches the bus and prints all received messages to our log
             lifecycleScope.launch {
-                credentialsProvider.bus.collectLatest {
-                    logger.d { it.toString() }
-                }
+                credentialsProvider.bus.collectLatest { logger.d { it.toString() } }
             }
             lifecycleScope.launch {
                 val token = credentialsProvider.getCredentials()
@@ -104,13 +95,13 @@ class MainActivity : ComponentActivity() {
 
     @Suppress("UnusedPrivateMember")
     fun onRedirectUriReceived(uri: Uri) {
-        lifecycleScope.launch {
-            auth.finalizeLogin(requireNotNull(uri.query))
-        }.invokeOnCompletion {
-            if (navController.currentBackStackEntry.toString().contains("login")) {
-                navController.popBackStack()
+        lifecycleScope
+            .launch { auth.finalizeLogin(requireNotNull(uri.query)) }
+            .invokeOnCompletion {
+                if (navController.currentBackStackEntry.toString().contains("login")) {
+                    navController.popBackStack()
+                }
             }
-        }
     }
 
     suspend fun initializeDeviceLogin(): AuthResult<DeviceAuthorizationResponse> {
@@ -126,9 +117,7 @@ class MainActivity : ComponentActivity() {
     }
 
     fun logout() {
-        lifecycleScope.launch {
-            auth.logout()
-        }
+        lifecycleScope.launch { auth.logout() }
     }
 
     companion object {

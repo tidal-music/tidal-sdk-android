@@ -3,9 +3,9 @@ package com.tidal.sdk.auth.model
 import com.tidal.sdk.common.TidalError
 
 /**
- *  Error indicating that the user did not correctly authenticate themselves at the TIDAL login
- *  service. Raised when the URI made to the redirect URI indicates that the authentication was
- *  not succesful.
+ * Error indicating that the user did not correctly authenticate themselves at the TIDAL login
+ * service. Raised when the URI made to the redirect URI indicates that the authentication was not
+ * succesful.
  *
  * @param code The error code returned by the API.
  * @param subStatus The TIDAL-specific error code returned by the API.

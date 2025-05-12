@@ -38,12 +38,13 @@ internal class PlayerDashOfflineMediaSourceFactoryTest {
         )
 
     @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(
-        dashMediaSourceFactoryFactory,
-        dashManifestFactory,
-        offlineStorageProvider,
-        offlineDrmHelper,
-    )
+    fun afterEach() =
+        verifyNoMoreInteractions(
+            dashMediaSourceFactoryFactory,
+            dashManifestFactory,
+            offlineStorageProvider,
+            offlineDrmHelper,
+        )
 
     @Test
     fun createDrmProtected() {
@@ -53,9 +54,8 @@ internal class PlayerDashOfflineMediaSourceFactoryTest {
         val isDrmProtected = true
         val dashManifest = mock<DashManifest>()
         val drmSessionManager = mock<DrmSessionManager>()
-        val drmSessionManagerProvider = mock<DrmSessionManagerProvider> {
-            on { it.get(mediaItem) } doReturn drmSessionManager
-        }
+        val drmSessionManagerProvider =
+            mock<DrmSessionManagerProvider> { on { it.get(mediaItem) } doReturn drmSessionManager }
         val expectedDashMediaSource = mock<DashMediaSource>()
         val dataSourceFactoryForOfflinePlay = mock<DataSource.Factory>()
         val dashMediaSourceFactory = mock<DashMediaSource.Factory>()
@@ -69,13 +69,14 @@ internal class PlayerDashOfflineMediaSourceFactoryTest {
         whenever(dashMediaSourceFactory.createMediaSource(dashManifest, mediaItem))
             .thenReturn(expectedDashMediaSource)
 
-        val actualDashMediaSource = playerDashOfflineMediaSourceFactory.create(
-            mediaItem,
-            ENCODED_MANIFEST,
-            offlineLicense,
-            storage,
-            drmSessionManagerProvider,
-        )
+        val actualDashMediaSource =
+            playerDashOfflineMediaSourceFactory.create(
+                mediaItem,
+                ENCODED_MANIFEST,
+                offlineLicense,
+                storage,
+                drmSessionManagerProvider,
+            )
 
         assertThat(actualDashMediaSource).isSameAs(expectedDashMediaSource)
         verify(dashManifestFactory).create(ENCODED_MANIFEST)
@@ -123,13 +124,14 @@ internal class PlayerDashOfflineMediaSourceFactoryTest {
         whenever(dashMediaSourceFactory.createMediaSource(dashManifest, mediaItem))
             .thenReturn(expectedDashMediaSource)
 
-        val actualDashMediaSource = playerDashOfflineMediaSourceFactory.create(
-            mediaItem,
-            ENCODED_MANIFEST,
-            offlineLicense,
-            storage,
-            drmSessionManagerProvider,
-        )
+        val actualDashMediaSource =
+            playerDashOfflineMediaSourceFactory.create(
+                mediaItem,
+                ENCODED_MANIFEST,
+                offlineLicense,
+                storage,
+                drmSessionManagerProvider,
+            )
 
         assertThat(actualDashMediaSource).isSameAs(expectedDashMediaSource)
         verify(dashManifestFactory).create(ENCODED_MANIFEST)

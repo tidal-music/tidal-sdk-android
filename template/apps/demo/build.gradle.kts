@@ -14,9 +14,7 @@ android {
 
     buildTypes {
         debug {}
-        composeOptions {
-            kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
-        }
+        composeOptions { kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get() }
     }
     packagingOptions {
         resources.excludes.apply {

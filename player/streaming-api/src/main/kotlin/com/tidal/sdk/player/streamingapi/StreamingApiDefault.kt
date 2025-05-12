@@ -8,8 +8,8 @@ import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackMode
 import com.tidal.sdk.player.streamingapi.playbackinfo.repository.PlaybackInfoRepository
 
 /**
- * Default implementation of the streaming api.
- * This uses the repositories provided and fetches playback info or drm license.
+ * Default implementation of the streaming api. This uses the repositories provided and fetches
+ * playback info or drm license.
  *
  * @param[playbackInfoRepository] A [PlaybackInfoRepository] that gets a playback info.
  * @param[drmLicenseRepository] An [DrmLicenseRepository] that gets a drm license.
@@ -26,14 +26,15 @@ internal class StreamingApiDefault(
         immersiveAudio: Boolean,
         streamingSessionId: String,
         playlistUuid: String?,
-    ) = playbackInfoRepository.getTrackPlaybackInfo(
-        trackId,
-        audioQuality,
-        playbackMode,
-        immersiveAudio,
-        streamingSessionId,
-        playlistUuid,
-    )
+    ) =
+        playbackInfoRepository.getTrackPlaybackInfo(
+            trackId,
+            audioQuality,
+            playbackMode,
+            immersiveAudio,
+            streamingSessionId,
+            playlistUuid,
+        )
 
     override suspend fun getVideoPlaybackInfo(
         videoId: String,
@@ -41,38 +42,34 @@ internal class StreamingApiDefault(
         playbackMode: PlaybackMode,
         streamingSessionId: String,
         playlistUuid: String?,
-    ) = playbackInfoRepository.getVideoPlaybackInfo(
-        videoId,
-        videoQuality,
-        playbackMode,
-        streamingSessionId,
-        playlistUuid,
-    )
+    ) =
+        playbackInfoRepository.getVideoPlaybackInfo(
+            videoId,
+            videoQuality,
+            playbackMode,
+            streamingSessionId,
+            playlistUuid,
+        )
 
     override suspend fun getBroadcastPlaybackInfo(
         djSessionId: String,
         streamingSessionId: String,
         audioQuality: AudioQuality,
-    ) = playbackInfoRepository.getBroadcastPlaybackInfo(
-        djSessionId,
-        streamingSessionId,
-        audioQuality,
-    )
+    ) =
+        playbackInfoRepository.getBroadcastPlaybackInfo(
+            djSessionId,
+            streamingSessionId,
+            audioQuality,
+        )
 
-    override suspend fun getUCPlaybackInfo(
-        itemId: String,
-        streamingSessionId: String,
-    ) = playbackInfoRepository.getUC(itemId, streamingSessionId)
+    override suspend fun getUCPlaybackInfo(itemId: String, streamingSessionId: String) =
+        playbackInfoRepository.getUC(itemId, streamingSessionId)
 
-    override suspend fun getOfflineTrackPlaybackInfo(
-        trackId: String,
-        streamingSessionId: String,
-    ) = playbackInfoRepository.getOfflineTrackPlaybackInfo(trackId, streamingSessionId)
+    override suspend fun getOfflineTrackPlaybackInfo(trackId: String, streamingSessionId: String) =
+        playbackInfoRepository.getOfflineTrackPlaybackInfo(trackId, streamingSessionId)
 
-    override suspend fun getOfflineVideoPlaybackInfo(
-        videoId: String,
-        streamingSessionId: String,
-    ) = playbackInfoRepository.getOfflineVideoPlaybackInfo(videoId, streamingSessionId)
+    override suspend fun getOfflineVideoPlaybackInfo(videoId: String, streamingSessionId: String) =
+        playbackInfoRepository.getOfflineVideoPlaybackInfo(videoId, streamingSessionId)
 
     override suspend fun getDrmLicense(drmLicenseRequest: DrmLicenseRequest) =
         drmLicenseRepository.getDrmLicense(drmLicenseRequest)

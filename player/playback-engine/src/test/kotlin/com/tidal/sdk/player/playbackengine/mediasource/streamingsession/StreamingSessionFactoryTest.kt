@@ -23,8 +23,7 @@ internal abstract class StreamingSessionFactoryTest {
         streamingSessionFactoryF(uuidWrapper, configuration)
     }
 
-    @AfterEach
-    fun tearDown() = verifyNoMoreInteractions(uuidWrapper, configuration)
+    @AfterEach fun tearDown() = verifyNoMoreInteractions(uuidWrapper, configuration)
 
     @Test
     fun createCreatesInstanceWithProvidedData() {

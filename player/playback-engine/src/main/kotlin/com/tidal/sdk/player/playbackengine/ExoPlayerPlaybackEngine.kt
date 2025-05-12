@@ -73,9 +73,7 @@ import kotlinx.coroutines.launch
 
 private const val MS_IN_SECOND = 1000L
 
-/**
- * The default implementation of [PlaybackEngine] that will use ExoPlayer to play media.
- */
+/** The default implementation of [PlaybackEngine] that will use ExoPlayer to play media. */
 @Suppress("TooManyFunctions", "LargeClass", "LongParameterList")
 internal class ExoPlayerPlaybackEngine(
     private val coroutineScope: CoroutineScope,
@@ -95,7 +93,8 @@ internal class ExoPlayerPlaybackEngine(
     private val undeterminedPlaybackSessionResolver: UndeterminedPlaybackSessionResolver,
     private val outputDeviceManager: OutputDeviceManager,
     private val playerCache: PlayerCache,
-) : PlaybackEngine,
+) :
+    PlaybackEngine,
     StreamingPrivilegesListener,
     PlaybackInfoListener,
     AnalyticsListener,
@@ -103,72 +102,72 @@ internal class ExoPlayerPlaybackEngine(
 
     override val mediaProduct: MediaProduct?
         get() = forwardingMediaProduct?.delegate
+
     private val forwardingMediaProduct: ForwardingMediaProduct<MediaProduct>?
         get() = mediaSource?.forwardingMediaProduct
 
-    /**
-     * Holds the next [ForwardingMediaProduct]. May be null if not set.
-     */
+    /** Holds the next [ForwardingMediaProduct]. May be null if not set. */
     private val nextForwardingMediaProduct: ForwardingMediaProduct<MediaProduct>?
         get() = nextMediaSource?.forwardingMediaProduct
 
-    override var playbackContext: PlaybackContext? by Delegates.observable(null) { _, old, new ->
-        if (old == new) {
-            return@observable
+    override var playbackContext: PlaybackContext? by
+        Delegates.observable(null) { _, old, new ->
+            if (old == new) {
+                return@observable
+            }
+            val mediaProduct = mediaProduct ?: return@observable
+            val playbackContext = new ?: return@observable
+            coroutineScope.launch {
+                eventSink.emit(Event.MediaProductTransition(mediaProduct, playbackContext))
+            }
         }
-        val mediaProduct = mediaProduct ?: return@observable
-        val playbackContext = new ?: return@observable
-        coroutineScope.launch {
-            eventSink.emit(Event.MediaProductTransition(mediaProduct, playbackContext))
-        }
-    }
         private set
 
-    /**
-     * Holds the next [playbackContext]. May be null if not set.
-     */
+    /** Holds the next [playbackContext]. May be null if not set. */
     private var nextPlaybackContext: PlaybackContext? = null
 
-    private var mediaSource: PlaybackInfoMediaSource? by Delegates.observable(null) { _, _, new ->
-        currentPlaybackStatistics = null
-        playbackContext = null
-        nextMediaSource = null
-        currentPlaybackSession = null
-        djSessionManager.cleanUp()
-        if (new?.forwardingMediaProduct?.productType == ProductType.BROADCAST) {
-            djSessionManager.listener = this
+    private var mediaSource: PlaybackInfoMediaSource? by
+        Delegates.observable(null) { _, _, new ->
+            currentPlaybackStatistics = null
+            playbackContext = null
+            nextMediaSource = null
+            currentPlaybackSession = null
+            djSessionManager.cleanUp()
+            if (new?.forwardingMediaProduct?.productType == ProductType.BROADCAST) {
+                djSessionManager.listener = this
+            }
         }
-    }
 
-    /**
-     * Holds the next [PlaybackInfoMediaSource]. May be null if not set.
-     */
-    private var nextMediaSource: PlaybackInfoMediaSource? by Delegates.observable(null) { _, _, _ ->
-        nextPlaybackStatistics = null
-        nextPlaybackContext = null
-        nextPlaybackSession = null
-        delayedMediaProductTransition = null
-    }
+    /** Holds the next [PlaybackInfoMediaSource]. May be null if not set. */
+    private var nextMediaSource: PlaybackInfoMediaSource? by
+        Delegates.observable(null) { _, _, _ ->
+            nextPlaybackStatistics = null
+            nextPlaybackContext = null
+            nextPlaybackSession = null
+            delayedMediaProductTransition = null
+        }
 
     private var delayedMediaProductTransition: DelayedMediaProductTransition? = null
 
-    override var playbackState by Delegates.observable(PlaybackState.IDLE) { _, value, newValue ->
-        if (newValue == value) {
-            return@observable
+    override var playbackState by
+        Delegates.observable(PlaybackState.IDLE) { _, value, newValue ->
+            if (newValue == value) {
+                return@observable
+            }
+            coroutineScope.launch { eventSink.emit(Event.PlaybackStateChange(newValue)) }
+            videoSurfaceView?.refreshKeepScreenOnBasedOnPlaybackState()
+            if (newValue == PlaybackState.PLAYING) {
+                streamingPrivileges.setStreamingPrivilegesListener(this)
+                streamingPrivileges.acquireStreamingPrivileges()
+            }
         }
-        coroutineScope.launch { eventSink.emit(Event.PlaybackStateChange(newValue)) }
-        videoSurfaceView?.refreshKeepScreenOnBasedOnPlaybackState()
-        if (newValue == PlaybackState.PLAYING) {
-            streamingPrivileges.setStreamingPrivilegesListener(this)
-            streamingPrivileges.acquireStreamingPrivileges()
-        }
-    }
         private set
 
-    override val events: Flow<Event> = eventSink.transformWhile {
-        emit(it)
-        it !is Event.Release
-    }
+    override val events: Flow<Event> =
+        eventSink.transformWhile {
+            emit(it)
+            it !is Event.Release
+        }
 
     override val assetPosition: Float
         get() = extendedExoPlayer.currentPositionMs.toFloat() / MS_IN_SECOND
@@ -208,14 +207,13 @@ internal class ExoPlayerPlaybackEngine(
             audioModeRepository.immersiveAudio = value
         }
 
-    private var extendedExoPlayer by Delegates.observable(
-        extendedExoPlayerFactory.create(this, this),
-    ) { _, oldValue, newValue ->
-        videoSurfaceViewAndSurfaceHolder?.second?.let {
-            oldValue.clearVideoSurfaceHolder(it)
-            newValue.setVideoSurfaceHolder(it)
+    private var extendedExoPlayer by
+        Delegates.observable(extendedExoPlayerFactory.create(this, this)) { _, oldValue, newValue ->
+            videoSurfaceViewAndSurfaceHolder?.second?.let {
+                oldValue.clearVideoSurfaceHolder(it)
+                newValue.setVideoSurfaceHolder(it)
+            }
         }
-    }
 
     override var videoSurfaceView: AspectRatioAdjustingSurfaceView?
         set(value) {
@@ -234,28 +232,24 @@ internal class ExoPlayerPlaybackEngine(
                 extendedExoPlayer.setVideoSurfaceHolder(synchronousSurfaceHolder)
                 videoSurfaceViewAndSurfaceHolder = value to synchronousSurfaceHolder
                 extendedExoPlayer.videoFormat?.let {
-                    value.suggestedVideoDimen = AspectRatioAdjustingSurfaceView.SuggestedDimensions(
-                        it.width,
-                        it.height,
-                    )
+                    value.suggestedVideoDimen =
+                        AspectRatioAdjustingSurfaceView.SuggestedDimensions(it.width, it.height)
                 }
             }
         }
         get() = videoSurfaceViewAndSurfaceHolder?.first
 
     private var videoSurfaceViewAndSurfaceHolder:
-        Pair<AspectRatioAdjustingSurfaceView, SynchronousSurfaceHolder>? = null
+        Pair<AspectRatioAdjustingSurfaceView, SynchronousSurfaceHolder>? =
+        null
 
     private var currentPlaybackStatistics: PlaybackStatistics? by
-        Delegates.observable(null) { _, _, _ ->
-            currentStall = null
-        }
+        Delegates.observable(null) { _, _, _ -> currentStall = null }
 
     private var nextPlaybackStatistics: PlaybackStatistics.Undetermined? = null
 
-    private var currentStall: StartedStall? by Delegates.observable(null) { _, oldValue, _ ->
-        oldValue?.complete()
-    }
+    private var currentStall: StartedStall? by
+        Delegates.observable(null) { _, oldValue, _ -> oldValue?.complete() }
 
     private var currentPlaybackSession: PlaybackSession? = null
 
@@ -268,11 +262,9 @@ internal class ExoPlayerPlaybackEngine(
         }
 
     private val isOperating: Boolean
-        get() = playbackState in listOf(
-            PlaybackState.PLAYING,
-            PlaybackState.NOT_PLAYING,
-            PlaybackState.STALLED,
-        )
+        get() =
+            playbackState in
+                listOf(PlaybackState.PLAYING, PlaybackState.NOT_PLAYING, PlaybackState.STALLED)
 
     init {
         outputDeviceManager.start {
@@ -283,10 +275,11 @@ internal class ExoPlayerPlaybackEngine(
     override fun load(mediaProduct: MediaProduct) {
         val positionInSeconds =
             if (this.forwardingMediaProduct?.productType == ProductType.BROADCAST) {
-                extendedExoPlayer.currentPositionSinceEpochMs
-            } else {
-                extendedExoPlayer.currentPositionMs
-            }.toDouble() / MS_IN_SECOND
+                    extendedExoPlayer.currentPositionSinceEpochMs
+                } else {
+                    extendedExoPlayer.currentPositionMs
+                }
+                .toDouble() / MS_IN_SECOND
         reportEnd(EndReason.OTHER, endPositionSeconds = positionInSeconds)
         playbackState = PlaybackState.STALLED
 
@@ -305,22 +298,24 @@ internal class ExoPlayerPlaybackEngine(
         val readCurrentPlaybackStatistics = currentPlaybackStatistics
         if (readCurrentPlaybackStatistics == null) {
             currentPlaybackStatistics =
-                extendedExoPlayer.currentStreamingSession!!
-                    .createUndeterminedPlaybackStatistics(
-                        PlaybackStatistics.IdealStartTimestampMs.Known(
-                            trueTimeWrapper.currentTimeMillis,
-                        ),
-                        mediaProduct!!.extras,
-                    )
+                extendedExoPlayer.currentStreamingSession!!.createUndeterminedPlaybackStatistics(
+                    PlaybackStatistics.IdealStartTimestampMs.Known(
+                        trueTimeWrapper.currentTimeMillis
+                    ),
+                    mediaProduct!!.extras,
+                )
         } else if (
             readCurrentPlaybackStatistics is PlaybackStatistics.Undetermined &&
-            readCurrentPlaybackStatistics.idealStartTimestampMs
-            is PlaybackStatistics.IdealStartTimestampMs.Known
+                readCurrentPlaybackStatistics.idealStartTimestampMs is
+                    PlaybackStatistics.IdealStartTimestampMs.Known
         ) {
-            currentPlaybackStatistics = readCurrentPlaybackStatistics.copy(
-                idealStartTimestampMs =
-                PlaybackStatistics.IdealStartTimestampMs.Known(trueTimeWrapper.currentTimeMillis),
-            )
+            currentPlaybackStatistics =
+                readCurrentPlaybackStatistics.copy(
+                    idealStartTimestampMs =
+                        PlaybackStatistics.IdealStartTimestampMs.Known(
+                            trueTimeWrapper.currentTimeMillis
+                        )
+                )
         }
         extendedExoPlayer.play()
     }
@@ -349,11 +344,13 @@ internal class ExoPlayerPlaybackEngine(
     }
 
     override fun reset() {
-        val positionInSeconds = if (forwardingMediaProduct?.productType == ProductType.BROADCAST) {
-            extendedExoPlayer.currentPositionSinceEpochMs
-        } else {
-            extendedExoPlayer.currentPositionMs
-        }.toDouble() / MS_IN_SECOND
+        val positionInSeconds =
+            if (forwardingMediaProduct?.productType == ProductType.BROADCAST) {
+                    extendedExoPlayer.currentPositionSinceEpochMs
+                } else {
+                    extendedExoPlayer.currentPositionMs
+                }
+                .toDouble() / MS_IN_SECOND
         reportEnd(EndReason.OTHER, endPositionSeconds = positionInSeconds)
         resetInternal()
     }
@@ -380,9 +377,7 @@ internal class ExoPlayerPlaybackEngine(
             coroutineScope.launch {
                 eventSink.emit(Event.StreamingPrivilegesRevoked(privilegedClientDisplayName))
             }
-            internalHandler.post {
-                pause()
-            }
+            internalHandler.post { pause() }
         }
     }
 
@@ -397,51 +392,58 @@ internal class ExoPlayerPlaybackEngine(
             val nextForwardingMediaProduct = nextForwardingMediaProduct
             when (forwardingMediaProduct) {
                 currentForwardingMediaProduct -> {
-                    playbackContext = playbackContextFactory.create(
-                        playbackInfo,
-                        currentForwardingMediaProduct.delegate.referenceId,
-                    )
+                    playbackContext =
+                        playbackContextFactory.create(
+                            playbackInfo,
+                            currentForwardingMediaProduct.delegate.referenceId,
+                        )
                     internalHandler.post { updatePlayerVolume() }
                     val readPlaybackStatistics = currentPlaybackStatistics
-                    currentPlaybackStatistics = undeterminedPlaybackSessionResolver(
-                        if (readPlaybackStatistics != null &&
-                            readPlaybackStatistics is PlaybackStatistics.Undetermined
-                        ) {
-                            readPlaybackStatistics
-                        } else {
-                            streamingSession.createUndeterminedPlaybackStatistics(
-                                PlaybackStatistics.IdealStartTimestampMs.NotYetKnown,
-                                currentForwardingMediaProduct.extras,
-                            )
-                        },
-                        playbackInfo,
-                        currentForwardingMediaProduct.extras,
-                    )
-                    currentPlaybackSession = streamingSession.createPlaybackSession(
-                        playbackInfo,
-                        currentForwardingMediaProduct,
-                    )
+                    currentPlaybackStatistics =
+                        undeterminedPlaybackSessionResolver(
+                            if (
+                                readPlaybackStatistics != null &&
+                                    readPlaybackStatistics is PlaybackStatistics.Undetermined
+                            ) {
+                                readPlaybackStatistics
+                            } else {
+                                streamingSession.createUndeterminedPlaybackStatistics(
+                                    PlaybackStatistics.IdealStartTimestampMs.NotYetKnown,
+                                    currentForwardingMediaProduct.extras,
+                                )
+                            },
+                            playbackInfo,
+                            currentForwardingMediaProduct.extras,
+                        )
+                    currentPlaybackSession =
+                        streamingSession.createPlaybackSession(
+                            playbackInfo,
+                            currentForwardingMediaProduct,
+                        )
                 }
 
                 nextForwardingMediaProduct -> {
-                    nextPlaybackContext = playbackContextFactory.create(
-                        playbackInfo,
-                        nextForwardingMediaProduct.delegate.referenceId,
-                    )
-                    nextPlaybackStatistics = extendedExoPlayer.nextStreamingSession!!
-                        .createUndeterminedPlaybackStatistics(
-                            PlaybackStatistics.IdealStartTimestampMs.NotYetKnown,
-                            nextForwardingMediaProduct.extras,
+                    nextPlaybackContext =
+                        playbackContextFactory.create(
+                            playbackInfo,
+                            nextForwardingMediaProduct.delegate.referenceId,
                         )
-                    nextPlaybackSession = streamingSession.createPlaybackSession(
-                        playbackInfo,
-                        nextForwardingMediaProduct,
-                    )
+                    nextPlaybackStatistics =
+                        extendedExoPlayer.nextStreamingSession!!
+                            .createUndeterminedPlaybackStatistics(
+                                PlaybackStatistics.IdealStartTimestampMs.NotYetKnown,
+                                nextForwardingMediaProduct.extras,
+                            )
+                    nextPlaybackSession =
+                        streamingSession.createPlaybackSession(
+                            playbackInfo,
+                            nextForwardingMediaProduct,
+                        )
                 }
             }
             val delayedMediaProductTransition = delayedMediaProductTransition ?: return@post
-            if (delayedMediaProductTransition
-                    .run { from === mediaSource && to === nextMediaSource }
+            if (
+                delayedMediaProductTransition.run { from === mediaSource && to === nextMediaSource }
             ) {
                 delayedMediaProductTransition(
                     this,
@@ -455,39 +457,37 @@ internal class ExoPlayerPlaybackEngine(
     }
 
     override fun onDjSessionUpdated(productId: String, status: DjSessionStatus) {
-        coroutineScope.launch {
-            eventSink.emit(Event.DjSessionUpdate(productId, status))
-        }
+        coroutineScope.launch { eventSink.emit(Event.DjSessionUpdate(productId, status)) }
     }
 
     override fun onPlaybackSuppressionReasonChanged(
         eventTime: EventTime,
         playbackSuppressionReason: Int,
     ) {
-        if (playbackSuppressionReason == Player.PLAYBACK_SUPPRESSION_REASON_NONE &&
-            forwardingMediaProduct?.productType == ProductType.BROADCAST &&
-            eventTime.correspondingForwardingMediaProductIfMatching === forwardingMediaProduct
+        if (
+            playbackSuppressionReason == Player.PLAYBACK_SUPPRESSION_REASON_NONE &&
+                forwardingMediaProduct?.productType == ProductType.BROADCAST &&
+                eventTime.correspondingForwardingMediaProductIfMatching === forwardingMediaProduct
         ) {
             extendedExoPlayer.seekToDefaultPosition()
         }
 
-        val positionInSeconds = if (forwardingMediaProduct?.productType == ProductType.BROADCAST) {
-            extendedExoPlayer.currentPositionSinceEpochMs
-        } else {
-            eventTime.currentPlaybackPositionMs
-        }.toDouble() / MS_IN_SECOND
-        val actionType = if (playbackSuppressionReason == Player.PLAYBACK_SUPPRESSION_REASON_NONE) {
-            Action.Type.PLAYBACK_START
-        } else {
-            Action.Type.PLAYBACK_STOP
-        }
-        currentPlaybackSession?.actions?.add(
-            Action(
-                trueTimeWrapper.currentTimeMillis,
-                positionInSeconds,
-                actionType,
-            ),
-        )
+        val positionInSeconds =
+            if (forwardingMediaProduct?.productType == ProductType.BROADCAST) {
+                    extendedExoPlayer.currentPositionSinceEpochMs
+                } else {
+                    eventTime.currentPlaybackPositionMs
+                }
+                .toDouble() / MS_IN_SECOND
+        val actionType =
+            if (playbackSuppressionReason == Player.PLAYBACK_SUPPRESSION_REASON_NONE) {
+                Action.Type.PLAYBACK_START
+            } else {
+                Action.Type.PLAYBACK_STOP
+            }
+        currentPlaybackSession
+            ?.actions
+            ?.add(Action(trueTimeWrapper.currentTimeMillis, positionInSeconds, actionType))
     }
 
     override fun onIsPlayingChanged(eventTime: EventTime, isPlaying: Boolean) {
@@ -495,19 +495,18 @@ internal class ExoPlayerPlaybackEngine(
             currentPlaybackSession!!.apply {
                 val positionInSeconds =
                     if (forwardingMediaProduct?.productType == ProductType.BROADCAST) {
-                        extendedExoPlayer.currentPositionSinceEpochMs
-                    } else {
-                        eventTime.currentPlaybackPositionMs
-                    }.toDouble() / MS_IN_SECOND
+                            extendedExoPlayer.currentPositionSinceEpochMs
+                        } else {
+                            eventTime.currentPlaybackPositionMs
+                        }
+                        .toDouble() / MS_IN_SECOND
                 startAssetPosition = positionInSeconds
             }
         }
     }
 
     override fun onPlaybackStateChanged(eventTime: EventTime, state: Int) {
-        if (eventTime.correspondingForwardingMediaProductIfMatching !==
-            forwardingMediaProduct
-        ) {
+        if (eventTime.correspondingForwardingMediaProductIfMatching !== forwardingMediaProduct) {
             return
         }
         if (state == Player.STATE_BUFFERING) {
@@ -517,10 +516,11 @@ internal class ExoPlayerPlaybackEngine(
                 val currentTimeMillis = trueTimeWrapper.currentTimeMillis
                 val positionSeconds =
                     if (forwardingMediaProduct?.productType == ProductType.BROADCAST) {
-                        extendedExoPlayer.currentPositionSinceEpochMs
-                    } else {
-                        eventTime.currentPlaybackPositionMs
-                    }.toDouble() / MS_IN_SECOND
+                            extendedExoPlayer.currentPositionSinceEpochMs
+                        } else {
+                            eventTime.currentPlaybackPositionMs
+                        }
+                        .toDouble() / MS_IN_SECOND
                 reportEnd(
                     EndReason.COMPLETE,
                     endTimestamp = currentTimeMillis,
@@ -531,20 +531,18 @@ internal class ExoPlayerPlaybackEngine(
                 val endedPlaybackContext = playbackContext!!
                 coroutineScope.launch {
                     eventSink.emit(
-                        Event.MediaProductEnded(
-                            endedMediaProduct.delegate,
-                            endedPlaybackContext,
-                        ),
+                        Event.MediaProductEnded(endedMediaProduct.delegate, endedPlaybackContext)
                     )
                 }
             }
             resetInternal()
         } else if (state == Player.STATE_READY) {
-            playbackState = if (extendedExoPlayer.playWhenReady) {
-                PlaybackState.PLAYING
-            } else {
-                PlaybackState.NOT_PLAYING
-            }
+            playbackState =
+                if (extendedExoPlayer.playWhenReady) {
+                    PlaybackState.PLAYING
+                } else {
+                    PlaybackState.NOT_PLAYING
+                }
         }
     }
 
@@ -556,17 +554,19 @@ internal class ExoPlayerPlaybackEngine(
         reason: Int,
     ) {
         extendedExoPlayer.updatePosition(newPosition.positionMs)
-        val oldPositionMs = if (forwardingMediaProduct?.productType == ProductType.BROADCAST) {
-            extendedExoPlayer.getPositionSinceEpochMs(oldPosition.positionMs)
-        } else {
-            oldPosition.positionMs
-        }
+        val oldPositionMs =
+            if (forwardingMediaProduct?.productType == ProductType.BROADCAST) {
+                extendedExoPlayer.getPositionSinceEpochMs(oldPosition.positionMs)
+            } else {
+                oldPosition.positionMs
+            }
 
-        val newPositionMs = if (forwardingMediaProduct?.productType == ProductType.BROADCAST) {
-            extendedExoPlayer.getPositionSinceEpochMs(newPosition.positionMs)
-        } else {
-            newPosition.positionMs
-        }
+        val newPositionMs =
+            if (forwardingMediaProduct?.productType == ProductType.BROADCAST) {
+                extendedExoPlayer.getPositionSinceEpochMs(newPosition.positionMs)
+            } else {
+                newPosition.positionMs
+            }
 
         val invokedAtMillis = trueTimeWrapper.currentTimeMillis
         val oldPositionSeconds = oldPositionMs.toDouble() / MS_IN_SECOND
@@ -589,7 +589,7 @@ internal class ExoPlayerPlaybackEngine(
 
                 Player.REPEAT_MODE_ALL -> {
                     throw UnsupportedOperationException(
-                        "Unsupported repeat mode: ${Player.REPEAT_MODE_ALL}",
+                        "Unsupported repeat mode: ${Player.REPEAT_MODE_ALL}"
                     )
                 }
             }
@@ -607,12 +607,13 @@ internal class ExoPlayerPlaybackEngine(
             if (!extendedExoPlayer.shouldStartPlaybackAfterUserAction()) {
                 val stallPositionSeconds =
                     if (forwardingMediaProduct?.productType == ProductType.BROADCAST) {
-                        extendedExoPlayer.getPositionSinceEpochMs(
-                            eventTime.currentPlaybackPositionMs,
-                        )
-                    } else {
-                        eventTime.currentPlaybackPositionMs
-                    }.toDouble() / MS_IN_SECOND
+                            extendedExoPlayer.getPositionSinceEpochMs(
+                                eventTime.currentPlaybackPositionMs
+                            )
+                        } else {
+                            eventTime.currentPlaybackPositionMs
+                        }
+                        .toDouble() / MS_IN_SECOND
                 startStall(Stall.Reason.SEEK, stallPositionSeconds, invokedAtMillis)
             }
             currentPlaybackSession?.actions?.apply {
@@ -630,40 +631,45 @@ internal class ExoPlayerPlaybackEngine(
         targetPlaybackStatistics: PlaybackStatistics.Undetermined? = nextPlaybackStatistics,
         targetPlaybackSession: PlaybackSession? = nextPlaybackSession,
     ) {
-        if (delayedMediaProductTransition
-                ?.run { from === mediaSource && to === nextMediaSource } != true
+        if (
+            delayedMediaProductTransition?.run { from === mediaSource && to === nextMediaSource } !=
+                true
         ) {
             delayedMediaProductTransition = null
         }
         val nextMediaSource = nextMediaSource!!
         if (nextMediaSource.playbackInfo == null) {
-            delayedMediaProductTransition = DelayedMediaProductTransition(
-                mediaSource!!,
-                nextMediaSource,
-                eventTime,
-                invokedAtMillis,
-                newPositionSeconds,
-            )
+            delayedMediaProductTransition =
+                DelayedMediaProductTransition(
+                    mediaSource!!,
+                    nextMediaSource,
+                    eventTime,
+                    invokedAtMillis,
+                    newPositionSeconds,
+                )
             return
         }
         mediaSource = nextMediaSource
         this.nextMediaSource = null
         extendedExoPlayer.onCurrentItemFinished()
 
-        playbackContext = targetPlaybackContext!!
-            .copy(eventTime.windowDurationMs.toFloat() / MS_IN_SECOND)
-        currentPlaybackStatistics = undeterminedPlaybackSessionResolver(
-            targetPlaybackStatistics!!.copy(
-                idealStartTimestampMs =
-                PlaybackStatistics.IdealStartTimestampMs.Known(invokedAtMillis),
-            ),
-            mediaSource!!.playbackInfo!!,
-            mediaProduct!!.extras,
-        ).toStarted(invokedAtMillis)
-        currentPlaybackSession = targetPlaybackSession?.apply {
-            startTimestamp = invokedAtMillis
-            startAssetPosition = newPositionSeconds
-        }
+        playbackContext =
+            targetPlaybackContext!!.copy(eventTime.windowDurationMs.toFloat() / MS_IN_SECOND)
+        currentPlaybackStatistics =
+            undeterminedPlaybackSessionResolver(
+                    targetPlaybackStatistics!!.copy(
+                        idealStartTimestampMs =
+                            PlaybackStatistics.IdealStartTimestampMs.Known(invokedAtMillis)
+                    ),
+                    mediaSource!!.playbackInfo!!,
+                    mediaProduct!!.extras,
+                )
+                .toStarted(invokedAtMillis)
+        currentPlaybackSession =
+            targetPlaybackSession?.apply {
+                startTimestamp = invokedAtMillis
+                startAssetPosition = newPositionSeconds
+            }
     }
 
     private fun handleTransitionForRepeatOne(invokedAtMillis: Long, newPositionSeconds: Double) {
@@ -671,42 +677,49 @@ internal class ExoPlayerPlaybackEngine(
         val newStreamingSession = extendedExoPlayer.currentStreamingSession!!
 
         playbackContext = playbackContext!!.copy(newStreamingSession.id.toString())
-        currentPlaybackStatistics = undeterminedPlaybackSessionResolver(
-            newStreamingSession.createUndeterminedPlaybackStatistics(
-                PlaybackStatistics.IdealStartTimestampMs.Known(invokedAtMillis),
-                forwardingMediaProduct!!.extras,
-            ),
-            mediaSource!!.playbackInfo!!,
-            mediaProduct!!.extras,
-        ).toStarted(invokedAtMillis)
-        currentPlaybackSession = newStreamingSession.createPlaybackSession(
-            mediaSource!!.playbackInfo!!,
-            forwardingMediaProduct!!,
-        ).apply {
-            startTimestamp = invokedAtMillis
-            startAssetPosition = newPositionSeconds
-        }
+        currentPlaybackStatistics =
+            undeterminedPlaybackSessionResolver(
+                    newStreamingSession.createUndeterminedPlaybackStatistics(
+                        PlaybackStatistics.IdealStartTimestampMs.Known(invokedAtMillis),
+                        forwardingMediaProduct!!.extras,
+                    ),
+                    mediaSource!!.playbackInfo!!,
+                    mediaProduct!!.extras,
+                )
+                .toStarted(invokedAtMillis)
+        currentPlaybackSession =
+            newStreamingSession
+                .createPlaybackSession(mediaSource!!.playbackInfo!!, forwardingMediaProduct!!)
+                .apply {
+                    startTimestamp = invokedAtMillis
+                    startAssetPosition = newPositionSeconds
+                }
     }
 
     override fun onPlayWhenReadyChanged(eventTime: EventTime, playWhenReady: Boolean, reason: Int) {
-        val positionInSeconds = if (forwardingMediaProduct?.productType == ProductType.BROADCAST) {
-            extendedExoPlayer.currentPositionSinceEpochMs
-        } else {
-            eventTime.currentPlaybackPositionMs
-        }.toDouble() / MS_IN_SECOND
-        currentPlaybackSession?.actions?.add(
-            Action(
-                trueTimeWrapper.currentTimeMillis,
-                positionInSeconds,
-                if (playWhenReady) Action.Type.PLAYBACK_START else Action.Type.PLAYBACK_STOP,
-            ),
-        )
+        val positionInSeconds =
+            if (forwardingMediaProduct?.productType == ProductType.BROADCAST) {
+                    extendedExoPlayer.currentPositionSinceEpochMs
+                } else {
+                    eventTime.currentPlaybackPositionMs
+                }
+                .toDouble() / MS_IN_SECOND
+        currentPlaybackSession
+            ?.actions
+            ?.add(
+                Action(
+                    trueTimeWrapper.currentTimeMillis,
+                    positionInSeconds,
+                    if (playWhenReady) Action.Type.PLAYBACK_START else Action.Type.PLAYBACK_STOP,
+                )
+            )
         if (playWhenReady) {
-            playbackState = if (extendedExoPlayer.playbackState == Player.STATE_READY) {
-                PlaybackState.PLAYING
-            } else {
-                playbackState
-            }
+            playbackState =
+                if (extendedExoPlayer.playbackState == Player.STATE_READY) {
+                    PlaybackState.PLAYING
+                } else {
+                    playbackState
+                }
         } else {
             if (playbackState != PlaybackState.STALLED) {
                 playbackState = PlaybackState.NOT_PLAYING
@@ -731,7 +744,8 @@ internal class ExoPlayerPlaybackEngine(
             return
         }
         val duration = durationMs.toFloat() / MS_IN_SECOND
-        playbackContext?.takeIf { it.duration != duration }
+        playbackContext
+            ?.takeIf { it.duration != duration }
             ?.let { playbackContext = it.copy(duration) }
     }
 
@@ -740,13 +754,9 @@ internal class ExoPlayerPlaybackEngine(
             (extendedExoPlayer.currentManifest as? HlsManifest)?.let {
                 val currentPositionSinceEpochMs = extendedExoPlayer.currentPositionSinceEpochMs
                 currentPlaybackSession!!.apply {
-                    startAssetPosition =
-                        currentPositionSinceEpochMs.toDouble() / MS_IN_SECOND
+                    startAssetPosition = currentPositionSinceEpochMs.toDouble() / MS_IN_SECOND
                 }
-                djSessionManager.checkForUpdates(
-                    it.mediaPlaylist.tags,
-                    currentPositionSinceEpochMs,
-                )
+                djSessionManager.checkForUpdates(it.mediaPlaylist.tags, currentPositionSinceEpochMs)
             }
         }
     }
@@ -762,10 +772,8 @@ internal class ExoPlayerPlaybackEngine(
         format: Format,
         decoderReuseEvaluation: DecoderReuseEvaluation?,
     ) {
-        videoSurfaceView?.suggestedVideoDimen = AspectRatioAdjustingSurfaceView.SuggestedDimensions(
-            format.width,
-            format.height,
-        )
+        videoSurfaceView?.suggestedVideoDimen =
+            AspectRatioAdjustingSurfaceView.SuggestedDimensions(format.width, format.height)
         trackNewAdaptation(eventTime, format)
     }
 
@@ -778,9 +786,7 @@ internal class ExoPlayerPlaybackEngine(
             val startTimestamp = trueTimeWrapper.currentTimeMillis
             if (readCurrentPlaybackStatistics is PlaybackStatistics.Success.Prepared) {
                 currentPlaybackStatistics = readCurrentPlaybackStatistics.toStarted(startTimestamp)
-                currentPlaybackSession!!.apply {
-                    this.startTimestamp = startTimestamp
-                }
+                currentPlaybackSession!!.apply { this.startTimestamp = startTimestamp }
             }
         }
     }
@@ -794,11 +800,13 @@ internal class ExoPlayerPlaybackEngine(
         if (eventTime.correspondingForwardingMediaProductIfMatching !== forwardingMediaProduct) {
             return
         }
-        val positionInSeconds = if (forwardingMediaProduct?.productType == ProductType.BROADCAST) {
-            extendedExoPlayer.currentPositionSinceEpochMs
-        } else {
-            eventTime.currentPlaybackPositionMs
-        }.toDouble() / MS_IN_SECOND
+        val positionInSeconds =
+            if (forwardingMediaProduct?.productType == ProductType.BROADCAST) {
+                    extendedExoPlayer.currentPositionSinceEpochMs
+                } else {
+                    eventTime.currentPlaybackPositionMs
+                }
+                .toDouble() / MS_IN_SECOND
         startStall(Stall.Reason.UNEXPECTED, positionInSeconds, trueTimeWrapper.currentTimeMillis)
     }
 
@@ -822,37 +830,31 @@ internal class ExoPlayerPlaybackEngine(
         }
 
         val eventError = errorHandler.getErrorEvent(error, forwardingMediaProduct?.productType)
-        coroutineScope.launch {
-            eventSink.emit(eventError)
-        }
+        coroutineScope.launch { eventSink.emit(eventError) }
         playbackInfoFetchException.report(errorMessage, eventError.errorCode)
         val matchingMediaProduct = eventTime.correspondingForwardingMediaProductIfMatching
-        if (matchingMediaProduct === forwardingMediaProduct ||
-            matchingMediaProduct === nextForwardingMediaProduct
+        if (
+            matchingMediaProduct === forwardingMediaProduct ||
+                matchingMediaProduct === nextForwardingMediaProduct
         ) {
             if (playbackInfoFetchException != null) {
                 reset()
             } else if (matchingMediaProduct === forwardingMediaProduct) {
                 val positionInSeconds =
                     if (forwardingMediaProduct?.productType == ProductType.BROADCAST) {
-                        extendedExoPlayer.currentPositionSinceEpochMs
-                    } else {
-                        extendedExoPlayer.currentPositionMs
-                    }.toDouble() / MS_IN_SECOND
-                reportEnd(
-                    EndReason.ERROR,
-                    errorMessage,
-                    eventError.errorCode,
-                    positionInSeconds,
-                )
+                            extendedExoPlayer.currentPositionSinceEpochMs
+                        } else {
+                            extendedExoPlayer.currentPositionMs
+                        }
+                        .toDouble() / MS_IN_SECOND
+                reportEnd(EndReason.ERROR, errorMessage, eventError.errorCode, positionInSeconds)
             }
         }
     }
 
     override fun onVideoSizeChanged(eventTime: EventTime, videoSize: VideoSize) {
-        videoSurfaceView?.suggestedVideoDimen = videoSize.run {
-            AspectRatioAdjustingSurfaceView.SuggestedDimensions(width, height)
-        }
+        videoSurfaceView?.suggestedVideoDimen =
+            videoSize.run { AspectRatioAdjustingSurfaceView.SuggestedDimensions(width, height) }
     }
 
     private fun PlaybackContext.copy(duration: Float): PlaybackContext {
@@ -870,8 +872,8 @@ internal class ExoPlayerPlaybackEngine(
     }
 
     private fun SurfaceView.refreshKeepScreenOnBasedOnPlaybackState(): Boolean = post {
-        keepScreenOn = playbackState == PlaybackState.PLAYING ||
-            playbackState == PlaybackState.STALLED
+        keepScreenOn =
+            playbackState == PlaybackState.PLAYING || playbackState == PlaybackState.STALLED
     }
 
     @Suppress("LongMethod", "ReturnCount")
@@ -879,25 +881,27 @@ internal class ExoPlayerPlaybackEngine(
         val updatedPlaybackStatisticsF = { playbackStatistics: PlaybackStatistics ->
             val positionInSeconds =
                 if (forwardingMediaProduct?.productType == ProductType.BROADCAST) {
-                    extendedExoPlayer.currentPositionSinceEpochMs
-                } else {
-                    eventTime.eventPlaybackPositionMs
-                }.toDouble() / MS_IN_SECOND
-            playbackStatistics + Adaptation(
-                positionInSeconds,
-                trueTimeWrapper.currentTimeMillis,
-                format.sampleMimeType ?: "",
-                format.codecs ?: "",
-                format.bitrate,
-                format.width,
-                format.height,
-            )
+                        extendedExoPlayer.currentPositionSinceEpochMs
+                    } else {
+                        eventTime.eventPlaybackPositionMs
+                    }
+                    .toDouble() / MS_IN_SECOND
+            playbackStatistics +
+                Adaptation(
+                    positionInSeconds,
+                    trueTimeWrapper.currentTimeMillis,
+                    format.sampleMimeType ?: "",
+                    format.codecs ?: "",
+                    format.bitrate,
+                    format.width,
+                    format.height,
+                )
         }
         when (eventTime.windowIndex) {
             0 -> {
                 if (
                     eventTime.correspondingForwardingMediaProductIfMatching !==
-                    forwardingMediaProduct
+                        forwardingMediaProduct
                 ) {
                     return
                 }
@@ -945,12 +949,13 @@ internal class ExoPlayerPlaybackEngine(
                 }
                 if (
                     eventTime.correspondingForwardingMediaProductIfMatching !==
-                    nextForwardingMediaProduct
+                        nextForwardingMediaProduct
                 ) {
                     return
                 }
-                this.nextPlaybackStatistics = updatedPlaybackStatisticsF(nextPlaybackStatistics)
-                    as PlaybackStatistics.Undetermined
+                this.nextPlaybackStatistics =
+                    updatedPlaybackStatisticsF(nextPlaybackStatistics)
+                        as PlaybackStatistics.Undetermined
             }
 
             else -> error("Unexpected window index ${eventTime.windowIndex}")
@@ -967,13 +972,14 @@ internal class ExoPlayerPlaybackEngine(
 
     private fun StartedStall.complete() {
         (currentPlaybackStatistics as? PlaybackStatistics.Success.Started)?.let {
-            currentPlaybackStatistics = it +
-                Stall(
-                    reason,
-                    assetPositionSeconds,
-                    startTimestamp,
-                    trueTimeWrapper.currentTimeMillis,
-                )
+            currentPlaybackStatistics =
+                it +
+                    Stall(
+                        reason,
+                        assetPositionSeconds,
+                        startTimestamp,
+                        trueTimeWrapper.currentTimeMillis,
+                    )
         }
     }
 
@@ -1078,21 +1084,23 @@ internal class ExoPlayerPlaybackEngine(
 
                     else -> error("Illegal delegate type ${this::class.simpleName}")
                 },
-                extras
+                extras,
             )
         }
     }
 
-    private fun PlaybackStatistics.getStarted() = when (this) {
-        is PlaybackStatistics.Success.Started -> this
-        else -> null
-    }
+    private fun PlaybackStatistics.getStarted() =
+        when (this) {
+            is PlaybackStatistics.Success.Started -> this
+            else -> null
+        }
 
-    private fun PlaybackStatistics.getPrepared() = when (this) {
-        is PlaybackStatistics.Success.Started -> this.prepared
-        is PlaybackStatistics.Success.Prepared -> this
-        else -> null
-    }
+    private fun PlaybackStatistics.getPrepared() =
+        when (this) {
+            is PlaybackStatistics.Success.Started -> this.prepared
+            is PlaybackStatistics.Success.Prepared -> this
+            else -> null
+        }
 
     @Suppress("LongMethod")
     private fun reportCurrentPlaybackSession(endTimestamp: Long, endPositionSeconds: Double) {
@@ -1101,66 +1109,70 @@ internal class ExoPlayerPlaybackEngine(
         with(readPlaybackSession) {
             eventReporter.report(
                 when (this) {
-                    is PlaybackSession.Audio -> AudioPlaybackSession.Payload(
-                        playbackSessionId,
-                        startTimestamp,
-                        startAssetPosition,
-                        requestedProductId,
-                        actualProductId,
-                        actualAssetPresentation,
-                        actualAudioMode,
-                        actualQuality,
-                        sourceType,
-                        sourceId,
-                        actions,
-                        endTimestamp,
-                        endPositionSeconds,
-                    )
+                    is PlaybackSession.Audio ->
+                        AudioPlaybackSession.Payload(
+                            playbackSessionId,
+                            startTimestamp,
+                            startAssetPosition,
+                            requestedProductId,
+                            actualProductId,
+                            actualAssetPresentation,
+                            actualAudioMode,
+                            actualQuality,
+                            sourceType,
+                            sourceId,
+                            actions,
+                            endTimestamp,
+                            endPositionSeconds,
+                        )
 
-                    is PlaybackSession.Video -> VideoPlaybackSession.Payload(
-                        playbackSessionId,
-                        startTimestamp,
-                        startAssetPosition,
-                        requestedProductId,
-                        actualProductId,
-                        actualAssetPresentation,
-                        actualQuality,
-                        sourceType,
-                        sourceId,
-                        actions,
-                        endTimestamp,
-                        endPositionSeconds,
-                    )
+                    is PlaybackSession.Video ->
+                        VideoPlaybackSession.Payload(
+                            playbackSessionId,
+                            startTimestamp,
+                            startAssetPosition,
+                            requestedProductId,
+                            actualProductId,
+                            actualAssetPresentation,
+                            actualQuality,
+                            sourceType,
+                            sourceId,
+                            actions,
+                            endTimestamp,
+                            endPositionSeconds,
+                        )
 
-                    is PlaybackSession.Broadcast -> BroadcastPlaybackSession.Payload(
-                        playbackSessionId,
-                        startTimestamp,
-                        startAssetPosition,
-                        requestedProductId,
-                        actualProductId,
-                        actualQuality,
-                        sourceType,
-                        sourceId,
-                        actions,
-                        endTimestamp,
-                        endPositionSeconds,
-                    )
+                    is PlaybackSession.Broadcast ->
+                        BroadcastPlaybackSession.Payload(
+                            playbackSessionId,
+                            startTimestamp,
+                            startAssetPosition,
+                            requestedProductId,
+                            actualProductId,
+                            actualQuality,
+                            sourceType,
+                            sourceId,
+                            actions,
+                            endTimestamp,
+                            endPositionSeconds,
+                        )
 
-                    is PlaybackSession.UC -> UCPlaybackSession.Payload(
-                        playbackSessionId,
-                        startTimestamp,
-                        startAssetPosition,
-                        requestedProductId,
-                        actualProductId,
-                        actualQuality,
-                        sourceType,
-                        sourceId,
-                        actions,
-                        endTimestamp,
-                        endPositionSeconds,
-                    )
+                    is PlaybackSession.UC ->
+                        UCPlaybackSession.Payload(
+                            playbackSessionId,
+                            startTimestamp,
+                            startAssetPosition,
+                            requestedProductId,
+                            actualProductId,
+                            actualQuality,
+                            sourceType,
+                            sourceId,
+                            actions,
+                            endTimestamp,
+                            endPositionSeconds,
+                        )
                 },
-                extras
+                extras,
             )
         }
     }
@@ -1181,27 +1193,29 @@ internal class ExoPlayerPlaybackEngine(
             return
         }
         val createUndeterminedPlaybackStatistics:
-            StreamingSession.() -> PlaybackStatistics.Undetermined = {
+            StreamingSession.() -> PlaybackStatistics.Undetermined =
+            {
                 createUndeterminedPlaybackStatistics(
                     PlaybackStatistics.IdealStartTimestampMs.NotYetKnown,
                     extras,
                 )
             }
-        val playbackStatisticsForReporting = when (requestedMediaProduct) {
-            forwardingMediaProduct ->
-                currentPlaybackStatistics ?: extendedExoPlayer.currentStreamingSession!!
-                    .createUndeterminedPlaybackStatistics().also {
-                        currentPlaybackStatistics = it
-                    }
+        val playbackStatisticsForReporting =
+            when (requestedMediaProduct) {
+                forwardingMediaProduct ->
+                    currentPlaybackStatistics
+                        ?: extendedExoPlayer.currentStreamingSession!!
+                            .createUndeterminedPlaybackStatistics()
+                            .also { currentPlaybackStatistics = it }
 
-            nextForwardingMediaProduct ->
-                nextPlaybackStatistics ?: extendedExoPlayer.nextStreamingSession!!
-                    .createUndeterminedPlaybackStatistics().also {
-                        nextPlaybackStatistics = it
-                    }
+                nextForwardingMediaProduct ->
+                    nextPlaybackStatistics
+                        ?: extendedExoPlayer.nextStreamingSession!!
+                            .createUndeterminedPlaybackStatistics()
+                            .also { nextPlaybackStatistics = it }
 
-            else -> return
-        }
+                else -> return
+            }
         eventReporter.report(
             (playbackStatisticsForReporting as PlaybackStatistics.Undetermined).run {
                 NotStartedPlaybackStatistics.Payload(
@@ -1225,24 +1239,29 @@ internal class ExoPlayerPlaybackEngine(
         get() = timeline.getWindow(windowIndex, Timeline.Window()).durationMs
 
     private val EventTime.correspondingForwardingMediaProductIfMatching
-        get() = this.windowIndex.run {
-            if (this >= timeline.windowCount) {
-                return@run null
+        get() =
+            this.windowIndex.run {
+                if (this >= timeline.windowCount) {
+                    return@run null
+                }
+                val targetForwardingMediaProduct =
+                    when (this) {
+                        0 -> forwardingMediaProduct
+                        1 -> nextForwardingMediaProduct
+                        else -> return@run null
+                    }
+                if (
+                    timeline
+                        .getWindow(this, Timeline.Window())
+                        .mediaItem
+                        .mediaId
+                        .contentEquals(targetForwardingMediaProduct.hashCode().toString())
+                ) {
+                    targetForwardingMediaProduct
+                } else {
+                    null
+                }
             }
-            val targetForwardingMediaProduct = when (this) {
-                0 -> forwardingMediaProduct
-                1 -> nextForwardingMediaProduct
-                else -> return@run null
-            }
-            if (timeline.getWindow(this, Timeline.Window()).mediaItem.mediaId.contentEquals(
-                    targetForwardingMediaProduct.hashCode().toString(),
-                )
-            ) {
-                targetForwardingMediaProduct
-            } else {
-                null
-            }
-        }
 
     @get:RestrictTo(RestrictTo.Scope.TESTS)
     @set:RestrictTo(RestrictTo.Scope.TESTS)

@@ -32,38 +32,54 @@ internal class ErrorCodeFactory {
     fun createForAudioSinkInitialization(extra: Extra, errorCode: Int?) =
         "${Type.AudioSinkInitialization.value}:${extra.value}:$errorCode"
 
-    /**
-     * Describes what type of error we are dealing with.
-     */
+    /** Describes what type of error we are dealing with. */
     @Suppress("MagicNumber")
     private sealed class Type(val value: Int) {
         object Other : Type(-1)
+
         object ApiError : Type(0)
+
         object Timeout : Type(1)
+
         object Network : Type(2)
+
         object InvalidResponseCode : Type(3)
+
         object HttpDataSource : Type(4)
+
         object DrmSession : Type(5)
+
         object UnexpectedLoader : Type(6)
+
         object BehindLiveWindow : Type(7)
+
         object AudioSinkInitialization : Type(8)
     }
 
     /**
-     * Describes the where or some extra details of the error,
-     * so that we can easily identify exactly what has happened.
+     * Describes the where or some extra details of the error, so that we can easily identify
+     * exactly what has happened.
      */
     @Suppress("MagicNumber")
     sealed class Extra(val value: Int) {
         object Other : Extra(-1)
+
         object PlaybackInfoFetch : Extra(0)
+
         object DrmLicenseFetch : Extra(1)
+
         object PlayerSourceError : Extra(2)
+
         object PlayerRendererError : Extra(3)
+
         object PlayerUnexpectedError : Extra(4)
+
         object PlayerOtherError : Extra(5)
+
         object Broadcast : Extra(6)
+
         object Storage : Extra(7)
+
         object OfflineExpired : Extra(8)
     }
 }

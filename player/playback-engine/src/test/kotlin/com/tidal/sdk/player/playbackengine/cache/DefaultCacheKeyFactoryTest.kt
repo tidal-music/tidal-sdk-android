@@ -20,9 +20,7 @@ internal class DefaultCacheKeyFactoryTest {
     fun buildCacheKeyFromDataSpecKey() {
         val key = "123abc"
         val path = "/path/to/uri"
-        val uri = mock<Uri> {
-            on { this.path } doReturn path
-        }
+        val uri = mock<Uri> { on { this.path } doReturn path }
         val dataSpec = spy(DataSpec.Builder().setKey(key).setUri(uri).build())
 
         val actual = cacheKeyFactory.buildCacheKey(dataSpec)
@@ -36,9 +34,7 @@ internal class DefaultCacheKeyFactoryTest {
     @Test
     fun buildCacheKeyFromUriPath() {
         val path = "/path/to/uri"
-        val uri = mock<Uri> {
-            on { this.path } doReturn path
-        }
+        val uri = mock<Uri> { on { this.path } doReturn path }
         val dataSpec = spy(DataSpec.Builder().setUri(uri).build())
 
         val actual = cacheKeyFactory.buildCacheKey(dataSpec)
@@ -51,9 +47,7 @@ internal class DefaultCacheKeyFactoryTest {
 
     @Test
     fun buildCacheKeyFromUriPathWithNullPath() {
-        val uri = mock<Uri> {
-            on { this.path } doReturn null
-        }
+        val uri = mock<Uri> { on { this.path } doReturn null }
         val dataSpec = spy(DataSpec.Builder().setUri(uri).build())
 
         val actual = cacheKeyFactory.buildCacheKey(dataSpec)

@@ -8,9 +8,7 @@ plugins {
 android {
     namespace = "com.tidal.sdk.eventproducer"
 
-    buildFeatures {
-        buildConfig = true
-    }
+    buildFeatures { buildConfig = true }
 }
 
 dependencies {

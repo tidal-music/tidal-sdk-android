@@ -20,14 +20,10 @@ private const val MIME_TYPE = MimeTypes.APPLICATION_M3U8
 internal class PlayerAuthHlsMediaSourceFactoryTest {
 
     private val hlsMediaSourceFactory = mock<HlsMediaSource.Factory>()
-    private val playerAuthHlsMediaSourceFactory = PlayerAuthHlsMediaSourceFactory(
-        hlsMediaSourceFactory,
-    )
+    private val playerAuthHlsMediaSourceFactory =
+        PlayerAuthHlsMediaSourceFactory(hlsMediaSourceFactory)
 
-    @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(
-        hlsMediaSourceFactory,
-    )
+    @AfterEach fun afterEach() = verifyNoMoreInteractions(hlsMediaSourceFactory)
 
     @Test
     fun create() {
@@ -44,11 +40,8 @@ internal class PlayerAuthHlsMediaSourceFactoryTest {
         whenever(hlsMediaSourceFactory.createMediaSource(builtMediaItem))
             .thenReturn(expectedHlsMediaSource)
 
-        val actualHlsMediaSource = playerAuthHlsMediaSourceFactory.create(
-            mediaItem,
-            url,
-            drmSessionManagerProvider,
-        )
+        val actualHlsMediaSource =
+            playerAuthHlsMediaSourceFactory.create(mediaItem, url, drmSessionManagerProvider)
 
         assertThat(actualHlsMediaSource).isSameAs(expectedHlsMediaSource)
         verify(mediaItem).buildUpon()

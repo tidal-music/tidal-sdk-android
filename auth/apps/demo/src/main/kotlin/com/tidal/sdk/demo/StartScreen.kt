@@ -21,9 +21,7 @@ fun StartScreen(navController: NavController) {
     val isLoggedIn = remember { mutableStateOf(activity.credentialsProvider.isUserLoggedIn()) }
 
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.Black),
+        modifier = Modifier.fillMaxSize().background(Color.Black),
         contentAlignment = Alignment.Center,
     ) {
         if (isLoggedIn.value) {
@@ -34,7 +32,7 @@ fun StartScreen(navController: NavController) {
         } else {
             NotLoggedInUI(
                 { navController.navigate("login") },
-                { navController.navigate("deviceLogin") }
+                { navController.navigate("deviceLogin") },
             )
         }
     }
@@ -43,34 +41,16 @@ fun StartScreen(navController: NavController) {
 @Composable
 private fun LoggedInUI(onClick: () -> Unit) {
     Column {
-        Text(
-            text = "You are logged in",
-            color = Color.White,
-        )
-        Button(
-            onClick = onClick,
-        ) {
-            Text(text = "Log out")
-        }
+        Text(text = "You are logged in", color = Color.White)
+        Button(onClick = onClick) { Text(text = "Log out") }
     }
 }
 
 @Composable
 private fun NotLoggedInUI(onLoginClicked: () -> Unit, onDeviceLoginClicked: () -> Unit) {
     Column {
-        Text(
-            text = "You are not logged in",
-            color = Color.White,
-        )
-        Button(
-            onClick = onLoginClicked,
-        ) {
-            Text(text = "Open Login Screen")
-        }
-        Button(
-            onClick = onDeviceLoginClicked,
-        ) {
-            Text(text = "Device Login")
-        }
+        Text(text = "You are not logged in", color = Color.White)
+        Button(onClick = onLoginClicked) { Text(text = "Open Login Screen") }
+        Button(onClick = onDeviceLoginClicked) { Text(text = "Device Login") }
     }
 }

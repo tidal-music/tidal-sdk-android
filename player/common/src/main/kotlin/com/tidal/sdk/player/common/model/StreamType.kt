@@ -7,8 +7,8 @@ import com.tidal.sdk.player.common.model.StreamType.ON_DEMAND
 /**
  * Stream type of a given video.
  *
- * [ON_DEMAND] Indicating the video is an on-demand stream.
- * [LIVE] Indicating the video is a live stream.
+ * [ON_DEMAND] Indicating the video is an on-demand stream. [LIVE] Indicating the video is a live
+ * stream.
  */
 @Keep
 enum class StreamType {

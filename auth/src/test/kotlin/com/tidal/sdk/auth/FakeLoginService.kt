@@ -15,19 +15,10 @@ internal class FakeLoginService(
     private val shouldThrowUnknownHostException: Boolean = false,
 ) : LoginService {
 
-    val fakeLoginResponse = LoginResponse(
-        "credentials",
-        "clientName",
-        0,
-        "refreshToken",
-        "tokenType",
-        "",
-        userId = 999,
-    )
+    val fakeLoginResponse =
+        LoginResponse("credentials", "clientName", 0, "refreshToken", "tokenType", "", userId = 999)
 
-    /**
-     * Set the login behaviour before testing the device login flow
-     */
+    /** Set the login behaviour before testing the device login flow */
     lateinit var deviceLoginBehaviour: DeviceLoginBehaviour
 
     private var deviceLoginPendingHelper: DeviceLoginPendingHelper? = null
@@ -53,12 +44,8 @@ internal class FakeLoginService(
         scope: String,
     ): DeviceAuthorizationResponse {
         calls.add(CallType.GET_DEVICE_AUTHORIZATION)
-        errorResponse?.let {
-            throw buildTestHttpException(it)
-        }
-        return makeDeviceAuthorizationResponse().also {
-            deviceAuthorizationResponse = it
-        }
+        errorResponse?.let { throw buildTestHttpException(it) }
+        return makeDeviceAuthorizationResponse().also { deviceAuthorizationResponse = it }
     }
 
     override suspend fun getTokenFromDeviceCode(
@@ -89,10 +76,11 @@ internal class FakeLoginService(
     }
 
     private fun makeDeviceAuthorizationResponse(): DeviceAuthorizationResponse {
-        deviceLoginPendingHelper = DeviceLoginPendingHelper(
-            deviceLoginBehaviour.timeProvider,
-            deviceLoginBehaviour.loginPendingSeconds,
-        )
+        deviceLoginPendingHelper =
+            DeviceLoginPendingHelper(
+                deviceLoginBehaviour.timeProvider,
+                deviceLoginBehaviour.loginPendingSeconds,
+            )
         return DeviceAuthorizationResponse(
             "deviceCode",
             "userCode",
@@ -107,11 +95,10 @@ internal class FakeLoginService(
         if (shouldThrowUnknownHostException) {
             throw UnknownHostException()
         }
-        errorResponse?.let {
-            throw buildTestHttpException(errorResponse)
-        } ?: run {
-            return fakeLoginResponse
-        }
+        errorResponse?.let { throw buildTestHttpException(errorResponse) }
+            ?: run {
+                return fakeLoginResponse
+            }
     }
 
     enum class CallType {
@@ -134,19 +121,19 @@ internal class FakeLoginService(
 }
 
 /**
- * Use this class to define [FakeLoginService]'s behaviour when using the
- * device login flow. Note that you need to supply a [CoroutineTestTimeProvider]
- * and start it before making calls.
+ * Use this class to define [FakeLoginService]'s behaviour when using the device login flow. Note
+ * that you need to supply a [CoroutineTestTimeProvider] and start it before making calls.
  */
 internal data class DeviceLoginBehaviour(
     val authorizationResponseExpirationSeconds: Int,
     val loginPendingSeconds: Int,
-    val errorResponseWhilePending: ErrorResponse = ErrorResponse(
-        400,
-        "authorization_pending",
-        ApiErrorSubStatus.AuthorizationPending.value.toInt(),
-        "",
-    ),
+    val errorResponseWhilePending: ErrorResponse =
+        ErrorResponse(
+            400,
+            "authorization_pending",
+            ApiErrorSubStatus.AuthorizationPending.value.toInt(),
+            "",
+        ),
     val errorResponseToFinishWith: ErrorResponse? = null,
     val timeProvider: CoroutineTestTimeProvider,
 )

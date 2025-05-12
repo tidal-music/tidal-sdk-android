@@ -13,14 +13,8 @@ internal class StreamingSessionEndMarshallingTest {
     private val user = User(-3L, 0, "sessionId")
     private val client = Client("token", Client.DeviceType.TV, "version")
     private val payload = StreamingSessionEnd.Payload("streamingSessionId", 0L)
-    private val streamingSessionEnd = StreamingSessionEnd(
-        ts,
-        UUID.fromString(uuidString),
-        user,
-        client,
-        payload,
-        emptyMap(),
-    )
+    private val streamingSessionEnd =
+        StreamingSessionEnd(ts, UUID.fromString(uuidString), user, client, payload, emptyMap())
     private val gson = Gson()
 
     @Test

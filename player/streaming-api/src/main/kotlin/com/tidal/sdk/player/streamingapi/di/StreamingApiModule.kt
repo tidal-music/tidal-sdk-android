@@ -21,7 +21,8 @@ internal object StreamingApiModule {
     @Reusable
     @StreamingApiComponent.Local
     fun provideGson(gson: Gson): Gson {
-        return gson.newBuilder()
+        return gson
+            .newBuilder()
             .registerTypeAdapter(
                 ManifestMimeType::class.java,
                 ManifestMimeType.Converter.Deserializer(),
@@ -37,8 +38,7 @@ internal object StreamingApiModule {
 
     @Provides
     @Reusable
-    fun provideApiErrorMapper(apiErrorFactory: ApiError.Factory) =
-        ApiErrorMapper(apiErrorFactory)
+    fun provideApiErrorMapper(apiErrorFactory: ApiError.Factory) = ApiErrorMapper(apiErrorFactory)
 
     @Provides
     @Reusable

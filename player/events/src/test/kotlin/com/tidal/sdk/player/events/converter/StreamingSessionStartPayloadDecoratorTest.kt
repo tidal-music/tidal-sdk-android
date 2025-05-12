@@ -27,23 +27,25 @@ internal class StreamingSessionStartPayloadDecoratorTest {
     private val resources = mock<Resources>()
     private val activeNetworkType = mock<ActiveNetworkType>()
     private val activeMobileNetworkType = mock<ActiveMobileNetworkType>()
-    private val streamingSessionStartPayloadDecorator = StreamingSessionStartPayloadDecorator(
-        streamingSessionStartDecoratedPayloadFactory,
-        hardwarePlatform,
-        operatingSystemVersion,
-        resources,
-        activeNetworkType,
-        activeMobileNetworkType,
-    )
+    private val streamingSessionStartPayloadDecorator =
+        StreamingSessionStartPayloadDecorator(
+            streamingSessionStartDecoratedPayloadFactory,
+            hardwarePlatform,
+            operatingSystemVersion,
+            resources,
+            activeNetworkType,
+            activeMobileNetworkType,
+        )
 
     @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(
-        streamingSessionStartDecoratedPayloadFactory,
-        hardwarePlatform,
-        resources,
-        activeNetworkType,
-        activeMobileNetworkType,
-    )
+    fun afterEach() =
+        verifyNoMoreInteractions(
+            streamingSessionStartDecoratedPayloadFactory,
+            hardwarePlatform,
+            resources,
+            activeNetworkType,
+            activeMobileNetworkType,
+        )
 
     @Test
     @Suppress("LongMethod")
@@ -61,10 +63,11 @@ internal class StreamingSessionStartPayloadDecoratorTest {
         whenever(hardwarePlatform.value) doReturn hardwarePlatformValue
         val widthPixels = Int.MAX_VALUE
         val heightPixels = Int.MIN_VALUE
-        val displayMetrics = mock<DisplayMetrics>().apply {
-            this.widthPixels = widthPixels
-            this.heightPixels = heightPixels
-        }
+        val displayMetrics =
+            mock<DisplayMetrics>().apply {
+                this.widthPixels = widthPixels
+                this.heightPixels = heightPixels
+            }
         whenever(resources.displayMetrics) doReturn displayMetrics
         val activeNetworkTypeValue = StreamingSessionStart.NetworkType.WIFI
         whenever(activeNetworkType.value) doReturn activeNetworkTypeValue
@@ -78,23 +81,24 @@ internal class StreamingSessionStartPayloadDecoratorTest {
         whenever(payload.sessionProductId) doReturn sessionProductId
         val expected = mock<StreamingSessionStart.DecoratedPayload>()
         whenever(
-            streamingSessionStartDecoratedPayloadFactory.create(
-                streamingSessionId,
-                timestamp,
-                isOfflineStart,
-                startReason,
-                hardwarePlatformValue,
-                "Android",
-                operatingSystemVersion,
-                widthPixels,
-                heightPixels,
-                activeNetworkTypeValue,
-                activeMobileNetworkTypeValue,
-                sessionType,
-                sessionProductType,
-                sessionProductId,
-            ),
-        ).thenReturn(expected)
+                streamingSessionStartDecoratedPayloadFactory.create(
+                    streamingSessionId,
+                    timestamp,
+                    isOfflineStart,
+                    startReason,
+                    hardwarePlatformValue,
+                    "Android",
+                    operatingSystemVersion,
+                    widthPixels,
+                    heightPixels,
+                    activeNetworkTypeValue,
+                    activeMobileNetworkTypeValue,
+                    sessionType,
+                    sessionProductType,
+                    sessionProductId,
+                )
+            )
+            .thenReturn(expected)
 
         val actual = streamingSessionStartPayloadDecorator.decorate(payload)
 
@@ -109,22 +113,23 @@ internal class StreamingSessionStartPayloadDecoratorTest {
         verify(payload).sessionType
         verify(payload).sessionProductType
         verify(payload).sessionProductId
-        verify(streamingSessionStartDecoratedPayloadFactory).create(
-            streamingSessionId,
-            timestamp,
-            isOfflineStart,
-            startReason,
-            hardwarePlatformValue,
-            "Android",
-            operatingSystemVersion,
-            widthPixels,
-            heightPixels,
-            activeNetworkTypeValue,
-            activeMobileNetworkTypeValue,
-            sessionType,
-            sessionProductType,
-            sessionProductId,
-        )
+        verify(streamingSessionStartDecoratedPayloadFactory)
+            .create(
+                streamingSessionId,
+                timestamp,
+                isOfflineStart,
+                startReason,
+                hardwarePlatformValue,
+                "Android",
+                operatingSystemVersion,
+                widthPixels,
+                heightPixels,
+                activeNetworkTypeValue,
+                activeMobileNetworkTypeValue,
+                sessionType,
+                sessionProductType,
+                sessionProductId,
+            )
         assertThat(actual).isSameAs(expected)
         verifyNoMoreInteractions(displayMetrics, payload, expected)
     }

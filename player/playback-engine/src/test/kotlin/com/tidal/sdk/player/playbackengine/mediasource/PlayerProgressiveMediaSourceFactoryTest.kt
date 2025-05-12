@@ -25,18 +25,20 @@ internal class PlayerProgressiveMediaSourceFactoryTest {
     private val progressiveMediaSourceFactoryFactory = mock<ProgressiveMediaSourceFactoryFactory>()
     private val cacheDataSourceFactory = mock<CacheDataSource.Factory>()
     private val btsManifestFactory = mock<BtsManifestFactory>()
-    private val playerProgressiveMediaSourceFactory = PlayerProgressiveMediaSourceFactory(
-        progressiveMediaSourceFactoryFactory,
-        cacheDataSourceFactory,
-        btsManifestFactory,
-    )
+    private val playerProgressiveMediaSourceFactory =
+        PlayerProgressiveMediaSourceFactory(
+            progressiveMediaSourceFactoryFactory,
+            cacheDataSourceFactory,
+            btsManifestFactory,
+        )
 
     @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(
-        progressiveMediaSourceFactoryFactory,
-        cacheDataSourceFactory,
-        btsManifestFactory,
-    )
+    fun afterEach() =
+        verifyNoMoreInteractions(
+            progressiveMediaSourceFactoryFactory,
+            cacheDataSourceFactory,
+            btsManifestFactory,
+        )
 
     @ParameterizedTest
     @MethodSource("btsManifests")
@@ -44,9 +46,10 @@ internal class PlayerProgressiveMediaSourceFactoryTest {
         val mediaItem = mock<MediaItem>()
         val builtMediaItem = mock<MediaItem>()
         val expectedProgressiveMediaSource = mock<ProgressiveMediaSource>()
-        val progressiveMediaSourceFactory = mock<ProgressiveMediaSource.Factory> {
-            on { createMediaSource(builtMediaItem) } doReturn expectedProgressiveMediaSource
-        }
+        val progressiveMediaSourceFactory =
+            mock<ProgressiveMediaSource.Factory> {
+                on { createMediaSource(builtMediaItem) } doReturn expectedProgressiveMediaSource
+            }
         whenever(btsManifestFactory.create(ENCODED_MANIFEST)).thenReturn(btsManifest)
         val mediaItemBuilder = mock<MediaItem.Builder>(defaultAnswer = Answers.RETURNS_SELF)
         whenever(mediaItem.buildUpon()) doReturn mediaItemBuilder
@@ -77,16 +80,17 @@ internal class PlayerProgressiveMediaSourceFactoryTest {
 
         @JvmStatic
         @Suppress("UnusedPrivateMember")
-        private fun btsManifests() = setOf(
-            Arguments.of(BtsManifest("", listOf())),
-            Arguments.of(BtsManifest("", listOf("url"))),
-            Arguments.of(BtsManifest("", listOf("url", "url2"))),
-            Arguments.of(BtsManifest("codecs", listOf())),
-            Arguments.of(BtsManifest("codecs", listOf("url"))),
-            Arguments.of(BtsManifest("codecs", listOf("url", "url2"))),
-            Arguments.of(BtsManifest("codecs,codecs", listOf())),
-            Arguments.of(BtsManifest("codecs,codecs", listOf("url"))),
-            Arguments.of(BtsManifest("codecs,codecs", listOf("url", "url2"))),
-        )
+        private fun btsManifests() =
+            setOf(
+                Arguments.of(BtsManifest("", listOf())),
+                Arguments.of(BtsManifest("", listOf("url"))),
+                Arguments.of(BtsManifest("", listOf("url", "url2"))),
+                Arguments.of(BtsManifest("codecs", listOf())),
+                Arguments.of(BtsManifest("codecs", listOf("url"))),
+                Arguments.of(BtsManifest("codecs", listOf("url", "url2"))),
+                Arguments.of(BtsManifest("codecs,codecs", listOf())),
+                Arguments.of(BtsManifest("codecs,codecs", listOf("url"))),
+                Arguments.of(BtsManifest("codecs,codecs", listOf("url", "url2"))),
+            )
     }
 }

@@ -16,13 +16,12 @@ internal class VideoDownloadStatisticsPayloadMarshallingTest :
     override val productType = ProductType.VIDEO
     override val payloadFactory =
         {
-                assetPresentation: AssetPresentation,
-                audioMode: AudioMode,
-                productQuality: ProductQuality,
-                endReason: EndReason,
-                errorMessage: String?,
-                errorCode: String?,
-            ->
+            assetPresentation: AssetPresentation,
+            audioMode: AudioMode,
+            productQuality: ProductQuality,
+            endReason: EndReason,
+            errorMessage: String?,
+            errorCode: String? ->
             VideoDownloadStatistics.Payload(
                 streamingSessionId,
                 startTimestamp,

@@ -24,19 +24,21 @@ class EventReporterModuleRoot(
     coroutineScope: CoroutineScope,
 ) {
 
-    val eventReporter = componentFactoryF()
-        .create(
-            context,
-            connectivityManager,
-            userSupplier,
-            clientSupplier,
-            okHttpClient,
-            gson,
-            uuidWrapper,
-            trueTimeWrapper,
-            eventSender,
-            coroutineScope,
-        ).eventReporter
+    val eventReporter =
+        componentFactoryF()
+            .create(
+                context,
+                connectivityManager,
+                userSupplier,
+                clientSupplier,
+                okHttpClient,
+                gson,
+                uuidWrapper,
+                trueTimeWrapper,
+                eventSender,
+                coroutineScope,
+            )
+            .eventReporter
 
     companion object {
 

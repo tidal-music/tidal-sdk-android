@@ -23,15 +23,12 @@ import org.junit.jupiter.api.extension.ExtendWith
  */
 internal class DefaultAuthenticatorTest {
 
-    @get:ExtendWith
-    val server = MockWebServer()
+    @get:ExtendWith val server = MockWebServer()
 
     private var accessToken = ""
 
-    private val request = Request.Builder()
-        .url(server.url("/"))
-        .header("Authorization", "Bearer accessToken")
-        .build()
+    private val request =
+        Request.Builder().url(server.url("/")).header("Authorization", "Bearer accessToken").build()
 
     @BeforeEach
     fun setUp() {
@@ -40,70 +37,67 @@ internal class DefaultAuthenticatorTest {
 
     @Test
     fun `Should not retry request`() {
-        val credentialsProvider = object : CredentialsProvider {
-            override val bus: Flow<TidalMessage>
-                get() = throw IllegalAccessException("Not supported")
+        val credentialsProvider =
+            object : CredentialsProvider {
+                override val bus: Flow<TidalMessage>
+                    get() = throw IllegalAccessException("Not supported")
 
-            override suspend fun getCredentials(apiErrorSubStatus: String?) =
-                AuthResult.Success<Credentials>(null)
+                override suspend fun getCredentials(apiErrorSubStatus: String?) =
+                    AuthResult.Success<Credentials>(null)
 
-            override fun isUserLoggedIn() = throw IllegalAccessException("Not supported")
-        }
+                override fun isUserLoggedIn() = throw IllegalAccessException("Not supported")
+            }
 
-        val defaultAuthenticator = DefaultAuthenticator(
-            Gson(),
-            credentialsProvider,
-            RequestAuthorizationDelegate(emptyMap()),
-        )
-        val okHttpClient = OkHttpClient.Builder()
-            .authenticator(defaultAuthenticator)
-            .build()
+        val defaultAuthenticator =
+            DefaultAuthenticator(
+                Gson(),
+                credentialsProvider,
+                RequestAuthorizationDelegate(emptyMap()),
+            )
+        val okHttpClient = OkHttpClient.Builder().authenticator(defaultAuthenticator).build()
 
         server.enqueue(MockResponse().setResponseCode(401))
 
-        okHttpClient.newCall(request).execute().use {
-            assertThat(it.code).isEqualTo(401)
-        }
+        okHttpClient.newCall(request).execute().use { assertThat(it.code).isEqualTo(401) }
     }
 
     @Test
     fun `Should retry request`() {
-        val credentialsProvider = object : CredentialsProvider {
-            override val bus: Flow<TidalMessage>
-                get() = throw IllegalAccessException("Not supported")
+        val credentialsProvider =
+            object : CredentialsProvider {
+                override val bus: Flow<TidalMessage>
+                    get() = throw IllegalAccessException("Not supported")
 
-            override suspend fun getCredentials(apiErrorSubStatus: String?) =
-                AuthResult.Success(
-                    Credentials(
-                        clientId = "clientId",
-                        requestedScopes = emptySet(),
-                        clientUniqueKey = null,
-                        grantedScopes = emptySet(),
-                        userId = null,
-                        expires = null,
-                        token = "newAccessToken",
-                    ),
-                )
+                override suspend fun getCredentials(apiErrorSubStatus: String?) =
+                    AuthResult.Success(
+                        Credentials(
+                            clientId = "clientId",
+                            requestedScopes = emptySet(),
+                            clientUniqueKey = null,
+                            grantedScopes = emptySet(),
+                            userId = null,
+                            expires = null,
+                            token = "newAccessToken",
+                        )
+                    )
 
-            override fun isUserLoggedIn() = throw IllegalAccessException("Not supported")
-        }
+                override fun isUserLoggedIn() = throw IllegalAccessException("Not supported")
+            }
 
-        val defaultAuthenticator = DefaultAuthenticator(
-            Gson(),
-            credentialsProvider,
-            RequestAuthorizationDelegate(emptyMap()),
-        )
-        val okHttpClient = OkHttpClient.Builder()
-            .authenticator(defaultAuthenticator)
-            .build()
+        val defaultAuthenticator =
+            DefaultAuthenticator(
+                Gson(),
+                credentialsProvider,
+                RequestAuthorizationDelegate(emptyMap()),
+            )
+        val okHttpClient = OkHttpClient.Builder().authenticator(defaultAuthenticator).build()
 
         server.enqueueResponse("errors/401_6005.json", 401)
         server.enqueue(MockResponse())
 
         okHttpClient.newCall(request).execute().use {
             assertThat(it.code).isEqualTo(200)
-            assertThat(it.request.header("Authorization"))
-                .isEqualTo("Bearer newAccessToken")
+            assertThat(it.request.header("Authorization")).isEqualTo("Bearer newAccessToken")
         }
     }
 }

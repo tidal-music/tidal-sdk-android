@@ -8,11 +8,6 @@ internal class MediaDrmCallbackExceptionFactory {
 
     private val dataSpec = DataSpec.Builder().setUri(Uri.EMPTY).build()
 
-    fun create(throwable: Throwable) = MediaDrmCallbackException(
-        dataSpec,
-        dataSpec.uri,
-        emptyMap(),
-        0,
-        throwable,
-    )
+    fun create(throwable: Throwable) =
+        MediaDrmCallbackException(dataSpec, dataSpec.uri, emptyMap(), 0, throwable)
 }

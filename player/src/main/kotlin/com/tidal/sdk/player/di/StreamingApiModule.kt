@@ -14,24 +14,23 @@ import okhttp3.OkHttpClient
 @Module
 internal object StreamingApiModule {
 
-    @Provides
-    @Reusable
-    fun apiErrorFactory(gson: Gson) = ApiError.Factory(gson)
+    @Provides @Reusable fun apiErrorFactory(gson: Gson) = ApiError.Factory(gson)
 
     @Provides
     @Singleton
     fun streamingApi(
-        @LocalWithCacheAndAuth
-        okHttpClient: OkHttpClient,
+        @LocalWithCacheAndAuth okHttpClient: OkHttpClient,
         streamingApiTimeoutConfig: StreamingApiTimeoutConfig,
         gson: Gson,
         apiErrorFactory: ApiError.Factory,
         offlinePlayProvider: OfflinePlayProvider?,
-    ) = StreamingApiModuleRoot(
-        okHttpClient,
-        streamingApiTimeoutConfig,
-        gson,
-        apiErrorFactory,
-        offlinePlayProvider?.offlinePlaybackInfoProvider,
-    ).streamingApi
+    ) =
+        StreamingApiModuleRoot(
+                okHttpClient,
+                streamingApiTimeoutConfig,
+                gson,
+                apiErrorFactory,
+                offlinePlayProvider?.offlinePlaybackInfoProvider,
+            )
+            .streamingApi
 }

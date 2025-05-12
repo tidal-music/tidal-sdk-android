@@ -13,11 +13,8 @@ import com.tidal.sdk.player.playbackengine.mediasource.streamingsession.Streamin
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
 import java.util.UUID
 
-internal sealed class StreamingSession private constructor(
-    val id: UUID,
-    val configuration: Configuration,
-    val extras: Extras?,
-) {
+internal sealed class StreamingSession
+private constructor(val id: UUID, val configuration: Configuration, val extras: Extras?) {
 
     fun createUndeterminedPlaybackStatistics(
         idealStartTimestampMs: PlaybackStatistics.IdealStartTimestampMs,
@@ -28,72 +25,79 @@ internal sealed class StreamingSession private constructor(
     fun createPlaybackSession(
         playbackInfo: PlaybackInfo,
         requestedMediaProduct: ForwardingMediaProduct<*>,
-    ) = when (playbackInfo) {
-        is PlaybackInfo.Track -> PlaybackSession.Audio(
-            id,
-            playbackInfo.trackId.toString(),
-            requestedMediaProduct.productId,
-            playbackInfo.assetPresentation,
-            playbackInfo.audioMode,
-            playbackInfo.audioQuality,
-            requestedMediaProduct.sourceType,
-            requestedMediaProduct.sourceId,
-            extras,
-        )
+    ) =
+        when (playbackInfo) {
+            is PlaybackInfo.Track ->
+                PlaybackSession.Audio(
+                    id,
+                    playbackInfo.trackId.toString(),
+                    requestedMediaProduct.productId,
+                    playbackInfo.assetPresentation,
+                    playbackInfo.audioMode,
+                    playbackInfo.audioQuality,
+                    requestedMediaProduct.sourceType,
+                    requestedMediaProduct.sourceId,
+                    extras,
+                )
 
-        is PlaybackInfo.Video -> PlaybackSession.Video(
-            id,
-            playbackInfo.videoId.toString(),
-            requestedMediaProduct.productId,
-            playbackInfo.assetPresentation,
-            playbackInfo.videoQuality,
-            requestedMediaProduct.sourceType,
-            requestedMediaProduct.sourceId,
-            extras,
-        )
+            is PlaybackInfo.Video ->
+                PlaybackSession.Video(
+                    id,
+                    playbackInfo.videoId.toString(),
+                    requestedMediaProduct.productId,
+                    playbackInfo.assetPresentation,
+                    playbackInfo.videoQuality,
+                    requestedMediaProduct.sourceType,
+                    requestedMediaProduct.sourceId,
+                    extras,
+                )
 
-        is PlaybackInfo.Broadcast -> PlaybackSession.Broadcast(
-            id,
-            playbackInfo.id,
-            requestedMediaProduct.productId,
-            playbackInfo.audioQuality,
-            requestedMediaProduct.sourceType,
-            requestedMediaProduct.sourceId,
-            extras,
-        )
+            is PlaybackInfo.Broadcast ->
+                PlaybackSession.Broadcast(
+                    id,
+                    playbackInfo.id,
+                    requestedMediaProduct.productId,
+                    playbackInfo.audioQuality,
+                    requestedMediaProduct.sourceType,
+                    requestedMediaProduct.sourceId,
+                    extras,
+                )
 
-        is PlaybackInfo.UC -> PlaybackSession.UC(
-            id,
-            playbackInfo.id,
-            requestedMediaProduct.productId,
-            requestedMediaProduct.sourceType,
-            requestedMediaProduct.sourceId,
-            extras,
-        )
+            is PlaybackInfo.UC ->
+                PlaybackSession.UC(
+                    id,
+                    playbackInfo.id,
+                    requestedMediaProduct.productId,
+                    requestedMediaProduct.sourceType,
+                    requestedMediaProduct.sourceId,
+                    extras,
+                )
 
-        is PlaybackInfo.Offline.Track -> PlaybackSession.Audio(
-            id,
-            playbackInfo.track.trackId.toString(),
-            requestedMediaProduct.productId,
-            playbackInfo.track.assetPresentation,
-            playbackInfo.track.audioMode,
-            playbackInfo.track.audioQuality,
-            requestedMediaProduct.sourceType,
-            requestedMediaProduct.sourceId,
-            extras,
-        )
+            is PlaybackInfo.Offline.Track ->
+                PlaybackSession.Audio(
+                    id,
+                    playbackInfo.track.trackId.toString(),
+                    requestedMediaProduct.productId,
+                    playbackInfo.track.assetPresentation,
+                    playbackInfo.track.audioMode,
+                    playbackInfo.track.audioQuality,
+                    requestedMediaProduct.sourceType,
+                    requestedMediaProduct.sourceId,
+                    extras,
+                )
 
-        is PlaybackInfo.Offline.Video -> PlaybackSession.Video(
-            id,
-            playbackInfo.video.videoId.toString(),
-            requestedMediaProduct.productId,
-            playbackInfo.video.assetPresentation,
-            playbackInfo.video.videoQuality,
-            requestedMediaProduct.sourceType,
-            requestedMediaProduct.sourceId,
-            extras,
-        )
-    }
+            is PlaybackInfo.Offline.Video ->
+                PlaybackSession.Video(
+                    id,
+                    playbackInfo.video.videoId.toString(),
+                    requestedMediaProduct.productId,
+                    playbackInfo.video.assetPresentation,
+                    playbackInfo.video.videoQuality,
+                    requestedMediaProduct.sourceType,
+                    requestedMediaProduct.sourceId,
+                    extras,
+                )
+        }
 
     class Explicit(id: UUID, configuration: Configuration, extras: Extras?) :
         StreamingSession(id, configuration, extras)
@@ -101,7 +105,8 @@ internal sealed class StreamingSession private constructor(
     class Implicit(id: UUID, configuration: Configuration, extras: Extras?) :
         StreamingSession(id, configuration, extras)
 
-    sealed class Creator<T : Factory> private constructor(
+    sealed class Creator<T : Factory>
+    private constructor(
         private val factory: T,
         private val trueTimeWrapper: TrueTimeWrapper,
         private val eventReporter: EventReporter,
@@ -113,19 +118,20 @@ internal sealed class StreamingSession private constructor(
             sessionProductType: ProductType,
             sessionProductId: String,
             extras: Extras?,
-        ) = factory.create(extras).also {
-            eventReporter.report(
-                StreamingSessionStart.Payload(
-                    it.id.toString(),
-                    trueTimeWrapper.currentTimeMillis,
-                    startReason,
-                    it.configuration.isOfflineMode,
-                    sessionProductType,
-                    sessionProductId,
-                ),
-                extras
-            )
-        }
+        ) =
+            factory.create(extras).also {
+                eventReporter.report(
+                    StreamingSessionStart.Payload(
+                        it.id.toString(),
+                        trueTimeWrapper.currentTimeMillis,
+                        startReason,
+                        it.configuration.isOfflineMode,
+                        sessionProductType,
+                        sessionProductId,
+                    ),
+                    extras,
+                )
+            }
 
         class Explicit(
             factory: Factory.Explicit,
@@ -146,7 +152,8 @@ internal sealed class StreamingSession private constructor(
         }
     }
 
-    sealed class Factory private constructor(
+    sealed class Factory
+    private constructor(
         protected val uuidWrapper: UUIDWrapper,
         protected val configuration: Configuration,
     ) {
@@ -156,21 +163,15 @@ internal sealed class StreamingSession private constructor(
         class Explicit(uuidWrapper: UUIDWrapper, configuration: Configuration) :
             Factory(uuidWrapper, configuration) {
 
-            override fun create(extras: Extras?): StreamingSession = Explicit(
-                uuidWrapper.randomUUID,
-                configuration,
-                extras,
-            )
+            override fun create(extras: Extras?): StreamingSession =
+                Explicit(uuidWrapper.randomUUID, configuration, extras)
         }
 
         class Implicit(uuidWrapper: UUIDWrapper, configuration: Configuration) :
             Factory(uuidWrapper, configuration) {
 
-            override fun create(extras: Extras?): StreamingSession = Implicit(
-                uuidWrapper.randomUUID,
-                configuration,
-                extras
-            )
+            override fun create(extras: Extras?): StreamingSession =
+                Implicit(uuidWrapper.randomUUID, configuration, extras)
         }
     }
 }

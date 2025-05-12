@@ -36,20 +36,20 @@ internal class PlayerLoadErrorHandlingPolicyTest {
     private val playerLoadErrorHandlingPolicy =
         PlayerLoadErrorHandlingPolicy(loadErrorHandlingPolicy)
 
-    @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(loadErrorHandlingPolicy)
+    @AfterEach fun afterEach() = verifyNoMoreInteractions(loadErrorHandlingPolicy)
 
     @ParameterizedTest
     @ValueSource(ints = [400, 401, 403, 404, 405, 416])
     fun getRetryDelayMsForShouldNotRetryFor4xxInvalidResponseCode(responseCode: Int) {
-        val exception = InvalidResponseCodeException(
-            responseCode,
-            null,
-            null,
-            emptyMap(),
-            mock(),
-            byteArrayOf(),
-        )
+        val exception =
+            InvalidResponseCodeException(
+                responseCode,
+                null,
+                null,
+                emptyMap(),
+                mock(),
+                byteArrayOf(),
+            )
         val loadErrorInfo = LoadErrorInfo(mock(), mock(), exception, 0)
 
         val actualRetryDelayMs = playerLoadErrorHandlingPolicy.getRetryDelayMsFor(loadErrorInfo)
@@ -60,9 +60,7 @@ internal class PlayerLoadErrorHandlingPolicyTest {
     @ParameterizedTest
     @ValueSource(ints = [400, 401, 403, 404, 405, 416])
     fun getRetryDelayMsForShouldNotRetryFor4xxApiError(responseCode: Int) {
-        val json = gson.toJson(
-            JsonObject().apply { addProperty("status", responseCode) },
-        )
+        val json = gson.toJson(JsonObject().apply { addProperty("status", responseCode) })
         val apiError = apiErrorFactory.fromJsonStringOrCause(json, mock())
         val exception = IOException(apiError)
         val loadErrorInfo = LoadErrorInfo(mock(), mock(), exception, 0)
@@ -99,22 +97,20 @@ internal class PlayerLoadErrorHandlingPolicyTest {
 
         val actualRetryDelayMs = playerLoadErrorHandlingPolicy.getRetryDelayMsFor(loadErrorInfo)
 
-        val expectedErrorCount: Long = when (errorCount) {
-            1 -> 500
-            2 -> 1_000
-            3 -> 2_000
-            else -> 5_000
-        }
+        val expectedErrorCount: Long =
+            when (errorCount) {
+                1 -> 500
+                2 -> 1_000
+                3 -> 2_000
+                else -> 5_000
+            }
         assertThat(actualRetryDelayMs).isEqualTo(expectedErrorCount)
     }
 
     @ParameterizedTest
     @ValueSource(
-        classes = [
-            SocketTimeoutException::class,
-            UnknownHostException::class,
-            ConnectException::class,
-        ],
+        classes =
+            [SocketTimeoutException::class, UnknownHostException::class, ConnectException::class]
     )
     fun getRetryDelayMsForShouldRetryForTimeoutOrNetworkErrorAsCause(causeClass: Class<Throwable>) {
         val exception = IOException(causeClass.getConstructor().newInstance())
@@ -127,14 +123,11 @@ internal class PlayerLoadErrorHandlingPolicyTest {
 
     @ParameterizedTest
     @ValueSource(
-        classes = [
-            SocketTimeoutException::class,
-            UnknownHostException::class,
-            ConnectException::class,
-        ],
+        classes =
+            [SocketTimeoutException::class, UnknownHostException::class, ConnectException::class]
     )
     fun getRetryDelayMsForShouldRetryForTimeoutOrNetworkErrorAsMainException(
-        ioExceptionClass: Class<IOException>,
+        ioExceptionClass: Class<IOException>
     ) {
         val exception = ioExceptionClass.getConstructor().newInstance()
         val loadErrorInfo = LoadErrorInfo(mock(), mock(), exception, 1)
@@ -147,9 +140,7 @@ internal class PlayerLoadErrorHandlingPolicyTest {
     @ParameterizedTest
     @ValueSource(ints = [500, 501, 502, 503, 504])
     fun getRetryDelayMsForShouldRetryFor5xxApiError(responseCode: Int) {
-        val json = gson.toJson(
-            JsonObject().apply { addProperty("status", responseCode) },
-        )
+        val json = gson.toJson(JsonObject().apply { addProperty("status", responseCode) })
         val apiError = apiErrorFactory.fromJsonStringOrCause(json, mock())
         val exception = IOException(apiError)
         val loadErrorInfo = LoadErrorInfo(mock(), mock(), exception, 1)
@@ -162,56 +153,55 @@ internal class PlayerLoadErrorHandlingPolicyTest {
     @ParameterizedTest
     @ValueSource(ints = [-1, 0, 1, 2, 3, 4, 5, 10])
     fun getRetryDelayMsForShouldRetryFor500ApiError(errorCount: Int) {
-        val json = gson.toJson(
-            JsonObject().apply { addProperty("status", 500) },
-        )
+        val json = gson.toJson(JsonObject().apply { addProperty("status", 500) })
         val apiError = apiErrorFactory.fromJsonStringOrCause(json, mock())
         val exception = IOException(apiError)
         val loadErrorInfo = LoadErrorInfo(mock(), mock(), exception, errorCount)
 
         val actualRetryDelayMs = playerLoadErrorHandlingPolicy.getRetryDelayMsFor(loadErrorInfo)
 
-        val expectedErrorCount: Long = if (errorCount <= 3) {
-            when (errorCount) {
-                1 -> 500
-                2 -> 1_000
-                3 -> 2_000
-                else -> 5_000
+        val expectedErrorCount: Long =
+            if (errorCount <= 3) {
+                when (errorCount) {
+                    1 -> 500
+                    2 -> 1_000
+                    3 -> 2_000
+                    else -> 5_000
+                }
+            } else {
+                C.TIME_UNSET
             }
-        } else {
-            C.TIME_UNSET
-        }
         assertThat(actualRetryDelayMs).isEqualTo(expectedErrorCount)
     }
 
     @ParameterizedTest
     @ValueSource(ints = [-1, 0, 1, 2, 3, 4, 5, 10])
     fun getRetryDelayMsForShouldRetryFor429ApiError(errorCount: Int) {
-        val httpException = mock<HttpException> {
-            on { this.code() } doReturn 429
-        }
+        val httpException = mock<HttpException> { on { this.code() } doReturn 429 }
         val exception = IOException(httpException)
         val loadErrorInfo = LoadErrorInfo(mock(), mock(), exception, errorCount)
 
         val actualRetryDelayMs = playerLoadErrorHandlingPolicy.getRetryDelayMsFor(loadErrorInfo)
 
-        val expectedErrorCount: Long = when (errorCount) {
-            1 -> 500
-            2 -> 1_000
-            3 -> 2_000
-            else -> 5_000
-        }
+        val expectedErrorCount: Long =
+            when (errorCount) {
+                1 -> 500
+                2 -> 1_000
+                3 -> 2_000
+                else -> 5_000
+            }
         assertThat(actualRetryDelayMs).isEqualTo(expectedErrorCount)
     }
 
     companion object {
 
         @JvmStatic
-        fun nonRetryableExceptions() = setOf(
-            ParserException.createForUnsupportedContainerFeature(null),
-            FileNotFoundException(),
-            StorageException(),
-            OfflineExpiredException(),
-        )
+        fun nonRetryableExceptions() =
+            setOf(
+                ParserException.createForUnsupportedContainerFeature(null),
+                FileNotFoundException(),
+                StorageException(),
+                OfflineExpiredException(),
+            )
     }
 }

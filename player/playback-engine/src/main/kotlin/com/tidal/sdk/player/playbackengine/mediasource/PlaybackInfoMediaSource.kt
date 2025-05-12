@@ -31,8 +31,8 @@ internal class PlaybackInfoMediaSource(
     private val mediaItem: MediaItem,
     private val dataType: Int,
     private val loadEventInfoF: (Long, Long) -> LoadEventInfo,
-    private val loadErrorInfoF: (LoadEventInfo, error: IOException, errorCount: Int) ->
-    LoadErrorInfo,
+    private val loadErrorInfoF:
+        (LoadEventInfo, error: IOException, errorCount: Int) -> LoadErrorInfo,
     private val loader: Loader,
     private val loaderCallbackFactory: PlaybackInfoLoadableLoaderCallbackFactory,
     private val extras: Extras?,
@@ -55,11 +55,13 @@ internal class PlaybackInfoMediaSource(
     private var createEventDispatcherF = { createEventDispatcher(null) }
     private var prepareChildSourceF: (MediaSource) -> Unit = { prepareChildSource(null, it) }
     private var prepareSourceInternalF = {
-        loader.startLoading(
-            loadable,
-            loaderCallback,
-            loadErrorHandlingPolicy.getMinimumLoadableRetryCount(dataType),
-        ).also { eventDispatcher.loadStarted(loadEventInfoF(it, 0), dataType) }
+        loader
+            .startLoading(
+                loadable,
+                loaderCallback,
+                loadErrorHandlingPolicy.getMinimumLoadableRetryCount(dataType),
+            )
+            .also { eventDispatcher.loadStarted(loadEventInfoF(it, 0), dataType) }
     }
 
     override fun getMediaItem() = mediaItem

@@ -13,7 +13,9 @@ import dagger.assisted.AssistedInject
 import java.util.UUID
 
 @Keep
-data class BroadcastPlaybackSession @AssistedInject internal constructor(
+data class BroadcastPlaybackSession
+@AssistedInject
+internal constructor(
     @Assisted override val ts: Long,
     @Assisted override val uuid: UUID,
     @Assisted override val user: User,
@@ -26,8 +28,7 @@ data class BroadcastPlaybackSession @AssistedInject internal constructor(
     data class Payload(
         override val playbackSessionId: UUID,
         override val startTimestamp: Long,
-        @SerializedName("startAssetPosition")
-        override val startAssetPositionSeconds: Double,
+        @SerializedName("startAssetPosition") override val startAssetPositionSeconds: Double,
         override val requestedProductId: String,
         override val actualProductId: String,
         override val actualQuality: AudioQuality,
@@ -35,8 +36,7 @@ data class BroadcastPlaybackSession @AssistedInject internal constructor(
         override val sourceId: String?,
         override val actions: List<PlaybackSession.Payload.Action>,
         override val endTimestamp: Long,
-        @SerializedName("endAssetPosition")
-        override val endAssetPositionSeconds: Double,
+        @SerializedName("endAssetPosition") override val endAssetPositionSeconds: Double,
     ) : PlaybackSession.Payload {
 
         override val actualAudioMode = AudioMode.STEREO

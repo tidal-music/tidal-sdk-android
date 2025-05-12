@@ -27,6 +27,5 @@ internal abstract class EventDao : EventsLocalDataSource {
     @Query("DELETE FROM events WHERE id IN (:ids)")
     protected abstract fun delete(ids: List<String>): Int
 
-    @Query("SELECT * FROM events")
-    protected abstract fun getAll(): List<EventEntity>
+    @Query("SELECT * FROM events") protected abstract fun getAll(): List<EventEntity>
 }

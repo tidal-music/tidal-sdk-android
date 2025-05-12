@@ -11,16 +11,16 @@ import java.util.UUID
 
 @Keep
 @Suppress("UnusedPrivateMember")
-data class StreamingSessionStart @AssistedInject internal constructor(
+data class StreamingSessionStart
+@AssistedInject
+internal constructor(
     @Assisted override val ts: Long,
     @Assisted override val uuid: UUID,
     @Assisted override val user: User,
     @Assisted override val client: Client,
     @Assisted override val payload: DecoratedPayload,
     @Assisted override val extras: Extras?,
-) : StreamingMetrics<StreamingSessionStart.DecoratedPayload>(
-    name = "streaming_session_start",
-) {
+) : StreamingMetrics<StreamingSessionStart.DecoratedPayload>(name = "streaming_session_start") {
 
     data class Payload(
         override val streamingSessionId: String,
@@ -35,7 +35,9 @@ data class StreamingSessionStart @AssistedInject internal constructor(
     }
 
     @Keep
-    data class DecoratedPayload @AssistedInject internal constructor(
+    data class DecoratedPayload
+    @AssistedInject
+    internal constructor(
         @Assisted("streamingSessionId") override val streamingSessionId: String,
         @Assisted private val timestamp: Long,
         @Assisted("isOfflineModeStart") private val isOfflineModeStart: Boolean,
@@ -43,12 +45,8 @@ data class StreamingSessionStart @AssistedInject internal constructor(
         @Assisted("hardwarePlatform") private val hardwarePlatform: String,
         @Assisted("operatingSystem") private val operatingSystem: String,
         @Assisted("operatingSystemVersion") private val operatingSystemVersion: String,
-        @Assisted("screenWidth")
-        @Px
-        private val screenWidth: Int,
-        @Assisted("screenHeight")
-        @Px
-        private val screenHeight: Int,
+        @Assisted("screenWidth") @Px private val screenWidth: Int,
+        @Assisted("screenHeight") @Px private val screenHeight: Int,
         @Assisted private val networkType: NetworkType,
         @Assisted("mobileNetworkType") private val mobileNetworkType: String,
         @Assisted private val sessionType: SessionType,
@@ -68,12 +66,8 @@ data class StreamingSessionStart @AssistedInject internal constructor(
                 @Assisted("hardwarePlatform") hardwarePlatform: String,
                 @Assisted("operatingSystem") operatingSystem: String,
                 @Assisted("operatingSystemVersion") operatingSystemVersion: String,
-                @Px
-                @Assisted("screenWidth")
-                screenWidth: Int,
-                @Px
-                @Assisted("screenHeight")
-                screenHeight: Int,
+                @Px @Assisted("screenWidth") screenWidth: Int,
+                @Px @Assisted("screenHeight") screenHeight: Int,
                 networkType: NetworkType,
                 @Assisted("mobileNetworkType") mobileNetworkType: String,
                 sessionType: SessionType,
@@ -93,7 +87,7 @@ data class StreamingSessionStart @AssistedInject internal constructor(
     @Keep
     enum class SessionType {
 
-        PLAYBACK,
+        PLAYBACK
     }
 
     @Keep

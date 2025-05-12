@@ -20,30 +20,29 @@ import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.mock
 
-/**
- * Test that the [PlaybackInfoRepository] returns correct [PlaybackInfo] in various
- * situations.
- */
+/** Test that the [PlaybackInfoRepository] returns correct [PlaybackInfo] in various situations. */
 internal class PlaybackInfoRepositoryDefaultTest {
 
     private val offlinePlaybackInfoProvider = OfflinePlaybackInfoProviderStub()
     private val playbackInfoService = PlaybackInfoServiceStub()
     private val apiErrorMapperLazy = { mock<ApiErrorMapper>() }
-    private val playbackInfoRepository = PlaybackInfoRepositoryDefault(
-        offlinePlaybackInfoProvider,
-        playbackInfoService,
-        apiErrorMapperLazy,
-    )
+    private val playbackInfoRepository =
+        PlaybackInfoRepositoryDefault(
+            offlinePlaybackInfoProvider,
+            playbackInfoService,
+            apiErrorMapperLazy,
+        )
 
     @Test
     fun getTrackPlaybackInfoShouldThrowWhenUncaughtExceptionIsThrown() {
         assertFailure {
-            runBlocking {
-                getTrackPlaybackInfo(
-                    PlaybackInfoServiceStub.PLAYBACK_INFO_ID_FOR_UNCAUGHT_EXCEPTION,
-                )
+                runBlocking {
+                    getTrackPlaybackInfo(
+                        PlaybackInfoServiceStub.PLAYBACK_INFO_ID_FOR_UNCAUGHT_EXCEPTION
+                    )
+                }
             }
-        }.hasClass(NullPointerException::class)
+            .hasClass(NullPointerException::class)
     }
 
     @Test
@@ -66,12 +65,13 @@ internal class PlaybackInfoRepositoryDefaultTest {
     @Test
     fun getVideoPlaybackInfoShouldThrowWhenUncaughtExceptionIsThrown() {
         assertFailure {
-            runBlocking {
-                getVideoPlaybackInfo(
-                    PlaybackInfoServiceStub.PLAYBACK_INFO_ID_FOR_UNCAUGHT_EXCEPTION,
-                )
+                runBlocking {
+                    getVideoPlaybackInfo(
+                        PlaybackInfoServiceStub.PLAYBACK_INFO_ID_FOR_UNCAUGHT_EXCEPTION
+                    )
+                }
             }
-        }.hasClass(NullPointerException::class)
+            .hasClass(NullPointerException::class)
     }
 
     @Test
@@ -93,46 +93,40 @@ internal class PlaybackInfoRepositoryDefaultTest {
     @Test
     fun getBroadcastPlaybackInfoShouldThrowWhenUncaughtExceptionIsThrown() {
         assertFailure {
-            runBlocking {
-                getBroadcastPlaybackInfo(
-                    PlaybackInfoServiceStub.PLAYBACK_INFO_ID_FOR_UNCAUGHT_EXCEPTION,
-                )
+                runBlocking {
+                    getBroadcastPlaybackInfo(
+                        PlaybackInfoServiceStub.PLAYBACK_INFO_ID_FOR_UNCAUGHT_EXCEPTION
+                    )
+                }
             }
-        }.hasClass(NullPointerException::class)
+            .hasClass(NullPointerException::class)
     }
 
     @Test
     fun getBroadcastPlaybackInfoShouldReturnCorrectAndFillMissingStreamingSessionIdWhenPlaybackInfoIsReturned() =
         runBlocking {
-            val playbackInfo = getBroadcastPlaybackInfo(
-                PlaybackInfoServiceStub.PLAYBACK_INFO_ID_SUCCESS,
-            )
+            val playbackInfo =
+                getBroadcastPlaybackInfo(PlaybackInfoServiceStub.PLAYBACK_INFO_ID_SUCCESS)
 
             assertThat(playbackInfo).isEqualTo(BroadcastPlaybackInfoFactory.DEFAULT)
         }
 
     private suspend fun getBroadcastPlaybackInfo(djSessionId: String) =
-        playbackInfoRepository
-            .getBroadcastPlaybackInfo(
-                djSessionId,
-                BroadcastPlaybackInfoFactory.DEFAULT.streamingSessionId,
-                AudioQuality.LOW,
-            )
+        playbackInfoRepository.getBroadcastPlaybackInfo(
+            djSessionId,
+            BroadcastPlaybackInfoFactory.DEFAULT.streamingSessionId,
+            AudioQuality.LOW,
+        )
 
     @Test
     fun getUCPlaybackInfoShouldReturnCorrectWhenPlaybackInfoIsReturned() = runBlocking {
-        val playbackInfo = getUCPlaybackInfo(
-            ApiConstants.PLAYBACK_INFO_ID_FOR_DEFAULT,
-        )
+        val playbackInfo = getUCPlaybackInfo(ApiConstants.PLAYBACK_INFO_ID_FOR_DEFAULT)
 
         assertThat(playbackInfo).isEqualTo(UCPlaybackInfoFactory.DEFAULT)
     }
 
     private suspend fun getUCPlaybackInfo(itemId: String) =
-        playbackInfoRepository.getUC(
-            itemId,
-            UCPlaybackInfoFactory.DEFAULT.streamingSessionId,
-        )
+        playbackInfoRepository.getUC(itemId, UCPlaybackInfoFactory.DEFAULT.streamingSessionId)
 
     @Test
     fun getOfflineTrackPlaybackInfo() = runBlocking {

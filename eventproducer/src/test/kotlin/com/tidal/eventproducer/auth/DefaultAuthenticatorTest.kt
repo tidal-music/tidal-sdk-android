@@ -18,18 +18,14 @@ class DefaultAuthenticatorTest {
 
     private val server = MockWebServer()
 
-    private val request = Request.Builder()
-        .url(server.url("/"))
-        .build()
+    private val request = Request.Builder().url(server.url("/")).build()
 
     @Test
     fun `Should not retry request when CredentialsProvider returns failure AuthResult`() {
         // given
         val credentialsProvider = FakeCredentialsProvider(false)
         val defaultAuthenticator = DefaultAuthenticator(credentialsProvider)
-        val okHttpClient = OkHttpClient.Builder()
-            .authenticator(defaultAuthenticator)
-            .build()
+        val okHttpClient = OkHttpClient.Builder().authenticator(defaultAuthenticator).build()
 
         val unauthorisedResponse = MockResponse().setResponseCode(401)
         server.enqueue(unauthorisedResponse)
@@ -48,10 +44,11 @@ class DefaultAuthenticatorTest {
         val credentialsProvider = FakeCredentialsProvider(true, newAccessToken)
         val headersInterceptor = HeadersInterceptor(credentialsProvider)
         val defaultAuthenticator = DefaultAuthenticator(credentialsProvider)
-        val okHttpClient = OkHttpClient.Builder()
-            .authenticator(defaultAuthenticator)
-            .addInterceptor(headersInterceptor)
-            .build()
+        val okHttpClient =
+            OkHttpClient.Builder()
+                .authenticator(defaultAuthenticator)
+                .addInterceptor(headersInterceptor)
+                .build()
 
         val unauthorisedResponse = MockResponse().setResponseCode(401)
         val successResponse = MockResponse().setResponseCode(200)
@@ -76,10 +73,11 @@ class DefaultAuthenticatorTest {
         val credentialsProvider = FakeCredentialsProvider(true, refreshToken, refreshClientId)
         val headersInterceptor = HeadersInterceptor(credentialsProvider)
         val defaultAuthenticator = DefaultAuthenticator(credentialsProvider)
-        val okHttpClient = OkHttpClient.Builder()
-            .authenticator(defaultAuthenticator)
-            .addInterceptor(headersInterceptor)
-            .build()
+        val okHttpClient =
+            OkHttpClient.Builder()
+                .authenticator(defaultAuthenticator)
+                .addInterceptor(headersInterceptor)
+                .build()
 
         val unauthorisedResponse = MockResponse().setResponseCode(401)
         val successResponse = MockResponse().setResponseCode(200)
@@ -92,9 +90,7 @@ class DefaultAuthenticatorTest {
 
         // then
         assertThat(response.code).isEqualTo(200)
-        assertThat(response.request.header(X_TIDAL_TOKEN_HEADER_NAME))
-            .isEqualTo(refreshClientId)
-        assertThat(response.request.header(AUTHORIZATION_HEADER_NAME))
-            .isEqualTo(null)
+        assertThat(response.request.header(X_TIDAL_TOKEN_HEADER_NAME)).isEqualTo(refreshClientId)
+        assertThat(response.request.header(AUTHORIZATION_HEADER_NAME)).isEqualTo(null)
     }
 }

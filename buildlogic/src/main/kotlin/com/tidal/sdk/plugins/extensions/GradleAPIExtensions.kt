@@ -8,32 +8,24 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.getByType
 
 /**
- * Extension function that allows configuring Gradle's [ApplicationExtension]
- * Same as calling:
- * android {
- *    ...
- * }
- * block in an application module
+ * Extension function that allows configuring Gradle's [ApplicationExtension] Same as calling:
+ * android { ... } block in an application module
  */
 internal fun Project.androidApplication(action: ApplicationExtension.() -> Unit) {
     action.invoke(extensions.getByType())
 }
 
 /**
- * Extension function that allows configuring Gradle's [LibraryExtension]
- * Same as calling:
- * android {
- *    ...
- * }
- * block in a library module
+ * Extension function that allows configuring Gradle's [LibraryExtension] Same as calling: android {
+ * ... } block in a library module
  */
 internal fun Project.androidLibrary(action: LibraryExtension.() -> Unit) {
     action.invoke(extensions.getByType())
 }
 
 /**
- * Extension function that loads properties from a 'local.properties' file
- * 'local.properties' is expected to be in the project root.
+ * Extension function that loads properties from a 'local.properties' file 'local.properties' is
+ * expected to be in the project root.
  */
 fun Project.loadLocalProperties(): Properties {
     val properties = Properties()
@@ -48,7 +40,8 @@ fun Project.loadLocalProperties(): Properties {
 }
 
 /**
- * Extension property that returns the 'local.properties' file
- * 'local.properties' is expected to be in the project root.
+ * Extension property that returns the 'local.properties' file 'local.properties' is expected to be
+ * in the project root.
  */
-val Project.localPropertiesFile: File get() = rootProject.file("local.properties")
+val Project.localPropertiesFile: File
+    get() = rootProject.file("local.properties")

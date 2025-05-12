@@ -8,7 +8,10 @@ import com.tidal.sdk.player.playbackengine.datasource.DecryptedHeaderFileDataSou
 
 internal class PlayerDecryptedHeaderProgressiveOfflineMediaSourceFactory(
     private val progressiveMediaSourceFactoryFactory: ProgressiveMediaSourceFactoryFactory,
-    @Suppress("MaxLineLength") private val decryptedHeaderFileDataSourceFactoryFactory: DecryptedHeaderFileDataSourceFactoryFactory, // ktlint-disable max-line-length parameter-wrapping
+    @Suppress("MaxLineLength")
+    private val decryptedHeaderFileDataSourceFactoryFactory:
+        DecryptedHeaderFileDataSourceFactoryFactory, // ktlint-disable max-line-length
+    // parameter-wrapping
     private val encryption: Encryption?,
     private val btsManifestFactory: BtsManifestFactory,
 ) {
@@ -19,14 +22,14 @@ internal class PlayerDecryptedHeaderProgressiveOfflineMediaSourceFactory(
         productId: String,
     ): ProgressiveMediaSource {
         val btsManifest = btsManifestFactory.create(encodedManifest)
-        val newMediaItem = mediaItem.buildUpon()
-            .setUri(btsManifest.urls.firstOrNull())
-            .build()
+        val newMediaItem = mediaItem.buildUpon().setUri(btsManifest.urls.firstOrNull()).build()
 
-        return progressiveMediaSourceFactoryFactory.create(
-            decryptedHeaderFileDataSourceFactoryFactory.create(
-                encryption!!.getDecryptedHeader(productId),
-            ),
-        ).createMediaSource(newMediaItem)
+        return progressiveMediaSourceFactoryFactory
+            .create(
+                decryptedHeaderFileDataSourceFactoryFactory.create(
+                    encryption!!.getDecryptedHeader(productId)
+                )
+            )
+            .createMediaSource(newMediaItem)
     }
 }

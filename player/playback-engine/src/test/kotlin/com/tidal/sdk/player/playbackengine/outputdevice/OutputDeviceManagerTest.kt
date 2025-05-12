@@ -23,8 +23,7 @@ internal class OutputDeviceManagerTest {
     private val handler = mock<Handler>()
     private val outputDeviceManager = OutputDeviceManager(audioManager, handler)
 
-    @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(audioManager, handler)
+    @AfterEach fun afterEach() = verifyNoMoreInteractions(audioManager, handler)
 
     @Test
     fun `start does not change outputDevice when no callbacks are invoked`() {
@@ -40,14 +39,10 @@ internal class OutputDeviceManagerTest {
     @Test
     fun `start sets output device when callback adds devices`() {
         val callback = mock<(OutputDevice) -> Unit>()
-        val audioDeviceInfo = mock<AudioDeviceInfo> {
-            on { it.type } doReturn AudioDeviceInfo.TYPE_BLUETOOTH_A2DP
-        }
-        whenever(audioManager.getDevices(AudioManager.GET_DEVICES_OUTPUTS)).thenReturn(
-            arrayOf(
-                audioDeviceInfo,
-            ),
-        )
+        val audioDeviceInfo =
+            mock<AudioDeviceInfo> { on { it.type } doReturn AudioDeviceInfo.TYPE_BLUETOOTH_A2DP }
+        whenever(audioManager.getDevices(AudioManager.GET_DEVICES_OUTPUTS))
+            .thenReturn(arrayOf(audioDeviceInfo))
         whenever(audioManager.registerAudioDeviceCallback(any(), any())).thenAnswer {
             val callbackArg = it.arguments[0] as AudioDeviceCallback
             val handlerArg = it.arguments[1] as Handler
@@ -68,14 +63,10 @@ internal class OutputDeviceManagerTest {
     @Test
     fun `start sets output device when callback removes devices`() {
         val callback = mock<(OutputDevice) -> Unit>()
-        val audioDeviceInfo = mock<AudioDeviceInfo> {
-            on { it.type } doReturn AudioDeviceInfo.TYPE_BLUETOOTH_A2DP
-        }
-        whenever(audioManager.getDevices(AudioManager.GET_DEVICES_OUTPUTS)).thenReturn(
-            arrayOf(
-                audioDeviceInfo,
-            ),
-        )
+        val audioDeviceInfo =
+            mock<AudioDeviceInfo> { on { it.type } doReturn AudioDeviceInfo.TYPE_BLUETOOTH_A2DP }
+        whenever(audioManager.getDevices(AudioManager.GET_DEVICES_OUTPUTS))
+            .thenReturn(arrayOf(audioDeviceInfo))
         whenever(audioManager.registerAudioDeviceCallback(any(), any())).thenAnswer {
             val callbackArg = it.arguments[0] as AudioDeviceCallback
             val handlerArg = it.arguments[1] as Handler

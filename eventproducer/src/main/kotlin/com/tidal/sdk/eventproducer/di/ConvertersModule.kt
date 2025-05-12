@@ -13,14 +13,8 @@ internal class ConvertersModule {
     @Provides
     @Singleton
     fun provideXmlConverter(): TikXmlConverterFactory {
-        return TikXmlConverterFactory.create(
-            TikXml.Builder()
-                .exceptionOnUnreadXml(false)
-                .build(),
-        )
+        return TikXmlConverterFactory.create(TikXml.Builder().exceptionOnUnreadXml(false).build())
     }
 
-    @Provides
-    @Singleton
-    fun provideMoshi(): Moshi = Moshi.Builder().build()
+    @Provides @Singleton fun provideMoshi(): Moshi = Moshi.Builder().build()
 }

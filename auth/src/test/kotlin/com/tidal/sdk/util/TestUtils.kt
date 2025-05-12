@@ -18,11 +18,12 @@ fun makeCredentials(
     userId: String? = "userId",
     token: String = "token",
 ): Credentials {
-    val expiry = if (isExpired) {
-        TEST_TIME_PROVIDER.now.minus(5.toDuration(DurationUnit.MINUTES).inWholeSeconds)
-    } else {
-        TEST_TIME_PROVIDER.now.plus(5.toDuration(DurationUnit.MINUTES).inWholeSeconds)
-    }
+    val expiry =
+        if (isExpired) {
+            TEST_TIME_PROVIDER.now.minus(5.toDuration(DurationUnit.MINUTES).inWholeSeconds)
+        } else {
+            TEST_TIME_PROVIDER.now.plus(5.toDuration(DurationUnit.MINUTES).inWholeSeconds)
+        }
     return Credentials(
         clientId = clientId,
         requestedScopes = scopes,

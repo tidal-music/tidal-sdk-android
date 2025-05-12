@@ -124,33 +124,34 @@ internal class ExoPlayerPlaybackEngineTest {
 
     private val forwardingMediaProduct =
         ForwardingMediaProduct(MediaProduct(ProductType.TRACK, "1"))
-    private val mediaSource = mock<PlaybackInfoMediaSource> {
-        on { it.forwardingMediaProduct } doReturn forwardingMediaProduct
-    }
+    private val mediaSource =
+        mock<PlaybackInfoMediaSource> {
+            on { it.forwardingMediaProduct } doReturn forwardingMediaProduct
+        }
 
     @BeforeEach
     fun beforeEach() {
-        whenever(extendedExoPlayerFactory.create(any(), any()))
-            .thenReturn(initialExtendedExoPlayer)
-        playbackEngine = ExoPlayerPlaybackEngine(
-            coroutineScope,
-            extendedExoPlayerFactory,
-            internalHandler,
-            events,
-            synchronousSurfaceHolderFactory,
-            streamingPrivileges,
-            playbackContextFactory,
-            audioQualityRepository,
-            audioModeRepository,
-            volumeHelper,
-            trueTimeWrapper,
-            eventReporter,
-            errorHandler,
-            djSessionManager,
-            undeterminedPlaybackSessionResolver,
-            outputDeviceManager,
-            playerCache,
-        )
+        whenever(extendedExoPlayerFactory.create(any(), any())).thenReturn(initialExtendedExoPlayer)
+        playbackEngine =
+            ExoPlayerPlaybackEngine(
+                coroutineScope,
+                extendedExoPlayerFactory,
+                internalHandler,
+                events,
+                synchronousSurfaceHolderFactory,
+                streamingPrivileges,
+                playbackContextFactory,
+                audioQualityRepository,
+                audioModeRepository,
+                volumeHelper,
+                trueTimeWrapper,
+                eventReporter,
+                errorHandler,
+                djSessionManager,
+                undeterminedPlaybackSessionResolver,
+                outputDeviceManager,
+                playerCache,
+            )
     }
 
     @Test
@@ -237,9 +238,8 @@ internal class ExoPlayerPlaybackEngineTest {
     @EnumSource(LoudnessNormalizationMode::class)
     fun setLoudnessNormalizationMode(loudnessNormalizationMode: LoudnessNormalizationMode) {
         val playbackInfo = mock<PlaybackInfo.Track>()
-        val currentMediaSource = mock<PlaybackInfoMediaSource> {
-            on { it.playbackInfo } doReturn playbackInfo
-        }
+        val currentMediaSource =
+            mock<PlaybackInfoMediaSource> { on { it.playbackInfo } doReturn playbackInfo }
         playbackEngine.testMediaSource = currentMediaSource
 
         playbackEngine.loudnessNormalizationMode = loudnessNormalizationMode
@@ -265,9 +265,8 @@ internal class ExoPlayerPlaybackEngineTest {
     fun setLoudnessNormalizationPreAmp() {
         val preAmp = 4
         val playbackInfo = mock<PlaybackInfo.Track>()
-        val currentMediaSource = mock<PlaybackInfoMediaSource> {
-            on { it.playbackInfo } doReturn playbackInfo
-        }
+        val currentMediaSource =
+            mock<PlaybackInfoMediaSource> { on { it.playbackInfo } doReturn playbackInfo }
         playbackEngine.testMediaSource = currentMediaSource
 
         playbackEngine.loudnessNormalizationPreAmp = preAmp
@@ -308,13 +307,14 @@ internal class ExoPlayerPlaybackEngineTest {
 
         playbackEngine.setNext(nextMediaProduct)
 
-        verify(initialExtendedExoPlayer).setNext(
-            if (nextMediaProduct == null) {
-                null
-            } else {
-                argThat { delegate === nextMediaProduct }
-            },
-        )
+        verify(initialExtendedExoPlayer)
+            .setNext(
+                if (nextMediaProduct == null) {
+                    null
+                } else {
+                    argThat { delegate === nextMediaProduct }
+                }
+            )
     }
 
     @Test
@@ -327,8 +327,11 @@ internal class ExoPlayerPlaybackEngineTest {
     @Test
     fun playShouldSucceedIfPlaybackStateIsNotIdle() {
         whenever(
-            initialExtendedExoPlayer.load(argThat { delegate === forwardingMediaProduct.delegate })
-        ).thenReturn(mediaSource)
+                initialExtendedExoPlayer.load(
+                    argThat { delegate === forwardingMediaProduct.delegate }
+                )
+            )
+            .thenReturn(mediaSource)
         playbackEngine.load(forwardingMediaProduct.delegate)
         val streamingSession = mock<StreamingSession.Explicit>()
         whenever(initialExtendedExoPlayer.currentStreamingSession) doReturn streamingSession
@@ -339,10 +342,11 @@ internal class ExoPlayerPlaybackEngineTest {
 
         verify(initialExtendedExoPlayer).currentStreamingSession
         verify(trueTimeWrapper, atLeastOnce()).currentTimeMillis
-        verify(streamingSession).createUndeterminedPlaybackStatistics(
-            PlaybackStatistics.IdealStartTimestampMs.Known(idealStartTimestampMs),
-            null,
-        )
+        verify(streamingSession)
+            .createUndeterminedPlaybackStatistics(
+                PlaybackStatistics.IdealStartTimestampMs.Known(idealStartTimestampMs),
+                null,
+            )
         verify(initialExtendedExoPlayer).play()
     }
 
@@ -417,8 +421,7 @@ internal class ExoPlayerPlaybackEngineTest {
         val newState = PlaybackState.STALLED
         assumeTrue(playbackEngine.playbackState != newState)
         val videoSurfaceView = mock<AspectRatioAdjustingSurfaceView>()
-        val synchronousSurfaceHolder =
-            mock<SynchronousSurfaceHolder>()
+        val synchronousSurfaceHolder = mock<SynchronousSurfaceHolder>()
         playbackEngine.reflectionVideoSurfaceViewAndSurfaceHolder =
             videoSurfaceView to synchronousSurfaceHolder
         val keepScreenOnCaptor = argumentCaptor<Runnable>()
@@ -433,18 +436,12 @@ internal class ExoPlayerPlaybackEngineTest {
                     .isEqualTo(Event.PlaybackStateChange(newState))
             }
         }
-        verifyNoMoreInteractions(
-            videoSurfaceView,
-            synchronousSurfaceHolder,
-        )
+        verifyNoMoreInteractions(videoSurfaceView, synchronousSurfaceHolder)
 
         keepScreenOnCaptor.firstValue.run()
 
         verify(videoSurfaceView).keepScreenOn = true
-        verifyNoMoreInteractions(
-            videoSurfaceView,
-            synchronousSurfaceHolder,
-        )
+        verifyNoMoreInteractions(videoSurfaceView, synchronousSurfaceHolder)
     }
 
     @Test
@@ -539,9 +536,8 @@ internal class ExoPlayerPlaybackEngineTest {
         val oldSurfaceHolder = mock<SynchronousSurfaceHolder>()
         val oldVideoSurfaceView = mock<AspectRatioAdjustingSurfaceView>()
         val newSurfaceHolder = mock<SurfaceHolder>()
-        val newVideoSurfaceView = mock<AspectRatioAdjustingSurfaceView> {
-            on { it.holder } doReturn newSurfaceHolder
-        }
+        val newVideoSurfaceView =
+            mock<AspectRatioAdjustingSurfaceView> { on { it.holder } doReturn newSurfaceHolder }
         val synchronousSurfaceHolder = mock<SynchronousSurfaceHolder>()
         playbackEngine.reflectionSetPlaybackState(PlaybackState.PLAYING)
         playbackEngine.reflectionExtendedExoPlayer = extendedExoPlayer
@@ -553,10 +549,7 @@ internal class ExoPlayerPlaybackEngineTest {
         val keepScreenOnCaptor = argumentCaptor<Runnable>()
         val formatWidth = 1
         val formatHeight = 3
-        val format = Format.Builder()
-            .setWidth(formatWidth)
-            .setHeight(formatHeight)
-            .build()
+        val format = Format.Builder().setWidth(formatWidth).setHeight(formatHeight).build()
         whenever(extendedExoPlayer.videoFormat) doReturn format
 
         playbackEngine.videoSurfaceView = newVideoSurfaceView
@@ -624,7 +617,7 @@ internal class ExoPlayerPlaybackEngineTest {
     @ParameterizedTest
     @EnumSource(PlaybackState::class)
     fun onConnectionEstablishedDoesNotAcquireStreamingPrivilegesIfNotPlaying(
-        playbackState: PlaybackState,
+        playbackState: PlaybackState
     ) {
         assumeFalse(playbackState == PlaybackState.PLAYING)
         playbackEngine.reflectionSetPlaybackState(playbackState)
@@ -638,7 +631,7 @@ internal class ExoPlayerPlaybackEngineTest {
     @ParameterizedTest
     @EnumSource(PlaybackState::class)
     fun onStreamingPrivilegesRevokedWhileNotPlayingDoesNotPauseNorDispatchEvent(
-        playbackState: PlaybackState,
+        playbackState: PlaybackState
     ) {
         assumeFalse(playbackState == PlaybackState.PLAYING)
         val privilegedClientDisplayName = "a privileged client"
@@ -649,11 +642,8 @@ internal class ExoPlayerPlaybackEngineTest {
         runBlocking {
             playbackEngine.onStreamingPrivilegesRevoked(privilegedClientDisplayName)
 
-            verify(events, never()).emit(
-                Event.StreamingPrivilegesRevoked(
-                    privilegedClientDisplayName,
-                ),
-            )
+            verify(events, never())
+                .emit(Event.StreamingPrivilegesRevoked(privilegedClientDisplayName))
             verify(internalHandler, never()).post(any())
             verify(initialExtendedExoPlayer, never()).pause()
         }
@@ -669,9 +659,7 @@ internal class ExoPlayerPlaybackEngineTest {
         playbackEngine.reflectionSetPlaybackState(PlaybackState.PLAYING)
 
         runBlocking {
-            launch {
-                playbackEngine.onStreamingPrivilegesRevoked(privilegedClientDisplayName)
-            }
+            launch { playbackEngine.onStreamingPrivilegesRevoked(privilegedClientDisplayName) }
             withTimeout(3000) {
                 /*
                  * Can't use the exact pattern as is in other tests because it causes it to be flaky
@@ -679,8 +667,11 @@ internal class ExoPlayerPlaybackEngineTest {
                  * event that will race the event that we are trying to assert on
                  */
                 assertThat(
-                    playbackEngine.events.filter { it is Event.StreamingPrivilegesRevoked }.first(),
-                ).isEqualTo(Event.StreamingPrivilegesRevoked(privilegedClientDisplayName))
+                        playbackEngine.events
+                            .filter { it is Event.StreamingPrivilegesRevoked }
+                            .first()
+                    )
+                    .isEqualTo(Event.StreamingPrivilegesRevoked(privilegedClientDisplayName))
             }
         }
 
@@ -692,20 +683,18 @@ internal class ExoPlayerPlaybackEngineTest {
     fun onPlaybackInfoFetchedForCurrentMediaProduct() {
         val actualProductId = 123
         val referenceId = "referenceId"
-        val currentMediaProduct = mock<MediaProduct> {
-            on { it.referenceId } doReturn referenceId
-        }
-        val currentForwardingMediaProduct = mock<ForwardingMediaProduct<MediaProduct>> {
-            on { it.delegate } doReturn currentMediaProduct
-        }
+        val currentMediaProduct = mock<MediaProduct> { on { it.referenceId } doReturn referenceId }
+        val currentForwardingMediaProduct =
+            mock<ForwardingMediaProduct<MediaProduct>> {
+                on { it.delegate } doReturn currentMediaProduct
+            }
         val streamingSession = mock<StreamingSession.Explicit>()
-        val playbackInfo = mock<PlaybackInfo.Track> {
-            on { it.trackId } doReturn actualProductId
-        }
-        val currentMediaSource = mock<PlaybackInfoMediaSource> {
-            on { it.forwardingMediaProduct } doReturn currentForwardingMediaProduct
-            on { it.playbackInfo } doReturn playbackInfo
-        }
+        val playbackInfo = mock<PlaybackInfo.Track> { on { it.trackId } doReturn actualProductId }
+        val currentMediaSource =
+            mock<PlaybackInfoMediaSource> {
+                on { it.forwardingMediaProduct } doReturn currentForwardingMediaProduct
+                on { it.playbackInfo } doReturn playbackInfo
+            }
         playbackEngine.testMediaSource = currentMediaSource
         val playbackContext = mock<PlaybackContext.Track>()
         whenever(internalHandler.post(any())).thenAnswer {
@@ -716,25 +705,31 @@ internal class ExoPlayerPlaybackEngineTest {
         whenever(playbackContextFactory.create(playbackInfo, referenceId))
             .thenReturn(playbackContext)
         val streamingSessionId = mock<UUID>()
-        val playbackStatistics = mock<PlaybackStatistics.Success.Prepared.Audio> {
-            on { it.streamingSessionId } doReturn streamingSessionId
-        }
+        val playbackStatistics =
+            mock<PlaybackStatistics.Success.Prepared.Audio> {
+                on { it.streamingSessionId } doReturn streamingSessionId
+            }
         val previousPlaybackStatistics = mock<PlaybackStatistics.Undetermined>()
         playbackEngine.reflectionCurrentPlaybackStatistics = previousPlaybackStatistics
         whenever(
-            undeterminedPlaybackSessionResolver(
-                previousPlaybackStatistics,
-                playbackInfo,
-                emptyMap(),
-            ),
-        ).thenReturn(playbackStatistics)
+                undeterminedPlaybackSessionResolver(
+                    previousPlaybackStatistics,
+                    playbackInfo,
+                    emptyMap(),
+                )
+            )
+            .thenReturn(playbackStatistics)
         val playbackSession = mock<PlaybackSession.Audio>()
         whenever(
-            streamingSession.createPlaybackSession(playbackInfo, currentForwardingMediaProduct),
-        ).thenReturn(playbackSession)
+                streamingSession.createPlaybackSession(playbackInfo, currentForwardingMediaProduct)
+            )
+            .thenReturn(playbackSession)
 
-        playbackEngine
-            .onPlaybackInfoFetched(streamingSession, currentForwardingMediaProduct, playbackInfo)
+        playbackEngine.onPlaybackInfoFetched(
+            streamingSession,
+            currentForwardingMediaProduct,
+            playbackInfo,
+        )
 
         assertThat(playbackEngine.reflectionCurrentPlaybackStatistics).isSameAs(playbackStatistics)
         verify(currentMediaSource, atLeastOnce()).forwardingMediaProduct
@@ -766,38 +761,40 @@ internal class ExoPlayerPlaybackEngineTest {
     fun onPlaybackInfoFetchedForNextMediaProduct() {
         val productId = 123
         val referenceId = "referenceId"
-        val nextMediaProduct = mock<MediaProduct> {
-            on { it.referenceId } doReturn referenceId
-        }
-        val nextForwardingMediaProduct = mock<ForwardingMediaProduct<MediaProduct>> {
-            on { it.delegate } doReturn nextMediaProduct
-        }
-        val nextMediaSource = mock<PlaybackInfoMediaSource> {
-            on { it.forwardingMediaProduct } doReturn nextForwardingMediaProduct
-        }
+        val nextMediaProduct = mock<MediaProduct> { on { it.referenceId } doReturn referenceId }
+        val nextForwardingMediaProduct =
+            mock<ForwardingMediaProduct<MediaProduct>> {
+                on { it.delegate } doReturn nextMediaProduct
+            }
+        val nextMediaSource =
+            mock<PlaybackInfoMediaSource> {
+                on { it.forwardingMediaProduct } doReturn nextForwardingMediaProduct
+            }
         playbackEngine.testNextMediaSource = nextMediaSource
         val streamingSession = mock<StreamingSession.Implicit>()
-        val playbackInfo = mock<PlaybackInfo.Video> {
-            on { it.videoId } doReturn productId
-        }
+        val playbackInfo = mock<PlaybackInfo.Video> { on { it.videoId } doReturn productId }
         val playbackContext = mock<PlaybackContext.Track>()
         whenever(playbackContextFactory.create(playbackInfo, referenceId))
             .thenReturn(playbackContext)
         val playbackStatistics = mock<PlaybackStatistics.Undetermined>()
         whenever(initialExtendedExoPlayer.nextStreamingSession) doReturn streamingSession
         whenever(
-            streamingSession.createUndeterminedPlaybackStatistics(
-                PlaybackStatistics.IdealStartTimestampMs.NotYetKnown,
-                emptyMap(),
-            ),
-        ).thenReturn(playbackStatistics)
+                streamingSession.createUndeterminedPlaybackStatistics(
+                    PlaybackStatistics.IdealStartTimestampMs.NotYetKnown,
+                    emptyMap(),
+                )
+            )
+            .thenReturn(playbackStatistics)
         whenever(internalHandler.post(any())).then {
             (it.arguments.single() as Runnable).run()
             false
         }
 
-        playbackEngine
-            .onPlaybackInfoFetched(streamingSession, nextForwardingMediaProduct, playbackInfo)
+        playbackEngine.onPlaybackInfoFetched(
+            streamingSession,
+            nextForwardingMediaProduct,
+            playbackInfo,
+        )
 
         assertThat(playbackEngine.reflectionNextPlaybackStatistics).isSameAs(playbackStatistics)
         verify(nextMediaSource).forwardingMediaProduct
@@ -807,10 +804,11 @@ internal class ExoPlayerPlaybackEngineTest {
         assertThat(playbackEngine.playbackContext).isNull()
         assertThat(playbackEngine.reflectionNextPlaybackContext).isEqualTo(playbackContext)
         verify(nextForwardingMediaProduct).extras
-        verify(streamingSession).createUndeterminedPlaybackStatistics(
-            PlaybackStatistics.IdealStartTimestampMs.NotYetKnown,
-            emptyMap(),
-        )
+        verify(streamingSession)
+            .createUndeterminedPlaybackStatistics(
+                PlaybackStatistics.IdealStartTimestampMs.NotYetKnown,
+                emptyMap(),
+            )
         verify(streamingSession).createPlaybackSession(playbackInfo, nextForwardingMediaProduct)
         verifyNoMoreInteractions(
             nextMediaProduct,
@@ -826,9 +824,7 @@ internal class ExoPlayerPlaybackEngineTest {
         val status = DjSessionStatus.PAUSED
 
         runBlocking {
-            launch {
-                playbackEngine.onDjSessionUpdated(productId, status)
-            }
+            launch { playbackEngine.onDjSessionUpdated(productId, status) }
             withTimeout(3000) {
                 assertThat(playbackEngine.events.first())
                     .isEqualTo(Event.DjSessionUpdate(productId, status))
@@ -840,108 +836,114 @@ internal class ExoPlayerPlaybackEngineTest {
 
     @ParameterizedTest
     @ValueSource(
-        ints = [
-            Player.PLAYBACK_SUPPRESSION_REASON_NONE,
-            Player.PLAYBACK_SUPPRESSION_REASON_TRANSIENT_AUDIO_FOCUS_LOSS,
-        ],
+        ints =
+            [
+                Player.PLAYBACK_SUPPRESSION_REASON_NONE,
+                Player.PLAYBACK_SUPPRESSION_REASON_TRANSIENT_AUDIO_FOCUS_LOSS,
+            ]
     )
     fun onPlaybackSuppressionReasonChangedShouldSetActionForTrack(reason: Int) =
         testOnPlaybackSuppressionReasonChanged(reason, ProductType.TRACK)
 
     @ParameterizedTest
     @ValueSource(
-        ints = [
-            Player.PLAYBACK_SUPPRESSION_REASON_NONE,
-            Player.PLAYBACK_SUPPRESSION_REASON_TRANSIENT_AUDIO_FOCUS_LOSS,
-        ],
+        ints =
+            [
+                Player.PLAYBACK_SUPPRESSION_REASON_NONE,
+                Player.PLAYBACK_SUPPRESSION_REASON_TRANSIENT_AUDIO_FOCUS_LOSS,
+            ]
     )
     fun onPlaybackSuppressionReasonChangedShouldSetActionForVideo(reason: Int) =
         testOnPlaybackSuppressionReasonChanged(reason, ProductType.VIDEO)
 
     @ParameterizedTest
     @ValueSource(
-        ints = [
-            Player.PLAYBACK_SUPPRESSION_REASON_NONE,
-            Player.PLAYBACK_SUPPRESSION_REASON_TRANSIENT_AUDIO_FOCUS_LOSS,
-        ],
+        ints =
+            [
+                Player.PLAYBACK_SUPPRESSION_REASON_NONE,
+                Player.PLAYBACK_SUPPRESSION_REASON_TRANSIENT_AUDIO_FOCUS_LOSS,
+            ]
     )
     fun onPlaybackSuppressionReasonChangedShouldSetActionAndPotentiallySeekForBroadcast(
-        reason: Int,
+        reason: Int
     ) = testOnPlaybackSuppressionReasonChanged(reason, ProductType.BROADCAST)
 
     @Suppress("LongMethod")
     private fun testOnPlaybackSuppressionReasonChanged(reason: Int, productType: ProductType) {
-        val forwardingMediaProduct = mock<ForwardingMediaProduct<MediaProduct>> {
-            on { it.productType } doReturn productType
-        }
-        val mediaSource = mock<PlaybackInfoMediaSource> {
-            on { it.forwardingMediaProduct } doReturn forwardingMediaProduct
-        }
+        val forwardingMediaProduct =
+            mock<ForwardingMediaProduct<MediaProduct>> {
+                on { it.productType } doReturn productType
+            }
+        val mediaSource =
+            mock<PlaybackInfoMediaSource> {
+                on { it.forwardingMediaProduct } doReturn forwardingMediaProduct
+            }
         playbackEngine.testMediaSource = mediaSource
-        val mediaItem = MediaItem.Builder()
-            .setMediaId(forwardingMediaProduct.hashCode().toString())
-            .build()
-        val windowZero = Timeline.Window()
-            .set(
-                Unit,
-                mediaItem,
-                null,
-                -1L,
-                -1L,
-                -1L,
-                false,
-                false,
-                null,
-                -1L,
-                -1L,
-                -1,
-                -1,
-                -1L,
-            )
-        val timeline = mock<Timeline> {
-            on { it.windowCount } doReturn 1
-            on { it.getWindow(eq(0), any()) } doReturn windowZero
-        }
+        val mediaItem =
+            MediaItem.Builder().setMediaId(forwardingMediaProduct.hashCode().toString()).build()
+        val windowZero =
+            Timeline.Window()
+                .set(
+                    Unit,
+                    mediaItem,
+                    null,
+                    -1L,
+                    -1L,
+                    -1L,
+                    false,
+                    false,
+                    null,
+                    -1L,
+                    -1L,
+                    -1,
+                    -1,
+                    -1L,
+                )
+        val timeline =
+            mock<Timeline> {
+                on { it.windowCount } doReturn 1
+                on { it.getWindow(eq(0), any()) } doReturn windowZero
+            }
         val currentPlaybackPositionMs = -12314351234
-        val eventTime = spy(
-            EventTime(
-                -1,
-                timeline,
-                0,
-                null,
-                -5,
-                Timeline.EMPTY,
-                -1,
-                null,
-                currentPlaybackPositionMs,
-                -1,
-            ),
-        )
+        val eventTime =
+            spy(
+                EventTime(
+                    -1,
+                    timeline,
+                    0,
+                    null,
+                    -5,
+                    Timeline.EMPTY,
+                    -1,
+                    null,
+                    currentPlaybackPositionMs,
+                    -1,
+                )
+            )
         val currentPositionSinceEpochMs = 123L
         whenever(initialExtendedExoPlayer.currentPositionSinceEpochMs)
             .thenReturn(currentPositionSinceEpochMs)
-        val positionSeconds = if (productType == ProductType.BROADCAST) {
-            currentPositionSinceEpochMs
-        } else {
-            currentPlaybackPositionMs
-        }.toDouble() / 1_000
+        val positionSeconds =
+            if (productType == ProductType.BROADCAST) {
+                    currentPositionSinceEpochMs
+                } else {
+                    currentPlaybackPositionMs
+                }
+                .toDouble() / 1_000
         val actions = mock<MutableList<Action>>()
-        val currentPlaybackSession = mock<PlaybackSession.Audio> {
-            on { it.actions } doReturn actions
-        }
+        val currentPlaybackSession =
+            mock<PlaybackSession.Audio> { on { it.actions } doReturn actions }
         playbackEngine.reflectionCurrentPlaybackSession = currentPlaybackSession
         val currentTimeMills = -1L
         whenever(trueTimeWrapper.currentTimeMillis) doReturn currentTimeMills
-        val actionType = if (reason == Player.PLAYBACK_SUPPRESSION_REASON_NONE) {
-            Action.Type.PLAYBACK_START
-        } else {
-            Action.Type.PLAYBACK_STOP
-        }
+        val actionType =
+            if (reason == Player.PLAYBACK_SUPPRESSION_REASON_NONE) {
+                Action.Type.PLAYBACK_START
+            } else {
+                Action.Type.PLAYBACK_STOP
+            }
 
-        playbackEngine.onPlaybackSuppressionReasonChanged(
-            eventTime,
-            reason,
-        )
+        playbackEngine.onPlaybackSuppressionReasonChanged(eventTime, reason)
 
         verify(forwardingMediaProduct, atLeastOnce()).productType
         verify(mediaSource, atLeastOnce()).forwardingMediaProduct
@@ -953,13 +955,7 @@ internal class ExoPlayerPlaybackEngineTest {
         }
         verify(currentPlaybackSession).actions
         verify(trueTimeWrapper).currentTimeMillis
-        verify(actions).add(
-            Action(
-                currentTimeMills,
-                positionSeconds,
-                actionType,
-            ),
-        )
+        verify(actions).add(Action(currentTimeMills, positionSeconds, actionType))
         verifyNoMoreInteractions(
             forwardingMediaProduct,
             mediaSource,
@@ -973,41 +969,44 @@ internal class ExoPlayerPlaybackEngineTest {
     @ParameterizedTest
     @EnumSource(ProductType::class)
     @Suppress("LongMethod")
-    fun onIsPlayingChangedToTrueUpdatesPlaybackState(
-        productType: ProductType,
-    ) {
+    fun onIsPlayingChangedToTrueUpdatesPlaybackState(productType: ProductType) {
         val currentPlaybackPositionMs = -12314351234
-        val eventTime = spy(
-            EventTime(
-                -1,
-                Timeline.EMPTY,
-                -1,
-                null,
-                -1,
-                Timeline.EMPTY,
-                -1,
-                null,
-                currentPlaybackPositionMs,
-                -1,
-            ),
-        )
-        val forwardingMediaProduct = mock<ForwardingMediaProduct<MediaProduct>> {
-            on { it.productType } doReturn productType
-        }
-        val mediaSource = mock<PlaybackInfoMediaSource> {
-            on { it.forwardingMediaProduct } doReturn forwardingMediaProduct
-        }
+        val eventTime =
+            spy(
+                EventTime(
+                    -1,
+                    Timeline.EMPTY,
+                    -1,
+                    null,
+                    -1,
+                    Timeline.EMPTY,
+                    -1,
+                    null,
+                    currentPlaybackPositionMs,
+                    -1,
+                )
+            )
+        val forwardingMediaProduct =
+            mock<ForwardingMediaProduct<MediaProduct>> {
+                on { it.productType } doReturn productType
+            }
+        val mediaSource =
+            mock<PlaybackInfoMediaSource> {
+                on { it.forwardingMediaProduct } doReturn forwardingMediaProduct
+            }
         playbackEngine.testMediaSource = mediaSource
         val currentPlaybackSession = mock<PlaybackSession.Audio>()
         playbackEngine.reflectionCurrentPlaybackSession = currentPlaybackSession
         val currentPositionSinceEpochMs = 123L
         whenever(initialExtendedExoPlayer.currentPositionSinceEpochMs)
             .thenReturn(currentPositionSinceEpochMs)
-        val positionSeconds = if (productType == ProductType.BROADCAST) {
-            currentPositionSinceEpochMs
-        } else {
-            currentPlaybackPositionMs
-        }.toDouble() / 1_000
+        val positionSeconds =
+            if (productType == ProductType.BROADCAST) {
+                    currentPositionSinceEpochMs
+                } else {
+                    currentPlaybackPositionMs
+                }
+                .toDouble() / 1_000
 
         playbackEngine.onIsPlayingChanged(eventTime, true)
 
@@ -1026,7 +1025,7 @@ internal class ExoPlayerPlaybackEngineTest {
     @ParameterizedTest
     @EnumSource(PlaybackState::class)
     fun onIsPlayingChangedToFalseWhileNotPlayingDoesNotClosePlaybackReportOrUpdatePlaybackState(
-        playbackState: PlaybackState,
+        playbackState: PlaybackState
     ) {
         assumeFalse(playbackState == PlaybackState.PLAYING)
         val eventTime = mock<EventTime>()
@@ -1040,42 +1039,32 @@ internal class ExoPlayerPlaybackEngineTest {
 
     @Test
     fun onPlaybackStateChangedToBufferingChangesStateToStalled() {
-        val mediaItem = MediaItem.Builder()
-            .setMediaId(forwardingMediaProduct.hashCode().toString())
-            .build()
-        val window = Timeline.Window()
-            .set(
-                Unit,
-                mediaItem,
-                null,
-                -1L,
-                -1L,
-                -1L,
-                false,
-                false,
-                null,
-                -1L,
-                -1L,
-                -1,
-                -1,
-                -1L,
-            )
-        val timeline = mock<Timeline> {
-            on { it.windowCount } doReturn 1
-            on { it.getWindow(eq(0), any()) } doReturn window
-        }
-        val eventTime = EventTime(
-            -1L,
-            timeline,
-            0,
-            null,
-            -1L,
-            Timeline.EMPTY,
-            -1,
-            null,
-            -1L,
-            -1L,
-        )
+        val mediaItem =
+            MediaItem.Builder().setMediaId(forwardingMediaProduct.hashCode().toString()).build()
+        val window =
+            Timeline.Window()
+                .set(
+                    Unit,
+                    mediaItem,
+                    null,
+                    -1L,
+                    -1L,
+                    -1L,
+                    false,
+                    false,
+                    null,
+                    -1L,
+                    -1L,
+                    -1,
+                    -1,
+                    -1L,
+                )
+        val timeline =
+            mock<Timeline> {
+                on { it.windowCount } doReturn 1
+                on { it.getWindow(eq(0), any()) } doReturn window
+            }
+        val eventTime = EventTime(-1L, timeline, 0, null, -1L, Timeline.EMPTY, -1, null, -1L, -1L)
 
         playbackEngine.onPlaybackStateChanged(eventTime, Player.STATE_BUFFERING)
 
@@ -1084,42 +1073,32 @@ internal class ExoPlayerPlaybackEngineTest {
 
     @Test
     fun onPlaybackStateChangedToReadyChangesStateToNotPlaying() {
-        val mediaItem = MediaItem.Builder()
-            .setMediaId(forwardingMediaProduct.hashCode().toString())
-            .build()
-        val window = Timeline.Window()
-            .set(
-                Unit,
-                mediaItem,
-                null,
-                -1L,
-                -1L,
-                -1L,
-                false,
-                false,
-                null,
-                -1L,
-                -1L,
-                -1,
-                -1,
-                -1L,
-            )
-        val timeline = mock<Timeline> {
-            on { it.windowCount } doReturn 1
-            on { it.getWindow(eq(0), any()) } doReturn window
-        }
-        val eventTime = EventTime(
-            -1L,
-            timeline,
-            0,
-            null,
-            -1L,
-            Timeline.EMPTY,
-            -1,
-            null,
-            -1L,
-            -1L,
-        )
+        val mediaItem =
+            MediaItem.Builder().setMediaId(forwardingMediaProduct.hashCode().toString()).build()
+        val window =
+            Timeline.Window()
+                .set(
+                    Unit,
+                    mediaItem,
+                    null,
+                    -1L,
+                    -1L,
+                    -1L,
+                    false,
+                    false,
+                    null,
+                    -1L,
+                    -1L,
+                    -1,
+                    -1,
+                    -1L,
+                )
+        val timeline =
+            mock<Timeline> {
+                on { it.windowCount } doReturn 1
+                on { it.getWindow(eq(0), any()) } doReturn window
+            }
+        val eventTime = EventTime(-1L, timeline, 0, null, -1L, Timeline.EMPTY, -1, null, -1L, -1L)
 
         playbackEngine.onPlaybackStateChanged(eventTime, Player.STATE_READY)
 
@@ -1128,42 +1107,32 @@ internal class ExoPlayerPlaybackEngineTest {
 
     @Test
     fun onPlaybackStateChangedToIdleResetsToIdle() {
-        val mediaItem = MediaItem.Builder()
-            .setMediaId(forwardingMediaProduct.hashCode().toString())
-            .build()
-        val window = Timeline.Window()
-            .set(
-                Unit,
-                mediaItem,
-                null,
-                -1L,
-                -1L,
-                -1L,
-                false,
-                false,
-                null,
-                -1L,
-                -1L,
-                -1,
-                -1,
-                -1L,
-            )
-        val timeline = mock<Timeline> {
-            on { it.windowCount } doReturn 1
-            on { it.getWindow(eq(0), any()) } doReturn window
-        }
-        val eventTime = EventTime(
-            -1L,
-            timeline,
-            0,
-            null,
-            -1L,
-            Timeline.EMPTY,
-            -1,
-            null,
-            -1L,
-            -1L,
-        )
+        val mediaItem =
+            MediaItem.Builder().setMediaId(forwardingMediaProduct.hashCode().toString()).build()
+        val window =
+            Timeline.Window()
+                .set(
+                    Unit,
+                    mediaItem,
+                    null,
+                    -1L,
+                    -1L,
+                    -1L,
+                    false,
+                    false,
+                    null,
+                    -1L,
+                    -1L,
+                    -1,
+                    -1,
+                    -1L,
+                )
+        val timeline =
+            mock<Timeline> {
+                on { it.windowCount } doReturn 1
+                on { it.getWindow(eq(0), any()) } doReturn window
+            }
+        val eventTime = EventTime(-1L, timeline, 0, null, -1L, Timeline.EMPTY, -1, null, -1L, -1L)
 
         playbackEngine.onPlaybackStateChanged(eventTime, Player.STATE_IDLE)
 
@@ -1191,73 +1160,71 @@ internal class ExoPlayerPlaybackEngineTest {
         val actualQuality = VideoQuality.AUDIO_ONLY
         val sourceType = "sourceType"
         val sourceId = "sourceId"
-        val currentPlaybackSession = mock<PlaybackSession.Video> {
-            on { it.playbackSessionId } doReturn playbackSessionId
-            on { it.startTimestamp } doReturn startTimestamp
-            on { it.startAssetPosition } doReturn startAssetPosition
-            on { it.requestedProductId } doReturn requestedProductId
-            on { it.actualProductId } doReturn actualProductId
-            on { it.actualAssetPresentation } doReturn actualAssetPresentation
-            on { it.actualQuality } doReturn actualQuality
-            on { it.sourceType } doReturn sourceType
-            on { it.sourceId } doReturn sourceId
-            on { it.actions } doReturn actions
-        }
+        val currentPlaybackSession =
+            mock<PlaybackSession.Video> {
+                on { it.playbackSessionId } doReturn playbackSessionId
+                on { it.startTimestamp } doReturn startTimestamp
+                on { it.startAssetPosition } doReturn startAssetPosition
+                on { it.requestedProductId } doReturn requestedProductId
+                on { it.actualProductId } doReturn actualProductId
+                on { it.actualAssetPresentation } doReturn actualAssetPresentation
+                on { it.actualQuality } doReturn actualQuality
+                on { it.sourceType } doReturn sourceType
+                on { it.sourceId } doReturn sourceId
+                on { it.actions } doReturn actions
+            }
         playbackEngine.reflectionCurrentPlaybackSession = currentPlaybackSession
         val currentTimeMillis = 12345L
         whenever(trueTimeWrapper.currentTimeMillis) doReturn currentTimeMillis
         val currentPlaybackPositionMs = -12314351234
 
-        val mediaItem = MediaItem.Builder()
-            .setMediaId(forwardingMediaProduct.hashCode().toString())
-            .build()
-        val window = Timeline.Window()
-            .set(
-                Unit,
-                mediaItem,
-                null,
-                -1L,
-                -1L,
-                -1L,
-                false,
-                false,
-                null,
-                -1L,
-                -1L,
-                -1,
-                -1,
-                -1L,
+        val mediaItem =
+            MediaItem.Builder().setMediaId(forwardingMediaProduct.hashCode().toString()).build()
+        val window =
+            Timeline.Window()
+                .set(
+                    Unit,
+                    mediaItem,
+                    null,
+                    -1L,
+                    -1L,
+                    -1L,
+                    false,
+                    false,
+                    null,
+                    -1L,
+                    -1L,
+                    -1,
+                    -1,
+                    -1L,
+                )
+        val timeline =
+            mock<Timeline> {
+                on { it.windowCount } doReturn 1
+                on { it.getWindow(eq(0), any()) } doReturn window
+            }
+        val eventTime =
+            spy(
+                EventTime(
+                    -1L,
+                    timeline,
+                    0,
+                    null,
+                    -1,
+                    Timeline.EMPTY,
+                    -1,
+                    null,
+                    currentPlaybackPositionMs,
+                    -1,
+                )
             )
-        val timeline = mock<Timeline> {
-            on { it.windowCount } doReturn 1
-            on { it.getWindow(eq(0), any()) } doReturn window
-        }
-        val eventTime = spy(
-            EventTime(
-                -1L,
-                timeline,
-                0,
-                null,
-                -1,
-                Timeline.EMPTY,
-                -1,
-                null,
-                currentPlaybackPositionMs,
-                -1,
-            ),
-        )
 
         runBlocking {
-            launch {
-                playbackEngine.onPlaybackStateChanged(eventTime, Player.STATE_ENDED)
-            }
+            launch { playbackEngine.onPlaybackStateChanged(eventTime, Player.STATE_ENDED) }
             withTimeout(3000) {
                 assertThat(playbackEngine.events.first())
                     .isEqualTo(
-                        Event.MediaProductEnded(
-                            forwardingMediaProduct.delegate,
-                            playbackContext,
-                        ),
+                        Event.MediaProductEnded(forwardingMediaProduct.delegate, playbackContext)
                     )
             }
         }
@@ -1273,23 +1240,24 @@ internal class ExoPlayerPlaybackEngineTest {
         verify(currentPlaybackSession).sourceId
         verify(currentPlaybackSession).actions
         verify(currentPlaybackSession).extras
-        verify(eventReporter).report(
-            VideoPlaybackSession.Payload(
-                playbackSessionId,
-                startTimestamp,
-                startAssetPosition,
-                requestedProductId,
-                actualProductId,
-                actualAssetPresentation,
-                actualQuality,
-                sourceType,
-                sourceId,
-                actions,
-                currentTimeMillis,
-                currentPlaybackPositionMs.toDouble() / 1_000,
-            ),
-            emptyMap(),
-        )
+        verify(eventReporter)
+            .report(
+                VideoPlaybackSession.Payload(
+                    playbackSessionId,
+                    startTimestamp,
+                    startAssetPosition,
+                    requestedProductId,
+                    actualProductId,
+                    actualAssetPresentation,
+                    actualQuality,
+                    sourceType,
+                    sourceId,
+                    actions,
+                    currentTimeMillis,
+                    currentPlaybackPositionMs.toDouble() / 1_000,
+                ),
+                emptyMap(),
+            )
         verify(internalHandler).removeCallbacksAndMessages(null)
         assertThat(playbackEngine.mediaProduct).isNull()
         assertThat(playbackEngine.testNextMediaSource).isNull()
@@ -1301,25 +1269,29 @@ internal class ExoPlayerPlaybackEngineTest {
 
     @ParameterizedTest
     @ValueSource(
-        ints = [
-            Player.DISCONTINUITY_REASON_SEEK_ADJUSTMENT,
-            Player.DISCONTINUITY_REASON_SKIP,
-            Player.DISCONTINUITY_REASON_REMOVE,
-            Player.DISCONTINUITY_REASON_INTERNAL,
-        ],
+        ints =
+            [
+                Player.DISCONTINUITY_REASON_SEEK_ADJUSTMENT,
+                Player.DISCONTINUITY_REASON_SKIP,
+                Player.DISCONTINUITY_REASON_REMOVE,
+                Player.DISCONTINUITY_REASON_INTERNAL,
+            ]
     )
     fun onPositionDiscontinuityShouldOnlyUpdatePosWhenNotAutoTransitionOrSeeking(reason: Int) {
         val forwardingMediaProduct = mock<ForwardingMediaProduct<MediaProduct>>()
-        val mediaSource = mock<PlaybackInfoMediaSource> {
-            on { it.forwardingMediaProduct } doReturn forwardingMediaProduct
-        }
+        val mediaSource =
+            mock<PlaybackInfoMediaSource> {
+                on { it.forwardingMediaProduct } doReturn forwardingMediaProduct
+            }
         val nextMediaProduct = mock<MediaProduct>()
-        val nextForwardingMediaProduct = mock<ForwardingMediaProduct<MediaProduct>> {
-            on { it.delegate } doReturn nextMediaProduct
-        }
-        val nextMediaSource = mock<PlaybackInfoMediaSource> {
-            on { it.forwardingMediaProduct } doReturn nextForwardingMediaProduct
-        }
+        val nextForwardingMediaProduct =
+            mock<ForwardingMediaProduct<MediaProduct>> {
+                on { it.delegate } doReturn nextMediaProduct
+            }
+        val nextMediaSource =
+            mock<PlaybackInfoMediaSource> {
+                on { it.forwardingMediaProduct } doReturn nextForwardingMediaProduct
+            }
         val playbackContext = mock<PlaybackContext.Track>()
         val nextPlaybackContext = mock<PlaybackContext.Track>()
         playbackEngine.testMediaSource = mediaSource
@@ -1327,18 +1299,7 @@ internal class ExoPlayerPlaybackEngineTest {
         playbackEngine.reflectionPlaybackContext = playbackContext
         playbackEngine.reflectionNextPlaybackContext = nextPlaybackContext
         val positionMs = 87L
-        val newPositionInfo = spy(
-            Player.PositionInfo(
-                null,
-                -1,
-                null,
-                -1,
-                positionMs,
-                -1,
-                -1,
-                -1,
-            ),
-        )
+        val newPositionInfo = spy(Player.PositionInfo(null, -1, null, -1, positionMs, -1, -1, -1))
 
         playbackEngine.onPositionDiscontinuity(mock(), mock(), newPositionInfo, reason)
 
@@ -1354,33 +1315,36 @@ internal class ExoPlayerPlaybackEngineTest {
     @ParameterizedTest
     @EnumSource(ProductType::class)
     fun onPositionDiscontinuityWhenAutoTransitionShouldEmitMediaProductTransitionAndUpdateEventInfoForRepeatModeOff(
-        productType: ProductType,
+        productType: ProductType
     ) = runBlocking {
         val duration = 24.seconds
         val nextMediaProduct = mock<MediaProduct>()
-        val nextForwardingMediaProduct = mock<ForwardingMediaProduct<MediaProduct>> {
-            on { it.delegate } doReturn nextMediaProduct
-            on { it.productType } doReturn productType
-        }
+        val nextForwardingMediaProduct =
+            mock<ForwardingMediaProduct<MediaProduct>> {
+                on { it.delegate } doReturn nextMediaProduct
+                on { it.productType } doReturn productType
+            }
         val playbackInfo = mock<PlaybackInfo.Track>()
-        val nextMediaSource = mock<PlaybackInfoMediaSource> {
-            on { it.forwardingMediaProduct } doReturn nextForwardingMediaProduct
-            on { it.playbackInfo } doReturn playbackInfo
-        }
-        val nextPlaybackContext = PlaybackContext.Track(
-            AudioMode.STEREO,
-            AudioQuality.HIGH,
-            320_000,
-            16,
-            "aac",
-            44100,
-            "123",
-            AssetPresentation.FULL,
-            duration.toDouble(DurationUnit.SECONDS).toFloat(),
-            AssetSource.ONLINE,
-            "123-abc",
-            "123-abc",
-        )
+        val nextMediaSource =
+            mock<PlaybackInfoMediaSource> {
+                on { it.forwardingMediaProduct } doReturn nextForwardingMediaProduct
+                on { it.playbackInfo } doReturn playbackInfo
+            }
+        val nextPlaybackContext =
+            PlaybackContext.Track(
+                AudioMode.STEREO,
+                AudioQuality.HIGH,
+                320_000,
+                16,
+                "aac",
+                44100,
+                "123",
+                AssetPresentation.FULL,
+                duration.toDouble(DurationUnit.SECONDS).toFloat(),
+                AssetSource.ONLINE,
+                "123-abc",
+                "123-abc",
+            )
         playbackEngine.testMediaSource = mock()
         playbackEngine.testNextMediaSource = nextMediaSource
         playbackEngine.reflectionPlaybackContext = mock<PlaybackContext.Track>()
@@ -1388,92 +1352,76 @@ internal class ExoPlayerPlaybackEngineTest {
         val startTimestampMs = -1L
         whenever(trueTimeWrapper.currentTimeMillis) doReturn startTimestampMs
         val startedPlaybackStatistics = mock<PlaybackStatistics.Success.Started>()
-        val preparedPlaybackStatistics = mock<PlaybackStatistics.Success.Prepared.Audio> {
-            on { it.toStarted(startTimestampMs) } doReturn startedPlaybackStatistics
-        }
+        val preparedPlaybackStatistics =
+            mock<PlaybackStatistics.Success.Prepared.Audio> {
+                on { it.toStarted(startTimestampMs) } doReturn startedPlaybackStatistics
+            }
         val undeterminedPlaybackStatisticsWithIdealStartTimestampMs =
             mock<PlaybackStatistics.Undetermined>()
-        val undeterminedPlaybackStatistics = mock<PlaybackStatistics.Undetermined> {
-            on {
-                copy(
-                    idealStartTimestampMs =
-                    PlaybackStatistics.IdealStartTimestampMs.Known(startTimestampMs),
-                )
-            }.thenReturn(undeterminedPlaybackStatisticsWithIdealStartTimestampMs)
-        }
+        val undeterminedPlaybackStatistics =
+            mock<PlaybackStatistics.Undetermined> {
+                on {
+                        copy(
+                            idealStartTimestampMs =
+                                PlaybackStatistics.IdealStartTimestampMs.Known(startTimestampMs)
+                        )
+                    }
+                    .thenReturn(undeterminedPlaybackStatisticsWithIdealStartTimestampMs)
+            }
         whenever(
-            undeterminedPlaybackSessionResolver(
-                undeterminedPlaybackStatisticsWithIdealStartTimestampMs,
-                playbackInfo,
-                emptyMap(),
-            ),
-        ).thenReturn(preparedPlaybackStatistics)
+                undeterminedPlaybackSessionResolver(
+                    undeterminedPlaybackStatisticsWithIdealStartTimestampMs,
+                    playbackInfo,
+                    emptyMap(),
+                )
+            )
+            .thenReturn(preparedPlaybackStatistics)
         playbackEngine.reflectionNextPlaybackStatistics = undeterminedPlaybackStatistics
         val nextPlaybackSession = mock<PlaybackSession.Audio>()
         playbackEngine.reflectionNextPlaybackSession = nextPlaybackSession
         val eventPlaybackPositionMs = Long.MAX_VALUE
-        val mediaItem = MediaItem.Builder()
-            .setMediaId(forwardingMediaProduct.hashCode().toString())
-            .build()
-        val window = Timeline.Window()
-            .set(
-                Unit,
-                mediaItem,
-                null,
-                -1L,
-                -1L,
-                -1L,
-                false,
-                false,
-                null,
-                -1L,
-                duration.toLong(DurationUnit.MICROSECONDS),
-                -1,
-                -1,
-                -1L,
-            )
+        val mediaItem =
+            MediaItem.Builder().setMediaId(forwardingMediaProduct.hashCode().toString()).build()
+        val window =
+            Timeline.Window()
+                .set(
+                    Unit,
+                    mediaItem,
+                    null,
+                    -1L,
+                    -1L,
+                    -1L,
+                    false,
+                    false,
+                    null,
+                    -1L,
+                    duration.toLong(DurationUnit.MICROSECONDS),
+                    -1,
+                    -1,
+                    -1L,
+                )
         val windowIndex = 0
-        val timeline = mock<Timeline> {
-            on { it.windowCount } doReturn 1
-            on { it.getWindow(eq(windowIndex), any()) } doReturn window
-        }
-        val eventTime = EventTime(
-            -1,
-            timeline,
-            windowIndex,
-            null,
-            eventPlaybackPositionMs,
-            Timeline.EMPTY,
-            -1,
-            null,
-            -1,
-            -1,
-        )
-        val oldPositionInfo = spy(
-            Player.PositionInfo(
+        val timeline =
+            mock<Timeline> {
+                on { it.windowCount } doReturn 1
+                on { it.getWindow(eq(windowIndex), any()) } doReturn window
+            }
+        val eventTime =
+            EventTime(
+                -1,
+                timeline,
+                windowIndex,
                 null,
+                eventPlaybackPositionMs,
+                Timeline.EMPTY,
                 -1,
                 null,
                 -1,
-                12459L,
                 -1,
-                -1,
-                -1,
-            ),
-        )
+            )
+        val oldPositionInfo = spy(Player.PositionInfo(null, -1, null, -1, 12459L, -1, -1, -1))
         val positionMs = 87L
-        val newPositionInfo = spy(
-            Player.PositionInfo(
-                null,
-                -1,
-                null,
-                -1,
-                positionMs,
-                -1,
-                -1,
-                -1,
-            ),
-        )
+        val newPositionInfo = spy(Player.PositionInfo(null, -1, null, -1, positionMs, -1, -1, -1))
         whenever(initialExtendedExoPlayer.repeatMode).thenReturn(Player.REPEAT_MODE_OFF)
         whenever(volumeHelper.getVolume(playbackInfo)).thenReturn(1.0F)
 
@@ -1488,9 +1436,7 @@ internal class ExoPlayerPlaybackEngineTest {
             }
             withTimeout(3000) {
                 assertThat(playbackEngine.events.first())
-                    .isEqualTo(
-                        Event.MediaProductTransition(nextMediaProduct, nextPlaybackContext),
-                    )
+                    .isEqualTo(Event.MediaProductTransition(nextMediaProduct, nextPlaybackContext))
             }
         }
 
@@ -1533,113 +1479,99 @@ internal class ExoPlayerPlaybackEngineTest {
     @ParameterizedTest
     @EnumSource(ProductType::class)
     fun onPositionDiscontinuityWhenAutoTransitionShouldEmitMediaProductTransitionAndUpdateEventInfoForRepeatModeOne(
-        productType: ProductType,
+        productType: ProductType
     ) {
         val duration = 24000L
         val productId = "123"
         val sourceType = "sourceType"
         val sourceId = "sourceId"
-        val currentMediaProduct = mock<MediaProduct> {
-            on { it.productId } doReturn productId
-            on { it.productType } doReturn productType
-            on { it.sourceType } doReturn sourceType
-            on { it.sourceId } doReturn sourceId
-        }
+        val currentMediaProduct =
+            mock<MediaProduct> {
+                on { it.productId } doReturn productId
+                on { it.productType } doReturn productType
+                on { it.sourceType } doReturn sourceType
+                on { it.sourceId } doReturn sourceId
+            }
         val currentForwardingMediaProduct = ForwardingMediaProduct(currentMediaProduct)
         val playbackInfo = mock<PlaybackInfo.Track>()
-        val mediaSource = mock<PlaybackInfoMediaSource> {
-            on { it.forwardingMediaProduct } doReturn currentForwardingMediaProduct
-            on { it.playbackInfo } doReturn playbackInfo
-        }
-        val currentPlaybackContext = PlaybackContext.Track(
-            AudioMode.STEREO,
-            AudioQuality.HIGH,
-            320_000,
-            16,
-            "aac",
-            44100,
-            "123",
-            AssetPresentation.FULL,
-            duration.toFloat() / 1000,
-            AssetSource.ONLINE,
-            "123-abc",
-            "123-abc",
-        )
+        val mediaSource =
+            mock<PlaybackInfoMediaSource> {
+                on { it.forwardingMediaProduct } doReturn currentForwardingMediaProduct
+                on { it.playbackInfo } doReturn playbackInfo
+            }
+        val currentPlaybackContext =
+            PlaybackContext.Track(
+                AudioMode.STEREO,
+                AudioQuality.HIGH,
+                320_000,
+                16,
+                "aac",
+                44100,
+                "123",
+                AssetPresentation.FULL,
+                duration.toFloat() / 1000,
+                AssetSource.ONLINE,
+                "123-abc",
+                "123-abc",
+            )
         playbackEngine.testMediaSource = mediaSource
         playbackEngine.reflectionPlaybackContext = currentPlaybackContext
         val startTimestampMs = -1L
         whenever(trueTimeWrapper.currentTimeMillis) doReturn startTimestampMs
         val eventPlaybackPositionMs = Long.MAX_VALUE
-        val eventTime = EventTime(
-            -1,
-            Timeline.EMPTY,
-            -1,
-            null,
-            eventPlaybackPositionMs,
-            mock(),
-            0,
-            null,
-            -1,
-            -1,
-        )
+        val eventTime =
+            EventTime(
+                -1,
+                Timeline.EMPTY,
+                -1,
+                null,
+                eventPlaybackPositionMs,
+                mock(),
+                0,
+                null,
+                -1,
+                -1,
+            )
         val oldPositionMs = 12459L
-        val oldPositionInfo = spy(
-            Player.PositionInfo(
-                null,
-                -1,
-                null,
-                -1,
-                oldPositionMs,
-                -1,
-                -1,
-                -1,
-            ),
-        )
+        val oldPositionInfo =
+            spy(Player.PositionInfo(null, -1, null, -1, oldPositionMs, -1, -1, -1))
         val positionMs = 87L
-        val newPositionInfo = spy(
-            Player.PositionInfo(
-                null,
-                -1,
-                null,
-                -1,
-                positionMs,
-                -1,
-                -1,
-                -1,
-            ),
-        )
+        val newPositionInfo = spy(Player.PositionInfo(null, -1, null, -1, positionMs, -1, -1, -1))
         whenever(initialExtendedExoPlayer.repeatMode).thenReturn(Player.REPEAT_MODE_ONE)
         whenever(volumeHelper.getVolume(null)).thenReturn(1.0F)
         whenever(initialExtendedExoPlayer.getPositionSinceEpochMs(positionMs))
             .thenReturn(positionMs)
-        val currentPlaybackSession = mock<PlaybackSession.Audio> {
-            on { it.startAssetPosition } doReturn 43.0
-        }
+        val currentPlaybackSession =
+            mock<PlaybackSession.Audio> { on { it.startAssetPosition } doReturn 43.0 }
         val newStreamingSessionId = mock<UUID>()
         val startedPlaybackStatistics = mock<PlaybackStatistics.Success.Started>()
-        val preparedPlaybackStatistics = mock<PlaybackStatistics.Success.Prepared.Audio> {
-            on { it.toStarted(startTimestampMs) } doReturn startedPlaybackStatistics
-        }
+        val preparedPlaybackStatistics =
+            mock<PlaybackStatistics.Success.Prepared.Audio> {
+                on { it.toStarted(startTimestampMs) } doReturn startedPlaybackStatistics
+            }
         val undeterminedPlaybackStatistics = mock<PlaybackStatistics.Undetermined>()
         whenever(
-            undeterminedPlaybackSessionResolver(
-                undeterminedPlaybackStatistics,
-                playbackInfo,
-                emptyMap(),
-            ),
-        ).thenReturn(preparedPlaybackStatistics)
-        val newStreamingSession = mock<StreamingSession.Implicit> {
-            on { it.id } doReturn newStreamingSessionId
-            on {
-                it.createPlaybackSession(playbackInfo, currentForwardingMediaProduct)
-            } doReturn currentPlaybackSession
-            on {
-                createUndeterminedPlaybackStatistics(
-                    PlaybackStatistics.IdealStartTimestampMs.Known(startTimestampMs),
+                undeterminedPlaybackSessionResolver(
+                    undeterminedPlaybackStatistics,
+                    playbackInfo,
                     emptyMap(),
                 )
-            }.thenReturn(undeterminedPlaybackStatistics)
-        }
+            )
+            .thenReturn(preparedPlaybackStatistics)
+        val newStreamingSession =
+            mock<StreamingSession.Implicit> {
+                on { it.id } doReturn newStreamingSessionId
+                on {
+                    it.createPlaybackSession(playbackInfo, currentForwardingMediaProduct)
+                } doReturn currentPlaybackSession
+                on {
+                        createUndeterminedPlaybackStatistics(
+                            PlaybackStatistics.IdealStartTimestampMs.Known(startTimestampMs),
+                            emptyMap(),
+                        )
+                    }
+                    .thenReturn(undeterminedPlaybackStatistics)
+            }
         whenever(initialExtendedExoPlayer.currentStreamingSession).thenReturn(newStreamingSession)
         val newCurrentPlaybackContext =
             currentPlaybackContext.copy(playbackSessionId = newStreamingSessionId.toString())
@@ -1656,10 +1588,7 @@ internal class ExoPlayerPlaybackEngineTest {
             withTimeout(3000) {
                 assertThat(playbackEngine.events.first())
                     .isEqualTo(
-                        Event.MediaProductTransition(
-                            currentMediaProduct,
-                            newCurrentPlaybackContext,
-                        ),
+                        Event.MediaProductTransition(currentMediaProduct, newCurrentPlaybackContext)
                     )
             }
         }
@@ -1715,53 +1644,31 @@ internal class ExoPlayerPlaybackEngineTest {
     @Test
     fun onPositionDiscontinuityDueToSeekShouldCreateStallIfShouldNotStartPlaybackAfterUserAction() {
         val currentPlaybackPositionMs = 5L
-        val eventTime = EventTime(
-            -1,
-            Timeline.EMPTY,
-            -1,
-            null,
-            -1,
-            Timeline.EMPTY,
-            -1,
-            null,
-            currentPlaybackPositionMs,
-            -1,
-        )
+        val eventTime =
+            EventTime(
+                -1,
+                Timeline.EMPTY,
+                -1,
+                null,
+                -1,
+                Timeline.EMPTY,
+                -1,
+                null,
+                currentPlaybackPositionMs,
+                -1,
+            )
         val oldPositionMs = 345678L
-        val oldPosition = spy(
-            Player.PositionInfo(
-                null,
-                0,
-                null,
-                -1,
-                oldPositionMs,
-                -1L,
-                -1,
-                -1,
-            ),
-        )
+        val oldPosition = spy(Player.PositionInfo(null, 0, null, -1, oldPositionMs, -1L, -1, -1))
         val newPositionMs = 44444L
-        val newPosition = spy(
-            Player.PositionInfo(
-                null,
-                0,
-                null,
-                -1,
-                newPositionMs,
-                -1L,
-                -1,
-                -1,
-            ),
-        )
+        val newPosition = spy(Player.PositionInfo(null, 0, null, -1, newPositionMs, -1L, -1, -1))
         val extendedExoPlayer = mock<ExtendedExoPlayer>()
         playbackEngine.reflectionExtendedExoPlayer = extendedExoPlayer
         whenever(extendedExoPlayer.shouldStartPlaybackAfterUserAction()) doReturn false
         val currentTimeMills = -80L
         whenever(trueTimeWrapper.currentTimeMillis) doReturn currentTimeMills
         val actions = mock<MutableList<Action>>()
-        val currentPlaybackSession = mock<PlaybackSession.Audio> {
-            on { it.actions } doReturn actions
-        }
+        val currentPlaybackSession =
+            mock<PlaybackSession.Audio> { on { it.actions } doReturn actions }
         playbackEngine.reflectionCurrentPlaybackSession = currentPlaybackSession
 
         playbackEngine.onPositionDiscontinuity(
@@ -1776,28 +1683,31 @@ internal class ExoPlayerPlaybackEngineTest {
         verify(trueTimeWrapper).currentTimeMillis
         verify(currentPlaybackSession).actions
         inOrder(actions).apply {
-            verify(actions).add(
-                Action(
-                    currentTimeMills,
-                    oldPositionMs.toDouble() / 1_000,
-                    Action.Type.PLAYBACK_STOP,
-                ),
-            )
-            verify(actions).add(
-                Action(
-                    currentTimeMills,
-                    newPositionMs.toDouble() / 1_000,
-                    Action.Type.PLAYBACK_START,
-                ),
-            )
+            verify(actions)
+                .add(
+                    Action(
+                        currentTimeMills,
+                        oldPositionMs.toDouble() / 1_000,
+                        Action.Type.PLAYBACK_STOP,
+                    )
+                )
+            verify(actions)
+                .add(
+                    Action(
+                        currentTimeMills,
+                        newPositionMs.toDouble() / 1_000,
+                        Action.Type.PLAYBACK_START,
+                    )
+                )
         }
-        assertThat(playbackEngine.reflectionCurrentStall).isEqualTo(
-            StartedStall(
-                Reason.SEEK,
-                currentPlaybackPositionMs.toDouble() / 1_000,
-                currentTimeMills,
-            ),
-        )
+        assertThat(playbackEngine.reflectionCurrentStall)
+            .isEqualTo(
+                StartedStall(
+                    Reason.SEEK,
+                    currentPlaybackPositionMs.toDouble() / 1_000,
+                    currentTimeMills,
+                )
+            )
         verifyNoMoreInteractions(
             oldPosition,
             newPosition,
@@ -1812,40 +1722,17 @@ internal class ExoPlayerPlaybackEngineTest {
     fun onPositionDiscontinuityDueToSeekShouldNotCreateStallIfShouldStartPlaybackAfterUserAction() {
         val eventTime = mock<EventTime>()
         val oldPositionMs = 345678L
-        val oldPosition = spy(
-            Player.PositionInfo(
-                null,
-                0,
-                null,
-                -1,
-                oldPositionMs,
-                -1L,
-                -1,
-                -1,
-            ),
-        )
+        val oldPosition = spy(Player.PositionInfo(null, 0, null, -1, oldPositionMs, -1L, -1, -1))
         val newPositionMs = 44444L
-        val newPosition = spy(
-            Player.PositionInfo(
-                null,
-                0,
-                null,
-                -1,
-                newPositionMs,
-                -1L,
-                -1,
-                -1,
-            ),
-        )
+        val newPosition = spy(Player.PositionInfo(null, 0, null, -1, newPositionMs, -1L, -1, -1))
         val extendedExoPlayer = mock<ExtendedExoPlayer>()
         playbackEngine.reflectionExtendedExoPlayer = extendedExoPlayer
         whenever(extendedExoPlayer.shouldStartPlaybackAfterUserAction()) doReturn true
         val currentTimeMills = -80L
         whenever(trueTimeWrapper.currentTimeMillis) doReturn currentTimeMills
         val actions = mock<MutableList<Action>>()
-        val currentPlaybackSession = mock<PlaybackSession.Audio> {
-            on { it.actions } doReturn actions
-        }
+        val currentPlaybackSession =
+            mock<PlaybackSession.Audio> { on { it.actions } doReturn actions }
         playbackEngine.reflectionCurrentPlaybackSession = currentPlaybackSession
 
         playbackEngine.onPositionDiscontinuity(
@@ -1860,20 +1747,22 @@ internal class ExoPlayerPlaybackEngineTest {
         verify(trueTimeWrapper).currentTimeMillis
         verify(currentPlaybackSession).actions
         inOrder(actions).apply {
-            verify(actions).add(
-                Action(
-                    currentTimeMills,
-                    oldPositionMs.toDouble() / 1_000,
-                    Action.Type.PLAYBACK_STOP,
-                ),
-            )
-            verify(actions).add(
-                Action(
-                    currentTimeMills,
-                    newPositionMs.toDouble() / 1_000,
-                    Action.Type.PLAYBACK_START,
-                ),
-            )
+            verify(actions)
+                .add(
+                    Action(
+                        currentTimeMills,
+                        oldPositionMs.toDouble() / 1_000,
+                        Action.Type.PLAYBACK_STOP,
+                    )
+                )
+            verify(actions)
+                .add(
+                    Action(
+                        currentTimeMills,
+                        newPositionMs.toDouble() / 1_000,
+                        Action.Type.PLAYBACK_START,
+                    )
+                )
         }
         assertThat(playbackEngine.reflectionCurrentStall).isNull()
         verifyNoMoreInteractions(
@@ -1890,47 +1779,50 @@ internal class ExoPlayerPlaybackEngineTest {
     fun onTimelineChangedShouldDoNothingIfDurationIsUnset() {
         val duration = C.TIME_UNSET
         val forwardingMediaProduct = mock<ForwardingMediaProduct<MediaProduct>>()
-        val mediaSource = mock<PlaybackInfoMediaSource> {
-            on { it.forwardingMediaProduct } doReturn forwardingMediaProduct
-        }
+        val mediaSource =
+            mock<PlaybackInfoMediaSource> {
+                on { it.forwardingMediaProduct } doReturn forwardingMediaProduct
+            }
         playbackEngine.testMediaSource = mediaSource
-        val mediaItem = MediaItem.Builder()
-            .setMediaId(forwardingMediaProduct.hashCode().toString())
-            .build()
-        val window = Timeline.Window()
-            .set(
-                Unit,
-                mediaItem,
+        val mediaItem =
+            MediaItem.Builder().setMediaId(forwardingMediaProduct.hashCode().toString()).build()
+        val window =
+            Timeline.Window()
+                .set(
+                    Unit,
+                    mediaItem,
+                    null,
+                    -1L,
+                    -1L,
+                    -1L,
+                    false,
+                    false,
+                    null,
+                    -1L,
+                    duration,
+                    -1,
+                    -1,
+                    -1L,
+                )
+        val windowIndex = 0
+        val timeline =
+            mock<Timeline> {
+                on { it.windowCount } doReturn 1
+                on { it.getWindow(eq(windowIndex), any()) } doReturn window
+            }
+        val eventTime =
+            EventTime(
+                -1L,
+                timeline,
+                windowIndex,
                 null,
                 -1L,
-                -1L,
-                -1L,
-                false,
-                false,
+                Timeline.EMPTY,
+                windowIndex,
                 null,
                 -1L,
-                duration,
-                -1,
-                -1,
                 -1L,
             )
-        val windowIndex = 0
-        val timeline = mock<Timeline> {
-            on { it.windowCount } doReturn 1
-            on { it.getWindow(eq(windowIndex), any()) } doReturn window
-        }
-        val eventTime = EventTime(
-            -1L,
-            timeline,
-            windowIndex,
-            null,
-            -1L,
-            Timeline.EMPTY,
-            windowIndex,
-            null,
-            -1L,
-            -1L,
-        )
 
         playbackEngine.onTimelineChanged(eventTime, Player.TIMELINE_CHANGE_REASON_SOURCE_UPDATE)
 
@@ -1943,52 +1835,45 @@ internal class ExoPlayerPlaybackEngineTest {
     @Test
     fun onTimelineChangedShouldDoNothingIfDurationHasNotChanged() {
         val forwardingMediaProduct = mock<ForwardingMediaProduct<MediaProduct>>()
-        val mediaSource = mock<PlaybackInfoMediaSource> {
-            on { it.forwardingMediaProduct } doReturn forwardingMediaProduct
-        }
+        val mediaSource =
+            mock<PlaybackInfoMediaSource> {
+                on { it.forwardingMediaProduct } doReturn forwardingMediaProduct
+            }
         playbackEngine.testMediaSource = mediaSource
         val duration = 123.milliseconds
-        val playbackContext = mock<PlaybackContext.Track> {
-            on { it.duration } doReturn duration.toDouble(DurationUnit.SECONDS).toFloat()
-        }
+        val playbackContext =
+            mock<PlaybackContext.Track> {
+                on { it.duration } doReturn duration.toDouble(DurationUnit.SECONDS).toFloat()
+            }
         playbackEngine.reflectionPlaybackContext = playbackContext
-        val mediaItem = MediaItem.Builder()
-            .setMediaId(forwardingMediaProduct.hashCode().toString())
-            .build()
-        val window = Timeline.Window()
-            .set(
-                Unit,
-                mediaItem,
-                null,
-                -1L,
-                -1L,
-                -1L,
-                false,
-                false,
-                null,
-                -1L,
-                duration.toLong(DurationUnit.MICROSECONDS),
-                -1,
-                -1,
-                -1L,
-            )
+        val mediaItem =
+            MediaItem.Builder().setMediaId(forwardingMediaProduct.hashCode().toString()).build()
+        val window =
+            Timeline.Window()
+                .set(
+                    Unit,
+                    mediaItem,
+                    null,
+                    -1L,
+                    -1L,
+                    -1L,
+                    false,
+                    false,
+                    null,
+                    -1L,
+                    duration.toLong(DurationUnit.MICROSECONDS),
+                    -1,
+                    -1,
+                    -1L,
+                )
         val windowIndex = 0
-        val timeline = mock<Timeline> {
-            on { it.windowCount } doReturn 1
-            on { it.getWindow(eq(windowIndex), any()) } doReturn window
-        }
-        val eventTime = EventTime(
-            -1L,
-            timeline,
-            windowIndex,
-            null,
-            -1L,
-            Timeline.EMPTY,
-            -1,
-            null,
-            -1L,
-            -1L,
-        )
+        val timeline =
+            mock<Timeline> {
+                on { it.windowCount } doReturn 1
+                on { it.getWindow(eq(windowIndex), any()) } doReturn window
+            }
+        val eventTime =
+            EventTime(-1L, timeline, windowIndex, null, -1L, Timeline.EMPTY, -1, null, -1L, -1L)
 
         playbackEngine.onTimelineChanged(eventTime, Player.TIMELINE_CHANGE_REASON_SOURCE_UPDATE)
 
@@ -2004,67 +1889,59 @@ internal class ExoPlayerPlaybackEngineTest {
     fun onTimelineChangedShouldEmitMediaProductTransition() {
         val duration = 24.seconds
         val mediaProduct = mock<MediaProduct>()
-        val forwardingMediaProduct = mock<ForwardingMediaProduct<MediaProduct>> {
-            on { it.delegate } doReturn mediaProduct
-        }
-        val mediaSource = mock<PlaybackInfoMediaSource> {
-            on { it.forwardingMediaProduct } doReturn forwardingMediaProduct
-        }
-        val playbackContext = PlaybackContext.Track(
-            AudioMode.STEREO,
-            AudioQuality.HIGH,
-            320_000,
-            16,
-            "aac",
-            44100,
-            "123",
-            AssetPresentation.FULL,
-            C.TIME_UNSET.toFloat() / 1_000,
-            AssetSource.ONLINE,
-            "123-abc",
-            "123-abc",
-        )
+        val forwardingMediaProduct =
+            mock<ForwardingMediaProduct<MediaProduct>> { on { it.delegate } doReturn mediaProduct }
+        val mediaSource =
+            mock<PlaybackInfoMediaSource> {
+                on { it.forwardingMediaProduct } doReturn forwardingMediaProduct
+            }
+        val playbackContext =
+            PlaybackContext.Track(
+                AudioMode.STEREO,
+                AudioQuality.HIGH,
+                320_000,
+                16,
+                "aac",
+                44100,
+                "123",
+                AssetPresentation.FULL,
+                C.TIME_UNSET.toFloat() / 1_000,
+                AssetSource.ONLINE,
+                "123-abc",
+                "123-abc",
+            )
         val updatedPlaybackContext =
             playbackContext.copy(duration = duration.toDouble(DurationUnit.SECONDS).toFloat())
         playbackEngine.testMediaSource = mediaSource
         playbackEngine.reflectionPlaybackContext = playbackContext
-        val mediaItem = MediaItem.Builder()
-            .setMediaId(forwardingMediaProduct.hashCode().toString())
-            .build()
-        val window = Timeline.Window()
-            .set(
-                Unit,
-                mediaItem,
-                null,
-                -1L,
-                -1L,
-                -1L,
-                false,
-                false,
-                null,
-                -1L,
-                duration.toLong(DurationUnit.MICROSECONDS),
-                -1,
-                -1,
-                -1L,
-            )
+        val mediaItem =
+            MediaItem.Builder().setMediaId(forwardingMediaProduct.hashCode().toString()).build()
+        val window =
+            Timeline.Window()
+                .set(
+                    Unit,
+                    mediaItem,
+                    null,
+                    -1L,
+                    -1L,
+                    -1L,
+                    false,
+                    false,
+                    null,
+                    -1L,
+                    duration.toLong(DurationUnit.MICROSECONDS),
+                    -1,
+                    -1,
+                    -1L,
+                )
         val windowIndex = 0
-        val timeline = mock<Timeline> {
-            on { it.windowCount } doReturn 1
-            on { it.getWindow(eq(windowIndex), any()) } doReturn window
-        }
-        val eventTime = EventTime(
-            -1L,
-            timeline,
-            windowIndex,
-            null,
-            -1L,
-            Timeline.EMPTY,
-            -1,
-            null,
-            -1L,
-            -1L,
-        )
+        val timeline =
+            mock<Timeline> {
+                on { it.windowCount } doReturn 1
+                on { it.getWindow(eq(windowIndex), any()) } doReturn window
+            }
+        val eventTime =
+            EventTime(-1L, timeline, windowIndex, null, -1L, Timeline.EMPTY, -1, null, -1L, -1L)
 
         runBlocking {
             launch {
@@ -2079,7 +1956,7 @@ internal class ExoPlayerPlaybackEngineTest {
                         Event.MediaProductTransition(
                             forwardingMediaProduct.delegate,
                             updatedPlaybackContext,
-                        ),
+                        )
                     )
             }
         }
@@ -2109,25 +1986,23 @@ internal class ExoPlayerPlaybackEngineTest {
         hlsManifest.reflectionSetMediaPlaylist(hlsMediaPlaylist)
         whenever(initialExtendedExoPlayer.currentManifest).thenReturn(hlsManifest)
         val duration = 24000L
-        val window = mock<Timeline.Window> {
-            on { it.durationMs } doReturn duration
-        }
+        val window = mock<Timeline.Window> { on { it.durationMs } doReturn duration }
         val currentWindowIndex = 83
-        val currentTimeline = mock<Timeline> {
-            on { it.getWindow(eq(currentWindowIndex), any()) } doReturn window
-        }
-        val eventTime = EventTime(
-            -1L,
-            Timeline.EMPTY,
-            -1,
-            null,
-            -1L,
-            currentTimeline,
-            currentWindowIndex,
-            null,
-            -1L,
-            -1L,
-        )
+        val currentTimeline =
+            mock<Timeline> { on { it.getWindow(eq(currentWindowIndex), any()) } doReturn window }
+        val eventTime =
+            EventTime(
+                -1L,
+                Timeline.EMPTY,
+                -1,
+                null,
+                -1L,
+                currentTimeline,
+                currentWindowIndex,
+                null,
+                -1L,
+                -1L,
+            )
 
         playbackEngine.onTimelineChanged(eventTime, Player.TIMELINE_CHANGE_REASON_SOURCE_UPDATE)
 
@@ -2142,45 +2017,33 @@ internal class ExoPlayerPlaybackEngineTest {
     @Test
     fun onAudioPositionAdvancingShouldDoNothingIfCurrentPlaybackStatisticsAreStarted() {
         val forwardingMediaProduct = mock<ForwardingMediaProduct<MediaProduct>>()
-        val mediaSource = mock<PlaybackInfoMediaSource> {
-            on { it.forwardingMediaProduct } doReturn forwardingMediaProduct
-        }
+        val mediaSource =
+            mock<PlaybackInfoMediaSource> {
+                on { it.forwardingMediaProduct } doReturn forwardingMediaProduct
+            }
         playbackEngine.testMediaSource = mediaSource
-        val mediaItem = MediaItem.Builder()
-            .setMediaId(forwardingMediaProduct.hashCode().toString())
-            .build()
-        val windowZero = Timeline.Window()
-            .set(
-                Unit,
-                mediaItem,
-                null,
-                -1L,
-                -1L,
-                -1L,
-                false,
-                false,
-                null,
-                -1L,
-                -1L,
-                -1,
-                -1,
-                -1L,
-            )
-        val timeline = mock<Timeline> {
-            on { it.getWindow(eq(0), any()) } doReturn windowZero
-        }
-        val eventTime = EventTime(
-            -1,
-            timeline,
-            0,
-            null,
-            -8,
-            Timeline.EMPTY,
-            -1,
-            null,
-            -1,
-            -1,
-        )
+        val mediaItem =
+            MediaItem.Builder().setMediaId(forwardingMediaProduct.hashCode().toString()).build()
+        val windowZero =
+            Timeline.Window()
+                .set(
+                    Unit,
+                    mediaItem,
+                    null,
+                    -1L,
+                    -1L,
+                    -1L,
+                    false,
+                    false,
+                    null,
+                    -1L,
+                    -1L,
+                    -1,
+                    -1,
+                    -1L,
+                )
+        val timeline = mock<Timeline> { on { it.getWindow(eq(0), any()) } doReturn windowZero }
+        val eventTime = EventTime(-1, timeline, 0, null, -8, Timeline.EMPTY, -1, null, -1, -1)
         val currentPlaybackStatistics = mock<PlaybackStatistics.Success.Started>()
         playbackEngine.reflectionCurrentPlaybackStatistics = currentPlaybackStatistics
 
@@ -2195,52 +2058,44 @@ internal class ExoPlayerPlaybackEngineTest {
     @Test
     fun onAudioPositionAdvancingShouldRecordStartTimestampIfCurrentPlaybackStatisticsArePrepared() {
         val forwardingMediaProduct = mock<ForwardingMediaProduct<MediaProduct>>()
-        val mediaSource = mock<PlaybackInfoMediaSource> {
-            on { it.forwardingMediaProduct } doReturn forwardingMediaProduct
-        }
+        val mediaSource =
+            mock<PlaybackInfoMediaSource> {
+                on { it.forwardingMediaProduct } doReturn forwardingMediaProduct
+            }
         playbackEngine.testMediaSource = mediaSource
-        val mediaItem = MediaItem.Builder()
-            .setMediaId(forwardingMediaProduct.hashCode().toString())
-            .build()
-        val windowZero = Timeline.Window()
-            .set(
-                Unit,
-                mediaItem,
-                null,
-                -1L,
-                -1L,
-                -1L,
-                false,
-                false,
-                null,
-                -1L,
-                -1L,
-                -1,
-                -1,
-                -1L,
-            )
-        val timeline = mock<Timeline> {
-            on { it.windowCount } doReturn 1
-            on { it.getWindow(eq(0), any()) } doReturn windowZero
-        }
-        val eventTime = EventTime(
-            -1,
-            timeline,
-            0,
-            null,
-            -123,
-            Timeline.EMPTY,
-            -1,
-            null,
-            -1,
-            -1,
-        )
+        val mediaItem =
+            MediaItem.Builder().setMediaId(forwardingMediaProduct.hashCode().toString()).build()
+        val windowZero =
+            Timeline.Window()
+                .set(
+                    Unit,
+                    mediaItem,
+                    null,
+                    -1L,
+                    -1L,
+                    -1L,
+                    false,
+                    false,
+                    null,
+                    -1L,
+                    -1L,
+                    -1,
+                    -1,
+                    -1L,
+                )
+        val timeline =
+            mock<Timeline> {
+                on { it.windowCount } doReturn 1
+                on { it.getWindow(eq(0), any()) } doReturn windowZero
+            }
+        val eventTime = EventTime(-1, timeline, 0, null, -123, Timeline.EMPTY, -1, null, -1, -1)
         val currentTimeMillis = 5L
         whenever(trueTimeWrapper.currentTimeMillis) doReturn currentTimeMillis
         val startedPlaybackStatistics = mock<PlaybackStatistics.Success.Started>()
-        val preparedPlaybackStatistics = mock<PlaybackStatistics.Success.Prepared.Audio> {
-            on { toStarted(currentTimeMillis) } doReturn startedPlaybackStatistics
-        }
+        val preparedPlaybackStatistics =
+            mock<PlaybackStatistics.Success.Prepared.Audio> {
+                on { toStarted(currentTimeMillis) } doReturn startedPlaybackStatistics
+            }
         playbackEngine.reflectionCurrentPlaybackStatistics = preparedPlaybackStatistics
         val currentPlaybackSession = mock<PlaybackSession.Audio>()
         playbackEngine.reflectionCurrentPlaybackSession = currentPlaybackSession
@@ -2289,18 +2144,19 @@ internal class ExoPlayerPlaybackEngineTest {
         call: ExoPlayerPlaybackEngine.(EventTime, Format) -> Unit,
     ) {
         val eventPlaybackPositionMs = 0L
-        val eventTime = EventTime(
-            -1,
-            Timeline.EMPTY,
-            targetWindowIndex,
-            null,
-            eventPlaybackPositionMs,
-            Timeline.EMPTY,
-            -1,
-            null,
-            -1,
-            -1,
-        )
+        val eventTime =
+            EventTime(
+                -1,
+                Timeline.EMPTY,
+                targetWindowIndex,
+                null,
+                eventPlaybackPositionMs,
+                Timeline.EMPTY,
+                -1,
+                null,
+                -1,
+                -1,
+            )
         val currentTimeMillis = -38L
         whenever(trueTimeWrapper.currentTimeMillis) doReturn currentTimeMillis
         val sampleMimeType = "sampleMimeType"
@@ -2308,38 +2164,42 @@ internal class ExoPlayerPlaybackEngineTest {
         val bitrate = Int.MAX_VALUE
         val width = 0
         val height = Int.MIN_VALUE
-        val format = Format.Builder()
-            .setSampleMimeType(sampleMimeType)
-            .setCodecs(codecs)
-            .setPeakBitrate(bitrate)
-            .setWidth(width)
-            .setHeight(height)
-            .build()
+        val format =
+            Format.Builder()
+                .setSampleMimeType(sampleMimeType)
+                .setCodecs(codecs)
+                .setPeakBitrate(bitrate)
+                .setWidth(width)
+                .setHeight(height)
+                .build()
         val currentPlaybackStatistics = mock<PlaybackStatistics.Success.Prepared.Audio>()
         val nextPlaybackStatistics = mock<PlaybackStatistics.Undetermined>()
         when (targetWindowIndex) {
             0 -> playbackEngine.reflectionCurrentPlaybackStatistics = currentPlaybackStatistics
             1 -> playbackEngine.reflectionNextPlaybackStatistics = nextPlaybackStatistics
         }
-        val targetPlaybackStatistics = when (targetWindowIndex) {
-            0 -> currentPlaybackStatistics
-            1 -> nextPlaybackStatistics
-            else -> throw IllegalArgumentException("Invalid index $targetWindowIndex")
-        }
-        val targetAdaptation = Adaptation(
-            eventPlaybackPositionMs.toDouble() / 1_000,
-            currentTimeMillis,
-            sampleMimeType,
-            codecs,
-            bitrate,
-            width,
-            height,
-        )
-        val updatedPlaybackStatistics = when (targetWindowIndex) {
-            0 -> mock<PlaybackStatistics.Success.Prepared.Audio>()
-            1 -> mock<PlaybackStatistics.Undetermined>()
-            else -> throw IllegalArgumentException("Invalid index $targetWindowIndex")
-        }
+        val targetPlaybackStatistics =
+            when (targetWindowIndex) {
+                0 -> currentPlaybackStatistics
+                1 -> nextPlaybackStatistics
+                else -> throw IllegalArgumentException("Invalid index $targetWindowIndex")
+            }
+        val targetAdaptation =
+            Adaptation(
+                eventPlaybackPositionMs.toDouble() / 1_000,
+                currentTimeMillis,
+                sampleMimeType,
+                codecs,
+                bitrate,
+                width,
+                height,
+            )
+        val updatedPlaybackStatistics =
+            when (targetWindowIndex) {
+                0 -> mock<PlaybackStatistics.Success.Prepared.Audio>()
+                1 -> mock<PlaybackStatistics.Undetermined>()
+                else -> throw IllegalArgumentException("Invalid index $targetWindowIndex")
+            }
         whenever(targetPlaybackStatistics + targetAdaptation) doReturn updatedPlaybackStatistics
 
         playbackEngine.call(eventTime, format)
@@ -2347,13 +2207,16 @@ internal class ExoPlayerPlaybackEngineTest {
         verify(trueTimeWrapper).currentTimeMillis
         verify(targetPlaybackStatistics) + targetAdaptation
         assertThat(
-            when (targetWindowIndex) {
-                0 -> playbackEngine.reflectionCurrentPlaybackStatistics
-                1 -> playbackEngine.reflectionNextPlaybackStatistics
-                else ->
-                    throw IllegalArgumentException("Expected valid index, found $targetWindowIndex")
-            },
-        ).isSameAs(updatedPlaybackStatistics)
+                when (targetWindowIndex) {
+                    0 -> playbackEngine.reflectionCurrentPlaybackStatistics
+                    1 -> playbackEngine.reflectionNextPlaybackStatistics
+                    else ->
+                        throw IllegalArgumentException(
+                            "Expected valid index, found $targetWindowIndex"
+                        )
+                }
+            )
+            .isSameAs(updatedPlaybackStatistics)
         verifyNoMoreInteractions(targetPlaybackStatistics, updatedPlaybackStatistics)
     }
 
@@ -2380,49 +2243,49 @@ internal class ExoPlayerPlaybackEngineTest {
     }
 
     private fun testTrackAdaptationOnCurrentWindowIndexWithInvalidPosition(
-        call: ExoPlayerPlaybackEngine.(EventTime, Format) -> Unit,
+        call: ExoPlayerPlaybackEngine.(EventTime, Format) -> Unit
     ) {
         val eventPlaybackPositionMs = 123_456L
         val forwardingMediaProduct = mock<ForwardingMediaProduct<MediaProduct>>()
-        val mediaSource = mock<PlaybackInfoMediaSource> {
-            on { it.forwardingMediaProduct } doReturn forwardingMediaProduct
-        }
+        val mediaSource =
+            mock<PlaybackInfoMediaSource> {
+                on { it.forwardingMediaProduct } doReturn forwardingMediaProduct
+            }
         playbackEngine.testMediaSource = mediaSource
-        val mediaItem = MediaItem.Builder()
-            .setMediaId(forwardingMediaProduct.hashCode().toString())
-            .build()
-        val windowZero = Timeline.Window()
-            .set(
-                Unit,
-                mediaItem,
+        val mediaItem =
+            MediaItem.Builder().setMediaId(forwardingMediaProduct.hashCode().toString()).build()
+        val windowZero =
+            Timeline.Window()
+                .set(
+                    Unit,
+                    mediaItem,
+                    null,
+                    -1L,
+                    -1L,
+                    -1L,
+                    false,
+                    false,
+                    null,
+                    -1L,
+                    -1L,
+                    -1,
+                    -1,
+                    -1L,
+                )
+        val timeline = mock<Timeline> { on { it.getWindow(eq(0), any()) } doReturn windowZero }
+        val eventTime =
+            EventTime(
+                -1,
+                timeline,
+                0,
                 null,
-                -1L,
-                -1L,
-                -1L,
-                false,
-                false,
+                eventPlaybackPositionMs,
+                Timeline.EMPTY,
+                -1,
                 null,
-                -1L,
-                -1L,
                 -1,
                 -1,
-                -1L,
             )
-        val timeline = mock<Timeline> {
-            on { it.getWindow(eq(0), any()) } doReturn windowZero
-        }
-        val eventTime = EventTime(
-            -1,
-            timeline,
-            0,
-            null,
-            eventPlaybackPositionMs,
-            Timeline.EMPTY,
-            -1,
-            null,
-            -1,
-            -1,
-        )
 
         playbackEngine.call(eventTime, mock())
     }
@@ -2450,24 +2313,13 @@ internal class ExoPlayerPlaybackEngineTest {
     }
 
     private fun testTrackAdaptationOnInvalidWindowIndex(
-        call: ExoPlayerPlaybackEngine.(EventTime, Format) -> Unit,
+        call: ExoPlayerPlaybackEngine.(EventTime, Format) -> Unit
     ) {
         val format = mock<Format>()
 
         assertThrows<IllegalStateException> {
             playbackEngine.call(
-                EventTime(
-                    -1,
-                    Timeline.EMPTY,
-                    -2,
-                    null,
-                    -3,
-                    Timeline.EMPTY,
-                    -4,
-                    null,
-                    -5,
-                    -6,
-                ),
+                EventTime(-1, Timeline.EMPTY, -2, null, -3, Timeline.EMPTY, -4, null, -5, -6),
                 format,
             )
         }
@@ -2483,20 +2335,16 @@ internal class ExoPlayerPlaybackEngineTest {
         val reason = mock<Reason>()
         val assetPositionSeconds = 0.0
         val startTimestamp = -1L
-        val initialCurrentStartedStall = mock<StartedStall> {
-            on { it.reason } doReturn reason
-            on { it.assetPositionSeconds } doReturn assetPositionSeconds
-            on { it.startTimestamp } doReturn startTimestamp
-        }
+        val initialCurrentStartedStall =
+            mock<StartedStall> {
+                on { it.reason } doReturn reason
+                on { it.assetPositionSeconds } doReturn assetPositionSeconds
+                on { it.startTimestamp } doReturn startTimestamp
+            }
         playbackEngine.reflectionCurrentStall = initialCurrentStartedStall
         val currentTimeMillis = 2L
         whenever(trueTimeWrapper.currentTimeMillis) doReturn currentTimeMillis
-        val completedStall = Stall(
-            reason,
-            assetPositionSeconds,
-            startTimestamp,
-            currentTimeMillis,
-        )
+        val completedStall = Stall(reason, assetPositionSeconds, startTimestamp, currentTimeMillis)
         val updatedPlaybackStatistics = mock<PlaybackStatistics.Success.Started>()
         whenever(currentPlaybackStatistics + completedStall) doReturn updatedPlaybackStatistics
 
@@ -2531,30 +2379,32 @@ internal class ExoPlayerPlaybackEngineTest {
     @Test
     fun onAudioUnderrunShouldCreateUnexpectedStall() {
         val currentPlaybackPositionMs = 5123132515
-        val eventTime = EventTime(
-            -1,
-            Timeline.EMPTY,
-            -1,
-            null,
-            -1,
-            Timeline.EMPTY,
-            -1,
-            null,
-            currentPlaybackPositionMs,
-            -1,
-        )
+        val eventTime =
+            EventTime(
+                -1,
+                Timeline.EMPTY,
+                -1,
+                null,
+                -1,
+                Timeline.EMPTY,
+                -1,
+                null,
+                currentPlaybackPositionMs,
+                -1,
+            )
         val currentTimeMillis = Long.MAX_VALUE
         whenever(trueTimeWrapper.currentTimeMillis) doReturn currentTimeMillis
 
         playbackEngine.onAudioUnderrun(eventTime, -1, 0, Long.MIN_VALUE)
 
-        assertThat(playbackEngine.reflectionCurrentStall).isEqualTo(
-            StartedStall(
-                Reason.UNEXPECTED,
-                currentPlaybackPositionMs.toDouble() / 1_000,
-                currentTimeMillis,
-            ),
-        )
+        assertThat(playbackEngine.reflectionCurrentStall)
+            .isEqualTo(
+                StartedStall(
+                    Reason.UNEXPECTED,
+                    currentPlaybackPositionMs.toDouble() / 1_000,
+                    currentTimeMillis,
+                )
+            )
     }
 
     @Test
@@ -2579,9 +2429,10 @@ internal class ExoPlayerPlaybackEngineTest {
 
         @JvmStatic
         @Suppress("UnusedPrivateMember")
-        private fun nextMediaProducts() = setOf(
-            Arguments.of(MediaProduct(ProductType.TRACK, "2")),
-            Arguments.of(MediaProduct(ProductType.VIDEO, "3")),
-        )
+        private fun nextMediaProducts() =
+            setOf(
+                Arguments.of(MediaProduct(ProductType.TRACK, "2")),
+                Arguments.of(MediaProduct(ProductType.VIDEO, "3")),
+            )
     }
 }

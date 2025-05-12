@@ -7,11 +7,9 @@ android {
     namespace = "com.tidal.sdk.player"
 
     sourceSets {
-        getByName("androidTest").java
-            .srcDirs(
-                "events/src/androidTest/kotlin",
-                "events/src/testext/kotlin",
-            )
+        getByName("androidTest")
+            .java
+            .srcDirs("events/src/androidTest/kotlin", "events/src/testext/kotlin")
     }
 }
 

@@ -47,8 +47,7 @@ sealed class PlaybackStatistics<T : PlaybackStatistics.Payload> :
         @Keep
         data class Stall(
             private val reason: Reason,
-            @SerializedName("assetPosition")
-            private val assetPositionSeconds: Double,
+            @SerializedName("assetPosition") private val assetPositionSeconds: Double,
             private val startTimestamp: Long,
             private val endTimestamp: Long,
         ) {
@@ -63,17 +62,13 @@ sealed class PlaybackStatistics<T : PlaybackStatistics.Payload> :
 
         @Keep
         data class Adaptation(
-            @SerializedName("assetPosition")
-            private val assetPositionSeconds: Double,
+            @SerializedName("assetPosition") private val assetPositionSeconds: Double,
             private val timestamp: Long,
             private val mimeType: String,
             private val codecs: String,
-            @SerializedName("bandwidth")
-            private val bandwidthBps: Int,
-            @Px
-            private val videoWidth: Int,
-            @Px
-            private val videoHeight: Int,
+            @SerializedName("bandwidth") private val bandwidthBps: Int,
+            @Px private val videoWidth: Int,
+            @Px private val videoHeight: Int,
         )
     }
 }

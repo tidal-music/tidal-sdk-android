@@ -13,7 +13,9 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-internal class Submitter @Inject constructor(
+internal class Submitter
+@Inject
+constructor(
     private val configProvider: EventsConfigProvider,
     private val eventSizeValidator: EventSizeValidator,
     private val repository: EventsRepository,
@@ -42,12 +44,7 @@ internal class Submitter @Inject constructor(
         eventName: String,
         monitoringEventType: MonitoringEventType,
     ) {
-        repository.storeNewMonitoringEvent(
-            MonitoringEvent(
-                monitoringEventType,
-                eventName,
-            ),
-        )
+        repository.storeNewMonitoringEvent(MonitoringEvent(monitoringEventType, eventName))
     }
 
     private fun createEvent(

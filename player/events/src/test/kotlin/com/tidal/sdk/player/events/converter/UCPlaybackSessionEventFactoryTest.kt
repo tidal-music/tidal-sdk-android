@@ -25,22 +25,24 @@ internal class UCPlaybackSessionEventFactoryTest {
     private val userSupplier = mock<UserSupplier>()
     private val clientSupplier = mock<ClientSupplier>()
     private val ucPlaybackSessionFactory = mock<UCPlaybackSession.Factory>()
-    private val ucPlaybackSessionEventFactory = UCPlaybackSessionEventFactory(
-        trueTimeWrapper,
-        uuidWrapper,
-        userSupplier,
-        clientSupplier,
-        ucPlaybackSessionFactory,
-    )
+    private val ucPlaybackSessionEventFactory =
+        UCPlaybackSessionEventFactory(
+            trueTimeWrapper,
+            uuidWrapper,
+            userSupplier,
+            clientSupplier,
+            ucPlaybackSessionFactory,
+        )
 
     @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(
-        trueTimeWrapper,
-        uuidWrapper,
-        userSupplier,
-        clientSupplier,
-        ucPlaybackSessionFactory,
-    )
+    fun afterEach() =
+        verifyNoMoreInteractions(
+            trueTimeWrapper,
+            uuidWrapper,
+            userSupplier,
+            clientSupplier,
+            ucPlaybackSessionFactory,
+        )
 
     @Test
     fun invoke() = runBlocking {
@@ -55,15 +57,16 @@ internal class UCPlaybackSessionEventFactoryTest {
         val payload = mock<UCPlaybackSession.Payload>()
         val expected = mock<UCPlaybackSession>()
         whenever(
-            ucPlaybackSessionFactory.create(
-                currentTimeMillis,
-                randomUUID,
-                user,
-                client,
-                payload,
-                emptyMap(),
-            ),
-        ).thenReturn(expected)
+                ucPlaybackSessionFactory.create(
+                    currentTimeMillis,
+                    randomUUID,
+                    user,
+                    client,
+                    payload,
+                    emptyMap(),
+                )
+            )
+            .thenReturn(expected)
 
         val actual = ucPlaybackSessionEventFactory(payload, emptyMap())
 
@@ -71,14 +74,8 @@ internal class UCPlaybackSessionEventFactoryTest {
         verify(uuidWrapper).randomUUID
         verify(userSupplier)()
         verify(clientSupplier)()
-        verify(ucPlaybackSessionFactory).create(
-            currentTimeMillis,
-            randomUUID,
-            user,
-            client,
-            payload,
-            emptyMap(),
-        )
+        verify(ucPlaybackSessionFactory)
+            .create(currentTimeMillis, randomUUID, user, client, payload, emptyMap())
         assertThat(actual).isSameAs(expected)
         verifyNoMoreInteractions(randomUUID, user, client, payload, expected)
     }

@@ -23,8 +23,7 @@ internal class VersionedCdmCalculatorTest {
     private val exoMediaDrmProvider = mock<ExoMediaDrm.Provider>()
     private val versionedCdmCalculator = VersionedCdm.Calculator(exoMediaDrmProvider)
 
-    @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(exoMediaDrmProvider)
+    @AfterEach fun afterEach() = verifyNoMoreInteractions(exoMediaDrmProvider)
 
     @Test
     fun invokeOnUnlicensedPlaybackInfo() {
@@ -40,13 +39,13 @@ internal class VersionedCdmCalculatorTest {
 
     @Test
     fun invokeOnLicensedPlaybackInfo() {
-        val playbackInfo = mock<PlaybackInfo.Track> {
-            on { licenseSecurityToken } doReturn "licenseSecurityToken"
-        }
+        val playbackInfo =
+            mock<PlaybackInfo.Track> { on { licenseSecurityToken } doReturn "licenseSecurityToken" }
         val expectedVersion = "expectedVersion"
-        val exoMediaDrm = mock<ExoMediaDrm> {
-            on { getPropertyString(MediaDrm.PROPERTY_VERSION) } doReturn expectedVersion
-        }
+        val exoMediaDrm =
+            mock<ExoMediaDrm> {
+                on { getPropertyString(MediaDrm.PROPERTY_VERSION) } doReturn expectedVersion
+            }
         whenever(exoMediaDrmProvider.acquireExoMediaDrm(C.WIDEVINE_UUID)) doReturn exoMediaDrm
 
         val actual = versionedCdmCalculator(playbackInfo)

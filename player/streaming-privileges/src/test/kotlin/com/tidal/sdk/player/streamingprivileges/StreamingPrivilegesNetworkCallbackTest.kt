@@ -15,16 +15,11 @@ internal class StreamingPrivilegesNetworkCallbackTest {
 
     private val networkInteractionsHandler = mock<Handler>()
     private val connectRunnable = mock<ConnectRunnable>()
-    private val streamingPrivilegesNetworkCallback = StreamingPrivilegesNetworkCallback(
-        networkInteractionsHandler,
-        connectRunnable,
-    )
+    private val streamingPrivilegesNetworkCallback =
+        StreamingPrivilegesNetworkCallback(networkInteractionsHandler, connectRunnable)
 
     @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(
-        networkInteractionsHandler,
-        connectRunnable,
-    )
+    fun afterEach() = verifyNoMoreInteractions(networkInteractionsHandler, connectRunnable)
 
     @Test
     fun onAvailableWhenNoConnectionMutableState() {
@@ -38,9 +33,10 @@ internal class StreamingPrivilegesNetworkCallbackTest {
     @Test
     fun onCapabilitiesChangedWhenNetworkHasInternet() {
         val network = mock<Network>()
-        val networkCapabilities = mock<NetworkCapabilities> {
-            on { hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) } doReturn true
-        }
+        val networkCapabilities =
+            mock<NetworkCapabilities> {
+                on { hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) } doReturn true
+            }
 
         streamingPrivilegesNetworkCallback.onCapabilitiesChanged(network, networkCapabilities)
 

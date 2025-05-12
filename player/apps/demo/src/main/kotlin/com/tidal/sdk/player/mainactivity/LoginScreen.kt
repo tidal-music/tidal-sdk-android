@@ -38,7 +38,7 @@ internal fun LoginScreen(
                     message = state.snackbarMessage,
                     withDismissAction = true,
                     duration = SnackbarDuration.Indefinite,
-                ) == SnackbarResult.Dismissed,
+                ) == SnackbarResult.Dismissed
             )
             dispatchSetSnackbarMessage(null)
         }
@@ -50,9 +50,7 @@ internal fun LoginScreen(
         return
     }
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(top = paddingValues.calculateTopPadding()),
+        modifier = Modifier.fillMaxSize().padding(top = paddingValues.calculateTopPadding()),
         contentAlignment = Alignment.Center,
     ) {
         CircularProgressIndicator()

@@ -15,5 +15,5 @@ internal val PlaybackInfoMediaSource.reflectionPrepareSourceInternalF: () -> Uni
     get() = reflectionGetInstanceMemberProperty("prepareSourceInternalF")!!
 
 internal fun PlaybackInfoMediaSource.reflectionSetCreateEventDispatcherF(
-    newEventDispatcherF: () -> EventDispatcher,
+    newEventDispatcherF: () -> EventDispatcher
 ) = reflectionSetInstanceMemberProperty("createEventDispatcherF", newEventDispatcherF)

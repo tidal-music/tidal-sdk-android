@@ -9,17 +9,16 @@ import kotlinx.serialization.json.Json
 internal class LegacyCredentialsMigrator {
 
     private inline fun <reified T : LegacyTokens> decodeJsonString(jsonString: String): Tokens =
-        Json.decodeFromString<T>(
-            jsonString,
-        ).toTokens()
+        Json.decodeFromString<T>(jsonString).toTokens()
 
     @Suppress("TooGenericExceptionCaught")
     fun migrateCredentials(jsonString: String): Tokens {
         // if ever necessary, add further legacy type operations here
-        val operations = listOf(
-            { decodeJsonString<TokensV1>(jsonString) },
-            { decodeJsonString<TokensV2>(jsonString) },
-        )
+        val operations =
+            listOf(
+                { decodeJsonString<TokensV1>(jsonString) },
+                { decodeJsonString<TokensV2>(jsonString) },
+            )
         logger.i { "Attempting to decode using legacy types." }
         val exceptions = mutableListOf<Exception>()
         for (operation in operations) {

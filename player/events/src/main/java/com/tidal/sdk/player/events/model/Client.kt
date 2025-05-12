@@ -7,9 +7,7 @@ import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 import com.tidal.sdk.player.events.R
 
-/**
- * Information about the client an event is tied to.
- */
+/** Information about the client an event is tied to. */
 @Keep
 @Suppress("UnusedPrivateMember")
 data class Client(
@@ -23,19 +21,10 @@ data class Client(
     @Keep
     enum class DeviceType {
 
-        @SerializedName("androidAuto")
-        ANDROID_AUTO,
-
-        @SerializedName("tv")
-        TV,
-
-        @SerializedName("tablet")
-        TABLET,
-
-        @SerializedName("mobile")
-        MOBILE,
-
-        ;
+        @SerializedName("androidAuto") ANDROID_AUTO,
+        @SerializedName("tv") TV,
+        @SerializedName("tablet") TABLET,
+        @SerializedName("mobile") MOBILE;
 
         companion object {
             fun from(context: Context, uiModeManager: UiModeManager): DeviceType {

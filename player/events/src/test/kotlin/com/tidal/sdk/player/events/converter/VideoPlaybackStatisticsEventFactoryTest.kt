@@ -25,22 +25,24 @@ internal class VideoPlaybackStatisticsEventFactoryTest {
     private val userSupplier = mock<UserSupplier>()
     private val clientSupplier = mock<ClientSupplier>()
     private val videoPlaybackStatisticsFactory = mock<VideoPlaybackStatistics.Factory>()
-    private val videoPlaybackStatisticsEventFactory = VideoPlaybackStatisticsEventFactory(
-        trueTimeWrapper,
-        uuidWrapper,
-        userSupplier,
-        clientSupplier,
-        videoPlaybackStatisticsFactory,
-    )
+    private val videoPlaybackStatisticsEventFactory =
+        VideoPlaybackStatisticsEventFactory(
+            trueTimeWrapper,
+            uuidWrapper,
+            userSupplier,
+            clientSupplier,
+            videoPlaybackStatisticsFactory,
+        )
 
     @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(
-        trueTimeWrapper,
-        uuidWrapper,
-        userSupplier,
-        clientSupplier,
-        videoPlaybackStatisticsFactory,
-    )
+    fun afterEach() =
+        verifyNoMoreInteractions(
+            trueTimeWrapper,
+            uuidWrapper,
+            userSupplier,
+            clientSupplier,
+            videoPlaybackStatisticsFactory,
+        )
 
     @Test
     fun invoke() = runBlocking {
@@ -55,15 +57,16 @@ internal class VideoPlaybackStatisticsEventFactoryTest {
         val payload = mock<VideoPlaybackStatistics.Payload>()
         val expected = mock<VideoPlaybackStatistics>()
         whenever(
-            videoPlaybackStatisticsFactory.create(
-                currentTimeMillis,
-                randomUUID,
-                user,
-                client,
-                payload,
-                emptyMap(),
-            ),
-        ).thenReturn(expected)
+                videoPlaybackStatisticsFactory.create(
+                    currentTimeMillis,
+                    randomUUID,
+                    user,
+                    client,
+                    payload,
+                    emptyMap(),
+                )
+            )
+            .thenReturn(expected)
 
         val actual = videoPlaybackStatisticsEventFactory(payload, emptyMap())
 
@@ -71,14 +74,8 @@ internal class VideoPlaybackStatisticsEventFactoryTest {
         verify(uuidWrapper).randomUUID
         verify(userSupplier)()
         verify(clientSupplier)()
-        verify(videoPlaybackStatisticsFactory).create(
-            currentTimeMillis,
-            randomUUID,
-            user,
-            client,
-            payload,
-            emptyMap(),
-        )
+        verify(videoPlaybackStatisticsFactory)
+            .create(currentTimeMillis, randomUUID, user, client, payload, emptyMap())
         assertThat(actual).isSameAs(expected)
         verifyNoMoreInteractions(randomUUID, user, client, payload, expected)
     }

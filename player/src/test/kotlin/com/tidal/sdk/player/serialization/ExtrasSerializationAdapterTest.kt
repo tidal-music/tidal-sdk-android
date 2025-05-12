@@ -14,43 +14,49 @@ import org.junit.jupiter.api.Test
 
 internal class ExtrasSerializationAdapterTest {
 
-    private val gson = GsonBuilder()
-        .registerTypeHierarchyAdapter(Extra::class.java, ExtrasSerializationAdapter())
-        .disableHtmlEscaping()
-        .create()
+    private val gson =
+        GsonBuilder()
+            .registerTypeHierarchyAdapter(Extra::class.java, ExtrasSerializationAdapter())
+            .disableHtmlEscaping()
+            .create()
 
-    private val sampleExtras = CollectionMap(
-        mapOf(
-            "boolean" to Bool(true),
-            "int" to number(1),
-            "float" to number(1.01f),
-            "double" to number(1.7976931348623157E308),
-            "text" to Text("textValue"),
-            "listNumber" to CollectionList(listOf(number(1), number(2), number(3))),
-            "listMix" to CollectionList(
-                listOf(
-                    number(1),
-                    Text("a"),
-                    Bool(false),
-                    CollectionList(listOf(Text("listValue"))),
-                    CollectionMap(mapOf("key1" to number(1), "key2" to Text("a"))),
-                ),
-            ),
-            "mapMix" to CollectionMap(
-                mapOf(
-                    "key2.1" to CollectionMap(
-                        mapOf(
-                            "key2.1.1" to Bool(true),
-                            "key2.1.2" to number(1),
-                            "key2.1.3" to Text("a"),
-                        ),
+    private val sampleExtras =
+        CollectionMap(
+            mapOf(
+                "boolean" to Bool(true),
+                "int" to number(1),
+                "float" to number(1.01f),
+                "double" to number(1.7976931348623157E308),
+                "text" to Text("textValue"),
+                "listNumber" to CollectionList(listOf(number(1), number(2), number(3))),
+                "listMix" to
+                    CollectionList(
+                        listOf(
+                            number(1),
+                            Text("a"),
+                            Bool(false),
+                            CollectionList(listOf(Text("listValue"))),
+                            CollectionMap(mapOf("key1" to number(1), "key2" to Text("a"))),
+                        )
                     ),
-                ),
-            ),
-        ),
-    )
+                "mapMix" to
+                    CollectionMap(
+                        mapOf(
+                            "key2.1" to
+                                CollectionMap(
+                                    mapOf(
+                                        "key2.1.1" to Bool(true),
+                                        "key2.1.2" to number(1),
+                                        "key2.1.3" to Text("a"),
+                                    )
+                                )
+                        )
+                    ),
+            )
+        )
 
-    private val sampleJson = """
+    private val sampleJson =
+        """
         {
             "boolean":true,
             "int":1,
@@ -61,23 +67,20 @@ internal class ExtrasSerializationAdapterTest {
             "listMix":[1,"a",false,["listValue"],{"key1":1,"key2":"a"}],
             "mapMix":{"key2.1":{"key2.1.1":true,"key2.1.2":1,"key2.1.3":"a"}}
         }
-    """.lines().joinToString("") {
-        it.replace(" ", "")
-    }
+    """
+            .lines()
+            .joinToString("") { it.replace(" ", "") }
 
     /**
-     * This is done to fix number's quality check.
-     * Gson implements LazilyParsedNumber whose equality only works for the Number with same type.
-     * Hence this converts current numbers to "LazilyParsedNumber" and allows for quality check.
+     * This is done to fix number's quality check. Gson implements LazilyParsedNumber whose equality
+     * only works for the Number with same type. Hence this converts current numbers to
+     * "LazilyParsedNumber" and allows for quality check.
      */
     private fun number(number: Number): Extra.Number {
         return Extra.Number(JsonPrimitive(number.toString()).asNumber)
     }
 
-    data class ExtrasHolder(
-        val someOtherValue: String,
-        val extras: Extras?,
-    )
+    data class ExtrasHolder(val someOtherValue: String, val extras: Extras?)
 
     @Test
     fun verifySerializationFromExtrasToJson() {
@@ -92,9 +95,11 @@ internal class ExtrasSerializationAdapterTest {
     @Test
     fun verifySerializationFromExtrasHolderClassToJson() {
         val extrasHolder = ExtrasHolder("otherValue", mapOf("extra1" to sampleExtras))
-        val expectedJson = """
+        val expectedJson =
+            """
             {"someOtherValue":"otherValue","extras":{"extra1":$sampleJson}}
-        """.trimIndent()
+        """
+                .trimIndent()
 
         assertThat(gson.toJson(extrasHolder)).isEqualTo(expectedJson)
     }
@@ -102,9 +107,11 @@ internal class ExtrasSerializationAdapterTest {
     @Test
     fun verifyDeserializationFromJsonToExtrasHolderClass() {
         val extrasHolder = ExtrasHolder("otherValue", mapOf("extra1" to sampleExtras))
-        val actualJson = """
+        val actualJson =
+            """
             {"someOtherValue":"otherValue","extras":{"extra1":$sampleJson}}
-        """.trimIndent()
+        """
+                .trimIndent()
 
         assertThat(gson.fromJson(actualJson, ExtrasHolder::class.java)).isEqualTo(extrasHolder)
     }
@@ -112,9 +119,11 @@ internal class ExtrasSerializationAdapterTest {
     @Test
     fun verifyNullExtrasIsNotSerialized() {
         val extrasHolder = ExtrasHolder("otherValue", null)
-        val expectedJson = """
+        val expectedJson =
+            """
             {"someOtherValue":"otherValue"}
-        """.trimIndent()
+        """
+                .trimIndent()
 
         assertThat(gson.toJson(extrasHolder)).isEqualTo(expectedJson)
     }
@@ -122,9 +131,11 @@ internal class ExtrasSerializationAdapterTest {
     @Test
     fun verifyNullDeserializationForExtras() {
         val extrasHolder = ExtrasHolder("otherValue", null)
-        val actualJson = """
+        val actualJson =
+            """
             {"someOtherValue":"otherValue","extras":null}
-        """.trimIndent()
+        """
+                .trimIndent()
 
         assertThat(gson.fromJson(actualJson, ExtrasHolder::class.java)).isEqualTo(extrasHolder)
     }

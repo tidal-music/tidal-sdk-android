@@ -20,15 +20,11 @@ internal class NetworkTransportHelperTest {
     private val connectivityManager = mock<ConnectivityManager>()
     private val networkTransportHelper = NetworkTransportHelper(connectivityManager)
 
-    @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(connectivityManager)
+    @AfterEach fun afterEach() = verifyNoMoreInteractions(connectivityManager)
 
     @ParameterizedTest
     @ValueSource(
-        ints = [
-            NetworkCapabilities.TRANSPORT_WIFI,
-            NetworkCapabilities.TRANSPORT_ETHERNET,
-        ],
+        ints = [NetworkCapabilities.TRANSPORT_WIFI, NetworkCapabilities.TRANSPORT_ETHERNET]
     )
     fun isWifiOrEthernetReturnsTrueForWifiOrEthernetNetworks(networkCapability: Int) {
         hasTransportForNetworkCapability(networkCapability, true)
@@ -36,11 +32,15 @@ internal class NetworkTransportHelperTest {
 
     @ParameterizedTest
     @ValueSource(
-        ints = [
-            NetworkCapabilities.TRANSPORT_BLUETOOTH, NetworkCapabilities.TRANSPORT_CELLULAR,
-            NetworkCapabilities.TRANSPORT_LOWPAN, NetworkCapabilities.TRANSPORT_USB,
-            NetworkCapabilities.TRANSPORT_VPN, NetworkCapabilities.TRANSPORT_WIFI_AWARE,
-        ],
+        ints =
+            [
+                NetworkCapabilities.TRANSPORT_BLUETOOTH,
+                NetworkCapabilities.TRANSPORT_CELLULAR,
+                NetworkCapabilities.TRANSPORT_LOWPAN,
+                NetworkCapabilities.TRANSPORT_USB,
+                NetworkCapabilities.TRANSPORT_VPN,
+                NetworkCapabilities.TRANSPORT_WIFI_AWARE,
+            ]
     )
     fun isWifiOrEthernetReturnsFalseForOtherNetworks(networkCapability: Int) {
         hasTransportForNetworkCapability(networkCapability, false)
@@ -48,11 +48,11 @@ internal class NetworkTransportHelperTest {
 
     private fun hasTransportForNetworkCapability(networkCapability: Int, hasTransport: Boolean) {
         val activeNetwork = mock<Network>()
-        val networkCapabilities = mock<NetworkCapabilities> {
-            on { it.hasTransport(networkCapability) } doReturn hasTransport
-        }
-        whenever(connectivityManager.activeNetwork)
-            .thenReturn(activeNetwork)
+        val networkCapabilities =
+            mock<NetworkCapabilities> {
+                on { it.hasTransport(networkCapability) } doReturn hasTransport
+            }
+        whenever(connectivityManager.activeNetwork).thenReturn(activeNetwork)
         whenever(connectivityManager.getNetworkCapabilities(activeNetwork))
             .thenReturn(networkCapabilities)
 
@@ -73,10 +73,8 @@ internal class NetworkTransportHelperTest {
     @Test
     fun isWifiOrEthernetReturnsFalseForMissingNetworkCapabilities() {
         val activeNetwork = mock<Network>()
-        whenever(connectivityManager.activeNetwork)
-            .thenReturn(activeNetwork)
-        whenever(connectivityManager.getNetworkCapabilities(mock()))
-            .thenReturn(null)
+        whenever(connectivityManager.activeNetwork).thenReturn(activeNetwork)
+        whenever(connectivityManager.getNetworkCapabilities(mock())).thenReturn(null)
 
         val actual = networkTransportHelper.isWifiOrEthernet()
 

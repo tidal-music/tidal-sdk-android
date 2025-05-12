@@ -12,10 +12,12 @@ internal class CacheKeyAesCipherDataSourceFactoryFactory(
     private val encryption: Encryption?,
 ) {
 
-    fun create(cache: Cache) = CacheKeyAesCipherDataSourceFactory(
-        cacheKeyFactory,
-        encryption!!.secretKey,
-        cacheDataSourceFactory.setCache(cache)
-            .setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR),
-    )
+    fun create(cache: Cache) =
+        CacheKeyAesCipherDataSourceFactory(
+            cacheKeyFactory,
+            encryption!!.secretKey,
+            cacheDataSourceFactory
+                .setCache(cache)
+                .setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR),
+        )
 }

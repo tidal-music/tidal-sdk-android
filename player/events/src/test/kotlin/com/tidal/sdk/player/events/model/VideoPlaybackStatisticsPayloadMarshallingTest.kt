@@ -24,17 +24,16 @@ internal class VideoPlaybackStatisticsPayloadMarshallingTest :
     override val endTimestamp = Long.MIN_VALUE
     override val payloadFactory =
         {
-                actualStartTimestamp: Long?,
-                streamType: StreamType?,
-                assetPresentation: AssetPresentation?,
-                _: AudioMode?,
-                productQuality: ProductQuality?,
-                mediaStorage: MediaStorage?,
-                endReason: EndReason,
-                cdmVersion: String?,
-                errorMessage: String?,
-                errorCode: String?,
-            ->
+            actualStartTimestamp: Long?,
+            streamType: StreamType?,
+            assetPresentation: AssetPresentation?,
+            _: AudioMode?,
+            productQuality: ProductQuality?,
+            mediaStorage: MediaStorage?,
+            endReason: EndReason,
+            cdmVersion: String?,
+            errorMessage: String?,
+            errorCode: String? ->
             VideoPlaybackStatistics.Payload(
                 streamingSessionId,
                 idealStartTimestamp,
@@ -135,7 +134,7 @@ internal class VideoPlaybackStatisticsPayloadMarshallingTest :
                                                         cdmVersion,
                                                         errorMessage,
                                                         errorCode,
-                                                    ),
+                                                    )
                                                 )
                                             }
                                         }

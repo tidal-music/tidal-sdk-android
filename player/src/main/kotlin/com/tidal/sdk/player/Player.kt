@@ -22,22 +22,22 @@ import okhttp3.OkHttpClient
  * @param application An [Application] to use.
  * @param[credentialsProvider] A [CredentialsProvider] from the Auth SDK.
  * @param[eventSender] An [EventSender] from the EventProducer SDK.
- * @param userClientIdSupplier A function that supplies a userClientId used for event tracking.
- * This value needs to be taken from the session. Internal use only.
+ * @param userClientIdSupplier A function that supplies a userClientId used for event tracking. This
+ *   value needs to be taken from the session. Internal use only.
  * @param bufferConfiguration The parameters to configure different values for player buffer
- * functionalities.
+ *   functionalities.
  * @param assetTimeoutConfig The parameters to configure different values for player asset timeouts.
- * @param[cacheProvider] A [CacheProvider] that decides if Player should use internal or
- * external cache.
+ * @param[cacheProvider] A [CacheProvider] that decides if Player should use internal or external
+ *   cache.
  * @param isOfflineMode Sets initial offline mode property.
  * @param[isDebuggable] A [Boolean] that describes if this instance is debuggable, or not.
  * @param[okHttpClient] An [OkHttpClient] that internal logic will use as a reference to build upon.
- * Use this if you want to share your application's [OkHttpClient] with us, which is recommended by
- * [OkHttpClient].
+ *   Use this if you want to share your application's [OkHttpClient] with us, which is recommended
+ *   by [OkHttpClient].
  * @param[playbackPrivilegeProvider] An implementation to differentiate the way in which items can
- * be streamed. Internal use only.
+ *   be streamed. Internal use only.
  * @param[offlinePlayProvider] A means of supporting offline streaming when appropriate. Internal
- * use only.
+ *   use only.
  * @param version The version of the app, used for event tracking. Defaults to 1.0.0.
  */
 @Suppress("LongParameterList")
@@ -54,30 +54,32 @@ class Player(
     isOfflineMode: Boolean = false,
     isDebuggable: Boolean = false,
     okHttpClient: OkHttpClient = OkHttpClient(),
-    playbackPrivilegeProvider: PlaybackPrivilegeProvider = object : PlaybackPrivilegeProvider {
-        override fun get(mediaProduct: MediaProduct) = PlaybackPrivilege.OK_ONLINE
-    },
+    playbackPrivilegeProvider: PlaybackPrivilegeProvider =
+        object : PlaybackPrivilegeProvider {
+            override fun get(mediaProduct: MediaProduct) = PlaybackPrivilege.OK_ONLINE
+        },
     offlinePlayProvider: OfflinePlayProvider? = null,
     version: String = "1.0.0",
 ) : ConfigurationListener {
-    private val playerComponent = DaggerPlayerComponent.factory()
-        .create(
-            application,
-            credentialsProvider,
-            eventSender,
-            useLibflacAudioRenderer,
-            userClientIdSupplier,
-            version,
-            bufferConfiguration,
-            assetTimeoutConfig,
-            streamingApiTimeoutConfig,
-            cacheProvider,
-            isOfflineMode,
-            okHttpClient,
-            isDebuggable,
-            playbackPrivilegeProvider,
-            offlinePlayProvider,
-        )
+    private val playerComponent =
+        DaggerPlayerComponent.factory()
+            .create(
+                application,
+                credentialsProvider,
+                eventSender,
+                useLibflacAudioRenderer,
+                userClientIdSupplier,
+                version,
+                bufferConfiguration,
+                assetTimeoutConfig,
+                streamingApiTimeoutConfig,
+                cacheProvider,
+                isOfflineMode,
+                okHttpClient,
+                isDebuggable,
+                playbackPrivilegeProvider,
+                offlinePlayProvider,
+            )
     val configuration = playerComponent.configuration
     val playbackEngine = playerComponent.playbackEngine
     private val streamingPrivileges = playerComponent.streamingPrivileges

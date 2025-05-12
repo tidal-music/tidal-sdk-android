@@ -16,8 +16,7 @@ internal class VolumeHelperTest {
 
     private val loudnessNormalizer = mock<LoudnessNormalizer>()
 
-    @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(loudnessNormalizer)
+    @AfterEach fun afterEach() = verifyNoMoreInteractions(loudnessNormalizer)
 
     @Test
     fun getVolumeWhenPlaybackInfoIsNull() {
@@ -39,10 +38,11 @@ internal class VolumeHelperTest {
     fun getVolumeWhenLoudnessNormalizationModeIsTrack() {
         val replayGain = -10.98F
         val peakAmplitude = 0.997437F
-        val playbackInfo = mock<PlaybackInfo.Track> {
-            on { it.trackReplayGain } doReturn replayGain
-            on { it.trackPeakAmplitude } doReturn peakAmplitude
-        }
+        val playbackInfo =
+            mock<PlaybackInfo.Track> {
+                on { it.trackReplayGain } doReturn replayGain
+                on { it.trackPeakAmplitude } doReturn peakAmplitude
+            }
         val preAmp = 4
         val expectedVolume = 0.44771332F
         val volumeHelper = VolumeHelper(loudnessNormalizer, LoudnessNormalizationMode.TRACK, preAmp)
@@ -62,10 +62,11 @@ internal class VolumeHelperTest {
     fun getVolumeWhenLoudnessNormalizationModeIsAlbum() {
         val replayGain = -10.98F
         val peakAmplitude = 0.997437F
-        val playbackInfo = mock<PlaybackInfo.Track> {
-            on { it.albumReplayGain } doReturn replayGain
-            on { it.albumPeakAmplitude } doReturn peakAmplitude
-        }
+        val playbackInfo =
+            mock<PlaybackInfo.Track> {
+                on { it.albumReplayGain } doReturn replayGain
+                on { it.albumPeakAmplitude } doReturn peakAmplitude
+            }
         val preAmp = 4
         val expectedVolume = 0.44771332F
         val volumeHelper = VolumeHelper(loudnessNormalizer, LoudnessNormalizationMode.ALBUM, preAmp)

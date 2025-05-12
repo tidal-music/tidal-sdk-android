@@ -14,20 +14,19 @@ import org.mockito.kotlin.verifyNoMoreInteractions
 internal class StreamingPrivilegesEventDispatcherTest {
 
     private val networkInteractionsHandler = mock<Handler>()
-    private val streamingPrivilegesEventDispatcher = StreamingPrivilegesEventDispatcher(
-        networkInteractionsHandler,
-    )
+    private val streamingPrivilegesEventDispatcher =
+        StreamingPrivilegesEventDispatcher(networkInteractionsHandler)
 
-    @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(networkInteractionsHandler)
+    @AfterEach fun afterEach() = verifyNoMoreInteractions(networkInteractionsHandler)
 
     @Test
     fun dispatchConnectionEstablished() {
         val runnableCaptor = argumentCaptor<Runnable>()
         val streamingPrivilegesListener = mock<StreamingPrivilegesListener>()
-        val connectionMutableState = mock<ConnectionMutableState> {
-            on { it.streamingPrivilegesListener } doReturn streamingPrivilegesListener
-        }
+        val connectionMutableState =
+            mock<ConnectionMutableState> {
+                on { it.streamingPrivilegesListener } doReturn streamingPrivilegesListener
+            }
 
         streamingPrivilegesEventDispatcher.dispatchConnectionEstablished(connectionMutableState)
 
@@ -46,12 +45,15 @@ internal class StreamingPrivilegesEventDispatcherTest {
         val privilegedClientDisplayName = "privilegedClientDisplayName"
         val runnableCaptor = argumentCaptor<Runnable>()
         val streamingPrivilegesListener = mock<StreamingPrivilegesListener>()
-        val connectionMutableState = mock<ConnectionMutableState> {
-            on { it.streamingPrivilegesListener } doReturn streamingPrivilegesListener
-        }
+        val connectionMutableState =
+            mock<ConnectionMutableState> {
+                on { it.streamingPrivilegesListener } doReturn streamingPrivilegesListener
+            }
 
-        streamingPrivilegesEventDispatcher
-            .dispatchStreamingPrivilegeRevoked(connectionMutableState, privilegedClientDisplayName)
+        streamingPrivilegesEventDispatcher.dispatchStreamingPrivilegeRevoked(
+            connectionMutableState,
+            privilegedClientDisplayName,
+        )
 
         verify(networkInteractionsHandler).post(runnableCaptor.capture())
         verifyNoInteractions(streamingPrivilegesListener, connectionMutableState)

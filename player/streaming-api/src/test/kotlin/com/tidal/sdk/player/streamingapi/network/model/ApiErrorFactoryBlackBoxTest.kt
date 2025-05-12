@@ -24,13 +24,14 @@ internal class ApiErrorFactoryBlackBoxTest {
         val cause = mock<RuntimeException>()
         val status = 1
         val userMessage = "userMessage"
-        val json = gson.toJson(
-            JsonObject().apply {
-                addProperty("status", status)
-                addProperty("subStatus", subStatus.code)
-                addProperty("userMessage", userMessage)
-            },
-        )
+        val json =
+            gson.toJson(
+                JsonObject().apply {
+                    addProperty("status", status)
+                    addProperty("subStatus", subStatus.code)
+                    addProperty("userMessage", userMessage)
+                }
+            )
 
         val actual = apiErrorFactory.fromJsonStringOrCause(json, cause) as ApiError
 
@@ -55,23 +56,24 @@ internal class ApiErrorFactoryBlackBoxTest {
 
         @JvmStatic
         @Suppress("UnusedPrivateMember")
-        private fun apiErrorSubStatuses() = setOf(
-            Arguments.of(ApiError.SubStatus.GenericPlaybackError),
-            Arguments.of(ApiError.SubStatus.NoStreamingPrivileges),
-            Arguments.of(ApiError.SubStatus.UserClientNotAuthorizedForOffline),
-            Arguments.of(ApiError.SubStatus.UserMonthlyStreamQuotaExceeded),
-            Arguments.of(ApiError.SubStatus.SessionNotFound),
-            Arguments.of(ApiError.SubStatus.UserNotFound),
-            Arguments.of(ApiError.SubStatus.ClientNotFound),
-            Arguments.of(ApiError.SubStatus.ProductNotFound),
-            Arguments.of(ApiError.SubStatus.NoContentAvailableInProduct),
-            Arguments.of(ApiError.SubStatus.NoContentMatchingRequest),
-            Arguments.of(ApiError.SubStatus.NoContentMatchingSubscriptionLocation),
-            Arguments.of(ApiError.SubStatus.NoContentMatchingSubscriptionConfiguration),
-            Arguments.of(ApiError.SubStatus.NoContentMatchingClient),
-            Arguments.of(ApiError.SubStatus.NoContentMatchingPrePaywallLocation),
-            Arguments.of(ApiError.SubStatus.Unknown(-1)),
-            Arguments.of(ApiError.SubStatus.Unknown(1234)),
-        )
+        private fun apiErrorSubStatuses() =
+            setOf(
+                Arguments.of(ApiError.SubStatus.GenericPlaybackError),
+                Arguments.of(ApiError.SubStatus.NoStreamingPrivileges),
+                Arguments.of(ApiError.SubStatus.UserClientNotAuthorizedForOffline),
+                Arguments.of(ApiError.SubStatus.UserMonthlyStreamQuotaExceeded),
+                Arguments.of(ApiError.SubStatus.SessionNotFound),
+                Arguments.of(ApiError.SubStatus.UserNotFound),
+                Arguments.of(ApiError.SubStatus.ClientNotFound),
+                Arguments.of(ApiError.SubStatus.ProductNotFound),
+                Arguments.of(ApiError.SubStatus.NoContentAvailableInProduct),
+                Arguments.of(ApiError.SubStatus.NoContentMatchingRequest),
+                Arguments.of(ApiError.SubStatus.NoContentMatchingSubscriptionLocation),
+                Arguments.of(ApiError.SubStatus.NoContentMatchingSubscriptionConfiguration),
+                Arguments.of(ApiError.SubStatus.NoContentMatchingClient),
+                Arguments.of(ApiError.SubStatus.NoContentMatchingPrePaywallLocation),
+                Arguments.of(ApiError.SubStatus.Unknown(-1)),
+                Arguments.of(ApiError.SubStatus.Unknown(1234)),
+            )
     }
 }

@@ -24,13 +24,9 @@ internal class LoginModule {
 
     @Provides
     @Singleton
-    fun provideLoginAssistant(
-        loginRepository: LoginRepository,
-    ) = Auth(loginRepository)
+    fun provideLoginAssistant(loginRepository: LoginRepository) = Auth(loginRepository)
 
-    @Provides
-    @Reusable
-    fun provideCodeChallengeBuilder() = CodeChallengeBuilder()
+    @Provides @Reusable fun provideCodeChallengeBuilder() = CodeChallengeBuilder()
 
     @Provides
     @Singleton
@@ -62,15 +58,16 @@ internal class LoginModule {
         mutex: Mutex,
         @Named("default") retryPolicy: RetryPolicy,
         bus: MutableSharedFlow<TidalMessage>,
-    ): LoginRepository = LoginRepository(
-        authConfig,
-        timeProvider,
-        codeChallengeBuilder,
-        loginUriBuilder,
-        loginService,
-        tokensStore,
-        retryPolicy,
-        mutex,
-        bus,
-    )
+    ): LoginRepository =
+        LoginRepository(
+            authConfig,
+            timeProvider,
+            codeChallengeBuilder,
+            loginUriBuilder,
+            loginService,
+            tokensStore,
+            retryPolicy,
+            mutex,
+            bus,
+        )
 }

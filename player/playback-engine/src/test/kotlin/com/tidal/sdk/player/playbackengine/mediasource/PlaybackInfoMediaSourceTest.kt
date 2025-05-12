@@ -36,18 +36,16 @@ internal class PlaybackInfoMediaSourceTest {
     private val loadErrorHandlingPolicy = mock<LoadErrorHandlingPolicy>()
     private val loadable = mock<PlaybackInfoLoadable>()
     private val mediaItemId = "mediaItemId"
-    private val expectedMediaItem = spy(
-        MediaItem.Builder()
-            .setMediaId(mediaItemId)
-            .build(),
-    )
+    private val expectedMediaItem = spy(MediaItem.Builder().setMediaId(mediaItemId).build())
     private val loadEventInfo = mock<LoadEventInfo>()
-    private val loadEventInfoF = mock<(Long, Long) -> LoadEventInfo> {
-        on { invoke(any(), any()) } doReturn loadEventInfo
-    }
+    private val loadEventInfoF =
+        mock<(Long, Long) -> LoadEventInfo> { on { invoke(any(), any()) } doReturn loadEventInfo }
     private val loadErrorInfo = mock<LoadErrorInfo>()
-    private val loadErrorInfoF: (LoadEventInfo, error: IOException, errorCount: Int) ->
-    LoadErrorInfo = { _, _, _ -> loadErrorInfo }
+    private val loadErrorInfoF:
+        (LoadEventInfo, error: IOException, errorCount: Int) -> LoadErrorInfo =
+        { _, _, _ ->
+            loadErrorInfo
+        }
     private val loader = mock<Loader>()
     private val callbackFactory = mock<PlaybackInfoLoadableLoaderCallbackFactory>()
     private val playbackInfoMediaSource =
@@ -78,22 +76,22 @@ internal class PlaybackInfoMediaSourceTest {
         val expectedLoadDurationMs = 0L
 
         val eventDispatcher = mock<EventDispatcher>()
-        val eventDispatcherF = mock<() -> EventDispatcher> {
-            on { invoke() } doReturn eventDispatcher
-        }
+        val eventDispatcherF =
+            mock<() -> EventDispatcher> { on { invoke() } doReturn eventDispatcher }
         playbackInfoMediaSource.reflectionSetCreateEventDispatcherF(eventDispatcherF)
         val callback = mock<PlaybackInfoLoadableLoaderCallback>()
         whenever(
-            callbackFactory.create(
-                expectedMediaItem,
-                C.DATA_TYPE_MANIFEST,
-                eventDispatcher,
-                loadEventInfoF,
-                loadErrorInfoF,
-                playbackInfoMediaSource.reflectionPrepareChildSourceF,
-                emptyMap(),
-            ),
-        ).thenReturn(callback)
+                callbackFactory.create(
+                    expectedMediaItem,
+                    C.DATA_TYPE_MANIFEST,
+                    eventDispatcher,
+                    loadEventInfoF,
+                    loadErrorInfoF,
+                    playbackInfoMediaSource.reflectionPrepareChildSourceF,
+                    emptyMap(),
+                )
+            )
+            .thenReturn(callback)
 
         whenever(loader.startLoading(loadable, callback, minimumLoadableRetryCount))
             .thenReturn(expectedElapsedRealtimeMs)
@@ -120,23 +118,26 @@ internal class PlaybackInfoMediaSourceTest {
         val allocator = mock<Allocator>()
         val startPositionUs = 123L
         val mediaPeriod = mock<MediaPeriod>()
-        val selectedMediaSource = mock<MediaSource> {
-            on { createPeriod(id, allocator, startPositionUs) } doReturn mediaPeriod
-        }
-        val callback = mock<PlaybackInfoLoadableLoaderCallback> {
-            on { it.selectedMediaSource } doReturn selectedMediaSource
-        }
+        val selectedMediaSource =
+            mock<MediaSource> {
+                on { createPeriod(id, allocator, startPositionUs) } doReturn mediaPeriod
+            }
+        val callback =
+            mock<PlaybackInfoLoadableLoaderCallback> {
+                on { it.selectedMediaSource } doReturn selectedMediaSource
+            }
         whenever(
-            callbackFactory.create(
-                expectedMediaItem,
-                C.DATA_TYPE_MANIFEST,
-                playbackInfoMediaSource.reflectionEventDispatcher,
-                loadEventInfoF,
-                loadErrorInfoF,
-                playbackInfoMediaSource.reflectionPrepareChildSourceF,
-                emptyMap(),
-            ),
-        ).thenReturn(callback)
+                callbackFactory.create(
+                    expectedMediaItem,
+                    C.DATA_TYPE_MANIFEST,
+                    playbackInfoMediaSource.reflectionEventDispatcher,
+                    loadEventInfoF,
+                    loadErrorInfoF,
+                    playbackInfoMediaSource.reflectionPrepareChildSourceF,
+                    emptyMap(),
+                )
+            )
+            .thenReturn(callback)
 
         val actual = playbackInfoMediaSource.createPeriod(id, allocator, startPositionUs)
 
@@ -148,20 +149,22 @@ internal class PlaybackInfoMediaSourceTest {
     fun releasePeriodForwardsCallToSelectedMediaSource() {
         val mediaPeriod = mock<MediaPeriod>()
         val selectedMediaSource = mock<MediaSource>()
-        val callback = mock<PlaybackInfoLoadableLoaderCallback> {
-            on { it.selectedMediaSource } doReturn selectedMediaSource
-        }
+        val callback =
+            mock<PlaybackInfoLoadableLoaderCallback> {
+                on { it.selectedMediaSource } doReturn selectedMediaSource
+            }
         whenever(
-            callbackFactory.create(
-                expectedMediaItem,
-                C.DATA_TYPE_MANIFEST,
-                playbackInfoMediaSource.reflectionEventDispatcher,
-                loadEventInfoF,
-                loadErrorInfoF,
-                playbackInfoMediaSource.reflectionPrepareChildSourceF,
-                emptyMap(),
-            ),
-        ).thenReturn(callback)
+                callbackFactory.create(
+                    expectedMediaItem,
+                    C.DATA_TYPE_MANIFEST,
+                    playbackInfoMediaSource.reflectionEventDispatcher,
+                    loadEventInfoF,
+                    loadErrorInfoF,
+                    playbackInfoMediaSource.reflectionPrepareChildSourceF,
+                    emptyMap(),
+                )
+            )
+            .thenReturn(callback)
 
         playbackInfoMediaSource.releasePeriod(mediaPeriod)
 

@@ -21,14 +21,15 @@ import org.junit.jupiter.api.Test
 class TokenMutexTest {
 
     private var timeProvider = TEST_TIME_PROVIDER
-    private val authConfig = AuthConfig(
-        clientId = TEST_CLIENT_ID,
-        clientUniqueKey = TEST_CLIENT_UNIQUE_KEY,
-        clientSecret = "myVeryBestSecret",
-        credentialsKey = "credentialsKey",
-        scopes = setOf(),
-        enableCertificatePinning = false,
-    )
+    private val authConfig =
+        AuthConfig(
+            clientId = TEST_CLIENT_ID,
+            clientUniqueKey = TEST_CLIENT_UNIQUE_KEY,
+            clientSecret = "myVeryBestSecret",
+            credentialsKey = "credentialsKey",
+            scopes = setOf(),
+            enableCertificatePinning = false,
+        )
 
     private val tokenMutex = Mutex()
     private lateinit var fakeTokensStore: FakeTokensStore
@@ -36,11 +37,12 @@ class TokenMutexTest {
     private lateinit var loginRepository: LoginRepository
 
     private val messageBus: MutableSharedFlow<TidalMessage> = MutableSharedFlow()
-    private val testRetryPolicy = object : RetryPolicy {
-        override val numberOfRetries = 1
-        override val delayMillis = 1
-        override val delayFactor = 1
-    }
+    private val testRetryPolicy =
+        object : RetryPolicy {
+            override val numberOfRetries = 1
+            override val delayMillis = 1
+            override val delayFactor = 1
+        }
 
     private lateinit var fakeTokenService: FakeTokenService
     private lateinit var tokenRepository: TokenRepository
@@ -54,22 +56,23 @@ class TokenMutexTest {
     ) {
         fakeLoginService = loginService
         fakeTokensStore = tokensStore
-        loginRepository = LoginRepository(
-            authConfig,
-            timeProvider,
-            CodeChallengeBuilder(),
-            LoginUriBuilder(
-                TEST_CLIENT_ID,
-                TEST_CLIENT_UNIQUE_KEY,
-                loginBaseUrl,
-                authConfig.scopes,
-            ),
-            loginService,
-            tokensStore,
-            retryPolicy,
-            tokenMutex,
-            bus,
-        )
+        loginRepository =
+            LoginRepository(
+                authConfig,
+                timeProvider,
+                CodeChallengeBuilder(),
+                LoginUriBuilder(
+                    TEST_CLIENT_ID,
+                    TEST_CLIENT_UNIQUE_KEY,
+                    loginBaseUrl,
+                    authConfig.scopes,
+                ),
+                loginService,
+                tokensStore,
+                retryPolicy,
+                tokenMutex,
+                bus,
+            )
     }
 
     private fun createTokenRepository(
@@ -81,16 +84,17 @@ class TokenMutexTest {
     ) {
         fakeTokenService = tokenService
         fakeTokensStore = tokensStore
-        tokenRepository = TokenRepository(
-            authConfig,
-            TEST_TIME_PROVIDER,
-            tokensStore,
-            tokenService,
-            defaultRetrypolicy,
-            upgradeRetryPolicy,
-            tokenMutex,
-            bus,
-        )
+        tokenRepository =
+            TokenRepository(
+                authConfig,
+                TEST_TIME_PROVIDER,
+                tokensStore,
+                tokenService,
+                defaultRetrypolicy,
+                upgradeRetryPolicy,
+                tokenMutex,
+                bus,
+            )
     }
 
     @Test
@@ -103,9 +107,7 @@ class TokenMutexTest {
         val refreshToken = "myMostRefreshingToken"
 
         // when
-        val firstJob = launch {
-            tokenRepository.getCredentials(null)
-        }
+        val firstJob = launch { tokenRepository.getCredentials(null) }
         val secondJob = launch {
             delay(10)
             loginRepository.setCredentials(credentials, refreshToken)
@@ -117,8 +119,8 @@ class TokenMutexTest {
         assert(fakeTokensStore.tokensList.first().refreshToken == null) {
             "The first saved Tokens should not contain a refreshToken, as none was set and we aren't logged in"
         }
-        assert(
-            fakeTokensStore.tokensList.last().refreshToken == refreshToken,
-        ) { "The last saved Tokens should contain the refreshToken we have saved" }
+        assert(fakeTokensStore.tokensList.last().refreshToken == refreshToken) {
+            "The last saved Tokens should contain the refreshToken we have saved"
+        }
     }
 }

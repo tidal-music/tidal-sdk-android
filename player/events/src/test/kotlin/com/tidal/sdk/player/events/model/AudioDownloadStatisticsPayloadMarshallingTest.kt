@@ -16,13 +16,12 @@ internal class AudioDownloadStatisticsPayloadMarshallingTest :
     override val productType = ProductType.TRACK
     override val payloadFactory =
         {
-                assetPresentation: AssetPresentation,
-                audioMode: AudioMode,
-                productQuality: ProductQuality,
-                endReason: EndReason,
-                errorMessage: String?,
-                errorCode: String?,
-            ->
+            assetPresentation: AssetPresentation,
+            audioMode: AudioMode,
+            productQuality: ProductQuality,
+            endReason: EndReason,
+            errorMessage: String?,
+            errorCode: String? ->
             AudioDownloadStatistics.Payload(
                 streamingSessionId,
                 startTimestamp,

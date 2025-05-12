@@ -26,5 +26,7 @@ internal class PlaybackInfoLoadableFactory(
             streamingApiRepository,
             extendedExoPlayerState,
             playbackPrivilegeProvider,
-        ) { CoroutineScope(coroutineDispatcher) }
+        ) {
+            CoroutineScope(coroutineDispatcher)
+        }
 }

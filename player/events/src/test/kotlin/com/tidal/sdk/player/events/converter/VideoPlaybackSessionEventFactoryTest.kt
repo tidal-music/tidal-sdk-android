@@ -25,22 +25,24 @@ internal class VideoPlaybackSessionEventFactoryTest {
     private val userSupplier = mock<UserSupplier>()
     private val clientSupplier = mock<ClientSupplier>()
     private val videoPlaybackSessionFactory = mock<VideoPlaybackSession.Factory>()
-    private val videoPlaybackSessionEventFactory = VideoPlaybackSessionEventFactory(
-        trueTimeWrapper,
-        uuidWrapper,
-        userSupplier,
-        clientSupplier,
-        videoPlaybackSessionFactory,
-    )
+    private val videoPlaybackSessionEventFactory =
+        VideoPlaybackSessionEventFactory(
+            trueTimeWrapper,
+            uuidWrapper,
+            userSupplier,
+            clientSupplier,
+            videoPlaybackSessionFactory,
+        )
 
     @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(
-        trueTimeWrapper,
-        uuidWrapper,
-        userSupplier,
-        clientSupplier,
-        videoPlaybackSessionFactory,
-    )
+    fun afterEach() =
+        verifyNoMoreInteractions(
+            trueTimeWrapper,
+            uuidWrapper,
+            userSupplier,
+            clientSupplier,
+            videoPlaybackSessionFactory,
+        )
 
     @Test
     fun invoke() = runBlocking {
@@ -55,15 +57,16 @@ internal class VideoPlaybackSessionEventFactoryTest {
         val payload = mock<VideoPlaybackSession.Payload>()
         val expected = mock<VideoPlaybackSession>()
         whenever(
-            videoPlaybackSessionFactory.create(
-                currentTimeMillis,
-                randomUUID,
-                user,
-                client,
-                payload,
-                emptyMap(),
-            ),
-        ).thenReturn(expected)
+                videoPlaybackSessionFactory.create(
+                    currentTimeMillis,
+                    randomUUID,
+                    user,
+                    client,
+                    payload,
+                    emptyMap(),
+                )
+            )
+            .thenReturn(expected)
 
         val actual = videoPlaybackSessionEventFactory(payload, emptyMap())
 
@@ -71,14 +74,8 @@ internal class VideoPlaybackSessionEventFactoryTest {
         verify(uuidWrapper).randomUUID
         verify(userSupplier)()
         verify(clientSupplier)()
-        verify(videoPlaybackSessionFactory).create(
-            currentTimeMillis,
-            randomUUID,
-            user,
-            client,
-            payload,
-            emptyMap(),
-        )
+        verify(videoPlaybackSessionFactory)
+            .create(currentTimeMillis, randomUUID, user, client, payload, emptyMap())
         assertThat(actual).isSameAs(expected)
         verifyNoMoreInteractions(randomUUID, user, client, payload, expected)
     }

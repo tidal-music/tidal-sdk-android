@@ -37,9 +37,7 @@ internal fun PlayerNotInitializedScreen(
         ) {
             Text(
                 text = "Provide external cache?",
-                modifier = Modifier
-                    .padding(PaddingValues(end = 8F.dp))
-                    .weight(1F, fill = false),
+                modifier = Modifier.padding(PaddingValues(end = 8F.dp)).weight(1F, fill = false),
             )
             Switch(checked = provideExternalCache, onCheckedChange = { provideExternalCache = it })
         }
@@ -50,9 +48,7 @@ internal fun PlayerNotInitializedScreen(
         ) {
             Text(
                 text = "Start in offline mode?",
-                modifier = Modifier
-                    .padding(PaddingValues(end = 8F.dp))
-                    .weight(1F, fill = false),
+                modifier = Modifier.padding(PaddingValues(end = 8F.dp)).weight(1F, fill = false),
             )
             Switch(checked = startInOfflineMode, onCheckedChange = { startInOfflineMode = it })
         }

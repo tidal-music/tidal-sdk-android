@@ -23,8 +23,7 @@ internal class AcquireRunnableTest {
     private val startedAtMillis = -1L
     private val acquireRunnable = AcquireRunnable(connectionMutableState, gson, startedAtMillis)
 
-    @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(connectionMutableState, gson)
+    @AfterEach fun afterEach() = verifyNoMoreInteractions(connectionMutableState, gson)
 
     @Test
     fun runWhenWithNoRelevantConnection() {
@@ -37,9 +36,8 @@ internal class AcquireRunnableTest {
     fun runWhenConnectedToSocketWithRelevantConnection() {
         whenever(connectionMutableState.isConnectionRelevant) doReturn true
         val webSocket = mock<WebSocket>()
-        val socketConnectionState = mock<SocketConnectionState.Connected> {
-            on { it.webSocket } doReturn webSocket
-        }
+        val socketConnectionState =
+            mock<SocketConnectionState.Connected> { on { it.webSocket } doReturn webSocket }
         whenever(connectionMutableState.socketConnectionState) doReturn socketConnectionState
         val msgText = "msgText"
         whenever(gson.toJson(WebSocketMessage.Outgoing.Acquire(startedAtMillis))) doReturn msgText

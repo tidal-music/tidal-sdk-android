@@ -18,8 +18,7 @@ internal class ActiveMobileNetworkTypeTest {
     private val connectivityManager = mock<ConnectivityManager>()
     private val activeMobileNetworkType = ActiveMobileNetworkType(connectivityManager)
 
-    @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(connectivityManager)
+    @AfterEach fun afterEach() = verifyNoMoreInteractions(connectivityManager)
 
     @Test
     fun hasNoActiveNetwork() {
@@ -34,9 +33,7 @@ internal class ActiveMobileNetworkTypeTest {
     @Test
     fun hasAnActiveNetwork() {
         val subtypeName = "subtypeName"
-        val activeNetworkInfo = mock<NetworkInfo> {
-            on { it.subtypeName } doReturn subtypeName
-        }
+        val activeNetworkInfo = mock<NetworkInfo> { on { it.subtypeName } doReturn subtypeName }
         whenever(connectivityManager.activeNetworkInfo) doReturn activeNetworkInfo
 
         val actual = activeMobileNetworkType.value

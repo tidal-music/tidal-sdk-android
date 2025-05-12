@@ -126,4 +126,3 @@ fun getOneOfSerializer() = SerializersModule {
         subclass(VideosResource::class, VideosResource.serializer())
     }
 }
-

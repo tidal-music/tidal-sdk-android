@@ -18,24 +18,27 @@ internal class SynchronousSurfaceHolderCallbackThreadingTest {
     private lateinit var executionThread: Thread
     private val handlerThread = HandlerThread("TestThread").apply { start() }
     private val handler = Handler(handlerThread.looper)
-    private val delegate = object : SurfaceHolder.Callback {
+    private val delegate =
+        object : SurfaceHolder.Callback {
 
-        override fun surfaceCreated(holder: SurfaceHolder) = assignThreadAndReleaseLock()
+            override fun surfaceCreated(holder: SurfaceHolder) = assignThreadAndReleaseLock()
 
-        override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) =
-            assignThreadAndReleaseLock()
+            override fun surfaceChanged(
+                holder: SurfaceHolder,
+                format: Int,
+                width: Int,
+                height: Int,
+            ) = assignThreadAndReleaseLock()
 
-        override fun surfaceDestroyed(holder: SurfaceHolder) = assignThreadAndReleaseLock()
+            override fun surfaceDestroyed(holder: SurfaceHolder) = assignThreadAndReleaseLock()
 
-        private fun assignThreadAndReleaseLock() {
-            executionThread = Thread.currentThread()
-            reentrantLock.withLock { delegateWaitCondition.signal() }
+            private fun assignThreadAndReleaseLock() {
+                executionThread = Thread.currentThread()
+                reentrantLock.withLock { delegateWaitCondition.signal() }
+            }
         }
-    }
-    private val synchronousSurfaceHolderCallback = SynchronousSurfaceHolderCallback(
-        handler,
-        delegate,
-    )
+    private val synchronousSurfaceHolderCallback =
+        SynchronousSurfaceHolderCallback(handler, delegate)
 
     @Test
     fun surfaceCreatedFromDifferentThread() = testCallFromDifferentThread {
@@ -84,9 +87,7 @@ internal class SynchronousSurfaceHolderCallbackThreadingTest {
     private fun testCallFromSameThread(block: (SurfaceHolder) -> Unit) {
         val surfaceHolder = mock<SurfaceHolder>()
 
-        handler.post {
-            block(surfaceHolder)
-        }
+        handler.post { block(surfaceHolder) }
         reentrantLock.withLock {
             while (!this::executionThread.isInitialized) {
                 delegateWaitCondition.await()

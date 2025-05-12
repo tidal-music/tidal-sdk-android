@@ -9,9 +9,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.tidal.sdk.auth.demo.BuildConfig
 
-class ExtendedWebClient(
-    private val onRedirectUriReceived: (Uri) -> Unit,
-) : WebViewClient() {
+class ExtendedWebClient(private val onRedirectUriReceived: (Uri) -> Unit) : WebViewClient() {
 
     override fun onPageCommitVisible(view: WebView?, url: String?) {
         super.onPageCommitVisible(view, url)
@@ -42,12 +40,7 @@ class ExtendedWebClient(
         request: WebResourceRequest,
         error: WebResourceError,
     ) {
-        onReceivedError(
-            view,
-            error.errorCode,
-            error.description.toString(),
-            request.url.toString(),
-        )
+        onReceivedError(view, error.errorCode, error.description.toString(), request.url.toString())
     }
 
     @SuppressWarnings("deprecation")

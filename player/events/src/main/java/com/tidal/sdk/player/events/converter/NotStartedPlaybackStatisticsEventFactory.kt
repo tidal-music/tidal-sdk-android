@@ -15,15 +15,13 @@ internal class NotStartedPlaybackStatisticsEventFactory(
     private val notStartedPlaybackStatisticsFactory: NotStartedPlaybackStatistics.Factory,
 ) : EventFactory<NotStartedPlaybackStatistics.Payload> {
 
-    override suspend fun invoke(
-        payload: NotStartedPlaybackStatistics.Payload,
-        extras: Extras?,
-    ) = notStartedPlaybackStatisticsFactory.create(
-        trueTimeWrapper.currentTimeMillis,
-        uuidWrapper.randomUUID,
-        userSupplier(),
-        clientSupplier(),
-        payload,
-        extras,
-    )
+    override suspend fun invoke(payload: NotStartedPlaybackStatistics.Payload, extras: Extras?) =
+        notStartedPlaybackStatisticsFactory.create(
+            trueTimeWrapper.currentTimeMillis,
+            uuidWrapper.randomUUID,
+            userSupplier(),
+            clientSupplier(),
+            payload,
+            extras,
+        )
 }

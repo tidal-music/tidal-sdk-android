@@ -10,18 +10,12 @@ plugins {
     alias(libs.plugins.tidal.jvm.platform) apply false
 }
 
-tasks.register("printSdkModules") {
-    doLast {
-        sdkModules.forEach { println(it.name) }
-    }
-}
+tasks.register("printSdkModules") { doLast { sdkModules.forEach { println(it.name) } } }
 
 sdkModules.forEach {
     rootProject.tasks.register("publish-sdk-module-${it.name}") {
         (it.subprojects + it).forEach {
-            it.tasks.findByName("publishToMavenCentral")?.let {
-                dependsOn(it)
-            }
+            it.tasks.findByName("publishToMavenCentral")?.let { dependsOn(it) }
         }
     }
 }
@@ -29,7 +23,10 @@ sdkModules.forEach {
 tasks.dokkaHtmlMultiModule.configure {
     moduleVersion = "bom-${project(":bom").property("version")}"
     includes.setFrom("README.md")
-    pluginsMapConfiguration.set(mapOf("org.jetbrains.dokka.base.DokkaBase" to
-        """{"footerMessage": "© ${LocalDate.now().year} TIDAL"}"""
-    ))
+    pluginsMapConfiguration.set(
+        mapOf(
+            "org.jetbrains.dokka.base.DokkaBase" to
+                """{"footerMessage": "© ${LocalDate.now().year} TIDAL"}"""
+        )
+    )
 }

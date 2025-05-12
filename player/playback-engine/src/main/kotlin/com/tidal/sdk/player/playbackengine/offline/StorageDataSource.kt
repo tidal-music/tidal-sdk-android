@@ -8,9 +8,9 @@ import androidx.media3.datasource.TransferListener
 /**
  * Dummy data source to be used as upstream when playing back offlined files.
  *
- * When playing offlined files fails, it will use the upstream to go online and get the file.
- * We don't want that, we instead want to be able to throw our custom [StorageException] so we can
- * give the user appropriate feedback.
+ * When playing offlined files fails, it will use the upstream to go online and get the file. We
+ * don't want that, we instead want to be able to throw our custom [StorageException] so we can give
+ * the user appropriate feedback.
  *
  * Situations where offline files fail to play:
  * - It can't find the files because they have been moved or deleted

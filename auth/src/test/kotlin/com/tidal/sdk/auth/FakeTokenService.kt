@@ -20,19 +20,10 @@ internal class FakeTokenService : TokenService {
     ): RefreshResponse {
         calls.add(CallType.Refresh)
         delay(responseDelay)
-        throwableToThrow?.let {
-            throw it
-        } ?: run {
-            return RefreshResponse(
-                "credentials",
-                "clientName",
-                5000,
-                "tokenType",
-                "",
-                999,
-
-            )
-        }
+        throwableToThrow?.let { throw it }
+            ?: run {
+                return RefreshResponse("credentials", "clientName", 5000, "tokenType", "", 999)
+            }
     }
 
     override suspend fun getTokenFromClientSecret(
@@ -43,18 +34,10 @@ internal class FakeTokenService : TokenService {
     ): RefreshResponse {
         calls.add(CallType.Secret)
         delay(responseDelay)
-        throwableToThrow?.let {
-            throw it
-        } ?: run {
-            return RefreshResponse(
-                "credentials",
-                "clientName",
-                5000,
-                "tokenType",
-                "",
-                999,
-            )
-        }
+        throwableToThrow?.let { throw it }
+            ?: run {
+                return RefreshResponse("credentials", "clientName", 5000, "tokenType", "", 999)
+            }
     }
 
     override suspend fun upgradeToken(
@@ -67,17 +50,20 @@ internal class FakeTokenService : TokenService {
     ): UpgradeResponse {
         calls.add(CallType.Upgrade)
         delay(responseDelay)
-        throwableToThrow?.let {
-            throw it
-        } ?: run {
-            return UpgradeResponse(
-                accessToken = "upgradeCredentials",
-                refreshToken = "upgradeRefreshToken",
-                tokenType = "Bearer",
-                expiresIn = 5000,
-            )
-        }
+        throwableToThrow?.let { throw it }
+            ?: run {
+                return UpgradeResponse(
+                    accessToken = "upgradeCredentials",
+                    refreshToken = "upgradeRefreshToken",
+                    tokenType = "Bearer",
+                    expiresIn = 5000,
+                )
+            }
     }
 
-    enum class CallType { Refresh, Secret, Upgrade }
+    enum class CallType {
+        Refresh,
+        Secret,
+        Upgrade,
+    }
 }

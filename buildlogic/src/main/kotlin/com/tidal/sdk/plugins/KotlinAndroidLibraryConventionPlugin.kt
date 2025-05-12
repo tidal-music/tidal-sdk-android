@@ -10,20 +10,22 @@ import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalogsExtension
 
 internal class KotlinAndroidLibraryConventionPlugin : Plugin<Project> {
-    override fun apply(target: Project) = target.run {
-        pluginManager.apply(PluginId.ANDROID_LIBRARY_PLUGIN_ID)
-        pluginManager.apply(KotlinAndroidConventionPlugin::class.java)
-        ConfiguresDokka()(this)
-        val libs = extensions.getByType(VersionCatalogsExtension::class.java).named("libs")
-        val dokkaAndroidLibrary = libs.findLibrary("dokka-android").get().get()
-        dependencies.add("dokkaPlugin", dokkaAndroidLibrary)
-        val testAndroidXRunnerLibrary = libs.findLibrary("test-androidx-runner").get()
-        dependencies.add("androidTestImplementation", testAndroidXRunnerLibrary)
-        val testAndroidXOrchestratorLibrary = libs.findLibrary("test-androidx-orchestrator").get()
-        dependencies.add("androidTestUtil", testAndroidXOrchestratorLibrary)
-        ConfiguresMavenPublish()(this)
-        configureLibrary()
-    }
+    override fun apply(target: Project) =
+        target.run {
+            pluginManager.apply(PluginId.ANDROID_LIBRARY_PLUGIN_ID)
+            pluginManager.apply(KotlinAndroidConventionPlugin::class.java)
+            ConfiguresDokka()(this)
+            val libs = extensions.getByType(VersionCatalogsExtension::class.java).named("libs")
+            val dokkaAndroidLibrary = libs.findLibrary("dokka-android").get().get()
+            dependencies.add("dokkaPlugin", dokkaAndroidLibrary)
+            val testAndroidXRunnerLibrary = libs.findLibrary("test-androidx-runner").get()
+            dependencies.add("androidTestImplementation", testAndroidXRunnerLibrary)
+            val testAndroidXOrchestratorLibrary =
+                libs.findLibrary("test-androidx-orchestrator").get()
+            dependencies.add("androidTestUtil", testAndroidXOrchestratorLibrary)
+            ConfiguresMavenPublish()(this)
+            configureLibrary()
+        }
 
     private fun Project.configureLibrary() {
         androidLibrary {
@@ -36,20 +38,14 @@ internal class KotlinAndroidLibraryConventionPlugin : Plugin<Project> {
                 testInstrumentationRunnerArguments["clearPackageData"] = "true"
             }
 
-            testOptions {
-                execution = "ANDROIDX_TEST_ORCHESTRATOR"
-            }
+            testOptions { execution = "ANDROIDX_TEST_ORCHESTRATOR" }
 
             compileOptions {
                 sourceCompatibility = JavaVersion.VERSION_17
                 targetCompatibility = JavaVersion.VERSION_17
             }
 
-            buildTypes {
-                release {
-                    isMinifyEnabled = false
-                }
-            }
+            buildTypes { release { isMinifyEnabled = false } }
         }
     }
 }

@@ -29,14 +29,15 @@ internal class MediaSourcererTest {
     private val implicitStreamingSessionCreator = mock<StreamingSession.Creator.Implicit>()
     private val eventReporter = mock<EventReporter>()
     private val trueTimeWrapper = mock<TrueTimeWrapper>()
-    private val mediaSourcerer = MediaSourcerer(
-        exoPlayer,
-        playbackInfoMediaSourceFactory,
-        explicitStreamingSessionCreator,
-        implicitStreamingSessionCreator,
-        eventReporter,
-        trueTimeWrapper,
-    )
+    private val mediaSourcerer =
+        MediaSourcerer(
+            exoPlayer,
+            playbackInfoMediaSourceFactory,
+            explicitStreamingSessionCreator,
+            implicitStreamingSessionCreator,
+            eventReporter,
+            trueTimeWrapper,
+        )
 
     @AfterEach
     fun afterEach() =
@@ -56,36 +57,19 @@ internal class MediaSourcererTest {
         val mediaProduct = ForwardingMediaProduct(MediaProduct(productType, productId))
         val mediaSource = mock<PlaybackInfoMediaSource>()
         val explicitStreamingSessionId = mock<UUID>()
-        val explicitStreamingSession = mock<StreamingSession.Explicit> {
-            on { id } doReturn explicitStreamingSessionId
-        }
-        whenever(
-            explicitStreamingSessionCreator.createAndReportStart(
-                productType,
-                productId,
-                null,
-            ),
-        ).thenReturn(explicitStreamingSession)
-        whenever(
-            playbackInfoMediaSourceFactory.create(
-                explicitStreamingSession,
-                mediaProduct,
-            ),
-        ).thenReturn(mediaSource)
+        val explicitStreamingSession =
+            mock<StreamingSession.Explicit> { on { id } doReturn explicitStreamingSessionId }
+        whenever(explicitStreamingSessionCreator.createAndReportStart(productType, productId, null))
+            .thenReturn(explicitStreamingSession)
+        whenever(playbackInfoMediaSourceFactory.create(explicitStreamingSession, mediaProduct))
+            .thenReturn(mediaSource)
 
         mediaSourcerer.load(mediaProduct)
 
         assertThat(mediaSourcerer.reflectionCurrentStreamingSession)
             .isSameAs(explicitStreamingSession)
-        verify(explicitStreamingSessionCreator).createAndReportStart(
-            productType,
-            productId,
-            null,
-        )
-        verify(playbackInfoMediaSourceFactory).create(
-            explicitStreamingSession,
-            mediaProduct,
-        )
+        verify(explicitStreamingSessionCreator).createAndReportStart(productType, productId, null)
+        verify(playbackInfoMediaSourceFactory).create(explicitStreamingSession, mediaProduct)
         verify(exoPlayer).setMediaSource(mediaSource)
         verifyNoMoreInteractions(mediaSource, explicitStreamingSessionId)
     }
@@ -97,19 +81,17 @@ internal class MediaSourcererTest {
         val mediaProductNext = ForwardingMediaProduct(MediaProduct(productType, productId))
         val mediaSourceNext = mock<PlaybackInfoMediaSource>()
         val implicitStreamingSessionNextId = mock<UUID>()
-        val implicitStreamingSessionNext = mock<StreamingSession.Implicit> {
-            on { id } doReturn implicitStreamingSessionNextId
-        }
+        val implicitStreamingSessionNext =
+            mock<StreamingSession.Implicit> { on { id } doReturn implicitStreamingSessionNextId }
+        whenever(implicitStreamingSessionCreator.createAndReportStart(productType, productId, null))
+            .thenReturn(implicitStreamingSessionNext)
         whenever(
-            implicitStreamingSessionCreator.createAndReportStart(
-                productType,
-                productId,
-                null,
-            ),
-        ).thenReturn(implicitStreamingSessionNext)
-        whenever(
-            playbackInfoMediaSourceFactory.create(implicitStreamingSessionNext, mediaProductNext),
-        ).thenReturn(mediaSourceNext)
+                playbackInfoMediaSourceFactory.create(
+                    implicitStreamingSessionNext,
+                    mediaProductNext,
+                )
+            )
+            .thenReturn(mediaSourceNext)
         whenever(exoPlayer.mediaItemCount) doReturn 1
 
         mediaSourcerer.setNext(mediaProductNext)
@@ -117,15 +99,9 @@ internal class MediaSourcererTest {
         assertThat(mediaSourcerer.reflectionNextStreamingSession)
             .isSameAs(implicitStreamingSessionNext)
         verify(exoPlayer).mediaItemCount
-        verify(implicitStreamingSessionCreator).createAndReportStart(
-            productType,
-            productId,
-            null,
-        )
-        verify(playbackInfoMediaSourceFactory).create(
-            implicitStreamingSessionNext,
-            mediaProductNext,
-        )
+        verify(implicitStreamingSessionCreator).createAndReportStart(productType, productId, null)
+        verify(playbackInfoMediaSourceFactory)
+            .create(implicitStreamingSessionNext, mediaProductNext)
         verify(exoPlayer).addMediaSource(mediaSourceNext)
         verifyNoMoreInteractions(mediaSourceNext, implicitStreamingSessionNextId)
     }
@@ -137,22 +113,17 @@ internal class MediaSourcererTest {
         val mediaProductNext = ForwardingMediaProduct(MediaProduct(productType, productId))
         val mediaSourceNewNext = mock<PlaybackInfoMediaSource>()
         val implicitStreamingSessionNewNextId = mock<UUID>()
-        val implicitStreamingSessionNewNext = mock<StreamingSession.Implicit> {
-            on { id } doReturn implicitStreamingSessionNewNextId
-        }
+        val implicitStreamingSessionNewNext =
+            mock<StreamingSession.Implicit> { on { id } doReturn implicitStreamingSessionNewNextId }
+        whenever(implicitStreamingSessionCreator.createAndReportStart(productType, productId, null))
+            .thenReturn(implicitStreamingSessionNewNext)
         whenever(
-            implicitStreamingSessionCreator.createAndReportStart(
-                productType,
-                productId,
-                null,
-            ),
-        ).thenReturn(implicitStreamingSessionNewNext)
-        whenever(
-            playbackInfoMediaSourceFactory.create(
-                implicitStreamingSessionNewNext,
-                mediaProductNext
-            ),
-        ).thenReturn(mediaSourceNewNext)
+                playbackInfoMediaSourceFactory.create(
+                    implicitStreamingSessionNewNext,
+                    mediaProductNext,
+                )
+            )
+            .thenReturn(mediaSourceNewNext)
         whenever(exoPlayer.mediaItemCount) doReturn 2
 
         mediaSourcerer.setNext(mediaProductNext)
@@ -160,11 +131,7 @@ internal class MediaSourcererTest {
         assertThat(mediaSourcerer.reflectionNextStreamingSession)
             .isSameAs(implicitStreamingSessionNewNext)
         verify(exoPlayer).mediaItemCount
-        verify(implicitStreamingSessionCreator).createAndReportStart(
-            productType,
-            productId,
-            null,
-        )
+        verify(implicitStreamingSessionCreator).createAndReportStart(productType, productId, null)
         verify(playbackInfoMediaSourceFactory)
             .create(implicitStreamingSessionNewNext, mediaProductNext)
         verify(exoPlayer).removeMediaItem(1)
@@ -187,13 +154,13 @@ internal class MediaSourcererTest {
     fun onCurrentItemFinished() {
         val currentStreamingSessionId = mock<UUID>()
         val currentStreamingSessionIdString = currentStreamingSessionId.toString()
-        val currentStreamingSession = mock<StreamingSession.Explicit> {
-            on { id } doReturn currentStreamingSessionId
-        }
+        val currentStreamingSession =
+            mock<StreamingSession.Explicit> { on { id } doReturn currentStreamingSessionId }
         mediaSourcerer.reflectionCurrentStreamingSession = currentStreamingSession
-        val nextStreamingSession = mock<StreamingSession.Implicit>().apply {
-            mediaSourcerer.reflectionNextStreamingSession = this
-        }
+        val nextStreamingSession =
+            mock<StreamingSession.Implicit>().apply {
+                mediaSourcerer.reflectionNextStreamingSession = this
+            }
         val endTimeMillis = -7L
         whenever(trueTimeWrapper.currentTimeMillis) doReturn endTimeMillis
 
@@ -218,45 +185,38 @@ internal class MediaSourcererTest {
     @Test
     fun onRepeatOne() {
         val currentStreamingSessionId = mock<UUID>()
-        val currentStreamingSession = mock<StreamingSession.Explicit> {
-            on { id } doReturn currentStreamingSessionId
-        }
+        val currentStreamingSession =
+            mock<StreamingSession.Explicit> { on { id } doReturn currentStreamingSessionId }
         mediaSourcerer.reflectionCurrentStreamingSession = currentStreamingSession
-        val nextStreamingSession = mock<StreamingSession.Implicit> {
-            on { id } doReturn mock()
-        }
+        val nextStreamingSession = mock<StreamingSession.Implicit> { on { id } doReturn mock() }
         mediaSourcerer.reflectionNextStreamingSession = nextStreamingSession
         val productType = ProductType.TRACK
         val productId = "123"
         val expectedNewStreamingSession = mock<StreamingSession.Implicit>()
         whenever(
-            implicitStreamingSessionCreator.createAndReportStart(
-                productType,
-                productId,
-                emptyMap(),
-            ),
-        ).thenReturn(expectedNewStreamingSession)
+                implicitStreamingSessionCreator.createAndReportStart(
+                    productType,
+                    productId,
+                    emptyMap(),
+                )
+            )
+            .thenReturn(expectedNewStreamingSession)
         val endTimeMillis = 123L
         whenever(trueTimeWrapper.currentTimeMillis).thenReturn(endTimeMillis)
-        val mediaProduct = mock<ForwardingMediaProduct<*>> {
-            on { it.productType } doReturn productType
-            on { it.productId } doReturn productId
-        }
+        val mediaProduct =
+            mock<ForwardingMediaProduct<*>> {
+                on { it.productType } doReturn productType
+                on { it.productId } doReturn productId
+            }
 
         mediaSourcerer.onRepeatOne(mediaProduct)
 
-        verify(implicitStreamingSessionCreator).createAndReportStart(
-            productType,
-            productId,
-            emptyMap(),
-        )
+        verify(implicitStreamingSessionCreator)
+            .createAndReportStart(productType, productId, emptyMap())
         verify(eventReporter)
             .report(
-                StreamingSessionEnd.Payload(
-                    currentStreamingSessionId.toString(),
-                    endTimeMillis,
-                ),
-                emptyMap()
+                StreamingSessionEnd.Payload(currentStreamingSessionId.toString(), endTimeMillis),
+                emptyMap(),
             )
         verify(trueTimeWrapper).currentTimeMillis
     }
@@ -265,15 +225,13 @@ internal class MediaSourcererTest {
     fun release() {
         val currentStreamingSessionId = mock<UUID>()
         val currentStreamingSessionIdString = currentStreamingSessionId.toString()
-        val currentStreamingSession = mock<StreamingSession.Explicit> {
-            on { id } doReturn currentStreamingSessionId
-        }
+        val currentStreamingSession =
+            mock<StreamingSession.Explicit> { on { id } doReturn currentStreamingSessionId }
         val nextStreamingSessionId = mock<UUID>()
         val nextStreamingSessionIdString = nextStreamingSessionId.toString()
         mediaSourcerer.reflectionCurrentStreamingSession = currentStreamingSession
-        val nextStreamingSession = mock<StreamingSession.Implicit> {
-            on { id } doReturn nextStreamingSessionId
-        }
+        val nextStreamingSession =
+            mock<StreamingSession.Implicit> { on { id } doReturn nextStreamingSessionId }
         mediaSourcerer.reflectionNextStreamingSession = nextStreamingSession
         val endTimeMillis0 = -7L
         val endTimeMillis1 = Long.MIN_VALUE

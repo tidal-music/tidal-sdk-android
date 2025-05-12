@@ -40,21 +40,20 @@ internal class ErrorHandlerTest {
     private val errorCodeFactory = mock<ErrorCodeFactory>()
     private val errorHandler = ErrorHandler(errorCodeFactory)
 
-    @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(errorCodeFactory)
+    @AfterEach fun afterEach() = verifyNoMoreInteractions(errorCodeFactory)
 
     @Test
     fun `getErrorCode should return correct errorCode for ApiError`() {
         val status = 499
         val subStatus = ApiError.SubStatus.GenericPlaybackError
-        val throwable = mock<ApiError> {
-            on { this.status } doReturn status
-            on { this.subStatus } doReturn subStatus
-        }
+        val throwable =
+            mock<ApiError> {
+                on { this.status } doReturn status
+                on { this.subStatus } doReturn subStatus
+            }
         val expectedErrorCode = "errorCode"
-        whenever(errorCodeFactory.createForApiError(status, subStatus.code)).thenReturn(
-            expectedErrorCode,
-        )
+        whenever(errorCodeFactory.createForApiError(status, subStatus.code))
+            .thenReturn(expectedErrorCode)
 
         val actualErrorCode =
             errorHandler.getErrorCode(throwable, ErrorCodeFactory.Extra.DrmLicenseFetch)
@@ -70,30 +69,23 @@ internal class ErrorHandlerTest {
         val expectedErrorCode = "errorCode"
         whenever(errorCodeFactory.createForTimeout(extra)).thenReturn(expectedErrorCode)
 
-        val actualErrorCode =
-            errorHandler.getErrorCode(throwable, extra)
+        val actualErrorCode = errorHandler.getErrorCode(throwable, extra)
 
         verify(errorCodeFactory).createForTimeout(extra)
         assertThat(actualErrorCode).isSameAs(expectedErrorCode)
     }
 
     @ParameterizedTest
-    @ValueSource(
-        classes = [
-            ConnectException::class,
-            UnknownHostException::class,
-        ],
-    )
+    @ValueSource(classes = [ConnectException::class, UnknownHostException::class])
     fun `getErrorCode should return correct errorCode for network connection errors`(
-        ioException: Class<IOException>,
+        ioException: Class<IOException>
     ) {
         val throwable = ioException.getConstructor().newInstance()
         val extra = ErrorCodeFactory.Extra.DrmLicenseFetch
         val expectedErrorCode = "errorCode"
         whenever(errorCodeFactory.createForNetwork(extra)).thenReturn(expectedErrorCode)
 
-        val actualErrorCode =
-            errorHandler.getErrorCode(throwable, extra)
+        val actualErrorCode = errorHandler.getErrorCode(throwable, extra)
 
         verify(errorCodeFactory).createForNetwork(extra)
         assertThat(actualErrorCode).isSameAs(expectedErrorCode)
@@ -106,8 +98,7 @@ internal class ErrorHandlerTest {
         val expectedErrorCode = "errorCode"
         whenever(errorCodeFactory.createForOther(extra)).thenReturn(expectedErrorCode)
 
-        val actualErrorCode =
-            errorHandler.getErrorCode(throwable, extra)
+        val actualErrorCode = errorHandler.getErrorCode(throwable, extra)
 
         verify(errorCodeFactory).createForOther(extra)
         assertThat(actualErrorCode).isSameAs(expectedErrorCode)
@@ -116,17 +107,17 @@ internal class ErrorHandlerTest {
     @ParameterizedTest
     @MethodSource("apiErrorSubStatusesForNotAllowed")
     fun `getErrorEvent should return correct errorEvent for NotAllowed`(
-        subStatus: ApiError.SubStatus,
+        subStatus: ApiError.SubStatus
     ) {
         val status = 499
-        val throwable = mock<ApiError> {
-            on { this.status } doReturn status
-            on { this.subStatus } doReturn subStatus
-        }
+        val throwable =
+            mock<ApiError> {
+                on { this.status } doReturn status
+                on { this.subStatus } doReturn subStatus
+            }
         val expectedErrorCode = "errorCode"
-        whenever(errorCodeFactory.createForApiError(status, subStatus.code)).thenReturn(
-            expectedErrorCode,
-        )
+        whenever(errorCodeFactory.createForApiError(status, subStatus.code))
+            .thenReturn(expectedErrorCode)
 
         val actualErrorEvent = errorHandler.getErrorEvent(throwable)
 
@@ -139,17 +130,17 @@ internal class ErrorHandlerTest {
     @ParameterizedTest
     @MethodSource("apiErrorSubStatusesForContentNotAvailableInLocation")
     fun `getErrorEvent should return correct errorEvent for ContentNotAvailableInLocation`(
-        subStatus: ApiError.SubStatus,
+        subStatus: ApiError.SubStatus
     ) {
         val status = 499
-        val throwable = mock<ApiError> {
-            on { this.subStatus } doReturn subStatus
-            on { this.status } doReturn status
-        }
+        val throwable =
+            mock<ApiError> {
+                on { this.subStatus } doReturn subStatus
+                on { this.status } doReturn status
+            }
         val expectedErrorCode = "errorCode"
-        whenever(errorCodeFactory.createForApiError(status, subStatus.code)).thenReturn(
-            expectedErrorCode,
-        )
+        whenever(errorCodeFactory.createForApiError(status, subStatus.code))
+            .thenReturn(expectedErrorCode)
 
         val actualErrorEvent = errorHandler.getErrorEvent(throwable)
 
@@ -163,14 +154,14 @@ internal class ErrorHandlerTest {
     fun `getErrorEvent should return correct errorEvent for UserMonthlyStreamQuotaExceeded`() {
         val status = 499
         val subStatus = ApiError.SubStatus.UserMonthlyStreamQuotaExceeded
-        val throwable = mock<ApiError> {
-            on { this.status } doReturn status
-            on { this.subStatus } doReturn subStatus
-        }
+        val throwable =
+            mock<ApiError> {
+                on { this.status } doReturn status
+                on { this.subStatus } doReturn subStatus
+            }
         val expectedErrorCode = "errorCode"
-        whenever(errorCodeFactory.createForApiError(status, subStatus.code)).thenReturn(
-            expectedErrorCode,
-        )
+        whenever(errorCodeFactory.createForApiError(status, subStatus.code))
+            .thenReturn(expectedErrorCode)
 
         val actualErrorEvent = errorHandler.getErrorEvent(throwable)
 
@@ -184,14 +175,14 @@ internal class ErrorHandlerTest {
     fun `getErrorEvent should return correct for NoContentMatchingSubscriptionConfiguration`() {
         val status = 499
         val subStatus = ApiError.SubStatus.NoContentMatchingSubscriptionConfiguration
-        val throwable = mock<ApiError> {
-            on { this.status } doReturn status
-            on { this.subStatus } doReturn subStatus
-        }
+        val throwable =
+            mock<ApiError> {
+                on { this.status } doReturn status
+                on { this.subStatus } doReturn subStatus
+            }
         val expectedErrorCode = "errorCode"
-        whenever(errorCodeFactory.createForApiError(status, subStatus.code)).thenReturn(
-            expectedErrorCode,
-        )
+        whenever(errorCodeFactory.createForApiError(status, subStatus.code))
+            .thenReturn(expectedErrorCode)
 
         val actualErrorEvent = errorHandler.getErrorEvent(throwable)
 
@@ -205,19 +196,17 @@ internal class ErrorHandlerTest {
     @ParameterizedTest
     @ValueSource(ints = [429, 500, 501, 502, 503, 504])
     fun `getErrorEvent should return correct errorEvent for 429 and 5xx`(code: Int) {
-        val cause = mock<HttpException> {
-            on { code() } doReturn code
-        }
+        val cause = mock<HttpException> { on { code() } doReturn code }
         val subStatus = ApiError.SubStatus.Unknown(-1)
-        val throwable = mock<ApiError> {
-            on { this.cause } doReturn cause
-            on { this.status } doReturn code
-            on { this.subStatus } doReturn subStatus
-        }
+        val throwable =
+            mock<ApiError> {
+                on { this.cause } doReturn cause
+                on { this.status } doReturn code
+                on { this.subStatus } doReturn subStatus
+            }
         val expectedErrorCode = "errorCode"
-        whenever(errorCodeFactory.createForApiError(code, subStatus.code)).thenReturn(
-            expectedErrorCode,
-        )
+        whenever(errorCodeFactory.createForApiError(code, subStatus.code))
+            .thenReturn(expectedErrorCode)
 
         val actualErrorEvent = errorHandler.getErrorEvent(throwable)
 
@@ -229,22 +218,18 @@ internal class ErrorHandlerTest {
 
     @ParameterizedTest
     @ValueSource(ints = [400, 401, 403, 404, 405, 416])
-    fun `getErrorEvent should return correct errorEvent for 4xx except 429`(
-        code: Int,
-    ) {
-        val cause = mock<HttpException> {
-            on { code() } doReturn code
-        }
+    fun `getErrorEvent should return correct errorEvent for 4xx except 429`(code: Int) {
+        val cause = mock<HttpException> { on { code() } doReturn code }
         val subStatus = ApiError.SubStatus.Unknown(-1)
-        val throwable = mock<ApiError> {
-            on { this.cause } doReturn cause
-            on { this.status } doReturn code
-            on { this.subStatus } doReturn subStatus
-        }
+        val throwable =
+            mock<ApiError> {
+                on { this.cause } doReturn cause
+                on { this.status } doReturn code
+                on { this.subStatus } doReturn subStatus
+            }
         val expectedErrorCode = "errorCode"
-        whenever(errorCodeFactory.createForApiError(code, subStatus.code)).thenReturn(
-            expectedErrorCode,
-        )
+        whenever(errorCodeFactory.createForApiError(code, subStatus.code))
+            .thenReturn(expectedErrorCode)
 
         val actualErrorEvent = errorHandler.getErrorEvent(throwable)
 
@@ -257,18 +242,17 @@ internal class ErrorHandlerTest {
     @Test
     fun `getErrorEvent should return correct errorEvent for InvalidResponseCodeException`() {
         val responseCode = 500
-        val cause = HttpDataSource.InvalidResponseCodeException(
-            responseCode,
-            null,
-            null,
-            emptyMap(),
-            mock(),
-            byteArrayOf(),
-        )
+        val cause =
+            HttpDataSource.InvalidResponseCodeException(
+                responseCode,
+                null,
+                null,
+                emptyMap(),
+                mock(),
+                byteArrayOf(),
+            )
         val exoPlayerErrorCode = 123
-        val throwable = mock<ExoPlaybackException> {
-            on { it.cause } doReturn cause
-        }
+        val throwable = mock<ExoPlaybackException> { on { it.cause } doReturn cause }
         throwable.reflectionSetErrorCode(exoPlayerErrorCode)
         val expectedErrorCode = "errorCode"
         whenever(errorCodeFactory.createForInvalidResponseCode(responseCode, exoPlayerErrorCode))
@@ -285,17 +269,13 @@ internal class ErrorHandlerTest {
     @Test
     fun `getErrorEvent should return correct errorEvent for HttpDataSourceException`() {
         val type = HttpDataSourceException.TYPE_OPEN
-        val cause =
-            HttpDataSourceException(mock(), 0, type)
+        val cause = HttpDataSourceException(mock(), 0, type)
         val exoPlayerErrorCode = 123
-        val throwable = mock<ExoPlaybackException> {
-            on { it.cause } doReturn cause
-        }
+        val throwable = mock<ExoPlaybackException> { on { it.cause } doReturn cause }
         throwable.reflectionSetErrorCode(exoPlayerErrorCode)
         val expectedErrorCode = "errorCode"
-        whenever(errorCodeFactory.createForHttpDataSource(type, exoPlayerErrorCode)).thenReturn(
-            expectedErrorCode,
-        )
+        whenever(errorCodeFactory.createForHttpDataSource(type, exoPlayerErrorCode))
+            .thenReturn(expectedErrorCode)
 
         val actualErrorEvent = errorHandler.getErrorEvent(throwable)
 
@@ -309,15 +289,12 @@ internal class ErrorHandlerTest {
     fun `getErrorEvent should return correct errorEvent for DrmSessionException for source`() {
         val cause = mock<DrmSessionException>()
         val exoPlayerErrorCode = 123
-        val throwable = mock<ExoPlaybackException> {
-            on { it.cause } doReturn cause
-        }
+        val throwable = mock<ExoPlaybackException> { on { it.cause } doReturn cause }
         throwable.reflectionSetErrorCode(exoPlayerErrorCode)
         val extra = ErrorCodeFactory.Extra.PlayerSourceError
         val expectedErrorCode = "errorCode"
-        whenever(errorCodeFactory.createForDrmSession(extra, exoPlayerErrorCode)).thenReturn(
-            expectedErrorCode,
-        )
+        whenever(errorCodeFactory.createForDrmSession(extra, exoPlayerErrorCode))
+            .thenReturn(expectedErrorCode)
 
         val actualErrorEvent = errorHandler.getErrorEvent(throwable)
 
@@ -331,15 +308,12 @@ internal class ErrorHandlerTest {
     fun `getErrorEvent should return correct errorEvent for unexpectedLoader when broadcast`() {
         val cause = mock<Loader.UnexpectedLoaderException>()
         val exoPlayerErrorCode = 123
-        val throwable = mock<ExoPlaybackException> {
-            on { it.cause } doReturn cause
-        }
+        val throwable = mock<ExoPlaybackException> { on { it.cause } doReturn cause }
         throwable.reflectionSetErrorCode(exoPlayerErrorCode)
         val extra = ErrorCodeFactory.Extra.Broadcast
         val expectedErrorCode = "errorCode"
-        whenever(errorCodeFactory.createForUnexpectedLoader(extra, exoPlayerErrorCode)).thenReturn(
-            expectedErrorCode,
-        )
+        whenever(errorCodeFactory.createForUnexpectedLoader(extra, exoPlayerErrorCode))
+            .thenReturn(expectedErrorCode)
 
         val actualErrorEvent = errorHandler.getErrorEvent(throwable, ProductType.BROADCAST)
 
@@ -352,19 +326,14 @@ internal class ErrorHandlerTest {
     @Test
     fun `getErrorEvent should return correct errorEvent for StorageException`() {
         val cause = mock<StorageException>()
-        val exception = mock<Loader.UnexpectedLoaderException> {
-            on { this.cause } doReturn cause
-        }
+        val exception = mock<Loader.UnexpectedLoaderException> { on { this.cause } doReturn cause }
         val exoPlayerErrorCode = 123
-        val throwable = mock<ExoPlaybackException> {
-            on { it.cause } doReturn exception
-        }
+        val throwable = mock<ExoPlaybackException> { on { it.cause } doReturn exception }
         throwable.reflectionSetErrorCode(exoPlayerErrorCode)
         val extra = ErrorCodeFactory.Extra.Storage
         val expectedErrorCode = "errorCode"
-        whenever(errorCodeFactory.createForOther(extra, exoPlayerErrorCode)).thenReturn(
-            expectedErrorCode,
-        )
+        whenever(errorCodeFactory.createForOther(extra, exoPlayerErrorCode))
+            .thenReturn(expectedErrorCode)
 
         val actualErrorEvent = errorHandler.getErrorEvent(throwable)
 
@@ -378,15 +347,12 @@ internal class ErrorHandlerTest {
     fun `getErrorEvent should return correct errorEvent for UnexpectedLoaderException`() {
         val cause = mock<Loader.UnexpectedLoaderException>()
         val exoPlayerErrorCode = 123
-        val throwable = mock<ExoPlaybackException> {
-            on { it.cause } doReturn cause
-        }
+        val throwable = mock<ExoPlaybackException> { on { it.cause } doReturn cause }
         throwable.reflectionSetErrorCode(exoPlayerErrorCode)
         val extra = ErrorCodeFactory.Extra.Other
         val expectedErrorCode = "errorCode"
-        whenever(errorCodeFactory.createForUnexpectedLoader(extra, exoPlayerErrorCode)).thenReturn(
-            expectedErrorCode,
-        )
+        whenever(errorCodeFactory.createForUnexpectedLoader(extra, exoPlayerErrorCode))
+            .thenReturn(expectedErrorCode)
 
         val actualErrorEvent = errorHandler.getErrorEvent(throwable)
 
@@ -400,15 +366,12 @@ internal class ErrorHandlerTest {
     fun `getErrorEvent should return correct errorEvent for BehindLiveWindowException`() {
         val cause = mock<BehindLiveWindowException>()
         val exoPlayerErrorCode = 123
-        val throwable = mock<ExoPlaybackException> {
-            on { it.cause } doReturn cause
-        }
+        val throwable = mock<ExoPlaybackException> { on { it.cause } doReturn cause }
         throwable.reflectionSetErrorCode(exoPlayerErrorCode)
         val extra = ErrorCodeFactory.Extra.PlayerSourceError
         val expectedErrorCode = "errorCode"
-        whenever(errorCodeFactory.createForBehindLiveWindow(extra, exoPlayerErrorCode)).thenReturn(
-            expectedErrorCode,
-        )
+        whenever(errorCodeFactory.createForBehindLiveWindow(extra, exoPlayerErrorCode))
+            .thenReturn(expectedErrorCode)
 
         val actualErrorEvent = errorHandler.getErrorEvent(throwable)
 
@@ -478,12 +441,8 @@ internal class ErrorHandlerTest {
     @Test
     fun `getErrorEvent should return correct errorEvent for timeouts on source`() {
         val cause = mock<SocketTimeoutException>()
-        val exception = mock<IOException> {
-            on { this.cause } doReturn cause
-        }
-        val throwable = mock<ExoPlaybackException> {
-            on { it.cause } doReturn exception
-        }
+        val exception = mock<IOException> { on { this.cause } doReturn cause }
+        val throwable = mock<ExoPlaybackException> { on { it.cause } doReturn exception }
         val extra = ErrorCodeFactory.Extra.PlayerSourceError
         val expectedErrorCode = "errorCode"
         whenever(errorCodeFactory.createForTimeout(extra, 0)).thenReturn(expectedErrorCode)
@@ -497,22 +456,13 @@ internal class ErrorHandlerTest {
     }
 
     @ParameterizedTest
-    @ValueSource(
-        classes = [
-            ConnectException::class,
-            UnknownHostException::class,
-        ],
-    )
+    @ValueSource(classes = [ConnectException::class, UnknownHostException::class])
     fun `getErrorEvent should return correct errorEvent for network connection errors on source`(
-        ioException: Class<IOException>,
+        ioException: Class<IOException>
     ) {
         val cause = ioException.getConstructor().newInstance()
-        val exception = mock<IOException> {
-            on { this.cause } doReturn cause
-        }
-        val throwable = mock<ExoPlaybackException> {
-            on { it.cause } doReturn exception
-        }
+        val exception = mock<IOException> { on { this.cause } doReturn cause }
+        val throwable = mock<ExoPlaybackException> { on { it.cause } doReturn exception }
         val extra = ErrorCodeFactory.Extra.PlayerSourceError
         val expectedErrorCode = "errorCode"
         whenever(errorCodeFactory.createForNetwork(extra, 0)).thenReturn(expectedErrorCode)
@@ -527,12 +477,8 @@ internal class ErrorHandlerTest {
 
     @Test
     fun `getErrorEvent should return correct errorEvent for unknown source errors`() {
-        val exception = mock<IOException> {
-            on { this.cause } doReturn mock()
-        }
-        val throwable = mock<ExoPlaybackException> {
-            on { sourceException } doReturn exception
-        }
+        val exception = mock<IOException> { on { this.cause } doReturn mock() }
+        val throwable = mock<ExoPlaybackException> { on { sourceException } doReturn exception }
         val extra = ErrorCodeFactory.Extra.PlayerSourceError
         val expectedErrorCode = "errorCode"
         whenever(errorCodeFactory.createForOther(extra, 0)).thenReturn(expectedErrorCode)
@@ -549,16 +495,13 @@ internal class ErrorHandlerTest {
     fun `getErrorEvent should return correct errorEvent for DrmSessionException for renderer`() {
         val cause = mock<DrmSessionException>()
         val exoPlayerErrorCode = 123
-        val throwable = mock<ExoPlaybackException> {
-            on { it.cause } doReturn cause
-        }
+        val throwable = mock<ExoPlaybackException> { on { it.cause } doReturn cause }
         throwable.reflectionSetErrorCode(exoPlayerErrorCode)
         throwable.reflectionSetType(ExoPlaybackException.TYPE_RENDERER)
         val extra = ErrorCodeFactory.Extra.PlayerRendererError
         val expectedErrorCode = "errorCode"
-        whenever(errorCodeFactory.createForDrmSession(extra, exoPlayerErrorCode)).thenReturn(
-            expectedErrorCode,
-        )
+        whenever(errorCodeFactory.createForDrmSession(extra, exoPlayerErrorCode))
+            .thenReturn(expectedErrorCode)
 
         val actualErrorEvent = errorHandler.getErrorEvent(throwable)
 
@@ -572,9 +515,7 @@ internal class ErrorHandlerTest {
     fun `getErrorEvent should return correct errorEvent for AudioSink_InitializationException`() {
         val cause = mock<AudioSink.InitializationException>()
         val exoPlayerErrorCode = 123
-        val throwable = mock<ExoPlaybackException> {
-            on { it.cause } doReturn cause
-        }
+        val throwable = mock<ExoPlaybackException> { on { it.cause } doReturn cause }
         throwable.reflectionSetErrorCode(exoPlayerErrorCode)
         throwable.reflectionSetType(ExoPlaybackException.TYPE_RENDERER)
         val extra = ErrorCodeFactory.Extra.PlayerRendererError
@@ -592,9 +533,7 @@ internal class ErrorHandlerTest {
 
     @Test
     fun `getErrorEvent should return correct errorEvent for unknown renderer errors`() {
-        val throwable = mock<ExoPlaybackException> {
-            on { rendererException } doReturn mock()
-        }
+        val throwable = mock<ExoPlaybackException> { on { rendererException } doReturn mock() }
         throwable.reflectionSetType(ExoPlaybackException.TYPE_RENDERER)
         val extra = ErrorCodeFactory.Extra.PlayerRendererError
         val expectedErrorCode = "errorCode"
@@ -610,9 +549,7 @@ internal class ErrorHandlerTest {
 
     @Test
     fun `getErrorEvent should return correct errorEvent for unexpected errors`() {
-        val throwable = mock<ExoPlaybackException> {
-            on { unexpectedException } doReturn mock()
-        }
+        val throwable = mock<ExoPlaybackException> { on { unexpectedException } doReturn mock() }
         throwable.reflectionSetType(ExoPlaybackException.TYPE_UNEXPECTED)
         val extra = ErrorCodeFactory.Extra.PlayerUnexpectedError
         val expectedErrorCode = "errorCode"
@@ -649,9 +586,7 @@ internal class ErrorHandlerTest {
         val throwable = SocketTimeoutException()
         val extra = ErrorCodeFactory.Extra.Other
         val expectedErrorCode = "errorCode"
-        whenever(errorCodeFactory.createForTimeout(extra, null)).thenReturn(
-            expectedErrorCode,
-        )
+        whenever(errorCodeFactory.createForTimeout(extra, null)).thenReturn(expectedErrorCode)
 
         val actualErrorEvent = errorHandler.getErrorEvent(throwable)
 
@@ -662,21 +597,14 @@ internal class ErrorHandlerTest {
     }
 
     @ParameterizedTest
-    @ValueSource(
-        classes = [
-            ConnectException::class,
-            UnknownHostException::class,
-        ],
-    )
+    @ValueSource(classes = [ConnectException::class, UnknownHostException::class])
     fun `getErrorEvent should return correct errorEvent for network connection errors`(
-        ioException: Class<IOException>,
+        ioException: Class<IOException>
     ) {
         val throwable = ioException.getConstructor().newInstance()
         val extra = ErrorCodeFactory.Extra.Other
         val expectedErrorCode = "errorCode"
-        whenever(errorCodeFactory.createForNetwork(extra, null)).thenReturn(
-            expectedErrorCode,
-        )
+        whenever(errorCodeFactory.createForNetwork(extra, null)).thenReturn(expectedErrorCode)
 
         val actualErrorEvent = errorHandler.getErrorEvent(throwable)
 
@@ -706,9 +634,7 @@ internal class ErrorHandlerTest {
         val throwable = IOException()
         val extra = ErrorCodeFactory.Extra.Other
         val expectedErrorCode = "errorCode"
-        whenever(errorCodeFactory.createForOther(extra, null)).thenReturn(
-            expectedErrorCode,
-        )
+        whenever(errorCodeFactory.createForOther(extra, null)).thenReturn(expectedErrorCode)
 
         val actualErrorEvent = errorHandler.getErrorEvent(throwable)
 
@@ -722,24 +648,26 @@ internal class ErrorHandlerTest {
 
         @JvmStatic
         @Suppress("UnusedPrivateMember")
-        private fun apiErrorSubStatusesForNotAllowed() = setOf(
-            Arguments.of(ApiError.SubStatus.GenericPlaybackError),
-            Arguments.of(ApiError.SubStatus.NoStreamingPrivileges),
-            Arguments.of(ApiError.SubStatus.UserClientNotAuthorizedForOffline),
-            Arguments.of(ApiError.SubStatus.SessionNotFound),
-            Arguments.of(ApiError.SubStatus.UserNotFound),
-            Arguments.of(ApiError.SubStatus.ClientNotFound),
-            Arguments.of(ApiError.SubStatus.ProductNotFound),
-            Arguments.of(ApiError.SubStatus.NoContentAvailableInProduct),
-            Arguments.of(ApiError.SubStatus.NoContentMatchingRequest),
-            Arguments.of(ApiError.SubStatus.NoContentMatchingClient),
-        )
+        private fun apiErrorSubStatusesForNotAllowed() =
+            setOf(
+                Arguments.of(ApiError.SubStatus.GenericPlaybackError),
+                Arguments.of(ApiError.SubStatus.NoStreamingPrivileges),
+                Arguments.of(ApiError.SubStatus.UserClientNotAuthorizedForOffline),
+                Arguments.of(ApiError.SubStatus.SessionNotFound),
+                Arguments.of(ApiError.SubStatus.UserNotFound),
+                Arguments.of(ApiError.SubStatus.ClientNotFound),
+                Arguments.of(ApiError.SubStatus.ProductNotFound),
+                Arguments.of(ApiError.SubStatus.NoContentAvailableInProduct),
+                Arguments.of(ApiError.SubStatus.NoContentMatchingRequest),
+                Arguments.of(ApiError.SubStatus.NoContentMatchingClient),
+            )
 
         @JvmStatic
         @Suppress("UnusedPrivateMember")
-        private fun apiErrorSubStatusesForContentNotAvailableInLocation() = setOf(
-            Arguments.of(ApiError.SubStatus.NoContentMatchingSubscriptionLocation),
-            Arguments.of(ApiError.SubStatus.NoContentMatchingPrePaywallLocation),
-        )
+        private fun apiErrorSubStatusesForContentNotAvailableInLocation() =
+            setOf(
+                Arguments.of(ApiError.SubStatus.NoContentMatchingSubscriptionLocation),
+                Arguments.of(ApiError.SubStatus.NoContentMatchingPrePaywallLocation),
+            )
     }
 }

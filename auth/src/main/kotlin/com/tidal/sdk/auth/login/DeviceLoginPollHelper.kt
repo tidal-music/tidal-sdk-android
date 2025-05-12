@@ -28,22 +28,25 @@ internal class DeviceLoginPollHelper(private val loginService: LoginService) {
     private lateinit var pollRetryPolicy: RetryPolicy
 
     fun prepareForPoll(interval: Int, maxDuration: Int) {
-        pollRetryPolicy = object : RetryPolicy {
-            override val numberOfRetries = maxDuration / interval
-            override val delayMillis = interval.toMilliseconds()
-            override val delayFactor = 1
+        pollRetryPolicy =
+            object : RetryPolicy {
+                override val numberOfRetries = maxDuration / interval
+                override val delayMillis = interval.toMilliseconds()
+                override val delayFactor = 1
 
-            override fun shouldRetry(
-                errorResponse: ErrorResponse?,
-                throwable: Throwable?,
-                attempt: Int,
-            ): Boolean {
-                val isTokenExpired = errorResponse?.subStatus
-                    .toString()
-                    .isSubStatus(ApiErrorSubStatus.ExpiredAccessToken)
-                return attempt < numberOfRetries && !isTokenExpired
+                override fun shouldRetry(
+                    errorResponse: ErrorResponse?,
+                    throwable: Throwable?,
+                    attempt: Int,
+                ): Boolean {
+                    val isTokenExpired =
+                        errorResponse
+                            ?.subStatus
+                            .toString()
+                            .isSubStatus(ApiErrorSubStatus.ExpiredAccessToken)
+                    return attempt < numberOfRetries && !isTokenExpired
+                }
             }
-        }
     }
 
     suspend fun poll(
@@ -73,29 +76,32 @@ internal class DeviceLoginPollHelper(private val loginService: LoginService) {
         ): AuthResult<T> {
             return when (throwable) {
                 is HttpException -> {
-                    val subStatus = ApiErrorSubStatus
-                        .entries
-                        .firstOrNull { it.value == errorResponse?.subStatus.toString() }
+                    val subStatus =
+                        ApiErrorSubStatus.entries.firstOrNull {
+                            it.value == errorResponse?.subStatus.toString()
+                        }
                     when {
-                        throwable.isServerError() -> failure(
-                            RetryableError(
-                                throwable.code().toString(),
-                                subStatus?.value?.toInt(),
-                                throwable,
-                            ),
-                        )
-
-                        throwable.isClientError() -> failure(
-                            if (throwable.code() > HttpURLConnection.HTTP_UNAUTHORIZED) {
-                                TokenResponseError(
+                        throwable.isServerError() ->
+                            failure(
+                                RetryableError(
                                     throwable.code().toString(),
                                     subStatus?.value?.toInt(),
                                     throwable,
                                 )
-                            } else {
-                                handleSubStatus(subStatus, throwable)
-                            },
-                        )
+                            )
+
+                        throwable.isClientError() ->
+                            failure(
+                                if (throwable.code() > HttpURLConnection.HTTP_UNAUTHORIZED) {
+                                    TokenResponseError(
+                                        throwable.code().toString(),
+                                        subStatus?.value?.toInt(),
+                                        throwable,
+                                    )
+                                } else {
+                                    handleSubStatus(subStatus, throwable)
+                                }
+                            )
 
                         else -> failure(NetworkError("1", throwable))
                     }
@@ -119,11 +125,7 @@ internal class DeviceLoginPollHelper(private val loginService: LoginService) {
                 }
 
                 ApiErrorSubStatus.AuthorizationPending -> {
-                    RetryableError(
-                        exception.code().toString(),
-                        subStatus.value.toInt(),
-                        exception,
-                    )
+                    RetryableError(exception.code().toString(), subStatus.value.toInt(), exception)
                 }
 
                 else -> {

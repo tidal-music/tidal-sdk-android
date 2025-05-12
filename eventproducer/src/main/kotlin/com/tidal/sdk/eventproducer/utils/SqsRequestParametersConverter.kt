@@ -5,9 +5,9 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-internal class SqsRequestParametersConverter @Inject constructor(
-    private val mapConverter: MapConverter,
-) {
+internal class SqsRequestParametersConverter
+@Inject
+constructor(private val mapConverter: MapConverter) {
 
     fun getSendEventsParameters(events: List<Event>): Map<String, String> {
         val params = mutableMapOf<String, String>()
@@ -23,8 +23,7 @@ internal class SqsRequestParametersConverter @Inject constructor(
             attributeIndex++
             val headersJson = mapConverter.fromStringStringMap(event.headers)
             params["$SEND_BATCH.$eventIndex.$ATTRIBUTE.$attributeIndex.$NAME_KEY"] = HEADERS_KEY
-            params["$SEND_BATCH.$eventIndex.$ATTRIBUTE.$attributeIndex.$VALUE_DATATYPE"] =
-                STRING
+            params["$SEND_BATCH.$eventIndex.$ATTRIBUTE.$attributeIndex.$VALUE_DATATYPE"] = STRING
             params["$SEND_BATCH.$eventIndex.$ATTRIBUTE.$attributeIndex.$VALUE"] = headersJson
         }
         return params

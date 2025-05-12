@@ -12,7 +12,9 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 @Singleton
-internal class DefaultEventSender @Inject constructor(
+internal class DefaultEventSender
+@Inject
+constructor(
     private val coroutineScope: CoroutineScope,
     private val submitter: Submitter,
     private val configProvider: EventsConfigProvider,
@@ -20,6 +22,7 @@ internal class DefaultEventSender @Inject constructor(
 
     /**
      * Sends an event to the TL Consumer. Tl Consumer - backend part of the event delivery platform
+     *
      * @param eventName The name of the event
      * @param consentCategory The consent category the event belongs to
      * @param payload The payload of the event, i.e. the actual business data being sent.
@@ -42,8 +45,8 @@ internal class DefaultEventSender @Inject constructor(
     }
 
     /**
-     * Sets blocked consent categories which results in filtering events associated with the
-     * blocked category. Events that are dropped are included in the monitoring statistics in the
+     * Sets blocked consent categories which results in filtering events associated with the blocked
+     * category. Events that are dropped are included in the monitoring statistics in the
      * [MonitoringInfo].
      */
     override fun setBlockedConsentCategories(blockedConsentCategories: Set<ConsentCategory>) {

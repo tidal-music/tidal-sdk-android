@@ -35,11 +35,12 @@ internal class PlayerProgressiveOfflineMediaSourceFactoryTest {
         )
 
     @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(
-        progressiveMediaSourceFactoryFactory,
-        btsManifestFactory,
-        offlineStorageProvider,
-    )
+    fun afterEach() =
+        verifyNoMoreInteractions(
+            progressiveMediaSourceFactoryFactory,
+            btsManifestFactory,
+            offlineStorageProvider,
+        )
 
     @ParameterizedTest
     @MethodSource("btsManifests")
@@ -48,9 +49,10 @@ internal class PlayerProgressiveOfflineMediaSourceFactoryTest {
         val storage = mock<Storage>()
         val builtMediaItem = mock<MediaItem>()
         val expectedProgressiveMediaSource = mock<ProgressiveMediaSource>()
-        val progressiveMediaSourceFactory = mock<ProgressiveMediaSource.Factory> {
-            on { createMediaSource(builtMediaItem) } doReturn expectedProgressiveMediaSource
-        }
+        val progressiveMediaSourceFactory =
+            mock<ProgressiveMediaSource.Factory> {
+                on { createMediaSource(builtMediaItem) } doReturn expectedProgressiveMediaSource
+            }
         val dataSourceFactoryForOfflinePlay = mock<DataSource.Factory>()
         whenever(btsManifestFactory.create(ENCODED_MANIFEST)).thenReturn(btsManifest)
         val mediaItemBuilder = mock<MediaItem.Builder>(defaultAnswer = Answers.RETURNS_SELF)
@@ -61,11 +63,8 @@ internal class PlayerProgressiveOfflineMediaSourceFactoryTest {
         whenever(progressiveMediaSourceFactoryFactory.create(dataSourceFactoryForOfflinePlay))
             .thenReturn(progressiveMediaSourceFactory)
 
-        val actualProgressiveMediaSource = playerProgressiveOfflineMediaSourceFactory.create(
-            mediaItem,
-            ENCODED_MANIFEST,
-            storage,
-        )
+        val actualProgressiveMediaSource =
+            playerProgressiveOfflineMediaSourceFactory.create(mediaItem, ENCODED_MANIFEST, storage)
 
         assertThat(actualProgressiveMediaSource).isSameAs(expectedProgressiveMediaSource)
         verify(btsManifestFactory).create(ENCODED_MANIFEST)
@@ -89,16 +88,17 @@ internal class PlayerProgressiveOfflineMediaSourceFactoryTest {
 
         @JvmStatic
         @Suppress("UnusedPrivateMember")
-        private fun btsManifests() = setOf(
-            Arguments.of(BtsManifest("", listOf())),
-            Arguments.of(BtsManifest("", listOf("url"))),
-            Arguments.of(BtsManifest("", listOf("url", "url2"))),
-            Arguments.of(BtsManifest("codecs", listOf())),
-            Arguments.of(BtsManifest("codecs", listOf("url"))),
-            Arguments.of(BtsManifest("codecs", listOf("url", "url2"))),
-            Arguments.of(BtsManifest("codecs,codecs", listOf())),
-            Arguments.of(BtsManifest("codecs,codecs", listOf("url"))),
-            Arguments.of(BtsManifest("codecs,codecs", listOf("url", "url2"))),
-        )
+        private fun btsManifests() =
+            setOf(
+                Arguments.of(BtsManifest("", listOf())),
+                Arguments.of(BtsManifest("", listOf("url"))),
+                Arguments.of(BtsManifest("", listOf("url", "url2"))),
+                Arguments.of(BtsManifest("codecs", listOf())),
+                Arguments.of(BtsManifest("codecs", listOf("url"))),
+                Arguments.of(BtsManifest("codecs", listOf("url", "url2"))),
+                Arguments.of(BtsManifest("codecs,codecs", listOf())),
+                Arguments.of(BtsManifest("codecs,codecs", listOf("url"))),
+                Arguments.of(BtsManifest("codecs,codecs", listOf("url", "url2"))),
+            )
     }
 }

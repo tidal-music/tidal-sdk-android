@@ -8,6 +8,5 @@ import dagger.Module
 @Module
 internal interface EventProducerModule {
 
-    @Binds
-    fun provideEventSender(defaultEventSender: DefaultEventSender): EventSender
+    @Binds fun provideEventSender(defaultEventSender: DefaultEventSender): EventSender
 }

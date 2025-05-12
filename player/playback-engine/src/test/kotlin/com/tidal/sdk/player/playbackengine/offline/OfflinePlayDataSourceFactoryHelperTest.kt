@@ -18,16 +18,15 @@ internal class OfflinePlayDataSourceFactoryHelperTest {
     private val cacheKeyAesCipherDataSourceFactoryFactory =
         mock<CacheKeyAesCipherDataSourceFactoryFactory>()
     private val offlineCacheProvider = mock<OfflineCacheProvider>()
-    private val offlinePlayDataSourceFactoryHelper = OfflinePlayDataSourceFactoryHelper(
-        cacheKeyAesCipherDataSourceFactoryFactory,
-        offlineCacheProvider,
-    )
+    private val offlinePlayDataSourceFactoryHelper =
+        OfflinePlayDataSourceFactoryHelper(
+            cacheKeyAesCipherDataSourceFactoryFactory,
+            offlineCacheProvider,
+        )
 
     @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(
-        cacheKeyAesCipherDataSourceFactoryFactory,
-        offlineCacheProvider,
-    )
+    fun afterEach() =
+        verifyNoMoreInteractions(cacheKeyAesCipherDataSourceFactoryFactory, offlineCacheProvider)
 
     @Test
     fun create() {
@@ -40,9 +39,6 @@ internal class OfflinePlayDataSourceFactoryHelperTest {
 
         assertThat(actualDataSourceFactory).isSameAs(cacheKeyAesCipherDataSourceFactory)
         verify(cacheKeyAesCipherDataSourceFactoryFactory).create(cache)
-        verifyNoMoreInteractions(
-            cache,
-            cacheKeyAesCipherDataSourceFactory,
-        )
+        verifyNoMoreInteractions(cache, cacheKeyAesCipherDataSourceFactory)
     }
 }

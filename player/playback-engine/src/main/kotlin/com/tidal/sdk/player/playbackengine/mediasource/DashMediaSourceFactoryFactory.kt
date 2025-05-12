@@ -5,9 +5,10 @@ import androidx.media3.exoplayer.dash.DashMediaSource
 import androidx.media3.exoplayer.upstream.LoadErrorHandlingPolicy
 
 internal class DashMediaSourceFactoryFactory(
-    private val loadErrorHandlingPolicy: LoadErrorHandlingPolicy,
+    private val loadErrorHandlingPolicy: LoadErrorHandlingPolicy
 ) {
 
-    fun create(dataSourceFactory: DataSource.Factory) = DashMediaSource.Factory(dataSourceFactory)
-        .setLoadErrorHandlingPolicy(loadErrorHandlingPolicy)
+    fun create(dataSourceFactory: DataSource.Factory) =
+        DashMediaSource.Factory(dataSourceFactory)
+            .setLoadErrorHandlingPolicy(loadErrorHandlingPolicy)
 }

@@ -49,24 +49,26 @@ import org.junit.jupiter.api.TestInstance
 class LoginRepositoryTest {
 
     private lateinit var timeProvider: TimeProvider
-    private val authConfig = AuthConfig(
-        clientId = TEST_CLIENT_ID,
-        clientUniqueKey = TEST_CLIENT_UNIQUE_KEY,
-        credentialsKey = "credentialsKey",
-        scopes = setOf(),
-        enableCertificatePinning = false,
-    )
+    private val authConfig =
+        AuthConfig(
+            clientId = TEST_CLIENT_ID,
+            clientUniqueKey = TEST_CLIENT_UNIQUE_KEY,
+            credentialsKey = "credentialsKey",
+            scopes = setOf(),
+            enableCertificatePinning = false,
+        )
     private val dummyEncodedString = "encoded_string"
     private val loginUri = "https://tidal.com/android/login/auth"
     private val messageBus: MutableSharedFlow<TidalMessage> = MutableSharedFlow()
     private lateinit var fakeTokensStore: FakeTokensStore
     private lateinit var fakeLoginService: FakeLoginService
     private lateinit var loginRepository: LoginRepository
-    private val testRetryPolicy: RetryPolicy = object : RetryPolicy {
-        override val numberOfRetries = 3
-        override val delayMillis = 1
-        override val delayFactor = 1
-    }
+    private val testRetryPolicy: RetryPolicy =
+        object : RetryPolicy {
+            override val numberOfRetries = 3
+            override val delayMillis = 1
+            override val delayFactor = 1
+        }
 
     private fun createLoginRepository(
         loginService: FakeLoginService,
@@ -77,31 +79,33 @@ class LoginRepositoryTest {
     ) {
         fakeLoginService = loginService
         fakeTokensStore = tokensStore
-        loginRepository = LoginRepository(
-            authConfig,
-            timeProvider,
-            CodeChallengeBuilder(),
-            LoginUriBuilder(
-                TEST_CLIENT_ID,
-                TEST_CLIENT_UNIQUE_KEY,
-                loginBaseUrl,
-                authConfig.scopes
-            ),
-            loginService,
-            tokensStore,
-            retryPolicy,
-            Mutex(),
-            bus,
-        )
+        loginRepository =
+            LoginRepository(
+                authConfig,
+                timeProvider,
+                CodeChallengeBuilder(),
+                LoginUriBuilder(
+                    TEST_CLIENT_ID,
+                    TEST_CLIENT_UNIQUE_KEY,
+                    loginBaseUrl,
+                    authConfig.scopes,
+                ),
+                loginService,
+                tokensStore,
+                retryPolicy,
+                Mutex(),
+                bus,
+            )
     }
 
     @BeforeAll
     fun setup() {
         mockkStatic(android.util.Base64::class)
         mockk<android.util.Base64> {
-            every {
-                android.util.Base64.encodeToString(any(), any())
-            } answers { dummyEncodedString }
+            every { android.util.Base64.encodeToString(any(), any()) } answers
+                {
+                    dummyEncodedString
+                }
         }
         timeProvider = TEST_TIME_PROVIDER
     }
@@ -170,13 +174,15 @@ class LoginRepositoryTest {
     fun `getLoginUri returns a uri containing all custom query arguments`() {
         // given
         createLoginRepository(FakeLoginService())
-        val loginConfig = LoginConfig(
-            customParams = setOf(
-                QueryParameter("key1", "value1"),
-                QueryParameter("key2", "value2"),
-                QueryParameter("key3", "value3"),
-            ),
-        )
+        val loginConfig =
+            LoginConfig(
+                customParams =
+                    setOf(
+                        QueryParameter("key1", "value1"),
+                        QueryParameter("key2", "value2"),
+                        QueryParameter("key3", "value3"),
+                    )
+            )
 
         // when
         val generatedUri = loginRepository.getLoginUri(loginUri, loginConfig)
@@ -196,9 +202,7 @@ class LoginRepositoryTest {
         createLoginRepository(FakeLoginService())
         val locale = Locale.ENGLISH
         val localeString = locale.toString()
-        val loginConfig = LoginConfig(
-            locale = Locale.ENGLISH,
-        )
+        val loginConfig = LoginConfig(locale = Locale.ENGLISH)
 
         // when
         val generatedUri = loginRepository.getLoginUri(loginUri, loginConfig)
@@ -220,11 +224,7 @@ class LoginRepositoryTest {
         loginRepository.getLoginUri(loginUri, null)
         val result = loginRepository.getCredentialsFromLoginCode(incorrectUriString)
         // then
-        assert(
-            fakeLoginService.calls.none {
-                it == CallType.GET_TOKEN_WITH_CODE_VERIFIER
-            },
-        ) {
+        assert(fakeLoginService.calls.none { it == CallType.GET_TOKEN_WITH_CODE_VERIFIER }) {
             "If the submitted uri is incorrect, the service should not get called"
         }
         assert((result as AuthResult.Failure).message is AuthorizationError) {
@@ -244,9 +244,7 @@ class LoginRepositoryTest {
 
         // then
         assert(
-            fakeLoginService.calls.filter {
-                it == CallType.GET_TOKEN_WITH_CODE_VERIFIER
-            }.size == 1,
+            fakeLoginService.calls.filter { it == CallType.GET_TOKEN_WITH_CODE_VERIFIER }.size == 1
         ) {
             "If the submitted uri is correct, the service should get called"
         }
@@ -275,11 +273,12 @@ class LoginRepositoryTest {
     fun `getTokenFromLoginCode retries as many times as specified in policy on 5xx HttpError`() =
         runTest {
             // given
-            val retryPolicy = object : RetryPolicy {
-                override val numberOfRetries = 3
-                override val delayMillis = 5
-                override val delayFactor = 1
-            }
+            val retryPolicy =
+                object : RetryPolicy {
+                    override val numberOfRetries = 3
+                    override val delayMillis = 5
+                    override val delayFactor = 1
+                }
             val fakeErrorResponse = ErrorResponse(503, "message", 0, "")
 
             createLoginRepository(
@@ -293,9 +292,9 @@ class LoginRepositoryTest {
 
             // then
             assert(
-                fakeLoginService.calls.filter {
-                    it == CallType.GET_TOKEN_WITH_CODE_VERIFIER
-                }.size == retryPolicy.numberOfRetries + 1,
+                fakeLoginService.calls
+                    .filter { it == CallType.GET_TOKEN_WITH_CODE_VERIFIER }
+                    .size == retryPolicy.numberOfRetries + 1
             ) {
                 "getTokenFromLoginCode should retry as many times as specified, resulting in a total number of attempts that is equal to the policy's specified retries + 1"
             }
@@ -305,11 +304,12 @@ class LoginRepositoryTest {
     fun `getTokenFromLoginCode returns a Failure with UnexpectedError on Http 4xx Error`() =
         runTest {
             // given
-            val retryPolicy = object : RetryPolicy {
-                override val numberOfRetries = 3
-                override val delayMillis = 5
-                override val delayFactor = 1
-            }
+            val retryPolicy =
+                object : RetryPolicy {
+                    override val numberOfRetries = 3
+                    override val delayMillis = 5
+                    override val delayFactor = 1
+                }
             val exceptionCode = 400
             val fakeErrorResponse = ErrorResponse(exceptionCode, "message", 0, "")
 
@@ -324,9 +324,9 @@ class LoginRepositoryTest {
 
             // then
             assert(
-                fakeLoginService.calls.filter {
-                    it == CallType.GET_TOKEN_WITH_CODE_VERIFIER
-                }.size == 1,
+                fakeLoginService.calls
+                    .filter { it == CallType.GET_TOKEN_WITH_CODE_VERIFIER }
+                    .size == 1
             ) {
                 "getTokenFromLoginCode should not retry on 4xx errors"
             }
@@ -342,11 +342,12 @@ class LoginRepositoryTest {
     fun `getTokenFromLoginCode retries as specified and returns a Failure with RetryableError on Http 5xx Error`() =
         runTest {
             // given
-            val retryPolicy = object : RetryPolicy {
-                override val numberOfRetries = 3
-                override val delayMillis = 5
-                override val delayFactor = 1
-            }
+            val retryPolicy =
+                object : RetryPolicy {
+                    override val numberOfRetries = 3
+                    override val delayMillis = 5
+                    override val delayFactor = 1
+                }
             val exceptionCode = 503
             val fakeErrorResponse = ErrorResponse(exceptionCode, "message", 0, "")
 
@@ -361,9 +362,9 @@ class LoginRepositoryTest {
 
             // then
             assert(
-                fakeLoginService.calls.filter {
-                    it == CallType.GET_TOKEN_WITH_CODE_VERIFIER
-                }.size == retryPolicy.numberOfRetries + 1,
+                fakeLoginService.calls
+                    .filter { it == CallType.GET_TOKEN_WITH_CODE_VERIFIER }
+                    .size == retryPolicy.numberOfRetries + 1
             ) {
                 "The network call should be retried the specified number of times"
             }
@@ -380,24 +381,25 @@ class LoginRepositoryTest {
         runTest {
             // given
             val dispatcher = StandardTestDispatcher()
-            val coroutineTimeProvider = CoroutineTestTimeProvider(dispatcher).also {
-                timeProvider = it
-            }
+            val coroutineTimeProvider =
+                CoroutineTestTimeProvider(dispatcher).also { timeProvider = it }
 
-            val retryPolicy = object : RetryPolicy {
-                override val numberOfRetries = 3
-                override val delayMillis = 5
-                override val delayFactor = 1
-            }
+            val retryPolicy =
+                object : RetryPolicy {
+                    override val numberOfRetries = 3
+                    override val delayMillis = 5
+                    override val delayFactor = 1
+                }
             createLoginRepository(
                 loginService = FakeLoginService(shouldThrowUnknownHostException = true),
                 retryPolicy = retryPolicy,
             )
-            fakeLoginService.deviceLoginBehaviour = DeviceLoginBehaviour(
-                authorizationResponseExpirationSeconds = 10,
-                loginPendingSeconds = 9,
-                timeProvider = coroutineTimeProvider,
-            )
+            fakeLoginService.deviceLoginBehaviour =
+                DeviceLoginBehaviour(
+                    authorizationResponseExpirationSeconds = 10,
+                    loginPendingSeconds = 9,
+                    timeProvider = coroutineTimeProvider,
+                )
 
             // when
             coroutineTimeProvider.startTimeFor(this, 10)
@@ -409,9 +411,9 @@ class LoginRepositoryTest {
                 "Http 4xx errors should result in a Failure containing an NetworkError"
             }
             assert(
-                fakeLoginService.calls.filter {
-                    it == CallType.GET_TOKEN_WITH_CODE_VERIFIER
-                }.size == 1,
+                fakeLoginService.calls
+                    .filter { it == CallType.GET_TOKEN_WITH_CODE_VERIFIER }
+                    .size == 1
             ) {
                 "getTokenFromLoginCode should not retry on non-5xx errors"
             }
@@ -436,23 +438,20 @@ class LoginRepositoryTest {
     fun `credentials are saved upon successful device login token retrieval`() = runTest {
         // given
         val dispatcher = StandardTestDispatcher()
-        val coroutineTimeProvider = CoroutineTestTimeProvider(dispatcher).also {
-            timeProvider = it
-        }
+        val coroutineTimeProvider = CoroutineTestTimeProvider(dispatcher).also { timeProvider = it }
 
         createLoginRepository(FakeLoginService())
-        fakeLoginService.deviceLoginBehaviour = DeviceLoginBehaviour(
-            authorizationResponseExpirationSeconds = 10,
-            loginPendingSeconds = 1,
-            timeProvider = coroutineTimeProvider,
-        )
+        fakeLoginService.deviceLoginBehaviour =
+            DeviceLoginBehaviour(
+                authorizationResponseExpirationSeconds = 10,
+                loginPendingSeconds = 1,
+                timeProvider = coroutineTimeProvider,
+            )
 
         // when
         coroutineTimeProvider.startTimeFor(this, 2)
         val authorizationResponse = loginRepository.initializeDeviceLogin()
-        loginRepository.pollForDeviceLoginResponse(
-            authorizationResponse.successData!!.deviceCode,
-        )
+        loginRepository.pollForDeviceLoginResponse(authorizationResponse.successData!!.deviceCode)
         // then
         assert(fakeTokensStore.saves == 1) {
             "TokensStore should have been called once to save after successful token retrieval"
@@ -473,15 +472,14 @@ class LoginRepositoryTest {
             // then
 
             assert(
-                fakeLoginService.calls.filter {
-                    it == CallType.GET_DEVICE_AUTHORIZATION
-                }.size == expectedNumberOfCalls,
+                fakeLoginService.calls.filter { it == CallType.GET_DEVICE_AUTHORIZATION }.size ==
+                    expectedNumberOfCalls
             ) {
                 "In case of 5xx returns, initializeDeviceLogin should trigger retries as defined by the retryPolicy"
             }
             assert(
                 ((result as AuthResult.Failure).message as RetryableError).code ==
-                    testErrorCode.toString(),
+                    testErrorCode.toString()
             ) {
                 "When finished retrying, a RetryableError should be returned that cointains the correct error code."
             }
@@ -492,16 +490,16 @@ class LoginRepositoryTest {
         runTest {
             // given
             val dispatcher = StandardTestDispatcher()
-            val coroutineTimeProvider = CoroutineTestTimeProvider(dispatcher).also {
-                timeProvider = it
-            }
+            val coroutineTimeProvider =
+                CoroutineTestTimeProvider(dispatcher).also { timeProvider = it }
             createLoginRepository(FakeLoginService())
-            fakeLoginService.deviceLoginBehaviour = DeviceLoginBehaviour(
-                authorizationResponseExpirationSeconds = 10,
-                loginPendingSeconds = 9,
-                errorResponseWhilePending = ErrorResponse(503, "message", 0, ""),
-                timeProvider = coroutineTimeProvider,
-            )
+            fakeLoginService.deviceLoginBehaviour =
+                DeviceLoginBehaviour(
+                    authorizationResponseExpirationSeconds = 10,
+                    loginPendingSeconds = 9,
+                    errorResponseWhilePending = ErrorResponse(503, "message", 0, ""),
+                    timeProvider = coroutineTimeProvider,
+                )
 
             // when
             coroutineTimeProvider.startTimeFor(this, 60)
@@ -509,9 +507,10 @@ class LoginRepositoryTest {
             val expectedPollCalls =
                 fakeLoginService.deviceLoginBehaviour.authorizationResponseExpirationSeconds /
                     authorizationResponse.successData!!.interval
-            val result = loginRepository.pollForDeviceLoginResponse(
-                authorizationResponse.successData!!.deviceCode,
-            )
+            val result =
+                loginRepository.pollForDeviceLoginResponse(
+                    authorizationResponse.successData!!.deviceCode
+                )
 
             // then
 
@@ -521,9 +520,8 @@ class LoginRepositoryTest {
                 expectedPollCalls + expectedPollCalls * testRetryPolicy.numberOfRetries
 
             assert(
-                fakeLoginService.calls.filter {
-                    it == CallType.GET_TOKEN_FROM_DEVICE_CODE
-                }.size == expectedTotalCalls,
+                fakeLoginService.calls.filter { it == CallType.GET_TOKEN_FROM_DEVICE_CODE }.size ==
+                    expectedTotalCalls
             ) {
                 "In case of 5xx returns, each poll attempt should trigger retries as defined by the retryPolicy"
             }
@@ -537,22 +535,23 @@ class LoginRepositoryTest {
         runTest {
             // given
             val dispatcher = StandardTestDispatcher()
-            val coroutineTimeProvider = CoroutineTestTimeProvider(dispatcher).also {
-                timeProvider = it
-            }
+            val coroutineTimeProvider =
+                CoroutineTestTimeProvider(dispatcher).also { timeProvider = it }
             createLoginRepository(FakeLoginService())
-            fakeLoginService.deviceLoginBehaviour = DeviceLoginBehaviour(
-                authorizationResponseExpirationSeconds = 12,
-                loginPendingSeconds = 9,
-                timeProvider = coroutineTimeProvider,
-            )
+            fakeLoginService.deviceLoginBehaviour =
+                DeviceLoginBehaviour(
+                    authorizationResponseExpirationSeconds = 12,
+                    loginPendingSeconds = 9,
+                    timeProvider = coroutineTimeProvider,
+                )
 
             // when
             coroutineTimeProvider.startTimeFor(this, 60)
             val authorizationResponse = loginRepository.initializeDeviceLogin()
-            val result = loginRepository.pollForDeviceLoginResponse(
-                authorizationResponse.successData!!.deviceCode,
-            )
+            val result =
+                loginRepository.pollForDeviceLoginResponse(
+                    authorizationResponse.successData!!.deviceCode
+                )
 
             // then
             assert(result.isSuccess) {
@@ -565,15 +564,15 @@ class LoginRepositoryTest {
         runTest {
             // given
             val dispatcher = StandardTestDispatcher()
-            val coroutineTimeProvider = CoroutineTestTimeProvider(dispatcher).also {
-                timeProvider = it
-            }
+            val coroutineTimeProvider =
+                CoroutineTestTimeProvider(dispatcher).also { timeProvider = it }
             createLoginRepository(FakeLoginService())
-            fakeLoginService.deviceLoginBehaviour = DeviceLoginBehaviour(
-                authorizationResponseExpirationSeconds = 10,
-                loginPendingSeconds = 9,
-                timeProvider = coroutineTimeProvider,
-            )
+            fakeLoginService.deviceLoginBehaviour =
+                DeviceLoginBehaviour(
+                    authorizationResponseExpirationSeconds = 10,
+                    loginPendingSeconds = 9,
+                    timeProvider = coroutineTimeProvider,
+                )
             val expectedPollCalls =
                 fakeLoginService.deviceLoginBehaviour.authorizationResponseExpirationSeconds / 2
 
@@ -581,14 +580,13 @@ class LoginRepositoryTest {
             coroutineTimeProvider.startTimeFor(this, 60)
             val authorizationResponse = loginRepository.initializeDeviceLogin()
             loginRepository.pollForDeviceLoginResponse(
-                authorizationResponse.successData!!.deviceCode,
+                authorizationResponse.successData!!.deviceCode
             )
             // then
 
             assert(
-                fakeLoginService.calls.filter {
-                    it == CallType.GET_TOKEN_FROM_DEVICE_CODE
-                }.size == expectedPollCalls,
+                fakeLoginService.calls.filter { it == CallType.GET_TOKEN_FROM_DEVICE_CODE }.size ==
+                    expectedPollCalls
             ) {
                 "Given an expiration of ${fakeLoginService.deviceLoginBehaviour.authorizationResponseExpirationSeconds} and a poll interval of ${authorizationResponse.successData!!.interval}, login service should have been called $expectedPollCalls"
             }
@@ -599,23 +597,24 @@ class LoginRepositoryTest {
         runTest {
             // given
             val dispatcher = StandardTestDispatcher()
-            val coroutineTimeProvider = CoroutineTestTimeProvider(dispatcher).also {
-                timeProvider = it
-            }
+            val coroutineTimeProvider =
+                CoroutineTestTimeProvider(dispatcher).also { timeProvider = it }
             createLoginRepository(FakeLoginService())
-            fakeLoginService.deviceLoginBehaviour = DeviceLoginBehaviour(
-                authorizationResponseExpirationSeconds = 10,
-                loginPendingSeconds = 9,
-                errorResponseWhilePending = ErrorResponse(403, "message", 0, ""),
-                timeProvider = coroutineTimeProvider,
-            )
+            fakeLoginService.deviceLoginBehaviour =
+                DeviceLoginBehaviour(
+                    authorizationResponseExpirationSeconds = 10,
+                    loginPendingSeconds = 9,
+                    errorResponseWhilePending = ErrorResponse(403, "message", 0, ""),
+                    timeProvider = coroutineTimeProvider,
+                )
 
             // when
             coroutineTimeProvider.startTimeFor(this, 60)
             val authorizationResponse = loginRepository.initializeDeviceLogin()
-            val result = loginRepository.pollForDeviceLoginResponse(
-                authorizationResponse.successData!!.deviceCode,
-            )
+            val result =
+                loginRepository.pollForDeviceLoginResponse(
+                    authorizationResponse.successData!!.deviceCode
+                )
             // then
             assert((result as AuthResult.Failure).message!! is TokenResponseError) {
                 "On 4xx errors that aren't 400 or 401, a TokenResponseError should be returned"
@@ -627,23 +626,24 @@ class LoginRepositoryTest {
         runTest {
             // given
             val dispatcher = StandardTestDispatcher()
-            val coroutineTimeProvider = CoroutineTestTimeProvider(dispatcher).also {
-                timeProvider = it
-            }
+            val coroutineTimeProvider =
+                CoroutineTestTimeProvider(dispatcher).also { timeProvider = it }
             createLoginRepository(FakeLoginService())
-            fakeLoginService.deviceLoginBehaviour = DeviceLoginBehaviour(
-                authorizationResponseExpirationSeconds = 10,
-                loginPendingSeconds = 5,
-                errorResponseToFinishWith = ErrorResponse(401, "token expired", 11003, ""),
-                timeProvider = coroutineTimeProvider,
-            )
+            fakeLoginService.deviceLoginBehaviour =
+                DeviceLoginBehaviour(
+                    authorizationResponseExpirationSeconds = 10,
+                    loginPendingSeconds = 5,
+                    errorResponseToFinishWith = ErrorResponse(401, "token expired", 11003, ""),
+                    timeProvider = coroutineTimeProvider,
+                )
 
             // when
             coroutineTimeProvider.startTimeFor(this, 60)
             val authorizationResponse = loginRepository.initializeDeviceLogin()
-            val result = loginRepository.pollForDeviceLoginResponse(
-                authorizationResponse.successData!!.deviceCode,
-            )
+            val result =
+                loginRepository.pollForDeviceLoginResponse(
+                    authorizationResponse.successData!!.deviceCode
+                )
 
             // then
             assert((result as AuthResult.Failure).message!! is TokenResponseError) {
@@ -657,23 +657,24 @@ class LoginRepositoryTest {
         runTest {
             // given
             val dispatcher = StandardTestDispatcher()
-            val coroutineTimeProvider = CoroutineTestTimeProvider(dispatcher).also {
-                timeProvider = it
-            }
+            val coroutineTimeProvider =
+                CoroutineTestTimeProvider(dispatcher).also { timeProvider = it }
             createLoginRepository(FakeLoginService())
-            fakeLoginService.deviceLoginBehaviour = DeviceLoginBehaviour(
-                authorizationResponseExpirationSeconds = 10,
-                loginPendingSeconds = 9,
-                errorResponseWhilePending = ErrorResponse(503, "message", 0, ""),
-                timeProvider = coroutineTimeProvider,
-            )
+            fakeLoginService.deviceLoginBehaviour =
+                DeviceLoginBehaviour(
+                    authorizationResponseExpirationSeconds = 10,
+                    loginPendingSeconds = 9,
+                    errorResponseWhilePending = ErrorResponse(503, "message", 0, ""),
+                    timeProvider = coroutineTimeProvider,
+                )
 
             // when
             coroutineTimeProvider.startTimeFor(this, 60)
             val authorizationResponse = loginRepository.initializeDeviceLogin()
-            val result = loginRepository.pollForDeviceLoginResponse(
-                authorizationResponse.successData!!.deviceCode,
-            )
+            val result =
+                loginRepository.pollForDeviceLoginResponse(
+                    authorizationResponse.successData!!.deviceCode
+                )
             // then
             assert((result as AuthResult.Failure).message!! is RetryableError) {
                 "On 5xx errors, a RetryableError should be returned"
@@ -736,20 +737,10 @@ class LoginRepositoryTest {
             val oldRefreshToken = "oldRefreshToken"
             val newRefreshToken = "newRefreshToken"
 
-            val oldTokens = Tokens(
-                makeCredentials(
-                    userId = oldUserId,
-                    isExpired = true,
-                ),
-                oldRefreshToken,
-            )
-            val newTokens = Tokens(
-                makeCredentials(
-                    userId = newUserId,
-                    isExpired = true,
-                ),
-                newRefreshToken,
-            )
+            val oldTokens =
+                Tokens(makeCredentials(userId = oldUserId, isExpired = true), oldRefreshToken)
+            val newTokens =
+                Tokens(makeCredentials(userId = newUserId, isExpired = true), newRefreshToken)
             createLoginRepository(FakeLoginService())
             fakeTokensStore.saveTokens(oldTokens)
 
@@ -757,9 +748,7 @@ class LoginRepositoryTest {
             loginRepository.setCredentials(newTokens.credentials, newRefreshToken)
 
             // then
-            assert(fakeTokensStore.saves == 2) {
-                "Two tokens should have been saved"
-            }
+            assert(fakeTokensStore.saves == 2) { "Two tokens should have been saved" }
             assert(fakeTokensStore.last()!!.credentials.userId == newUserId) {
                 "The last saved token should have the new userId"
             }
@@ -769,45 +758,33 @@ class LoginRepositoryTest {
         }
 
     @Test
-    fun `credentials sent via setCredentials trigger a CredentialsUpdatedMessage`() =
-        runTest {
-            messageBus.test {
-                // given
-                val oldUserId = "old"
-                val newUserId = "new"
-                val oldRefreshToken = "oldRefreshToken"
-                val newRefreshToken = "newRefreshToken"
+    fun `credentials sent via setCredentials trigger a CredentialsUpdatedMessage`() = runTest {
+        messageBus.test {
+            // given
+            val oldUserId = "old"
+            val newUserId = "new"
+            val oldRefreshToken = "oldRefreshToken"
+            val newRefreshToken = "newRefreshToken"
 
-                val oldTokens = Tokens(
-                    makeCredentials(
-                        userId = oldUserId,
-                        isExpired = true,
-                    ),
-                    oldRefreshToken,
-                )
-                val newTokens = Tokens(
-                    makeCredentials(
-                        userId = newUserId,
-                        isExpired = true,
-                    ),
-                    newRefreshToken,
-                )
-                createLoginRepository(FakeLoginService())
-                fakeTokensStore.saveTokens(oldTokens)
+            val oldTokens =
+                Tokens(makeCredentials(userId = oldUserId, isExpired = true), oldRefreshToken)
+            val newTokens =
+                Tokens(makeCredentials(userId = newUserId, isExpired = true), newRefreshToken)
+            createLoginRepository(FakeLoginService())
+            fakeTokensStore.saveTokens(oldTokens)
 
-                // when
-                loginRepository.setCredentials(newTokens.credentials, newRefreshToken)
+            // when
+            loginRepository.setCredentials(newTokens.credentials, newRefreshToken)
 
-                // then
-                assert(awaitItem() is CredentialsUpdatedMessage) {
-                    "A CredentialsUpdatedMessage should have been sent after saving"
-                }
+            // then
+            assert(awaitItem() is CredentialsUpdatedMessage) {
+                "A CredentialsUpdatedMessage should have been sent after saving"
             }
         }
+    }
 
     companion object {
         private const val QUERY_PREFIX = "(&|\\?)"
-        private const val VALID_REDIRECT_QUERY =
-            "code=123&appMode=android"
+        private const val VALID_REDIRECT_QUERY = "code=123&appMode=android"
     }
 }

@@ -9,7 +9,8 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 
-internal class DefaultCredentialsProvider internal constructor(
+internal class DefaultCredentialsProvider
+internal constructor(
     authBus: MutableSharedFlow<TidalMessage>,
     private val tokenRepository: TokenRepository,
 ) : CredentialsProvider {

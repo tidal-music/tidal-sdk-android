@@ -14,12 +14,13 @@ internal class ClientMarshallingTest {
     @EnumSource(Client.DeviceType::class)
     fun testMarshallingClient(deviceType: Client.DeviceType) {
         val token = "a token"
-        val deviceTypeString = when (deviceType) {
-            Client.DeviceType.ANDROID_AUTO -> "androidAuto"
-            Client.DeviceType.TV -> "tv"
-            Client.DeviceType.TABLET -> "tablet"
-            Client.DeviceType.MOBILE -> "mobile"
-        }
+        val deviceTypeString =
+            when (deviceType) {
+                Client.DeviceType.ANDROID_AUTO -> "androidAuto"
+                Client.DeviceType.TV -> "tv"
+                Client.DeviceType.TABLET -> "tablet"
+                Client.DeviceType.MOBILE -> "mobile"
+            }
         val version = "a version"
         val src = Client(token, deviceType, version)
 

@@ -24,10 +24,8 @@ internal class PlayerDashOfflineMediaSourceFactory(
     ): DashMediaSource {
         val dashManifest = dashManifestFactory.create(encodedManifest)
         val isDrmProtected = offlineLicense.isNotEmpty()
-        val dataSourceFactory = offlineStorageProvider!!.getDataSourceFactoryForOfflinePlay(
-            storage,
-            isDrmProtected,
-        )
+        val dataSourceFactory =
+            offlineStorageProvider!!.getDataSourceFactoryForOfflinePlay(storage, isDrmProtected)
 
         if (isDrmProtected) {
             offlineDrmHelper!!.setOfflineLicense(
@@ -36,7 +34,8 @@ internal class PlayerDashOfflineMediaSourceFactory(
             )
         }
 
-        return dashMediaSourceFactoryFactory.create(dataSourceFactory)
+        return dashMediaSourceFactoryFactory
+            .create(dataSourceFactory)
             .setDrmSessionManagerProvider(drmSessionManagerProvider)
             .createMediaSource(dashManifest, mediaItem)
     }

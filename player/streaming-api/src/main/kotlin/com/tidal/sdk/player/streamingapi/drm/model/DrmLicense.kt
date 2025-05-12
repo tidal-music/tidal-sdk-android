@@ -9,5 +9,4 @@ import androidx.annotation.Keep
  * @property[streamingSessionId] Loop back of the streaming session id sent in the request.
  * @property[payload] Base64 encoded payload we are supposed to pass to the CDM.
  */
-@Keep
-data class DrmLicense(val streamingSessionId: String, val payload: String)
+@Keep data class DrmLicense(val streamingSessionId: String, val payload: String)

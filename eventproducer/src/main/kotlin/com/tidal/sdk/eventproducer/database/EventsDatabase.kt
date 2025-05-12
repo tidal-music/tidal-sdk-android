@@ -15,17 +15,19 @@ import java.io.File
 internal abstract class EventsDatabase : RoomDatabase() {
 
     abstract fun eventDao(): EventDao
+
     abstract fun monitoringDao(): MonitoringDao
 
     fun isDatabaseLimitReached(maxDiskUsageBytes: Int): Boolean {
         val dbPath = openHelper.writableDatabase.path
-        val dbSize = dbPath?.let { path ->
-            val mainDbFileSize = File(path).length()
-            val shmFileSize = File("$path-shm").length()
-            val walFileSize = File("$path-wal").length()
-            val journalFileSize = File("$path-journal").length()
-            mainDbFileSize + shmFileSize + walFileSize + journalFileSize
-        }
+        val dbSize =
+            dbPath?.let { path ->
+                val mainDbFileSize = File(path).length()
+                val shmFileSize = File("$path-shm").length()
+                val walFileSize = File("$path-wal").length()
+                val journalFileSize = File("$path-journal").length()
+                mainDbFileSize + shmFileSize + walFileSize + journalFileSize
+            }
         return dbSize?.let { dbSize >= maxDiskUsageBytes } ?: true
     }
 

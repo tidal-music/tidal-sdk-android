@@ -14,27 +14,24 @@ import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.mock
 
-/**
- * Test that the [DrmLicenseRepository] returns correct [DrmLicense] or throws exception.
- */
+/** Test that the [DrmLicenseRepository] returns correct [DrmLicense] or throws exception. */
 internal class DrmLicenseRepositoryDefaultTest {
 
     private val drmLicenseService = DrmLicenseServiceStub()
 
     private val apiErrorMapperLazy = { mock<ApiErrorMapper>() }
 
-    private val drmLicenseRepository = DrmLicenseRepositoryDefault(
-        drmLicenseService,
-        apiErrorMapperLazy,
-    )
+    private val drmLicenseRepository =
+        DrmLicenseRepositoryDefault(drmLicenseService, apiErrorMapperLazy)
 
     @Test
     fun getDrmLicenseShouldThrowWhenUncaughtExceptionIsThrown() {
         assertFailure {
-            runBlocking {
-                getDrmLicense(DrmLicenseServiceStub.DRM_LICENSE_SSID_FOR_UNCAUGHT_EXCEPTION)
+                runBlocking {
+                    getDrmLicense(DrmLicenseServiceStub.DRM_LICENSE_SSID_FOR_UNCAUGHT_EXCEPTION)
+                }
             }
-        }.hasClass(NullPointerException::class)
+            .hasClass(NullPointerException::class)
     }
 
     @Test
@@ -50,6 +47,6 @@ internal class DrmLicenseRepositoryDefaultTest {
                 streamingSessionId,
                 ApiConstants.LICENSE_SECURITY_TOKEN,
                 ApiConstants.DRM_PAYLOAD_REQUEST,
-            ),
+            )
         )
 }

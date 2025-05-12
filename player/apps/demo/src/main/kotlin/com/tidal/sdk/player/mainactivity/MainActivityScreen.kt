@@ -99,7 +99,7 @@ internal fun MainActivityScreen(
                     message = snackbarMessage,
                     withDismissAction = true,
                     duration = SnackbarDuration.Indefinite,
-                ) == SnackbarResult.Dismissed,
+                ) == SnackbarResult.Dismissed
             )
             dispatchSetSnackbarMessage(null)
         }

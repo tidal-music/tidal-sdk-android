@@ -20,9 +20,7 @@ import retrofit2.Retrofit
 @Module
 internal class NetworkModule {
 
-    private val authHttp by lazy {
-        AuthHttp()
-    }
+    private val authHttp by lazy { AuthHttp() }
 
     @Provides
     @Singleton
@@ -44,9 +42,7 @@ internal class NetworkModule {
     @Singleton
     fun provideRetrofit(config: AuthConfig, okHttpClient: OkHttpClient): Retrofit {
         val contentType = "application/json".toMediaType()
-        val jsonConverter = Json {
-            ignoreUnknownKeys = true
-        }.asConverterFactory(contentType)
+        val jsonConverter = Json { ignoreUnknownKeys = true }.asConverterFactory(contentType)
         return Retrofit.Builder()
             .baseUrl(config.tidalAuthServiceBaseUrl)
             .client(okHttpClient)
@@ -57,26 +53,23 @@ internal class NetworkModule {
     private fun getLoggingInterceptor(level: NetworkLogLevel): HttpLoggingInterceptor {
         val okhttpLevel = HttpLoggingInterceptor.Level.entries.first { it.name == level.name }
         val logging = HttpLoggingInterceptor.Logger { authHttp.log(it) }
-        return HttpLoggingInterceptor(logging).apply {
-            setLevel(okhttpLevel)
-        }
+        return HttpLoggingInterceptor(logging).apply { setLevel(okhttpLevel) }
     }
 
     private fun getCertificatePinner(config: AuthConfig): CertificatePinner {
         val authHost = config.tidalAuthServiceBaseUrl.toHttpUrl().host
-        return CertificatePinner.Builder().apply {
-            CERTIFICATE_PINS.forEach {
-                add(authHost, it)
-            }
-        }.build()
+        return CertificatePinner.Builder()
+            .apply { CERTIFICATE_PINS.forEach { add(authHost, it) } }
+            .build()
     }
 
     companion object {
-        private val CERTIFICATE_PINS = arrayOf(
-            "sha256/++MBgDH5WGvL9Bcn5Be30cRcL0f5O+NyoXuWtQdX1aI=",
-            "sha256/f0KW/FtqTjs108NpYj42SrGvOB2PpxIVM8nWxjPqJGE=",
-            "sha256/NqvDJlas/GRcYbcWE8S/IceH9cq77kg0jVhZeAPXq8k=",
-            "sha256/9+ze1cZgR9KO1kZrVDxA4HQ6voHRCSVNz4RdTCx4U8U=",
-        )
+        private val CERTIFICATE_PINS =
+            arrayOf(
+                "sha256/++MBgDH5WGvL9Bcn5Be30cRcL0f5O+NyoXuWtQdX1aI=",
+                "sha256/f0KW/FtqTjs108NpYj42SrGvOB2PpxIVM8nWxjPqJGE=",
+                "sha256/NqvDJlas/GRcYbcWE8S/IceH9cq77kg0jVhZeAPXq8k=",
+                "sha256/9+ze1cZgR9KO1kZrVDxA4HQ6voHRCSVNz4RdTCx4U8U=",
+            )
     }
 }

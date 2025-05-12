@@ -31,8 +31,7 @@ internal sealed interface WebSocketMessage {
 
         private enum class Type {
 
-            @SerializedName("USER_ACTION")
-            ACQUIRE,
+            @SerializedName("USER_ACTION") ACQUIRE
         }
     }
 }

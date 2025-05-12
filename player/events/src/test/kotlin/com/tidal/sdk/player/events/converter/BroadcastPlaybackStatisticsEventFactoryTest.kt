@@ -24,8 +24,7 @@ internal class BroadcastPlaybackStatisticsEventFactoryTest {
     private val uuidWrapper = mock<UUIDWrapper>()
     private val userSupplier = mock<UserSupplier>()
     private val clientSupplier = mock<ClientSupplier>()
-    private val broadcastPlaybackStatisticsFactory =
-        mock<BroadcastPlaybackStatistics.Factory>()
+    private val broadcastPlaybackStatisticsFactory = mock<BroadcastPlaybackStatistics.Factory>()
     private val broadcastPlaybackStatisticsEventFactory =
         BroadcastPlaybackStatisticsEventFactory(
             trueTimeWrapper,
@@ -36,13 +35,14 @@ internal class BroadcastPlaybackStatisticsEventFactoryTest {
         )
 
     @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(
-        trueTimeWrapper,
-        uuidWrapper,
-        userSupplier,
-        clientSupplier,
-        broadcastPlaybackStatisticsFactory,
-    )
+    fun afterEach() =
+        verifyNoMoreInteractions(
+            trueTimeWrapper,
+            uuidWrapper,
+            userSupplier,
+            clientSupplier,
+            broadcastPlaybackStatisticsFactory,
+        )
 
     @Test
     fun invoke() = runBlocking {
@@ -57,15 +57,16 @@ internal class BroadcastPlaybackStatisticsEventFactoryTest {
         val payload = mock<BroadcastPlaybackStatistics.Payload>()
         val expected = mock<BroadcastPlaybackStatistics>()
         whenever(
-            broadcastPlaybackStatisticsFactory.create(
-                currentTimeMillis,
-                randomUUID,
-                user,
-                client,
-                payload,
-                emptyMap(),
-            ),
-        ).thenReturn(expected)
+                broadcastPlaybackStatisticsFactory.create(
+                    currentTimeMillis,
+                    randomUUID,
+                    user,
+                    client,
+                    payload,
+                    emptyMap(),
+                )
+            )
+            .thenReturn(expected)
 
         val actual = broadcastPlaybackStatisticsEventFactory(payload, emptyMap())
 
@@ -73,14 +74,8 @@ internal class BroadcastPlaybackStatisticsEventFactoryTest {
         verify(uuidWrapper).randomUUID
         verify(userSupplier)()
         verify(clientSupplier)()
-        verify(broadcastPlaybackStatisticsFactory).create(
-            currentTimeMillis,
-            randomUUID,
-            user,
-            client,
-            payload,
-            emptyMap(),
-        )
+        verify(broadcastPlaybackStatisticsFactory)
+            .create(currentTimeMillis, randomUUID, user, client, payload, emptyMap())
         assertThat(actual).isSameAs(expected)
         verifyNoMoreInteractions(randomUUID, user, client, payload, expected)
     }

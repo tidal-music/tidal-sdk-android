@@ -65,13 +65,14 @@ internal object EventFactoryModule {
         userSupplier: UserSupplier,
         clientSupplier: ClientSupplier,
         audioDownloadStatisticsFactory: AudioDownloadStatistics.Factory,
-    ): EventFactory<out Event.Payload> = AudioDownloadStatisticsEventFactory(
-        trueTimeWrapper,
-        uuidWrapper,
-        userSupplier,
-        clientSupplier,
-        audioDownloadStatisticsFactory,
-    )
+    ): EventFactory<out Event.Payload> =
+        AudioDownloadStatisticsEventFactory(
+            trueTimeWrapper,
+            uuidWrapper,
+            userSupplier,
+            clientSupplier,
+            audioDownloadStatisticsFactory,
+        )
 
     @Provides
     @Reusable
@@ -83,13 +84,14 @@ internal object EventFactoryModule {
         userSupplier: UserSupplier,
         clientSupplier: ClientSupplier,
         videoDownloadStatisticsFactory: VideoDownloadStatistics.Factory,
-    ): EventFactory<out Event.Payload> = VideoDownloadStatisticsEventFactory(
-        trueTimeWrapper,
-        uuidWrapper,
-        userSupplier,
-        clientSupplier,
-        videoDownloadStatisticsFactory,
-    )
+    ): EventFactory<out Event.Payload> =
+        VideoDownloadStatisticsEventFactory(
+            trueTimeWrapper,
+            uuidWrapper,
+            userSupplier,
+            clientSupplier,
+            videoDownloadStatisticsFactory,
+        )
 
     @Provides
     @Reusable
@@ -101,17 +103,16 @@ internal object EventFactoryModule {
         userSupplier: UserSupplier,
         clientSupplier: ClientSupplier,
         drmLicenseFetchFactory: DrmLicenseFetch.Factory,
-    ): EventFactory<out Event.Payload> = DrmLicenseFetchEventFactory(
-        trueTimeWrapper,
-        uuidWrapper,
-        userSupplier,
-        clientSupplier,
-        drmLicenseFetchFactory,
-    )
+    ): EventFactory<out Event.Payload> =
+        DrmLicenseFetchEventFactory(
+            trueTimeWrapper,
+            uuidWrapper,
+            userSupplier,
+            clientSupplier,
+            drmLicenseFetchFactory,
+        )
 
-    @Provides
-    @Reusable
-    fun hardwarePlatform() = HardwarePlatform(Build.MODEL, Build.MANUFACTURER)
+    @Provides @Reusable fun hardwarePlatform() = HardwarePlatform(Build.MODEL, Build.MANUFACTURER)
 
     @Provides
     @Reusable
@@ -123,26 +124,28 @@ internal object EventFactoryModule {
     fun activeMobileNetworkType(connectivityManager: ConnectivityManager) =
         ActiveMobileNetworkType(connectivityManager)
 
-    @Provides
-    @Reusable
-    fun resources(context: Context) = context.resources
+    @Provides @Reusable fun resources(context: Context) = context.resources
 
     @Provides
     @Reusable
     fun streamingSessionStartPayloadDecorator(
-        @Suppress("MaxLineLength") streamingSessionStartDecoratedPayloadFactory: StreamingSessionStart.DecoratedPayload.Factory, // ktlint-disable max-line-length parameter-wrapping
+        @Suppress("MaxLineLength")
+        streamingSessionStartDecoratedPayloadFactory:
+            StreamingSessionStart.DecoratedPayload.Factory, // ktlint-disable max-line-length
+        // parameter-wrapping
         hardwarePlatform: HardwarePlatform,
         resources: Resources,
         activeNetworkType: ActiveNetworkType,
         activeMobileNetworkType: ActiveMobileNetworkType,
-    ) = StreamingSessionStartPayloadDecorator(
-        streamingSessionStartDecoratedPayloadFactory,
-        hardwarePlatform,
-        Build.VERSION.RELEASE,
-        resources,
-        activeNetworkType,
-        activeMobileNetworkType,
-    )
+    ) =
+        StreamingSessionStartPayloadDecorator(
+            streamingSessionStartDecoratedPayloadFactory,
+            hardwarePlatform,
+            Build.VERSION.RELEASE,
+            resources,
+            activeNetworkType,
+            activeMobileNetworkType,
+        )
 
     @Provides
     @Reusable
@@ -155,14 +158,15 @@ internal object EventFactoryModule {
         clientSupplier: ClientSupplier,
         streamingSessionStartPayloadDecorator: StreamingSessionStartPayloadDecorator,
         streamingSessionStartFactory: StreamingSessionStart.Factory,
-    ): EventFactory<out Event.Payload> = StreamingSessionStartEventFactory(
-        trueTimeWrapper,
-        uuidWrapper,
-        userSupplier,
-        clientSupplier,
-        streamingSessionStartPayloadDecorator,
-        streamingSessionStartFactory,
-    )
+    ): EventFactory<out Event.Payload> =
+        StreamingSessionStartEventFactory(
+            trueTimeWrapper,
+            uuidWrapper,
+            userSupplier,
+            clientSupplier,
+            streamingSessionStartPayloadDecorator,
+            streamingSessionStartFactory,
+        )
 
     @Provides
     @Reusable
@@ -174,13 +178,14 @@ internal object EventFactoryModule {
         userSupplier: UserSupplier,
         clientSupplier: ClientSupplier,
         streamingSessionEndFactory: StreamingSessionEnd.Factory,
-    ): EventFactory<out Event.Payload> = StreamingSessionEndEventFactory(
-        trueTimeWrapper,
-        uuidWrapper,
-        userSupplier,
-        clientSupplier,
-        streamingSessionEndFactory,
-    )
+    ): EventFactory<out Event.Payload> =
+        StreamingSessionEndEventFactory(
+            trueTimeWrapper,
+            uuidWrapper,
+            userSupplier,
+            clientSupplier,
+            streamingSessionEndFactory,
+        )
 
     @Provides
     @Reusable
@@ -192,13 +197,14 @@ internal object EventFactoryModule {
         userSupplier: UserSupplier,
         clientSupplier: ClientSupplier,
         playbackInfoFetchFactory: PlaybackInfoFetch.Factory,
-    ): EventFactory<out Event.Payload> = PlaybackInfoFetchEventFactory(
-        trueTimeWrapper,
-        uuidWrapper,
-        userSupplier,
-        clientSupplier,
-        playbackInfoFetchFactory,
-    )
+    ): EventFactory<out Event.Payload> =
+        PlaybackInfoFetchEventFactory(
+            trueTimeWrapper,
+            uuidWrapper,
+            userSupplier,
+            clientSupplier,
+            playbackInfoFetchFactory,
+        )
 
     @Provides
     @Reusable
@@ -210,13 +216,14 @@ internal object EventFactoryModule {
         userSupplier: UserSupplier,
         clientSupplier: ClientSupplier,
         ucPlaybackSessionFactory: UCPlaybackSession.Factory,
-    ): EventFactory<out Event.Payload> = UCPlaybackSessionEventFactory(
-        trueTimeWrapper,
-        uuidWrapper,
-        userSupplier,
-        clientSupplier,
-        ucPlaybackSessionFactory,
-    )
+    ): EventFactory<out Event.Payload> =
+        UCPlaybackSessionEventFactory(
+            trueTimeWrapper,
+            uuidWrapper,
+            userSupplier,
+            clientSupplier,
+            ucPlaybackSessionFactory,
+        )
 
     @Provides
     @Reusable
@@ -228,13 +235,14 @@ internal object EventFactoryModule {
         userSupplier: UserSupplier,
         clientSupplier: ClientSupplier,
         audioPlaybackSessionFactory: AudioPlaybackSession.Factory,
-    ): EventFactory<out Event.Payload> = AudioPlaybackSessionEventFactory(
-        trueTimeWrapper,
-        uuidWrapper,
-        userSupplier,
-        clientSupplier,
-        audioPlaybackSessionFactory,
-    )
+    ): EventFactory<out Event.Payload> =
+        AudioPlaybackSessionEventFactory(
+            trueTimeWrapper,
+            uuidWrapper,
+            userSupplier,
+            clientSupplier,
+            audioPlaybackSessionFactory,
+        )
 
     @Provides
     @Reusable
@@ -246,13 +254,14 @@ internal object EventFactoryModule {
         userSupplier: UserSupplier,
         clientSupplier: ClientSupplier,
         broadcastPlaybackSessionFactory: BroadcastPlaybackSession.Factory,
-    ): EventFactory<out Event.Payload> = BroadcastPlaybackSessionEventFactory(
-        trueTimeWrapper,
-        uuidWrapper,
-        userSupplier,
-        clientSupplier,
-        broadcastPlaybackSessionFactory,
-    )
+    ): EventFactory<out Event.Payload> =
+        BroadcastPlaybackSessionEventFactory(
+            trueTimeWrapper,
+            uuidWrapper,
+            userSupplier,
+            clientSupplier,
+            broadcastPlaybackSessionFactory,
+        )
 
     @Provides
     @Reusable
@@ -264,13 +273,14 @@ internal object EventFactoryModule {
         userSupplier: UserSupplier,
         clientSupplier: ClientSupplier,
         ucPlaybackStatisticsFactory: UCPlaybackStatistics.Factory,
-    ): EventFactory<out Event.Payload> = UCPlaybackStatisticsEventFactory(
-        trueTimeWrapper,
-        uuidWrapper,
-        userSupplier,
-        clientSupplier,
-        ucPlaybackStatisticsFactory,
-    )
+    ): EventFactory<out Event.Payload> =
+        UCPlaybackStatisticsEventFactory(
+            trueTimeWrapper,
+            uuidWrapper,
+            userSupplier,
+            clientSupplier,
+            ucPlaybackStatisticsFactory,
+        )
 
     @Provides
     @Reusable
@@ -282,13 +292,14 @@ internal object EventFactoryModule {
         userSupplier: UserSupplier,
         clientSupplier: ClientSupplier,
         videoPlaybackSessionFactory: VideoPlaybackSession.Factory,
-    ): EventFactory<out Event.Payload> = VideoPlaybackSessionEventFactory(
-        trueTimeWrapper,
-        uuidWrapper,
-        userSupplier,
-        clientSupplier,
-        videoPlaybackSessionFactory,
-    )
+    ): EventFactory<out Event.Payload> =
+        VideoPlaybackSessionEventFactory(
+            trueTimeWrapper,
+            uuidWrapper,
+            userSupplier,
+            clientSupplier,
+            videoPlaybackSessionFactory,
+        )
 
     @Provides
     @Reusable
@@ -300,13 +311,14 @@ internal object EventFactoryModule {
         userSupplier: UserSupplier,
         clientSupplier: ClientSupplier,
         audioPlaybackStatisticsFactory: AudioPlaybackStatistics.Factory,
-    ): EventFactory<out Event.Payload> = AudioPlaybackStatisticsEventFactory(
-        trueTimeWrapper,
-        uuidWrapper,
-        userSupplier,
-        clientSupplier,
-        audioPlaybackStatisticsFactory,
-    )
+    ): EventFactory<out Event.Payload> =
+        AudioPlaybackStatisticsEventFactory(
+            trueTimeWrapper,
+            uuidWrapper,
+            userSupplier,
+            clientSupplier,
+            audioPlaybackStatisticsFactory,
+        )
 
     @Provides
     @Reusable
@@ -318,13 +330,14 @@ internal object EventFactoryModule {
         userSupplier: UserSupplier,
         clientSupplier: ClientSupplier,
         broadcastPlaybackStatisticsFactory: BroadcastPlaybackStatistics.Factory,
-    ): EventFactory<out Event.Payload> = BroadcastPlaybackStatisticsEventFactory(
-        trueTimeWrapper,
-        uuidWrapper,
-        userSupplier,
-        clientSupplier,
-        broadcastPlaybackStatisticsFactory,
-    )
+    ): EventFactory<out Event.Payload> =
+        BroadcastPlaybackStatisticsEventFactory(
+            trueTimeWrapper,
+            uuidWrapper,
+            userSupplier,
+            clientSupplier,
+            broadcastPlaybackStatisticsFactory,
+        )
 
     @Provides
     @Reusable
@@ -336,13 +349,14 @@ internal object EventFactoryModule {
         userSupplier: UserSupplier,
         clientSupplier: ClientSupplier,
         videoPlaybackStatisticsFactory: VideoPlaybackStatistics.Factory,
-    ): EventFactory<out Event.Payload> = VideoPlaybackStatisticsEventFactory(
-        trueTimeWrapper,
-        uuidWrapper,
-        userSupplier,
-        clientSupplier,
-        videoPlaybackStatisticsFactory,
-    )
+    ): EventFactory<out Event.Payload> =
+        VideoPlaybackStatisticsEventFactory(
+            trueTimeWrapper,
+            uuidWrapper,
+            userSupplier,
+            clientSupplier,
+            videoPlaybackStatisticsFactory,
+        )
 
     @Provides
     @Reusable
@@ -354,14 +368,14 @@ internal object EventFactoryModule {
         userSupplier: UserSupplier,
         clientSupplier: ClientSupplier,
         notStartedPlaybackStatisticsFactory: NotStartedPlaybackStatistics.Factory,
-    ): EventFactory<out Event.Payload> = NotStartedPlaybackStatisticsEventFactory(
-        trueTimeWrapper,
-        uuidWrapper,
-        userSupplier,
-        clientSupplier,
-        notStartedPlaybackStatisticsFactory,
-    )
+    ): EventFactory<out Event.Payload> =
+        NotStartedPlaybackStatisticsEventFactory(
+            trueTimeWrapper,
+            uuidWrapper,
+            userSupplier,
+            clientSupplier,
+            notStartedPlaybackStatisticsFactory,
+        )
 
-    @MapKey
-    annotation class EventFactoryKey(val value: KClass<out Event.Payload>)
+    @MapKey annotation class EventFactoryKey(val value: KClass<out Event.Payload>)
 }

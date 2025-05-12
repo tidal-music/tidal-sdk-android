@@ -18,14 +18,8 @@ fun NavigationHost(
         navController = navController,
         startDestination = startDestination,
     ) {
-        composable("start") {
-            StartScreen(navController)
-        }
-        composable("login") {
-            LoginScreen()
-        }
-        composable("deviceLogin") {
-            DeviceLoginScreen()
-        }
+        composable("start") { StartScreen(navController) }
+        composable("login") { LoginScreen() }
+        composable("deviceLogin") { DeviceLoginScreen() }
     }
 }

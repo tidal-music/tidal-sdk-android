@@ -72,24 +72,19 @@ internal fun PlayerInitializedScreen(
             modifier = Modifier.fillMaxWidth(),
         ) {
             Text(
-                text = "SHOW ${
+                text =
+                    "SHOW ${
                     if (demoPlayableItemsExpanded) {
                         "PLAYBACK CONTROLS"
                     } else {
                         "DEMO PLAYABLE ITEMS"
                     }
-                }",
+                }"
             )
         }
 
         if (demoPlayableItemsExpanded) {
-            DemoPlayableItemsList(
-                state,
-                dispatchLoad,
-                dispatchSetNext,
-                dispatchPlay,
-                dispatchSkip,
-            )
+            DemoPlayableItemsList(state, dispatchLoad, dispatchSetNext, dispatchPlay, dispatchSkip)
         } else {
             PlaybackControls(
                 state,
@@ -123,33 +118,25 @@ private fun DemoPlayableItemsList(
     dispatchSkip: () -> Unit,
 ) {
     val itemListState = rememberLazyListState()
-    val selectedDemoPlayableItems = DemoPlayableItem.HARDCODED.filter {
-        CREDENTIAL_LEVEL in it.allowedCredentialLevels
-    }
-    val selectedIndex = if (state.currentMediaProduct != null) {
-        selectedDemoPlayableItems.run {
-            indexOf(
-                single {
-                    it.mediaProductId.contentEquals(state.currentMediaProduct.productId)
-                },
-            )
+    val selectedDemoPlayableItems =
+        DemoPlayableItem.HARDCODED.filter { CREDENTIAL_LEVEL in it.allowedCredentialLevels }
+    val selectedIndex =
+        if (state.currentMediaProduct != null) {
+            selectedDemoPlayableItems.run {
+                indexOf(
+                    single { it.mediaProductId.contentEquals(state.currentMediaProduct.productId) }
+                )
+            }
+        } else {
+            null
         }
-    } else {
-        null
-    }
-    selectedIndex?.let {
-        LaunchedEffect("ScrollToCurrent") {
-            itemListState.scrollToItem(it)
-        }
-    }
+    selectedIndex?.let { LaunchedEffect("ScrollToCurrent") { itemListState.scrollToItem(it) } }
     LazyColumn(state = itemListState) {
         itemsIndexed(selectedDemoPlayableItems) { i, item ->
             DemoPlayableItemComposable(
                 item = item,
-                isCurrent =
-                item.mediaProductId.contentEquals(state.currentMediaProduct?.productId),
-                isNext = item.mediaProductId
-                    .contentEquals(state.nextMediaProduct?.productId),
+                isCurrent = item.mediaProductId.contentEquals(state.currentMediaProduct?.productId),
+                isNext = item.mediaProductId.contentEquals(state.nextMediaProduct?.productId),
                 dispatchLoad,
                 {
                     if (i < selectedDemoPlayableItems.size - 1) {
@@ -188,9 +175,7 @@ private fun PlaybackControls(
     dispatchRelease: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
-    Column(
-        modifier = Modifier.verticalScroll(scrollState),
-    ) {
+    Column(modifier = Modifier.verticalScroll(scrollState)) {
         val playbackState = state.playbackState
         OutlinedTextField(
             value = playbackState.name,
@@ -199,14 +184,13 @@ private fun PlaybackControls(
             label = { Text(text = "Playback state") },
             onValueChange = { throw UnsupportedOperationException() },
             textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                disabledLabelColor = LocalContentColor.current,
-                disabledBorderColor = LocalContentColor.current,
-                disabledTextColor = LocalContentColor.current,
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp),
+            colors =
+                TextFieldDefaults.outlinedTextFieldColors(
+                    disabledLabelColor = LocalContentColor.current,
+                    disabledBorderColor = LocalContentColor.current,
+                    disabledTextColor = LocalContentColor.current,
+                ),
+            modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
         )
         val outputDevice = state.outputDevice
         OutlinedTextField(
@@ -216,17 +200,17 @@ private fun PlaybackControls(
             label = { Text(text = "Output Device") },
             onValueChange = { throw UnsupportedOperationException() },
             textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                disabledLabelColor = LocalContentColor.current,
-                disabledBorderColor = LocalContentColor.current,
-                disabledTextColor = LocalContentColor.current,
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp),
+            colors =
+                TextFieldDefaults.outlinedTextFieldColors(
+                    disabledLabelColor = LocalContentColor.current,
+                    disabledBorderColor = LocalContentColor.current,
+                    disabledTextColor = LocalContentColor.current,
+                ),
+            modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
         )
-        if (playbackState != PlaybackState.IDLE &&
-            state.currentMediaProduct?.productType == ProductType.VIDEO
+        if (
+            playbackState != PlaybackState.IDLE &&
+                state.currentMediaProduct?.productType == ProductType.VIDEO
         ) {
             AndroidView(
                 factory = { AspectRatioAdjustingSurfaceView(it) },
@@ -247,9 +231,7 @@ private fun PlaybackControls(
 
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(0.dp, 0.dp, 0.dp, 16.dp),
+            modifier = Modifier.fillMaxWidth().padding(0.dp, 0.dp, 0.dp, 16.dp),
         ) {
             Text(text = DateUtils.formatElapsedTime(state.positionSeconds.toLong()))
             Text(text = DateUtils.formatElapsedTime(state.durationSeconds?.toLong() ?: 0L))
@@ -259,15 +241,13 @@ private fun PlaybackControls(
             horizontalArrangement = Arrangement.SpaceAround,
             modifier = Modifier.fillMaxWidth(),
         ) {
-            Button(
-                enabled = playbackState == PlaybackState.NOT_PLAYING,
-                onClick = dispatchPlay,
-            ) {
+            Button(enabled = playbackState == PlaybackState.NOT_PLAYING, onClick = dispatchPlay) {
                 Text(text = "PLAY")
             }
             Button(
-                enabled = playbackState == PlaybackState.PLAYING ||
-                    playbackState == PlaybackState.STALLED,
+                enabled =
+                    playbackState == PlaybackState.PLAYING ||
+                        playbackState == PlaybackState.STALLED,
                 onClick = dispatchPause,
             ) {
                 Text(text = "PAUSE")
@@ -278,37 +258,23 @@ private fun PlaybackControls(
             ) {
                 Text(text = "SKIP")
             }
-            Button(onClick = dispatchReset) {
-                Text(text = "RESET")
-            }
-            Button(
-                enabled = playbackState != PlaybackState.IDLE,
-                onClick = dispatchRewind,
-            ) {
+            Button(onClick = dispatchReset) { Text(text = "RESET") }
+            Button(enabled = playbackState != PlaybackState.IDLE, onClick = dispatchRewind) {
                 Text(text = "RW 10s")
             }
-            Button(
-                enabled = playbackState != PlaybackState.IDLE,
-                onClick = dispatchFastForward,
-            ) {
+            Button(enabled = playbackState != PlaybackState.IDLE, onClick = dispatchFastForward) {
                 Text(text = "FF 10s")
             }
-            Button(
-                enabled = playbackState != PlaybackState.IDLE,
-                onClick = dispatchSeekToNearEnd,
-            ) {
+            Button(enabled = playbackState != PlaybackState.IDLE, onClick = dispatchSeekToNearEnd) {
                 Text(text = "SEEK TO NEAR END")
             }
             Button(onClick = { dispatchSetRepeatOne(!state.isRepeatOneEnabled) }) {
-                Text(
-                    text =
-                    "SET REPEAT ONE (IS ${if (state.isRepeatOneEnabled) "ON" else "OFF"})",
-                )
+                Text(text = "SET REPEAT ONE (IS ${if (state.isRepeatOneEnabled) "ON" else "OFF"})")
             }
             Button(onClick = { dispatchSetOfflineMode(!state.isOfflineModeEnabled) }) {
                 Text(
                     text =
-                    "SET OFFLINE MODE (IS ${if (state.isOfflineModeEnabled) "ON" else "OFF"})",
+                        "SET OFFLINE MODE (IS ${if (state.isOfflineModeEnabled) "ON" else "OFF"})"
                 )
             }
         }
@@ -336,31 +302,25 @@ private fun PlaybackControls(
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
         ) {
             Text(
                 text = "Immersive Audio",
-                modifier = Modifier
-                    .padding(PaddingValues(end = 8F.dp))
-                    .weight(1F, fill = false),
+                modifier = Modifier.padding(PaddingValues(end = 8F.dp)).weight(1F, fill = false),
             )
             Switch(
                 checked = state.immersiveAudio,
                 onCheckedChange = { dispatchSetImmersiveAudioOnCell(it) },
             )
         }
-        Button(
-            onClick = dispatchRelease,
-            modifier = Modifier.fillMaxWidth(),
-        ) {
+        Button(onClick = dispatchRelease, modifier = Modifier.fillMaxWidth()) {
             Text(text = "RELEASE PLAYER")
         }
     }
 }
 
-private val CREDENTIAL_LEVEL = when {
-    BuildConfig.TIDAL_CLIENT_SECRET.isNullOrBlank() -> Credentials.Level.USER
-    else -> Credentials.Level.CLIENT
-}
+private val CREDENTIAL_LEVEL =
+    when {
+        BuildConfig.TIDAL_CLIENT_SECRET.isNullOrBlank() -> Credentials.Level.USER
+        else -> Credentials.Level.CLIENT
+    }

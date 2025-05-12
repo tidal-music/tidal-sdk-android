@@ -10,9 +10,7 @@ import com.tidal.sdk.player.playbackengine.outputdevice.OutputDevice
 import com.tidal.sdk.player.playbackengine.view.AspectRatioAdjustingSurfaceView
 import kotlinx.coroutines.flow.Flow
 
-/**
- * This should be implemented in order to play media.
- */
+/** This should be implemented in order to play media. */
 interface PlaybackEngine : Action, Query, Configuration
 
 /**
@@ -22,9 +20,9 @@ interface PlaybackEngine : Action, Query, Configuration
 interface Action {
 
     /**
-     * Resets playback and immediately transition to set selected [MediaProduct].
-     * Playback state will immediately change to [PlaybackState.NOT_PLAYING].
-     * When this call returns, the requested media product is considered the active one.
+     * Resets playback and immediately transition to set selected [MediaProduct]. Playback state
+     * will immediately change to [PlaybackState.NOT_PLAYING]. When this call returns, the requested
+     * media product is considered the active one.
      */
     fun load(mediaProduct: MediaProduct)
 
@@ -32,8 +30,8 @@ interface Action {
      * Playback makes an implicit transition to the selected [MediaProduct] once the currently
      * active finishes playing.
      *
-     * This must be called everytime the next in queue changes in order to continue playback, and
-     * in order to continue playback of the correct [MediaProduct].
+     * This must be called everytime the next in queue changes in order to continue playback, and in
+     * order to continue playback of the correct [MediaProduct].
      *
      * This action does not explicitly affect [PlaybackState].
      *
@@ -109,36 +107,28 @@ interface Action {
     fun release()
 }
 
-/**
- * This is the Query api where we can query various information related to the playback engine.
- */
+/** This is the Query api where we can query various information related to the playback engine. */
 interface Query {
 
     /**
-     * Gets the currently active [MediaProduct].
-     * May be null, most likely if current state is [PlaybackState.IDLE].
+     * Gets the currently active [MediaProduct]. May be null, most likely if current state is
+     * [PlaybackState.IDLE].
      */
     val mediaProduct: MediaProduct?
 
     /**
-     * Gets the currently active [PlaybackContext].
-     * May be null, most likely if current state is [PlaybackState.IDLE].
+     * Gets the currently active [PlaybackContext]. May be null, most likely if current state is
+     * [PlaybackState.IDLE].
      */
     val playbackContext: PlaybackContext?
 
-    /**
-     * Gets the currently active [PlaybackState].
-     */
+    /** Gets the currently active [PlaybackState]. */
     val playbackState: PlaybackState
 
-    /**
-     * Gets the current asset position, in seconds, from the active [MediaProduct], as [Float].
-     */
+    /** Gets the current asset position, in seconds, from the active [MediaProduct], as [Float]. */
     val assetPosition: Float
 
-    /**
-     * Gets the current output device, as [OutputDevice].
-     */
+    /** Gets the current output device, as [OutputDevice]. */
     val outputDevice: OutputDevice
 
     /**
@@ -149,33 +139,23 @@ interface Query {
 }
 
 /**
- * This is the Configuration api where we can configure and query various information related to
- * the playback engine.
+ * This is the Configuration api where we can configure and query various information related to the
+ * playback engine.
  */
 interface Configuration {
 
-    /**
-     * Get or set [AudioQuality] to use when streaming over WiFi.
-     */
+    /** Get or set [AudioQuality] to use when streaming over WiFi. */
     var streamingWifiAudioQuality: AudioQuality
 
-    /**
-     * Get or set [AudioQuality] to use when streaming over cellular.
-     */
+    /** Get or set [AudioQuality] to use when streaming over cellular. */
     var streamingCellularAudioQuality: AudioQuality
 
-    /**
-     * Get or set [LoudnessNormalizationMode] to use when playing.
-     */
+    /** Get or set [LoudnessNormalizationMode] to use when playing. */
     var loudnessNormalizationMode: LoudnessNormalizationMode
 
-    /**
-     * Get or set [loudnessNormalizationPreAmp] as [Int] to use when playing.
-     */
+    /** Get or set [loudnessNormalizationPreAmp] as [Int] to use when playing. */
     var loudnessNormalizationPreAmp: Int
 
-    /**
-     * Get or set [immersiveAudio] as [Boolean] to use when playing.
-     */
+    /** Get or set [immersiveAudio] as [Boolean] to use when playing. */
     var immersiveAudio: Boolean
 }

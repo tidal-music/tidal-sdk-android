@@ -12,9 +12,7 @@ import com.google.gson.JsonSerializer
 import com.tidal.sdk.player.common.model.Extra
 import java.lang.reflect.Type
 
-class ExtrasSerializationAdapter :
-    JsonSerializer<Extra>,
-    JsonDeserializer<Extra?> {
+class ExtrasSerializationAdapter : JsonSerializer<Extra>, JsonDeserializer<Extra?> {
 
     override fun serialize(
         src: Extra?,
@@ -39,21 +37,13 @@ class ExtrasSerializationAdapter :
 
     private fun Extra.CollectionMap.toJsonObjectElement(): JsonElement {
         return value?.let {
-            JsonObject().apply {
-                it.forEach { (key, extra) ->
-                    add(key, extra?.toJsonElement())
-                }
-            }
+            JsonObject().apply { it.forEach { (key, extra) -> add(key, extra?.toJsonElement()) } }
         } ?: JsonNull.INSTANCE
     }
 
     private fun Extra.CollectionList.toJsonArrayElement(): JsonElement {
         return value?.let {
-            JsonArray(it.size).apply {
-                it.forEach { extra ->
-                    add(extra.toJsonElement())
-                }
-            }
+            JsonArray(it.size).apply { it.forEach { extra -> add(extra.toJsonElement()) } }
         } ?: JsonNull.INSTANCE
     }
 
@@ -68,11 +58,7 @@ class ExtrasSerializationAdapter :
     private fun JsonElement.toExtra(): Extra? {
         return when (this) {
             is JsonObject -> {
-                Extra.CollectionMap(
-                    entrySet().associate {
-                        Pair(it.key, it.value?.toExtra())
-                    },
-                )
+                Extra.CollectionMap(entrySet().associate { Pair(it.key, it.value?.toExtra()) })
             }
 
             is JsonArray -> {

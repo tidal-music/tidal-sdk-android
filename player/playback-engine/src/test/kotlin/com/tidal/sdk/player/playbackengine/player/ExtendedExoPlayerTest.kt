@@ -37,12 +37,7 @@ internal class ExtendedExoPlayerTest {
     private val mediaSourcerer = mock<MediaSourcerer>()
     private val extendedExoPlayerState = mock<ExtendedExoPlayerState>()
     private val extendedExoPlayer by lazy {
-        ExtendedExoPlayer(
-            delegate,
-            loadControl,
-            mediaSourcerer,
-            extendedExoPlayerState,
-        )
+        ExtendedExoPlayer(delegate, loadControl, mediaSourcerer, extendedExoPlayerState)
     }
 
     @Test
@@ -64,9 +59,8 @@ internal class ExtendedExoPlayerTest {
         window.windowStartTimeMs = windowStartTimeMs
         val currentMediaItemIndex = 12
         whenever(delegate.currentMediaItemIndex) doReturn currentMediaItemIndex
-        val currentTimeline = mock<Timeline> {
-            on { it.getWindow(eq(currentMediaItemIndex), any()) } doReturn window
-        }
+        val currentTimeline =
+            mock<Timeline> { on { it.getWindow(eq(currentMediaItemIndex), any()) } doReturn window }
         whenever(delegate.currentTimeline) doReturn currentTimeline
         val currentPosition = 123L
         whenever(delegate.currentPosition) doReturn currentPosition
@@ -87,9 +81,8 @@ internal class ExtendedExoPlayerTest {
         window.windowStartTimeMs = windowStartTimeMs
         val currentMediaItemIndex = 12
         whenever(delegate.currentMediaItemIndex) doReturn currentMediaItemIndex
-        val currentTimeline = mock<Timeline> {
-            on { it.getWindow(eq(currentMediaItemIndex), any()) } doReturn window
-        }
+        val currentTimeline =
+            mock<Timeline> { on { it.getWindow(eq(currentMediaItemIndex), any()) } doReturn window }
         whenever(delegate.currentTimeline) doReturn currentTimeline
         val position = 123L
 
@@ -127,36 +120,27 @@ internal class ExtendedExoPlayerTest {
         whenever(delegate.playbackParameters).thenReturn(playbackParameters)
         whenever(extendedExoPlayer.totalBufferedDuration).thenReturn(totalBufferedDuration)
         whenever(
-            loadControl.shouldStartPlayback(
-                C.msToUs(totalBufferedDuration),
-                speed,
-                false,
-                C.TIME_UNSET,
-            ),
-        ).thenReturn(true)
+                loadControl.shouldStartPlayback(
+                    C.msToUs(totalBufferedDuration),
+                    speed,
+                    false,
+                    C.TIME_UNSET,
+                )
+            )
+            .thenReturn(true)
 
         val actual = extendedExoPlayer.shouldStartPlaybackAfterUserAction()
 
-        verify(loadControl).shouldStartPlayback(
-            C.msToUs(totalBufferedDuration),
-            speed,
-            false,
-            C.TIME_UNSET,
-        )
+        verify(loadControl)
+            .shouldStartPlayback(C.msToUs(totalBufferedDuration), speed, false, C.TIME_UNSET)
         assertThat(actual).isTrue()
     }
 
     @Test
     fun releaseForwardsToDelegateAndDontReleaseCache() {
-        val playerCache = mock<PlayerCache.Provided> {
-            on { cache } doReturn mock()
-        }
-        val extendedExoPlayer = ExtendedExoPlayer(
-            delegate,
-            loadControl,
-            mediaSourcerer,
-            extendedExoPlayerState,
-        )
+        val playerCache = mock<PlayerCache.Provided> { on { cache } doReturn mock() }
+        val extendedExoPlayer =
+            ExtendedExoPlayer(delegate, loadControl, mediaSourcerer, extendedExoPlayerState)
 
         extendedExoPlayer.release()
 
@@ -168,12 +152,8 @@ internal class ExtendedExoPlayerTest {
 
     @Test
     fun releaseForwardsToDelegate() {
-        val extendedExoPlayer = ExtendedExoPlayer(
-            delegate,
-            loadControl,
-            mediaSourcerer,
-            extendedExoPlayerState,
-        )
+        val extendedExoPlayer =
+            ExtendedExoPlayer(delegate, loadControl, mediaSourcerer, extendedExoPlayerState)
 
         extendedExoPlayer.release()
 
@@ -230,11 +210,9 @@ internal class ExtendedExoPlayerTest {
 
         @JvmStatic
         @Suppress("UnusedPrivateMember")
-        private fun nextMediaProducts() = setOf(
-            MediaProduct(ProductType.TRACK, "2"),
-            MediaProduct(ProductType.VIDEO, "3"),
-        ).map {
-            Arguments.of(ForwardingMediaProduct(it))
-        }
+        private fun nextMediaProducts() =
+            setOf(MediaProduct(ProductType.TRACK, "2"), MediaProduct(ProductType.VIDEO, "3")).map {
+                Arguments.of(ForwardingMediaProduct(it))
+            }
     }
 }

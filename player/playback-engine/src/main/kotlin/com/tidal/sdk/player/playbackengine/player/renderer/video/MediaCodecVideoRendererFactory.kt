@@ -9,16 +9,14 @@ import androidx.media3.exoplayer.video.VideoRendererEventListener
 
 internal class MediaCodecVideoRendererFactory(private val context: Context) {
 
-    fun create(
-        eventHandler: Handler,
-        videoRendererEventListener: VideoRendererEventListener,
-    ) = MediaCodecVideoRenderer(
-        context,
-        MediaCodecSelector.DEFAULT,
-        DefaultRenderersFactory.DEFAULT_ALLOWED_VIDEO_JOINING_TIME_MS,
-        false,
-        eventHandler,
-        videoRendererEventListener,
-        DefaultRenderersFactory.MAX_DROPPED_VIDEO_FRAME_COUNT_TO_NOTIFY,
-    )
+    fun create(eventHandler: Handler, videoRendererEventListener: VideoRendererEventListener) =
+        MediaCodecVideoRenderer(
+            context,
+            MediaCodecSelector.DEFAULT,
+            DefaultRenderersFactory.DEFAULT_ALLOWED_VIDEO_JOINING_TIME_MS,
+            false,
+            eventHandler,
+            videoRendererEventListener,
+            DefaultRenderersFactory.MAX_DROPPED_VIDEO_FRAME_COUNT_TO_NOTIFY,
+        )
 }

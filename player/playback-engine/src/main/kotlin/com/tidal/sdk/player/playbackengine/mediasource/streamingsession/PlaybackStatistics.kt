@@ -149,11 +149,12 @@ internal sealed interface PlaybackStatistics {
             val stalls: List<Stall>,
         ) : Prepared by prepared {
 
-            operator fun plus(stall: Stall) = if (stalls.size == STALLS_MAX) {
-                this
-            } else {
-                copy(stalls = stalls + stall)
-            }
+            operator fun plus(stall: Stall) =
+                if (stalls.size == STALLS_MAX) {
+                    this
+                } else {
+                    copy(stalls = stalls + stall)
+                }
 
             companion object {
                 private const val STALLS_MAX = 100

@@ -20,7 +20,10 @@ private const val LOADER_THREAD_NAME_SUFFIX = "PlaybackInfoMediaSource"
 internal class PlaybackInfoMediaSourceFactory(
     private val loadErrorHandlingPolicy: LoadErrorHandlingPolicy,
     private val playbackInfoLoadableFactory: PlaybackInfoLoadableFactory,
-    @Suppress("MaxLineLength") private val playbackInfoLoadableLoaderCallbackFactory: PlaybackInfoLoadableLoaderCallbackFactory, // ktlint-disable max-line-length parameter-wrapping
+    @Suppress("MaxLineLength")
+    private val playbackInfoLoadableLoaderCallbackFactory:
+        PlaybackInfoLoadableLoaderCallbackFactory, // ktlint-disable max-line-length
+    // parameter-wrapping
 ) {
 
     fun create(

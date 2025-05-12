@@ -16,49 +16,50 @@ internal data class DemoPlayableItem(
         MediaProduct(productType, mediaProductId, referenceId = referenceId)
 
     companion object {
-        val HARDCODED = arrayOf(
-            DemoPlayableItem(
-                "Izzo",
-                ProductType.TRACK,
-                "35738577",
-                setOf(Credentials.Level.USER, Credentials.Level.CLIENT),
-            ),
-            DemoPlayableItem(
-                "Empire State Of Mind",
-                ProductType.TRACK,
-                "37704290",
-                setOf(Credentials.Level.USER, Credentials.Level.CLIENT),
-            ),
-            DemoPlayableItem(
-                "Yellow",
-                ProductType.TRACK,
-                "120272",
-                setOf(Credentials.Level.USER, Credentials.Level.CLIENT),
-            ),
-            DemoPlayableItem(
-                "The heart part 5",
-                ProductType.VIDEO,
-                "228097594",
-                setOf(Credentials.Level.USER),
-            ),
-            DemoPlayableItem(
-                "Hurt",
-                ProductType.VIDEO,
-                "104175463",
-                setOf(Credentials.Level.USER),
-            ),
-            DemoPlayableItem(
-                "Ronnie",
-                ProductType.VIDEO,
-                "63520295",
-                setOf(Credentials.Level.USER),
-            ),
-            DemoPlayableItem(
-                "Dreams (Dolby Atmos)",
-                ProductType.TRACK,
-                "215245845",
-                setOf(Credentials.Level.USER),
-            ),
-        )
+        val HARDCODED =
+            arrayOf(
+                DemoPlayableItem(
+                    "Izzo",
+                    ProductType.TRACK,
+                    "35738577",
+                    setOf(Credentials.Level.USER, Credentials.Level.CLIENT),
+                ),
+                DemoPlayableItem(
+                    "Empire State Of Mind",
+                    ProductType.TRACK,
+                    "37704290",
+                    setOf(Credentials.Level.USER, Credentials.Level.CLIENT),
+                ),
+                DemoPlayableItem(
+                    "Yellow",
+                    ProductType.TRACK,
+                    "120272",
+                    setOf(Credentials.Level.USER, Credentials.Level.CLIENT),
+                ),
+                DemoPlayableItem(
+                    "The heart part 5",
+                    ProductType.VIDEO,
+                    "228097594",
+                    setOf(Credentials.Level.USER),
+                ),
+                DemoPlayableItem(
+                    "Hurt",
+                    ProductType.VIDEO,
+                    "104175463",
+                    setOf(Credentials.Level.USER),
+                ),
+                DemoPlayableItem(
+                    "Ronnie",
+                    ProductType.VIDEO,
+                    "63520295",
+                    setOf(Credentials.Level.USER),
+                ),
+                DemoPlayableItem(
+                    "Dreams (Dolby Atmos)",
+                    ProductType.TRACK,
+                    "215245845",
+                    setOf(Credentials.Level.USER),
+                ),
+            )
     }
 }

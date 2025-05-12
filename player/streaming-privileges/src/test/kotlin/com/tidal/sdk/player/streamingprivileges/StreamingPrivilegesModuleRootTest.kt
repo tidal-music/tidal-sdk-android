@@ -22,12 +22,7 @@ internal class StreamingPrivilegesModuleRootTest {
     private val gson = mock<Gson>()
     private val trueTimeWrapper = mock<TrueTimeWrapper>()
     private val streamingPrivilegesModuleRoot by lazy {
-        StreamingPrivilegesModuleRoot(
-            connectivityManager,
-            okHttpClient,
-            gson,
-            trueTimeWrapper,
-        )
+        StreamingPrivilegesModuleRoot(connectivityManager, okHttpClient, gson, trueTimeWrapper)
     }
 
     companion object {
@@ -49,29 +44,18 @@ internal class StreamingPrivilegesModuleRootTest {
     @Test
     fun propertyReturnsStreamingPrivilegesFromComponent() {
         val expected = mock<StreamingPrivileges>()
-        val component = mock<StreamingPrivilegesComponent> {
-            on { streamingPrivileges } doReturn expected
-        }
-        val componentFactory = mock<StreamingPrivilegesComponent.Factory> {
-            on {
-                create(
-                    connectivityManager,
-                    okHttpClient,
-                    gson,
-                    trueTimeWrapper,
-                )
-            } doReturn component
-        }
+        val component =
+            mock<StreamingPrivilegesComponent> { on { streamingPrivileges } doReturn expected }
+        val componentFactory =
+            mock<StreamingPrivilegesComponent.Factory> {
+                on { create(connectivityManager, okHttpClient, gson, trueTimeWrapper) } doReturn
+                    component
+            }
         StreamingPrivilegesModuleRoot.reflectionComponentFactoryF = { componentFactory }
 
         val actual = streamingPrivilegesModuleRoot.streamingPrivileges
 
-        verify(componentFactory).create(
-            connectivityManager,
-            okHttpClient,
-            gson,
-            trueTimeWrapper,
-        )
+        verify(componentFactory).create(connectivityManager, okHttpClient, gson, trueTimeWrapper)
         verify(component).streamingPrivileges
         verifyNoMoreInteractions(expected, component, componentFactory)
         assertThat(actual).isSameAs(expected)

@@ -20,19 +20,22 @@ internal class PlaybackInfoLoadableLoaderCallbackFactory(
         dataType: Int,
         eventDispatcher: MediaSourceEventListener.EventDispatcher,
         loadEventInfoF: (Long, Long) -> LoadEventInfo,
-        loadErrorInfoF: (LoadEventInfo, error: IOException, errorCount: Int) ->
-        LoadErrorHandlingPolicy.LoadErrorInfo,
+        loadErrorInfoF:
+            (
+                LoadEventInfo, error: IOException, errorCount: Int,
+            ) -> LoadErrorHandlingPolicy.LoadErrorInfo,
         prepareChildSourceF: (MediaSource) -> Unit,
         extras: Extras?,
-    ) = PlaybackInfoLoadableLoaderCallback(
-        mediaItem,
-        tidalMediaSourceCreator,
-        loadErrorHandlingPolicy,
-        dataType,
-        eventDispatcher,
-        loadEventInfoF,
-        loadErrorInfoF,
-        prepareChildSourceF,
-        extras,
-    )
+    ) =
+        PlaybackInfoLoadableLoaderCallback(
+            mediaItem,
+            tidalMediaSourceCreator,
+            loadErrorHandlingPolicy,
+            dataType,
+            eventDispatcher,
+            loadEventInfoF,
+            loadErrorInfoF,
+            prepareChildSourceF,
+            extras,
+        )
 }

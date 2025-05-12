@@ -1,8 +1,6 @@
 package com.tidal.sdk.player.streamingprivileges
 
-/**
- * Describes interactions with streaming privilege-related functionalities.
- */
+/** Describes interactions with streaming privilege-related functionalities. */
 interface StreamingPrivileges {
 
     /**
@@ -18,7 +16,7 @@ interface StreamingPrivileges {
      * @return true if the command can be deemed successful; false otherwise.
      */
     fun setStreamingPrivilegesListener(
-        streamingPrivilegesListener: StreamingPrivilegesListener?,
+        streamingPrivilegesListener: StreamingPrivilegesListener?
     ): Boolean
 
     /**

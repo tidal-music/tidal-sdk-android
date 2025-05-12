@@ -8,10 +8,6 @@ private const val RESOURCE_DIR = "api-responses"
 object MockWebServerExtensions {
 
     fun MockWebServer.enqueueResponse(fileName: String, code: Int = 200) {
-        enqueue(
-            MockResponse()
-                .setResponseCode(code)
-                .setBodyFromFile("$RESOURCE_DIR/$fileName")
-        )
+        enqueue(MockResponse().setResponseCode(code).setBodyFromFile("$RESOURCE_DIR/$fileName"))
     }
 }

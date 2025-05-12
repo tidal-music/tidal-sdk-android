@@ -20,18 +20,20 @@ internal class DisconnectRunnableTest {
     private val mutableState = mock<MutableState>()
     private val networkConnectivityManager = mock<ConnectivityManager>()
     private val streamingPrivilegesNetworkCallback = mock<StreamingPrivilegesNetworkCallback>()
-    private val disconnectRunnable = DisconnectRunnable(
-        mutableState,
-        networkConnectivityManager,
-        streamingPrivilegesNetworkCallback,
-    )
+    private val disconnectRunnable =
+        DisconnectRunnable(
+            mutableState,
+            networkConnectivityManager,
+            streamingPrivilegesNetworkCallback,
+        )
 
     @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(
-        mutableState,
-        networkConnectivityManager,
-        streamingPrivilegesNetworkCallback,
-    )
+    fun afterEach() =
+        verifyNoMoreInteractions(
+            mutableState,
+            networkConnectivityManager,
+            streamingPrivilegesNetworkCallback,
+        )
 
     @Test
     fun runWhenKeepAliveTrue() {
@@ -52,17 +54,18 @@ internal class DisconnectRunnableTest {
         whenever(mutableState.isNetworkConnectivityCallbackCurrentlyRegistered)
             .thenReturn(isNetworkConnectivityCallbackCurrentlyRegistered)
         val webSocket = mock<WebSocket>()
-        val socketConnectionStateConnected = mock<SocketConnectionState.Connected> {
-            on { it.webSocket } doReturn webSocket
-        }
+        val socketConnectionStateConnected =
+            mock<SocketConnectionState.Connected> { on { it.webSocket } doReturn webSocket }
         val socketConnectionStateNotConnected = mock<SocketConnectionState.NotConnected>()
-        val connectionMutableState = mock<ConnectionMutableState> {
-            on { it.socketConnectionState } doReturn if (isSocketConnectionStateConnected) {
-                socketConnectionStateConnected
-            } else {
-                socketConnectionStateNotConnected
+        val connectionMutableState =
+            mock<ConnectionMutableState> {
+                on { it.socketConnectionState } doReturn
+                    if (isSocketConnectionStateConnected) {
+                        socketConnectionStateConnected
+                    } else {
+                        socketConnectionStateNotConnected
+                    }
             }
-        }
         if (!isConnectionMutableStateNull) {
             whenever(mutableState.connectionMutableState) doReturn connectionMutableState
         }
@@ -83,10 +86,11 @@ internal class DisconnectRunnableTest {
             verify(connectionMutableState).socketConnectionState
             if (isSocketConnectionStateConnected) {
                 verify(socketConnectionStateConnected).webSocket
-                verify(webSocket).close(
-                    CloseReason.REASON_REQUESTED_BY_SELF.code,
-                    CloseReason.REASON_REQUESTED_BY_SELF.description,
-                )
+                verify(webSocket)
+                    .close(
+                        CloseReason.REASON_REQUESTED_BY_SELF.code,
+                        CloseReason.REASON_REQUESTED_BY_SELF.description,
+                    )
                 verify(connectionMutableState).socketConnectionState =
                     SocketConnectionState.NotConnected
             }

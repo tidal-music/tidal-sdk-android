@@ -25,22 +25,24 @@ internal class NotStartedPlaybackStatisticsEventFactoryTest {
     private val userSupplier = mock<UserSupplier>()
     private val clientSupplier = mock<ClientSupplier>()
     private val notStartedPlaybackStatisticsFactory = mock<NotStartedPlaybackStatistics.Factory>()
-    private val notStartedPlaybackStatisticsEventFactory = NotStartedPlaybackStatisticsEventFactory(
-        trueTimeWrapper,
-        uuidWrapper,
-        userSupplier,
-        clientSupplier,
-        notStartedPlaybackStatisticsFactory,
-    )
+    private val notStartedPlaybackStatisticsEventFactory =
+        NotStartedPlaybackStatisticsEventFactory(
+            trueTimeWrapper,
+            uuidWrapper,
+            userSupplier,
+            clientSupplier,
+            notStartedPlaybackStatisticsFactory,
+        )
 
     @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(
-        trueTimeWrapper,
-        uuidWrapper,
-        userSupplier,
-        clientSupplier,
-        notStartedPlaybackStatisticsFactory,
-    )
+    fun afterEach() =
+        verifyNoMoreInteractions(
+            trueTimeWrapper,
+            uuidWrapper,
+            userSupplier,
+            clientSupplier,
+            notStartedPlaybackStatisticsFactory,
+        )
 
     @Test
     fun invoke() = runBlocking {
@@ -55,15 +57,16 @@ internal class NotStartedPlaybackStatisticsEventFactoryTest {
         val payload = mock<NotStartedPlaybackStatistics.Payload>()
         val expected = mock<NotStartedPlaybackStatistics>()
         whenever(
-            notStartedPlaybackStatisticsFactory.create(
-                currentTimeMillis,
-                randomUUID,
-                user,
-                client,
-                payload,
-                emptyMap(),
-            ),
-        ).thenReturn(expected)
+                notStartedPlaybackStatisticsFactory.create(
+                    currentTimeMillis,
+                    randomUUID,
+                    user,
+                    client,
+                    payload,
+                    emptyMap(),
+                )
+            )
+            .thenReturn(expected)
 
         val actual = notStartedPlaybackStatisticsEventFactory(payload, emptyMap())
 
@@ -71,14 +74,8 @@ internal class NotStartedPlaybackStatisticsEventFactoryTest {
         verify(uuidWrapper).randomUUID
         verify(userSupplier)()
         verify(clientSupplier)()
-        verify(notStartedPlaybackStatisticsFactory).create(
-            currentTimeMillis,
-            randomUUID,
-            user,
-            client,
-            payload,
-            emptyMap(),
-        )
+        verify(notStartedPlaybackStatisticsFactory)
+            .create(currentTimeMillis, randomUUID, user, client, payload, emptyMap())
         assertThat(actual).isSameAs(expected)
         verifyNoMoreInteractions(randomUUID, user, client, payload, expected)
     }

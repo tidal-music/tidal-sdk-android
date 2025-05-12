@@ -50,34 +50,36 @@ internal class ConnectRunnableTest {
     private val forRealFactory = mock<SocketConnectionState.Connecting.ForReal.Factory>()
     private val registerDefaultNetworkCallbackRunnableFactory =
         mock<RegisterDefaultNetworkCallbackRunnable.Factory>()
-    private val connectRunnable = ConnectRunnable(
-        networkInteractionsHandler,
-        mutableState,
-        streamingPrivilegesEventDispatcher,
-        systemClockWrapper,
-        okHttpClient,
-        streamingPrivilegesService,
-        webSocketConnectionRequestFactory,
-        dumpCallbacksToHandlerWebSocketListenerFactory,
-        awaitingBackOffExpiryFactory,
-        forRealFactory,
-        registerDefaultNetworkCallbackRunnableFactory,
-    )
+    private val connectRunnable =
+        ConnectRunnable(
+            networkInteractionsHandler,
+            mutableState,
+            streamingPrivilegesEventDispatcher,
+            systemClockWrapper,
+            okHttpClient,
+            streamingPrivilegesService,
+            webSocketConnectionRequestFactory,
+            dumpCallbacksToHandlerWebSocketListenerFactory,
+            awaitingBackOffExpiryFactory,
+            forRealFactory,
+            registerDefaultNetworkCallbackRunnableFactory,
+        )
 
     @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(
-        networkInteractionsHandler,
-        mutableState,
-        streamingPrivilegesEventDispatcher,
-        systemClockWrapper,
-        okHttpClient,
-        streamingPrivilegesService,
-        webSocketConnectionRequestFactory,
-        dumpCallbacksToHandlerWebSocketListenerFactory,
-        awaitingBackOffExpiryFactory,
-        forRealFactory,
-        registerDefaultNetworkCallbackRunnableFactory,
-    )
+    fun afterEach() =
+        verifyNoMoreInteractions(
+            networkInteractionsHandler,
+            mutableState,
+            streamingPrivilegesEventDispatcher,
+            systemClockWrapper,
+            okHttpClient,
+            streamingPrivilegesService,
+            webSocketConnectionRequestFactory,
+            dumpCallbacksToHandlerWebSocketListenerFactory,
+            awaitingBackOffExpiryFactory,
+            forRealFactory,
+            registerDefaultNetworkCallbackRunnableFactory,
+        )
 
     @Test
     fun runSuccessfullyWhenKeepAliveIsFalse() {
@@ -118,9 +120,10 @@ internal class ConnectRunnableTest {
     @ValueSource(booleans = [true, false])
     fun runWhenConnectingForReal(isNetworkConnectivityCallbackCurrentlyRegistered: Boolean) {
         val socketConnectionState = mock<SocketConnectionState.Connecting.ForReal>()
-        val connectionMutableState = mock<ConnectionMutableState> {
-            on { it.socketConnectionState } doReturn socketConnectionState
-        }
+        val connectionMutableState =
+            mock<ConnectionMutableState> {
+                on { it.socketConnectionState } doReturn socketConnectionState
+            }
         whenever(mutableState.keepAlive) doReturn true
         whenever(mutableState.isNetworkConnectivityCallbackCurrentlyRegistered)
             .thenReturn(isNetworkConnectivityCallbackCurrentlyRegistered)
@@ -149,9 +152,10 @@ internal class ConnectRunnableTest {
     @ValueSource(booleans = [true, false])
     fun runWhenConnected(isNetworkConnectivityCallbackCurrentlyRegistered: Boolean) {
         val socketConnectionState = mock<SocketConnectionState.Connected>()
-        val connectionMutableState = mock<ConnectionMutableState> {
-            on { it.socketConnectionState } doReturn socketConnectionState
-        }
+        val connectionMutableState =
+            mock<ConnectionMutableState> {
+                on { it.socketConnectionState } doReturn socketConnectionState
+            }
         whenever(mutableState.keepAlive) doReturn true
         whenever(mutableState.isNetworkConnectivityCallbackCurrentlyRegistered)
             .thenReturn(isNetworkConnectivityCallbackCurrentlyRegistered)
@@ -181,16 +185,18 @@ internal class ConnectRunnableTest {
     @ParameterizedTest
     @ValueSource(booleans = [true, false])
     fun runWhenAwaitingNotYetExpiredBackOff(
-        isNetworkConnectivityCallbackCurrentlyRegistered: Boolean,
+        isNetworkConnectivityCallbackCurrentlyRegistered: Boolean
     ) {
         val retryAtMillis = 1L
-        val socketConnectionState = mock<SocketConnectionState.Connecting.AwaitingBackOffExpiry> {
-            on { it.failedAttempts } doReturn 1
-            on { it.retryAtMillis } doReturn retryAtMillis
-        }
-        val connectionMutableState = mock<ConnectionMutableState> {
-            on { it.socketConnectionState } doReturn socketConnectionState
-        }
+        val socketConnectionState =
+            mock<SocketConnectionState.Connecting.AwaitingBackOffExpiry> {
+                on { it.failedAttempts } doReturn 1
+                on { it.retryAtMillis } doReturn retryAtMillis
+            }
+        val connectionMutableState =
+            mock<ConnectionMutableState> {
+                on { it.socketConnectionState } doReturn socketConnectionState
+            }
         whenever(mutableState.keepAlive) doReturn true
         whenever(mutableState.isNetworkConnectivityCallbackCurrentlyRegistered)
             .thenReturn(isNetworkConnectivityCallbackCurrentlyRegistered)
@@ -226,11 +232,12 @@ internal class ConnectRunnableTest {
         failedAttempts: Int,
     ) {
         val retryAtMillis = 0L
-        val awaitingBackOffExpiry = mock<SocketConnectionState.Connecting.AwaitingBackOffExpiry> {
-            on { it.retryAtMillis } doReturn retryAtMillis
-            on { it.failedAttempts } doReturn failedAttempts
-            on { it.failedAttemptsOrZero } doReturn failedAttempts
-        }
+        val awaitingBackOffExpiry =
+            mock<SocketConnectionState.Connecting.AwaitingBackOffExpiry> {
+                on { it.retryAtMillis } doReturn retryAtMillis
+                on { it.failedAttempts } doReturn failedAttempts
+                on { it.failedAttemptsOrZero } doReturn failedAttempts
+            }
         whenever(systemClockWrapper.uptimeMillis) doReturn retryAtMillis + 1
 
         testSuccessfully(
@@ -254,11 +261,12 @@ internal class ConnectRunnableTest {
     ) {
         val retryAtMillis = -1L
         val upTimeMillis = -9L
-        val awaitingBackOffExpiry = mock<SocketConnectionState.Connecting.AwaitingBackOffExpiry> {
-            on { it.retryAtMillis } doReturn retryAtMillis
-            on { it.failedAttempts } doReturn failedAttempts
-            on { it.failedAttemptsOrZero } doReturn failedAttempts
-        }
+        val awaitingBackOffExpiry =
+            mock<SocketConnectionState.Connecting.AwaitingBackOffExpiry> {
+                on { it.retryAtMillis } doReturn retryAtMillis
+                on { it.failedAttempts } doReturn failedAttempts
+                on { it.failedAttemptsOrZero } doReturn failedAttempts
+            }
         whenever(systemClockWrapper.uptimeMillis).thenReturn(retryAtMillis + 1, upTimeMillis)
 
         testWithError(
@@ -291,24 +299,24 @@ internal class ConnectRunnableTest {
         val forReal = mock<SocketConnectionState.Connecting.ForReal>()
         whenever(forRealFactory.create(failedAttempts)) doReturn forReal
         val url = "socket url"
-        val streamingPrivilegesWebSocketInfo = mock<StreamingPrivilegesWebSocketInfo> {
-            on { it.url } doReturn url
-        }
-        val response = mock<Response<StreamingPrivilegesWebSocketInfo>> {
-            on { it.code() } doReturn HttpURLConnection.HTTP_OK
-            on { it.body() } doReturn streamingPrivilegesWebSocketInfo
-        }
-        val call = mock<Call<StreamingPrivilegesWebSocketInfo>> {
-            on { it.execute() } doReturn response
-        }
+        val streamingPrivilegesWebSocketInfo =
+            mock<StreamingPrivilegesWebSocketInfo> { on { it.url } doReturn url }
+        val response =
+            mock<Response<StreamingPrivilegesWebSocketInfo>> {
+                on { it.code() } doReturn HttpURLConnection.HTTP_OK
+                on { it.body() } doReturn streamingPrivilegesWebSocketInfo
+            }
+        val call =
+            mock<Call<StreamingPrivilegesWebSocketInfo>> { on { it.execute() } doReturn response }
         whenever(streamingPrivilegesService.getStreamingPrivilegesWebSocketInfo()) doReturn call
         val webSocketConnectionRequest = mock<Request>()
         whenever(webSocketConnectionRequestFactory.create(url)) doReturn webSocketConnectionRequest
         val dumpCallbacksToHandlerWebSocketListener =
             mock<DumpCallbacksToHandlerWebSocketListener>()
-        val connectionMutableState = mock<ConnectionMutableState> {
-            on { it.socketConnectionState } doReturn prevState doReturn forReal
-        }
+        val connectionMutableState =
+            mock<ConnectionMutableState> {
+                on { it.socketConnectionState } doReturn prevState doReturn forReal
+            }
         whenever(mutableState.connectionMutableState) doReturn connectionMutableState
         whenever(dumpCallbacksToHandlerWebSocketListenerFactory.create(connectionMutableState))
             .thenReturn(dumpCallbacksToHandlerWebSocketListener)
@@ -334,10 +342,8 @@ internal class ConnectRunnableTest {
         verify(streamingPrivilegesWebSocketInfo).url
         verify(webSocketConnectionRequestFactory).create(url)
         verify(dumpCallbacksToHandlerWebSocketListenerFactory).create(connectionMutableState)
-        verify(okHttpClient).newWebSocket(
-            webSocketConnectionRequest,
-            dumpCallbacksToHandlerWebSocketListener,
-        )
+        verify(okHttpClient)
+            .newWebSocket(webSocketConnectionRequest, dumpCallbacksToHandlerWebSocketListener)
         verifyNoMoreInteractions(
             connectionMutableState,
             registerDefaultNetworkCallbackRunnable,
@@ -367,9 +373,10 @@ internal class ConnectRunnableTest {
         }
         val nextFailedAttempts =
             (failedAttempts + 1).coerceAtMost(ConnectRunnable.ACCOUNTABLE_ATTEMPTS_MAX)
-        val forReal = mock<SocketConnectionState.Connecting.ForReal> {
-            on { failedAttemptsOrZero } doReturn failedAttempts
-        }
+        val forReal =
+            mock<SocketConnectionState.Connecting.ForReal> {
+                on { failedAttemptsOrZero } doReturn failedAttempts
+            }
         whenever(forRealFactory.create(failedAttempts)) doReturn forReal
         val uncheckedException = mock<RuntimeException>()
         whenever(streamingPrivilegesService.getStreamingPrivilegesWebSocketInfo())
@@ -378,12 +385,13 @@ internal class ConnectRunnableTest {
         whenever(awaitingBackOffExpiryFactory.create(any(), eq(nextFailedAttempts)))
             .thenReturn(awaitingBackOffExpiry)
         val retryAtMillisCaptor = argumentCaptor<Long>()
-        val maxDelayMs = ConnectRunnable.reflectionDELAY_BASE_MS *
-            2.0.pow(nextFailedAttempts).toLong()
+        val maxDelayMs =
+            ConnectRunnable.reflectionDELAY_BASE_MS * 2.0.pow(nextFailedAttempts).toLong()
         val adjustedDelayMsCaptor = argumentCaptor<Long>()
-        val connectionMutableState = mock<ConnectionMutableState> {
-            on { it.socketConnectionState } doReturn prevState doReturn forReal
-        }
+        val connectionMutableState =
+            mock<ConnectionMutableState> {
+                on { it.socketConnectionState } doReturn prevState doReturn forReal
+            }
         whenever(mutableState.connectionMutableState) doReturn connectionMutableState
 
         connectRunnable.run()
@@ -408,10 +416,8 @@ internal class ConnectRunnableTest {
         verify(forReal).failedAttemptsOrZero
         verify(awaitingBackOffExpiryFactory)
             .create(retryAtMillisCaptor.capture(), eq(nextFailedAttempts))
-        verify(networkInteractionsHandler).postDelayed(
-            eq(connectRunnable),
-            adjustedDelayMsCaptor.capture(),
-        )
+        verify(networkInteractionsHandler)
+            .postDelayed(eq(connectRunnable), adjustedDelayMsCaptor.capture())
         assertThat(retryAtMillisCaptor.firstValue - upTimeMillis)
             .isEqualTo(adjustedDelayMsCaptor.firstValue)
         assertThat(adjustedDelayMsCaptor.firstValue)
@@ -419,22 +425,19 @@ internal class ConnectRunnableTest {
                 (maxDelayMs * (1 - ConnectRunnable.reflectionJITTER_FACTOR_MAX)).toLong(),
                 maxDelayMs,
             )
-        verifyNoMoreInteractions(
-            forReal,
-            uncheckedException,
-            awaitingBackOffExpiry,
-        )
+        verifyNoMoreInteractions(forReal, uncheckedException, awaitingBackOffExpiry)
     }
 
     companion object {
 
         @JvmStatic
         @Suppress("UnusedPrivateMember", "NestedBlockDepth")
-        private fun combinationsForRunWithExpiredBackoff() = mutableSetOf(
-            Arguments.of(true, ConnectRunnable.ACCOUNTABLE_ATTEMPTS_MAX - 1),
-            Arguments.of(true, ConnectRunnable.ACCOUNTABLE_ATTEMPTS_MAX),
-            Arguments.of(false, ConnectRunnable.ACCOUNTABLE_ATTEMPTS_MAX - 1),
-            Arguments.of(false, ConnectRunnable.ACCOUNTABLE_ATTEMPTS_MAX),
-        )
+        private fun combinationsForRunWithExpiredBackoff() =
+            mutableSetOf(
+                Arguments.of(true, ConnectRunnable.ACCOUNTABLE_ATTEMPTS_MAX - 1),
+                Arguments.of(true, ConnectRunnable.ACCOUNTABLE_ATTEMPTS_MAX),
+                Arguments.of(false, ConnectRunnable.ACCOUNTABLE_ATTEMPTS_MAX - 1),
+                Arguments.of(false, ConnectRunnable.ACCOUNTABLE_ATTEMPTS_MAX),
+            )
     }
 }

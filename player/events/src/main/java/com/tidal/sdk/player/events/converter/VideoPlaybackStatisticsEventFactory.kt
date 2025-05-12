@@ -15,15 +15,13 @@ internal class VideoPlaybackStatisticsEventFactory(
     private val videoPlaybackStatisticsFactory: VideoPlaybackStatistics.Factory,
 ) : EventFactory<VideoPlaybackStatistics.Payload> {
 
-    override suspend fun invoke(
-        payload: VideoPlaybackStatistics.Payload,
-        extras: Extras?,
-    ) = videoPlaybackStatisticsFactory.create(
-        trueTimeWrapper.currentTimeMillis,
-        uuidWrapper.randomUUID,
-        userSupplier(),
-        clientSupplier(),
-        payload,
-        extras,
-    )
+    override suspend fun invoke(payload: VideoPlaybackStatistics.Payload, extras: Extras?) =
+        videoPlaybackStatisticsFactory.create(
+            trueTimeWrapper.currentTimeMillis,
+            uuidWrapper.randomUUID,
+            userSupplier(),
+            clientSupplier(),
+            payload,
+            extras,
+        )
 }

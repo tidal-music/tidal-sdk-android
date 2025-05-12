@@ -25,26 +25,28 @@ internal class StreamingPrivilegesDefaultTest {
     private val acquireRunnableFactory = mock<AcquireRunnable.Factory>()
     private val trueTimeWrapper = mock<TrueTimeWrapper>()
     private val mutableState = mock<MutableState>()
-    private val streamingPrivilegesDefault = StreamingPrivilegesDefault(
-        networkInteractionsHandler,
-        setKeepAliveRunnableFactory,
-        setStreamingPrivilegesListenerRunnableFactory,
-        releaseRunnable,
-        acquireRunnableFactory,
-        trueTimeWrapper,
-        mutableState,
-    )
+    private val streamingPrivilegesDefault =
+        StreamingPrivilegesDefault(
+            networkInteractionsHandler,
+            setKeepAliveRunnableFactory,
+            setStreamingPrivilegesListenerRunnableFactory,
+            releaseRunnable,
+            acquireRunnableFactory,
+            trueTimeWrapper,
+            mutableState,
+        )
 
     @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(
-        networkInteractionsHandler,
-        setKeepAliveRunnableFactory,
-        setStreamingPrivilegesListenerRunnableFactory,
-        releaseRunnable,
-        acquireRunnableFactory,
-        trueTimeWrapper,
-        mutableState,
-    )
+    fun afterEach() =
+        verifyNoMoreInteractions(
+            networkInteractionsHandler,
+            setKeepAliveRunnableFactory,
+            setStreamingPrivilegesListenerRunnableFactory,
+            releaseRunnable,
+            acquireRunnableFactory,
+            trueTimeWrapper,
+            mutableState,
+        )
 
     @Test
     fun setKeepAlivePostsRunnable() {

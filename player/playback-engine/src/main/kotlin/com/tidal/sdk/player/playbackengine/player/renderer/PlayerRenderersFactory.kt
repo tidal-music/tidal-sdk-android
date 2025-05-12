@@ -23,10 +23,12 @@ internal class PlayerRenderersFactory(
         audioRendererEventListener: AudioRendererEventListener,
         textRendererOutput: TextOutput,
         metadataRendererOutput: MetadataOutput,
-    ) = arrayOf(
-        mediaCodecVideoRendererFactory.create(eventHandler, videoRendererEventListener),
-        libflacAudioRendererFactory?.create(eventHandler, audioRendererEventListener),
-        fallbackAudioRendererFactory.create(eventHandler, audioRendererEventListener),
-    ).filterNotNull()
-        .toTypedArray()
+    ) =
+        arrayOf(
+                mediaCodecVideoRendererFactory.create(eventHandler, videoRendererEventListener),
+                libflacAudioRendererFactory?.create(eventHandler, audioRendererEventListener),
+                fallbackAudioRendererFactory.create(eventHandler, audioRendererEventListener),
+            )
+            .filterNotNull()
+            .toTypedArray()
 }

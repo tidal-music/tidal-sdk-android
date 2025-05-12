@@ -27,9 +27,7 @@ internal class DashManifestFactoryTest {
             .thenReturn(decodedManifest)
         val decodedManifestInputStream = mock<ByteArrayInputStream>()
         dashManifestFactory.reflectionSetByteArrayInputStreamF(
-            mock {
-                on { invoke(decodedManifest) } doReturn decodedManifestInputStream
-            },
+            mock { on { invoke(decodedManifest) } doReturn decodedManifestInputStream }
         )
         val expectedDashManifest = mock<DashManifest>()
         whenever(dashManifestParser.parse(Uri.EMPTY, decodedManifestInputStream))

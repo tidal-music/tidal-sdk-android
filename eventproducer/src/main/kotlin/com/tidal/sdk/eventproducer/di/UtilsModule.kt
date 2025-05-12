@@ -18,7 +18,5 @@ internal class UtilsModule {
         trueTimeWrapper: TrueTimeWrapper,
     ) = HeadersUtils(configProvider.config.appVersion, credentialsProvider, trueTimeWrapper)
 
-    @Provides
-    @Reusable
-    fun provideTrueTimeWrapper() = TrueTimeWrapper()
+    @Provides @Reusable fun provideTrueTimeWrapper() = TrueTimeWrapper()
 }

@@ -18,30 +18,28 @@ import org.mockito.kotlin.whenever
 internal class RequestAuthorizationDelegateTest {
 
     private val endpointsRequiringCredentialLevels = mock<Map<String, Set<Credentials.Level>>>()
-    private val requestAuthorizationDelegate = RequestAuthorizationDelegate(
-        endpointsRequiringCredentialLevels,
-    )
+    private val requestAuthorizationDelegate =
+        RequestAuthorizationDelegate(endpointsRequiringCredentialLevels)
 
-    @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(endpointsRequiringCredentialLevels)
+    @AfterEach fun afterEach() = verifyNoMoreInteractions(endpointsRequiringCredentialLevels)
 
     @Test
     fun invokeEndpointDoesNotHaveLevelRequirement() {
         val requestUrl = mock<HttpUrl>()
         val expected = mock<Request>()
         val tokenString = "token"
-        val newBuilder = mock<Request.Builder> {
-            on { header(HEADER_AUTHORIZATION, "${TokenType.BEARER.type} $tokenString") }
-                .thenReturn(it)
-            on { build() } doReturn expected
-        }
-        val request = mock<Request> {
-            on { url } doReturn requestUrl
-            on { newBuilder() } doReturn newBuilder
-        }
-        val credentials = mock<Credentials> {
-            on { token } doReturn tokenString
-        }
+        val newBuilder =
+            mock<Request.Builder> {
+                on { header(HEADER_AUTHORIZATION, "${TokenType.BEARER.type} $tokenString") }
+                    .thenReturn(it)
+                on { build() } doReturn expected
+            }
+        val request =
+            mock<Request> {
+                on { url } doReturn requestUrl
+                on { newBuilder() } doReturn newBuilder
+            }
+        val credentials = mock<Credentials> { on { token } doReturn tokenString }
         whenever(endpointsRequiringCredentialLevels[requestUrl.toString()]) doReturn null
 
         val actual = requestAuthorizationDelegate(request, credentials)
@@ -51,8 +49,7 @@ internal class RequestAuthorizationDelegateTest {
         verify(request).newBuilder()
         verify(credentials).token
         inOrder(newBuilder) {
-            verify(newBuilder)
-                .header(HEADER_AUTHORIZATION, "${TokenType.BEARER.type} $tokenString")
+            verify(newBuilder).header(HEADER_AUTHORIZATION, "${TokenType.BEARER.type} $tokenString")
             verify(newBuilder).build()
         }
         assertThat(actual).isSameAs(expected)
@@ -62,13 +59,9 @@ internal class RequestAuthorizationDelegateTest {
     @Test
     fun invokeEndpointRequiresMissingLevel() {
         val requestUrl = mock<HttpUrl>()
-        val request = mock<Request> {
-            on { url } doReturn requestUrl
-        }
+        val request = mock<Request> { on { url } doReturn requestUrl }
         val credentialLevel = mock<Credentials.Level>()
-        val credentials = mock<Credentials> {
-            on { level } doReturn credentialLevel
-        }
+        val credentials = mock<Credentials> { on { level } doReturn credentialLevel }
         val allowedLevelSet = mock<Set<Credentials.Level>>()
         whenever(endpointsRequiringCredentialLevels[requestUrl.toString()]) doReturn allowedLevelSet
         whenever(allowedLevelSet.contains(credentialLevel)) doReturn false
@@ -80,13 +73,7 @@ internal class RequestAuthorizationDelegateTest {
         verify(credentials).level
         verify(allowedLevelSet).contains(credentialLevel)
         assertThat(actual).isNull()
-        verifyNoMoreInteractions(
-            requestUrl,
-            request,
-            credentialLevel,
-            credentials,
-            allowedLevelSet,
-        )
+        verifyNoMoreInteractions(requestUrl, request, credentialLevel, credentials, allowedLevelSet)
     }
 
     @Test
@@ -94,20 +81,23 @@ internal class RequestAuthorizationDelegateTest {
         val requestUrl = mock<HttpUrl>()
         val expected = mock<Request>()
         val tokenString = "token"
-        val newBuilder = mock<Request.Builder> {
-            on { header(HEADER_AUTHORIZATION, "${TokenType.BEARER.type} $tokenString") }
-                .thenReturn(it)
-            on { build() } doReturn expected
-        }
-        val request = mock<Request> {
-            on { url } doReturn requestUrl
-            on { newBuilder() } doReturn newBuilder
-        }
+        val newBuilder =
+            mock<Request.Builder> {
+                on { header(HEADER_AUTHORIZATION, "${TokenType.BEARER.type} $tokenString") }
+                    .thenReturn(it)
+                on { build() } doReturn expected
+            }
+        val request =
+            mock<Request> {
+                on { url } doReturn requestUrl
+                on { newBuilder() } doReturn newBuilder
+            }
         val credentialLevel = mock<Credentials.Level>()
-        val credentials = mock<Credentials> {
-            on { token } doReturn tokenString
-            on { level } doReturn credentialLevel
-        }
+        val credentials =
+            mock<Credentials> {
+                on { token } doReturn tokenString
+                on { level } doReturn credentialLevel
+            }
         val allowedLevelSet = mock<Set<Credentials.Level>>()
         whenever(endpointsRequiringCredentialLevels[requestUrl.toString()]) doReturn allowedLevelSet
         whenever(allowedLevelSet.contains(credentialLevel)) doReturn true
@@ -121,8 +111,7 @@ internal class RequestAuthorizationDelegateTest {
         verify(request).newBuilder()
         verify(credentials).token
         inOrder(newBuilder) {
-            verify(newBuilder)
-                .header(HEADER_AUTHORIZATION, "${TokenType.BEARER.type} $tokenString")
+            verify(newBuilder).header(HEADER_AUTHORIZATION, "${TokenType.BEARER.type} $tokenString")
             verify(newBuilder).build()
         }
         assertThat(actual).isSameAs(expected)

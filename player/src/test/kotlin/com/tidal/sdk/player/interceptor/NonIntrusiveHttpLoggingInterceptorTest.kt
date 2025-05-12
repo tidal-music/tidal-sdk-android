@@ -16,23 +16,18 @@ internal class NonIntrusiveHttpLoggingInterceptorTest {
 
     private val basicLevelHttpLoggingInterceptor = mock<HttpLoggingInterceptor>()
     private val bodyLevelHttpLoggingInterceptor = mock<HttpLoggingInterceptor>()
-    private val nonIntrusiveHttpLoggingInterceptor = NonIntrusiveHttpLoggingInterceptor(
-        basicLevelHttpLoggingInterceptor,
-        bodyLevelHttpLoggingInterceptor,
-    )
+    private val nonIntrusiveHttpLoggingInterceptor =
+        NonIntrusiveHttpLoggingInterceptor(
+            basicLevelHttpLoggingInterceptor,
+            bodyLevelHttpLoggingInterceptor,
+        )
 
     @Test
     fun interceptApiRequest() {
         val host = "api.tidal.com"
-        val url = mock<HttpUrl> {
-            on { it.host } doReturn host
-        }
-        val request = mock<Request> {
-            on { it.url } doReturn url
-        }
-        val chain = mock<Chain> {
-            on { request() } doReturn request
-        }
+        val url = mock<HttpUrl> { on { it.host } doReturn host }
+        val request = mock<Request> { on { it.url } doReturn url }
+        val chain = mock<Chain> { on { request() } doReturn request }
         whenever(bodyLevelHttpLoggingInterceptor.intercept(chain)).thenReturn(mock())
 
         nonIntrusiveHttpLoggingInterceptor.intercept(chain)
@@ -45,15 +40,9 @@ internal class NonIntrusiveHttpLoggingInterceptorTest {
     @Test
     fun interceptEventRequest() {
         val host = "et.tidal.com"
-        val url = mock<HttpUrl> {
-            on { it.host } doReturn host
-        }
-        val request = mock<Request> {
-            on { it.url } doReturn url
-        }
-        val chain = mock<Chain> {
-            on { request() } doReturn request
-        }
+        val url = mock<HttpUrl> { on { it.host } doReturn host }
+        val request = mock<Request> { on { it.url } doReturn url }
+        val chain = mock<Chain> { on { request() } doReturn request }
         whenever(bodyLevelHttpLoggingInterceptor.intercept(chain)).thenReturn(mock())
 
         nonIntrusiveHttpLoggingInterceptor.intercept(chain)
@@ -66,15 +55,9 @@ internal class NonIntrusiveHttpLoggingInterceptorTest {
     @Test
     fun interceptAudioRequest() {
         val host = "audio.tidal.com"
-        val url = mock<HttpUrl> {
-            on { it.host } doReturn host
-        }
-        val request = mock<Request> {
-            on { it.url } doReturn url
-        }
-        val chain = mock<Chain> {
-            on { request() } doReturn request
-        }
+        val url = mock<HttpUrl> { on { it.host } doReturn host }
+        val request = mock<Request> { on { it.url } doReturn url }
+        val chain = mock<Chain> { on { request() } doReturn request }
         whenever(basicLevelHttpLoggingInterceptor.intercept(chain)).thenReturn(mock())
 
         nonIntrusiveHttpLoggingInterceptor.intercept(chain)

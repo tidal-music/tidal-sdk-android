@@ -13,10 +13,9 @@ internal class PlayerProgressiveMediaSourceFactory(
 
     fun create(mediaItem: MediaItem, encodedManifest: String): ProgressiveMediaSource {
         val btsManifest = btsManifestFactory.create(encodedManifest)
-        val newMediaItem = mediaItem.buildUpon()
-            .setUri(btsManifest.urls.firstOrNull())
-            .build()
-        return progressiveMediaSourceFactoryFactory.create(cacheDataSourceFactory)
+        val newMediaItem = mediaItem.buildUpon().setUri(btsManifest.urls.firstOrNull()).build()
+        return progressiveMediaSourceFactoryFactory
+            .create(cacheDataSourceFactory)
             .createMediaSource(newMediaItem)
     }
 }

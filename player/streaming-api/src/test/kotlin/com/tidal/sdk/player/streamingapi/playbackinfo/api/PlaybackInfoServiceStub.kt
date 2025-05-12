@@ -10,8 +10,7 @@ import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackMode
 import org.junit.jupiter.api.fail
 
 /**
- * Stub implementation of [PlaybackInfoService] that is useful for testing without any
- * dependencies.
+ * Stub implementation of [PlaybackInfoService] that is useful for testing without any dependencies.
  *
  * This implementation hard codes the result of the functions to a various values useful in tests.
  */
@@ -26,11 +25,12 @@ internal class PlaybackInfoServiceStub : PlaybackInfoService {
         immersiveAudio: Boolean,
         streamingSessionId: String,
         playlistUuid: String?,
-    ) = when (trackId) {
-        PLAYBACK_INFO_ID_FOR_UNCAUGHT_EXCEPTION -> throw NullPointerException()
-        PLAYBACK_INFO_ID_SUCCESS -> TrackPlaybackInfoFactory.DEFAULT
-        else -> fail("Unsupported call")
-    }
+    ) =
+        when (trackId) {
+            PLAYBACK_INFO_ID_FOR_UNCAUGHT_EXCEPTION -> throw NullPointerException()
+            PLAYBACK_INFO_ID_SUCCESS -> TrackPlaybackInfoFactory.DEFAULT
+            else -> fail("Unsupported call")
+        }
 
     override suspend fun getVideoPlaybackInfo(
         videoId: String,
@@ -39,22 +39,21 @@ internal class PlaybackInfoServiceStub : PlaybackInfoService {
         videoQuality: VideoQuality,
         streamingSessionId: String,
         playlistUuid: String?,
-    ) = when (videoId) {
-        PLAYBACK_INFO_ID_FOR_UNCAUGHT_EXCEPTION -> throw NullPointerException()
-        PLAYBACK_INFO_ID_SUCCESS -> VideoPlaybackInfoFactory.DEFAULT
-        else -> fail("Unsupported call")
-    }
+    ) =
+        when (videoId) {
+            PLAYBACK_INFO_ID_FOR_UNCAUGHT_EXCEPTION -> throw NullPointerException()
+            PLAYBACK_INFO_ID_SUCCESS -> VideoPlaybackInfoFactory.DEFAULT
+            else -> fail("Unsupported call")
+        }
 
-    override suspend fun getBroadcastPlaybackInfo(
-        djSessionId: String,
-        audioQuality: AudioQuality,
-    ) = when (djSessionId) {
-        PLAYBACK_INFO_ID_FOR_UNCAUGHT_EXCEPTION -> throw NullPointerException()
-        PLAYBACK_INFO_ID_SUCCESS ->
-            BroadcastPlaybackInfoFactory.DEFAULT_MISSING_STREAMING_SESSION_ID
+    override suspend fun getBroadcastPlaybackInfo(djSessionId: String, audioQuality: AudioQuality) =
+        when (djSessionId) {
+            PLAYBACK_INFO_ID_FOR_UNCAUGHT_EXCEPTION -> throw NullPointerException()
+            PLAYBACK_INFO_ID_SUCCESS ->
+                BroadcastPlaybackInfoFactory.DEFAULT_MISSING_STREAMING_SESSION_ID
 
-        else -> fail("Unsupported call")
-    }
+            else -> fail("Unsupported call")
+        }
 
     companion object {
         const val PLAYBACK_INFO_ID_SUCCESS = "0"

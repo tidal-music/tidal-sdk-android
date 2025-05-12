@@ -25,38 +25,36 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val eventProducer = EventProducer.getInstance(
-            getCredentialsProvider(),
-            EventsConfig(MAX_DISK_USAGE_BYTES, emptySet(), "1.0"),
-            applicationContext,
-            coroutineScope,
-            TL_CONSUMER_URI,
-        )
+        val eventProducer =
+            EventProducer.getInstance(
+                getCredentialsProvider(),
+                EventsConfig(MAX_DISK_USAGE_BYTES, emptySet(), "1.0"),
+                applicationContext,
+                coroutineScope,
+                TL_CONSUMER_URI,
+            )
         eventSender = eventProducer.eventSender
 
-        setContent {
-            EventSenderDemoScreen {
-                sendEvent()
-            }
-        }
+        setContent { EventSenderDemoScreen { sendEvent() } }
     }
 
     private fun getCredentialsProvider(): CredentialsProvider {
-        val credentials = Credentials(
-            clientId = "123",
-            requestedScopes = emptySet(),
-            clientUniqueKey = "clientUniqueKey",
-            grantedScopes = emptySet(),
-            userId = "123",
-            expires = Long.MAX_VALUE,
-            token = null,
-        )
+        val credentials =
+            Credentials(
+                clientId = "123",
+                requestedScopes = emptySet(),
+                clientUniqueKey = "clientUniqueKey",
+                grantedScopes = emptySet(),
+                userId = "123",
+                expires = Long.MAX_VALUE,
+                token = null,
+            )
         return object : CredentialsProvider {
             override val bus: Flow<TidalMessage>
                 get() = flowOf()
 
             override suspend fun getCredentials(
-                apiErrorSubStatus: String?,
+                apiErrorSubStatus: String?
             ): AuthResult<Credentials> {
                 return AuthResult.Success(credentials)
             }
@@ -76,7 +74,6 @@ class MainActivity : ComponentActivity() {
 
     companion object {
         private const val MAX_DISK_USAGE_BYTES = 1000000
-        private val TL_CONSUMER_URI =
-            URI("https://event-collector.obelix-staging-use1.tidalhi.fi/")
+        private val TL_CONSUMER_URI = URI("https://event-collector.obelix-staging-use1.tidalhi.fi/")
     }
 }

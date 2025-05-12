@@ -5,8 +5,7 @@ import com.tidal.sdk.player.streamingapi.drm.model.DrmLicenseRequest
 import org.junit.jupiter.api.fail
 
 /**
- * Stub implementation of [DrmLicenseService] that is useful for testing without any
- * dependencies.
+ * Stub implementation of [DrmLicenseService] that is useful for testing without any dependencies.
  *
  * This implementation hard codes the result of the function to a various values useful in tests.
  */

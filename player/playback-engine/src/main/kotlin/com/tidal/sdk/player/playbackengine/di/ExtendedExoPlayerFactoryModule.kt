@@ -12,6 +12,6 @@ internal object ExtendedExoPlayerFactoryModule {
     @Provides
     @Reusable
     fun extendedExoPlayerFactory(
-        extendedExoPlayerComponentFactory: ExtendedExoPlayerComponent.Factory,
+        extendedExoPlayerComponentFactory: ExtendedExoPlayerComponent.Factory
     ) = ExtendedExoPlayerFactory(extendedExoPlayerComponentFactory)
 }

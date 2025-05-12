@@ -12,14 +12,15 @@ import kotlinx.coroutines.CoroutineScope
 
 @Singleton
 @Component(
-    modules = [
-        DatabaseModule::class,
-        EventProducerModule::class,
-        NetworkModule::class,
-        OkHttpModule::class,
-        ConvertersModule::class,
-        UtilsModule::class,
-    ],
+    modules =
+        [
+            DatabaseModule::class,
+            EventProducerModule::class,
+            NetworkModule::class,
+            OkHttpModule::class,
+            ConvertersModule::class,
+            UtilsModule::class,
+        ]
 )
 internal interface EventsComponent {
 

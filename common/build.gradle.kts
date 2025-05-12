@@ -3,9 +3,7 @@ plugins {
     alias(libs.plugins.android.junit5)
 }
 
-android {
-    namespace = "com.tidal.sdk.common"
-}
+android { namespace = "com.tidal.sdk.common" }
 
 dependencies {
     api(libs.kotlin.logging)

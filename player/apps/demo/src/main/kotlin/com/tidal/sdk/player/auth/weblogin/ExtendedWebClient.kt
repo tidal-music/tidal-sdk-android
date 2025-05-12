@@ -47,12 +47,7 @@ internal class ExtendedWebClient(
         request: WebResourceRequest,
         error: WebResourceError,
     ) {
-        onReceivedError(
-            view,
-            error.errorCode,
-            error.description.toString(),
-            request.url.toString(),
-        )
+        onReceivedError(view, error.errorCode, error.description.toString(), request.url.toString())
     }
 
     @SuppressWarnings("deprecation")
@@ -63,7 +58,7 @@ internal class ExtendedWebClient(
         failingUrl: String,
     ) {
         onErrorReceived(
-            "Error errorCode=$errorCode description=$description failingUrl=$failingUrl",
+            "Error errorCode=$errorCode description=$description failingUrl=$failingUrl"
         )
     }
 }

@@ -35,14 +35,17 @@ internal class DrmSessionManagerFactory(
         drmMode: DrmMode = DrmMode.Streaming,
         extras: Extras?,
     ): DefaultDrmSessionManager {
-        return defaultDrmSessionManagerBuilder
-            .build(tidalMediaDrmCallbackFactory.create(playbackInfo, drmMode, extras))
+        return defaultDrmSessionManagerBuilder.build(
+            tidalMediaDrmCallbackFactory.create(playbackInfo, drmMode, extras)
+        )
     }
 
     private val PlaybackInfo.Offline.delegate: PlaybackInfo
-        get() = when (this) {
-            is PlaybackInfo.Offline.Track -> track
-            is PlaybackInfo.Offline.Video -> video
-            else -> throw IllegalArgumentException("Not a valid delegate for PlaybackInfo.Offline")
-        }
+        get() =
+            when (this) {
+                is PlaybackInfo.Offline.Track -> track
+                is PlaybackInfo.Offline.Video -> video
+                else ->
+                    throw IllegalArgumentException("Not a valid delegate for PlaybackInfo.Offline")
+            }
 }

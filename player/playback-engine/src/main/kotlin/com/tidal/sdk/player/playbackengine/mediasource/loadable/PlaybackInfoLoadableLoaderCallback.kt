@@ -21,14 +21,15 @@ internal class PlaybackInfoLoadableLoaderCallback(
     private val dataType: Int,
     private val eventDispatcher: MediaSourceEventListener.EventDispatcher,
     private val loadEventInfoF: (Long, Long) -> LoadEventInfo,
-    private val loadErrorInfoF: (LoadEventInfo, error: IOException, errorCount: Int) ->
-    LoadErrorInfo,
+    private val loadErrorInfoF:
+        (LoadEventInfo, error: IOException, errorCount: Int) -> LoadErrorInfo,
     private val prepareChildSourceF: (MediaSource) -> Unit,
     private val extras: Extras?,
 ) : Loader.Callback<PlaybackInfoLoadable> {
 
     var selectedMediaSource: MediaSource? = null
         private set
+
     var playbackInfo: PlaybackInfo? = null
         private set
 
@@ -71,12 +72,7 @@ internal class PlaybackInfoLoadableLoaderCallback(
         val retryDelayMs = loadErrorHandlingPolicy.getRetryDelayMsFor(loadErrorInfo)
         val isFatal = retryDelayMs == C.TIME_UNSET
 
-        eventDispatcher.loadError(
-            loadEventInfo,
-            dataType,
-            error,
-            isFatal,
-        )
+        eventDispatcher.loadError(loadEventInfo, dataType, error, isFatal)
         return if (isFatal) {
             Loader.DONT_RETRY_FATAL
         } else {

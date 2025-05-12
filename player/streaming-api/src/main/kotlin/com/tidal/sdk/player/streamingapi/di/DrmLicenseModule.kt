@@ -18,9 +18,6 @@ internal object DrmLicenseModule {
         drmLicenseService: DrmLicenseService,
         apiErrorMapperLazy: Lazy<ApiErrorMapper>,
     ): DrmLicenseRepository {
-        return DrmLicenseRepositoryDefault(
-            drmLicenseService,
-            apiErrorMapperLazy,
-        )
+        return DrmLicenseRepositoryDefault(drmLicenseService, apiErrorMapperLazy)
     }
 }

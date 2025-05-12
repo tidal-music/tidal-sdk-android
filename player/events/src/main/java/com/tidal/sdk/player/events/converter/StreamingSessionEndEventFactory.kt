@@ -15,15 +15,13 @@ internal class StreamingSessionEndEventFactory(
     private val streamingSessionEndFactory: StreamingSessionEnd.Factory,
 ) : EventFactory<StreamingSessionEnd.Payload> {
 
-    override suspend fun invoke(
-        payload: StreamingSessionEnd.Payload,
-        extras: Extras?,
-    ) = streamingSessionEndFactory.create(
-        trueTimeWrapper.currentTimeMillis,
-        uuidWrapper.randomUUID,
-        userSupplier(),
-        clientSupplier(),
-        payload,
-        extras,
-    )
+    override suspend fun invoke(payload: StreamingSessionEnd.Payload, extras: Extras?) =
+        streamingSessionEndFactory.create(
+            trueTimeWrapper.currentTimeMillis,
+            uuidWrapper.randomUUID,
+            userSupplier(),
+            clientSupplier(),
+            payload,
+            extras,
+        )
 }

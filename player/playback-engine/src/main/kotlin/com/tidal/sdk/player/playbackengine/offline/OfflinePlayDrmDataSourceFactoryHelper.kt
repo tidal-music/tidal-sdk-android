@@ -9,13 +9,13 @@ import com.tidal.sdk.player.playbackengine.offline.cache.OfflineCacheProvider
  * This creates and stores DataSourceFactories used for drm protected offline playback.
  *
  * @param[offlineCacheProvider] An instance of [OfflineCacheProvider]. Used to get the correct
- * [Cache] instance.
+ *   [Cache] instance.
  */
 internal class OfflinePlayDrmDataSourceFactoryHelper(
     private val cacheDataSourceFactory: CacheDataSource.Factory,
     offlineCacheProvider: OfflineCacheProvider?,
 ) : OfflineDataSourceFactoryHelper<DataSource.Factory>(offlineCacheProvider) {
 
-    override fun create(cache: Cache) = cacheDataSourceFactory.setCache(cache)
-        .setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR)
+    override fun create(cache: Cache) =
+        cacheDataSourceFactory.setCache(cache).setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR)
 }

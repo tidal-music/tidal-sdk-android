@@ -9,10 +9,10 @@ import dagger.assisted.AssistedInject
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
 
-internal class SynchronousSurfaceHolderCallback @AssistedInject constructor(
-    private val handler: Handler,
-    @Assisted private val delegate: SurfaceHolder.Callback,
-) : SurfaceHolder.Callback {
+internal class SynchronousSurfaceHolderCallback
+@AssistedInject
+constructor(private val handler: Handler, @Assisted private val delegate: SurfaceHolder.Callback) :
+    SurfaceHolder.Callback {
 
     private val reentrantLock = ReentrantLock(true)
 

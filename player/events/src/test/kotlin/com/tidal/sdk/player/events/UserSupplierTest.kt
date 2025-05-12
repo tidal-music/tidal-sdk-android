@@ -27,32 +27,26 @@ class UserSupplierTest {
     private val credentialsProvider = mock<CredentialsProvider>()
     private val userSupplier = UserSupplier(base64JwtDecoder, credentialsProvider) { 1 }
 
-    @AfterEach
-    fun afterEach() = verifyNoMoreInteractions(base64JwtDecoder, credentialsProvider)
+    @AfterEach fun afterEach() = verifyNoMoreInteractions(base64JwtDecoder, credentialsProvider)
 
     @Test
     fun invokeHappyPath() = runBlocking {
         val token = "token"
-        val credentials = mock<Credentials> {
-            on { it.token } doReturn token
-        }
-        val authResult = mock<AuthResult.Success<Credentials>> {
-            on { it.successData } doReturn credentials
-        }
+        val credentials = mock<Credentials> { on { it.token } doReturn token }
+        val authResult =
+            mock<AuthResult.Success<Credentials>> { on { it.successData } doReturn credentials }
         val userIdString = "123"
-        val userId = mock<JsonPrimitive> {
-            on { it.jsonPrimitive.content } doReturn userIdString
-        }
+        val userId = mock<JsonPrimitive> { on { it.jsonPrimitive.content } doReturn userIdString }
         val userIdKey = "uid"
         val sessionIdString = "123-abc"
-        val sessionId = mock<JsonPrimitive> {
-            on { it.jsonPrimitive.content } doReturn sessionIdString
-        }
+        val sessionId =
+            mock<JsonPrimitive> { on { it.jsonPrimitive.content } doReturn sessionIdString }
         val sessionIdKey = "sid"
-        val claims = mock<JsonObject> {
-            on { it[userIdKey] } doReturn userId
-            on { it[sessionIdKey] } doReturn sessionId
-        }
+        val claims =
+            mock<JsonObject> {
+                on { it[userIdKey] } doReturn userId
+                on { it[sessionIdKey] } doReturn sessionId
+            }
         whenever(credentialsProvider.getCredentials()).thenReturn(authResult)
         whenever(base64JwtDecoder.getClaims(token)).thenReturn(claims)
 
@@ -70,12 +64,9 @@ class UserSupplierTest {
 
     @Test
     fun invokeWithEmptyToken() = runBlocking {
-        val credentials = mock<Credentials> {
-            on { it.token } doReturn ""
-        }
-        val authResult = mock<AuthResult.Success<Credentials>> {
-            on { it.successData } doReturn credentials
-        }
+        val credentials = mock<Credentials> { on { it.token } doReturn "" }
+        val authResult =
+            mock<AuthResult.Success<Credentials>> { on { it.successData } doReturn credentials }
         whenever(credentialsProvider.getCredentials()).thenReturn(authResult)
 
         val actualUser = userSupplier.invoke()

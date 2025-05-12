@@ -8,9 +8,9 @@ import com.tidal.sdk.player.common.model.MediaStorage.INTERNET
 /**
  * Source of the asset for a given product.
  *
- * [INTERNET] tells us that the asset source is from the Internet.
- * [DEVICE_INTERNAL] tells us that the asset is stored on an internal storage on the device.
- * [DEVICE_EXTERNAL] tells us that the asset is stored on an external storage device.
+ * [INTERNET] tells us that the asset source is from the Internet. [DEVICE_INTERNAL] tells us that
+ * the asset is stored on an internal storage on the device. [DEVICE_EXTERNAL] tells us that the
+ * asset is stored on an external storage device.
  */
 @Keep
 enum class MediaStorage {

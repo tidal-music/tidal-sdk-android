@@ -52,19 +52,18 @@ internal object ExoPlayerPlaybackEngineModule {
 
     @Provides
     @Singleton
-    fun looper(): Looper = HandlerThread("ExoPlayerPlaybackEngineThread").let {
-        it.start()
-        it.looper
-    }
+    fun looper(): Looper =
+        HandlerThread("ExoPlayerPlaybackEngineThread").let {
+            it.start()
+            it.looper
+        }
 
-    @Provides
-    @Singleton
-    fun handler(looper: Looper) = Handler(looper)
+    @Provides @Singleton fun handler(looper: Looper) = Handler(looper)
 
     @Provides
     @Reusable
-    fun audioManager(context: Context) = context.getSystemService(Context.AUDIO_SERVICE)
-        as AudioManager
+    fun audioManager(context: Context) =
+        context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
     @Provides
     @Reusable
@@ -83,9 +82,7 @@ internal object ExoPlayerPlaybackEngineModule {
     @Named("internalHandler")
     fun internalHandler(looper: Looper) = Handler(looper)
 
-    @Provides
-    @Reusable
-    fun playbackContextFactory() = PlaybackContextFactory()
+    @Provides @Reusable fun playbackContextFactory() = PlaybackContextFactory()
 
     @Provides
     @Reusable
@@ -97,29 +94,21 @@ internal object ExoPlayerPlaybackEngineModule {
     fun audioQualityRepository(networkTransportHelper: NetworkTransportHelper) =
         AudioQualityRepository(networkTransportHelper)
 
-    @Provides
-    @Reusable
-    fun loudnessNormalizer() = LoudnessNormalizer()
+    @Provides @Reusable fun loudnessNormalizer() = LoudnessNormalizer()
 
     @Provides
     @Singleton
     fun volumeHelper(loudnessNormalizer: LoudnessNormalizer) = VolumeHelper(loudnessNormalizer)
 
-    @Provides
-    @Reusable
-    fun errorCodeFactory() = ErrorCodeFactory()
+    @Provides @Reusable fun errorCodeFactory() = ErrorCodeFactory()
 
     @Provides
     @Reusable
     fun errorHandler(errorCodeFactory: ErrorCodeFactory) = ErrorHandler(errorCodeFactory)
 
-    @Provides
-    @Reusable
-    fun hlsTagsParser() = HlsTagsParser()
+    @Provides @Reusable fun hlsTagsParser() = HlsTagsParser()
 
-    @Provides
-    @Reusable
-    fun dateParser() = DateParser()
+    @Provides @Reusable fun dateParser() = DateParser()
 
     @Provides
     @Reusable
@@ -134,9 +123,7 @@ internal object ExoPlayerPlaybackEngineModule {
         @Named("djSessionHandler") handler: Handler,
     ) = DjSessionManager(hlsTagsParser, dateParser, handler)
 
-    @Provides
-    @Reusable
-    fun exoMediaDrmProvider() = FrameworkMediaDrm.DEFAULT_PROVIDER
+    @Provides @Reusable fun exoMediaDrmProvider() = FrameworkMediaDrm.DEFAULT_PROVIDER
 
     @Provides
     @Reusable
@@ -148,9 +135,7 @@ internal object ExoPlayerPlaybackEngineModule {
     fun undeterminedPlaybackSessionResolver(versionedCdmCalculator: VersionedCdm.Calculator) =
         UndeterminedPlaybackSessionResolver(versionedCdmCalculator)
 
-    @Provides
-    @Singleton
-    fun audioModeRepository() = AudioModeRepository()
+    @Provides @Singleton fun audioModeRepository() = AudioModeRepository()
 
     @Provides
     @Singleton
@@ -194,25 +179,26 @@ internal object ExoPlayerPlaybackEngineModule {
         undeterminedPlaybackSessionResolver: UndeterminedPlaybackSessionResolver,
         outputDeviceManager: OutputDeviceManager,
         playerCache: PlayerCache,
-    ) = ExoPlayerPlaybackEngine(
-        coroutineScope,
-        extendedExoPlayerFactory,
-        internalHandler,
-        events,
-        synchronousSurfaceHolderFactory,
-        streamingPrivileges,
-        playbackContextFactory,
-        audioQualityRepository,
-        audioModeRepository,
-        volumeHelper,
-        trueTimeWrapper,
-        eventReporter,
-        errorHandler,
-        djSessionManager,
-        undeterminedPlaybackSessionResolver,
-        outputDeviceManager,
-        playerCache,
-    )
+    ) =
+        ExoPlayerPlaybackEngine(
+            coroutineScope,
+            extendedExoPlayerFactory,
+            internalHandler,
+            events,
+            synchronousSurfaceHolderFactory,
+            streamingPrivileges,
+            playbackContextFactory,
+            audioQualityRepository,
+            audioModeRepository,
+            volumeHelper,
+            trueTimeWrapper,
+            eventReporter,
+            errorHandler,
+            djSessionManager,
+            undeterminedPlaybackSessionResolver,
+            outputDeviceManager,
+            playerCache,
+        )
 
     @Provides
     @Reusable

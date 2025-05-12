@@ -50,32 +50,33 @@ class PlaybackEngineModuleRoot(
     coroutineScope: CoroutineScope,
 ) {
 
-    private val component = componentFactoryF()
-        .create(
-            context,
-            connectivityManager,
-            events,
-            bufferConfiguration,
-            assetTimeoutConfig,
-            cacheProvider,
-            configuration,
-            useLibflacAudioRenderer,
-            appSpecificCacheDir,
-            streamingApi,
-            okHttpClient,
-            okHttpClientWithAuth,
-            gson,
-            eventReporter,
-            streamingPrivileges,
-            uuidWrapper,
-            trueTimeWrapper,
-            playbackPrivilegeProvider,
-            offlineCacheProvider,
-            encryption,
-            base64Codec,
-            coroutineDispatcher,
-            coroutineScope,
-        )
+    private val component =
+        componentFactoryF()
+            .create(
+                context,
+                connectivityManager,
+                events,
+                bufferConfiguration,
+                assetTimeoutConfig,
+                cacheProvider,
+                configuration,
+                useLibflacAudioRenderer,
+                appSpecificCacheDir,
+                streamingApi,
+                okHttpClient,
+                okHttpClientWithAuth,
+                gson,
+                eventReporter,
+                streamingPrivileges,
+                uuidWrapper,
+                trueTimeWrapper,
+                playbackPrivilegeProvider,
+                offlineCacheProvider,
+                encryption,
+                base64Codec,
+                coroutineDispatcher,
+                coroutineScope,
+            )
     val playbackEngine = component.playbackEngine
 
     companion object {

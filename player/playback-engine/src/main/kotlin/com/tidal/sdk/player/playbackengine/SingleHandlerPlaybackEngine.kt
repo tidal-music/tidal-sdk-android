@@ -51,9 +51,7 @@ internal class SingleHandlerPlaybackEngine(
         set(value) = postOrThrow { delegate.videoSurfaceView = value }
         get() = delegate.videoSurfaceView
 
-    override fun load(mediaProduct: MediaProduct) = postOrThrow {
-        delegate.load(mediaProduct)
-    }
+    override fun load(mediaProduct: MediaProduct) = postOrThrow { delegate.load(mediaProduct) }
 
     override fun setNext(mediaProduct: MediaProduct?) = postOrThrow {
         delegate.setNext(mediaProduct)

@@ -7,8 +7,8 @@ import com.tidal.sdk.player.streamingapi.offline.Storage
 /**
  * This helps get the correct [DataSource.Factory] used for playing back the downloaded content.
  *
- * ExoPlayer does not have a solution for downloading to different paths(including a potential
- * SD card) selectable by the user, so we need to keep track of this by ourselves by using two
+ * ExoPlayer does not have a solution for downloading to different paths(including a potential SD
+ * card) selectable by the user, so we need to keep track of this by ourselves by using two
  * different instances of [SimpleCache] (handled by [OfflineCacheProvider]) and provide the correct
  * [DataSource.Factory] on demand.
  *
@@ -16,10 +16,10 @@ import com.tidal.sdk.player.streamingapi.offline.Storage
  * otherwise it won't find the offlined files and will throw a [StorageException].
  *
  * @param[offlinePlayDataSourceFactoryHelper] An instance of [OfflinePlayDataSourceFactoryHelper].
- * Used to get the correct [DataSource.Factory] for offline playback without protection.
+ *   Used to get the correct [DataSource.Factory] for offline playback without protection.
  * @param[offlinePlayDrmDataSourceFactoryHelper] An instance of
- * [OfflinePlayDrmDataSourceFactoryHelper]. Used to get the correct [DataSource.Factory] for
- * drm protected offline playback.
+ *   [OfflinePlayDrmDataSourceFactoryHelper]. Used to get the correct [DataSource.Factory] for drm
+ *   protected offline playback.
  */
 internal class OfflineStorageProvider(
     private val offlinePlayDataSourceFactoryHelper: OfflinePlayDataSourceFactoryHelper,
