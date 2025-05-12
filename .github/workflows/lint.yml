@@ -7,13 +7,19 @@ on:
         required: true
 
 jobs:
-  run-ktlint:
+  run-ktfmt:
     runs-on: ubuntu-latest
-    name: Run ktlint
+    name: Run ktfmt
     steps:
       - uses: actions/checkout@v4
-      - name: Run ktlint
-        run: static-analysis/run-ktlint.sh
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: temurin
+
+      - name: Run ktfmt
+        run: static-analysis/run-ktfmt.sh -l
 
   run-detekt:
     runs-on: ubuntu-latest
