@@ -32,7 +32,9 @@ data class PlaylistsAttributes(
 
     @SerialName(value = "bounded") val bounded: kotlin.Boolean,
     @SerialName(value = "externalLinks") val externalLinks: kotlin.collections.List<ExternalLink>,
-    @SerialName(value = "imageLinks") val imageLinks: kotlin.collections.List<ImageLink>,
+    @SerialName(value = "imageLinks")
+    @Deprecated(message = "This property is deprecated.")
+    val imageLinks: kotlin.collections.List<ImageLink>,
     /* Datetime of playlist creation (ISO 8601) */
 
     @SerialName(value = "createdAt") val createdAt: kotlin.String,

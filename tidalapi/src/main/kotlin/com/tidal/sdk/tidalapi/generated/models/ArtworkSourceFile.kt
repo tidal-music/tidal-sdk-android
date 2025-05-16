@@ -10,12 +10,18 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param href
- * @param meta
+ * Artwork source file
+ *
+ * @param md5Hash MD5 hash of file to be uploaded
+ * @param fileUploadLink
+ * @param fileStatus
  */
 @Serializable
-@Deprecated(message = "This schema is deprecated.")
-data class ImageLink(
-    @SerialName(value = "href") val href: kotlin.String,
-    @SerialName(value = "meta") val meta: ImageLinkMeta,
+data class ArtworkSourceFile(
+
+    /* MD5 hash of file to be uploaded */
+
+    @SerialName(value = "md5Hash") val md5Hash: kotlin.String,
+    @SerialName(value = "fileUploadLink") val fileUploadLink: FileUploadLink,
+    @SerialName(value = "fileStatus") val fileStatus: FileStatus,
 ) {}

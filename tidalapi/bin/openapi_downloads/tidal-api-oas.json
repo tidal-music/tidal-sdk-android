@@ -8,7 +8,7 @@
       "name" : "TIDAL Developer - Discussions",
       "url" : "https://github.com/orgs/tidal-music/discussions"
     },
-    "version" : "0.1.0"
+    "version" : "0.1.2"
   },
   "externalDocs" : {
     "description" : "TIDAL Developer - Documentation",
@@ -2932,6 +2932,175 @@
         "x-path-item-properties" : {
           "required-access-tier" : "THIRD_PARTY"
         }
+      },
+      "patch" : {
+        "tags" : [ "artists" ],
+        "summary" : "Update profileArt relationship (\"to-many\").",
+        "description" : "Updates profileArt relationship.",
+        "parameters" : [ ],
+        "requestBody" : {
+          "content" : {
+            "application/vnd.api+json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ArtistProfileArtRelationshipUpdateOperation_Payload"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "451" : {
+            "description" : "Unavailable For Legal Reasons",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Unavailable_For_Legal_Reasons_Doc" : {
+                    "$ref" : "#/components/examples/Unavailable_For_Legal_Reasons_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Bad_Request_Error_Doc" : {
+                    "$ref" : "#/components/examples/Bad_Request_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal Server Error. Something went wrong on the server party.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Internal_Server_Error_Doc" : {
+                    "$ref" : "#/components/examples/Internal_Server_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found. The requested resource is not found.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Resource_Not_Found_Error_Doc" : {
+                    "$ref" : "#/components/examples/Resource_Not_Found_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "415" : {
+            "description" : "Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Unsupported_Media_Type_Error_Doc" : {
+                    "$ref" : "#/components/examples/Unsupported_Media_Type_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Method not supported. Ensure a proper HTTP method for an HTTP request is used.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Method_Not_Supported_Error_Doc" : {
+                    "$ref" : "#/components/examples/Method_Not_Supported_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "406" : {
+            "description" : "Not acceptable. The server doesn't support any of the requested by client acceptable content types.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Not_Acceptable_Error_Doc" : {
+                    "$ref" : "#/components/examples/Not_Acceptable_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Too many HTTP requests have been made within the allowed time.",
+            "headers" : {
+              "X-RateLimit-Remaining" : {
+                "description" : "Number of tokens currently remaining. Refer to X-RateLimit-Replenish-Rate header for replenishment information.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Burst-Capacity" : {
+                "description" : "Initial number of tokens, and max number of tokens that can be replenished.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "20"
+              },
+              "X-RateLimit-Replenish-Rate" : {
+                "description" : "Number of tokens replenished per second.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Requested-Tokens" : {
+                "description" : "Request cost in tokens.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "w_usr" ]
+        } ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
       }
     },
     "/artists/{id}/relationships/radio" : {
@@ -4580,6 +4749,184 @@
         } ],
         "x-path-item-properties" : {
           "required-access-tier" : "THIRD_PARTY"
+        }
+      },
+      "post" : {
+        "tags" : [ "artworks" ],
+        "summary" : "Create single artwork.",
+        "description" : "Creates a new artwork.",
+        "parameters" : [ ],
+        "requestBody" : {
+          "content" : {
+            "application/vnd.api+json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ArtworkCreateOperation_Payload"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Artworks_Single_Data_Document"
+                }
+              }
+            }
+          },
+          "451" : {
+            "description" : "Unavailable For Legal Reasons",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Unavailable_For_Legal_Reasons_Doc" : {
+                    "$ref" : "#/components/examples/Unavailable_For_Legal_Reasons_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Bad_Request_Error_Doc" : {
+                    "$ref" : "#/components/examples/Bad_Request_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal Server Error. Something went wrong on the server party.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Internal_Server_Error_Doc" : {
+                    "$ref" : "#/components/examples/Internal_Server_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found. The requested resource is not found.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Resource_Not_Found_Error_Doc" : {
+                    "$ref" : "#/components/examples/Resource_Not_Found_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "415" : {
+            "description" : "Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Unsupported_Media_Type_Error_Doc" : {
+                    "$ref" : "#/components/examples/Unsupported_Media_Type_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Method not supported. Ensure a proper HTTP method for an HTTP request is used.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Method_Not_Supported_Error_Doc" : {
+                    "$ref" : "#/components/examples/Method_Not_Supported_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "406" : {
+            "description" : "Not acceptable. The server doesn't support any of the requested by client acceptable content types.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Not_Acceptable_Error_Doc" : {
+                    "$ref" : "#/components/examples/Not_Acceptable_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Too many HTTP requests have been made within the allowed time.",
+            "headers" : {
+              "X-RateLimit-Remaining" : {
+                "description" : "Number of tokens currently remaining. Refer to X-RateLimit-Replenish-Rate header for replenishment information.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Burst-Capacity" : {
+                "description" : "Initial number of tokens, and max number of tokens that can be replenished.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "20"
+              },
+              "X-RateLimit-Replenish-Rate" : {
+                "description" : "Number of tokens replenished per second.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Requested-Tokens" : {
+                "description" : "Request cost in tokens.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "w_usr" ]
+        } ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
         }
       }
     },
@@ -12852,7 +13199,7 @@
           "Authorization_Code_PKCE" : [ "collection.read", "r_usr" ]
         } ],
         "x-path-item-properties" : {
-          "required-access-tier" : "INTERNAL"
+          "required-access-tier" : "THIRD_PARTY"
         }
       }
     },
@@ -17459,9 +17806,9 @@
               }, {
                 "$ref" : "#/components/schemas/Artworks_Resource"
               }, {
-                "$ref" : "#/components/schemas/Videos_Resource"
-              }, {
                 "$ref" : "#/components/schemas/Tracks_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Videos_Resource"
               }, {
                 "$ref" : "#/components/schemas/Providers_Resource"
               }, {
@@ -17491,9 +17838,9 @@
               }, {
                 "$ref" : "#/components/schemas/Artworks_Resource"
               }, {
-                "$ref" : "#/components/schemas/Videos_Resource"
-              }, {
                 "$ref" : "#/components/schemas/Tracks_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Videos_Resource"
               }, {
                 "$ref" : "#/components/schemas/Providers_Resource"
               }, {
@@ -17564,15 +17911,42 @@
               }, {
                 "$ref" : "#/components/schemas/Artworks_Resource"
               }, {
-                "$ref" : "#/components/schemas/Videos_Resource"
-              }, {
                 "$ref" : "#/components/schemas/Tracks_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Videos_Resource"
               }, {
                 "$ref" : "#/components/schemas/Providers_Resource"
               }, {
                 "$ref" : "#/components/schemas/Albums_Resource"
               } ]
             }
+          }
+        }
+      },
+      "ArtistProfileArtRelationshipUpdateOperation_Payload" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "maxItems" : 1,
+            "minItems" : 1,
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/ArtistProfileArtRelationshipUpdateOperation_Payload_Data"
+            }
+          }
+        }
+      },
+      "ArtistProfileArtRelationshipUpdateOperation_Payload_Data" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "artworks" ]
           }
         }
       },
@@ -17922,6 +18296,50 @@
           }
         }
       },
+      "ArtworkCreateOperation_Payload" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/ArtworkCreateOperation_Payload_Data"
+          }
+        }
+      },
+      "ArtworkCreateOperation_Payload_Data" : {
+        "required" : [ "attributes", "type" ],
+        "type" : "object",
+        "properties" : {
+          "type" : {
+            "type" : "string",
+            "enum" : [ "artworks" ]
+          },
+          "attributes" : {
+            "$ref" : "#/components/schemas/ArtworkCreateOperation_Payload_Data_Attributes"
+          }
+        }
+      },
+      "ArtworkCreateOperation_Payload_Data_Attributes" : {
+        "required" : [ "mediaType", "sourceFile" ],
+        "type" : "object",
+        "properties" : {
+          "mediaType" : {
+            "type" : "string",
+            "enum" : [ "IMAGE", "VIDEO" ]
+          },
+          "sourceFile" : {
+            "$ref" : "#/components/schemas/ArtworkCreateOperation_Payload_Data_Attributes_SourceFile"
+          }
+        }
+      },
+      "ArtworkCreateOperation_Payload_Data_Attributes_SourceFile" : {
+        "required" : [ "md5Hash" ],
+        "type" : "object",
+        "properties" : {
+          "md5Hash" : {
+            "type" : "string"
+          }
+        }
+      },
       "Artwork_File" : {
         "required" : [ "href" ],
         "type" : "object",
@@ -17955,6 +18373,23 @@
         },
         "description" : "Metadata about an artwork file"
       },
+      "Artwork_SourceFile" : {
+        "required" : [ "fileStatus", "fileUploadLink", "md5Hash" ],
+        "type" : "object",
+        "properties" : {
+          "md5Hash" : {
+            "type" : "string",
+            "description" : "MD5 hash of file to be uploaded"
+          },
+          "fileUploadLink" : {
+            "$ref" : "#/components/schemas/File_Upload_Link"
+          },
+          "fileStatus" : {
+            "$ref" : "#/components/schemas/File_Status"
+          }
+        },
+        "description" : "Artwork source file"
+      },
       "Artworks_Attributes" : {
         "required" : [ "files", "mediaType" ],
         "type" : "object",
@@ -17963,6 +18398,9 @@
             "type" : "string",
             "description" : "Media type of artwork files",
             "enum" : [ "IMAGE", "VIDEO" ]
+          },
+          "sourceFile" : {
+            "$ref" : "#/components/schemas/Artwork_SourceFile"
           },
           "files" : {
             "type" : "array",
@@ -18132,6 +18570,56 @@
         },
         "description" : "metadata about an external link"
       },
+      "File_Status" : {
+        "required" : [ "moderationFileStatus", "technicalFileStatus" ],
+        "type" : "object",
+        "properties" : {
+          "technicalFileStatus" : {
+            "type" : "string",
+            "description" : "Technical status for file",
+            "enum" : [ "UPLOAD_REQUESTED", "PROCESSING", "FAILED", "OK", "ERROR" ]
+          },
+          "moderationFileStatus" : {
+            "type" : "string",
+            "description" : "Moderation status for file",
+            "enum" : [ "NOT_MODERATED", "SCANNING", "FLAGGED", "TAKEN_DOWN", "OK", "ERROR" ]
+          }
+        },
+        "description" : "File status"
+      },
+      "File_Upload_Link" : {
+        "required" : [ "href", "meta" ],
+        "type" : "object",
+        "properties" : {
+          "href" : {
+            "type" : "string",
+            "description" : "Href to upload actual file to"
+          },
+          "meta" : {
+            "$ref" : "#/components/schemas/File_Upload_Link_Meta"
+          }
+        },
+        "description" : "Upload link"
+      },
+      "File_Upload_Link_Meta" : {
+        "required" : [ "method" ],
+        "type" : "object",
+        "properties" : {
+          "method" : {
+            "type" : "string",
+            "description" : "HTTP method"
+          },
+          "headers" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "string",
+              "description" : "HTTP headers that must be added to the operation"
+            },
+            "description" : "HTTP headers that must be added to the operation"
+          }
+        },
+        "description" : "metadata for upload link"
+      },
       "Image_Link" : {
         "required" : [ "href", "meta" ],
         "type" : "object",
@@ -18142,7 +18630,8 @@
           "meta" : {
             "$ref" : "#/components/schemas/Image_Link_Meta"
           }
-        }
+        },
+        "deprecated" : true
       },
       "Image_Link_Meta" : {
         "required" : [ "height", "width" ],
@@ -18435,6 +18924,7 @@
           },
           "imageLinks" : {
             "type" : "array",
+            "deprecated" : true,
             "items" : {
               "$ref" : "#/components/schemas/Image_Link"
             }
@@ -18525,9 +19015,9 @@
               "oneOf" : [ {
                 "$ref" : "#/components/schemas/Artworks_Resource"
               }, {
-                "$ref" : "#/components/schemas/Videos_Resource"
-              }, {
                 "$ref" : "#/components/schemas/Tracks_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Videos_Resource"
               }, {
                 "$ref" : "#/components/schemas/Artists_Resource"
               }, {
@@ -18555,9 +19045,9 @@
               "oneOf" : [ {
                 "$ref" : "#/components/schemas/Artworks_Resource"
               }, {
-                "$ref" : "#/components/schemas/Videos_Resource"
-              }, {
                 "$ref" : "#/components/schemas/Tracks_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Videos_Resource"
               }, {
                 "$ref" : "#/components/schemas/Artists_Resource"
               }, {
@@ -18620,9 +19110,9 @@
               "oneOf" : [ {
                 "$ref" : "#/components/schemas/Artworks_Resource"
               }, {
-                "$ref" : "#/components/schemas/Videos_Resource"
-              }, {
                 "$ref" : "#/components/schemas/Tracks_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Videos_Resource"
               }, {
                 "$ref" : "#/components/schemas/Artists_Resource"
               }, {
@@ -18950,9 +19440,9 @@
               }, {
                 "$ref" : "#/components/schemas/Videos_Resource"
               }, {
-                "$ref" : "#/components/schemas/Albums_Resource"
-              }, {
                 "$ref" : "#/components/schemas/Artists_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Albums_Resource"
               }, {
                 "$ref" : "#/components/schemas/Playlists_Resource"
               } ]
@@ -18980,9 +19470,9 @@
               }, {
                 "$ref" : "#/components/schemas/Videos_Resource"
               }, {
-                "$ref" : "#/components/schemas/Albums_Resource"
-              }, {
                 "$ref" : "#/components/schemas/Artists_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Albums_Resource"
               }, {
                 "$ref" : "#/components/schemas/Playlists_Resource"
               }, {
@@ -19039,9 +19529,9 @@
               }, {
                 "$ref" : "#/components/schemas/Videos_Resource"
               }, {
-                "$ref" : "#/components/schemas/Albums_Resource"
-              }, {
                 "$ref" : "#/components/schemas/Artists_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Albums_Resource"
               }, {
                 "$ref" : "#/components/schemas/Playlists_Resource"
               } ]
@@ -20221,7 +20711,8 @@
           "meta" : {
             "$ref" : "#/components/schemas/Video_Link_Meta"
           }
-        }
+        },
+        "deprecated" : true
       },
       "Video_Link_Meta" : {
         "required" : [ "height", "width" ],
