@@ -10,12 +10,14 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param href
- * @param meta
+ * @param `data`
+ * @param links
+ * @param included
  */
 @Serializable
-@Deprecated(message = "This schema is deprecated.")
-data class ImageLink(
-    @SerialName(value = "href") val href: kotlin.String,
-    @SerialName(value = "meta") val meta: ImageLinkMeta,
+data class SearchresultsSingleDataDocument(
+    @SerialName(value = "data") val `data`: SearchresultsResource? = null,
+    @SerialName(value = "links") val links: Links? = null,
+    @SerialName(value = "included")
+    val included: kotlin.collections.List<SearchResultsMultiDataDocumentIncludedInner>? = null,
 ) {}
