@@ -14,6 +14,7 @@ import kotlinx.serialization.Serializable
  * @param meta
  */
 @Serializable
+@Deprecated(message = "This schema is deprecated.")
 data class VideoLink(
     @SerialName(value = "href") val href: kotlin.String,
     @SerialName(value = "meta") val meta: VideoLinkMeta,

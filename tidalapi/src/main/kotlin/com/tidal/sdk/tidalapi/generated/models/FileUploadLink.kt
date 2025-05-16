@@ -10,12 +10,16 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param href
+ * Upload link
+ *
+ * @param href Href to upload actual file to
  * @param meta
  */
 @Serializable
-@Deprecated(message = "This schema is deprecated.")
-data class ImageLink(
+data class FileUploadLink(
+
+    /* Href to upload actual file to */
+
     @SerialName(value = "href") val href: kotlin.String,
-    @SerialName(value = "meta") val meta: ImageLinkMeta,
+    @SerialName(value = "meta") val meta: FileUploadLinkMeta,
 ) {}

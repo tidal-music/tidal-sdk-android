@@ -10,27 +10,18 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param mediaType Media type of artwork files
- * @param files Artwork files
+ * @param mediaType
  * @param sourceFile
  */
 @Serializable
-data class ArtworksAttributes(
-
-    /* Media type of artwork files */
-
-    @SerialName(value = "mediaType") val mediaType: ArtworksAttributes.MediaType,
-    /* Artwork files */
-
-    @SerialName(value = "files") val files: kotlin.collections.List<ArtworkFile>,
-    @SerialName(value = "sourceFile") val sourceFile: ArtworkSourceFile? = null,
+data class ArtworkCreateOperationPayloadDataAttributes(
+    @SerialName(value = "mediaType")
+    val mediaType: ArtworkCreateOperationPayloadDataAttributes.MediaType,
+    @SerialName(value = "sourceFile")
+    val sourceFile: ArtworkCreateOperationPayloadDataAttributesSourceFile,
 ) {
 
-    /**
-     * Media type of artwork files
-     *
-     * Values: IMAGE,VIDEO
-     */
+    /** Values: IMAGE,VIDEO */
     @Serializable
     enum class MediaType(val value: kotlin.String) {
         @SerialName(value = "IMAGE") IMAGE("IMAGE"),
