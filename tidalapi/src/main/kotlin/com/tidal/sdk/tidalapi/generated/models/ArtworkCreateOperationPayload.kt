@@ -9,13 +9,8 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/**
- * @param href
- * @param meta
- */
+/** @param `data` */
 @Serializable
-@Deprecated(message = "This schema is deprecated.")
-data class ImageLink(
-    @SerialName(value = "href") val href: kotlin.String,
-    @SerialName(value = "meta") val meta: ImageLinkMeta,
+data class ArtworkCreateOperationPayload(
+    @SerialName(value = "data") val `data`: ArtworkCreateOperationPayloadData
 ) {}
