@@ -162,18 +162,18 @@ def main():
     os.chdir(original_dir)
     logging.info(f"Changed working directory back to: {os.getcwd()}")
 
-    logging.info("Running ktlint...")
+    logging.info("Running ktfmt...")
     result = subprocess.run(
-        [f"{sdk_root}/static-analysis/run-ktlint.sh", "-F", "-g", "-d", f"{project_root}/src"],
+        [f"{sdk_root}/static-analysis/run-ktfmt.sh", "-F", "-g", "-d", f"{project_root}/src"],
         capture_output=True,
         text=True
     )
 
     if result.returncode != 0:
-        logging.warning(f"ktlint failed with return code {result.returncode}")
-        logging.warning(f"ktlint stdout: {result.stdout}")
-        logging.warning(f"ktlint stderr: {result.stderr}")
-        logging.warning("Continuing with the rest of the script despite ktlint failure.")
+        logging.warning(f"ktfmt failed with return code {result.returncode}")
+        logging.warning(f"ktfmt stdout: {result.stdout}")
+        logging.warning(f"ktfmt stderr: {result.stderr}")
+        logging.warning("Continuing with the rest of the script despite ktfmt failure.")
 
     target_line = "import com.tidal.sdk.tidalapi.generated.infrastructure.CollectionFormats.*"
     remove_specific_line_from_files(f"{project_root}/src", target_line)
