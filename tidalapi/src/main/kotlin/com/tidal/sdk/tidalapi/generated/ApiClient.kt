@@ -9,7 +9,6 @@ import com.tidal.sdk.tidalapi.generated.apis.Playlists
 import com.tidal.sdk.tidalapi.generated.apis.Providers
 import com.tidal.sdk.tidalapi.generated.apis.SearchResults
 import com.tidal.sdk.tidalapi.generated.apis.SearchSuggestions
-import com.tidal.sdk.tidalapi.generated.apis.Searchresults
 import com.tidal.sdk.tidalapi.generated.apis.TrackFiles
 import com.tidal.sdk.tidalapi.generated.apis.TrackManifests
 import com.tidal.sdk.tidalapi.generated.apis.Tracks
@@ -56,19 +55,14 @@ class TidalApiClient(credentialsProvider: CredentialsProvider, baseUrl: String =
         return retrofit.create(Providers::class.java)
     }
 
-    /** Returns an instance of the [SearchResults] which can be used to make API calls to the */
-    fun createSearchResults(): SearchResults {
-        return retrofit.create(SearchResults::class.java)
-    }
-
     /** Returns an instance of the [SearchSuggestions] which can be used to make API calls to the */
     fun createSearchSuggestions(): SearchSuggestions {
         return retrofit.create(SearchSuggestions::class.java)
     }
 
-    /** Returns an instance of the [Searchresults] which can be used to make API calls to the */
-    fun createSearchresults(): Searchresults {
-        return retrofit.create(Searchresults::class.java)
+    /** Returns an instance of the [SearchResults] which can be used to make API calls to the */
+    fun createSearchResults(): SearchResults {
+        return retrofit.create(SearchResults::class.java)
     }
 
     /** Returns an instance of the [TrackFiles] which can be used to make API calls to the */
