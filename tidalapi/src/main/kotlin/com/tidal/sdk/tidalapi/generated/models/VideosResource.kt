@@ -37,6 +37,5 @@ data class VideosResource(
     SearchResultsMultiDataDocumentIncludedInner,
     ArtistsMultiDataDocumentIncludedInner,
     SearchSuggestionsMultiDataDocumentIncludedInner,
-    SearchresultsMultiDataRelationshipDocumentIncludedInner,
     ArtistsMultiDataRelationshipDocumentIncludedInner,
     PlaylistsMultiDataRelationshipDocumentIncludedInner {}
