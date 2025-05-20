@@ -17,7 +17,7 @@ import kotlinx.serialization.Transient
  * @param relationships
  */
 @Serializable
-@SerialName(value = "searchResults")
+@SerialName(value = "searchresults")
 data class SearchResultsResource(
 
     /* resource unique identifier */
