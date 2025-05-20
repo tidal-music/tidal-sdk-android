@@ -181,15 +181,17 @@ interface Artists {
      *   content types.
      * - 429: Too many HTTP requests have been made within the allowed time.
      *
+     * @param id Artist id
      * @param artistProfileArtRelationshipUpdateOperationPayload (optional)
      * @return [Unit]
      */
     @PATCH("artists/{id}/relationships/profileArt")
     suspend fun artistsIdRelationshipsProfileArtPatch(
+        @Path("id") id: kotlin.String,
         @Body
         artistProfileArtRelationshipUpdateOperationPayload:
             ArtistProfileArtRelationshipUpdateOperationPayload? =
-            null
+            null,
     ): Response<Unit>
 
     /**
