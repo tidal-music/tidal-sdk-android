@@ -17,14 +17,14 @@ import kotlinx.serialization.Transient
  * @param relationships
  */
 @Serializable
-@SerialName(value = "searchResults")
-data class SearchResultsResource(
+@SerialName(value = "searchresults")
+data class SearchresultsResource(
 
     /* resource unique identifier */
 
     @SerialName(value = "id") val id: kotlin.String,
     /* resource unique type */
     @Transient @SerialName(value = "type") val type: kotlin.String = "",
-    @SerialName(value = "attributes") val attributes: SearchResultsAttributes? = null,
-    @SerialName(value = "relationships") val relationships: SearchResultsRelationships? = null,
-) : SearchResultsMultiDataRelationshipDocumentIncludedInner {}
+    @SerialName(value = "attributes") val attributes: SearchresultsAttributes? = null,
+    @SerialName(value = "relationships") val relationships: SearchresultsRelationships? = null,
+) : SearchresultsMultiDataRelationshipDocumentIncludedInner {}

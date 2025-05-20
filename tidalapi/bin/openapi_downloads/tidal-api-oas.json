@@ -8,7 +8,7 @@
       "name" : "TIDAL Developer - Discussions",
       "url" : "https://github.com/orgs/tidal-music/discussions"
     },
-    "version" : "0.1.2"
+    "version" : "0.1.3"
   },
   "externalDocs" : {
     "description" : "TIDAL Developer - Documentation",
@@ -2937,7 +2937,16 @@
         "tags" : [ "artists" ],
         "summary" : "Update profileArt relationship (\"to-many\").",
         "description" : "Updates profileArt relationship.",
-        "parameters" : [ ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "Artist id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "1566"
+        } ],
         "requestBody" : {
           "content" : {
             "application/vnd.api+json" : {
@@ -17806,9 +17815,9 @@
               }, {
                 "$ref" : "#/components/schemas/Artworks_Resource"
               }, {
-                "$ref" : "#/components/schemas/Tracks_Resource"
-              }, {
                 "$ref" : "#/components/schemas/Videos_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Tracks_Resource"
               }, {
                 "$ref" : "#/components/schemas/Providers_Resource"
               }, {
@@ -17838,9 +17847,9 @@
               }, {
                 "$ref" : "#/components/schemas/Artworks_Resource"
               }, {
-                "$ref" : "#/components/schemas/Tracks_Resource"
-              }, {
                 "$ref" : "#/components/schemas/Videos_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Tracks_Resource"
               }, {
                 "$ref" : "#/components/schemas/Providers_Resource"
               }, {
@@ -17911,9 +17920,9 @@
               }, {
                 "$ref" : "#/components/schemas/Artworks_Resource"
               }, {
-                "$ref" : "#/components/schemas/Tracks_Resource"
-              }, {
                 "$ref" : "#/components/schemas/Videos_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Tracks_Resource"
               }, {
                 "$ref" : "#/components/schemas/Providers_Resource"
               }, {
@@ -19019,9 +19028,9 @@
               }, {
                 "$ref" : "#/components/schemas/Videos_Resource"
               }, {
-                "$ref" : "#/components/schemas/Artists_Resource"
-              }, {
                 "$ref" : "#/components/schemas/Users_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Artists_Resource"
               } ]
             }
           }
@@ -19049,9 +19058,9 @@
               }, {
                 "$ref" : "#/components/schemas/Videos_Resource"
               }, {
-                "$ref" : "#/components/schemas/Artists_Resource"
-              }, {
                 "$ref" : "#/components/schemas/Users_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Artists_Resource"
               }, {
                 "$ref" : "#/components/schemas/Playlists_Resource"
               } ]
@@ -19114,9 +19123,9 @@
               }, {
                 "$ref" : "#/components/schemas/Videos_Resource"
               }, {
-                "$ref" : "#/components/schemas/Artists_Resource"
-              }, {
                 "$ref" : "#/components/schemas/Users_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Artists_Resource"
               } ]
             }
           }
@@ -19254,9 +19263,9 @@
               }, {
                 "$ref" : "#/components/schemas/Playlists_Resource"
               }, {
-                "$ref" : "#/components/schemas/Tracks_Resource"
-              }, {
                 "$ref" : "#/components/schemas/Videos_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Tracks_Resource"
               } ]
             }
           }
@@ -19284,9 +19293,9 @@
               }, {
                 "$ref" : "#/components/schemas/Playlists_Resource"
               }, {
-                "$ref" : "#/components/schemas/Tracks_Resource"
-              }, {
                 "$ref" : "#/components/schemas/Videos_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Tracks_Resource"
               }, {
                 "$ref" : "#/components/schemas/SearchResults_Resource"
               } ]
@@ -19358,9 +19367,9 @@
               }, {
                 "$ref" : "#/components/schemas/Playlists_Resource"
               }, {
-                "$ref" : "#/components/schemas/Tracks_Resource"
-              }, {
                 "$ref" : "#/components/schemas/Videos_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Tracks_Resource"
               } ]
             }
           }
@@ -19436,15 +19445,15 @@
             "type" : "array",
             "items" : {
               "oneOf" : [ {
+                "$ref" : "#/components/schemas/Videos_Resource"
+              }, {
                 "$ref" : "#/components/schemas/Tracks_Resource"
               }, {
-                "$ref" : "#/components/schemas/Videos_Resource"
+                "$ref" : "#/components/schemas/Playlists_Resource"
               }, {
                 "$ref" : "#/components/schemas/Artists_Resource"
               }, {
                 "$ref" : "#/components/schemas/Albums_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Playlists_Resource"
               } ]
             }
           }
@@ -19466,15 +19475,15 @@
             "type" : "array",
             "items" : {
               "oneOf" : [ {
+                "$ref" : "#/components/schemas/Videos_Resource"
+              }, {
                 "$ref" : "#/components/schemas/Tracks_Resource"
               }, {
-                "$ref" : "#/components/schemas/Videos_Resource"
+                "$ref" : "#/components/schemas/Playlists_Resource"
               }, {
                 "$ref" : "#/components/schemas/Artists_Resource"
               }, {
                 "$ref" : "#/components/schemas/Albums_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Playlists_Resource"
               }, {
                 "$ref" : "#/components/schemas/SearchSuggestions_Resource"
               } ]
@@ -19525,15 +19534,15 @@
             "type" : "array",
             "items" : {
               "oneOf" : [ {
+                "$ref" : "#/components/schemas/Videos_Resource"
+              }, {
                 "$ref" : "#/components/schemas/Tracks_Resource"
               }, {
-                "$ref" : "#/components/schemas/Videos_Resource"
+                "$ref" : "#/components/schemas/Playlists_Resource"
               }, {
                 "$ref" : "#/components/schemas/Artists_Resource"
               }, {
                 "$ref" : "#/components/schemas/Albums_Resource"
-              }, {
-                "$ref" : "#/components/schemas/Playlists_Resource"
               } ]
             }
           }
@@ -19593,9 +19602,9 @@
               }, {
                 "$ref" : "#/components/schemas/Playlists_Resource"
               }, {
-                "$ref" : "#/components/schemas/Tracks_Resource"
-              }, {
                 "$ref" : "#/components/schemas/Videos_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Tracks_Resource"
               } ]
             }
           }
@@ -19623,9 +19632,9 @@
               }, {
                 "$ref" : "#/components/schemas/Playlists_Resource"
               }, {
-                "$ref" : "#/components/schemas/Tracks_Resource"
-              }, {
                 "$ref" : "#/components/schemas/Videos_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Tracks_Resource"
               }, {
                 "$ref" : "#/components/schemas/Searchresults_Resource"
               } ]
@@ -19697,9 +19706,9 @@
               }, {
                 "$ref" : "#/components/schemas/Playlists_Resource"
               }, {
-                "$ref" : "#/components/schemas/Tracks_Resource"
-              }, {
                 "$ref" : "#/components/schemas/Videos_Resource"
+              }, {
+                "$ref" : "#/components/schemas/Tracks_Resource"
               } ]
             }
           }

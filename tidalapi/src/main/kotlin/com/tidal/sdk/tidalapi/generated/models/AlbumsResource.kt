@@ -37,6 +37,7 @@ data class AlbumsResource(
     SearchResultsMultiDataDocumentIncludedInner,
     ArtistsMultiDataDocumentIncludedInner,
     SearchSuggestionsMultiDataDocumentIncludedInner,
+    SearchresultsMultiDataRelationshipDocumentIncludedInner,
     ArtistsMultiDataRelationshipDocumentIncludedInner,
     VideosMultiDataDocumentIncludedInner,
     TracksMultiDataDocumentIncludedInner {}
