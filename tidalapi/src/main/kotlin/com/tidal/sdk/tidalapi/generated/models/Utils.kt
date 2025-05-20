@@ -85,11 +85,11 @@ fun getOneOfSerializer() = SerializersModule {
         subclass(TracksResource::class, TracksResource.serializer())
         subclass(VideosResource::class, VideosResource.serializer())
     }
-    polymorphic(SearchresultsMultiDataRelationshipDocumentIncludedInner::class) {
+    polymorphic(SearchResultsMultiDataRelationshipDocumentIncludedInner::class) {
         subclass(AlbumsResource::class, AlbumsResource.serializer())
         subclass(ArtistsResource::class, ArtistsResource.serializer())
         subclass(PlaylistsResource::class, PlaylistsResource.serializer())
-        subclass(SearchresultsResource::class, SearchresultsResource.serializer())
+        subclass(SearchResultsResource::class, SearchResultsResource.serializer())
         subclass(TracksResource::class, TracksResource.serializer())
         subclass(VideosResource::class, VideosResource.serializer())
     }
