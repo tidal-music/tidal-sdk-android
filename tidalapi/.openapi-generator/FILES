@@ -27,6 +27,8 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumsMultiDataRelations
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumsRelationships.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumsResource.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumsSingleDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistProfileArtRelationshipUpdateOperationPayload.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistProfileArtRelationshipUpdateOperationPayloadData.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistRolesAttributes.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistRolesMultiDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistRolesResource.kt
@@ -46,8 +48,13 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistsSingleDataDocumen
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistsTrackProvidersMultiDataRelationshipDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistsTrackProvidersResourceIdentifier.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistsTrackProvidersResourceIdentifierMeta.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtworkCreateOperationPayload.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtworkCreateOperationPayloadData.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtworkCreateOperationPayloadDataAttributes.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtworkCreateOperationPayloadDataAttributesSourceFile.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtworkFile.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtworkFileMeta.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtworkSourceFile.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtworksAttributes.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtworksMultiDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtworksResource.kt
@@ -59,6 +66,9 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ErrorObject.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ErrorObjectSource.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ExternalLink.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ExternalLinkMeta.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/FileStatus.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/FileUploadLink.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/FileUploadLinkMeta.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ImageLink.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ImageLinkMeta.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/Links.kt

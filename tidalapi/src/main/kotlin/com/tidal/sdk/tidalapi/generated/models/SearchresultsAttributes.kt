@@ -10,12 +10,16 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param href
- * @param meta
+ * @param trackingId search request unique tracking number
+ * @param didYouMean 'did you mean' prompt
  */
 @Serializable
-@Deprecated(message = "This schema is deprecated.")
-data class ImageLink(
-    @SerialName(value = "href") val href: kotlin.String,
-    @SerialName(value = "meta") val meta: ImageLinkMeta,
+data class SearchresultsAttributes(
+
+    /* search request unique tracking number */
+
+    @SerialName(value = "trackingId") val trackingId: kotlin.String,
+    /* 'did you mean' prompt */
+
+    @SerialName(value = "didYouMean") val didYouMean: kotlin.String? = null,
 ) {}

@@ -1,5 +1,6 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.models.ArtistProfileArtRelationshipUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.ArtistUpdateBody
 import com.tidal.sdk.tidalapi.generated.models.ArtistsMultiDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistsMultiDataRelationshipDocument
@@ -164,6 +165,34 @@ interface Artists {
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
     ): Response<ArtistsMultiDataRelationshipDocument>
+
+    /**
+     * Update profileArt relationship (\&quot;to-many\&quot;). Updates profileArt relationship.
+     * Responses:
+     * - 451: Unavailable For Legal Reasons
+     * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
+     *   request body, etc.).
+     * - 500: Internal Server Error. Something went wrong on the server party.
+     * - 404: Resource not found. The requested resource is not found.
+     * - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media
+     *   type is set into Content-Type header.
+     * - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
+     * - 406: Not acceptable. The server doesn't support any of the requested by client acceptable
+     *   content types.
+     * - 429: Too many HTTP requests have been made within the allowed time.
+     *
+     * @param id Artist id
+     * @param artistProfileArtRelationshipUpdateOperationPayload (optional)
+     * @return [Unit]
+     */
+    @PATCH("artists/{id}/relationships/profileArt")
+    suspend fun artistsIdRelationshipsProfileArtPatch(
+        @Path("id") id: kotlin.String,
+        @Body
+        artistProfileArtRelationshipUpdateOperationPayload:
+            ArtistProfileArtRelationshipUpdateOperationPayload? =
+            null,
+    ): Response<Unit>
 
     /**
      * Get radio relationship (\&quot;to-many\&quot;). Retrieves radio relationship. Responses:
