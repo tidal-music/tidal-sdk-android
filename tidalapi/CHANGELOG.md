@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.4] - 2025-05-21
+### Changed
+- Generated api based on the documentation
+- Manually renamed 'Searchresults' to 'SearchResults' in class names
+
 ## [0.2.3] - 2025-04-29
 ### Changed
 - Generated api based on the documentation
