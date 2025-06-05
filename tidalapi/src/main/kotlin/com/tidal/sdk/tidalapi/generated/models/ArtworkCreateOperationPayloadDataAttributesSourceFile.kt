@@ -9,8 +9,12 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param md5Hash */
+/**
+ * @param md5Hash
+ * @param propertySize
+ */
 @Serializable
 data class ArtworkCreateOperationPayloadDataAttributesSourceFile(
-    @SerialName(value = "md5Hash") val md5Hash: kotlin.String
+    @SerialName(value = "md5Hash") val md5Hash: kotlin.String,
+    @SerialName(value = "size") val propertySize: kotlin.Long,
 ) {}

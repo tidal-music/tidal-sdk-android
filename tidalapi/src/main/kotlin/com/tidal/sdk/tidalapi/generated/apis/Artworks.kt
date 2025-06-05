@@ -10,7 +10,7 @@ interface Artworks {
     /**
      * Get multiple artworks. Retrieves multiple artworks by available filters, or without if
      * applicable. Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).
@@ -36,7 +36,7 @@ interface Artworks {
 
     /**
      * Get single artwork. Retrieves single artwork by id. Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).
@@ -61,7 +61,7 @@ interface Artworks {
 
     /**
      * Create single artwork. Creates a new artwork. Responses:
-     * - 201:
+     * - 201: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).

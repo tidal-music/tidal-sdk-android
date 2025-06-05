@@ -9,7 +9,7 @@ interface Providers {
     /**
      * Get multiple providers. Retrieves multiple providers by available filters, or without if
      * applicable. Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).
@@ -34,7 +34,7 @@ interface Providers {
 
     /**
      * Get single provider. Retrieves single provider by id. Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).

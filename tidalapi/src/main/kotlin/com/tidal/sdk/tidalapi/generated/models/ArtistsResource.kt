@@ -32,13 +32,11 @@ data class ArtistsResource(
     UserCollectionsMultiDataDocumentIncludedInner,
     SearchResultsMultiDataRelationshipDocumentIncludedInner,
     SearchSuggestionsMultiDataRelationshipDocumentIncludedInner,
-    PlaylistsMultiDataDocumentIncludedInner,
     AlbumsMultiDataRelationshipDocumentIncludedInner,
     VideosMultiDataRelationshipDocumentIncludedInner,
     SearchResultsMultiDataDocumentIncludedInner,
     ArtistsMultiDataDocumentIncludedInner,
     SearchSuggestionsMultiDataDocumentIncludedInner,
     ArtistsMultiDataRelationshipDocumentIncludedInner,
-    PlaylistsMultiDataRelationshipDocumentIncludedInner,
     VideosMultiDataDocumentIncludedInner,
     TracksMultiDataDocumentIncludedInner {}
