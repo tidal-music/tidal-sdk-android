@@ -18,6 +18,9 @@ import kotlinx.serialization.Serializable
  * @param mediaTags
  * @param version Track version, complements title
  * @param copyright Copyright
+ * @param key Key
+ * @param keyScale The scale of the key
+ * @param bpm Beats per minute
  * @param availability Available usage for this track
  * @param externalLinks Track links external to TIDAL API
  */
@@ -46,6 +49,15 @@ data class TracksAttributes(
     /* Copyright */
 
     @SerialName(value = "copyright") val copyright: kotlin.String? = null,
+    /* Key */
+
+    @SerialName(value = "key") val key: TracksAttributes.Key? = null,
+    /* The scale of the key */
+
+    @SerialName(value = "keyScale") val keyScale: TracksAttributes.KeyScale? = null,
+    /* Beats per minute */
+
+    @SerialName(value = "bpm") val bpm: kotlin.Float? = null,
     /* Available usage for this track */
 
     @SerialName(value = "availability")
@@ -55,6 +67,33 @@ data class TracksAttributes(
     @SerialName(value = "externalLinks")
     val externalLinks: kotlin.collections.List<ExternalLink>? = null,
 ) {
+
+    /**
+     * Key
+     *
+     * Values: A,B,C,D,E,F,G
+     */
+    @Serializable
+    enum class Key(val value: kotlin.String) {
+        @SerialName(value = "A") A("A"),
+        @SerialName(value = "B") B("B"),
+        @SerialName(value = "C") C("C"),
+        @SerialName(value = "D") D("D"),
+        @SerialName(value = "E") E("E"),
+        @SerialName(value = "F") F("F"),
+        @SerialName(value = "G") G("G"),
+    }
+
+    /**
+     * The scale of the key
+     *
+     * Values: MAJOR,MINOR
+     */
+    @Serializable
+    enum class KeyScale(val value: kotlin.String) {
+        @SerialName(value = "MAJOR") MAJOR("MAJOR"),
+        @SerialName(value = "MINOR") MINOR("MINOR"),
+    }
 
     /**
      * Available usage for this track

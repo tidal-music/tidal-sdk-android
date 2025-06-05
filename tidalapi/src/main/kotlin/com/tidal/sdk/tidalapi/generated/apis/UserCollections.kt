@@ -15,7 +15,7 @@ import retrofit2.http.*
 interface UserCollections {
     /**
      * Get single userCollection. Retrieves single userCollection by id. Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).
@@ -74,7 +74,7 @@ interface UserCollections {
 
     /**
      * Get albums relationship (\&quot;to-many\&quot;). Retrieves albums relationship. Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).
@@ -166,7 +166,7 @@ interface UserCollections {
 
     /**
      * Get artists relationship (\&quot;to-many\&quot;). Retrieves artists relationship. Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).
@@ -259,7 +259,7 @@ interface UserCollections {
     /**
      * Get playlists relationship (\&quot;to-many\&quot;). Retrieves playlists relationship.
      * Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).

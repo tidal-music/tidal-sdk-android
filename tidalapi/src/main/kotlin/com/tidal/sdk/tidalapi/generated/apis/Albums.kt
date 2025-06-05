@@ -11,7 +11,7 @@ interface Albums {
     /**
      * Get multiple albums. Retrieves multiple albums by available filters, or without if
      * applicable. Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).
@@ -46,7 +46,7 @@ interface Albums {
 
     /**
      * Get single album. Retrieves single album by id. Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).
@@ -75,7 +75,7 @@ interface Albums {
 
     /**
      * Get artists relationship (\&quot;to-many\&quot;). Retrieves artists relationship. Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).
@@ -108,7 +108,7 @@ interface Albums {
     /**
      * Get coverArt relationship (\&quot;to-many\&quot;). Retrieves coverArt relationship.
      * Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).
@@ -140,7 +140,7 @@ interface Albums {
 
     /**
      * Get items relationship (\&quot;to-many\&quot;). Retrieves items relationship. Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).
@@ -173,7 +173,7 @@ interface Albums {
     /**
      * Get providers relationship (\&quot;to-many\&quot;). Retrieves providers relationship.
      * Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).
@@ -206,7 +206,7 @@ interface Albums {
     /**
      * Get similarAlbums relationship (\&quot;to-many\&quot;). Retrieves similarAlbums relationship.
      * Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).

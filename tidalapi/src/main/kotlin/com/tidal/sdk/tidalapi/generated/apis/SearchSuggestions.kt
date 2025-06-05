@@ -8,7 +8,7 @@ import retrofit2.http.*
 interface SearchSuggestions {
     /**
      * Get single searchSuggestion. Retrieves single searchSuggestion by id. Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).
@@ -40,7 +40,7 @@ interface SearchSuggestions {
     /**
      * Get directHits relationship (\&quot;to-many\&quot;). Retrieves directHits relationship.
      * Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).

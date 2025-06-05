@@ -7,7 +7,7 @@ import retrofit2.http.*
 interface Users {
     /**
      * Get current user&#39;s user(s). Retrieves current user&#39;s user(s). Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).

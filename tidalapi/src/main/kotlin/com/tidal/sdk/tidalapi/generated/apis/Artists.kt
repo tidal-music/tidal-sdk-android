@@ -13,7 +13,7 @@ interface Artists {
     /**
      * Get multiple artists. Retrieves multiple artists by available filters, or without if
      * applicable. Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).
@@ -49,7 +49,7 @@ interface Artists {
 
     /**
      * Get single artist. Retrieves single artist by id. Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).
@@ -103,7 +103,7 @@ interface Artists {
 
     /**
      * Get albums relationship (\&quot;to-many\&quot;). Retrieves albums relationship. Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).
@@ -136,7 +136,7 @@ interface Artists {
     /**
      * Get profileArt relationship (\&quot;to-many\&quot;). Retrieves profileArt relationship.
      * Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).
@@ -196,7 +196,7 @@ interface Artists {
 
     /**
      * Get radio relationship (\&quot;to-many\&quot;). Retrieves radio relationship. Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).
@@ -228,7 +228,7 @@ interface Artists {
 
     /**
      * Get roles relationship (\&quot;to-many\&quot;). Retrieves roles relationship. Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).
@@ -259,7 +259,7 @@ interface Artists {
     /**
      * Get similarArtists relationship (\&quot;to-many\&quot;). Retrieves similarArtists
      * relationship. Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).
@@ -292,7 +292,7 @@ interface Artists {
     /**
      * Get trackProviders relationship (\&quot;to-many\&quot;). Retrieves trackProviders
      * relationship. Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).
@@ -322,7 +322,7 @@ interface Artists {
 
     /**
      * Get tracks relationship (\&quot;to-many\&quot;). Retrieves tracks relationship. Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).
@@ -358,7 +358,7 @@ interface Artists {
 
     /**
      * Get videos relationship (\&quot;to-many\&quot;). Retrieves videos relationship. Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).

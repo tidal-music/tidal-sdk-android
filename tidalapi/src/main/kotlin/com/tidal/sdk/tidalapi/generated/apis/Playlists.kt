@@ -16,7 +16,7 @@ interface Playlists {
     /**
      * Get multiple playlists. Retrieves multiple playlists by available filters, or without if
      * applicable. Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).
@@ -72,7 +72,7 @@ interface Playlists {
 
     /**
      * Get single playlist. Retrieves single playlist by id. Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).
@@ -128,7 +128,7 @@ interface Playlists {
     /**
      * Get coverArt relationship (\&quot;to-many\&quot;). Retrieves coverArt relationship.
      * Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).
@@ -188,7 +188,7 @@ interface Playlists {
 
     /**
      * Get items relationship (\&quot;to-many\&quot;). Retrieves items relationship. Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).
@@ -277,7 +277,7 @@ interface Playlists {
 
     /**
      * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).
@@ -311,7 +311,7 @@ interface Playlists {
      * Get current user&#39;s playlist(s). This operation is deprecated and will be removed shortly.
      * Please switch to the filter endpoint: /playlists?filter[r.owners.id]&#x3D;&lt;userId&gt;
      * Retrieves current user&#39;s playlist(s). Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).
@@ -342,7 +342,7 @@ interface Playlists {
 
     /**
      * Create single playlist. Creates a new playlist. Responses:
-     * - 201:
+     * - 201: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).
