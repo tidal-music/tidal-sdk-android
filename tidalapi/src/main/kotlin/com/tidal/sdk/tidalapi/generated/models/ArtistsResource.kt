@@ -37,7 +37,7 @@ data class ArtistsResource(
     SearchResultsMultiDataDocumentIncludedInner,
     ArtistsMultiDataDocumentIncludedInner,
     SearchSuggestionsMultiDataDocumentIncludedInner,
-    SearchresultsMultiDataRelationshipDocumentIncludedInner,
+    SearchResultsMultiDataRelationshipDocumentIncludedInner,
     ArtistsMultiDataRelationshipDocumentIncludedInner,
     VideosMultiDataDocumentIncludedInner,
     TracksMultiDataDocumentIncludedInner {}

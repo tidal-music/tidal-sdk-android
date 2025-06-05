@@ -14,7 +14,7 @@ import kotlinx.serialization.Serializable
  * @param didYouMean 'did you mean' prompt
  */
 @Serializable
-data class SearchresultsAttributes(
+data class SearchResultsAttributes(
 
     /* search request unique tracking number */
 

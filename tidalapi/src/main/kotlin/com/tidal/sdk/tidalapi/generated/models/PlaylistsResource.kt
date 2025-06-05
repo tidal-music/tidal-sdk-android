@@ -35,7 +35,7 @@ data class PlaylistsResource(
     SearchResultsMultiDataDocumentIncludedInner,
     ArtistsMultiDataDocumentIncludedInner,
     SearchSuggestionsMultiDataDocumentIncludedInner,
-    SearchresultsMultiDataRelationshipDocumentIncludedInner,
+    SearchResultsMultiDataRelationshipDocumentIncludedInner,
     ArtistsMultiDataRelationshipDocumentIncludedInner,
     PlaylistsMultiDataRelationshipDocumentIncludedInner,
     UserRecommendationsMultiDataRelationshipDocumentIncludedInner,

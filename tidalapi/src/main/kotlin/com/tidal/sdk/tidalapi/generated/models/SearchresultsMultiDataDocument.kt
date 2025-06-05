@@ -15,8 +15,8 @@ import kotlinx.serialization.Serializable
  * @param included
  */
 @Serializable
-data class SearchresultsMultiDataDocument(
-    @SerialName(value = "data") val `data`: kotlin.collections.List<SearchresultsResource>? = null,
+data class SearchResultsMultiDataDocument(
+    @SerialName(value = "data") val `data`: kotlin.collections.List<SearchResultsResource>? = null,
     @SerialName(value = "links") val links: Links? = null,
     @SerialName(value = "included")
     val included: kotlin.collections.List<SearchResultsMultiDataDocumentIncludedInner>? = null,

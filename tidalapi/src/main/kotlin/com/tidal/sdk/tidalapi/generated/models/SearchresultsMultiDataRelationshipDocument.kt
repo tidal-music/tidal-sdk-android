@@ -15,11 +15,11 @@ import kotlinx.serialization.Serializable
  * @param included
  */
 @Serializable
-data class SearchresultsMultiDataRelationshipDocument(
+data class SearchResultsMultiDataRelationshipDocument(
     @SerialName(value = "data") val `data`: kotlin.collections.List<ResourceIdentifier>? = null,
     @SerialName(value = "links") val links: Links? = null,
     @SerialName(value = "included")
     val included:
-        kotlin.collections.List<SearchresultsMultiDataRelationshipDocumentIncludedInner>? =
+        kotlin.collections.List<SearchResultsMultiDataRelationshipDocumentIncludedInner>? =
         null,
 ) {}

@@ -18,7 +18,7 @@ import kotlinx.serialization.Serializable
  * @param tracks
  */
 @Serializable
-data class SearchresultsRelationships(
+data class SearchResultsRelationships(
     @SerialName(value = "albums") val albums: MultiDataRelationshipDoc,
     @SerialName(value = "artists") val artists: MultiDataRelationshipDoc,
     @SerialName(value = "playlists") val playlists: MultiDataRelationshipDoc,

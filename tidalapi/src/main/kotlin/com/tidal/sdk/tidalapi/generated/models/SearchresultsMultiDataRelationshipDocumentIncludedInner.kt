@@ -15,4 +15,4 @@ import kotlinx.serialization.Serializable
  * @param attributes
  * @param relationships
  */
-@Serializable @Polymorphic sealed interface SearchresultsMultiDataRelationshipDocumentIncludedInner
+@Serializable @Polymorphic sealed interface SearchResultsMultiDataRelationshipDocumentIncludedInner
