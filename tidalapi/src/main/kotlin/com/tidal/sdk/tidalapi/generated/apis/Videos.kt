@@ -10,7 +10,7 @@ interface Videos {
     /**
      * Get multiple videos. Retrieves multiple videos by available filters, or without if
      * applicable. Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).
@@ -45,7 +45,7 @@ interface Videos {
 
     /**
      * Get single video. Retrieves single video by id. Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).
@@ -74,7 +74,7 @@ interface Videos {
 
     /**
      * Get albums relationship (\&quot;to-many\&quot;). Retrieves albums relationship. Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).
@@ -106,7 +106,7 @@ interface Videos {
 
     /**
      * Get artists relationship (\&quot;to-many\&quot;). Retrieves artists relationship. Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).
@@ -139,7 +139,7 @@ interface Videos {
     /**
      * Get providers relationship (\&quot;to-many\&quot;). Retrieves providers relationship.
      * Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).
@@ -172,7 +172,7 @@ interface Videos {
     /**
      * Get thumbnailArt relationship (\&quot;to-many\&quot;). Retrieves thumbnailArt relationship.
      * Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).

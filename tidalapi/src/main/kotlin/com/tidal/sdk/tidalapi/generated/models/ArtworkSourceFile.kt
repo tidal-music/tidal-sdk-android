@@ -13,8 +13,9 @@ import kotlinx.serialization.Serializable
  * Artwork source file
  *
  * @param md5Hash MD5 hash of file to be uploaded
- * @param fileUploadLink
- * @param fileStatus
+ * @param propertySize File size of the artwork in bytes
+ * @param uploadLink
+ * @param status
  */
 @Serializable
 data class ArtworkSourceFile(
@@ -22,6 +23,9 @@ data class ArtworkSourceFile(
     /* MD5 hash of file to be uploaded */
 
     @SerialName(value = "md5Hash") val md5Hash: kotlin.String,
-    @SerialName(value = "fileUploadLink") val fileUploadLink: FileUploadLink,
-    @SerialName(value = "fileStatus") val fileStatus: FileStatus,
+    /* File size of the artwork in bytes */
+
+    @SerialName(value = "size") val propertySize: kotlin.Long,
+    @SerialName(value = "uploadLink") val uploadLink: FileUploadLink,
+    @SerialName(value = "status") val status: FileStatus,
 ) {}

@@ -8,7 +8,7 @@ import retrofit2.http.*
 interface UserRecommendations {
     /**
      * Get single userRecommendation. Retrieves single userRecommendation by id. Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).
@@ -40,7 +40,7 @@ interface UserRecommendations {
     /**
      * Get discoveryMixes relationship (\&quot;to-many\&quot;). Retrieves discoveryMixes
      * relationship. Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).
@@ -74,7 +74,7 @@ interface UserRecommendations {
 
     /**
      * Get myMixes relationship (\&quot;to-many\&quot;). Retrieves myMixes relationship. Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).
@@ -109,7 +109,7 @@ interface UserRecommendations {
     /**
      * Get newArrivalMixes relationship (\&quot;to-many\&quot;). Retrieves newArrivalMixes
      * relationship. Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).
@@ -146,7 +146,7 @@ interface UserRecommendations {
      * removed shortly. Please switch to the equivalent /userRecommendations/{userId} endpoint. You
      * can find your user id by calling /users/me. Retrieves current user&#39;s
      * userRecommendation(s). Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).

@@ -6,15 +6,13 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.Serializable
 
 /**
- * @param md5Hash
- * @param propertySize
+ * @param id resource unique identifier
+ * @param type resource unique type
+ * @param attributes
+ * @param relationships
  */
-@Serializable
-data class ArtworkCreateOperationPayloadDataAttributesSourceFile(
-    @SerialName(value = "md5Hash") val md5Hash: kotlin.String,
-    @SerialName(value = "size") val propertySize: kotlin.Long,
-) {}
+@Serializable @Polymorphic sealed interface SearchresultsMultiDataRelationshipDocumentIncludedInner

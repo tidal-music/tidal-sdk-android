@@ -9,7 +9,7 @@ interface ArtistRoles {
     /**
      * Get multiple artistRoles. Retrieves multiple artistRoles by available filters, or without if
      * applicable. Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).
@@ -34,7 +34,7 @@ interface ArtistRoles {
 
     /**
      * Get single artistRole. Retrieves single artistRole by id. Responses:
-     * - 200:
+     * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
      *   request body, etc.).

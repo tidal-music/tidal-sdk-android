@@ -10,11 +10,14 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param md5Hash
- * @param propertySize
+ * @param `data`
+ * @param links
+ * @param included
  */
 @Serializable
-data class ArtworkCreateOperationPayloadDataAttributesSourceFile(
-    @SerialName(value = "md5Hash") val md5Hash: kotlin.String,
-    @SerialName(value = "size") val propertySize: kotlin.Long,
+data class SearchresultsMultiDataDocument(
+    @SerialName(value = "data") val `data`: kotlin.collections.List<SearchresultsResource>? = null,
+    @SerialName(value = "links") val links: Links? = null,
+    @SerialName(value = "included")
+    val included: kotlin.collections.List<SearchResultsMultiDataDocumentIncludedInner>? = null,
 ) {}

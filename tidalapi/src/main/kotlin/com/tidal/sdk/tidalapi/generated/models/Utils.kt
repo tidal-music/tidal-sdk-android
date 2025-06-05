@@ -41,14 +41,12 @@ fun getOneOfSerializer() = SerializersModule {
         subclass(VideosResource::class, VideosResource.serializer())
     }
     polymorphic(PlaylistsMultiDataDocumentIncludedInner::class) {
-        subclass(ArtistsResource::class, ArtistsResource.serializer())
         subclass(ArtworksResource::class, ArtworksResource.serializer())
         subclass(TracksResource::class, TracksResource.serializer())
         subclass(UsersResource::class, UsersResource.serializer())
         subclass(VideosResource::class, VideosResource.serializer())
     }
     polymorphic(PlaylistsMultiDataRelationshipDocumentIncludedInner::class) {
-        subclass(ArtistsResource::class, ArtistsResource.serializer())
         subclass(ArtworksResource::class, ArtworksResource.serializer())
         subclass(PlaylistsResource::class, PlaylistsResource.serializer())
         subclass(TracksResource::class, TracksResource.serializer())
@@ -85,11 +83,11 @@ fun getOneOfSerializer() = SerializersModule {
         subclass(TracksResource::class, TracksResource.serializer())
         subclass(VideosResource::class, VideosResource.serializer())
     }
-    polymorphic(SearchResultsMultiDataRelationshipDocumentIncludedInner::class) {
+    polymorphic(SearchresultsMultiDataRelationshipDocumentIncludedInner::class) {
         subclass(AlbumsResource::class, AlbumsResource.serializer())
         subclass(ArtistsResource::class, ArtistsResource.serializer())
         subclass(PlaylistsResource::class, PlaylistsResource.serializer())
-        subclass(SearchResultsResource::class, SearchResultsResource.serializer())
+        subclass(SearchresultsResource::class, SearchresultsResource.serializer())
         subclass(TracksResource::class, TracksResource.serializer())
         subclass(VideosResource::class, VideosResource.serializer())
     }

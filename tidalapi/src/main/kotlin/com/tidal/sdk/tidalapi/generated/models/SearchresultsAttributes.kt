@@ -10,11 +10,16 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param md5Hash
- * @param propertySize
+ * @param trackingId search request unique tracking number
+ * @param didYouMean 'did you mean' prompt
  */
 @Serializable
-data class ArtworkCreateOperationPayloadDataAttributesSourceFile(
-    @SerialName(value = "md5Hash") val md5Hash: kotlin.String,
-    @SerialName(value = "size") val propertySize: kotlin.Long,
+data class SearchresultsAttributes(
+
+    /* search request unique tracking number */
+
+    @SerialName(value = "trackingId") val trackingId: kotlin.String,
+    /* 'did you mean' prompt */
+
+    @SerialName(value = "didYouMean") val didYouMean: kotlin.String? = null,
 ) {}
