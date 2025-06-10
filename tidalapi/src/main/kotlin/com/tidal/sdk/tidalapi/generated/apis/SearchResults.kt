@@ -28,7 +28,7 @@ interface SearchResults {
      *   Available options: albums, artists, playlists, topHits, tracks, videos (optional)
      * @return [SearchResultsSingleDataDocument]
      */
-    @GET("searchResults/{id}")
+    @GET("searchresults/{id}")
     suspend fun searchResultsIdGet(
         @Path("id") id: kotlin.String,
         @Query("countryCode") countryCode: kotlin.String,
@@ -61,7 +61,7 @@ interface SearchResults {
      *   targets first page if not specified (optional)
      * @return [SearchResultsMultiDataRelationshipDocument]
      */
-    @GET("searchResults/{id}/relationships/albums")
+    @GET("searchresults/{id}/relationships/albums")
     suspend fun searchResultsIdRelationshipsAlbumsGet(
         @Path("id") id: kotlin.String,
         @Query("countryCode") countryCode: kotlin.String,
@@ -95,7 +95,7 @@ interface SearchResults {
      *   targets first page if not specified (optional)
      * @return [SearchResultsMultiDataRelationshipDocument]
      */
-    @GET("searchResults/{id}/relationships/artists")
+    @GET("searchresults/{id}/relationships/artists")
     suspend fun searchResultsIdRelationshipsArtistsGet(
         @Path("id") id: kotlin.String,
         @Query("countryCode") countryCode: kotlin.String,
@@ -130,7 +130,7 @@ interface SearchResults {
      *   targets first page if not specified (optional)
      * @return [SearchResultsMultiDataRelationshipDocument]
      */
-    @GET("searchResults/{id}/relationships/playlists")
+    @GET("searchresults/{id}/relationships/playlists")
     suspend fun searchResultsIdRelationshipsPlaylistsGet(
         @Path("id") id: kotlin.String,
         @Query("countryCode") countryCode: kotlin.String,
@@ -164,7 +164,7 @@ interface SearchResults {
      *   targets first page if not specified (optional)
      * @return [SearchResultsMultiDataRelationshipDocument]
      */
-    @GET("searchResults/{id}/relationships/topHits")
+    @GET("searchresults/{id}/relationships/topHits")
     suspend fun searchResultsIdRelationshipsTopHitsGet(
         @Path("id") id: kotlin.String,
         @Query("countryCode") countryCode: kotlin.String,
@@ -198,7 +198,7 @@ interface SearchResults {
      *   targets first page if not specified (optional)
      * @return [SearchResultsMultiDataRelationshipDocument]
      */
-    @GET("searchResults/{id}/relationships/tracks")
+    @GET("searchresults/{id}/relationships/tracks")
     suspend fun searchResultsIdRelationshipsTracksGet(
         @Path("id") id: kotlin.String,
         @Query("countryCode") countryCode: kotlin.String,
@@ -232,7 +232,7 @@ interface SearchResults {
      *   targets first page if not specified (optional)
      * @return [SearchResultsMultiDataRelationshipDocument]
      */
-    @GET("searchResults/{id}/relationships/videos")
+    @GET("searchresults/{id}/relationships/videos")
     suspend fun searchResultsIdRelationshipsVideosGet(
         @Path("id") id: kotlin.String,
         @Query("countryCode") countryCode: kotlin.String,
