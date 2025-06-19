@@ -12,20 +12,26 @@ import kotlinx.serialization.Serializable
 /**
  * @param name
  * @param description
- * @param privacy
+ * @param accessType Access type
  */
 @Serializable
 data class PlaylistUpdateOperationPayloadDataAttributes(
     @SerialName(value = "name") val name: kotlin.String? = null,
     @SerialName(value = "description") val description: kotlin.String? = null,
-    @SerialName(value = "privacy")
-    val privacy: PlaylistUpdateOperationPayloadDataAttributes.Privacy? = null,
+    /* Access type */
+
+    @SerialName(value = "accessType")
+    val accessType: PlaylistUpdateOperationPayloadDataAttributes.AccessType? = null,
 ) {
 
-    /** Values: PUBLIC,PRIVATE */
+    /**
+     * Access type
+     *
+     * Values: PUBLIC,UNLISTED
+     */
     @Serializable
-    enum class Privacy(val value: kotlin.String) {
+    enum class AccessType(val value: kotlin.String) {
         @SerialName(value = "PUBLIC") PUBLIC("PUBLIC"),
-        @SerialName(value = "PRIVATE") PRIVATE("PRIVATE"),
+        @SerialName(value = "UNLISTED") UNLISTED("UNLISTED"),
     }
 }

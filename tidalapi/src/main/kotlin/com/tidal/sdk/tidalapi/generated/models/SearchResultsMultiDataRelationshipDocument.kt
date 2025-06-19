@@ -18,8 +18,5 @@ import kotlinx.serialization.Serializable
 data class SearchResultsMultiDataRelationshipDocument(
     @SerialName(value = "data") val `data`: kotlin.collections.List<ResourceIdentifier>? = null,
     @SerialName(value = "links") val links: Links? = null,
-    @SerialName(value = "included")
-    val included:
-        kotlin.collections.List<SearchResultsMultiDataRelationshipDocumentIncludedInner>? =
-        null,
+    @SerialName(value = "included") val included: kotlin.collections.List<IncludedInner>? = null,
 ) {}

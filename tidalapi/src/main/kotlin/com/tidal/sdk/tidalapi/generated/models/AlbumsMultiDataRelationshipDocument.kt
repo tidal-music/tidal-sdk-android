@@ -18,6 +18,5 @@ import kotlinx.serialization.Serializable
 data class AlbumsMultiDataRelationshipDocument(
     @SerialName(value = "data") val `data`: kotlin.collections.List<ResourceIdentifier>? = null,
     @SerialName(value = "links") val links: Links? = null,
-    @SerialName(value = "included")
-    val included: kotlin.collections.List<AlbumsMultiDataRelationshipDocumentIncludedInner>? = null,
+    @SerialName(value = "included") val included: kotlin.collections.List<IncludedInner>? = null,
 ) {}

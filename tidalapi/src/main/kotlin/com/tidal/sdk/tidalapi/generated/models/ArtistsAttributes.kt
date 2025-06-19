@@ -12,7 +12,6 @@ import kotlinx.serialization.Serializable
 /**
  * @param name Artist name
  * @param popularity Artist popularity (0.0 - 1.0)
- * @param imageLinks Artist image links and metadata
  * @param externalLinks Artist links external to TIDAL API
  * @param handle Artist handle
  */
@@ -25,11 +24,6 @@ data class ArtistsAttributes(
     /* Artist popularity (0.0 - 1.0) */
 
     @SerialName(value = "popularity") val popularity: kotlin.Double,
-    /* Artist image links and metadata */
-
-    @SerialName(value = "imageLinks")
-    @Deprecated(message = "This property is deprecated.")
-    val imageLinks: kotlin.collections.List<ImageLink>? = null,
     /* Artist links external to TIDAL API */
 
     @SerialName(value = "externalLinks")

@@ -27,15 +27,4 @@ data class VideosResource(
     @Transient @SerialName(value = "type") val type: kotlin.String = "",
     @SerialName(value = "attributes") val attributes: VideosAttributes? = null,
     @SerialName(value = "relationships") val relationships: VideosRelationships? = null,
-) :
-    AlbumsMultiDataDocumentIncludedInner,
-    SearchResultsMultiDataRelationshipDocumentIncludedInner,
-    SearchSuggestionsMultiDataRelationshipDocumentIncludedInner,
-    PlaylistsMultiDataDocumentIncludedInner,
-    AlbumsMultiDataRelationshipDocumentIncludedInner,
-    VideosMultiDataRelationshipDocumentIncludedInner,
-    SearchResultsMultiDataDocumentIncludedInner,
-    ArtistsMultiDataDocumentIncludedInner,
-    SearchSuggestionsMultiDataDocumentIncludedInner,
-    ArtistsMultiDataRelationshipDocumentIncludedInner,
-    PlaylistsMultiDataRelationshipDocumentIncludedInner {}
+) : IncludedInner {}

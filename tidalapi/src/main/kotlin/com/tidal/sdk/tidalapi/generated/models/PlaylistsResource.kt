@@ -27,15 +27,4 @@ data class PlaylistsResource(
     @Transient @SerialName(value = "type") val type: kotlin.String = "",
     @SerialName(value = "attributes") val attributes: PlaylistsAttributes? = null,
     @SerialName(value = "relationships") val relationships: PlaylistsRelationships? = null,
-) :
-    UserRecommendationsMultiDataDocumentIncludedInner,
-    UserCollectionsMultiDataDocumentIncludedInner,
-    SearchResultsMultiDataRelationshipDocumentIncludedInner,
-    SearchSuggestionsMultiDataRelationshipDocumentIncludedInner,
-    SearchResultsMultiDataDocumentIncludedInner,
-    ArtistsMultiDataDocumentIncludedInner,
-    SearchSuggestionsMultiDataDocumentIncludedInner,
-    ArtistsMultiDataRelationshipDocumentIncludedInner,
-    PlaylistsMultiDataRelationshipDocumentIncludedInner,
-    UserRecommendationsMultiDataRelationshipDocumentIncludedInner,
-    TracksMultiDataDocumentIncludedInner {}
+) : IncludedInner {}

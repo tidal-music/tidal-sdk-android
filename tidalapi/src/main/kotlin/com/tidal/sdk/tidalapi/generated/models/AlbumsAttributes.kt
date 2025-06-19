@@ -22,8 +22,6 @@ import kotlinx.serialization.Serializable
  * @param releaseDate Release date (ISO-8601)
  * @param copyright Copyright
  * @param availability Available usage for this album
- * @param imageLinks Album image links and metadata
- * @param videoLinks Album video links and metadata
  * @param externalLinks Album links external to TIDAL API
  */
 @Serializable
@@ -64,16 +62,6 @@ data class AlbumsAttributes(
 
     @SerialName(value = "availability")
     val availability: kotlin.collections.List<AlbumsAttributes.Availability>? = null,
-    /* Album image links and metadata */
-
-    @SerialName(value = "imageLinks")
-    @Deprecated(message = "This property is deprecated.")
-    val imageLinks: kotlin.collections.List<ImageLink>? = null,
-    /* Album video links and metadata */
-
-    @SerialName(value = "videoLinks")
-    @Deprecated(message = "This property is deprecated.")
-    val videoLinks: kotlin.collections.List<VideoLink>? = null,
     /* Album links external to TIDAL API */
 
     @SerialName(value = "externalLinks")

@@ -27,4 +27,4 @@ data class SearchSuggestionsResource(
     @Transient @SerialName(value = "type") val type: kotlin.String = "",
     @SerialName(value = "attributes") val attributes: SearchSuggestionsAttributes? = null,
     @SerialName(value = "relationships") val relationships: SearchSuggestionsRelationships? = null,
-) : SearchSuggestionsMultiDataRelationshipDocumentIncludedInner {}
+) : IncludedInner {}

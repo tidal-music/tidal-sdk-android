@@ -25,12 +25,4 @@ data class ArtworksResource(
     /* resource unique type */
     @Transient @SerialName(value = "type") val type: kotlin.String = "",
     @SerialName(value = "attributes") val attributes: ArtworksAttributes? = null,
-) :
-    AlbumsMultiDataDocumentIncludedInner,
-    PlaylistsMultiDataDocumentIncludedInner,
-    AlbumsMultiDataRelationshipDocumentIncludedInner,
-    VideosMultiDataRelationshipDocumentIncludedInner,
-    ArtistsMultiDataDocumentIncludedInner,
-    ArtistsMultiDataRelationshipDocumentIncludedInner,
-    PlaylistsMultiDataRelationshipDocumentIncludedInner,
-    VideosMultiDataDocumentIncludedInner {}
+) : IncludedInner {}

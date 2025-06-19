@@ -28,4 +28,4 @@ data class UserRecommendationsResource(
     @Transient @SerialName(value = "type") val type: kotlin.String = "",
     @Contextual @SerialName(value = "attributes") val attributes: kotlin.Any? = null,
     @SerialName(value = "relationships") val relationships: UserRecommendationsRelationships? = null,
-) : UserRecommendationsMultiDataRelationshipDocumentIncludedInner {}
+) : IncludedInner {}

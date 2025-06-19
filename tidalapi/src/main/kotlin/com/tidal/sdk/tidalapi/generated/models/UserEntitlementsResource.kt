@@ -8,6 +8,7 @@ package com.tidal.sdk.tidalapi.generated.models
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 /**
  * @param id resource unique identifier
@@ -15,13 +16,13 @@ import kotlinx.serialization.Serializable
  * @param attributes
  */
 @Serializable
+@SerialName(value = "userEntitlements")
 data class UserEntitlementsResource(
 
     /* resource unique identifier */
 
     @SerialName(value = "id") val id: kotlin.String,
     /* resource unique type */
-
-    @SerialName(value = "type") val type: kotlin.String,
+    @Transient @SerialName(value = "type") val type: kotlin.String = "",
     @SerialName(value = "attributes") val attributes: UserEntitlementsAttributes? = null,
-) {}
+) : IncludedInner {}

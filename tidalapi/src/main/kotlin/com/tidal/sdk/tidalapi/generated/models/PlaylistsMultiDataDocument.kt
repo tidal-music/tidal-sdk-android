@@ -18,6 +18,5 @@ import kotlinx.serialization.Serializable
 data class PlaylistsMultiDataDocument(
     @SerialName(value = "data") val `data`: kotlin.collections.List<PlaylistsResource>? = null,
     @SerialName(value = "links") val links: Links? = null,
-    @SerialName(value = "included")
-    val included: kotlin.collections.List<PlaylistsMultiDataDocumentIncludedInner>? = null,
+    @SerialName(value = "included") val included: kotlin.collections.List<IncludedInner>? = null,
 ) {}

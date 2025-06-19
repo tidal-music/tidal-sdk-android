@@ -25,11 +25,4 @@ data class ProvidersResource(
     /* resource unique type */
     @Transient @SerialName(value = "type") val type: kotlin.String = "",
     @SerialName(value = "attributes") val attributes: ProvidersAttributes? = null,
-) :
-    AlbumsMultiDataDocumentIncludedInner,
-    AlbumsMultiDataRelationshipDocumentIncludedInner,
-    VideosMultiDataRelationshipDocumentIncludedInner,
-    ArtistsMultiDataDocumentIncludedInner,
-    ArtistsMultiDataRelationshipDocumentIncludedInner,
-    VideosMultiDataDocumentIncludedInner,
-    TracksMultiDataDocumentIncludedInner {}
+) : IncludedInner {}

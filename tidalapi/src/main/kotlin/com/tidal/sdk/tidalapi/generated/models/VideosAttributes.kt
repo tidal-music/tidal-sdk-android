@@ -19,7 +19,6 @@ import kotlinx.serialization.Serializable
  * @param copyright Copyright
  * @param releaseDate Release date (ISO-8601)
  * @param availability Available usage for this video
- * @param imageLinks Video image links and metadata
  * @param externalLinks Video links external to TIDAL API
  */
 @Serializable
@@ -53,11 +52,6 @@ data class VideosAttributes(
 
     @SerialName(value = "availability")
     val availability: kotlin.collections.List<VideosAttributes.Availability>? = null,
-    /* Video image links and metadata */
-
-    @SerialName(value = "imageLinks")
-    @Deprecated(message = "This property is deprecated.")
-    val imageLinks: kotlin.collections.List<ImageLink>? = null,
     /* Video links external to TIDAL API */
 
     @SerialName(value = "externalLinks")

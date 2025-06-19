@@ -18,6 +18,5 @@ import kotlinx.serialization.Serializable
 data class TracksSingleDataDocument(
     @SerialName(value = "data") val `data`: TracksResource? = null,
     @SerialName(value = "links") val links: Links? = null,
-    @SerialName(value = "included")
-    val included: kotlin.collections.List<TracksMultiDataDocumentIncludedInner>? = null,
+    @SerialName(value = "included") val included: kotlin.collections.List<IncludedInner>? = null,
 ) {}

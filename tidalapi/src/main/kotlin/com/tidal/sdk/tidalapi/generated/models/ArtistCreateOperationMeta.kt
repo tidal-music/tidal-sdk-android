@@ -6,13 +6,11 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/**
- * @param id resource unique identifier
- * @param type resource unique type
- * @param attributes
- * @param relationships
- */
-@Serializable @Polymorphic sealed interface TracksMultiDataDocumentIncludedInner
+/** @param dryRun */
+@Serializable
+data class ArtistCreateOperationMeta(
+    @SerialName(value = "dryRun") val dryRun: kotlin.Boolean? = null
+) {}
