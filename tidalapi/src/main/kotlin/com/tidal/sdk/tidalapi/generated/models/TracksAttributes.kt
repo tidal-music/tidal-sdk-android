@@ -21,7 +21,10 @@ import kotlinx.serialization.Serializable
  * @param key Key
  * @param keyScale The scale of the key
  * @param bpm Beats per minute
+ * @param accessType Access type
  * @param availability Available usage for this track
+ * @param toneTags Tone tags
+ * @param genreTags Genre tags
  * @param externalLinks Track links external to TIDAL API
  */
 @Serializable
@@ -58,10 +61,19 @@ data class TracksAttributes(
     /* Beats per minute */
 
     @SerialName(value = "bpm") val bpm: kotlin.Float? = null,
+    /* Access type */
+
+    @SerialName(value = "accessType") val accessType: TracksAttributes.AccessType? = null,
     /* Available usage for this track */
 
     @SerialName(value = "availability")
     val availability: kotlin.collections.List<TracksAttributes.Availability>? = null,
+    /* Tone tags */
+
+    @SerialName(value = "toneTags") val toneTags: kotlin.collections.List<kotlin.String>? = null,
+    /* Genre tags */
+
+    @SerialName(value = "genreTags") val genreTags: kotlin.collections.List<kotlin.String>? = null,
     /* Track links external to TIDAL API */
 
     @SerialName(value = "externalLinks")
@@ -71,16 +83,21 @@ data class TracksAttributes(
     /**
      * Key
      *
-     * Values: A,B,C,D,E,F,G
+     * Values: A,Ab,B,Bb,C,CSharp,D,E,Eb,F,FSharp,G
      */
     @Serializable
     enum class Key(val value: kotlin.String) {
         @SerialName(value = "A") A("A"),
+        @SerialName(value = "Ab") Ab("Ab"),
         @SerialName(value = "B") B("B"),
+        @SerialName(value = "Bb") Bb("Bb"),
         @SerialName(value = "C") C("C"),
+        @SerialName(value = "CSharp") CSharp("CSharp"),
         @SerialName(value = "D") D("D"),
         @SerialName(value = "E") E("E"),
+        @SerialName(value = "Eb") Eb("Eb"),
         @SerialName(value = "F") F("F"),
+        @SerialName(value = "FSharp") FSharp("FSharp"),
         @SerialName(value = "G") G("G"),
     }
 
@@ -93,6 +110,18 @@ data class TracksAttributes(
     enum class KeyScale(val value: kotlin.String) {
         @SerialName(value = "MAJOR") MAJOR("MAJOR"),
         @SerialName(value = "MINOR") MINOR("MINOR"),
+    }
+
+    /**
+     * Access type
+     *
+     * Values: PUBLIC,UNLISTED,PRIVATE
+     */
+    @Serializable
+    enum class AccessType(val value: kotlin.String) {
+        @SerialName(value = "PUBLIC") PUBLIC("PUBLIC"),
+        @SerialName(value = "UNLISTED") UNLISTED("UNLISTED"),
+        @SerialName(value = "PRIVATE") PRIVATE("PRIVATE"),
     }
 
     /**

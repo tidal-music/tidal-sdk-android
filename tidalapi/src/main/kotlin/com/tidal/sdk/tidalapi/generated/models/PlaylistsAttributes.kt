@@ -13,10 +13,10 @@ import kotlinx.serialization.Serializable
  * @param name Playlist name
  * @param bounded Indicates if the playlist has a duration and set number of tracks
  * @param externalLinks
- * @param imageLinks
  * @param createdAt Datetime of playlist creation (ISO 8601)
  * @param lastModifiedAt Datetime of last modification of the playlist (ISO 8601)
  * @param privacy Privacy setting of the playlist
+ * @param accessType Access type
  * @param playlistType The type of the playlist
  * @param description Playlist description
  * @param duration Duration of playlist (ISO 8601)
@@ -32,9 +32,6 @@ data class PlaylistsAttributes(
 
     @SerialName(value = "bounded") val bounded: kotlin.Boolean,
     @SerialName(value = "externalLinks") val externalLinks: kotlin.collections.List<ExternalLink>,
-    @SerialName(value = "imageLinks")
-    @Deprecated(message = "This property is deprecated.")
-    val imageLinks: kotlin.collections.List<ImageLink>,
     /* Datetime of playlist creation (ISO 8601) */
 
     @SerialName(value = "createdAt") val createdAt: kotlin.String,
@@ -43,7 +40,12 @@ data class PlaylistsAttributes(
     @SerialName(value = "lastModifiedAt") val lastModifiedAt: kotlin.String,
     /* Privacy setting of the playlist */
 
-    @SerialName(value = "privacy") val privacy: PlaylistsAttributes.Privacy,
+    @SerialName(value = "privacy")
+    @Deprecated(message = "This property is deprecated.")
+    val privacy: PlaylistsAttributes.Privacy,
+    /* Access type */
+
+    @SerialName(value = "accessType") val accessType: PlaylistsAttributes.AccessType,
     /* The type of the playlist */
 
     @SerialName(value = "playlistType") val playlistType: PlaylistsAttributes.PlaylistType,
@@ -67,6 +69,17 @@ data class PlaylistsAttributes(
     enum class Privacy(val value: kotlin.String) {
         @SerialName(value = "PUBLIC") PUBLIC("PUBLIC"),
         @SerialName(value = "PRIVATE") PRIVATE("PRIVATE"),
+    }
+
+    /**
+     * Access type
+     *
+     * Values: PUBLIC,UNLISTED
+     */
+    @Serializable
+    enum class AccessType(val value: kotlin.String) {
+        @SerialName(value = "PUBLIC") PUBLIC("PUBLIC"),
+        @SerialName(value = "UNLISTED") UNLISTED("UNLISTED"),
     }
 
     /**

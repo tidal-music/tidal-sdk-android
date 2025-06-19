@@ -12,9 +12,11 @@ import kotlinx.serialization.Serializable
 /**
  * @param `data`
  * @param links
+ * @param included
  */
 @Serializable
 data class TrackFilesMultiDataDocument(
     @SerialName(value = "data") val `data`: kotlin.collections.List<TrackFilesResource>? = null,
     @SerialName(value = "links") val links: Links? = null,
+    @SerialName(value = "included") val included: kotlin.collections.List<IncludedInner>? = null,
 ) {}

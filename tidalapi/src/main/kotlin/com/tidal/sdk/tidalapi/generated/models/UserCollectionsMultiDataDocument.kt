@@ -19,6 +19,5 @@ data class UserCollectionsMultiDataDocument(
     @SerialName(value = "data")
     val `data`: kotlin.collections.List<UserCollectionsResource>? = null,
     @SerialName(value = "links") val links: Links? = null,
-    @SerialName(value = "included")
-    val included: kotlin.collections.List<UserCollectionsMultiDataDocumentIncludedInner>? = null,
+    @SerialName(value = "included") val included: kotlin.collections.List<IncludedInner>? = null,
 ) {}

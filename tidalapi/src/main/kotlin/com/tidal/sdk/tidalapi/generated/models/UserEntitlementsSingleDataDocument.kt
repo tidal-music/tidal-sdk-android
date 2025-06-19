@@ -12,9 +12,11 @@ import kotlinx.serialization.Serializable
 /**
  * @param `data`
  * @param links
+ * @param included
  */
 @Serializable
 data class UserEntitlementsSingleDataDocument(
     @SerialName(value = "data") val `data`: UserEntitlementsResource? = null,
     @SerialName(value = "links") val links: Links? = null,
+    @SerialName(value = "included") val included: kotlin.collections.List<IncludedInner>? = null,
 ) {}

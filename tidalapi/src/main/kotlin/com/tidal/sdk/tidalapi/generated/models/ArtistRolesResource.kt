@@ -25,4 +25,4 @@ data class ArtistRolesResource(
     /* resource unique type */
     @Transient @SerialName(value = "type") val type: kotlin.String = "",
     @SerialName(value = "attributes") val attributes: ArtistRolesAttributes? = null,
-) : ArtistsMultiDataDocumentIncludedInner, ArtistsMultiDataRelationshipDocumentIncludedInner {}
+) : IncludedInner {}

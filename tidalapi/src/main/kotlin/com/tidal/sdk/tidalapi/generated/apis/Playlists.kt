@@ -1,5 +1,6 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.models.PlaylistCoverArtRelationshipUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.PlaylistCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.PlaylistItemsRelationshipAddOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.PlaylistItemsRelationshipRemoveOperationPayload
@@ -159,6 +160,34 @@ interface Playlists {
     ): Response<PlaylistsMultiDataRelationshipDocument>
 
     /**
+     * Update coverArt relationship (\&quot;to-many\&quot;). Updates coverArt relationship.
+     * Responses:
+     * - 451: Unavailable For Legal Reasons
+     * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
+     *   request body, etc.).
+     * - 500: Internal Server Error. Something went wrong on the server party.
+     * - 404: Resource not found. The requested resource is not found.
+     * - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media
+     *   type is set into Content-Type header.
+     * - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
+     * - 406: Not acceptable. The server doesn't support any of the requested by client acceptable
+     *   content types.
+     * - 429: Too many HTTP requests have been made within the allowed time.
+     *
+     * @param id Playlist id
+     * @param playlistCoverArtRelationshipUpdateOperationPayload (optional)
+     * @return [Unit]
+     */
+    @PATCH("playlists/{id}/relationships/coverArt")
+    suspend fun playlistsIdRelationshipsCoverArtPatch(
+        @Path("id") id: kotlin.String,
+        @Body
+        playlistCoverArtRelationshipUpdateOperationPayload:
+            PlaylistCoverArtRelationshipUpdateOperationPayload? =
+            null,
+    ): Response<Unit>
+
+    /**
      * Delete from items relationship (\&quot;to-many\&quot;). Deletes item(s) from items
      * relationship. Responses:
      * - 451: Unavailable For Legal Reasons
@@ -306,39 +335,6 @@ interface Playlists {
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
     ): Response<PlaylistsMultiDataRelationshipDocument>
-
-    /**
-     * Get current user&#39;s playlist(s). This operation is deprecated and will be removed shortly.
-     * Please switch to the filter endpoint: /playlists?filter[r.owners.id]&#x3D;&lt;userId&gt;
-     * Retrieves current user&#39;s playlist(s). Responses:
-     * - 200: Successful response
-     * - 451: Unavailable For Legal Reasons
-     * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
-     *   request body, etc.).
-     * - 500: Internal Server Error. Something went wrong on the server party.
-     * - 404: Resource not found. The requested resource is not found.
-     * - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media
-     *   type is set into Content-Type header.
-     * - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
-     * - 406: Not acceptable. The server doesn't support any of the requested by client acceptable
-     *   content types.
-     * - 429: Too many HTTP requests have been made within the allowed time.
-     *
-     * @param countryCode ISO 3166-1 alpha-2 country code
-     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
-     *   targets first page if not specified (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: coverArt, items, owners (optional)
-     * @return [PlaylistsMultiDataDocument]
-     */
-    @Deprecated("This api was deprecated")
-    @GET("playlists/me")
-    suspend fun playlistsMeGet(
-        @Query("countryCode") countryCode: kotlin.String,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-        @Query("include")
-        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<PlaylistsMultiDataDocument>
 
     /**
      * Create single playlist. Creates a new playlist. Responses:

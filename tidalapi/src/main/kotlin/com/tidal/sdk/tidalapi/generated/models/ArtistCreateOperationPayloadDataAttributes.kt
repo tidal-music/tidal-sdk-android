@@ -6,13 +6,15 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param id resource unique identifier
- * @param type resource unique type
- * @param attributes
- * @param relationships
+ * @param name
+ * @param handle
  */
-@Serializable @Polymorphic sealed interface PlaylistsMultiDataDocumentIncludedInner
+@Serializable
+data class ArtistCreateOperationPayloadDataAttributes(
+    @SerialName(value = "name") val name: kotlin.String,
+    @SerialName(value = "handle") val handle: kotlin.String? = null,
+) {}

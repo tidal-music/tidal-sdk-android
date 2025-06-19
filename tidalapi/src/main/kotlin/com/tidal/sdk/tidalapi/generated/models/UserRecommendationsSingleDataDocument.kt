@@ -18,6 +18,5 @@ import kotlinx.serialization.Serializable
 data class UserRecommendationsSingleDataDocument(
     @SerialName(value = "data") val `data`: UserRecommendationsResource? = null,
     @SerialName(value = "links") val links: Links? = null,
-    @SerialName(value = "included")
-    val included: kotlin.collections.List<UserRecommendationsMultiDataDocumentIncludedInner>? = null,
+    @SerialName(value = "included") val included: kotlin.collections.List<IncludedInner>? = null,
 ) {}

@@ -18,6 +18,5 @@ import kotlinx.serialization.Serializable
 data class VideosMultiDataDocument(
     @SerialName(value = "data") val `data`: kotlin.collections.List<VideosResource>? = null,
     @SerialName(value = "links") val links: Links? = null,
-    @SerialName(value = "included")
-    val included: kotlin.collections.List<VideosMultiDataDocumentIncludedInner>? = null,
+    @SerialName(value = "included") val included: kotlin.collections.List<IncludedInner>? = null,
 ) {}

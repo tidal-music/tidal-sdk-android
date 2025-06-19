@@ -8,21 +8,21 @@ package com.tidal.sdk.tidalapi.generated.models
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.Transient
 
 /**
- * @param id resource unique identifier
- * @param type resource unique type
- * @param attributes
+ * @param id
+ * @param type
  */
 @Serializable
-@SerialName(value = "users")
-data class UsersResource(
-
-    /* resource unique identifier */
-
+data class PlaylistCoverArtRelationshipUpdateOperationPayloadData(
     @SerialName(value = "id") val id: kotlin.String,
-    /* resource unique type */
-    @Transient @SerialName(value = "type") val type: kotlin.String = "",
-    @SerialName(value = "attributes") val attributes: UsersAttributes? = null,
-) : IncludedInner {}
+    @SerialName(value = "type")
+    val type: PlaylistCoverArtRelationshipUpdateOperationPayloadData.Type,
+) {
+
+    /** Values: artworks */
+    @Serializable
+    enum class Type(val value: kotlin.String) {
+        @SerialName(value = "artworks") artworks("artworks")
+    }
+}

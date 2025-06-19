@@ -17,7 +17,7 @@ import kotlinx.serialization.Transient
  * @param relationships
  */
 @Serializable
-@SerialName(value = "searchresults")
+@SerialName(value = "searchResults")
 data class SearchResultsResource(
 
     /* resource unique identifier */
@@ -27,4 +27,4 @@ data class SearchResultsResource(
     @Transient @SerialName(value = "type") val type: kotlin.String = "",
     @SerialName(value = "attributes") val attributes: SearchResultsAttributes? = null,
     @SerialName(value = "relationships") val relationships: SearchResultsRelationships? = null,
-) : SearchResultsMultiDataRelationshipDocumentIncludedInner {}
+) : IncludedInner {}

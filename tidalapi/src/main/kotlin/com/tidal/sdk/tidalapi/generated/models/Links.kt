@@ -12,16 +12,16 @@ import kotlinx.serialization.Serializable
 /**
  * Links JSON:API object
  *
- * @param self the link that generated the current response document
- * @param next the next page of data (pagination)
+ * @param self Link to self
+ * @param next Link to next page
  */
 @Serializable
 data class Links(
 
-    /* the link that generated the current response document */
+    /* Link to self */
 
     @SerialName(value = "self") val self: kotlin.String,
-    /* the next page of data (pagination) */
+    /* Link to next page */
 
     @SerialName(value = "next") val next: kotlin.String? = null,
 ) {}
