@@ -26,11 +26,9 @@ interface Tracks {
      *
      * @param countryCode ISO 3166-1 alpha-2 country code
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: albums, artists, providers, radio, similarTracks (optional)
-     * @param filterIsrc Allows to filter the collection of resources based on isrc attribute value
-     *   (optional)
-     * @param filterId Allows to filter the collection of resources based on id attribute value
-     *   (optional)
+     *   Available options: albums, artists, owners, providers, radio, similarTracks (optional)
+     * @param filterIsrc International Standard Recording Code (ISRC) (optional)
+     * @param filterId A Tidal catalogue ID (optional)
      * @return [TracksMultiDataDocument]
      */
     @GET("tracks")
@@ -59,10 +57,10 @@ interface Tracks {
      *   content types.
      * - 429: Too many HTTP requests have been made within the allowed time.
      *
-     * @param id Track id
+     * @param id A Tidal catalogue ID
      * @param countryCode ISO 3166-1 alpha-2 country code
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: albums, artists, providers, radio, similarTracks (optional)
+     *   Available options: albums, artists, owners, providers, radio, similarTracks (optional)
      * @return [TracksSingleDataDocument]
      */
     @GET("tracks/{id}")
@@ -87,7 +85,7 @@ interface Tracks {
      *   content types.
      * - 429: Too many HTTP requests have been made within the allowed time.
      *
-     * @param id Track id
+     * @param id A Tidal catalogue ID
      * @param trackUpdateOperationPayload (optional)
      * @return [Unit]
      */
@@ -112,7 +110,7 @@ interface Tracks {
      *   content types.
      * - 429: Too many HTTP requests have been made within the allowed time.
      *
-     * @param id Track id
+     * @param id A Tidal catalogue ID
      * @param countryCode ISO 3166-1 alpha-2 country code
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: albums (optional)
@@ -144,18 +142,48 @@ interface Tracks {
      *   content types.
      * - 429: Too many HTTP requests have been made within the allowed time.
      *
-     * @param id Track id
+     * @param id A Tidal catalogue ID
      * @param countryCode ISO 3166-1 alpha-2 country code
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: artists (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: artists (optional)
      * @return [TracksMultiDataRelationshipDocument]
      */
     @GET("tracks/{id}/relationships/artists")
     suspend fun tracksIdRelationshipsArtistsGet(
         @Path("id") id: kotlin.String,
         @Query("countryCode") countryCode: kotlin.String,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+    ): Response<TracksMultiDataRelationshipDocument>
+
+    /**
+     * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
+     * - 200: Successful response
+     * - 451: Unavailable For Legal Reasons
+     * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
+     *   request body, etc.).
+     * - 500: Internal Server Error. Something went wrong on the server party.
+     * - 404: Resource not found. The requested resource is not found.
+     * - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media
+     *   type is set into Content-Type header.
+     * - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
+     * - 406: Not acceptable. The server doesn't support any of the requested by client acceptable
+     *   content types.
+     * - 429: Too many HTTP requests have been made within the allowed time.
+     *
+     * @param id A Tidal catalogue ID
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: owners (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
+     * @return [TracksMultiDataRelationshipDocument]
+     */
+    @GET("tracks/{id}/relationships/owners")
+    suspend fun tracksIdRelationshipsOwnersGet(
+        @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
@@ -177,7 +205,7 @@ interface Tracks {
      *   content types.
      * - 429: Too many HTTP requests have been made within the allowed time.
      *
-     * @param id Track id
+     * @param id A Tidal catalogue ID
      * @param countryCode ISO 3166-1 alpha-2 country code
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: providers (optional)
@@ -209,7 +237,7 @@ interface Tracks {
      *   content types.
      * - 429: Too many HTTP requests have been made within the allowed time.
      *
-     * @param id Track id
+     * @param id A Tidal catalogue ID
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: radio (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -240,20 +268,20 @@ interface Tracks {
      *   content types.
      * - 429: Too many HTTP requests have been made within the allowed time.
      *
-     * @param id Track id
+     * @param id A Tidal catalogue ID
      * @param countryCode ISO 3166-1 alpha-2 country code
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: similarTracks (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: similarTracks (optional)
      * @return [TracksMultiDataRelationshipDocument]
      */
     @GET("tracks/{id}/relationships/similarTracks")
     suspend fun tracksIdRelationshipsSimilarTracksGet(
         @Path("id") id: kotlin.String,
         @Query("countryCode") countryCode: kotlin.String,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
     ): Response<TracksMultiDataRelationshipDocument>
 }

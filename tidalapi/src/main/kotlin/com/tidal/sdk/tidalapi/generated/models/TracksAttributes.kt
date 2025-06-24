@@ -23,9 +23,10 @@ import kotlinx.serialization.Serializable
  * @param bpm Beats per minute
  * @param accessType Access type
  * @param availability Available usage for this track
- * @param toneTags Tone tags
- * @param genreTags Genre tags
+ * @param toneTags
+ * @param genreTags
  * @param externalLinks Track links external to TIDAL API
+ * @param spotlighted Is the track spotlighted?
  */
 @Serializable
 data class TracksAttributes(
@@ -68,16 +69,15 @@ data class TracksAttributes(
 
     @SerialName(value = "availability")
     val availability: kotlin.collections.List<TracksAttributes.Availability>? = null,
-    /* Tone tags */
-
     @SerialName(value = "toneTags") val toneTags: kotlin.collections.List<kotlin.String>? = null,
-    /* Genre tags */
-
     @SerialName(value = "genreTags") val genreTags: kotlin.collections.List<kotlin.String>? = null,
     /* Track links external to TIDAL API */
 
     @SerialName(value = "externalLinks")
     val externalLinks: kotlin.collections.List<ExternalLink>? = null,
+    /* Is the track spotlighted? */
+
+    @SerialName(value = "spotlighted") val spotlighted: kotlin.Boolean? = null,
 ) {
 
     /**
