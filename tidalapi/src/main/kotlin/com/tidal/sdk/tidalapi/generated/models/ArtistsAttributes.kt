@@ -14,6 +14,8 @@ import kotlinx.serialization.Serializable
  * @param popularity Artist popularity (0.0 - 1.0)
  * @param externalLinks Artist links external to TIDAL API
  * @param handle Artist handle
+ * @param spotlighted Is the artist spotlighted?
+ * @param contributionsEnabled Is the artist enabled for contributions?
  */
 @Serializable
 data class ArtistsAttributes(
@@ -31,4 +33,10 @@ data class ArtistsAttributes(
     /* Artist handle */
 
     @SerialName(value = "handle") val handle: kotlin.String? = null,
+    /* Is the artist spotlighted? */
+
+    @SerialName(value = "spotlighted") val spotlighted: kotlin.Boolean? = null,
+    /* Is the artist enabled for contributions? */
+
+    @SerialName(value = "contributionsEnabled") val contributionsEnabled: kotlin.Boolean? = null,
 ) {}

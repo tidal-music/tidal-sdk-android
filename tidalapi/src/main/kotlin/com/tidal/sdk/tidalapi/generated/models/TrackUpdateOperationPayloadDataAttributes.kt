@@ -16,8 +16,8 @@ import kotlinx.serialization.Serializable
  * @param bpm
  * @param key
  * @param keyScale
- * @param genreTags Genre tags
- * @param toneTags Tone tags
+ * @param genreTags
+ * @param toneTags
  */
 @Serializable
 data class TrackUpdateOperationPayloadDataAttributes(
@@ -33,11 +33,7 @@ data class TrackUpdateOperationPayloadDataAttributes(
     @SerialName(value = "key") val key: TrackUpdateOperationPayloadDataAttributes.Key? = null,
     @SerialName(value = "keyScale")
     val keyScale: TrackUpdateOperationPayloadDataAttributes.KeyScale? = null,
-    /* Genre tags */
-
     @SerialName(value = "genreTags") val genreTags: kotlin.collections.List<kotlin.String>? = null,
-    /* Tone tags */
-
     @SerialName(value = "toneTags") val toneTags: kotlin.collections.List<kotlin.String>? = null,
 ) {
 

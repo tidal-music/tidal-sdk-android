@@ -8,7 +8,7 @@
       "name" : "TIDAL Developer - Discussions",
       "url" : "https://github.com/orgs/tidal-music/discussions"
     },
-    "version" : "0.1.17"
+    "version" : "0.1.18"
   },
   "externalDocs" : {
     "description" : "TIDAL Developer - Documentation",
@@ -10446,12 +10446,12 @@
         "parameters" : [ {
           "name" : "id",
           "in" : "path",
-          "description" : "Track id",
+          "description" : "A Tidal catalogue ID",
           "required" : true,
           "schema" : {
             "type" : "string"
           },
-          "example" : "251380837"
+          "example" : "75413016"
         }, {
           "name" : "countryCode",
           "in" : "query",
@@ -10464,7 +10464,7 @@
         }, {
           "name" : "include",
           "in" : "query",
-          "description" : "Allows the client to customize which related resources should be returned. Available options: albums, artists, providers, radio, similarTracks",
+          "description" : "Allows the client to customize which related resources should be returned. Available options: albums, artists, owners, providers, radio, similarTracks",
           "required" : false,
           "schema" : {
             "type" : "array",
@@ -10649,12 +10649,12 @@
         "parameters" : [ {
           "name" : "id",
           "in" : "path",
-          "description" : "Track id",
+          "description" : "A Tidal catalogue ID",
           "required" : true,
           "schema" : {
             "type" : "string"
           },
-          "example" : "251380837"
+          "example" : "75413016"
         } ],
         "requestBody" : {
           "content" : {
@@ -10838,7 +10838,7 @@
         }, {
           "name" : "include",
           "in" : "query",
-          "description" : "Allows the client to customize which related resources should be returned. Available options: albums, artists, providers, radio, similarTracks",
+          "description" : "Allows the client to customize which related resources should be returned. Available options: albums, artists, owners, providers, radio, similarTracks",
           "required" : false,
           "schema" : {
             "type" : "array",
@@ -10851,29 +10851,29 @@
         }, {
           "name" : "filter[isrc]",
           "in" : "query",
-          "description" : "Allows to filter the collection of resources based on isrc attribute value",
+          "description" : "International Standard Recording Code (ISRC)",
           "required" : false,
           "schema" : {
             "type" : "array",
             "items" : {
               "type" : "string",
-              "example" : "USSM12209515"
+              "example" : "QMJMT1701237"
             }
           },
-          "example" : "USSM12209515"
+          "example" : "QMJMT1701237"
         }, {
           "name" : "filter[id]",
           "in" : "query",
-          "description" : "Allows to filter the collection of resources based on id attribute value",
+          "description" : "A Tidal catalogue ID",
           "required" : false,
           "schema" : {
             "type" : "array",
             "items" : {
               "type" : "string",
-              "example" : "251380837"
+              "example" : "75413016"
             }
           },
-          "example" : "251380837"
+          "example" : "75413016"
         } ],
         "responses" : {
           "200" : {
@@ -11051,12 +11051,12 @@
         "parameters" : [ {
           "name" : "id",
           "in" : "path",
-          "description" : "Track id",
+          "description" : "A Tidal catalogue ID",
           "required" : true,
           "schema" : {
             "type" : "string"
           },
-          "example" : "251380837"
+          "example" : "75413016"
         }, {
           "name" : "countryCode",
           "in" : "query",
@@ -11264,12 +11264,12 @@
         "parameters" : [ {
           "name" : "id",
           "in" : "path",
-          "description" : "Track id",
+          "description" : "A Tidal catalogue ID",
           "required" : true,
           "schema" : {
             "type" : "string"
           },
-          "example" : "251380837"
+          "example" : "75413016"
         }, {
           "name" : "countryCode",
           "in" : "query",
@@ -11279,6 +11279,14 @@
             "type" : "string"
           },
           "example" : "US"
+        }, {
+          "name" : "page[cursor]",
+          "in" : "query",
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
         }, {
           "name" : "include",
           "in" : "query",
@@ -11292,6 +11300,202 @@
             }
           },
           "example" : "artists"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Tracks_Multi_Data_Relationship_Document"
+                }
+              }
+            }
+          },
+          "451" : {
+            "description" : "Unavailable For Legal Reasons",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Unavailable_For_Legal_Reasons_Doc" : {
+                    "$ref" : "#/components/examples/Unavailable_For_Legal_Reasons_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Bad_Request_Error_Doc" : {
+                    "$ref" : "#/components/examples/Bad_Request_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal Server Error. Something went wrong on the server party.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Internal_Server_Error_Doc" : {
+                    "$ref" : "#/components/examples/Internal_Server_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found. The requested resource is not found.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Resource_Not_Found_Error_Doc" : {
+                    "$ref" : "#/components/examples/Resource_Not_Found_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "415" : {
+            "description" : "Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Unsupported_Media_Type_Error_Doc" : {
+                    "$ref" : "#/components/examples/Unsupported_Media_Type_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Method not supported. Ensure a proper HTTP method for an HTTP request is used.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Method_Not_Supported_Error_Doc" : {
+                    "$ref" : "#/components/examples/Method_Not_Supported_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "406" : {
+            "description" : "Not acceptable. The server doesn't support any of the requested by client acceptable content types.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Not_Acceptable_Error_Doc" : {
+                    "$ref" : "#/components/examples/Not_Acceptable_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Too many HTTP requests have been made within the allowed time.",
+            "headers" : {
+              "X-RateLimit-Remaining" : {
+                "description" : "Number of tokens currently remaining. Refer to X-RateLimit-Replenish-Rate header for replenishment information.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Burst-Capacity" : {
+                "description" : "Initial number of tokens, and max number of tokens that can be replenished.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "20"
+              },
+              "X-RateLimit-Replenish-Rate" : {
+                "description" : "Number of tokens replenished per second.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Requested-Tokens" : {
+                "description" : "Request cost in tokens.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "Client_Credentials" : [ ]
+        }, {
+          "Authorization_Code_PKCE" : [ ]
+        } ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "THIRD_PARTY"
+        }
+      }
+    },
+    "/tracks/{id}/relationships/owners" : {
+      "get" : {
+        "tags" : [ "tracks" ],
+        "summary" : "Get owners relationship (\"to-many\").",
+        "description" : "Retrieves owners relationship.",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "A Tidal catalogue ID",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "75413016"
+        }, {
+          "name" : "include",
+          "in" : "query",
+          "description" : "Allows the client to customize which related resources should be returned. Available options: owners",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "owners"
+            }
+          },
+          "example" : "owners"
         }, {
           "name" : "page[cursor]",
           "in" : "query",
@@ -11465,7 +11669,7 @@
           "Authorization_Code_PKCE" : [ ]
         } ],
         "x-path-item-properties" : {
-          "required-access-tier" : "THIRD_PARTY"
+          "required-access-tier" : "INTERNAL"
         }
       }
     },
@@ -11477,12 +11681,12 @@
         "parameters" : [ {
           "name" : "id",
           "in" : "path",
-          "description" : "Track id",
+          "description" : "A Tidal catalogue ID",
           "required" : true,
           "schema" : {
             "type" : "string"
           },
-          "example" : "251380837"
+          "example" : "75413016"
         }, {
           "name" : "countryCode",
           "in" : "query",
@@ -11690,12 +11894,12 @@
         "parameters" : [ {
           "name" : "id",
           "in" : "path",
-          "description" : "Track id",
+          "description" : "A Tidal catalogue ID",
           "required" : true,
           "schema" : {
             "type" : "string"
           },
-          "example" : "251380837"
+          "example" : "75413016"
         }, {
           "name" : "include",
           "in" : "query",
@@ -11894,12 +12098,12 @@
         "parameters" : [ {
           "name" : "id",
           "in" : "path",
-          "description" : "Track id",
+          "description" : "A Tidal catalogue ID",
           "required" : true,
           "schema" : {
             "type" : "string"
           },
-          "example" : "251380837"
+          "example" : "75413016"
         }, {
           "name" : "countryCode",
           "in" : "query",
@@ -11909,6 +12113,14 @@
             "type" : "string"
           },
           "example" : "US"
+        }, {
+          "name" : "page[cursor]",
+          "in" : "query",
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
         }, {
           "name" : "include",
           "in" : "query",
@@ -11922,14 +12134,6 @@
             }
           },
           "example" : "similarTracks"
-        }, {
-          "name" : "page[cursor]",
-          "in" : "query",
-          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
         } ],
         "responses" : {
           "200" : {
@@ -17193,6 +17397,16 @@
             "type" : "string",
             "description" : "Artist handle",
             "example" : "jayz"
+          },
+          "spotlighted" : {
+            "type" : "boolean",
+            "description" : "Is the artist spotlighted?",
+            "example" : true
+          },
+          "contributionsEnabled" : {
+            "type" : "boolean",
+            "description" : "Is the artist enabled for contributions?",
+            "example" : true
           }
         }
       },
@@ -18789,22 +19003,18 @@
             "maxItems" : 5,
             "minItems" : 0,
             "type" : "array",
-            "description" : "Genre tags",
-            "example" : "pop,rock",
             "items" : {
               "maxLength" : 20,
               "minLength" : 1,
               "type" : "string",
               "description" : "Genre tags",
-              "example" : "pop,rock"
+              "example" : "rock"
             }
           },
           "toneTags" : {
             "maxItems" : 5,
             "minItems" : 0,
             "type" : "array",
-            "description" : "Tone tags",
-            "example" : "happy",
             "items" : {
               "maxLength" : 20,
               "minLength" : 1,
@@ -18849,12 +19059,6 @@
             "description" : "Explicit content",
             "example" : false
           },
-          "popularity" : {
-            "type" : "number",
-            "description" : "Popularity (0.0 - 1.0)",
-            "format" : "double",
-            "example" : 0.56
-          },
           "key" : {
             "type" : "string",
             "description" : "Key",
@@ -18870,6 +19074,12 @@
             "description" : "Beats per minute",
             "format" : "float",
             "example" : 60.0
+          },
+          "popularity" : {
+            "type" : "number",
+            "description" : "Popularity (0.0 - 1.0)",
+            "format" : "double",
+            "example" : 0.56
           },
           "accessType" : {
             "type" : "string",
@@ -18890,13 +19100,11 @@
             "items" : {
               "type" : "string",
               "description" : "Media metadata tags",
-              "example" : "HIRES_LOSSLESS ,LOSSLESS"
+              "example" : "HIRES_LOSSLESS"
             }
           },
           "toneTags" : {
             "type" : "array",
-            "description" : "Tone tags",
-            "example" : "Happy",
             "items" : {
               "type" : "string",
               "description" : "Tone tags",
@@ -18905,8 +19113,6 @@
           },
           "genreTags" : {
             "type" : "array",
-            "description" : "Genre tags",
-            "example" : "Pop",
             "items" : {
               "type" : "string",
               "description" : "Genre tags",
@@ -18919,6 +19125,11 @@
             "items" : {
               "$ref" : "#/components/schemas/External_Link"
             }
+          },
+          "spotlighted" : {
+            "type" : "boolean",
+            "description" : "Is the track spotlighted?",
+            "example" : true
           }
         }
       },
@@ -18957,7 +19168,7 @@
         }
       },
       "Tracks_Relationships" : {
-        "required" : [ "albums", "artists", "providers", "radio", "similarTracks" ],
+        "required" : [ "albums", "artists", "owners", "providers", "radio", "similarTracks" ],
         "properties" : {
           "albums" : {
             "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
@@ -18966,6 +19177,9 @@
             "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
           },
           "similarTracks" : {
+            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
+          },
+          "owners" : {
             "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
           },
           "providers" : {
