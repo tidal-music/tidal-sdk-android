@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.8] - 2025-07-01
+### Changed
+- Generated api based on the documentation
+- Improved and added operations for artists, tracks and reporting
+
 ## [0.2.7] - 2025-06-25
 ### Changed
 - Generated api based on the documentation
