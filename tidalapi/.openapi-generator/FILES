@@ -13,6 +13,7 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/Tracks.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/UserCollections.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/UserEntitlements.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/UserRecommendations.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/UserReports.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/Users.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/Videos.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumsAttributes.kt
@@ -56,6 +57,8 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtworkFileMeta.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtworkSourceFile.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtworksAttributes.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtworksMultiDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtworksMultiDataRelationshipDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtworksRelationships.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtworksResource.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtworksSingleDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AudioNormalizationData.kt
@@ -120,6 +123,12 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/SearchSuggestionsResourc
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/SearchSuggestionsSingleDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/SearchSuggestionsSuggestions.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/SingletonDataRelationshipDoc.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/TrackCreateOperationPayload.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/TrackCreateOperationPayloadData.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/TrackCreateOperationPayloadDataAttributes.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/TrackCreateOperationPayloadDataRelationships.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/TrackCreateOperationPayloadDataRelationshipsAlbums.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/TrackCreateOperationPayloadDataRelationshipsAlbumsData.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/TrackFilesAttributes.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/TrackFilesMultiDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/TrackFilesResource.kt
@@ -157,6 +166,7 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionsArtistsMu
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionsArtistsResourceIdentifier.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionsArtistsResourceIdentifierMeta.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionsMultiDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionsMultiDataRelationshipDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionsPlaylistsMultiDataRelationshipDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionsPlaylistsResourceIdentifier.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionsPlaylistsResourceIdentifierMeta.kt
@@ -172,6 +182,18 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserRecommendationsMulti
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserRecommendationsRelationships.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserRecommendationsResource.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserRecommendationsSingleDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserReportCreateOperationPayload.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserReportCreateOperationPayloadData.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserReportCreateOperationPayloadDataAttributes.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserReportsAttributes.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserReportsCreateOperationPayloadDataRelationships.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserReportsCreateOperationPayloadDataRelationshipsReportedResources.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserReportsCreateOperationPayloadDataRelationshipsReportedResourcesData.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserReportsMultiDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserReportsMultiDataRelationshipDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserReportsRelationships.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserReportsResource.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserReportsSingleDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UsersAttributes.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UsersMultiDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UsersResource.kt

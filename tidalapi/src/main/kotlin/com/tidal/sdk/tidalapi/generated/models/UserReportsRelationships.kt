@@ -10,16 +10,11 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param albums
- * @param artists
- * @param playlists
+ * @param reportedResources
  * @param owners
  */
 @Serializable
-data class UserCollectionsRelationships(
-    @SerialName(value = "albums") val albums: UserCollectionsAlbumsMultiDataRelationshipDocument,
-    @SerialName(value = "artists") val artists: UserCollectionsArtistsMultiDataRelationshipDocument,
-    @SerialName(value = "playlists")
-    val playlists: UserCollectionsPlaylistsMultiDataRelationshipDocument,
+data class UserReportsRelationships(
+    @SerialName(value = "reportedResources") val reportedResources: MultiDataRelationshipDoc,
     @SerialName(value = "owners") val owners: MultiDataRelationshipDoc,
 ) {}

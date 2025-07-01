@@ -8,7 +8,7 @@
       "name" : "TIDAL Developer - Discussions",
       "url" : "https://github.com/orgs/tidal-music/discussions"
     },
-    "version" : "0.1.18"
+    "version" : "0.1.22"
   },
   "externalDocs" : {
     "description" : "TIDAL Developer - Documentation",
@@ -46,6 +46,8 @@
     "name" : "userEntitlements"
   }, {
     "name" : "userRecommendations"
+  }, {
+    "name" : "userReports"
   }, {
     "name" : "users"
   }, {
@@ -3106,10 +3108,10 @@
           }
         },
         "security" : [ {
-          "Authorization_Code_PKCE" : [ ]
+          "Authorization_Code_PKCE" : [ "r_usr" ]
         } ],
         "x-path-item-properties" : {
-          "required-access-tier" : "INTERNAL"
+          "required-access-tier" : "THIRD_PARTY"
         }
       }
     },
@@ -4796,6 +4798,19 @@
             "type" : "string"
           },
           "example" : "US"
+        }, {
+          "name" : "include",
+          "in" : "query",
+          "description" : "Allows the client to customize which related resources should be returned. Available options: owners",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "owners"
+            }
+          },
+          "example" : "owners"
         } ],
         "responses" : {
           "200" : {
@@ -4979,6 +4994,19 @@
             "type" : "string"
           },
           "example" : "US"
+        }, {
+          "name" : "include",
+          "in" : "query",
+          "description" : "Allows the client to customize which related resources should be returned. Available options: owners",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "owners"
+            }
+          },
+          "example" : "owners"
         }, {
           "name" : "filter[id]",
           "in" : "query",
@@ -5337,6 +5365,208 @@
         } ],
         "x-path-item-properties" : {
           "required-access-tier" : "INTERNAL"
+        }
+      }
+    },
+    "/artworks/{id}/relationships/owners" : {
+      "get" : {
+        "tags" : [ "artworks" ],
+        "summary" : "Get owners relationship (\"to-many\").",
+        "description" : "Retrieves owners relationship.",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "Artwork id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "a468bee88def"
+        }, {
+          "name" : "include",
+          "in" : "query",
+          "description" : "Allows the client to customize which related resources should be returned. Available options: owners",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "owners"
+            }
+          },
+          "example" : "owners"
+        }, {
+          "name" : "page[cursor]",
+          "in" : "query",
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Artworks_Multi_Data_Relationship_Document"
+                }
+              }
+            }
+          },
+          "451" : {
+            "description" : "Unavailable For Legal Reasons",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Unavailable_For_Legal_Reasons_Doc" : {
+                    "$ref" : "#/components/examples/Unavailable_For_Legal_Reasons_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Bad_Request_Error_Doc" : {
+                    "$ref" : "#/components/examples/Bad_Request_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal Server Error. Something went wrong on the server party.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Internal_Server_Error_Doc" : {
+                    "$ref" : "#/components/examples/Internal_Server_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found. The requested resource is not found.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Resource_Not_Found_Error_Doc" : {
+                    "$ref" : "#/components/examples/Resource_Not_Found_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "415" : {
+            "description" : "Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Unsupported_Media_Type_Error_Doc" : {
+                    "$ref" : "#/components/examples/Unsupported_Media_Type_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Method not supported. Ensure a proper HTTP method for an HTTP request is used.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Method_Not_Supported_Error_Doc" : {
+                    "$ref" : "#/components/examples/Method_Not_Supported_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "406" : {
+            "description" : "Not acceptable. The server doesn't support any of the requested by client acceptable content types.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Not_Acceptable_Error_Doc" : {
+                    "$ref" : "#/components/examples/Not_Acceptable_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Too many HTTP requests have been made within the allowed time.",
+            "headers" : {
+              "X-RateLimit-Remaining" : {
+                "description" : "Number of tokens currently remaining. Refer to X-RateLimit-Replenish-Rate header for replenishment information.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Burst-Capacity" : {
+                "description" : "Initial number of tokens, and max number of tokens that can be replenished.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "20"
+              },
+              "X-RateLimit-Replenish-Rate" : {
+                "description" : "Number of tokens replenished per second.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Requested-Tokens" : {
+                "description" : "Request cost in tokens.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "r_usr" ]
+        } ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "THIRD_PARTY"
         }
       }
     },
@@ -7670,8 +7900,6 @@
           }
         },
         "security" : [ {
-          "Client_Credentials" : [ ]
-        }, {
           "Authorization_Code_PKCE" : [ "playlists.read", "r_usr" ]
         } ],
         "x-path-item-properties" : {
@@ -10836,6 +11064,14 @@
           },
           "example" : "US"
         }, {
+          "name" : "page[cursor]",
+          "in" : "query",
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
           "name" : "include",
           "in" : "query",
           "description" : "Allows the client to customize which related resources should be returned. Available options: albums, artists, owners, providers, radio, similarTracks",
@@ -10848,6 +11084,19 @@
             }
           },
           "example" : "albums"
+        }, {
+          "name" : "filter[r.owners.id]",
+          "in" : "query",
+          "description" : "User id",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "123456"
+            }
+          },
+          "example" : "123456"
         }, {
           "name" : "filter[isrc]",
           "in" : "query",
@@ -11036,10 +11285,189 @@
         "security" : [ {
           "Client_Credentials" : [ ]
         }, {
-          "Authorization_Code_PKCE" : [ ]
+          "Authorization_Code_PKCE" : [ "r_usr" ]
         } ],
         "x-path-item-properties" : {
           "required-access-tier" : "THIRD_PARTY"
+        }
+      },
+      "post" : {
+        "tags" : [ "tracks" ],
+        "summary" : "Create single track.",
+        "description" : "Creates a new track.",
+        "parameters" : [ ],
+        "requestBody" : {
+          "content" : {
+            "application/vnd.api+json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/TrackCreateOperation_Payload"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Successful response",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Tracks_Single_Data_Document"
+                }
+              }
+            }
+          },
+          "451" : {
+            "description" : "Unavailable For Legal Reasons",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Unavailable_For_Legal_Reasons_Doc" : {
+                    "$ref" : "#/components/examples/Unavailable_For_Legal_Reasons_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Bad_Request_Error_Doc" : {
+                    "$ref" : "#/components/examples/Bad_Request_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal Server Error. Something went wrong on the server party.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Internal_Server_Error_Doc" : {
+                    "$ref" : "#/components/examples/Internal_Server_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found. The requested resource is not found.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Resource_Not_Found_Error_Doc" : {
+                    "$ref" : "#/components/examples/Resource_Not_Found_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "415" : {
+            "description" : "Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Unsupported_Media_Type_Error_Doc" : {
+                    "$ref" : "#/components/examples/Unsupported_Media_Type_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Method not supported. Ensure a proper HTTP method for an HTTP request is used.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Method_Not_Supported_Error_Doc" : {
+                    "$ref" : "#/components/examples/Method_Not_Supported_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "406" : {
+            "description" : "Not acceptable. The server doesn't support any of the requested by client acceptable content types.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Not_Acceptable_Error_Doc" : {
+                    "$ref" : "#/components/examples/Not_Acceptable_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Too many HTTP requests have been made within the allowed time.",
+            "headers" : {
+              "X-RateLimit-Remaining" : {
+                "description" : "Number of tokens currently remaining. Refer to X-RateLimit-Replenish-Rate header for replenishment information.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Burst-Capacity" : {
+                "description" : "Initial number of tokens, and max number of tokens that can be replenished.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "20"
+              },
+              "X-RateLimit-Replenish-Rate" : {
+                "description" : "Number of tokens replenished per second.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Requested-Tokens" : {
+                "description" : "Request cost in tokens.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "w_usr" ]
+        } ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
         }
       }
     },
@@ -11664,12 +12092,10 @@
           }
         },
         "security" : [ {
-          "Client_Credentials" : [ ]
-        }, {
-          "Authorization_Code_PKCE" : [ ]
+          "Authorization_Code_PKCE" : [ "r_usr" ]
         } ],
         "x-path-item-properties" : {
-          "required-access-tier" : "INTERNAL"
+          "required-access-tier" : "THIRD_PARTY"
         }
       }
     },
@@ -12338,7 +12764,7 @@
         }, {
           "name" : "include",
           "in" : "query",
-          "description" : "Allows the client to customize which related resources should be returned. Available options: albums, artists, playlists",
+          "description" : "Allows the client to customize which related resources should be returned. Available options: albums, artists, owners, playlists",
           "required" : false,
           "schema" : {
             "type" : "array",
@@ -12728,7 +13154,7 @@
           }
         },
         "security" : [ {
-          "Authorization_Code_PKCE" : [ "collection.read", "user.read" ]
+          "Authorization_Code_PKCE" : [ "collection.read", "r_usr" ]
         } ],
         "x-path-item-properties" : {
           "required-access-tier" : "THIRD_PARTY"
@@ -13313,7 +13739,7 @@
           }
         },
         "security" : [ {
-          "Authorization_Code_PKCE" : [ "collection.read", "user.read" ]
+          "Authorization_Code_PKCE" : [ "collection.read", "r_usr" ]
         } ],
         "x-path-item-properties" : {
           "required-access-tier" : "THIRD_PARTY"
@@ -13685,6 +14111,208 @@
         }
       }
     },
+    "/userCollections/{id}/relationships/owners" : {
+      "get" : {
+        "tags" : [ "userCollections" ],
+        "summary" : "Get owners relationship (\"to-many\").",
+        "description" : "Retrieves owners relationship.",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "User id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "123456"
+        }, {
+          "name" : "include",
+          "in" : "query",
+          "description" : "Allows the client to customize which related resources should be returned. Available options: owners",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "owners"
+            }
+          },
+          "example" : "owners"
+        }, {
+          "name" : "page[cursor]",
+          "in" : "query",
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/UserCollections_Multi_Data_Relationship_Document"
+                }
+              }
+            }
+          },
+          "451" : {
+            "description" : "Unavailable For Legal Reasons",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Unavailable_For_Legal_Reasons_Doc" : {
+                    "$ref" : "#/components/examples/Unavailable_For_Legal_Reasons_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Bad_Request_Error_Doc" : {
+                    "$ref" : "#/components/examples/Bad_Request_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal Server Error. Something went wrong on the server party.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Internal_Server_Error_Doc" : {
+                    "$ref" : "#/components/examples/Internal_Server_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found. The requested resource is not found.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Resource_Not_Found_Error_Doc" : {
+                    "$ref" : "#/components/examples/Resource_Not_Found_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "415" : {
+            "description" : "Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Unsupported_Media_Type_Error_Doc" : {
+                    "$ref" : "#/components/examples/Unsupported_Media_Type_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Method not supported. Ensure a proper HTTP method for an HTTP request is used.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Method_Not_Supported_Error_Doc" : {
+                    "$ref" : "#/components/examples/Method_Not_Supported_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "406" : {
+            "description" : "Not acceptable. The server doesn't support any of the requested by client acceptable content types.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Not_Acceptable_Error_Doc" : {
+                    "$ref" : "#/components/examples/Not_Acceptable_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Too many HTTP requests have been made within the allowed time.",
+            "headers" : {
+              "X-RateLimit-Remaining" : {
+                "description" : "Number of tokens currently remaining. Refer to X-RateLimit-Replenish-Rate header for replenishment information.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Burst-Capacity" : {
+                "description" : "Initial number of tokens, and max number of tokens that can be replenished.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "20"
+              },
+              "X-RateLimit-Replenish-Rate" : {
+                "description" : "Number of tokens replenished per second.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Requested-Tokens" : {
+                "description" : "Request cost in tokens.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "collection.read", "r_usr" ]
+        } ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "THIRD_PARTY"
+        }
+      }
+    },
     "/userCollections/{id}/relationships/playlists" : {
       "get" : {
         "tags" : [ "userCollections" ],
@@ -13889,7 +14517,7 @@
           }
         },
         "security" : [ {
-          "Authorization_Code_PKCE" : [ "collection.read", "user.read" ]
+          "Authorization_Code_PKCE" : [ "collection.read", "r_usr" ]
         } ],
         "x-path-item-properties" : {
           "required-access-tier" : "THIRD_PARTY"
@@ -15506,6 +16134,779 @@
         } ],
         "x-path-item-properties" : {
           "required-access-tier" : "THIRD_PARTY"
+        }
+      }
+    },
+    "/userReports/{id}" : {
+      "get" : {
+        "tags" : [ "userReports" ],
+        "summary" : "Get single userReport.",
+        "description" : "Retrieves single userReport by id.",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "include",
+          "in" : "query",
+          "description" : "Allows the client to customize which related resources should be returned. Available options: owners, reportedResources",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "owners"
+            }
+          },
+          "example" : "owners"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/UserReports_Single_Data_Document"
+                }
+              }
+            }
+          },
+          "451" : {
+            "description" : "Unavailable For Legal Reasons",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Unavailable_For_Legal_Reasons_Doc" : {
+                    "$ref" : "#/components/examples/Unavailable_For_Legal_Reasons_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Bad_Request_Error_Doc" : {
+                    "$ref" : "#/components/examples/Bad_Request_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal Server Error. Something went wrong on the server party.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Internal_Server_Error_Doc" : {
+                    "$ref" : "#/components/examples/Internal_Server_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found. The requested resource is not found.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Resource_Not_Found_Error_Doc" : {
+                    "$ref" : "#/components/examples/Resource_Not_Found_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "415" : {
+            "description" : "Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Unsupported_Media_Type_Error_Doc" : {
+                    "$ref" : "#/components/examples/Unsupported_Media_Type_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Method not supported. Ensure a proper HTTP method for an HTTP request is used.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Method_Not_Supported_Error_Doc" : {
+                    "$ref" : "#/components/examples/Method_Not_Supported_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "406" : {
+            "description" : "Not acceptable. The server doesn't support any of the requested by client acceptable content types.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Not_Acceptable_Error_Doc" : {
+                    "$ref" : "#/components/examples/Not_Acceptable_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Too many HTTP requests have been made within the allowed time.",
+            "headers" : {
+              "X-RateLimit-Remaining" : {
+                "description" : "Number of tokens currently remaining. Refer to X-RateLimit-Replenish-Rate header for replenishment information.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Burst-Capacity" : {
+                "description" : "Initial number of tokens, and max number of tokens that can be replenished.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "20"
+              },
+              "X-RateLimit-Replenish-Rate" : {
+                "description" : "Number of tokens replenished per second.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Requested-Tokens" : {
+                "description" : "Request cost in tokens.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "r_usr" ]
+        } ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      }
+    },
+    "/userReports" : {
+      "post" : {
+        "tags" : [ "userReports" ],
+        "summary" : "Create single userReport.",
+        "description" : "Creates a new userReport.",
+        "parameters" : [ ],
+        "requestBody" : {
+          "content" : {
+            "application/vnd.api+json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/UserReportCreateOperation_Payload"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Successful response",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/UserReports_Single_Data_Document"
+                }
+              }
+            }
+          },
+          "451" : {
+            "description" : "Unavailable For Legal Reasons",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Unavailable_For_Legal_Reasons_Doc" : {
+                    "$ref" : "#/components/examples/Unavailable_For_Legal_Reasons_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Bad_Request_Error_Doc" : {
+                    "$ref" : "#/components/examples/Bad_Request_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal Server Error. Something went wrong on the server party.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Internal_Server_Error_Doc" : {
+                    "$ref" : "#/components/examples/Internal_Server_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found. The requested resource is not found.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Resource_Not_Found_Error_Doc" : {
+                    "$ref" : "#/components/examples/Resource_Not_Found_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "415" : {
+            "description" : "Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Unsupported_Media_Type_Error_Doc" : {
+                    "$ref" : "#/components/examples/Unsupported_Media_Type_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Method not supported. Ensure a proper HTTP method for an HTTP request is used.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Method_Not_Supported_Error_Doc" : {
+                    "$ref" : "#/components/examples/Method_Not_Supported_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "406" : {
+            "description" : "Not acceptable. The server doesn't support any of the requested by client acceptable content types.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Not_Acceptable_Error_Doc" : {
+                    "$ref" : "#/components/examples/Not_Acceptable_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Too many HTTP requests have been made within the allowed time.",
+            "headers" : {
+              "X-RateLimit-Remaining" : {
+                "description" : "Number of tokens currently remaining. Refer to X-RateLimit-Replenish-Rate header for replenishment information.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Burst-Capacity" : {
+                "description" : "Initial number of tokens, and max number of tokens that can be replenished.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "20"
+              },
+              "X-RateLimit-Replenish-Rate" : {
+                "description" : "Number of tokens replenished per second.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Requested-Tokens" : {
+                "description" : "Request cost in tokens.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "w_usr" ]
+        } ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      }
+    },
+    "/userReports/{id}/relationships/owners" : {
+      "get" : {
+        "tags" : [ "userReports" ],
+        "summary" : "Get owners relationship (\"to-many\").",
+        "description" : "Retrieves owners relationship.",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "include",
+          "in" : "query",
+          "description" : "Allows the client to customize which related resources should be returned. Available options: owners",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "owners"
+            }
+          },
+          "example" : "owners"
+        }, {
+          "name" : "page[cursor]",
+          "in" : "query",
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/UserReports_Multi_Data_Relationship_Document"
+                }
+              }
+            }
+          },
+          "451" : {
+            "description" : "Unavailable For Legal Reasons",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Unavailable_For_Legal_Reasons_Doc" : {
+                    "$ref" : "#/components/examples/Unavailable_For_Legal_Reasons_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Bad_Request_Error_Doc" : {
+                    "$ref" : "#/components/examples/Bad_Request_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal Server Error. Something went wrong on the server party.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Internal_Server_Error_Doc" : {
+                    "$ref" : "#/components/examples/Internal_Server_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found. The requested resource is not found.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Resource_Not_Found_Error_Doc" : {
+                    "$ref" : "#/components/examples/Resource_Not_Found_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "415" : {
+            "description" : "Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Unsupported_Media_Type_Error_Doc" : {
+                    "$ref" : "#/components/examples/Unsupported_Media_Type_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Method not supported. Ensure a proper HTTP method for an HTTP request is used.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Method_Not_Supported_Error_Doc" : {
+                    "$ref" : "#/components/examples/Method_Not_Supported_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "406" : {
+            "description" : "Not acceptable. The server doesn't support any of the requested by client acceptable content types.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Not_Acceptable_Error_Doc" : {
+                    "$ref" : "#/components/examples/Not_Acceptable_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Too many HTTP requests have been made within the allowed time.",
+            "headers" : {
+              "X-RateLimit-Remaining" : {
+                "description" : "Number of tokens currently remaining. Refer to X-RateLimit-Replenish-Rate header for replenishment information.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Burst-Capacity" : {
+                "description" : "Initial number of tokens, and max number of tokens that can be replenished.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "20"
+              },
+              "X-RateLimit-Replenish-Rate" : {
+                "description" : "Number of tokens replenished per second.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Requested-Tokens" : {
+                "description" : "Request cost in tokens.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "r_usr" ]
+        } ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      }
+    },
+    "/userReports/{id}/relationships/reportedResources" : {
+      "get" : {
+        "tags" : [ "userReports" ],
+        "summary" : "Get reportedResources relationship (\"to-many\").",
+        "description" : "Retrieves reportedResources relationship.",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "include",
+          "in" : "query",
+          "description" : "Allows the client to customize which related resources should be returned. Available options: reportedResources",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "reportedResources"
+            }
+          },
+          "example" : "reportedResources"
+        }, {
+          "name" : "page[cursor]",
+          "in" : "query",
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/UserReports_Multi_Data_Relationship_Document"
+                }
+              }
+            }
+          },
+          "451" : {
+            "description" : "Unavailable For Legal Reasons",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Unavailable_For_Legal_Reasons_Doc" : {
+                    "$ref" : "#/components/examples/Unavailable_For_Legal_Reasons_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request on client party. Ensure the proper HTTP request is sent (query parameters, request body, etc.).",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Bad_Request_Error_Doc" : {
+                    "$ref" : "#/components/examples/Bad_Request_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal Server Error. Something went wrong on the server party.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Internal_Server_Error_Doc" : {
+                    "$ref" : "#/components/examples/Internal_Server_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found. The requested resource is not found.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Resource_Not_Found_Error_Doc" : {
+                    "$ref" : "#/components/examples/Resource_Not_Found_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "415" : {
+            "description" : "Unsupported Media Type. The API is using content negotiation. Ensure the proper media type is set into Content-Type header.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Unsupported_Media_Type_Error_Doc" : {
+                    "$ref" : "#/components/examples/Unsupported_Media_Type_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Method not supported. Ensure a proper HTTP method for an HTTP request is used.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Method_Not_Supported_Error_Doc" : {
+                    "$ref" : "#/components/examples/Method_Not_Supported_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "406" : {
+            "description" : "Not acceptable. The server doesn't support any of the requested by client acceptable content types.",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error_Document"
+                },
+                "examples" : {
+                  "Not_Acceptable_Error_Doc" : {
+                    "$ref" : "#/components/examples/Not_Acceptable_Error_Doc"
+                  }
+                }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Too many HTTP requests have been made within the allowed time.",
+            "headers" : {
+              "X-RateLimit-Remaining" : {
+                "description" : "Number of tokens currently remaining. Refer to X-RateLimit-Replenish-Rate header for replenishment information.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Burst-Capacity" : {
+                "description" : "Initial number of tokens, and max number of tokens that can be replenished.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "20"
+              },
+              "X-RateLimit-Replenish-Rate" : {
+                "description" : "Number of tokens replenished per second.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              },
+              "X-RateLimit-Requested-Tokens" : {
+                "description" : "Request cost in tokens.",
+                "required" : true,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "example" : "5"
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "r_usr" ]
+        } ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
         }
       }
     },
@@ -17360,6 +18761,9 @@
             "items" : {
               "$ref" : "#/components/schemas/External_Link"
             }
+          },
+          "contributionsEnabled" : {
+            "type" : "boolean"
           }
         }
       },
@@ -17456,10 +18860,10 @@
           "roles" : {
             "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
           },
-          "owners" : {
+          "videos" : {
             "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
           },
-          "videos" : {
+          "owners" : {
             "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
           },
           "profileArt" : {
@@ -17699,6 +19103,31 @@
           }
         }
       },
+      "Artworks_Multi_Data_Relationship_Document" : {
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Resource_Identifier"
+            }
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          }
+        }
+      },
+      "Artworks_Relationships" : {
+        "required" : [ "owners" ],
+        "properties" : {
+          "owners" : {
+            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
+          }
+        }
+      },
       "Artworks_Resource" : {
         "required" : [ "id", "type" ],
         "type" : "object",
@@ -17715,6 +19144,9 @@
           },
           "attributes" : {
             "$ref" : "#/components/schemas/Artworks_Attributes"
+          },
+          "relationships" : {
+            "$ref" : "#/components/schemas/Artworks_Relationships"
           }
         }
       },
@@ -17917,6 +19349,7 @@
               "userCollections" : "#/components/schemas/UserCollections_Resource",
               "userEntitlements" : "#/components/schemas/UserEntitlements_Resource",
               "userRecommendations" : "#/components/schemas/UserRecommendations_Resource",
+              "userReports" : "#/components/schemas/UserReports_Resource",
               "users" : "#/components/schemas/Users_Resource",
               "videos" : "#/components/schemas/Videos_Resource"
             }
@@ -17949,6 +19382,8 @@
             "$ref" : "#/components/schemas/UserEntitlements_Resource"
           }, {
             "$ref" : "#/components/schemas/UserRecommendations_Resource"
+          }, {
+            "$ref" : "#/components/schemas/UserReports_Resource"
           }, {
             "$ref" : "#/components/schemas/Users_Resource"
           }, {
@@ -18784,6 +20219,87 @@
           }
         }
       },
+      "TrackCreateOperation_Payload" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/TrackCreateOperation_Payload_Data"
+          }
+        }
+      },
+      "TrackCreateOperation_Payload_Data" : {
+        "required" : [ "attributes", "relationships", "type" ],
+        "type" : "object",
+        "properties" : {
+          "type" : {
+            "type" : "string",
+            "enum" : [ "tracks" ]
+          },
+          "attributes" : {
+            "$ref" : "#/components/schemas/TrackCreateOperation_Payload_Data_Attributes"
+          },
+          "relationships" : {
+            "$ref" : "#/components/schemas/TrackCreateOperation_Payload_Data_Relationships"
+          }
+        }
+      },
+      "TrackCreateOperation_Payload_Data_Attributes" : {
+        "required" : [ "accessType", "title" ],
+        "type" : "object",
+        "properties" : {
+          "accessType" : {
+            "type" : "string",
+            "description" : "Access type",
+            "example" : "PRIVATE",
+            "enum" : [ "PUBLIC", "UNLISTED", "PRIVATE" ]
+          },
+          "title" : {
+            "type" : "string"
+          },
+          "explicit" : {
+            "type" : "boolean",
+            "description" : "Explicit content",
+            "example" : false
+          }
+        }
+      },
+      "TrackCreateOperation_Payload_Data_Relationships" : {
+        "required" : [ "albums" ],
+        "type" : "object",
+        "properties" : {
+          "albums" : {
+            "$ref" : "#/components/schemas/TrackCreateOperation_Payload_Data_Relationships_Albums"
+          }
+        }
+      },
+      "TrackCreateOperation_Payload_Data_Relationships_Albums" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "maxItems" : 1,
+            "minItems" : 1,
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/TrackCreateOperation_Payload_Data_Relationships_Albums_Data"
+            }
+          }
+        }
+      },
+      "TrackCreateOperation_Payload_Data_Relationships_Albums_Data" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "albums" ]
+          }
+        }
+      },
       "TrackFiles_Attributes" : {
         "type" : "object",
         "properties" : {
@@ -19506,6 +21022,23 @@
           }
         }
       },
+      "UserCollections_Multi_Data_Relationship_Document" : {
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Resource_Identifier"
+            }
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          }
+        }
+      },
       "UserCollections_Playlists_Multi_Data_Relationship_Document" : {
         "type" : "object",
         "properties" : {
@@ -19553,7 +21086,7 @@
         }
       },
       "UserCollections_Relationships" : {
-        "required" : [ "albums", "artists", "playlists" ],
+        "required" : [ "albums", "artists", "owners", "playlists" ],
         "properties" : {
           "albums" : {
             "$ref" : "#/components/schemas/UserCollections_Albums_Multi_Data_Relationship_Document"
@@ -19563,6 +21096,9 @@
           },
           "playlists" : {
             "$ref" : "#/components/schemas/UserCollections_Playlists_Multi_Data_Relationship_Document"
+          },
+          "owners" : {
+            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
           }
         }
       },
@@ -19745,6 +21281,176 @@
         "properties" : {
           "data" : {
             "$ref" : "#/components/schemas/UserRecommendations_Resource"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          }
+        }
+      },
+      "UserReportCreateOperation_Payload" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/UserReportCreateOperation_Payload_Data"
+          }
+        }
+      },
+      "UserReportCreateOperation_Payload_Data" : {
+        "required" : [ "attributes", "relationships", "type" ],
+        "type" : "object",
+        "properties" : {
+          "type" : {
+            "type" : "string",
+            "enum" : [ "userReports" ]
+          },
+          "attributes" : {
+            "$ref" : "#/components/schemas/UserReportCreateOperation_Payload_Data_Attributes"
+          },
+          "relationships" : {
+            "$ref" : "#/components/schemas/UserReportsCreateOperation_Payload_Data_Relationships"
+          }
+        }
+      },
+      "UserReportCreateOperation_Payload_Data_Attributes" : {
+        "required" : [ "description", "reason" ],
+        "type" : "object",
+        "properties" : {
+          "reason" : {
+            "type" : "string",
+            "enum" : [ "SEXUAL_CONTENT_OR_NUDITY", "VIOLENT_OR_DANGEROUS_CONTENT", "HATEFUL_OR_ABUSIVE_CONTENT", "HARASSMENT", "PRIVACY_VIOLATION", "SCAMS_OR_FRAUD", "SPAM", "COPYRIGHT_INFRINGEMENT", "UNKNOWN" ]
+          },
+          "description" : {
+            "type" : "string"
+          }
+        }
+      },
+      "UserReportsCreateOperation_Payload_Data_Relationships" : {
+        "required" : [ "reportedResources" ],
+        "type" : "object",
+        "properties" : {
+          "reportedResources" : {
+            "$ref" : "#/components/schemas/UserReportsCreateOperation_Payload_Data_Relationships_ReportedResources"
+          }
+        }
+      },
+      "UserReportsCreateOperation_Payload_Data_Relationships_ReportedResources" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "maxItems" : 1,
+            "minItems" : 1,
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/UserReportsCreateOperation_Payload_Data_Relationships_ReportedResources_Data"
+            }
+          }
+        }
+      },
+      "UserReportsCreateOperation_Payload_Data_Relationships_ReportedResources_Data" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "tracks", "artists", "playlists" ]
+          }
+        }
+      },
+      "UserReports_Attributes" : {
+        "required" : [ "description", "reason" ],
+        "type" : "object",
+        "properties" : {
+          "reason" : {
+            "type" : "string",
+            "description" : "Reason",
+            "enum" : [ "SEXUAL_CONTENT_OR_NUDITY", "VIOLENT_OR_DANGEROUS_CONTENT", "HATEFUL_OR_ABUSIVE_CONTENT", "HARASSMENT", "PRIVACY_VIOLATION", "SCAMS_OR_FRAUD", "SPAM", "COPYRIGHT_INFRINGEMENT", "UNKNOWN" ]
+          },
+          "description" : {
+            "type" : "string",
+            "description" : "Description"
+          }
+        }
+      },
+      "UserReports_Multi_Data_Document" : {
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/UserReports_Resource"
+            }
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          }
+        }
+      },
+      "UserReports_Multi_Data_Relationship_Document" : {
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Resource_Identifier"
+            }
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          }
+        }
+      },
+      "UserReports_Relationships" : {
+        "required" : [ "owners", "reportedResources" ],
+        "properties" : {
+          "reportedResources" : {
+            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
+          },
+          "owners" : {
+            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
+          }
+        }
+      },
+      "UserReports_Resource" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "description" : "resource unique identifier",
+            "example" : "12345"
+          },
+          "type" : {
+            "type" : "string",
+            "description" : "resource unique type",
+            "example" : "tracks"
+          },
+          "attributes" : {
+            "$ref" : "#/components/schemas/UserReports_Attributes"
+          },
+          "relationships" : {
+            "$ref" : "#/components/schemas/UserReports_Relationships"
+          }
+        }
+      },
+      "UserReports_Single_Data_Document" : {
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/UserReports_Resource"
           },
           "links" : {
             "$ref" : "#/components/schemas/Links"

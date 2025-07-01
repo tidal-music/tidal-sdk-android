@@ -19,6 +19,7 @@ fun getOneOfSerializer() = SerializersModule {
         subclass(UserCollectionsResource::class, UserCollectionsResource.serializer())
         subclass(UserEntitlementsResource::class, UserEntitlementsResource.serializer())
         subclass(UserRecommendationsResource::class, UserRecommendationsResource.serializer())
+        subclass(UserReportsResource::class, UserReportsResource.serializer())
         subclass(UsersResource::class, UsersResource.serializer())
         subclass(VideosResource::class, VideosResource.serializer())
     }

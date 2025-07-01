@@ -1,16 +1,14 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
-import com.tidal.sdk.tidalapi.generated.models.ArtworkCreateOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.ArtworksMultiDataDocument
-import com.tidal.sdk.tidalapi.generated.models.ArtworksMultiDataRelationshipDocument
-import com.tidal.sdk.tidalapi.generated.models.ArtworksSingleDataDocument
+import com.tidal.sdk.tidalapi.generated.models.UserReportCreateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.UserReportsMultiDataRelationshipDocument
+import com.tidal.sdk.tidalapi.generated.models.UserReportsSingleDataDocument
 import retrofit2.Response
 import retrofit2.http.*
 
-interface Artworks {
+interface UserReports {
     /**
-     * Get multiple artworks. Retrieves multiple artworks by available filters, or without if
-     * applicable. Responses:
+     * Get single userReport. Retrieves single userReport by id. Responses:
      * - 200: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
@@ -24,49 +22,17 @@ interface Artworks {
      *   content types.
      * - 429: Too many HTTP requests have been made within the allowed time.
      *
-     * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param id
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners (optional)
-     * @param filterId Artwork id (optional)
-     * @return [ArtworksMultiDataDocument]
+     *   Available options: owners, reportedResources (optional)
+     * @return [UserReportsSingleDataDocument]
      */
-    @GET("artworks")
-    suspend fun artworksGet(
-        @Query("countryCode") countryCode: kotlin.String,
-        @Query("include")
-        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[id]")
-        filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<ArtworksMultiDataDocument>
-
-    /**
-     * Get single artwork. Retrieves single artwork by id. Responses:
-     * - 200: Successful response
-     * - 451: Unavailable For Legal Reasons
-     * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
-     *   request body, etc.).
-     * - 500: Internal Server Error. Something went wrong on the server party.
-     * - 404: Resource not found. The requested resource is not found.
-     * - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media
-     *   type is set into Content-Type header.
-     * - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
-     * - 406: Not acceptable. The server doesn't support any of the requested by client acceptable
-     *   content types.
-     * - 429: Too many HTTP requests have been made within the allowed time.
-     *
-     * @param id Artwork id
-     * @param countryCode ISO 3166-1 alpha-2 country code
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners (optional)
-     * @return [ArtworksSingleDataDocument]
-     */
-    @GET("artworks/{id}")
-    suspend fun artworksIdGet(
+    @GET("userReports/{id}")
+    suspend fun userReportsIdGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<ArtworksSingleDataDocument>
+    ): Response<UserReportsSingleDataDocument>
 
     /**
      * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
@@ -83,23 +49,54 @@ interface Artworks {
      *   content types.
      * - 429: Too many HTTP requests have been made within the allowed time.
      *
-     * @param id Artwork id
+     * @param id
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [ArtworksMultiDataRelationshipDocument]
+     * @return [UserReportsMultiDataRelationshipDocument]
      */
-    @GET("artworks/{id}/relationships/owners")
-    suspend fun artworksIdRelationshipsOwnersGet(
+    @GET("userReports/{id}/relationships/owners")
+    suspend fun userReportsIdRelationshipsOwnersGet(
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<ArtworksMultiDataRelationshipDocument>
+    ): Response<UserReportsMultiDataRelationshipDocument>
 
     /**
-     * Create single artwork. Creates a new artwork. Responses:
+     * Get reportedResources relationship (\&quot;to-many\&quot;). Retrieves reportedResources
+     * relationship. Responses:
+     * - 200: Successful response
+     * - 451: Unavailable For Legal Reasons
+     * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
+     *   request body, etc.).
+     * - 500: Internal Server Error. Something went wrong on the server party.
+     * - 404: Resource not found. The requested resource is not found.
+     * - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media
+     *   type is set into Content-Type header.
+     * - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
+     * - 406: Not acceptable. The server doesn't support any of the requested by client acceptable
+     *   content types.
+     * - 429: Too many HTTP requests have been made within the allowed time.
+     *
+     * @param id
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: reportedResources (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
+     * @return [UserReportsMultiDataRelationshipDocument]
+     */
+    @GET("userReports/{id}/relationships/reportedResources")
+    suspend fun userReportsIdRelationshipsReportedResourcesGet(
+        @Path("id") id: kotlin.String,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
+    ): Response<UserReportsMultiDataRelationshipDocument>
+
+    /**
+     * Create single userReport. Creates a new userReport. Responses:
      * - 201: Successful response
      * - 451: Unavailable For Legal Reasons
      * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
@@ -113,11 +110,11 @@ interface Artworks {
      *   content types.
      * - 429: Too many HTTP requests have been made within the allowed time.
      *
-     * @param artworkCreateOperationPayload (optional)
-     * @return [ArtworksSingleDataDocument]
+     * @param userReportCreateOperationPayload (optional)
+     * @return [UserReportsSingleDataDocument]
      */
-    @POST("artworks")
-    suspend fun artworksPost(
-        @Body artworkCreateOperationPayload: ArtworkCreateOperationPayload? = null
-    ): Response<ArtworksSingleDataDocument>
+    @POST("userReports")
+    suspend fun userReportsPost(
+        @Body userReportCreateOperationPayload: UserReportCreateOperationPayload? = null
+    ): Response<UserReportsSingleDataDocument>
 }
