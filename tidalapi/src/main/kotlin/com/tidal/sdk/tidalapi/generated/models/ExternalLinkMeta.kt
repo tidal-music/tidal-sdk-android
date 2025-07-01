@@ -19,7 +19,7 @@ data class ExternalLinkMeta(@SerialName(value = "type") val type: ExternalLinkMe
 
     /**
      * Values:
-     * TIDAL_SHARING,TIDAL_AUTOPLAY_ANDROID,TIDAL_AUTOPLAY_IOS,TIDAL_AUTOPLAY_WEB,TWITTER,FACEBOOK,INSTAGRAM,TIKTOK,SNAPCHAT,HOMEPAGE
+     * TIDAL_SHARING,TIDAL_AUTOPLAY_ANDROID,TIDAL_AUTOPLAY_IOS,TIDAL_AUTOPLAY_WEB,TWITTER,FACEBOOK,INSTAGRAM,TIKTOK,SNAPCHAT,HOMEPAGE,CASHAPP_CONTRIBUTIONS
      */
     @Serializable
     enum class Type(val value: kotlin.String) {
@@ -34,5 +34,6 @@ data class ExternalLinkMeta(@SerialName(value = "type") val type: ExternalLinkMe
         @SerialName(value = "TIKTOK") TIKTOK("TIKTOK"),
         @SerialName(value = "SNAPCHAT") SNAPCHAT("SNAPCHAT"),
         @SerialName(value = "HOMEPAGE") HOMEPAGE("HOMEPAGE"),
+        @SerialName(value = "CASHAPP_CONTRIBUTIONS") CASHAPP_CONTRIBUTIONS("CASHAPP_CONTRIBUTIONS"),
     }
 }
