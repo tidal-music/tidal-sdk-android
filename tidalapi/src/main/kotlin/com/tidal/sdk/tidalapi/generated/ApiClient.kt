@@ -15,6 +15,7 @@ import com.tidal.sdk.tidalapi.generated.apis.Tracks
 import com.tidal.sdk.tidalapi.generated.apis.UserCollections
 import com.tidal.sdk.tidalapi.generated.apis.UserEntitlements
 import com.tidal.sdk.tidalapi.generated.apis.UserRecommendations
+import com.tidal.sdk.tidalapi.generated.apis.UserReports
 import com.tidal.sdk.tidalapi.generated.apis.Users
 import com.tidal.sdk.tidalapi.generated.apis.Videos
 import com.tidal.sdk.tidalapi.networking.RetrofitProvider
@@ -95,6 +96,11 @@ class TidalApiClient(credentialsProvider: CredentialsProvider, baseUrl: String =
      */
     fun createUserRecommendations(): UserRecommendations {
         return retrofit.create(UserRecommendations::class.java)
+    }
+
+    /** Returns an instance of the [UserReports] which can be used to make API calls to the */
+    fun createUserReports(): UserReports {
+        return retrofit.create(UserReports::class.java)
     }
 
     /** Returns an instance of the [Users] which can be used to make API calls to the */

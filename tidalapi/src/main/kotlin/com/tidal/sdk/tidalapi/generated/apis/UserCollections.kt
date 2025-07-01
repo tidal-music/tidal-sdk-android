@@ -7,6 +7,7 @@ import com.tidal.sdk.tidalapi.generated.models.UserCollectionArtistsRelationship
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionPlaylistsRelationshipRemoveOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionsAlbumsMultiDataRelationshipDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionsArtistsMultiDataRelationshipDocument
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionsMultiDataRelationshipDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionsPlaylistsMultiDataRelationshipDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionsSingleDataDocument
 import retrofit2.Response
@@ -32,7 +33,7 @@ interface UserCollections {
      * @param locale BCP 47 locale
      * @param countryCode ISO 3166-1 alpha-2 country code
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: albums, artists, playlists (optional)
+     *   Available options: albums, artists, owners, playlists (optional)
      * @return [UserCollectionsSingleDataDocument]
      */
     @GET("userCollections/{id}")
@@ -227,6 +228,36 @@ interface UserCollections {
             UserCollectionArtistsRelationshipAddOperationPayload? =
             null,
     ): Response<Unit>
+
+    /**
+     * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
+     * - 200: Successful response
+     * - 451: Unavailable For Legal Reasons
+     * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
+     *   request body, etc.).
+     * - 500: Internal Server Error. Something went wrong on the server party.
+     * - 404: Resource not found. The requested resource is not found.
+     * - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media
+     *   type is set into Content-Type header.
+     * - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
+     * - 406: Not acceptable. The server doesn't support any of the requested by client acceptable
+     *   content types.
+     * - 429: Too many HTTP requests have been made within the allowed time.
+     *
+     * @param id User id
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: owners (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
+     * @return [UserCollectionsMultiDataRelationshipDocument]
+     */
+    @GET("userCollections/{id}/relationships/owners")
+    suspend fun userCollectionsIdRelationshipsOwnersGet(
+        @Path("id") id: kotlin.String,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
+    ): Response<UserCollectionsMultiDataRelationshipDocument>
 
     /**
      * Delete from playlists relationship (\&quot;to-many\&quot;). Deletes item(s) from playlists

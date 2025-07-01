@@ -17,14 +17,14 @@ import kotlinx.serialization.Transient
  * @param relationships
  */
 @Serializable
-@SerialName(value = "artworks")
-data class ArtworksResource(
+@SerialName(value = "userReports")
+data class UserReportsResource(
 
     /* resource unique identifier */
 
     @SerialName(value = "id") val id: kotlin.String,
     /* resource unique type */
     @Transient @SerialName(value = "type") val type: kotlin.String = "",
-    @SerialName(value = "attributes") val attributes: ArtworksAttributes? = null,
-    @SerialName(value = "relationships") val relationships: ArtworksRelationships? = null,
+    @SerialName(value = "attributes") val attributes: UserReportsAttributes? = null,
+    @SerialName(value = "relationships") val relationships: UserReportsRelationships? = null,
 ) : IncludedInner {}
