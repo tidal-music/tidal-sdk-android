@@ -12,15 +12,15 @@ import kotlinx.serialization.Serializable
 /**
  * DRM data. Absence implies no DRM.
  *
+ * @param certificateUrl
  * @param drmSystem
  * @param licenseUrl
- * @param certificateUrl
  */
 @Serializable
 data class DrmData(
+    @SerialName(value = "certificateUrl") val certificateUrl: kotlin.String? = null,
     @SerialName(value = "drmSystem") val drmSystem: DrmData.DrmSystem? = null,
     @SerialName(value = "licenseUrl") val licenseUrl: kotlin.String? = null,
-    @SerialName(value = "certificateUrl") val certificateUrl: kotlin.String? = null,
 ) {
 
     /** Values: FAIRPLAY,WIDEVINE */

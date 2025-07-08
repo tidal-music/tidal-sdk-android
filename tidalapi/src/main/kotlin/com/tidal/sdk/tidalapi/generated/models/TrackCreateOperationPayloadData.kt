@@ -10,16 +10,16 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param type
  * @param attributes
  * @param relationships
+ * @param type
  */
 @Serializable
 data class TrackCreateOperationPayloadData(
-    @SerialName(value = "type") val type: TrackCreateOperationPayloadData.Type,
     @SerialName(value = "attributes") val attributes: TrackCreateOperationPayloadDataAttributes,
     @SerialName(value = "relationships")
     val relationships: TrackCreateOperationPayloadDataRelationships,
+    @SerialName(value = "type") val type: TrackCreateOperationPayloadData.Type,
 ) {
 
     /** Values: tracks */

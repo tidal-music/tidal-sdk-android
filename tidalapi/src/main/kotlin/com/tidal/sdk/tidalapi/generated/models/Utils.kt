@@ -15,6 +15,7 @@ fun getOneOfSerializer() = SerializersModule {
         subclass(SearchSuggestionsResource::class, SearchSuggestionsResource.serializer())
         subclass(TrackFilesResource::class, TrackFilesResource.serializer())
         subclass(TrackManifestsResource::class, TrackManifestsResource.serializer())
+        subclass(TrackStatisticsResource::class, TrackStatisticsResource.serializer())
         subclass(TracksResource::class, TracksResource.serializer())
         subclass(UserCollectionsResource::class, UserCollectionsResource.serializer())
         subclass(UserEntitlementsResource::class, UserEntitlementsResource.serializer())

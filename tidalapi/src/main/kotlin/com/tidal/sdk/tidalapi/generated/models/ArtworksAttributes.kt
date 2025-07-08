@@ -10,19 +10,19 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param mediaType Media type of artwork files
  * @param files Artwork files
+ * @param mediaType Media type of artwork files
  * @param sourceFile
  */
 @Serializable
 data class ArtworksAttributes(
 
-    /* Media type of artwork files */
-
-    @SerialName(value = "mediaType") val mediaType: ArtworksAttributes.MediaType,
     /* Artwork files */
 
     @SerialName(value = "files") val files: kotlin.collections.List<ArtworkFile>,
+    /* Media type of artwork files */
+
+    @SerialName(value = "mediaType") val mediaType: ArtworksAttributes.MediaType,
     @SerialName(value = "sourceFile") val sourceFile: ArtworkSourceFile? = null,
 ) {
 

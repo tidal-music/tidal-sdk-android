@@ -10,16 +10,16 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param name
- * @param handle
- * @param externalLinks
  * @param contributionsEnabled
+ * @param externalLinks
+ * @param handle
+ * @param name
  */
 @Serializable
 data class ArtistUpdateBodyDataAttributes(
-    @SerialName(value = "name") val name: kotlin.String? = null,
-    @SerialName(value = "handle") val handle: kotlin.String? = null,
+    @SerialName(value = "contributionsEnabled") val contributionsEnabled: kotlin.Boolean? = null,
     @SerialName(value = "externalLinks")
     val externalLinks: kotlin.collections.List<ExternalLink>? = null,
-    @SerialName(value = "contributionsEnabled") val contributionsEnabled: kotlin.Boolean? = null,
+    @SerialName(value = "handle") val handle: kotlin.String? = null,
+    @SerialName(value = "name") val name: kotlin.String? = null,
 ) {}

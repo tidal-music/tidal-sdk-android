@@ -10,18 +10,19 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param name
- * @param description
  * @param accessType Access type
+ * @param description
+ * @param name
  */
 @Serializable
 data class PlaylistUpdateOperationPayloadDataAttributes(
-    @SerialName(value = "name") val name: kotlin.String? = null,
-    @SerialName(value = "description") val description: kotlin.String? = null,
+
     /* Access type */
 
     @SerialName(value = "accessType")
     val accessType: PlaylistUpdateOperationPayloadDataAttributes.AccessType? = null,
+    @SerialName(value = "description") val description: kotlin.String? = null,
+    @SerialName(value = "name") val name: kotlin.String? = null,
 ) {
 
     /**

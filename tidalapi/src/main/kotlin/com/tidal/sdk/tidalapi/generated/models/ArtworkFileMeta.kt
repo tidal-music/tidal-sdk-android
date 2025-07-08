@@ -12,16 +12,16 @@ import kotlinx.serialization.Serializable
 /**
  * Metadata about an artwork file
  *
- * @param width Width (in pixels)
  * @param height Height (in pixels)
+ * @param width Width (in pixels)
  */
 @Serializable
 data class ArtworkFileMeta(
 
-    /* Width (in pixels) */
-
-    @SerialName(value = "width") val width: kotlin.Int,
     /* Height (in pixels) */
 
     @SerialName(value = "height") val height: kotlin.Int,
+    /* Width (in pixels) */
+
+    @SerialName(value = "width") val width: kotlin.Int,
 ) {}

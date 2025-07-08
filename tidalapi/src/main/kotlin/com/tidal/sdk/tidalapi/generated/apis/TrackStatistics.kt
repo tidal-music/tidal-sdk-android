@@ -1,14 +1,13 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
-import com.tidal.sdk.tidalapi.generated.models.ProvidersMultiDataDocument
-import com.tidal.sdk.tidalapi.generated.models.ProvidersSingleDataDocument
+import com.tidal.sdk.tidalapi.generated.models.TrackStatisticsMultiDataRelationshipDocument
+import com.tidal.sdk.tidalapi.generated.models.TrackStatisticsSingleDataDocument
 import retrofit2.Response
 import retrofit2.http.*
 
-interface Providers {
+interface TrackStatistics {
     /**
-     * Get multiple providers. Retrieves multiple providers by available filters, or without if
-     * applicable. Responses:
+     * Get single trackStatistic. Retrieves single trackStatistic by id. Responses:
      * - 200: Successful response
      * - 400: Bad request - The request could not be understood by the server due to malformed
      *   syntax or invalid parameters
@@ -23,18 +22,20 @@ interface Providers {
      * - 500: Internal server error - The server encountered an unexpected condition that prevented
      *   it from fulfilling the request
      *
-     * @param filterId Allows to filter the collection of resources based on id attribute value
-     *   (optional)
-     * @return [ProvidersMultiDataDocument]
+     * @param id A Tidal catalogue ID
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: owners (optional)
+     * @return [TrackStatisticsSingleDataDocument]
      */
-    @GET("providers")
-    suspend fun providersGet(
-        @Query("filter[id]")
-        filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null
-    ): Response<ProvidersMultiDataDocument>
+    @GET("trackStatistics/{id}")
+    suspend fun trackStatisticsIdGet(
+        @Path("id") id: kotlin.String,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+    ): Response<TrackStatisticsSingleDataDocument>
 
     /**
-     * Get single provider. Retrieves single provider by id. Responses:
+     * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
      * - 200: Successful response
      * - 400: Bad request - The request could not be understood by the server due to malformed
      *   syntax or invalid parameters
@@ -49,9 +50,18 @@ interface Providers {
      * - 500: Internal server error - The server encountered an unexpected condition that prevented
      *   it from fulfilling the request
      *
-     * @param id Provider id
-     * @return [ProvidersSingleDataDocument]
+     * @param id A Tidal catalogue ID
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: owners (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
+     * @return [TrackStatisticsMultiDataRelationshipDocument]
      */
-    @GET("providers/{id}")
-    suspend fun providersIdGet(@Path("id") id: kotlin.String): Response<ProvidersSingleDataDocument>
+    @GET("trackStatistics/{id}/relationships/owners")
+    suspend fun trackStatisticsIdRelationshipsOwnersGet(
+        @Path("id") id: kotlin.String,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
+    ): Response<TrackStatisticsMultiDataRelationshipDocument>
 }

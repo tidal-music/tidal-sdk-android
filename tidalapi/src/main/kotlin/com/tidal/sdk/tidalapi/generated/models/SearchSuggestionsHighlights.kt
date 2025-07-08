@@ -10,11 +10,11 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param start
  * @param length
+ * @param start
  */
 @Serializable
 data class SearchSuggestionsHighlights(
-    @SerialName(value = "start") val start: kotlin.Int,
     @SerialName(value = "length") val length: kotlin.Int,
+    @SerialName(value = "start") val start: kotlin.Int,
 ) {}

@@ -10,8 +10,8 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param username user name
  * @param country ISO 3166-1 alpha-2 country code
+ * @param username user name
  * @param email email address
  * @param emailVerified Is the email verified
  * @param firstName Users first name
@@ -21,12 +21,12 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class UsersAttributes(
 
-    /* user name */
-
-    @SerialName(value = "username") val username: kotlin.String,
     /* ISO 3166-1 alpha-2 country code */
 
     @SerialName(value = "country") val country: kotlin.String,
+    /* user name */
+
+    @SerialName(value = "username") val username: kotlin.String,
     /* email address */
 
     @SerialName(value = "email") val email: kotlin.String? = null,

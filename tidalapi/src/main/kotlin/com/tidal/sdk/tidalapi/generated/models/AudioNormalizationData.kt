@@ -12,11 +12,11 @@ import kotlinx.serialization.Serializable
 /**
  * Track normalization data
  *
- * @param replayGain
  * @param peakAmplitude
+ * @param replayGain
  */
 @Serializable
 data class AudioNormalizationData(
-    @SerialName(value = "replayGain") val replayGain: kotlin.Float? = null,
     @SerialName(value = "peakAmplitude") val peakAmplitude: kotlin.Float? = null,
+    @SerialName(value = "replayGain") val replayGain: kotlin.Float? = null,
 ) {}
