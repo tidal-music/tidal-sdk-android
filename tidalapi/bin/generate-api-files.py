@@ -5,6 +5,7 @@ import requests
 import shutil
 import subprocess
 import sys
+import argparse
 
 
 def setup_logging():
@@ -46,7 +47,7 @@ def remove_specific_line_from_files(directory, target_string):
                         f"No lines starting with '{target_string}' found in file: {file_path}")
 
 
-def download_api_spec(json_file_path):
+def process_api_spec(json_file_path, local_file=None, custom_url=None):
     try:
         with open(json_file_path, 'r') as f:
             config = json.load(f)
@@ -54,9 +55,10 @@ def download_api_spec(json_file_path):
         logging.error(f"Failed to read JSON file {json_file_path}: {e}")
         sys.exit(1)
 
-    input_url = config.get('input')
-    if not input_url:
-        logging.error("No input URL specified in the configuration.")
+    # Get the OpenAPI generator path from config
+    openapi_generator_path = config.get('openapi_generator_path')
+    if not openapi_generator_path:
+        logging.error("No openapi-generator-cli.jar path specified in the configuration.")
         sys.exit(1)
 
     output_path = config.get('output')
@@ -64,9 +66,22 @@ def download_api_spec(json_file_path):
         logging.error("No output file specified in the configuration.")
         sys.exit(1)
 
-    openapi_generator_path = config.get('openapi_generator_path')
-    if not openapi_generator_path:
-        logging.error("No openapi-generator-cli.jar path specified in the configuration.")
+    # Handle local file case
+    if local_file:
+        logging.info(f"Using local file: {local_file}")
+        try:
+            # Copy the local file to the output path
+            shutil.copy2(local_file, output_path)
+            logging.info(f"Copied local file to {output_path}")
+            return output_path, openapi_generator_path
+        except Exception as e:
+            logging.error(f"Failed to copy local file: {e}")
+            sys.exit(1)
+
+    # Handle URL case (either custom or from config)
+    input_url = custom_url if custom_url else config.get('input')
+    if not input_url:
+        logging.error("No input URL specified in the configuration or command line.")
         sys.exit(1)
 
     temp_dir = os.path.join(os.getcwd(), 'openapi_downloads')
@@ -89,23 +104,23 @@ def download_api_spec(json_file_path):
 def main():
     setup_logging()
 
+    # Parse command line arguments
+    parser = argparse.ArgumentParser(description='Generate API files from OpenAPI specification')
+    parser.add_argument('config_file', help='Path to the configuration JSON file')
+    parser.add_argument('--local-file', help='Path to a local OpenAPI JSON file')
+    parser.add_argument('--url', help='Custom URL to download the OpenAPI JSON file')
+    args = parser.parse_args()
+
     project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
     sdk_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
 
     logging.info(f"Project root: {project_root}")
     logging.info(f"SDK root: {sdk_root}")
+    logging.info(f"Using config file: {args.config_file}")
 
-    if len(sys.argv) < 2:
-        logging.error("Error: You must provide the path to the config file.")
-        logging.error(f"Usage: {sys.argv[0]} <path to config.json>")
-        sys.exit(1)
-
-    config_file = sys.argv[1]
-    logging.info(f"Using config file: {config_file}")
-
-    # Download the API spec and get the path to the OpenAPI generator jar
-    temp_json, source = download_api_spec(config_file)
-    logging.info(f"API spec downloaded to: {temp_json}")
+    # Process the API spec (download or use local file)
+    temp_json, source = process_api_spec(args.config_file, args.local_file, args.url)
+    logging.info(f"API spec processed: {temp_json}")
     logging.info(f"OpenAPI generator path: {source}")
 
     # Define the generated files path and clean the directory
@@ -135,7 +150,7 @@ def main():
     # Build the command
     cmd = [
         "java", "-jar", jar_path, "generate",
-        "-i", os.path.join("bin", temp_json),
+        "-i", os.path.join("bin", os.path.basename(temp_json)),
         "-g", "kotlin",
         "-o", ".",
         "-c", "openapi-config/openapi-config.yml",
