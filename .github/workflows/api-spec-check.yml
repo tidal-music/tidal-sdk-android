@@ -9,6 +9,10 @@ on:
     - cron: '0 0 * * *'
   workflow_dispatch:
 
+permissions:
+  contents: read
+  actions: write  # Required to trigger other workflows
+
 jobs:
   check-api-spec:
     runs-on: ubuntu-latest
@@ -39,6 +43,20 @@ jobs:
         run: |
           if [ "${{ steps.compare.outputs.changes_found }}" == "true" ]; then
             echo "Changes found - see diff above"
+            echo "Will trigger the regenerate_tidalapi_module workflow to update the API code"
           else
             echo "No Changes found"
           fi
+          
+      - name: Trigger regenerate_tidalapi_module workflow
+        if: steps.compare.outputs.changes_found == 'true'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'regenerate_tidalapi_module.yml',
+              ref: context.ref
+            });
