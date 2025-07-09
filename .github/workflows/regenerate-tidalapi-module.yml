@@ -43,7 +43,7 @@ jobs:
           # Extract the download URL for the desired asset
           ASSET_URL=$(jq -r '.assets[] | select(.name == "openapi-generator-cli.jar") | .browser_download_url' release_info.json)
           
-          echo "::set-output name=asset_url::$ASSET_URL"
+          echo "asset_url=$ASSET_URL" >> $GITHUB_OUTPUT
 
       - name: Download generator binary
         env:
@@ -93,18 +93,65 @@ jobs:
           echo "changes_detected=$changes_detected" >> $GITHUB_OUTPUT
           echo "changed_file_count=$changed_file_count" >> $GITHUB_OUTPUT
 
+      - name: Check for existing PR
+        id: check_pr
+        if: steps.check_changes.outputs.changes_detected == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Search for open PRs that contain "Automatic Tidal API module update" in the title
+          pr_data=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
+            "https://api.github.com/repos/${{ github.repository }}/pulls?state=open")
+          
+          existing_pr_number=$(echo "$pr_data" | jq -r '.[] | select(.title | contains("Automatic Tidal API module update")) | .number' | head -n 1)
+          
+          if [ -n "$existing_pr_number" ] && [ "$existing_pr_number" != "null" ]; then
+            echo "Found existing PR #$existing_pr_number"
+            echo "existing_pr=true" >> $GITHUB_OUTPUT
+            echo "pr_number=$existing_pr_number" >> $GITHUB_OUTPUT
+          else
+            echo "No existing PR found"
+            echo "existing_pr=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Commit changes
         id: commit_changes
         if: steps.check_changes.outputs.changes_detected == 'true'
         run: |
           git config user.email "svc-github-tidal-music-tools@block.xyz"
           git config user.name "TIDAL Music Tools"
-          timestamp=$(date +"%Y-%m-%d-%H-%M-%S")
-          branch_name="tidal-music-tools/Update-Tidal-Api-$timestamp"
-          git checkout -b $branch_name
+          
+          # Use a consistent branch name for API updates
+          standard_branch_name="tidal-music-tools/auto-update-tidal-api"
+          
+          if [ "${{ steps.check_pr.outputs.existing_pr }}" == "true" ]; then
+            # Try to find the branch of the existing PR
+            pr_data=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+              "https://api.github.com/repos/${{ github.repository }}/pulls/${{ steps.check_pr.outputs.pr_number }}")
+            branch_name=$(echo "$pr_data" | jq -r '.head.ref')
+            
+            # Check if branch exists locally
+            if git rev-parse --verify "$branch_name" >/dev/null 2>&1; then
+              git checkout "$branch_name"
+            else
+              # Try to fetch and checkout the branch
+              git fetch origin "$branch_name":"$branch_name" || true
+              if git rev-parse --verify "$branch_name" >/dev/null 2>&1; then
+                git checkout "$branch_name"
+              else
+                # If branch doesn't exist, use the standard branch name
+                git checkout -b "$standard_branch_name"
+                branch_name="$standard_branch_name"
+              fi
+            fi
+          else
+            # Use standard branch name
+            git checkout -b "$standard_branch_name"
+            branch_name="$standard_branch_name"
+          fi
           
           # Generate commit message with the number of changed files in the title and the list in the body
-          commit_title="Add ${{ steps.check_changes.outputs.changed_file_count }} files via GitHub Actions"
+          commit_title="Update Tidal API - ${{ steps.check_changes.outputs.changed_file_count }} files changed"
           commit_body="Changed files:\n${{ steps.check_changes.outputs.changed_files }}"
           
           git commit -m "$commit_title"$'\n\n'"$commit_body"
@@ -116,9 +163,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH_NAME: ${{ steps.commit_changes.outputs.branch_name }}
         run: |
-          git push --set-upstream origin "${{env.BRANCH_NAME}}"
+          git push --set-upstream origin "${{env.BRANCH_NAME}}" --force
 
-      - name: Create Pull Request via API
+      - name: Create or Update Pull Request
         if: steps.check_changes.outputs.changes_detected == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -127,18 +174,35 @@ jobs:
           BRANCH_NAME: ${{ steps.commit_changes.outputs.branch_name }}
         run: |
           pr_title="Automatic Tidal API module update - ${{env.CHANGED_FILE_COUNT}} files changed"
-          pr_body="Changed files:\n\n${{ env.CHANGED_FILES }}"
+          pr_body="Changed files:\n\n${{ env.CHANGED_FILES }}\n\nAutomatically generated on $(date)\n\nThis PR is automatically updated when API changes are detected."
           pr_body=$(echo -e "$pr_body")
-          pr_data=$(jq -n --arg title "$pr_title" \
-                            --arg head "${{env.BRANCH_NAME}}" \
-                            --arg base "${{ inputs.target_branch }}" \
-                            --arg body "$pr_body" \
-                            '{title: $title, head: $head, base: $base, body: $body}')
-
-          echo $pr_data
-
-          curl -X POST \
-            -H "Authorization: token $GITHUB_TOKEN" \
-            -H "Accept: application/vnd.github.v3+json" \
-            -d "$pr_data" \
-            https://api.github.com/repos/${{ github.repository }}/pulls
+          
+          if [ "${{ steps.check_pr.outputs.existing_pr }}" == "true" ]; then
+            # Update existing PR
+            pr_data=$(jq -n --arg title "$pr_title" \
+                              --arg body "$pr_body" \
+                              '{title: $title, body: $body}')
+            
+            curl -X PATCH \
+              -H "Authorization: token $GITHUB_TOKEN" \
+              -H "Accept: application/vnd.github.v3+json" \
+              -d "$pr_data" \
+              "https://api.github.com/repos/${{ github.repository }}/pulls/${{ steps.check_pr.outputs.pr_number }}"
+            
+            echo "Updated existing PR #${{ steps.check_pr.outputs.pr_number }}"
+          else
+            # Create new PR
+            pr_data=$(jq -n --arg title "$pr_title" \
+                              --arg head "${{env.BRANCH_NAME}}" \
+                              --arg base "${{ inputs.target_branch }}" \
+                              --arg body "$pr_body" \
+                              '{title: $title, head: $head, base: $base, body: $body}')
+            
+            curl -X POST \
+              -H "Authorization: token $GITHUB_TOKEN" \
+              -H "Accept: application/vnd.github.v3+json" \
+              -d "$pr_data" \
+              "https://api.github.com/repos/${{ github.repository }}/pulls"
+            
+            echo "Created new PR"
+          fi
