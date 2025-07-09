@@ -30,12 +30,15 @@ jobs:
           else
             echo "Changes found in the API specification"
             echo "changes_found=true" >> $GITHUB_OUTPUT
+            echo "::group::API Specification Diff"
+            diff -u "tidalapi/bin/tidal-api.json" "/tmp/api-check/latest-api.json" || true
+            echo "::endgroup::"
           fi
 
       - name: Output result
         run: |
           if [ "${{ steps.compare.outputs.changes_found }}" == "true" ]; then
-            echo "Changes found"
+            echo "Changes found - see diff above"
           else
             echo "No Changes found"
           fi
