@@ -1,0 +1,41 @@
+name: Check API Spec Changes
+
+on:
+  push:
+    branches:
+
+  schedule:
+    # Runs at 00:00 UTC every day
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  check-api-spec:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Download latest API spec
+        run: |
+          mkdir -p /tmp/api-check
+          curl -s https://tidal-music.github.io/tidal-api-reference/tidal-api-oas.json -o /tmp/api-check/latest-api.json
+      
+      - name: Compare API specs
+        id: compare
+        run: |
+          if cmp -s "tidalapi/bin/tidal-api.json" "/tmp/api-check/latest-api.json"; then
+            echo "No changes found in the API specification"
+            echo "changes_found=false" >> $GITHUB_OUTPUT
+          else
+            echo "Changes found in the API specification"
+            echo "changes_found=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Output result
+        run: |
+          if [ "${{ steps.compare.outputs.changes_found }}" == "true" ]; then
+            echo "Changes found"
+          else
+            echo "No Changes found"
+          fi
