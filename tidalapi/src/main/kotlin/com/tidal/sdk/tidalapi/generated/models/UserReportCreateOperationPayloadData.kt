@@ -10,17 +10,17 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param type
  * @param attributes
  * @param relationships
+ * @param type
  */
 @Serializable
 data class UserReportCreateOperationPayloadData(
-    @SerialName(value = "type") val type: UserReportCreateOperationPayloadData.Type,
     @SerialName(value = "attributes")
     val attributes: UserReportCreateOperationPayloadDataAttributes,
     @SerialName(value = "relationships")
     val relationships: UserReportsCreateOperationPayloadDataRelationships,
+    @SerialName(value = "type") val type: UserReportCreateOperationPayloadData.Type,
 ) {
 
     /** Values: userReports */

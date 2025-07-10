@@ -10,13 +10,13 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param reason
  * @param description
+ * @param reason
  */
 @Serializable
 data class UserReportCreateOperationPayloadDataAttributes(
-    @SerialName(value = "reason") val reason: UserReportCreateOperationPayloadDataAttributes.Reason,
     @SerialName(value = "description") val description: kotlin.String,
+    @SerialName(value = "reason") val reason: UserReportCreateOperationPayloadDataAttributes.Reason,
 ) {
 
     /**

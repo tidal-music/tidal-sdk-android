@@ -12,35 +12,21 @@ import kotlinx.serialization.Serializable
 /**
  * File status
  *
- * @param technicalFileStatus Technical status for file
  * @param moderationFileStatus Moderation status for file
+ * @param technicalFileStatus Technical status for file
  */
 @Serializable
 data class FileStatus(
 
-    /* Technical status for file */
-
-    @SerialName(value = "technicalFileStatus")
-    val technicalFileStatus: FileStatus.TechnicalFileStatus,
     /* Moderation status for file */
 
     @SerialName(value = "moderationFileStatus")
     val moderationFileStatus: FileStatus.ModerationFileStatus,
-) {
+    /* Technical status for file */
 
-    /**
-     * Technical status for file
-     *
-     * Values: UPLOAD_REQUESTED,PROCESSING,FAILED,OK,ERROR
-     */
-    @Serializable
-    enum class TechnicalFileStatus(val value: kotlin.String) {
-        @SerialName(value = "UPLOAD_REQUESTED") UPLOAD_REQUESTED("UPLOAD_REQUESTED"),
-        @SerialName(value = "PROCESSING") PROCESSING("PROCESSING"),
-        @SerialName(value = "FAILED") FAILED("FAILED"),
-        @SerialName(value = "OK") OK("OK"),
-        @SerialName(value = "ERROR") ERROR("ERROR"),
-    }
+    @SerialName(value = "technicalFileStatus")
+    val technicalFileStatus: FileStatus.TechnicalFileStatus,
+) {
 
     /**
      * Moderation status for file
@@ -53,6 +39,20 @@ data class FileStatus(
         @SerialName(value = "SCANNING") SCANNING("SCANNING"),
         @SerialName(value = "FLAGGED") FLAGGED("FLAGGED"),
         @SerialName(value = "TAKEN_DOWN") TAKEN_DOWN("TAKEN_DOWN"),
+        @SerialName(value = "OK") OK("OK"),
+        @SerialName(value = "ERROR") ERROR("ERROR"),
+    }
+
+    /**
+     * Technical status for file
+     *
+     * Values: UPLOAD_REQUESTED,PROCESSING,FAILED,OK,ERROR
+     */
+    @Serializable
+    enum class TechnicalFileStatus(val value: kotlin.String) {
+        @SerialName(value = "UPLOAD_REQUESTED") UPLOAD_REQUESTED("UPLOAD_REQUESTED"),
+        @SerialName(value = "PROCESSING") PROCESSING("PROCESSING"),
+        @SerialName(value = "FAILED") FAILED("FAILED"),
         @SerialName(value = "OK") OK("OK"),
         @SerialName(value = "ERROR") ERROR("ERROR"),
     }

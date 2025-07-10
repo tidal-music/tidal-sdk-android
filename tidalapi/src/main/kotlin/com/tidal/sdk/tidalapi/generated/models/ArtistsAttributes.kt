@@ -12,10 +12,10 @@ import kotlinx.serialization.Serializable
 /**
  * @param name Artist name
  * @param popularity Artist popularity (0.0 - 1.0)
+ * @param contributionsEnabled Is the artist enabled for contributions?
  * @param externalLinks Artist links external to TIDAL API
  * @param handle Artist handle
  * @param spotlighted Is the artist spotlighted?
- * @param contributionsEnabled Is the artist enabled for contributions?
  */
 @Serializable
 data class ArtistsAttributes(
@@ -26,6 +26,9 @@ data class ArtistsAttributes(
     /* Artist popularity (0.0 - 1.0) */
 
     @SerialName(value = "popularity") val popularity: kotlin.Double,
+    /* Is the artist enabled for contributions? */
+
+    @SerialName(value = "contributionsEnabled") val contributionsEnabled: kotlin.Boolean? = null,
     /* Artist links external to TIDAL API */
 
     @SerialName(value = "externalLinks")
@@ -36,7 +39,4 @@ data class ArtistsAttributes(
     /* Is the artist spotlighted? */
 
     @SerialName(value = "spotlighted") val spotlighted: kotlin.Boolean? = null,
-    /* Is the artist enabled for contributions? */
-
-    @SerialName(value = "contributionsEnabled") val contributionsEnabled: kotlin.Boolean? = null,
 ) {}

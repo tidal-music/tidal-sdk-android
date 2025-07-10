@@ -11,16 +11,16 @@ import kotlinx.serialization.Serializable
 
 /**
  * @param artists
- * @param similarAlbums
  * @param coverArt
  * @param items
  * @param providers
+ * @param similarAlbums
  */
 @Serializable
 data class AlbumsRelationships(
     @SerialName(value = "artists") val artists: MultiDataRelationshipDoc,
-    @SerialName(value = "similarAlbums") val similarAlbums: MultiDataRelationshipDoc,
     @SerialName(value = "coverArt") val coverArt: MultiDataRelationshipDoc,
     @SerialName(value = "items") val items: AlbumsItemsMultiDataRelationshipDocument,
     @SerialName(value = "providers") val providers: MultiDataRelationshipDoc,
+    @SerialName(value = "similarAlbums") val similarAlbums: MultiDataRelationshipDoc,
 ) {}

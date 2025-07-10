@@ -10,13 +10,16 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param `data`
- * @param links
- * @param included
+ * @param totalPlaybacks Total playbacks
+ * @param uniqueListeners Unique listeners
  */
 @Serializable
-data class UserReportsMultiDataRelationshipDocument(
-    @SerialName(value = "data") val `data`: kotlin.collections.List<ResourceIdentifier>? = null,
-    @SerialName(value = "links") val links: Links? = null,
-    @SerialName(value = "included") val included: kotlin.collections.List<IncludedInner>? = null,
+data class TrackStatisticsAttributes(
+
+    /* Total playbacks */
+
+    @SerialName(value = "totalPlaybacks") val totalPlaybacks: kotlin.Int,
+    /* Unique listeners */
+
+    @SerialName(value = "uniqueListeners") val uniqueListeners: kotlin.Int,
 ) {}

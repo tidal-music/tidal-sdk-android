@@ -10,15 +10,15 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
+ * @param attributes
  * @param id
  * @param type
- * @param attributes
  */
 @Serializable
 data class ArtistUpdateBodyData(
+    @SerialName(value = "attributes") val attributes: ArtistUpdateBodyDataAttributes,
     @SerialName(value = "id") val id: kotlin.String,
     @SerialName(value = "type") val type: ArtistUpdateBodyData.Type,
-    @SerialName(value = "attributes") val attributes: ArtistUpdateBodyDataAttributes,
 ) {
 
     /** Values: artists */

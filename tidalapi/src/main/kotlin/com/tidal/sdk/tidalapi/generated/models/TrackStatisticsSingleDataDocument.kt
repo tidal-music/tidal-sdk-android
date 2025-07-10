@@ -10,11 +10,13 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param reportedResources
- * @param owners
+ * @param `data`
+ * @param included
+ * @param links
  */
 @Serializable
-data class UserReportsRelationships(
-    @SerialName(value = "reportedResources") val reportedResources: MultiDataRelationshipDoc,
-    @SerialName(value = "owners") val owners: MultiDataRelationshipDoc,
+data class TrackStatisticsSingleDataDocument(
+    @SerialName(value = "data") val `data`: TrackStatisticsResource? = null,
+    @SerialName(value = "included") val included: kotlin.collections.List<IncludedInner>? = null,
+    @SerialName(value = "links") val links: Links? = null,
 ) {}

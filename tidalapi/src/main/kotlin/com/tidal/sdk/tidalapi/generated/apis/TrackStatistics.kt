@@ -1,14 +1,13 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
-import com.tidal.sdk.tidalapi.generated.models.ArtistRolesMultiDataDocument
-import com.tidal.sdk.tidalapi.generated.models.ArtistRolesSingleDataDocument
+import com.tidal.sdk.tidalapi.generated.models.TrackStatisticsMultiDataRelationshipDocument
+import com.tidal.sdk.tidalapi.generated.models.TrackStatisticsSingleDataDocument
 import retrofit2.Response
 import retrofit2.http.*
 
-interface ArtistRoles {
+interface TrackStatistics {
     /**
-     * Get multiple artistRoles. Retrieves multiple artistRoles by available filters, or without if
-     * applicable. Responses:
+     * Get single trackStatistic. Retrieves single trackStatistic by id. Responses:
      * - 200: Successful response
      * - 400: Bad request - The request could not be understood by the server due to malformed
      *   syntax or invalid parameters
@@ -22,18 +21,20 @@ interface ArtistRoles {
      * - 500: Internal server error - The server encountered an unexpected condition that prevented
      *   it from fulfilling the request
      *
-     * @param filterId Allows to filter the collection of resources based on id attribute value
-     *   (optional)
-     * @return [ArtistRolesMultiDataDocument]
+     * @param id A Tidal catalogue ID
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: owners (optional)
+     * @return [TrackStatisticsSingleDataDocument]
      */
-    @GET("artistRoles")
-    suspend fun artistRolesGet(
-        @Query("filter[id]")
-        filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null
-    ): Response<ArtistRolesMultiDataDocument>
+    @GET("trackStatistics/{id}")
+    suspend fun trackStatisticsIdGet(
+        @Path("id") id: kotlin.String,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+    ): Response<TrackStatisticsSingleDataDocument>
 
     /**
-     * Get single artistRole. Retrieves single artistRole by id. Responses:
+     * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
      * - 200: Successful response
      * - 400: Bad request - The request could not be understood by the server due to malformed
      *   syntax or invalid parameters
@@ -47,11 +48,18 @@ interface ArtistRoles {
      * - 500: Internal server error - The server encountered an unexpected condition that prevented
      *   it from fulfilling the request
      *
-     * @param id Artist role id
-     * @return [ArtistRolesSingleDataDocument]
+     * @param id A Tidal catalogue ID
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: owners (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
+     * @return [TrackStatisticsMultiDataRelationshipDocument]
      */
-    @GET("artistRoles/{id}")
-    suspend fun artistRolesIdGet(
-        @Path("id") id: kotlin.String
-    ): Response<ArtistRolesSingleDataDocument>
+    @GET("trackStatistics/{id}/relationships/owners")
+    suspend fun trackStatisticsIdRelationshipsOwnersGet(
+        @Path("id") id: kotlin.String,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
+    ): Response<TrackStatisticsMultiDataRelationshipDocument>
 }

@@ -10,17 +10,28 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
+ * @param albumAudioNormalizationData
+ * @param drmData
+ * @param formats Formats present in manifest
+ * @param hash Unique manifest hash
+ * @param trackAudioNormalizationData
  * @param trackPresentation Track presentation
  * @param uri Manifest URI
- * @param hash Unique manifest hash
- * @param formats Formats present in manifest
- * @param drmData
- * @param albumAudioNormalizationData
- * @param trackAudioNormalizationData
  */
 @Serializable
 data class TrackManifestsAttributes(
+    @SerialName(value = "albumAudioNormalizationData")
+    val albumAudioNormalizationData: AudioNormalizationData? = null,
+    @SerialName(value = "drmData") val drmData: DrmData? = null,
+    /* Formats present in manifest */
 
+    @SerialName(value = "formats")
+    val formats: kotlin.collections.List<TrackManifestsAttributes.Formats>? = null,
+    /* Unique manifest hash */
+
+    @SerialName(value = "hash") val hash: kotlin.String? = null,
+    @SerialName(value = "trackAudioNormalizationData")
+    val trackAudioNormalizationData: AudioNormalizationData? = null,
     /* Track presentation */
 
     @SerialName(value = "trackPresentation")
@@ -28,30 +39,7 @@ data class TrackManifestsAttributes(
     /* Manifest URI */
 
     @SerialName(value = "uri") val uri: kotlin.String? = null,
-    /* Unique manifest hash */
-
-    @SerialName(value = "hash") val hash: kotlin.String? = null,
-    /* Formats present in manifest */
-
-    @SerialName(value = "formats")
-    val formats: kotlin.collections.List<TrackManifestsAttributes.Formats>? = null,
-    @SerialName(value = "drmData") val drmData: DrmData? = null,
-    @SerialName(value = "albumAudioNormalizationData")
-    val albumAudioNormalizationData: AudioNormalizationData? = null,
-    @SerialName(value = "trackAudioNormalizationData")
-    val trackAudioNormalizationData: AudioNormalizationData? = null,
 ) {
-
-    /**
-     * Track presentation
-     *
-     * Values: FULL,PREVIEW
-     */
-    @Serializable
-    enum class TrackPresentation(val value: kotlin.String) {
-        @SerialName(value = "FULL") FULL("FULL"),
-        @SerialName(value = "PREVIEW") PREVIEW("PREVIEW"),
-    }
 
     /**
      * Formats present in manifest
@@ -64,5 +52,16 @@ data class TrackManifestsAttributes(
         @SerialName(value = "AACLC") AACLC("AACLC"),
         @SerialName(value = "FLAC") FLAC("FLAC"),
         @SerialName(value = "FLAC_HIRES") FLAC_HIRES("FLAC_HIRES"),
+    }
+
+    /**
+     * Track presentation
+     *
+     * Values: FULL,PREVIEW
+     */
+    @Serializable
+    enum class TrackPresentation(val value: kotlin.String) {
+        @SerialName(value = "FULL") FULL("FULL"),
+        @SerialName(value = "PREVIEW") PREVIEW("PREVIEW"),
     }
 }

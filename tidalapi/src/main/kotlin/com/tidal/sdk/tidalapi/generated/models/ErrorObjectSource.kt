@@ -12,21 +12,21 @@ import kotlinx.serialization.Serializable
 /**
  * object containing references to the primary source of the error
  *
+ * @param header string indicating the name of a single request header which caused the error
+ * @param parameter string indicating which URI query parameter caused the error.
  * @param pointer a JSON Pointer [RFC6901] to the value in the request document that caused the
  *   error
- * @param parameter string indicating which URI query parameter caused the error.
- * @param header string indicating the name of a single request header which caused the error
  */
 @Serializable
 data class ErrorObjectSource(
 
-    /* a JSON Pointer [RFC6901] to the value in the request document that caused the error */
-
-    @SerialName(value = "pointer") val pointer: kotlin.String? = null,
-    /* string indicating which URI query parameter caused the error. */
-
-    @SerialName(value = "parameter") val parameter: kotlin.String? = null,
     /* string indicating the name of a single request header which caused the error */
 
     @SerialName(value = "header") val header: kotlin.String? = null,
+    /* string indicating which URI query parameter caused the error. */
+
+    @SerialName(value = "parameter") val parameter: kotlin.String? = null,
+    /* a JSON Pointer [RFC6901] to the value in the request document that caused the error */
+
+    @SerialName(value = "pointer") val pointer: kotlin.String? = null,
 ) {}

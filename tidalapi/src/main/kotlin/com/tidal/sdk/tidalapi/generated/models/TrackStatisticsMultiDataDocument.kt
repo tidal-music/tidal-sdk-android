@@ -10,11 +10,14 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param addedAt
- * @param itemId
+ * @param `data`
+ * @param included
+ * @param links
  */
 @Serializable
-data class PlaylistsItemsResourceIdentifierMeta(
-    @SerialName(value = "addedAt") val addedAt: kotlin.String? = null,
-    @SerialName(value = "itemId") val itemId: kotlin.String? = null,
+data class TrackStatisticsMultiDataDocument(
+    @SerialName(value = "data")
+    val `data`: kotlin.collections.List<TrackStatisticsResource>? = null,
+    @SerialName(value = "included") val included: kotlin.collections.List<IncludedInner>? = null,
+    @SerialName(value = "links") val links: Links? = null,
 ) {}
