@@ -33,7 +33,7 @@ jobs:
     uses: ./.github/workflows/fossa-scan.yml
     secrets:
       pat: ${{ secrets.PACKAGES_PAT }}
-      fossaApiKey: ${{ secrets.FOSSAAPIKEY }}
+      fossaApiKey: ${{ secrets.FOSSA_API_KEY_FULL }}
 
   trigger-changelogs-check:
     name: Trigger changelog files check
