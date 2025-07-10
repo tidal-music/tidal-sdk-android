@@ -11,6 +11,21 @@ on:
         description: "Whether to use the already downloaded API spec"
         required: false
         default: "false"
+  workflow_call:
+    inputs:
+      target_branch:
+        description: "The branch to PR against"
+        type: string
+        required: false
+        default: "main"
+      use_downloaded_spec:
+        description: "Whether to use the already downloaded API spec"
+        type: string
+        required: false
+        default: "false"
+    secrets:
+      token:
+        required: true
 env:
   API_MODULE_DIR: tidalapi
 
@@ -24,6 +39,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Download API spec artifact
+        if: inputs.use_downloaded_spec == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          name: api-spec
+          path: /tmp/api-check
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -42,7 +64,7 @@ jobs:
           repo_owner="tidal-music"
           repo_name="openapi-generator"
           
-          curl -s -H -v "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          curl -s -H -v "Authorization: token ${{ secrets.token }}" \
             "https://api.github.com/repos/$repo_owner/$repo_name/releases/latest" > release_info.json
           # Extract the download URL for the desired asset
           ASSET_URL=$(jq -r '.assets[] | select(.name == "openapi-generator-cli.jar") | .browser_download_url' release_info.json)
@@ -54,7 +76,7 @@ jobs:
           ASSET_URL: ${{ steps.get_release.outputs.asset_url }}
         run: |
           echo "Downloading from ${{ env.ASSET_URL }}"
-          curl -L -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          curl -L -H "Authorization: token ${{ secrets.token }}" \
             -H "Accept: application/octet-stream" \
             -o tidalapi/bin/openapi-generator-cli.jar \
             "${{ env.ASSET_URL }}"
@@ -69,8 +91,12 @@ jobs:
           cd ${{ env.API_MODULE_DIR }}/bin
           
           # Check if we should use the pre-downloaded spec
-          if [ "${{ inputs.use_downloaded_spec }}" == "true" ] && [ -f "openapi_downloads/tidal-api-oas.json" ]; then
+          if [ "${{ inputs.use_downloaded_spec }}" == "true" ] && [ -f "/tmp/api-check/latest-api.json" ]; then
             echo "Using pre-downloaded API spec"
+            # Create directory if it doesn't exist
+            mkdir -p openapi_downloads
+            # Copy the artifact to the expected location
+            cp /tmp/api-check/latest-api.json openapi_downloads/tidal-api-oas.json
             # Use the local file parameter that's already supported by the script
             ./generate-api.sh --local-file "$(pwd)/openapi_downloads/tidal-api-oas.json"
           else
@@ -155,7 +181,7 @@ jobs:
       - name: Push changes
         if: steps.check_changes.outputs.changes_detected == 'true'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.token }}
           BRANCH_NAME: ${{ steps.commit_changes.outputs.branch_name }}
         run: |
           git push --set-upstream origin "${{env.BRANCH_NAME}}" --force
@@ -163,7 +189,7 @@ jobs:
       - name: Create or Update Pull Request
         if: steps.check_changes.outputs.changes_detected == 'true'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.token }}
           CHANGED_FILES: ${{ steps.check_changes.outputs.changed_files }}
           CHANGED_FILE_COUNT: ${{ steps.check_changes.outputs.changed_file_count }}
           BRANCH_NAME: ${{ steps.commit_changes.outputs.branch_name }}

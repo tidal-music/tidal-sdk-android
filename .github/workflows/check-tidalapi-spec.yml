@@ -8,12 +8,15 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   actions: write
+  pull-requests: write
 
 jobs:
   check-api-spec:
     runs-on: ubuntu-latest
+    outputs:
+      changes_found: ${{ steps.compare.outputs.changes_found }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -50,6 +53,14 @@ jobs:
             diff -u "tidalapi/bin/tidal-api.json" "/tmp/api-check/latest-api.json" || true
             echo "::endgroup::"
           fi
+          
+      - name: Upload API spec as artifact
+        if: steps.compare.outputs.changes_found == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-spec
+          path: /tmp/api-check/latest-api.json
+          retention-days: 1
 
       - name: Output result
         run: |
@@ -63,12 +74,16 @@ jobs:
           else
             echo "No Changes found"
           fi
-          
-      - name: Trigger regenerate workflow
-        if: steps.compare.outputs.changes_found == 'true'
-        uses: benc-uk/workflow-dispatch@v1
-        with:
-          workflow: regenerate-tidalapi-module.yml
-          ref: ${{ steps.check_pr.outputs.existing_pr == 'true' && steps.check_pr.outputs.pr_branch || github.ref_name }}
-          inputs: '{"use_downloaded_spec": "true"}'
-          token: ${{ secrets.GITHUB_TOKEN }}
+
+  # If changes are found, trigger the regenerate workflow
+  regenerate-api:
+    needs: check-api-spec
+    if: needs.check-api-spec.outputs.changes_found == 'true'
+    uses: ./.github/workflows/regenerate-tidalapi-module.yml
+    permissions:
+      contents: write
+      pull-requests: write
+    with:
+      use_downloaded_spec: "true"
+    secrets:
+      token: ${{ secrets.GITHUB_TOKEN }}
