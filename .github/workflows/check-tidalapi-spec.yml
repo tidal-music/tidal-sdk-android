@@ -64,23 +64,11 @@ jobs:
             echo "No Changes found"
           fi
           
-      - name: Trigger tidalapi module code generator
+      - name: Trigger regenerate workflow
         if: steps.compare.outputs.changes_found == 'true'
-        uses: actions/github-script@v6
+        uses: benc-uk/workflow-dispatch@v1
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            // Use the PR branch if it exists, otherwise use the current ref
-            const ref = ${{ steps.check_pr.outputs.existing_pr == 'true' }} 
-              ? '${{ steps.check_pr.outputs.pr_branch }}'
-              : context.ref;
-              
-            github.rest.actions.createWorkflowDispatch({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              workflow_id: 'regenerate-tidalapi-module.yml',
-              ref: ref,
-              inputs: {
-                use_downloaded_spec: 'true'
-              }
-            });
+          workflow: regenerate-tidalapi-module.yml
+          ref: ${{ steps.check_pr.outputs.existing_pr == 'true' && steps.check_pr.outputs.pr_branch || github.ref_name }}
+          inputs: '{"use_downloaded_spec": "true"}'
+          token: ${{ secrets.GITHUB_TOKEN }}
