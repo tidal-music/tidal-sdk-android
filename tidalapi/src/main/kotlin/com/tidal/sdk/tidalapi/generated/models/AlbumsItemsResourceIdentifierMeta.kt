@@ -10,16 +10,16 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param volumeNumber volume number
  * @param trackNumber track number
+ * @param volumeNumber volume number
  */
 @Serializable
 data class AlbumsItemsResourceIdentifierMeta(
 
-    /* volume number */
-
-    @SerialName(value = "volumeNumber") val volumeNumber: kotlin.Int,
     /* track number */
 
     @SerialName(value = "trackNumber") val trackNumber: kotlin.Int,
+    /* volume number */
+
+    @SerialName(value = "volumeNumber") val volumeNumber: kotlin.Int,
 ) {}

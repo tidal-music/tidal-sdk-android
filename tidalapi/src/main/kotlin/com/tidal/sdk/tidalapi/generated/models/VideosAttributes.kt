@@ -10,52 +10,52 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param title Video title
- * @param isrc International Standard Recording Code (ISRC)
  * @param duration Duration (ISO 8601)
  * @param explicit Explicit content
+ * @param isrc International Standard Recording Code (ISRC)
  * @param popularity Popularity (0.0 - 1.0)
- * @param version Video version, complements title
- * @param copyright Copyright
- * @param releaseDate Release date (ISO-8601)
+ * @param title Video title
  * @param availability Available usage for this video
+ * @param copyright Copyright
  * @param externalLinks Video links external to TIDAL API
+ * @param releaseDate Release date (ISO-8601)
+ * @param version Video version, complements title
  */
 @Serializable
 data class VideosAttributes(
 
-    /* Video title */
-
-    @SerialName(value = "title") val title: kotlin.String,
-    /* International Standard Recording Code (ISRC) */
-
-    @SerialName(value = "isrc") val isrc: kotlin.String,
     /* Duration (ISO 8601) */
 
     @SerialName(value = "duration") val duration: kotlin.String,
     /* Explicit content */
 
     @SerialName(value = "explicit") val explicit: kotlin.Boolean,
+    /* International Standard Recording Code (ISRC) */
+
+    @SerialName(value = "isrc") val isrc: kotlin.String,
     /* Popularity (0.0 - 1.0) */
 
     @SerialName(value = "popularity") val popularity: kotlin.Double,
-    /* Video version, complements title */
+    /* Video title */
 
-    @SerialName(value = "version") val version: kotlin.String? = null,
-    /* Copyright */
-
-    @SerialName(value = "copyright") val copyright: kotlin.String? = null,
-    /* Release date (ISO-8601) */
-
-    @SerialName(value = "releaseDate") val releaseDate: kotlin.String? = null,
+    @SerialName(value = "title") val title: kotlin.String,
     /* Available usage for this video */
 
     @SerialName(value = "availability")
     val availability: kotlin.collections.List<VideosAttributes.Availability>? = null,
+    /* Copyright */
+
+    @SerialName(value = "copyright") val copyright: kotlin.String? = null,
     /* Video links external to TIDAL API */
 
     @SerialName(value = "externalLinks")
     val externalLinks: kotlin.collections.List<ExternalLink>? = null,
+    /* Release date (ISO-8601) */
+
+    @SerialName(value = "releaseDate") val releaseDate: kotlin.String? = null,
+    /* Video version, complements title */
+
+    @SerialName(value = "version") val version: kotlin.String? = null,
 ) {
 
     /**

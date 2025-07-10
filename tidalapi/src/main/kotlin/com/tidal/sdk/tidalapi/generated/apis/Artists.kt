@@ -15,17 +15,17 @@ interface Artists {
      * Get multiple artists. Retrieves multiple artists by available filters, or without if
      * applicable. Responses:
      * - 200: Successful response
-     * - 451: Unavailable For Legal Reasons
-     * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
-     *   request body, etc.).
-     * - 500: Internal Server Error. Something went wrong on the server party.
-     * - 404: Resource not found. The requested resource is not found.
-     * - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media
-     *   type is set into Content-Type header.
-     * - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
-     * - 406: Not acceptable. The server doesn't support any of the requested by client acceptable
-     *   content types.
-     * - 429: Too many HTTP requests have been made within the allowed time.
+     * - 400: Bad request - The request could not be understood by the server due to malformed
+     *   syntax or invalid parameters
+     * - 404: Not found - The requested resource could not be found
+     * - 405: Method not allowed - The request method is not allowed for the requested resource
+     * - 406: Not acceptable - The requested resource is capable of generating only content not
+     *   acceptable according to the Accept headers sent in the request
+     * - 415: Unsupported media type - The request entity has a media type which the server or
+     *   resource does not support
+     * - 429: Too many requests - The user has sent too many requests in a given amount of time
+     * - 500: Internal server error - The server encountered an unexpected condition that prevented
+     *   it from fulfilling the request
      *
      * @param countryCode ISO 3166-1 alpha-2 country code
      * @param include Allows the client to customize which related resources should be returned.
@@ -49,17 +49,17 @@ interface Artists {
     /**
      * Get single artist. Retrieves single artist by id. Responses:
      * - 200: Successful response
-     * - 451: Unavailable For Legal Reasons
-     * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
-     *   request body, etc.).
-     * - 500: Internal Server Error. Something went wrong on the server party.
-     * - 404: Resource not found. The requested resource is not found.
-     * - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media
-     *   type is set into Content-Type header.
-     * - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
-     * - 406: Not acceptable. The server doesn't support any of the requested by client acceptable
-     *   content types.
-     * - 429: Too many HTTP requests have been made within the allowed time.
+     * - 400: Bad request - The request could not be understood by the server due to malformed
+     *   syntax or invalid parameters
+     * - 404: Not found - The requested resource could not be found
+     * - 405: Method not allowed - The request method is not allowed for the requested resource
+     * - 406: Not acceptable - The requested resource is capable of generating only content not
+     *   acceptable according to the Accept headers sent in the request
+     * - 415: Unsupported media type - The request entity has a media type which the server or
+     *   resource does not support
+     * - 429: Too many requests - The user has sent too many requests in a given amount of time
+     * - 500: Internal server error - The server encountered an unexpected condition that prevented
+     *   it from fulfilling the request
      *
      * @param id Artist id
      * @param countryCode ISO 3166-1 alpha-2 country code
@@ -78,17 +78,17 @@ interface Artists {
 
     /**
      * Update single artist. Updates existing artist. Responses:
-     * - 451: Unavailable For Legal Reasons
-     * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
-     *   request body, etc.).
-     * - 500: Internal Server Error. Something went wrong on the server party.
-     * - 404: Resource not found. The requested resource is not found.
-     * - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media
-     *   type is set into Content-Type header.
-     * - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
-     * - 406: Not acceptable. The server doesn't support any of the requested by client acceptable
-     *   content types.
-     * - 429: Too many HTTP requests have been made within the allowed time.
+     * - 400: Bad request - The request could not be understood by the server due to malformed
+     *   syntax or invalid parameters
+     * - 404: Not found - The requested resource could not be found
+     * - 405: Method not allowed - The request method is not allowed for the requested resource
+     * - 406: Not acceptable - The requested resource is capable of generating only content not
+     *   acceptable according to the Accept headers sent in the request
+     * - 415: Unsupported media type - The request entity has a media type which the server or
+     *   resource does not support
+     * - 429: Too many requests - The user has sent too many requests in a given amount of time
+     * - 500: Internal server error - The server encountered an unexpected condition that prevented
+     *   it from fulfilling the request
      *
      * @param id Artist id
      * @param artistUpdateBody (optional)
@@ -103,17 +103,17 @@ interface Artists {
     /**
      * Get albums relationship (\&quot;to-many\&quot;). Retrieves albums relationship. Responses:
      * - 200: Successful response
-     * - 451: Unavailable For Legal Reasons
-     * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
-     *   request body, etc.).
-     * - 500: Internal Server Error. Something went wrong on the server party.
-     * - 404: Resource not found. The requested resource is not found.
-     * - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media
-     *   type is set into Content-Type header.
-     * - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
-     * - 406: Not acceptable. The server doesn't support any of the requested by client acceptable
-     *   content types.
-     * - 429: Too many HTTP requests have been made within the allowed time.
+     * - 400: Bad request - The request could not be understood by the server due to malformed
+     *   syntax or invalid parameters
+     * - 404: Not found - The requested resource could not be found
+     * - 405: Method not allowed - The request method is not allowed for the requested resource
+     * - 406: Not acceptable - The requested resource is capable of generating only content not
+     *   acceptable according to the Accept headers sent in the request
+     * - 415: Unsupported media type - The request entity has a media type which the server or
+     *   resource does not support
+     * - 429: Too many requests - The user has sent too many requests in a given amount of time
+     * - 500: Internal server error - The server encountered an unexpected condition that prevented
+     *   it from fulfilling the request
      *
      * @param id Artist id
      * @param countryCode ISO 3166-1 alpha-2 country code
@@ -135,17 +135,17 @@ interface Artists {
     /**
      * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
      * - 200: Successful response
-     * - 451: Unavailable For Legal Reasons
-     * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
-     *   request body, etc.).
-     * - 500: Internal Server Error. Something went wrong on the server party.
-     * - 404: Resource not found. The requested resource is not found.
-     * - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media
-     *   type is set into Content-Type header.
-     * - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
-     * - 406: Not acceptable. The server doesn't support any of the requested by client acceptable
-     *   content types.
-     * - 429: Too many HTTP requests have been made within the allowed time.
+     * - 400: Bad request - The request could not be understood by the server due to malformed
+     *   syntax or invalid parameters
+     * - 404: Not found - The requested resource could not be found
+     * - 405: Method not allowed - The request method is not allowed for the requested resource
+     * - 406: Not acceptable - The requested resource is capable of generating only content not
+     *   acceptable according to the Accept headers sent in the request
+     * - 415: Unsupported media type - The request entity has a media type which the server or
+     *   resource does not support
+     * - 429: Too many requests - The user has sent too many requests in a given amount of time
+     * - 500: Internal server error - The server encountered an unexpected condition that prevented
+     *   it from fulfilling the request
      *
      * @param id Artist id
      * @param include Allows the client to customize which related resources should be returned.
@@ -166,17 +166,17 @@ interface Artists {
      * Get profileArt relationship (\&quot;to-many\&quot;). Retrieves profileArt relationship.
      * Responses:
      * - 200: Successful response
-     * - 451: Unavailable For Legal Reasons
-     * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
-     *   request body, etc.).
-     * - 500: Internal Server Error. Something went wrong on the server party.
-     * - 404: Resource not found. The requested resource is not found.
-     * - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media
-     *   type is set into Content-Type header.
-     * - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
-     * - 406: Not acceptable. The server doesn't support any of the requested by client acceptable
-     *   content types.
-     * - 429: Too many HTTP requests have been made within the allowed time.
+     * - 400: Bad request - The request could not be understood by the server due to malformed
+     *   syntax or invalid parameters
+     * - 404: Not found - The requested resource could not be found
+     * - 405: Method not allowed - The request method is not allowed for the requested resource
+     * - 406: Not acceptable - The requested resource is capable of generating only content not
+     *   acceptable according to the Accept headers sent in the request
+     * - 415: Unsupported media type - The request entity has a media type which the server or
+     *   resource does not support
+     * - 429: Too many requests - The user has sent too many requests in a given amount of time
+     * - 500: Internal server error - The server encountered an unexpected condition that prevented
+     *   it from fulfilling the request
      *
      * @param id Artist id
      * @param countryCode ISO 3166-1 alpha-2 country code
@@ -198,17 +198,17 @@ interface Artists {
     /**
      * Update profileArt relationship (\&quot;to-many\&quot;). Updates profileArt relationship.
      * Responses:
-     * - 451: Unavailable For Legal Reasons
-     * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
-     *   request body, etc.).
-     * - 500: Internal Server Error. Something went wrong on the server party.
-     * - 404: Resource not found. The requested resource is not found.
-     * - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media
-     *   type is set into Content-Type header.
-     * - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
-     * - 406: Not acceptable. The server doesn't support any of the requested by client acceptable
-     *   content types.
-     * - 429: Too many HTTP requests have been made within the allowed time.
+     * - 400: Bad request - The request could not be understood by the server due to malformed
+     *   syntax or invalid parameters
+     * - 404: Not found - The requested resource could not be found
+     * - 405: Method not allowed - The request method is not allowed for the requested resource
+     * - 406: Not acceptable - The requested resource is capable of generating only content not
+     *   acceptable according to the Accept headers sent in the request
+     * - 415: Unsupported media type - The request entity has a media type which the server or
+     *   resource does not support
+     * - 429: Too many requests - The user has sent too many requests in a given amount of time
+     * - 500: Internal server error - The server encountered an unexpected condition that prevented
+     *   it from fulfilling the request
      *
      * @param id Artist id
      * @param artistProfileArtRelationshipUpdateOperationPayload (optional)
@@ -226,17 +226,17 @@ interface Artists {
     /**
      * Get radio relationship (\&quot;to-many\&quot;). Retrieves radio relationship. Responses:
      * - 200: Successful response
-     * - 451: Unavailable For Legal Reasons
-     * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
-     *   request body, etc.).
-     * - 500: Internal Server Error. Something went wrong on the server party.
-     * - 404: Resource not found. The requested resource is not found.
-     * - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media
-     *   type is set into Content-Type header.
-     * - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
-     * - 406: Not acceptable. The server doesn't support any of the requested by client acceptable
-     *   content types.
-     * - 429: Too many HTTP requests have been made within the allowed time.
+     * - 400: Bad request - The request could not be understood by the server due to malformed
+     *   syntax or invalid parameters
+     * - 404: Not found - The requested resource could not be found
+     * - 405: Method not allowed - The request method is not allowed for the requested resource
+     * - 406: Not acceptable - The requested resource is capable of generating only content not
+     *   acceptable according to the Accept headers sent in the request
+     * - 415: Unsupported media type - The request entity has a media type which the server or
+     *   resource does not support
+     * - 429: Too many requests - The user has sent too many requests in a given amount of time
+     * - 500: Internal server error - The server encountered an unexpected condition that prevented
+     *   it from fulfilling the request
      *
      * @param id Artist id
      * @param countryCode ISO 3166-1 alpha-2 country code
@@ -258,17 +258,17 @@ interface Artists {
     /**
      * Get roles relationship (\&quot;to-many\&quot;). Retrieves roles relationship. Responses:
      * - 200: Successful response
-     * - 451: Unavailable For Legal Reasons
-     * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
-     *   request body, etc.).
-     * - 500: Internal Server Error. Something went wrong on the server party.
-     * - 404: Resource not found. The requested resource is not found.
-     * - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media
-     *   type is set into Content-Type header.
-     * - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
-     * - 406: Not acceptable. The server doesn't support any of the requested by client acceptable
-     *   content types.
-     * - 429: Too many HTTP requests have been made within the allowed time.
+     * - 400: Bad request - The request could not be understood by the server due to malformed
+     *   syntax or invalid parameters
+     * - 404: Not found - The requested resource could not be found
+     * - 405: Method not allowed - The request method is not allowed for the requested resource
+     * - 406: Not acceptable - The requested resource is capable of generating only content not
+     *   acceptable according to the Accept headers sent in the request
+     * - 415: Unsupported media type - The request entity has a media type which the server or
+     *   resource does not support
+     * - 429: Too many requests - The user has sent too many requests in a given amount of time
+     * - 500: Internal server error - The server encountered an unexpected condition that prevented
+     *   it from fulfilling the request
      *
      * @param id Artist id
      * @param include Allows the client to customize which related resources should be returned.
@@ -289,17 +289,17 @@ interface Artists {
      * Get similarArtists relationship (\&quot;to-many\&quot;). Retrieves similarArtists
      * relationship. Responses:
      * - 200: Successful response
-     * - 451: Unavailable For Legal Reasons
-     * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
-     *   request body, etc.).
-     * - 500: Internal Server Error. Something went wrong on the server party.
-     * - 404: Resource not found. The requested resource is not found.
-     * - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media
-     *   type is set into Content-Type header.
-     * - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
-     * - 406: Not acceptable. The server doesn't support any of the requested by client acceptable
-     *   content types.
-     * - 429: Too many HTTP requests have been made within the allowed time.
+     * - 400: Bad request - The request could not be understood by the server due to malformed
+     *   syntax or invalid parameters
+     * - 404: Not found - The requested resource could not be found
+     * - 405: Method not allowed - The request method is not allowed for the requested resource
+     * - 406: Not acceptable - The requested resource is capable of generating only content not
+     *   acceptable according to the Accept headers sent in the request
+     * - 415: Unsupported media type - The request entity has a media type which the server or
+     *   resource does not support
+     * - 429: Too many requests - The user has sent too many requests in a given amount of time
+     * - 500: Internal server error - The server encountered an unexpected condition that prevented
+     *   it from fulfilling the request
      *
      * @param id Artist id
      * @param countryCode ISO 3166-1 alpha-2 country code
@@ -322,17 +322,17 @@ interface Artists {
      * Get trackProviders relationship (\&quot;to-many\&quot;). Retrieves trackProviders
      * relationship. Responses:
      * - 200: Successful response
-     * - 451: Unavailable For Legal Reasons
-     * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
-     *   request body, etc.).
-     * - 500: Internal Server Error. Something went wrong on the server party.
-     * - 404: Resource not found. The requested resource is not found.
-     * - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media
-     *   type is set into Content-Type header.
-     * - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
-     * - 406: Not acceptable. The server doesn't support any of the requested by client acceptable
-     *   content types.
-     * - 429: Too many HTTP requests have been made within the allowed time.
+     * - 400: Bad request - The request could not be understood by the server due to malformed
+     *   syntax or invalid parameters
+     * - 404: Not found - The requested resource could not be found
+     * - 405: Method not allowed - The request method is not allowed for the requested resource
+     * - 406: Not acceptable - The requested resource is capable of generating only content not
+     *   acceptable according to the Accept headers sent in the request
+     * - 415: Unsupported media type - The request entity has a media type which the server or
+     *   resource does not support
+     * - 429: Too many requests - The user has sent too many requests in a given amount of time
+     * - 500: Internal server error - The server encountered an unexpected condition that prevented
+     *   it from fulfilling the request
      *
      * @param id Artist id
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -352,17 +352,17 @@ interface Artists {
     /**
      * Get tracks relationship (\&quot;to-many\&quot;). Retrieves tracks relationship. Responses:
      * - 200: Successful response
-     * - 451: Unavailable For Legal Reasons
-     * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
-     *   request body, etc.).
-     * - 500: Internal Server Error. Something went wrong on the server party.
-     * - 404: Resource not found. The requested resource is not found.
-     * - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media
-     *   type is set into Content-Type header.
-     * - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
-     * - 406: Not acceptable. The server doesn't support any of the requested by client acceptable
-     *   content types.
-     * - 429: Too many HTTP requests have been made within the allowed time.
+     * - 400: Bad request - The request could not be understood by the server due to malformed
+     *   syntax or invalid parameters
+     * - 404: Not found - The requested resource could not be found
+     * - 405: Method not allowed - The request method is not allowed for the requested resource
+     * - 406: Not acceptable - The requested resource is capable of generating only content not
+     *   acceptable according to the Accept headers sent in the request
+     * - 415: Unsupported media type - The request entity has a media type which the server or
+     *   resource does not support
+     * - 429: Too many requests - The user has sent too many requests in a given amount of time
+     * - 500: Internal server error - The server encountered an unexpected condition that prevented
+     *   it from fulfilling the request
      *
      * @param id Artist id
      * @param countryCode ISO 3166-1 alpha-2 country code
@@ -388,17 +388,17 @@ interface Artists {
     /**
      * Get videos relationship (\&quot;to-many\&quot;). Retrieves videos relationship. Responses:
      * - 200: Successful response
-     * - 451: Unavailable For Legal Reasons
-     * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
-     *   request body, etc.).
-     * - 500: Internal Server Error. Something went wrong on the server party.
-     * - 404: Resource not found. The requested resource is not found.
-     * - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media
-     *   type is set into Content-Type header.
-     * - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
-     * - 406: Not acceptable. The server doesn't support any of the requested by client acceptable
-     *   content types.
-     * - 429: Too many HTTP requests have been made within the allowed time.
+     * - 400: Bad request - The request could not be understood by the server due to malformed
+     *   syntax or invalid parameters
+     * - 404: Not found - The requested resource could not be found
+     * - 405: Method not allowed - The request method is not allowed for the requested resource
+     * - 406: Not acceptable - The requested resource is capable of generating only content not
+     *   acceptable according to the Accept headers sent in the request
+     * - 415: Unsupported media type - The request entity has a media type which the server or
+     *   resource does not support
+     * - 429: Too many requests - The user has sent too many requests in a given amount of time
+     * - 500: Internal server error - The server encountered an unexpected condition that prevented
+     *   it from fulfilling the request
      *
      * @param id Artist id
      * @param countryCode ISO 3166-1 alpha-2 country code
@@ -420,17 +420,17 @@ interface Artists {
     /**
      * Create single artist. Creates a new artist. Responses:
      * - 201: Successful response
-     * - 451: Unavailable For Legal Reasons
-     * - 400: Bad request on client party. Ensure the proper HTTP request is sent (query parameters,
-     *   request body, etc.).
-     * - 500: Internal Server Error. Something went wrong on the server party.
-     * - 404: Resource not found. The requested resource is not found.
-     * - 415: Unsupported Media Type. The API is using content negotiation. Ensure the proper media
-     *   type is set into Content-Type header.
-     * - 405: Method not supported. Ensure a proper HTTP method for an HTTP request is used.
-     * - 406: Not acceptable. The server doesn't support any of the requested by client acceptable
-     *   content types.
-     * - 429: Too many HTTP requests have been made within the allowed time.
+     * - 400: Bad request - The request could not be understood by the server due to malformed
+     *   syntax or invalid parameters
+     * - 404: Not found - The requested resource could not be found
+     * - 405: Method not allowed - The request method is not allowed for the requested resource
+     * - 406: Not acceptable - The requested resource is capable of generating only content not
+     *   acceptable according to the Accept headers sent in the request
+     * - 415: Unsupported media type - The request entity has a media type which the server or
+     *   resource does not support
+     * - 429: Too many requests - The user has sent too many requests in a given amount of time
+     * - 500: Internal server error - The server encountered an unexpected condition that prevented
+     *   it from fulfilling the request
      *
      * @param artistCreateOperationPayload (optional)
      * @return [ArtistsSingleDataDocument]

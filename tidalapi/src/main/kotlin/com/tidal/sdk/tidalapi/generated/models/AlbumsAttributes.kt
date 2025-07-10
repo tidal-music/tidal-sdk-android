@@ -10,62 +10,62 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param title Album title
  * @param barcodeId Barcode id (EAN-13 or UPC-A)
- * @param numberOfVolumes Number of volumes
- * @param numberOfItems Number of items in album
  * @param duration Duration (ISO 8601)
  * @param explicit Explicit content
- * @param popularity Popularity (0.0 - 1.0)
  * @param mediaTags
+ * @param numberOfItems Number of items in album
+ * @param numberOfVolumes Number of volumes
+ * @param popularity Popularity (0.0 - 1.0)
+ * @param title Album title
  * @param type Album type
- * @param releaseDate Release date (ISO-8601)
- * @param copyright Copyright
  * @param availability Available usage for this album
+ * @param copyright Copyright
  * @param externalLinks Album links external to TIDAL API
+ * @param releaseDate Release date (ISO-8601)
  */
 @Serializable
 data class AlbumsAttributes(
 
-    /* Album title */
-
-    @SerialName(value = "title") val title: kotlin.String,
     /* Barcode id (EAN-13 or UPC-A) */
 
     @SerialName(value = "barcodeId") val barcodeId: kotlin.String,
-    /* Number of volumes */
-
-    @SerialName(value = "numberOfVolumes") val numberOfVolumes: kotlin.Int,
-    /* Number of items in album */
-
-    @SerialName(value = "numberOfItems") val numberOfItems: kotlin.Int,
     /* Duration (ISO 8601) */
 
     @SerialName(value = "duration") val duration: kotlin.String,
     /* Explicit content */
 
     @SerialName(value = "explicit") val explicit: kotlin.Boolean,
+    @SerialName(value = "mediaTags") val mediaTags: kotlin.collections.List<kotlin.String>,
+    /* Number of items in album */
+
+    @SerialName(value = "numberOfItems") val numberOfItems: kotlin.Int,
+    /* Number of volumes */
+
+    @SerialName(value = "numberOfVolumes") val numberOfVolumes: kotlin.Int,
     /* Popularity (0.0 - 1.0) */
 
     @SerialName(value = "popularity") val popularity: kotlin.Double,
-    @SerialName(value = "mediaTags") val mediaTags: kotlin.collections.List<kotlin.String>,
+    /* Album title */
+
+    @SerialName(value = "title") val title: kotlin.String,
     /* Album type */
 
     @SerialName(value = "type") val type: AlbumsAttributes.Type,
-    /* Release date (ISO-8601) */
-
-    @SerialName(value = "releaseDate") val releaseDate: kotlin.String? = null,
-    /* Copyright */
-
-    @SerialName(value = "copyright") val copyright: kotlin.String? = null,
     /* Available usage for this album */
 
     @SerialName(value = "availability")
     val availability: kotlin.collections.List<AlbumsAttributes.Availability>? = null,
+    /* Copyright */
+
+    @SerialName(value = "copyright") val copyright: kotlin.String? = null,
     /* Album links external to TIDAL API */
 
     @SerialName(value = "externalLinks")
     val externalLinks: kotlin.collections.List<ExternalLink>? = null,
+    /* Release date (ISO-8601) */
+
+    @SerialName(value = "releaseDate") val releaseDate: kotlin.String? = null,
 ) {
 
     /**

@@ -10,13 +10,13 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param type
  * @param attributes
+ * @param type
  */
 @Serializable
 data class PlaylistCreateOperationPayloadData(
-    @SerialName(value = "type") val type: PlaylistCreateOperationPayloadData.Type,
     @SerialName(value = "attributes") val attributes: PlaylistCreateOperationPayloadDataAttributes,
+    @SerialName(value = "type") val type: PlaylistCreateOperationPayloadData.Type,
 ) {
 
     /** Values: playlists */

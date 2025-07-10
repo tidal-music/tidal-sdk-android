@@ -10,15 +10,21 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
+ * @param albumAudioNormalizationData
+ * @param format File's audio format
+ * @param trackAudioNormalizationData
  * @param trackPresentation Track presentation
  * @param url File URL
- * @param format File's audio format
- * @param albumAudioNormalizationData
- * @param trackAudioNormalizationData
  */
 @Serializable
 data class TrackFilesAttributes(
+    @SerialName(value = "albumAudioNormalizationData")
+    val albumAudioNormalizationData: AudioNormalizationData? = null,
+    /* File's audio format */
 
+    @SerialName(value = "format") val format: TrackFilesAttributes.Format? = null,
+    @SerialName(value = "trackAudioNormalizationData")
+    val trackAudioNormalizationData: AudioNormalizationData? = null,
     /* Track presentation */
 
     @SerialName(value = "trackPresentation")
@@ -26,25 +32,7 @@ data class TrackFilesAttributes(
     /* File URL */
 
     @SerialName(value = "url") val url: kotlin.String? = null,
-    /* File's audio format */
-
-    @SerialName(value = "format") val format: TrackFilesAttributes.Format? = null,
-    @SerialName(value = "albumAudioNormalizationData")
-    val albumAudioNormalizationData: AudioNormalizationData? = null,
-    @SerialName(value = "trackAudioNormalizationData")
-    val trackAudioNormalizationData: AudioNormalizationData? = null,
 ) {
-
-    /**
-     * Track presentation
-     *
-     * Values: FULL,PREVIEW
-     */
-    @Serializable
-    enum class TrackPresentation(val value: kotlin.String) {
-        @SerialName(value = "FULL") FULL("FULL"),
-        @SerialName(value = "PREVIEW") PREVIEW("PREVIEW"),
-    }
 
     /**
      * File's audio format
@@ -57,5 +45,16 @@ data class TrackFilesAttributes(
         @SerialName(value = "AACLC") AACLC("AACLC"),
         @SerialName(value = "FLAC") FLAC("FLAC"),
         @SerialName(value = "FLAC_HIRES") FLAC_HIRES("FLAC_HIRES"),
+    }
+
+    /**
+     * Track presentation
+     *
+     * Values: FULL,PREVIEW
+     */
+    @Serializable
+    enum class TrackPresentation(val value: kotlin.String) {
+        @SerialName(value = "FULL") FULL("FULL"),
+        @SerialName(value = "PREVIEW") PREVIEW("PREVIEW"),
     }
 }
