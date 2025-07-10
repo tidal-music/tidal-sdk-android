@@ -11,12 +11,12 @@ import kotlinx.serialization.Serializable
 
 /**
  * @param `data`
- * @param links
  * @param included
+ * @param links
  */
 @Serializable
 data class PlaylistsMultiDataRelationshipDocument(
     @SerialName(value = "data") val `data`: kotlin.collections.List<ResourceIdentifier>? = null,
-    @SerialName(value = "links") val links: Links? = null,
     @SerialName(value = "included") val included: kotlin.collections.List<IncludedInner>? = null,
+    @SerialName(value = "links") val links: Links? = null,
 ) {}

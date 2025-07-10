@@ -10,14 +10,14 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param name Playlist name
- * @param bounded Indicates if the playlist has a duration and set number of tracks
- * @param externalLinks
- * @param createdAt Datetime of playlist creation (ISO 8601)
- * @param lastModifiedAt Datetime of last modification of the playlist (ISO 8601)
- * @param privacy Privacy setting of the playlist
  * @param accessType Access type
+ * @param bounded Indicates if the playlist has a duration and set number of tracks
+ * @param createdAt Datetime of playlist creation (ISO 8601)
+ * @param externalLinks
+ * @param lastModifiedAt Datetime of last modification of the playlist (ISO 8601)
+ * @param name Playlist name
  * @param playlistType The type of the playlist
+ * @param privacy Privacy setting of the playlist
  * @param description Playlist description
  * @param duration Duration of playlist (ISO 8601)
  * @param numberOfItems Number of items in the playlist
@@ -25,30 +25,30 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class PlaylistsAttributes(
 
-    /* Playlist name */
+    /* Access type */
 
-    @SerialName(value = "name") val name: kotlin.String,
+    @SerialName(value = "accessType") val accessType: PlaylistsAttributes.AccessType,
     /* Indicates if the playlist has a duration and set number of tracks */
 
     @SerialName(value = "bounded") val bounded: kotlin.Boolean,
-    @SerialName(value = "externalLinks") val externalLinks: kotlin.collections.List<ExternalLink>,
     /* Datetime of playlist creation (ISO 8601) */
 
     @SerialName(value = "createdAt") val createdAt: kotlin.String,
+    @SerialName(value = "externalLinks") val externalLinks: kotlin.collections.List<ExternalLink>,
     /* Datetime of last modification of the playlist (ISO 8601) */
 
     @SerialName(value = "lastModifiedAt") val lastModifiedAt: kotlin.String,
+    /* Playlist name */
+
+    @SerialName(value = "name") val name: kotlin.String,
+    /* The type of the playlist */
+
+    @SerialName(value = "playlistType") val playlistType: PlaylistsAttributes.PlaylistType,
     /* Privacy setting of the playlist */
 
     @SerialName(value = "privacy")
     @Deprecated(message = "This property is deprecated.")
     val privacy: PlaylistsAttributes.Privacy,
-    /* Access type */
-
-    @SerialName(value = "accessType") val accessType: PlaylistsAttributes.AccessType,
-    /* The type of the playlist */
-
-    @SerialName(value = "playlistType") val playlistType: PlaylistsAttributes.PlaylistType,
     /* Playlist description */
 
     @SerialName(value = "description") val description: kotlin.String? = null,
@@ -59,17 +59,6 @@ data class PlaylistsAttributes(
 
     @SerialName(value = "numberOfItems") val numberOfItems: kotlin.Int? = null,
 ) {
-
-    /**
-     * Privacy setting of the playlist
-     *
-     * Values: PUBLIC,PRIVATE
-     */
-    @Serializable
-    enum class Privacy(val value: kotlin.String) {
-        @SerialName(value = "PUBLIC") PUBLIC("PUBLIC"),
-        @SerialName(value = "PRIVATE") PRIVATE("PRIVATE"),
-    }
 
     /**
      * Access type
@@ -93,5 +82,16 @@ data class PlaylistsAttributes(
         @SerialName(value = "USER") USER("USER"),
         @SerialName(value = "MIX") MIX("MIX"),
         @SerialName(value = "ARTIST") ARTIST("ARTIST"),
+    }
+
+    /**
+     * Privacy setting of the playlist
+     *
+     * Values: PUBLIC,PRIVATE
+     */
+    @Serializable
+    enum class Privacy(val value: kotlin.String) {
+        @SerialName(value = "PUBLIC") PUBLIC("PUBLIC"),
+        @SerialName(value = "PRIVATE") PRIVATE("PRIVATE"),
     }
 }

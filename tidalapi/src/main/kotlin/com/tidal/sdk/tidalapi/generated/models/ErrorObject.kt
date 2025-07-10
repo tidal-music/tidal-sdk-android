@@ -12,26 +12,26 @@ import kotlinx.serialization.Serializable
 /**
  * JSON:API error object
  *
- * @param id unique identifier for this particular occurrence of the problem
- * @param status HTTP status code applicable to this problem
  * @param code application-specific error code
  * @param detail human-readable explanation specific to this occurrence of the problem
+ * @param id unique identifier for this particular occurrence of the problem
  * @param source
+ * @param status HTTP status code applicable to this problem
  */
 @Serializable
 data class ErrorObject(
 
-    /* unique identifier for this particular occurrence of the problem */
-
-    @SerialName(value = "id") val id: kotlin.String? = null,
-    /* HTTP status code applicable to this problem */
-
-    @SerialName(value = "status") val status: kotlin.String? = null,
     /* application-specific error code */
 
     @SerialName(value = "code") val code: kotlin.String? = null,
     /* human-readable explanation specific to this occurrence of the problem */
 
     @SerialName(value = "detail") val detail: kotlin.String? = null,
+    /* unique identifier for this particular occurrence of the problem */
+
+    @SerialName(value = "id") val id: kotlin.String? = null,
     @SerialName(value = "source") val source: ErrorObjectSource? = null,
+    /* HTTP status code applicable to this problem */
+
+    @SerialName(value = "status") val status: kotlin.String? = null,
 ) {}

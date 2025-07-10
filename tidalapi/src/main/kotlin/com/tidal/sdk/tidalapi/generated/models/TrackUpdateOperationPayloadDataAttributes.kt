@@ -10,30 +10,31 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param title
- * @param explicit Explicit content
  * @param accessType Access type
  * @param bpm
+ * @param explicit Explicit content
+ * @param genreTags
  * @param key
  * @param keyScale
- * @param genreTags
+ * @param title
  * @param toneTags
  */
 @Serializable
 data class TrackUpdateOperationPayloadDataAttributes(
-    @SerialName(value = "title") val title: kotlin.String? = null,
-    /* Explicit content */
 
-    @SerialName(value = "explicit") val explicit: kotlin.Boolean? = null,
     /* Access type */
 
     @SerialName(value = "accessType")
     val accessType: TrackUpdateOperationPayloadDataAttributes.AccessType? = null,
     @SerialName(value = "bpm") val bpm: kotlin.Float? = null,
+    /* Explicit content */
+
+    @SerialName(value = "explicit") val explicit: kotlin.Boolean? = null,
+    @SerialName(value = "genreTags") val genreTags: kotlin.collections.List<kotlin.String>? = null,
     @SerialName(value = "key") val key: TrackUpdateOperationPayloadDataAttributes.Key? = null,
     @SerialName(value = "keyScale")
     val keyScale: TrackUpdateOperationPayloadDataAttributes.KeyScale? = null,
-    @SerialName(value = "genreTags") val genreTags: kotlin.collections.List<kotlin.String>? = null,
+    @SerialName(value = "title") val title: kotlin.String? = null,
     @SerialName(value = "toneTags") val toneTags: kotlin.collections.List<kotlin.String>? = null,
 ) {
 

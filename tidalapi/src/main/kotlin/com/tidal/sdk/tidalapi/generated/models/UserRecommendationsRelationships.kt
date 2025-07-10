@@ -11,12 +11,12 @@ import kotlinx.serialization.Serializable
 
 /**
  * @param discoveryMixes
- * @param newArrivalMixes
  * @param myMixes
+ * @param newArrivalMixes
  */
 @Serializable
 data class UserRecommendationsRelationships(
     @SerialName(value = "discoveryMixes") val discoveryMixes: MultiDataRelationshipDoc,
-    @SerialName(value = "newArrivalMixes") val newArrivalMixes: MultiDataRelationshipDoc,
     @SerialName(value = "myMixes") val myMixes: MultiDataRelationshipDoc,
+    @SerialName(value = "newArrivalMixes") val newArrivalMixes: MultiDataRelationshipDoc,
 ) {}

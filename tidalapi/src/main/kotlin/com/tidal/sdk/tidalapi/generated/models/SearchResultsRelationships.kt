@@ -13,16 +13,16 @@ import kotlinx.serialization.Serializable
  * @param albums
  * @param artists
  * @param playlists
- * @param videos
  * @param topHits
  * @param tracks
+ * @param videos
  */
 @Serializable
 data class SearchResultsRelationships(
     @SerialName(value = "albums") val albums: MultiDataRelationshipDoc,
     @SerialName(value = "artists") val artists: MultiDataRelationshipDoc,
     @SerialName(value = "playlists") val playlists: MultiDataRelationshipDoc,
-    @SerialName(value = "videos") val videos: MultiDataRelationshipDoc,
     @SerialName(value = "topHits") val topHits: MultiDataRelationshipDoc,
     @SerialName(value = "tracks") val tracks: MultiDataRelationshipDoc,
+    @SerialName(value = "videos") val videos: MultiDataRelationshipDoc,
 ) {}
