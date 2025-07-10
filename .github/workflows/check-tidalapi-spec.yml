@@ -7,12 +7,15 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   actions: write
+  pull-requests: write
 
 jobs:
   check-api-spec:
     runs-on: ubuntu-latest
+    outputs:
+      changes_found: ${{ steps.compare.outputs.changes_found }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -32,6 +35,9 @@ jobs:
         run: |
           mkdir -p /tmp/api-check
           curl -s https://tidal-music.github.io/tidal-api-reference/tidal-api-oas.json -o /tmp/api-check/latest-api.json
+          # Save the spec to a location that can be used by the regeneration workflow
+          mkdir -p tidalapi/bin/openapi_downloads
+          cp /tmp/api-check/latest-api.json tidalapi/bin/openapi_downloads/tidal-api-oas.json
       
       - name: Compare API specs
         id: compare
@@ -46,34 +52,36 @@ jobs:
             diff -u "tidalapi/bin/tidal-api.json" "/tmp/api-check/latest-api.json" || true
             echo "::endgroup::"
           fi
+          
+      - name: Upload API spec as artifact
+        if: steps.compare.outputs.changes_found == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-spec
+          path: /tmp/api-check/latest-api.json
+          retention-days: 1
 
       - name: Output result
         run: |
           if [ "${{ steps.compare.outputs.changes_found }}" == "true" ]; then
             echo "Changes found - see diff above"
             if [ "${{ steps.check_pr.outputs.existing_pr }}" == "true" ]; then
-                echo "Will trigger the regenerate-tidalapi-module workflow to update the existing PR"
+                echo "Updating the existing PR..."
             else
-              echo "Will trigger the regenerate-tidalapi-module workflow to create a new PR"
+              echo "Creating a new PR..."
             fi
           else
             echo "No Changes found"
           fi
-          
-      - name: Trigger tidalapi module code generator
-        if: steps.compare.outputs.changes_found == 'true'
-        uses: actions/github-script@v6
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            // Use the PR branch if it exists, otherwise use the current ref
-            const ref = ${{ steps.check_pr.outputs.existing_pr == 'true' }} 
-              ? '${{ steps.check_pr.outputs.pr_branch }}'
-              : context.ref;
-              
-            github.rest.actions.createWorkflowDispatch({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              workflow_id: 'regenerate-tidalapi-module.yml',
-              ref: ref
-            });
+
+  regenerate-api:
+    needs: check-api-spec
+    if: needs.check-api-spec.outputs.changes_found == 'true'
+    uses: ./.github/workflows/regenerate-tidalapi-module.yml
+    permissions:
+      contents: write
+      pull-requests: write
+    with:
+      use_downloaded_spec: "true"
+    secrets:
+      token: ${{ secrets.GITHUB_TOKEN }}
