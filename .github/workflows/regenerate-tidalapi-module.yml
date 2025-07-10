@@ -1,0 +1,229 @@
+name: Regenerate TidalApi Code
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_branch:
+        description: "The branch to PR against"
+        required: false
+        default: "main"
+      use_downloaded_spec:
+        description: "Whether to use the already downloaded API spec"
+        required: false
+        default: "false"
+  workflow_call:
+    inputs:
+      target_branch:
+        description: "The branch to PR against"
+        type: string
+        required: false
+        default: "main"
+      use_downloaded_spec:
+        description: "Whether to use the already downloaded API spec"
+        type: string
+        required: false
+        default: "false"
+    secrets:
+      token:
+        required: true
+env:
+  API_MODULE_DIR: tidalapi
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  openapi-code-generation:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download API spec artifact
+        if: inputs.use_downloaded_spec == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          name: api-spec
+          path: /tmp/api-check
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Get link to released openapi-generator fork .jar
+        id: get_release
+        run: |
+          repo_owner="tidal-music"
+          repo_name="openapi-generator"
+          
+          curl -s -H -v "Authorization: token ${{ secrets.token }}" \
+            "https://api.github.com/repos/$repo_owner/$repo_name/releases/latest" > release_info.json
+          # Extract the download URL for the desired asset
+          ASSET_URL=$(jq -r '.assets[] | select(.name == "openapi-generator-cli.jar") | .browser_download_url' release_info.json)
+          
+          echo "asset_url=$ASSET_URL" >> $GITHUB_OUTPUT
+
+      - name: Download generator binary
+        env:
+          ASSET_URL: ${{ steps.get_release.outputs.asset_url }}
+        run: |
+          echo "Downloading from ${{ env.ASSET_URL }}"
+          curl -L -H "Authorization: token ${{ secrets.token }}" \
+            -H "Accept: application/octet-stream" \
+            -o tidalapi/bin/openapi-generator-cli.jar \
+            "${{ env.ASSET_URL }}"
+
+      - name: Make scripts executable
+        run: |
+          chmod +x ${{ env.API_MODULE_DIR }}/bin/generate-api.sh
+          chmod +x ${{ env.API_MODULE_DIR }}/bin/openapi-generator-cli.jar
+
+      - name: Generate TidalAPI code
+        run: |
+          cd ${{ env.API_MODULE_DIR }}/bin
+          
+          # Check if we should use the pre-downloaded spec
+          if [ "${{ inputs.use_downloaded_spec }}" == "true" ] && [ -f "/tmp/api-check/latest-api.json" ]; then
+            echo "Using pre-downloaded API spec"
+            # Create directory if it doesn't exist
+            mkdir -p openapi_downloads
+            # Copy the artifact to the expected location
+            cp /tmp/api-check/latest-api.json openapi_downloads/tidal-api-oas.json
+            # Use the local file parameter that's already supported by the script
+            ./generate-api.sh --local-file "$(pwd)/openapi_downloads/tidal-api-oas.json"
+          else
+            echo "Downloading API spec as part of generation"
+            ./generate-api.sh
+          fi
+
+      - name: Check for changes
+        id: check_changes
+        env:
+          GENERATED_FOLDER_NAME: "tidalapi/src/main/kotlin/com/tidal/sdk/tidalapi/generated"
+        run: |
+          git add ./tidalapi
+          changes_in_generated=$(git status -s $GENERATED_FOLDER_NAME | sed 's/"//g')
+          echo "Changes in $GENERATED_FOLDER_NAME:"
+          echo "$changes_in_generated"
+          
+          if [ -n "$changes_in_generated" ]; then
+            changes_detected="true"
+            changed_file_count=$(echo "$changes_in_generated" | wc -l)
+          else
+            changes_detected="false"
+            changed_file_count=0
+            echo "No new changes found."
+          fi
+          
+          {
+            echo 'changed_files<<EOF'
+            echo "$changes_in_generated"
+            echo 'EOF'
+          } >> $GITHUB_OUTPUT
+          
+          echo "changes_detected=$changes_detected" >> $GITHUB_OUTPUT
+          echo "changed_file_count=$changed_file_count" >> $GITHUB_OUTPUT
+
+      - name: Check for existing PR
+        id: check_pr
+        if: steps.check_changes.outputs.changes_detected == 'true'
+        uses: ./.github/actions/check-api-pr
+
+      - name: Commit changes
+        id: commit_changes
+        if: steps.check_changes.outputs.changes_detected == 'true'
+        run: |
+          git config user.email "svc-github-tidal-music-tools@block.xyz"
+          git config user.name "TIDAL Music Tools"
+          
+          # Use a consistent branch name for API updates, so we can edit the PR later
+          standard_branch_name="tidal-music-tools/auto-update-tidal-api"
+          
+          if [ "${{ steps.check_pr.outputs.existing_pr }}" == "true" ]; then
+            # Try to find the branch of the existing PR
+            branch_name="${{ steps.check_pr.outputs.pr_branch }}"
+            
+            # Check if branch exists locally
+            if git rev-parse --verify "$branch_name" >/dev/null 2>&1; then
+              git checkout "$branch_name"
+            else
+              # Try to fetch and checkout the branch
+              git fetch origin "$branch_name":"$branch_name" || true
+              if git rev-parse --verify "$branch_name" >/dev/null 2>&1; then
+                git checkout "$branch_name"
+              else
+                # If branch doesn't exist, use the standard branch name
+                git checkout -b "$standard_branch_name"
+                branch_name="$standard_branch_name"
+              fi
+            fi
+          else
+            # Use standard branch name
+            git checkout -b "$standard_branch_name"
+            branch_name="$standard_branch_name"
+          fi
+          
+          # Generate commit message with the number of changed files in the title and the list in the body
+          commit_title="Update Tidal API - ${{ steps.check_changes.outputs.changed_file_count }} files changed"
+          commit_body="Changed files:\n${{ steps.check_changes.outputs.changed_files }}"
+          
+          git commit -m "$commit_title"$'\n\n'"$commit_body"
+          echo "branch_name=$branch_name" >> $GITHUB_OUTPUT
+
+      - name: Push changes
+        if: steps.check_changes.outputs.changes_detected == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.token }}
+          BRANCH_NAME: ${{ steps.commit_changes.outputs.branch_name }}
+        run: |
+          git push --set-upstream origin "${{env.BRANCH_NAME}}" --force
+
+      - name: Create or Update Pull Request
+        if: steps.check_changes.outputs.changes_detected == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.token }}
+          CHANGED_FILES: ${{ steps.check_changes.outputs.changed_files }}
+          CHANGED_FILE_COUNT: ${{ steps.check_changes.outputs.changed_file_count }}
+          BRANCH_NAME: ${{ steps.commit_changes.outputs.branch_name }}
+        run: |
+          pr_title="Automatic Tidal API module update - ${{env.CHANGED_FILE_COUNT}} files changed"
+          pr_body="Changed files:\n\n${{ env.CHANGED_FILES }}\n\nAutomatically generated on $(date)\n\nThis PR is automatically updated when API changes are detected."
+          pr_body=$(echo -e "$pr_body")
+          
+          if [ "${{ steps.check_pr.outputs.existing_pr }}" == "true" ]; then
+            # Update existing PR
+            pr_data=$(jq -n --arg title "$pr_title" \
+                              --arg body "$pr_body" \
+                              '{title: $title, body: $body}')
+            
+            curl -X PATCH \
+              -H "Authorization: token $GITHUB_TOKEN" \
+              -H "Accept: application/vnd.github.v3+json" \
+              -d "$pr_data" \
+              "https://api.github.com/repos/${{ github.repository }}/pulls/${{ steps.check_pr.outputs.pr_number }}"
+            
+            echo "Updated existing PR #${{ steps.check_pr.outputs.pr_number }}"
+          else
+            # Create new PR
+            pr_data=$(jq -n --arg title "$pr_title" \
+                              --arg head "${{env.BRANCH_NAME}}" \
+                              --arg base "${{ inputs.target_branch }}" \
+                              --arg body "$pr_body" \
+                              '{title: $title, head: $head, base: $base, body: $body}')
+            
+            curl -X POST \
+              -H "Authorization: token $GITHUB_TOKEN" \
+              -H "Accept: application/vnd.github.v3+json" \
+              -d "$pr_data" \
+              "https://api.github.com/repos/${{ github.repository }}/pulls"
+            
+            echo "Created new PR"
+          fi
