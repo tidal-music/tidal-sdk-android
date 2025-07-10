@@ -7,6 +7,10 @@ on:
         description: "The branch to PR against"
         required: false
         default: "main"
+      use_downloaded_spec:
+        description: "Whether to use the already downloaded API spec"
+        required: false
+        default: "false"
 env:
   API_MODULE_DIR: tidalapi
 
@@ -63,7 +67,16 @@ jobs:
       - name: Generate TidalAPI code
         run: |
           cd ${{ env.API_MODULE_DIR }}/bin
-          ./generate-api.sh
+          
+          # Check if we should use the pre-downloaded spec
+          if [ "${{ inputs.use_downloaded_spec }}" == "true" ] && [ -f "openapi_downloads/tidal-api-oas.json" ]; then
+            echo "Using pre-downloaded API spec"
+            # Use the local file parameter that's already supported by the script
+            ./generate-api.sh --local-file "$(pwd)/openapi_downloads/tidal-api-oas.json"
+          else
+            echo "Downloading API spec as part of generation"
+            ./generate-api.sh
+          fi
 
       - name: Check for changes
         id: check_changes
