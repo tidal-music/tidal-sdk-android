@@ -8,7 +8,7 @@
     "description" : "TIDAL API is a [JSON:API](https://jsonapi.org/) Web API that gives access to TIDAL functionality and data.",
     "termsOfService" : "https://developer.tidal.com/documentation/guidelines/guidelines-overview",
     "title" : "TIDAL API - Beta",
-    "version" : "0.1.31"
+    "version" : "0.1.32"
   },
   "externalDocs" : {
     "description" : "TIDAL Developer - Documentation",
@@ -20,6 +20,8 @@
   } ],
   "tags" : [ {
     "name" : "albums"
+  }, {
+    "name" : "artistBiographies"
   }, {
     "name" : "artistRoles"
   }, {
@@ -673,6 +675,300 @@
         }
       }
     },
+    "/artistBiographies" : {
+      "get" : {
+        "description" : "Retrieves multiple artistBiographies by available filters, or without if applicable.",
+        "parameters" : [ {
+          "description" : "ISO 3166-1 alpha-2 country code",
+          "example" : "US",
+          "in" : "query",
+          "name" : "countryCode",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: owners",
+          "example" : "owners",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "owners"
+            }
+          }
+        }, {
+          "description" : "Artist id",
+          "example" : "1566",
+          "in" : "query",
+          "name" : "filter[id]",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "1566"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ArtistBiographies_Multi_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Bad_Request_Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Not_Found_Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Not_Acceptable_Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Too_Many_Requests_Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Internal_Server_Error_Response"
+          }
+        },
+        "security" : [ {
+          "Client_Credentials" : [ ]
+        }, {
+          "Authorization_Code_PKCE" : [ ]
+        } ],
+        "summary" : "Get multiple artistBiographies.",
+        "tags" : [ "artistBiographies" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      }
+    },
+    "/artistBiographies/{id}" : {
+      "get" : {
+        "description" : "Retrieves single artistBiographie by id.",
+        "parameters" : [ {
+          "description" : "Artist id",
+          "example" : "1566",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "ISO 3166-1 alpha-2 country code",
+          "example" : "US",
+          "in" : "query",
+          "name" : "countryCode",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: owners",
+          "example" : "owners",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "owners"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ArtistBiographies_Single_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Bad_Request_Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Not_Found_Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Not_Acceptable_Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Too_Many_Requests_Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Internal_Server_Error_Response"
+          }
+        },
+        "security" : [ {
+          "Client_Credentials" : [ ]
+        }, {
+          "Authorization_Code_PKCE" : [ ]
+        } ],
+        "summary" : "Get single artistBiographie.",
+        "tags" : [ "artistBiographies" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      },
+      "patch" : {
+        "description" : "Updates existing artistBiographie.",
+        "parameters" : [ {
+          "description" : "Artist id",
+          "example" : "1566",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/vnd.api+json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ArtistBiographyUpdateBody"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "400" : {
+            "$ref" : "#/components/responses/Bad_Request_Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Not_Found_Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Not_Acceptable_Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Too_Many_Requests_Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Internal_Server_Error_Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "w_usr" ]
+        } ],
+        "summary" : "Update single artistBiographie.",
+        "tags" : [ "artistBiographies" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      }
+    },
+    "/artistBiographies/{id}/relationships/owners" : {
+      "get" : {
+        "description" : "Retrieves owners relationship.",
+        "parameters" : [ {
+          "description" : "Artist id",
+          "example" : "1566",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: owners",
+          "example" : "owners",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "owners"
+            }
+          }
+        }, {
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ArtistBiographies_Multi_Data_Relationship_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Bad_Request_Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Not_Found_Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Not_Acceptable_Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Too_Many_Requests_Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Internal_Server_Error_Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "r_usr" ]
+        } ],
+        "summary" : "Get owners relationship (\"to-many\").",
+        "tags" : [ "artistBiographies" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      }
+    },
     "/artistRoles" : {
       "get" : {
         "description" : "Retrieves multiple artistRoles by available filters, or without if applicable.",
@@ -806,7 +1102,7 @@
             "type" : "string"
           }
         }, {
-          "description" : "Allows the client to customize which related resources should be returned. Available options: albums, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos",
+          "description" : "Allows the client to customize which related resources should be returned. Available options: albums, biography, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos",
           "example" : "albums",
           "in" : "query",
           "name" : "include",
@@ -966,7 +1262,7 @@
             "type" : "string"
           }
         }, {
-          "description" : "Allows the client to customize which related resources should be returned. Available options: albums, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos",
+          "description" : "Allows the client to customize which related resources should be returned. Available options: albums, biography, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos",
           "example" : "albums",
           "in" : "query",
           "name" : "include",
@@ -1159,6 +1455,86 @@
           "Authorization_Code_PKCE" : [ ]
         } ],
         "summary" : "Get albums relationship (\"to-many\").",
+        "tags" : [ "artists" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "THIRD_PARTY"
+        }
+      }
+    },
+    "/artists/{id}/relationships/biography" : {
+      "get" : {
+        "description" : "Retrieves biography relationship.",
+        "parameters" : [ {
+          "description" : "Artist id",
+          "example" : "1566",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "ISO 3166-1 alpha-2 country code",
+          "example" : "US",
+          "in" : "query",
+          "name" : "countryCode",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: biography",
+          "example" : "biography",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "biography"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Artists_Singleton_Data_Relationship_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Bad_Request_Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Not_Found_Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Not_Acceptable_Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Too_Many_Requests_Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Internal_Server_Error_Response"
+          }
+        },
+        "security" : [ {
+          "Client_Credentials" : [ ]
+        }, {
+          "Authorization_Code_PKCE" : [ ]
+        } ],
+        "summary" : "Get biography relationship (\"to-one\").",
         "tags" : [ "artists" ],
         "x-path-item-properties" : {
           "required-access-tier" : "THIRD_PARTY"
@@ -7493,6 +7869,128 @@
           }
         }
       },
+      "ArtistBiographies_Attributes" : {
+        "required" : [ "text" ],
+        "type" : "object",
+        "properties" : {
+          "text" : {
+            "type" : "string",
+            "description" : "Artist biography",
+            "example" : "Once upon a time an artist is born"
+          }
+        }
+      },
+      "ArtistBiographies_Multi_Data_Document" : {
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/ArtistBiographies_Resource"
+            }
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "ArtistBiographies_Multi_Data_Relationship_Document" : {
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Resource_Identifier"
+            }
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "ArtistBiographies_Relationships" : {
+        "required" : [ "owners" ],
+        "properties" : {
+          "owners" : {
+            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
+          }
+        }
+      },
+      "ArtistBiographies_Resource" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "attributes" : {
+            "$ref" : "#/components/schemas/ArtistBiographies_Attributes"
+          },
+          "id" : {
+            "type" : "string",
+            "description" : "resource unique identifier",
+            "example" : "12345"
+          },
+          "relationships" : {
+            "$ref" : "#/components/schemas/ArtistBiographies_Relationships"
+          },
+          "type" : {
+            "type" : "string",
+            "description" : "resource unique type",
+            "example" : "tracks"
+          }
+        }
+      },
+      "ArtistBiographies_Single_Data_Document" : {
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/ArtistBiographies_Resource"
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "ArtistBiographyUpdateBody" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/ArtistBiographyUpdateBody_Data"
+          }
+        }
+      },
+      "ArtistBiographyUpdateBody_Data" : {
+        "required" : [ "attributes", "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "attributes" : {
+            "$ref" : "#/components/schemas/ArtistBiographyUpdateBody_Data_Attributes"
+          },
+          "id" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "artistBiographies" ]
+          }
+        }
+      },
+      "ArtistBiographyUpdateBody_Data_Attributes" : {
+        "type" : "object",
+        "properties" : {
+          "text" : {
+            "type" : "string"
+          }
+        }
+      },
       "ArtistCreateOperation_Meta" : {
         "type" : "object",
         "properties" : {
@@ -7753,10 +8251,13 @@
         }
       },
       "Artists_Relationships" : {
-        "required" : [ "albums", "owners", "profileArt", "radio", "roles", "similarArtists", "trackProviders", "tracks", "videos" ],
+        "required" : [ "albums", "biography", "owners", "profileArt", "radio", "roles", "similarArtists", "trackProviders", "tracks", "videos" ],
         "properties" : {
           "albums" : {
             "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
+          },
+          "biography" : {
+            "$ref" : "#/components/schemas/Singleton_Data_Relationship_Doc"
           },
           "owners" : {
             "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
@@ -7811,6 +8312,20 @@
         "properties" : {
           "data" : {
             "$ref" : "#/components/schemas/Artists_Resource"
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "Artists_Singleton_Data_Relationship_Document" : {
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/Resource_Identifier"
           },
           "included" : {
             "$ref" : "#/components/schemas/Included"
@@ -8239,6 +8754,7 @@
           "discriminator" : {
             "mapping" : {
               "albums" : "#/components/schemas/Albums_Resource",
+              "artistBiographies" : "#/components/schemas/ArtistBiographies_Resource",
               "artistRoles" : "#/components/schemas/ArtistRoles_Resource",
               "artists" : "#/components/schemas/Artists_Resource",
               "artworks" : "#/components/schemas/Artworks_Resource",
@@ -8261,6 +8777,8 @@
           },
           "oneOf" : [ {
             "$ref" : "#/components/schemas/Albums_Resource"
+          }, {
+            "$ref" : "#/components/schemas/ArtistBiographies_Resource"
           }, {
             "$ref" : "#/components/schemas/ArtistRoles_Resource"
           }, {
