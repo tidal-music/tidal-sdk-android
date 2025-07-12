@@ -2,6 +2,7 @@ package com.tidal.sdk.tidalapi.generated
 
 import com.tidal.sdk.auth.CredentialsProvider
 import com.tidal.sdk.tidalapi.generated.apis.Albums
+import com.tidal.sdk.tidalapi.generated.apis.ArtistBiographies
 import com.tidal.sdk.tidalapi.generated.apis.ArtistRoles
 import com.tidal.sdk.tidalapi.generated.apis.Artists
 import com.tidal.sdk.tidalapi.generated.apis.Artworks
@@ -30,6 +31,11 @@ class TidalApiClient(credentialsProvider: CredentialsProvider, baseUrl: String =
     /** Returns an instance of the [Albums] which can be used to make API calls to the */
     fun createAlbums(): Albums {
         return retrofit.create(Albums::class.java)
+    }
+
+    /** Returns an instance of the [ArtistBiographies] which can be used to make API calls to the */
+    fun createArtistBiographies(): ArtistBiographies {
+        return retrofit.create(ArtistBiographies::class.java)
     }
 
     /** Returns an instance of the [ArtistRoles] which can be used to make API calls to the */
