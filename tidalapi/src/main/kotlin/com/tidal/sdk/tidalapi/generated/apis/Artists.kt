@@ -6,6 +6,7 @@ import com.tidal.sdk.tidalapi.generated.models.ArtistUpdateBody
 import com.tidal.sdk.tidalapi.generated.models.ArtistsMultiDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistsMultiDataRelationshipDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistsSingleDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ArtistsSingletonDataRelationshipDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistsTrackProvidersMultiDataRelationshipDocument
 import retrofit2.Response
 import retrofit2.http.*
@@ -29,7 +30,7 @@ interface Artists {
      *
      * @param countryCode ISO 3166-1 alpha-2 country code
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: albums, owners, profileArt, radio, roles, similarArtists,
+     *   Available options: albums, biography, owners, profileArt, radio, roles, similarArtists,
      *   trackProviders, tracks, videos (optional)
      * @param filterHandle Artist handle (optional)
      * @param filterId Artist id (optional)
@@ -64,7 +65,7 @@ interface Artists {
      * @param id Artist id
      * @param countryCode ISO 3166-1 alpha-2 country code
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: albums, owners, profileArt, radio, roles, similarArtists,
+     *   Available options: albums, biography, owners, profileArt, radio, roles, similarArtists,
      *   trackProviders, tracks, videos (optional)
      * @return [ArtistsSingleDataDocument]
      */
@@ -131,6 +132,36 @@ interface Artists {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<ArtistsMultiDataRelationshipDocument>
+
+    /**
+     * Get biography relationship (\&quot;to-one\&quot;). Retrieves biography relationship.
+     * Responses:
+     * - 200: Successful response
+     * - 400: Bad request - The request could not be understood by the server due to malformed
+     *   syntax or invalid parameters
+     * - 404: Not found - The requested resource could not be found
+     * - 405: Method not allowed - The request method is not allowed for the requested resource
+     * - 406: Not acceptable - The requested resource is capable of generating only content not
+     *   acceptable according to the Accept headers sent in the request
+     * - 415: Unsupported media type - The request entity has a media type which the server or
+     *   resource does not support
+     * - 429: Too many requests - The user has sent too many requests in a given amount of time
+     * - 500: Internal server error - The server encountered an unexpected condition that prevented
+     *   it from fulfilling the request
+     *
+     * @param id Artist id
+     * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: biography (optional)
+     * @return [ArtistsSingletonDataRelationshipDocument]
+     */
+    @GET("artists/{id}/relationships/biography")
+    suspend fun artistsIdRelationshipsBiographyGet(
+        @Path("id") id: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+    ): Response<ArtistsSingletonDataRelationshipDocument>
 
     /**
      * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:

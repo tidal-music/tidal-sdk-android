@@ -1,5 +1,6 @@
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/ApiClient.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/Albums.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/ArtistBiographies.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/ArtistRoles.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/Artists.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/Artworks.kt
@@ -26,6 +27,15 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumsMultiDataRelations
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumsRelationships.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumsResource.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumsSingleDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistBiographiesAttributes.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistBiographiesMultiDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistBiographiesMultiDataRelationshipDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistBiographiesRelationships.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistBiographiesResource.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistBiographiesSingleDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistBiographyUpdateBody.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistBiographyUpdateBodyData.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistBiographyUpdateBodyDataAttributes.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistCreateOperationMeta.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistCreateOperationPayload.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistCreateOperationPayloadData.kt
@@ -46,6 +56,7 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistsMultiDataRelation
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistsRelationships.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistsResource.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistsSingleDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistsSingletonDataRelationshipDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistsTrackProvidersMultiDataRelationshipDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistsTrackProvidersResourceIdentifier.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistsTrackProvidersResourceIdentifierMeta.kt
