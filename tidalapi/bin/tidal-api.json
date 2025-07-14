@@ -8,7 +8,7 @@
     "description" : "TIDAL API is a [JSON:API](https://jsonapi.org/) Web API that gives access to TIDAL functionality and data.",
     "termsOfService" : "https://developer.tidal.com/documentation/guidelines/guidelines-overview",
     "title" : "TIDAL API - Beta",
-    "version" : "0.1.32"
+    "version" : "0.1.34"
   },
   "externalDocs" : {
     "description" : "TIDAL Developer - Documentation",
@@ -7592,38 +7592,10 @@
         "description" : "Not found - The requested resource could not be found"
       },
       "Too_Many_Requests_Response" : {
-        "content" : {
-          "application/vnd.api+json" : {
-            "schema" : {
-              "$ref" : "#/components/schemas/Error_Document"
-            }
-          }
-        },
         "description" : "Too many requests - The user has sent too many requests in a given amount of time",
         "headers" : {
-          "X-RateLimit-Burst-Capacity" : {
-            "description" : "Initial number of tokens, and max number of tokens that can be replenished.",
-            "schema" : {
-              "type" : "integer",
-              "format" : "int32"
-            }
-          },
-          "X-RateLimit-Remaining" : {
-            "description" : "The number of remaining tokens in the current period",
-            "schema" : {
-              "type" : "integer",
-              "format" : "int32"
-            }
-          },
-          "X-RateLimit-Replenish-Rate" : {
-            "description" : "The number of tokens replenished per second.",
-            "schema" : {
-              "type" : "integer",
-              "format" : "int32"
-            }
-          },
-          "X-RateLimit-Requested-Tokens" : {
-            "description" : "The request cost in tokens.",
+          "Retry-After" : {
+            "description" : "Time to wait before making a new request, in seconds.",
             "schema" : {
               "type" : "integer",
               "format" : "int32"
@@ -10067,11 +10039,11 @@
           },
           "key" : {
             "type" : "string",
-            "enum" : [ "A", "Ab", "B", "Bb", "C", "CSharp", "D", "E", "Eb", "F", "FSharp", "G" ]
+            "enum" : [ "UNKNOWN", "A", "Ab", "B", "Bb", "C", "CSharp", "D", "E", "Eb", "F", "FSharp", "G" ]
           },
           "keyScale" : {
             "type" : "string",
-            "enum" : [ "MAJOR", "MINOR" ]
+            "enum" : [ "UNKNOWN", "MAJOR", "MINOR", "AEOLIAN", "BLUES", "DORIAN", "HARMONIC_MINOR", "LOCRIAN", "LYDIAN", "MIXOLYDIAN", "PENTATONIC_MAJOR", "PHRYGIAN", "MELODIC_MINOR", "PENTATONIC_MINOR" ]
           },
           "title" : {
             "type" : "string"
@@ -10091,7 +10063,7 @@
         }
       },
       "Tracks_Attributes" : {
-        "required" : [ "duration", "explicit", "isrc", "mediaTags", "popularity", "title" ],
+        "required" : [ "duration", "explicit", "isrc", "key", "keyScale", "mediaTags", "popularity", "title" ],
         "type" : "object",
         "properties" : {
           "accessType" : {
@@ -10157,12 +10129,12 @@
           "key" : {
             "type" : "string",
             "description" : "Key",
-            "enum" : [ "A", "Ab", "B", "Bb", "C", "CSharp", "D", "E", "Eb", "F", "FSharp", "G" ]
+            "enum" : [ "UNKNOWN", "A", "Ab", "B", "Bb", "C", "CSharp", "D", "E", "Eb", "F", "FSharp", "G" ]
           },
           "keyScale" : {
             "type" : "string",
             "description" : "The scale of the key",
-            "enum" : [ "MAJOR", "MINOR" ]
+            "enum" : [ "UNKNOWN", "MAJOR", "MINOR", "AEOLIAN", "BLUES", "DORIAN", "HARMONIC_MINOR", "LOCRIAN", "LYDIAN", "MIXOLYDIAN", "PENTATONIC_MAJOR", "PHRYGIAN", "MELODIC_MINOR", "PENTATONIC_MINOR" ]
           },
           "mediaTags" : {
             "type" : "array",

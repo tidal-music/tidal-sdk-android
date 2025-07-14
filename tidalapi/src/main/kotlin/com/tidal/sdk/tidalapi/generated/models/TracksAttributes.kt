@@ -13,6 +13,8 @@ import kotlinx.serialization.Serializable
  * @param duration Duration (ISO 8601)
  * @param explicit Explicit content
  * @param isrc International Standard Recording Code (ISRC)
+ * @param key Key
+ * @param keyScale The scale of the key
  * @param mediaTags
  * @param popularity Popularity (0.0 - 1.0)
  * @param title Track title
@@ -23,8 +25,6 @@ import kotlinx.serialization.Serializable
  * @param createdAt Datetime of track creation (ISO 8601)
  * @param externalLinks Track links external to TIDAL API
  * @param genreTags
- * @param key Key
- * @param keyScale The scale of the key
  * @param spotlighted Is the track spotlighted?
  * @param toneTags
  * @param version Track version, complements title
@@ -41,6 +41,12 @@ data class TracksAttributes(
     /* International Standard Recording Code (ISRC) */
 
     @SerialName(value = "isrc") val isrc: kotlin.String,
+    /* Key */
+
+    @SerialName(value = "key") val key: TracksAttributes.Key,
+    /* The scale of the key */
+
+    @SerialName(value = "keyScale") val keyScale: TracksAttributes.KeyScale,
     @SerialName(value = "mediaTags") val mediaTags: kotlin.collections.List<kotlin.String>,
     /* Popularity (0.0 - 1.0) */
 
@@ -69,12 +75,6 @@ data class TracksAttributes(
     @SerialName(value = "externalLinks")
     val externalLinks: kotlin.collections.List<ExternalLink>? = null,
     @SerialName(value = "genreTags") val genreTags: kotlin.collections.List<kotlin.String>? = null,
-    /* Key */
-
-    @SerialName(value = "key") val key: TracksAttributes.Key? = null,
-    /* The scale of the key */
-
-    @SerialName(value = "keyScale") val keyScale: TracksAttributes.KeyScale? = null,
     /* Is the track spotlighted? */
 
     @SerialName(value = "spotlighted") val spotlighted: kotlin.Boolean? = null,
@@ -83,6 +83,52 @@ data class TracksAttributes(
 
     @SerialName(value = "version") val version: kotlin.String? = null,
 ) {
+
+    /**
+     * Key
+     *
+     * Values: UNKNOWN,A,Ab,B,Bb,C,CSharp,D,E,Eb,F,FSharp,G
+     */
+    @Serializable
+    enum class Key(val value: kotlin.String) {
+        @SerialName(value = "UNKNOWN") UNKNOWN("UNKNOWN"),
+        @SerialName(value = "A") A("A"),
+        @SerialName(value = "Ab") Ab("Ab"),
+        @SerialName(value = "B") B("B"),
+        @SerialName(value = "Bb") Bb("Bb"),
+        @SerialName(value = "C") C("C"),
+        @SerialName(value = "CSharp") CSharp("CSharp"),
+        @SerialName(value = "D") D("D"),
+        @SerialName(value = "E") E("E"),
+        @SerialName(value = "Eb") Eb("Eb"),
+        @SerialName(value = "F") F("F"),
+        @SerialName(value = "FSharp") FSharp("FSharp"),
+        @SerialName(value = "G") G("G"),
+    }
+
+    /**
+     * The scale of the key
+     *
+     * Values:
+     * UNKNOWN,MAJOR,MINOR,AEOLIAN,BLUES,DORIAN,HARMONIC_MINOR,LOCRIAN,LYDIAN,MIXOLYDIAN,PENTATONIC_MAJOR,PHRYGIAN,MELODIC_MINOR,PENTATONIC_MINOR
+     */
+    @Serializable
+    enum class KeyScale(val value: kotlin.String) {
+        @SerialName(value = "UNKNOWN") UNKNOWN("UNKNOWN"),
+        @SerialName(value = "MAJOR") MAJOR("MAJOR"),
+        @SerialName(value = "MINOR") MINOR("MINOR"),
+        @SerialName(value = "AEOLIAN") AEOLIAN("AEOLIAN"),
+        @SerialName(value = "BLUES") BLUES("BLUES"),
+        @SerialName(value = "DORIAN") DORIAN("DORIAN"),
+        @SerialName(value = "HARMONIC_MINOR") HARMONIC_MINOR("HARMONIC_MINOR"),
+        @SerialName(value = "LOCRIAN") LOCRIAN("LOCRIAN"),
+        @SerialName(value = "LYDIAN") LYDIAN("LYDIAN"),
+        @SerialName(value = "MIXOLYDIAN") MIXOLYDIAN("MIXOLYDIAN"),
+        @SerialName(value = "PENTATONIC_MAJOR") PENTATONIC_MAJOR("PENTATONIC_MAJOR"),
+        @SerialName(value = "PHRYGIAN") PHRYGIAN("PHRYGIAN"),
+        @SerialName(value = "MELODIC_MINOR") MELODIC_MINOR("MELODIC_MINOR"),
+        @SerialName(value = "PENTATONIC_MINOR") PENTATONIC_MINOR("PENTATONIC_MINOR"),
+    }
 
     /**
      * Access type
@@ -106,37 +152,5 @@ data class TracksAttributes(
         @SerialName(value = "STREAM") STREAM("STREAM"),
         @SerialName(value = "DJ") DJ("DJ"),
         @SerialName(value = "STEM") STEM("STEM"),
-    }
-
-    /**
-     * Key
-     *
-     * Values: A,Ab,B,Bb,C,CSharp,D,E,Eb,F,FSharp,G
-     */
-    @Serializable
-    enum class Key(val value: kotlin.String) {
-        @SerialName(value = "A") A("A"),
-        @SerialName(value = "Ab") Ab("Ab"),
-        @SerialName(value = "B") B("B"),
-        @SerialName(value = "Bb") Bb("Bb"),
-        @SerialName(value = "C") C("C"),
-        @SerialName(value = "CSharp") CSharp("CSharp"),
-        @SerialName(value = "D") D("D"),
-        @SerialName(value = "E") E("E"),
-        @SerialName(value = "Eb") Eb("Eb"),
-        @SerialName(value = "F") F("F"),
-        @SerialName(value = "FSharp") FSharp("FSharp"),
-        @SerialName(value = "G") G("G"),
-    }
-
-    /**
-     * The scale of the key
-     *
-     * Values: MAJOR,MINOR
-     */
-    @Serializable
-    enum class KeyScale(val value: kotlin.String) {
-        @SerialName(value = "MAJOR") MAJOR("MAJOR"),
-        @SerialName(value = "MINOR") MINOR("MINOR"),
     }
 }
