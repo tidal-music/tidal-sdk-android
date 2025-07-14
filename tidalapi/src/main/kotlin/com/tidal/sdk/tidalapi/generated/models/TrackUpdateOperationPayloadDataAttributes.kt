@@ -50,9 +50,10 @@ data class TrackUpdateOperationPayloadDataAttributes(
         @SerialName(value = "PRIVATE") PRIVATE("PRIVATE"),
     }
 
-    /** Values: A,Ab,B,Bb,C,CSharp,D,E,Eb,F,FSharp,G */
+    /** Values: UNKNOWN,A,Ab,B,Bb,C,CSharp,D,E,Eb,F,FSharp,G */
     @Serializable
     enum class Key(val value: kotlin.String) {
+        @SerialName(value = "UNKNOWN") UNKNOWN("UNKNOWN"),
         @SerialName(value = "A") A("A"),
         @SerialName(value = "Ab") Ab("Ab"),
         @SerialName(value = "B") B("B"),
@@ -67,10 +68,25 @@ data class TrackUpdateOperationPayloadDataAttributes(
         @SerialName(value = "G") G("G"),
     }
 
-    /** Values: MAJOR,MINOR */
+    /**
+     * Values:
+     * UNKNOWN,MAJOR,MINOR,AEOLIAN,BLUES,DORIAN,HARMONIC_MINOR,LOCRIAN,LYDIAN,MIXOLYDIAN,PENTATONIC_MAJOR,PHRYGIAN,MELODIC_MINOR,PENTATONIC_MINOR
+     */
     @Serializable
     enum class KeyScale(val value: kotlin.String) {
+        @SerialName(value = "UNKNOWN") UNKNOWN("UNKNOWN"),
         @SerialName(value = "MAJOR") MAJOR("MAJOR"),
         @SerialName(value = "MINOR") MINOR("MINOR"),
+        @SerialName(value = "AEOLIAN") AEOLIAN("AEOLIAN"),
+        @SerialName(value = "BLUES") BLUES("BLUES"),
+        @SerialName(value = "DORIAN") DORIAN("DORIAN"),
+        @SerialName(value = "HARMONIC_MINOR") HARMONIC_MINOR("HARMONIC_MINOR"),
+        @SerialName(value = "LOCRIAN") LOCRIAN("LOCRIAN"),
+        @SerialName(value = "LYDIAN") LYDIAN("LYDIAN"),
+        @SerialName(value = "MIXOLYDIAN") MIXOLYDIAN("MIXOLYDIAN"),
+        @SerialName(value = "PENTATONIC_MAJOR") PENTATONIC_MAJOR("PENTATONIC_MAJOR"),
+        @SerialName(value = "PHRYGIAN") PHRYGIAN("PHRYGIAN"),
+        @SerialName(value = "MELODIC_MINOR") MELODIC_MINOR("MELODIC_MINOR"),
+        @SerialName(value = "PENTATONIC_MINOR") PENTATONIC_MINOR("PENTATONIC_MINOR"),
     }
 }
