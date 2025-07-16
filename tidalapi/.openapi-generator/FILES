@@ -18,6 +18,13 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/UserRecommendations.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/UserReports.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/Users.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/Videos.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumCreateOperationPayload.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumCreateOperationPayloadData.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumCreateOperationPayloadDataAttributes.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumCreateOperationPayloadDataAttributesCopyright.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumCreateOperationPayloadDataRelationships.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumCreateOperationPayloadDataRelationshipsArtists.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumCreateOperationPayloadDataRelationshipsArtistsData.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumsAttributes.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumsItemsMultiDataRelationshipDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumsItemsResourceIdentifier.kt
