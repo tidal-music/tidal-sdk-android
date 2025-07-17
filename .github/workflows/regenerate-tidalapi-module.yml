@@ -147,47 +147,55 @@ jobs:
           # Use a consistent branch name for API updates, so we can edit the PR later
           standard_branch_name="tidal-music-tools/auto-update-tidal-api"
           
-          if [ "${{ steps.check_pr.outputs.existing_pr }}" == "true" ]; then
-            # Try to find the branch of the existing PR
-            branch_name="${{ steps.check_pr.outputs.pr_branch }}"
-            
-            # Check if branch exists locally
-            if git rev-parse --verify "$branch_name" >/dev/null 2>&1; then
-              git checkout "$branch_name"
-            else
-              # Try to fetch and checkout the branch
-              git fetch origin "$branch_name":"$branch_name" || true
-              if git rev-parse --verify "$branch_name" >/dev/null 2>&1; then
-                git checkout "$branch_name"
-              else
-                # If branch doesn't exist, use the standard branch name
-                git checkout -b "$standard_branch_name"
-                branch_name="$standard_branch_name"
-              fi
-            fi
-          else
-            # Use standard branch name
-            git checkout -b "$standard_branch_name"
-            branch_name="$standard_branch_name"
-          fi
-          
           # Generate commit message with the number of changed files in the title and the list in the body
           commit_title="Update Tidal API - ${{ steps.check_changes.outputs.changed_file_count }} files changed"
           commit_body="Changed files:\n${{ steps.check_changes.outputs.changed_files }}"
           
-          git commit -m "$commit_title"$'\n\n'"$commit_body"
-          echo "branch_name=$branch_name" >> $GITHUB_OUTPUT
+          if [ "${{ steps.check_pr.outputs.existing_pr }}" == "true" ]; then
+            # Use the branch name from the existing PR
+            branch_name="${{ steps.check_pr.outputs.pr_branch }}"
+            
+            # Fetch the existing PR branch to compare against
+            git fetch origin "$branch_name" || true
+            
+            # Check if current changes are different from existing PR branch
+            if git diff --quiet "origin/$branch_name" HEAD -- tidalapi/; then
+              echo "No new changes compared to existing PR branch - skipping update"
+              echo "branch_name=$branch_name" >> $GITHUB_OUTPUT
+              echo "commit_made=false" >> $GITHUB_OUTPUT
+            else
+              echo "Changes detected compared to existing PR branch - updating"
+              git commit -m "$commit_title"$'\n\n'"$commit_body"
+              echo "branch_name=$branch_name" >> $GITHUB_OUTPUT
+              echo "commit_made=true" >> $GITHUB_OUTPUT
+            fi
+          else
+            # Create new branch for new PR
+            git checkout -b "$standard_branch_name"
+            git commit -m "$commit_title"$'\n\n'"$commit_body"
+            branch_name="$standard_branch_name"
+            echo "branch_name=$branch_name" >> $GITHUB_OUTPUT
+            echo "commit_made=true" >> $GITHUB_OUTPUT
+          fi
 
       - name: Push changes
-        if: steps.check_changes.outputs.changes_detected == 'true'
+        if: steps.check_changes.outputs.changes_detected == 'true' && steps.commit_changes.outputs.commit_made == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.token }}
           BRANCH_NAME: ${{ steps.commit_changes.outputs.branch_name }}
         run: |
-          git push --set-upstream origin "${{env.BRANCH_NAME}}" --force
+          if [ "${{ steps.check_pr.outputs.existing_pr }}" == "true" ]; then
+            # Force push current state to existing PR branch
+            echo "Force pushing changes to existing PR branch: ${{env.BRANCH_NAME}}"
+            git push origin HEAD:"${{env.BRANCH_NAME}}" --force
+          else
+            # Push new branch
+            echo "Pushing new branch: ${{env.BRANCH_NAME}}"
+            git push --set-upstream origin "${{env.BRANCH_NAME}}"
+          fi
 
       - name: Create or Update Pull Request
-        if: steps.check_changes.outputs.changes_detected == 'true'
+        if: steps.check_changes.outputs.changes_detected == 'true' && steps.commit_changes.outputs.commit_made == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.token }}
           CHANGED_FILES: ${{ steps.check_changes.outputs.changed_files }}
