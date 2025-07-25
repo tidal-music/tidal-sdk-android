@@ -11,6 +11,7 @@ import kotlinx.serialization.Serializable
 
 /**
  * @param contributionsEnabled
+ * @param contributionsSalesPitch
  * @param externalLinks
  * @param handle
  * @param name
@@ -18,6 +19,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ArtistUpdateBodyDataAttributes(
     @SerialName(value = "contributionsEnabled") val contributionsEnabled: kotlin.Boolean? = null,
+    @SerialName(value = "contributionsSalesPitch")
+    val contributionsSalesPitch: kotlin.String? = null,
     @SerialName(value = "externalLinks")
     val externalLinks: kotlin.collections.List<ExternalLink>? = null,
     @SerialName(value = "handle") val handle: kotlin.String? = null,
