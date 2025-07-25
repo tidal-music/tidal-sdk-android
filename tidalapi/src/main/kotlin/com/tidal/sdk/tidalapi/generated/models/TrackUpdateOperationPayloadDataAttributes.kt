@@ -50,22 +50,22 @@ data class TrackUpdateOperationPayloadDataAttributes(
         @SerialName(value = "PRIVATE") PRIVATE("PRIVATE"),
     }
 
-    /** Values: UNKNOWN,A,Ab,B,Bb,C,CSharp,D,E,Eb,F,FSharp,G */
+    /** Values: UNKNOWN,C,CSharp,D,Eb,E,F,FSharp,G,Ab,A,Bb,B */
     @Serializable
     enum class Key(val value: kotlin.String) {
         @SerialName(value = "UNKNOWN") UNKNOWN("UNKNOWN"),
-        @SerialName(value = "A") A("A"),
-        @SerialName(value = "Ab") Ab("Ab"),
-        @SerialName(value = "B") B("B"),
-        @SerialName(value = "Bb") Bb("Bb"),
         @SerialName(value = "C") C("C"),
         @SerialName(value = "CSharp") CSharp("CSharp"),
         @SerialName(value = "D") D("D"),
-        @SerialName(value = "E") E("E"),
         @SerialName(value = "Eb") Eb("Eb"),
+        @SerialName(value = "E") E("E"),
         @SerialName(value = "F") F("F"),
         @SerialName(value = "FSharp") FSharp("FSharp"),
         @SerialName(value = "G") G("G"),
+        @SerialName(value = "Ab") Ab("Ab"),
+        @SerialName(value = "A") A("A"),
+        @SerialName(value = "Bb") Bb("Bb"),
+        @SerialName(value = "B") B("B"),
     }
 
     /**

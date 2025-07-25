@@ -13,6 +13,7 @@ import kotlinx.serialization.Serializable
  * @param name Artist name
  * @param popularity Artist popularity (0.0 - 1.0)
  * @param contributionsEnabled Is the artist enabled for contributions?
+ * @param contributionsSalesPitch Contributions sales pitch
  * @param externalLinks Artist links external to TIDAL API
  * @param handle Artist handle
  * @param spotlighted Is the artist spotlighted?
@@ -29,6 +30,10 @@ data class ArtistsAttributes(
     /* Is the artist enabled for contributions? */
 
     @SerialName(value = "contributionsEnabled") val contributionsEnabled: kotlin.Boolean? = null,
+    /* Contributions sales pitch */
+
+    @SerialName(value = "contributionsSalesPitch")
+    val contributionsSalesPitch: kotlin.String? = null,
     /* Artist links external to TIDAL API */
 
     @SerialName(value = "externalLinks")

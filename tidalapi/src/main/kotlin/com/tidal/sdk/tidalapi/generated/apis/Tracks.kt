@@ -30,7 +30,7 @@ interface Tracks {
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: albums, artists, owners, providers, radio, similarTracks,
+     *   Available options: albums, artists, lyrics, owners, providers, radio, similarTracks,
      *   trackStatistics (optional)
      * @param filterROwnersId User id (optional)
      * @param filterIsrc International Standard Recording Code (ISRC) (optional)
@@ -88,7 +88,7 @@ interface Tracks {
      * @param id A Tidal catalogue ID
      * @param countryCode ISO 3166-1 alpha-2 country code
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: albums, artists, owners, providers, radio, similarTracks,
+     *   Available options: albums, artists, lyrics, owners, providers, radio, similarTracks,
      *   trackStatistics (optional)
      * @return [TracksSingleDataDocument]
      */
@@ -186,6 +186,36 @@ interface Tracks {
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+    ): Response<TracksMultiDataRelationshipDocument>
+
+    /**
+     * Get lyrics relationship (\&quot;to-many\&quot;). Retrieves lyrics relationship. Responses:
+     * - 200: Successful response
+     * - 400: Bad request - The request could not be understood by the server due to malformed
+     *   syntax or invalid parameters
+     * - 404: Not found - The requested resource could not be found
+     * - 405: Method not allowed - The request method is not allowed for the requested resource
+     * - 406: Not acceptable - The requested resource is capable of generating only content not
+     *   acceptable according to the Accept headers sent in the request
+     * - 415: Unsupported media type - The request entity has a media type which the server or
+     *   resource does not support
+     * - 429: Too many requests - The user has sent too many requests in a given amount of time
+     * - 500: Internal server error - The server encountered an unexpected condition that prevented
+     *   it from fulfilling the request
+     *
+     * @param id A Tidal catalogue ID
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: lyrics (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
+     * @return [TracksMultiDataRelationshipDocument]
+     */
+    @GET("tracks/{id}/relationships/lyrics")
+    suspend fun tracksIdRelationshipsLyricsGet(
+        @Path("id") id: kotlin.String,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
     ): Response<TracksMultiDataRelationshipDocument>
 
     /**

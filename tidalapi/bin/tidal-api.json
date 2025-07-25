@@ -8,7 +8,7 @@
     "description" : "TIDAL API is a [JSON:API](https://jsonapi.org/) Web API that gives access to TIDAL functionality and data.",
     "termsOfService" : "https://developer.tidal.com/documentation/guidelines/guidelines-overview",
     "title" : "TIDAL API - Beta",
-    "version" : "0.1.34"
+    "version" : "0.1.42"
   },
   "externalDocs" : {
     "description" : "TIDAL Developer - Documentation",
@@ -28,6 +28,8 @@
     "name" : "artists"
   }, {
     "name" : "artworks"
+  }, {
+    "name" : "lyrics"
   }, {
     "name" : "playlists"
   }, {
@@ -71,7 +73,15 @@
             "type" : "string"
           }
         }, {
-          "description" : "Allows the client to customize which related resources should be returned. Available options: artists, coverArt, items, providers, similarAlbums",
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: artists, coverArt, items, owners, providers, similarAlbums",
           "example" : "artists",
           "in" : "query",
           "name" : "include",
@@ -81,6 +91,19 @@
             "items" : {
               "type" : "string",
               "example" : "artists"
+            }
+          }
+        }, {
+          "description" : "User id",
+          "example" : "123456",
+          "in" : "query",
+          "name" : "filter[r.owners.id]",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "123456"
             }
           }
         }, {
@@ -146,16 +169,114 @@
         "security" : [ {
           "Client_Credentials" : [ ]
         }, {
-          "Authorization_Code_PKCE" : [ ]
+          "Authorization_Code_PKCE" : [ "r_usr" ]
         } ],
         "summary" : "Get multiple albums.",
         "tags" : [ "albums" ],
         "x-path-item-properties" : {
           "required-access-tier" : "THIRD_PARTY"
         }
+      },
+      "post" : {
+        "description" : "Creates a new album.",
+        "parameters" : [ ],
+        "requestBody" : {
+          "content" : {
+            "application/vnd.api+json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/AlbumCreateOperation_Payload"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Albums_Single_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Bad_Request_Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Not_Found_Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Not_Acceptable_Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Too_Many_Requests_Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Internal_Server_Error_Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "w_usr" ]
+        } ],
+        "summary" : "Create single album.",
+        "tags" : [ "albums" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
       }
     },
     "/albums/{id}" : {
+      "delete" : {
+        "description" : "Deletes existing album.",
+        "parameters" : [ {
+          "description" : "Album id",
+          "example" : "251380836",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "400" : {
+            "$ref" : "#/components/responses/Bad_Request_Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Not_Found_Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Not_Acceptable_Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Too_Many_Requests_Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Internal_Server_Error_Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "w_usr" ]
+        } ],
+        "summary" : "Delete single album.",
+        "tags" : [ "albums" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      },
       "get" : {
         "description" : "Retrieves single album by id.",
         "parameters" : [ {
@@ -177,7 +298,7 @@
             "type" : "string"
           }
         }, {
-          "description" : "Allows the client to customize which related resources should be returned. Available options: artists, coverArt, items, providers, similarAlbums",
+          "description" : "Allows the client to customize which related resources should be returned. Available options: artists, coverArt, items, owners, providers, similarAlbums",
           "example" : "artists",
           "in" : "query",
           "name" : "include",
@@ -232,6 +353,59 @@
         "tags" : [ "albums" ],
         "x-path-item-properties" : {
           "required-access-tier" : "THIRD_PARTY"
+        }
+      },
+      "patch" : {
+        "description" : "Updates existing album.",
+        "parameters" : [ {
+          "description" : "Album id",
+          "example" : "251380836",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/vnd.api+json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/AlbumUpdateOperation_Payload"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "400" : {
+            "$ref" : "#/components/responses/Bad_Request_Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Not_Found_Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Not_Acceptable_Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Too_Many_Requests_Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Internal_Server_Error_Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "w_usr" ]
+        } ],
+        "summary" : "Update single album.",
+        "tags" : [ "albums" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
         }
       }
     },
@@ -409,6 +583,59 @@
         "x-path-item-properties" : {
           "required-access-tier" : "THIRD_PARTY"
         }
+      },
+      "patch" : {
+        "description" : "Updates coverArt relationship.",
+        "parameters" : [ {
+          "description" : "Album id",
+          "example" : "251380836",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/vnd.api+json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/AlbumCoverArtRelationshipUpdateOperation_Payload"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "400" : {
+            "$ref" : "#/components/responses/Bad_Request_Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Not_Found_Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Not_Acceptable_Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Too_Many_Requests_Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Internal_Server_Error_Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "w_usr" ]
+        } ],
+        "summary" : "Update coverArt relationship (\"to-many\").",
+        "tags" : [ "albums" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
       }
     },
     "/albums/{id}/relationships/items" : {
@@ -493,6 +720,83 @@
           "Authorization_Code_PKCE" : [ ]
         } ],
         "summary" : "Get items relationship (\"to-many\").",
+        "tags" : [ "albums" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "THIRD_PARTY"
+        }
+      }
+    },
+    "/albums/{id}/relationships/owners" : {
+      "get" : {
+        "description" : "Retrieves owners relationship.",
+        "parameters" : [ {
+          "description" : "Album id",
+          "example" : "251380836",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: owners",
+          "example" : "owners",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "owners"
+            }
+          }
+        }, {
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Albums_Multi_Data_Relationship_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Bad_Request_Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Not_Found_Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Not_Acceptable_Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Too_Many_Requests_Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Internal_Server_Error_Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "r_usr" ]
+        } ],
+        "summary" : "Get owners relationship (\"to-many\").",
         "tags" : [ "albums" ],
         "x-path-item-properties" : {
           "required-access-tier" : "THIRD_PARTY"
@@ -2570,6 +2874,237 @@
         "tags" : [ "artworks" ],
         "x-path-item-properties" : {
           "required-access-tier" : "THIRD_PARTY"
+        }
+      }
+    },
+    "/lyrics/{id}" : {
+      "get" : {
+        "description" : "Retrieves single lyric by id.",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: owners, track",
+          "example" : "owners",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "owners"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Lyrics_Single_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Bad_Request_Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Not_Found_Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Not_Acceptable_Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Too_Many_Requests_Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Internal_Server_Error_Response"
+          }
+        },
+        "security" : [ {
+          "Client_Credentials" : [ ]
+        }, {
+          "Authorization_Code_PKCE" : [ ]
+        } ],
+        "summary" : "Get single lyric.",
+        "tags" : [ "lyrics" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      }
+    },
+    "/lyrics/{id}/relationships/owners" : {
+      "get" : {
+        "description" : "Retrieves owners relationship.",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "ISO 3166-1 alpha-2 country code",
+          "example" : "US",
+          "in" : "query",
+          "name" : "countryCode",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: owners",
+          "example" : "owners",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "owners"
+            }
+          }
+        }, {
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Lyrics_Multi_Data_Relationship_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Bad_Request_Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Not_Found_Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Not_Acceptable_Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Too_Many_Requests_Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Internal_Server_Error_Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "r_usr" ]
+        } ],
+        "summary" : "Get owners relationship (\"to-many\").",
+        "tags" : [ "lyrics" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      }
+    },
+    "/lyrics/{id}/relationships/track" : {
+      "get" : {
+        "description" : "Retrieves track relationship.",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "ISO 3166-1 alpha-2 country code",
+          "example" : "US",
+          "in" : "query",
+          "name" : "countryCode",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: track",
+          "example" : "track",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "track"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Lyrics_Singleton_Data_Relationship_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Bad_Request_Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Not_Found_Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Not_Acceptable_Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Too_Many_Requests_Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Internal_Server_Error_Response"
+          }
+        },
+        "security" : [ {
+          "Client_Credentials" : [ ]
+        }, {
+          "Authorization_Code_PKCE" : [ ]
+        } ],
+        "summary" : "Get track relationship (\"to-one\").",
+        "tags" : [ "lyrics" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
         }
       }
     },
@@ -4711,7 +5246,7 @@
             "type" : "string"
           }
         }, {
-          "description" : "Allows the client to customize which related resources should be returned. Available options: albums, artists, owners, providers, radio, similarTracks, trackStatistics",
+          "description" : "Allows the client to customize which related resources should be returned. Available options: albums, artists, lyrics, owners, providers, radio, similarTracks, trackStatistics",
           "example" : "albums",
           "in" : "query",
           "name" : "include",
@@ -4928,7 +5463,7 @@
             "type" : "string"
           }
         }, {
-          "description" : "Allows the client to customize which related resources should be returned. Available options: albums, artists, owners, providers, radio, similarTracks, trackStatistics",
+          "description" : "Allows the client to customize which related resources should be returned. Available options: albums, artists, lyrics, owners, providers, radio, similarTracks, trackStatistics",
           "example" : "albums",
           "in" : "query",
           "name" : "include",
@@ -5212,6 +5747,85 @@
         "tags" : [ "tracks" ],
         "x-path-item-properties" : {
           "required-access-tier" : "THIRD_PARTY"
+        }
+      }
+    },
+    "/tracks/{id}/relationships/lyrics" : {
+      "get" : {
+        "description" : "Retrieves lyrics relationship.",
+        "parameters" : [ {
+          "description" : "A Tidal catalogue ID",
+          "example" : "75413016",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: lyrics",
+          "example" : "lyrics",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "lyrics"
+            }
+          }
+        }, {
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Tracks_Multi_Data_Relationship_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Bad_Request_Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Not_Found_Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Not_Acceptable_Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Too_Many_Requests_Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Internal_Server_Error_Response"
+          }
+        },
+        "security" : [ {
+          "Client_Credentials" : [ ]
+        }, {
+          "Authorization_Code_PKCE" : [ ]
+        } ],
+        "summary" : "Get lyrics relationship (\"to-many\").",
+        "tags" : [ "tracks" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
         }
       }
     },
@@ -7616,6 +8230,226 @@
       }
     },
     "schemas" : {
+      "AlbumCoverArtRelationshipUpdateOperation_Payload" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "maxItems" : 1,
+            "minItems" : 0,
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/AlbumCoverArtRelationshipUpdateOperation_Payload_Data"
+            }
+          }
+        }
+      },
+      "AlbumCoverArtRelationshipUpdateOperation_Payload_Data" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "artworks" ]
+          }
+        }
+      },
+      "AlbumCreateOperation_Payload" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/AlbumCreateOperation_Payload_Data"
+          }
+        }
+      },
+      "AlbumCreateOperation_Payload_Data" : {
+        "required" : [ "attributes", "relationships", "type" ],
+        "type" : "object",
+        "properties" : {
+          "attributes" : {
+            "$ref" : "#/components/schemas/AlbumCreateOperation_Payload_Data_Attributes"
+          },
+          "relationships" : {
+            "$ref" : "#/components/schemas/AlbumCreateOperation_Payload_Data_Relationships"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "albums" ]
+          }
+        }
+      },
+      "AlbumCreateOperation_Payload_Data_Attributes" : {
+        "required" : [ "title" ],
+        "type" : "object",
+        "properties" : {
+          "copyright" : {
+            "$ref" : "#/components/schemas/AlbumCreateOperation_Payload_Data_Attributes_Copyright"
+          },
+          "explicitLyrics" : {
+            "type" : "boolean"
+          },
+          "genres" : {
+            "maxItems" : 5,
+            "minItems" : 0,
+            "type" : "array",
+            "items" : {
+              "maxLength" : 100,
+              "minLength" : 1,
+              "type" : "string"
+            }
+          },
+          "releaseDate" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "title" : {
+            "maxLength" : 300,
+            "minLength" : 1,
+            "type" : "string"
+          },
+          "upc" : {
+            "maxLength" : 13,
+            "minLength" : 12,
+            "type" : "string"
+          },
+          "version" : {
+            "maxLength" : 300,
+            "minLength" : 0,
+            "type" : "string"
+          }
+        }
+      },
+      "AlbumCreateOperation_Payload_Data_Attributes_Copyright" : {
+        "required" : [ "text" ],
+        "type" : "object",
+        "properties" : {
+          "text" : {
+            "maxLength" : 300,
+            "minLength" : 1,
+            "type" : "string"
+          },
+          "year" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }
+      },
+      "AlbumCreateOperation_Payload_Data_Relationships" : {
+        "required" : [ "artists" ],
+        "type" : "object",
+        "properties" : {
+          "artists" : {
+            "$ref" : "#/components/schemas/AlbumCreateOperation_Payload_Data_Relationships_Artists"
+          }
+        }
+      },
+      "AlbumCreateOperation_Payload_Data_Relationships_Artists" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "maxItems" : 1,
+            "minItems" : 1,
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/AlbumCreateOperation_Payload_Data_Relationships_Artists_Data"
+            }
+          }
+        }
+      },
+      "AlbumCreateOperation_Payload_Data_Relationships_Artists_Data" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "artists" ]
+          }
+        }
+      },
+      "AlbumUpdateOperation_Payload" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/AlbumUpdateOperation_Payload_Data"
+          }
+        }
+      },
+      "AlbumUpdateOperation_Payload_Data" : {
+        "required" : [ "attributes", "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "attributes" : {
+            "$ref" : "#/components/schemas/AlbumUpdateOperation_Payload_Data_Attributes"
+          },
+          "id" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "albums" ]
+          }
+        }
+      },
+      "AlbumUpdateOperation_Payload_Data_Attributes" : {
+        "required" : [ "title" ],
+        "type" : "object",
+        "properties" : {
+          "copyright" : {
+            "$ref" : "#/components/schemas/AlbumUpdateOperation_Payload_Data_Attributes_Copyright"
+          },
+          "explicitLyrics" : {
+            "type" : "boolean"
+          },
+          "genres" : {
+            "maxItems" : 5,
+            "minItems" : 0,
+            "type" : "array",
+            "items" : {
+              "maxLength" : 100,
+              "minLength" : 1,
+              "type" : "string"
+            }
+          },
+          "releaseDate" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "title" : {
+            "maxLength" : 300,
+            "minLength" : 1,
+            "type" : "string"
+          },
+          "version" : {
+            "maxLength" : 300,
+            "minLength" : 0,
+            "type" : "string"
+          }
+        }
+      },
+      "AlbumUpdateOperation_Payload_Data_Attributes_Copyright" : {
+        "required" : [ "text" ],
+        "type" : "object",
+        "properties" : {
+          "text" : {
+            "maxLength" : 300,
+            "minLength" : 1,
+            "type" : "string"
+          },
+          "year" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }
+      },
       "Albums_Attributes" : {
         "required" : [ "barcodeId", "duration", "explicit", "mediaTags", "numberOfItems", "numberOfVolumes", "popularity", "title", "type" ],
         "type" : "object",
@@ -7786,7 +8620,7 @@
         }
       },
       "Albums_Relationships" : {
-        "required" : [ "artists", "coverArt", "items", "providers", "similarAlbums" ],
+        "required" : [ "artists", "coverArt", "items", "owners", "providers", "similarAlbums" ],
         "properties" : {
           "artists" : {
             "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
@@ -7796,6 +8630,9 @@
           },
           "items" : {
             "$ref" : "#/components/schemas/Albums_Items_Multi_Data_Relationship_Document"
+          },
+          "owners" : {
+            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
           },
           "providers" : {
             "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
@@ -8127,6 +8964,9 @@
           "contributionsEnabled" : {
             "type" : "boolean"
           },
+          "contributionsSalesPitch" : {
+            "type" : "string"
+          },
           "externalLinks" : {
             "type" : "array",
             "items" : {
@@ -8157,6 +8997,11 @@
             "type" : "boolean",
             "description" : "Is the artist enabled for contributions?",
             "example" : true
+          },
+          "contributionsSalesPitch" : {
+            "type" : "string",
+            "description" : "Contributions sales pitch",
+            "example" : "Help me be a full time artist"
           },
           "externalLinks" : {
             "type" : "array",
@@ -8730,6 +9575,7 @@
               "artistRoles" : "#/components/schemas/ArtistRoles_Resource",
               "artists" : "#/components/schemas/Artists_Resource",
               "artworks" : "#/components/schemas/Artworks_Resource",
+              "lyrics" : "#/components/schemas/Lyrics_Resource",
               "playlists" : "#/components/schemas/Playlists_Resource",
               "providers" : "#/components/schemas/Providers_Resource",
               "searchResults" : "#/components/schemas/SearchResults_Resource",
@@ -8757,6 +9603,8 @@
             "$ref" : "#/components/schemas/Artists_Resource"
           }, {
             "$ref" : "#/components/schemas/Artworks_Resource"
+          }, {
+            "$ref" : "#/components/schemas/Lyrics_Resource"
           }, {
             "$ref" : "#/components/schemas/Playlists_Resource"
           }, {
@@ -8804,6 +9652,110 @@
           }
         },
         "description" : "Links JSON:API object"
+      },
+      "Lyrics_Attributes" : {
+        "required" : [ "text" ],
+        "type" : "object",
+        "properties" : {
+          "text" : {
+            "type" : "string"
+          }
+        }
+      },
+      "Lyrics_Multi_Data_Document" : {
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Lyrics_Resource"
+            }
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "Lyrics_Multi_Data_Relationship_Document" : {
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Resource_Identifier"
+            }
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "Lyrics_Relationships" : {
+        "required" : [ "owners", "track" ],
+        "properties" : {
+          "owners" : {
+            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
+          },
+          "track" : {
+            "$ref" : "#/components/schemas/Singleton_Data_Relationship_Doc"
+          }
+        }
+      },
+      "Lyrics_Resource" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "attributes" : {
+            "$ref" : "#/components/schemas/Lyrics_Attributes"
+          },
+          "id" : {
+            "type" : "string",
+            "description" : "resource unique identifier",
+            "example" : "12345"
+          },
+          "relationships" : {
+            "$ref" : "#/components/schemas/Lyrics_Relationships"
+          },
+          "type" : {
+            "type" : "string",
+            "description" : "resource unique type",
+            "example" : "tracks"
+          }
+        }
+      },
+      "Lyrics_Single_Data_Document" : {
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/Lyrics_Resource"
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "Lyrics_Singleton_Data_Relationship_Document" : {
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/Resource_Identifier"
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
       },
       "Multi_Data_Relationship_Doc" : {
         "type" : "object",
@@ -10039,7 +10991,7 @@
           },
           "key" : {
             "type" : "string",
-            "enum" : [ "UNKNOWN", "A", "Ab", "B", "Bb", "C", "CSharp", "D", "E", "Eb", "F", "FSharp", "G" ]
+            "enum" : [ "UNKNOWN", "C", "CSharp", "D", "Eb", "E", "F", "FSharp", "G", "Ab", "A", "Bb", "B" ]
           },
           "keyScale" : {
             "type" : "string",
@@ -10129,7 +11081,7 @@
           "key" : {
             "type" : "string",
             "description" : "Key",
-            "enum" : [ "UNKNOWN", "A", "Ab", "B", "Bb", "C", "CSharp", "D", "E", "Eb", "F", "FSharp", "G" ]
+            "enum" : [ "UNKNOWN", "C", "CSharp", "D", "Eb", "E", "F", "FSharp", "G", "Ab", "A", "Bb", "B" ]
           },
           "keyScale" : {
             "type" : "string",
@@ -10210,12 +11162,15 @@
         }
       },
       "Tracks_Relationships" : {
-        "required" : [ "albums", "artists", "owners", "providers", "radio", "similarTracks", "trackStatistics" ],
+        "required" : [ "albums", "artists", "lyrics", "owners", "providers", "radio", "similarTracks", "trackStatistics" ],
         "properties" : {
           "albums" : {
             "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
           },
           "artists" : {
+            "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
+          },
+          "lyrics" : {
             "$ref" : "#/components/schemas/Multi_Data_Relationship_Doc"
           },
           "owners" : {

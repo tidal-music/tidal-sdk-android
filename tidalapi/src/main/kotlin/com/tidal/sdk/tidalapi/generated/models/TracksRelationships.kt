@@ -12,6 +12,7 @@ import kotlinx.serialization.Serializable
 /**
  * @param albums
  * @param artists
+ * @param lyrics
  * @param owners
  * @param providers
  * @param radio
@@ -22,6 +23,7 @@ import kotlinx.serialization.Serializable
 data class TracksRelationships(
     @SerialName(value = "albums") val albums: MultiDataRelationshipDoc,
     @SerialName(value = "artists") val artists: MultiDataRelationshipDoc,
+    @SerialName(value = "lyrics") val lyrics: MultiDataRelationshipDoc,
     @SerialName(value = "owners") val owners: MultiDataRelationshipDoc,
     @SerialName(value = "providers") val providers: MultiDataRelationshipDoc,
     @SerialName(value = "radio") val radio: MultiDataRelationshipDoc,

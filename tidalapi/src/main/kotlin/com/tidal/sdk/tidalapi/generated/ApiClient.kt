@@ -6,6 +6,7 @@ import com.tidal.sdk.tidalapi.generated.apis.ArtistBiographies
 import com.tidal.sdk.tidalapi.generated.apis.ArtistRoles
 import com.tidal.sdk.tidalapi.generated.apis.Artists
 import com.tidal.sdk.tidalapi.generated.apis.Artworks
+import com.tidal.sdk.tidalapi.generated.apis.Lyrics
 import com.tidal.sdk.tidalapi.generated.apis.Playlists
 import com.tidal.sdk.tidalapi.generated.apis.Providers
 import com.tidal.sdk.tidalapi.generated.apis.SearchResults
@@ -51,6 +52,11 @@ class TidalApiClient(credentialsProvider: CredentialsProvider, baseUrl: String =
     /** Returns an instance of the [Artworks] which can be used to make API calls to the */
     fun createArtworks(): Artworks {
         return retrofit.create(Artworks::class.java)
+    }
+
+    /** Returns an instance of the [Lyrics] which can be used to make API calls to the */
+    fun createLyrics(): Lyrics {
+        return retrofit.create(Lyrics::class.java)
     }
 
     /** Returns an instance of the [Playlists] which can be used to make API calls to the */
