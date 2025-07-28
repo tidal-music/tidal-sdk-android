@@ -8,7 +8,7 @@
     "description" : "TIDAL API is a [JSON:API](https://jsonapi.org/) Web API that gives access to TIDAL functionality and data.",
     "termsOfService" : "https://developer.tidal.com/documentation/guidelines/guidelines-overview",
     "title" : "TIDAL API - Beta",
-    "version" : "0.1.42"
+    "version" : "0.1.43"
   },
   "externalDocs" : {
     "description" : "TIDAL Developer - Documentation",
@@ -8679,9 +8679,14 @@
         }
       },
       "ArtistBiographies_Attributes" : {
-        "required" : [ "text" ],
+        "required" : [ "editable", "text" ],
         "type" : "object",
         "properties" : {
+          "editable" : {
+            "type" : "boolean",
+            "description" : "Boolean to indicate if the biography is editable (source = tidal or artist)",
+            "example" : true
+          },
           "text" : {
             "type" : "string",
             "description" : "Artist biography",

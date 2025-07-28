@@ -9,11 +9,17 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param text Artist biography */
+/**
+ * @param editable Boolean to indicate if the biography is editable (source = tidal or artist)
+ * @param text Artist biography
+ */
 @Serializable
 data class ArtistBiographiesAttributes(
 
+    /* Boolean to indicate if the biography is editable (source = tidal or artist) */
+
+    @SerialName(value = "editable") val editable: kotlin.Boolean,
     /* Artist biography */
 
-    @SerialName(value = "text") val text: kotlin.String
+    @SerialName(value = "text") val text: kotlin.String,
 ) {}
