@@ -5,25 +5,36 @@ import kotlinx.serialization.modules.polymorphic
 
 fun getOneOfSerializer() = SerializersModule {
     polymorphic(IncludedInner::class) {
-        subclass(AlbumsResource::class, AlbumsResource.serializer())
-        subclass(ArtistBiographiesResource::class, ArtistBiographiesResource.serializer())
-        subclass(ArtistRolesResource::class, ArtistRolesResource.serializer())
-        subclass(ArtistsResource::class, ArtistsResource.serializer())
-        subclass(ArtworksResource::class, ArtworksResource.serializer())
-        subclass(LyricsResource::class, LyricsResource.serializer())
-        subclass(PlaylistsResource::class, PlaylistsResource.serializer())
-        subclass(ProvidersResource::class, ProvidersResource.serializer())
-        subclass(SearchResultsResource::class, SearchResultsResource.serializer())
-        subclass(SearchSuggestionsResource::class, SearchSuggestionsResource.serializer())
-        subclass(TrackFilesResource::class, TrackFilesResource.serializer())
-        subclass(TrackManifestsResource::class, TrackManifestsResource.serializer())
-        subclass(TrackStatisticsResource::class, TrackStatisticsResource.serializer())
-        subclass(TracksResource::class, TracksResource.serializer())
-        subclass(UserCollectionsResource::class, UserCollectionsResource.serializer())
-        subclass(UserEntitlementsResource::class, UserEntitlementsResource.serializer())
-        subclass(UserRecommendationsResource::class, UserRecommendationsResource.serializer())
-        subclass(UserReportsResource::class, UserReportsResource.serializer())
-        subclass(UsersResource::class, UsersResource.serializer())
-        subclass(VideosResource::class, VideosResource.serializer())
+        subclass(AlbumsResourceObject::class, AlbumsResourceObject.serializer())
+        subclass(
+            ArtistBiographiesResourceObject::class,
+            ArtistBiographiesResourceObject.serializer(),
+        )
+        subclass(ArtistRolesResourceObject::class, ArtistRolesResourceObject.serializer())
+        subclass(ArtistsResourceObject::class, ArtistsResourceObject.serializer())
+        subclass(ArtworksResourceObject::class, ArtworksResourceObject.serializer())
+        subclass(GenresResourceObject::class, GenresResourceObject.serializer())
+        subclass(LyricsResourceObject::class, LyricsResourceObject.serializer())
+        subclass(PlaylistsResourceObject::class, PlaylistsResourceObject.serializer())
+        subclass(ProvidersResourceObject::class, ProvidersResourceObject.serializer())
+        subclass(SearchResultsResourceObject::class, SearchResultsResourceObject.serializer())
+        subclass(
+            SearchSuggestionsResourceObject::class,
+            SearchSuggestionsResourceObject.serializer(),
+        )
+        subclass(TrackFilesResourceObject::class, TrackFilesResourceObject.serializer())
+        subclass(TrackManifestsResourceObject::class, TrackManifestsResourceObject.serializer())
+        subclass(TrackSourceFilesResourceObject::class, TrackSourceFilesResourceObject.serializer())
+        subclass(TrackStatisticsResourceObject::class, TrackStatisticsResourceObject.serializer())
+        subclass(TracksResourceObject::class, TracksResourceObject.serializer())
+        subclass(UserCollectionsResourceObject::class, UserCollectionsResourceObject.serializer())
+        subclass(UserEntitlementsResourceObject::class, UserEntitlementsResourceObject.serializer())
+        subclass(
+            UserRecommendationsResourceObject::class,
+            UserRecommendationsResourceObject.serializer(),
+        )
+        subclass(UserReportsResourceObject::class, UserReportsResourceObject.serializer())
+        subclass(UsersResourceObject::class, UsersResourceObject.serializer())
+        subclass(VideosResourceObject::class, VideosResourceObject.serializer())
     }
 }

@@ -1,7 +1,7 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
-import com.tidal.sdk.tidalapi.generated.models.SearchSuggestionsMultiDataRelationshipDocument
-import com.tidal.sdk.tidalapi.generated.models.SearchSuggestionsSingleDataDocument
+import com.tidal.sdk.tidalapi.generated.models.SearchSuggestionsMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.SearchSuggestionsSingleResourceDataDocument
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -26,7 +26,7 @@ interface SearchSuggestions {
      * @param explicitFilter Explicit filter (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: directHits (optional)
-     * @return [SearchSuggestionsSingleDataDocument]
+     * @return [SearchSuggestionsSingleResourceDataDocument]
      */
     @GET("searchSuggestions/{id}")
     suspend fun searchSuggestionsIdGet(
@@ -35,7 +35,7 @@ interface SearchSuggestions {
         @Query("explicitFilter") explicitFilter: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<SearchSuggestionsSingleDataDocument>
+    ): Response<SearchSuggestionsSingleResourceDataDocument>
 
     /**
      * Get directHits relationship (\&quot;to-many\&quot;). Retrieves directHits relationship.
@@ -60,7 +60,7 @@ interface SearchSuggestions {
      *   Available options: directHits (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [SearchSuggestionsMultiDataRelationshipDocument]
+     * @return [SearchSuggestionsMultiRelationshipDataDocument]
      */
     @GET("searchSuggestions/{id}/relationships/directHits")
     suspend fun searchSuggestionsIdRelationshipsDirectHitsGet(
@@ -70,5 +70,5 @@ interface SearchSuggestions {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<SearchSuggestionsMultiDataRelationshipDocument>
+    ): Response<SearchSuggestionsMultiRelationshipDataDocument>
 }

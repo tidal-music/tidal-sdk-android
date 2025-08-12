@@ -10,8 +10,6 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * object containing references to the primary source of the error
- *
  * @param header string indicating the name of a single request header which caused the error
  * @param parameter string indicating which URI query parameter caused the error.
  * @param pointer a JSON Pointer [RFC6901] to the value in the request document that caused the

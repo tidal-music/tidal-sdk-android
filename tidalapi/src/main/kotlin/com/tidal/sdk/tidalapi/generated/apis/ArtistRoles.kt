@@ -1,7 +1,7 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
-import com.tidal.sdk.tidalapi.generated.models.ArtistRolesMultiDataDocument
-import com.tidal.sdk.tidalapi.generated.models.ArtistRolesSingleDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ArtistRolesMultiResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ArtistRolesSingleResourceDataDocument
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -24,13 +24,13 @@ interface ArtistRoles {
      *
      * @param filterId Allows to filter the collection of resources based on id attribute value
      *   (optional)
-     * @return [ArtistRolesMultiDataDocument]
+     * @return [ArtistRolesMultiResourceDataDocument]
      */
     @GET("artistRoles")
     suspend fun artistRolesGet(
         @Query("filter[id]")
         filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null
-    ): Response<ArtistRolesMultiDataDocument>
+    ): Response<ArtistRolesMultiResourceDataDocument>
 
     /**
      * Get single artistRole. Retrieves single artistRole by id. Responses:
@@ -48,10 +48,10 @@ interface ArtistRoles {
      *   it from fulfilling the request
      *
      * @param id Artist role id
-     * @return [ArtistRolesSingleDataDocument]
+     * @return [ArtistRolesSingleResourceDataDocument]
      */
     @GET("artistRoles/{id}")
     suspend fun artistRolesIdGet(
         @Path("id") id: kotlin.String
-    ): Response<ArtistRolesSingleDataDocument>
+    ): Response<ArtistRolesSingleResourceDataDocument>
 }

@@ -1,6 +1,6 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
-import com.tidal.sdk.tidalapi.generated.models.TrackManifestsSingleDataDocument
+import com.tidal.sdk.tidalapi.generated.models.TrackManifestsSingleResourceDataDocument
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -26,7 +26,7 @@ interface TrackManifests {
      * @param uriScheme
      * @param usage
      * @param adaptive
-     * @return [TrackManifestsSingleDataDocument]
+     * @return [TrackManifestsSingleResourceDataDocument]
      */
     @GET("trackManifests/{id}")
     suspend fun trackManifestsIdGet(
@@ -36,5 +36,5 @@ interface TrackManifests {
         @Query("uriScheme") uriScheme: kotlin.String,
         @Query("usage") usage: kotlin.String,
         @Query("adaptive") adaptive: kotlin.String,
-    ): Response<TrackManifestsSingleDataDocument>
+    ): Response<TrackManifestsSingleResourceDataDocument>
 }

@@ -1,7 +1,7 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
-import com.tidal.sdk.tidalapi.generated.models.ProvidersMultiDataDocument
-import com.tidal.sdk.tidalapi.generated.models.ProvidersSingleDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ProvidersMultiResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ProvidersSingleResourceDataDocument
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -24,13 +24,13 @@ interface Providers {
      *
      * @param filterId Allows to filter the collection of resources based on id attribute value
      *   (optional)
-     * @return [ProvidersMultiDataDocument]
+     * @return [ProvidersMultiResourceDataDocument]
      */
     @GET("providers")
     suspend fun providersGet(
         @Query("filter[id]")
         filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null
-    ): Response<ProvidersMultiDataDocument>
+    ): Response<ProvidersMultiResourceDataDocument>
 
     /**
      * Get single provider. Retrieves single provider by id. Responses:
@@ -48,8 +48,10 @@ interface Providers {
      *   it from fulfilling the request
      *
      * @param id Provider id
-     * @return [ProvidersSingleDataDocument]
+     * @return [ProvidersSingleResourceDataDocument]
      */
     @GET("providers/{id}")
-    suspend fun providersIdGet(@Path("id") id: kotlin.String): Response<ProvidersSingleDataDocument>
+    suspend fun providersIdGet(
+        @Path("id") id: kotlin.String
+    ): Response<ProvidersSingleResourceDataDocument>
 }

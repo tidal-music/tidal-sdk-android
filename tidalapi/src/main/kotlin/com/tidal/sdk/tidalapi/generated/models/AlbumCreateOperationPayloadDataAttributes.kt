@@ -13,7 +13,6 @@ import kotlinx.serialization.Serializable
  * @param title
  * @param copyright
  * @param explicitLyrics
- * @param genres
  * @param releaseDate
  * @param upc
  * @param version
@@ -24,7 +23,6 @@ data class AlbumCreateOperationPayloadDataAttributes(
     @SerialName(value = "copyright")
     val copyright: AlbumCreateOperationPayloadDataAttributesCopyright? = null,
     @SerialName(value = "explicitLyrics") val explicitLyrics: kotlin.Boolean? = null,
-    @SerialName(value = "genres") val genres: kotlin.collections.List<kotlin.String>? = null,
     @SerialName(value = "releaseDate") val releaseDate: kotlin.String? = null,
     @SerialName(value = "upc") val upc: kotlin.String? = null,
     @SerialName(value = "version") val version: kotlin.String? = null,

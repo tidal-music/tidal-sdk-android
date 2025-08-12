@@ -23,15 +23,15 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class ArtistsRelationships(
-    @SerialName(value = "albums") val albums: MultiDataRelationshipDoc,
-    @SerialName(value = "biography") val biography: SingletonDataRelationshipDoc,
-    @SerialName(value = "owners") val owners: MultiDataRelationshipDoc,
-    @SerialName(value = "profileArt") val profileArt: MultiDataRelationshipDoc,
-    @SerialName(value = "radio") val radio: MultiDataRelationshipDoc,
-    @SerialName(value = "roles") val roles: MultiDataRelationshipDoc,
-    @SerialName(value = "similarArtists") val similarArtists: MultiDataRelationshipDoc,
+    @SerialName(value = "albums") val albums: MultiRelationshipDataDocument,
+    @SerialName(value = "biography") val biography: SingleRelationshipDataDocument,
+    @SerialName(value = "owners") val owners: MultiRelationshipDataDocument,
+    @SerialName(value = "profileArt") val profileArt: MultiRelationshipDataDocument,
+    @SerialName(value = "radio") val radio: MultiRelationshipDataDocument,
+    @SerialName(value = "roles") val roles: MultiRelationshipDataDocument,
+    @SerialName(value = "similarArtists") val similarArtists: MultiRelationshipDataDocument,
     @SerialName(value = "trackProviders")
-    val trackProviders: ArtistsTrackProvidersMultiDataRelationshipDocument,
-    @SerialName(value = "tracks") val tracks: MultiDataRelationshipDoc,
-    @SerialName(value = "videos") val videos: MultiDataRelationshipDoc,
+    val trackProviders: ArtistsTrackProvidersMultiRelationshipDataDocument,
+    @SerialName(value = "tracks") val tracks: MultiRelationshipDataDocument,
+    @SerialName(value = "videos") val videos: MultiRelationshipDataDocument,
 ) {}

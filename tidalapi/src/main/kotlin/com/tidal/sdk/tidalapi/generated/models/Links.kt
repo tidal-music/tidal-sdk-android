@@ -10,9 +10,8 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * Links JSON:API object
- *
  * @param self Link to self
+ * @param meta
  * @param next Link to next page
  */
 @Serializable
@@ -21,6 +20,7 @@ data class Links(
     /* Link to self */
 
     @SerialName(value = "self") val self: kotlin.String,
+    @SerialName(value = "meta") val meta: LinksMeta? = null,
     /* Link to next page */
 
     @SerialName(value = "next") val next: kotlin.String? = null,

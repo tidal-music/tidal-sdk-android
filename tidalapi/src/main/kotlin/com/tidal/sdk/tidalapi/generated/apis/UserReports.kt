@@ -1,7 +1,7 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.UserReportCreateOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.UserReportsSingleDataDocument
+import com.tidal.sdk.tidalapi.generated.models.UserReportsSingleResourceDataDocument
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -22,10 +22,10 @@ interface UserReports {
      *   it from fulfilling the request
      *
      * @param userReportCreateOperationPayload (optional)
-     * @return [UserReportsSingleDataDocument]
+     * @return [UserReportsSingleResourceDataDocument]
      */
     @POST("userReports")
     suspend fun userReportsPost(
         @Body userReportCreateOperationPayload: UserReportCreateOperationPayload? = null
-    ): Response<UserReportsSingleDataDocument>
+    ): Response<UserReportsSingleResourceDataDocument>
 }

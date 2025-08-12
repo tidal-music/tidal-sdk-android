@@ -1,6 +1,6 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
-import com.tidal.sdk.tidalapi.generated.models.UsersSingleDataDocument
+import com.tidal.sdk.tidalapi.generated.models.UsersSingleResourceDataDocument
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -20,7 +20,7 @@ interface Users {
      * - 500: Internal server error - The server encountered an unexpected condition that prevented
      *   it from fulfilling the request
      *
-     * @return [UsersSingleDataDocument]
+     * @return [UsersSingleResourceDataDocument]
      */
-    @GET("users/me") suspend fun usersMeGet(): Response<UsersSingleDataDocument>
+    @GET("users/me") suspend fun usersMeGet(): Response<UsersSingleResourceDataDocument>
 }

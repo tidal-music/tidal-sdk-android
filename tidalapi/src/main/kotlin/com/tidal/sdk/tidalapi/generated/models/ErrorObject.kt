@@ -10,8 +10,6 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * JSON:API error object
- *
  * @param code application-specific error code
  * @param detail human-readable explanation specific to this occurrence of the problem
  * @param id unique identifier for this particular occurrence of the problem
