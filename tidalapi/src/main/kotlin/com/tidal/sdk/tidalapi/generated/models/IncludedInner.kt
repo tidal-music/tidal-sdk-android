@@ -10,8 +10,8 @@ import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.Serializable
 
 /**
- * @param id resource unique identifier
- * @param type resource unique type
+ * @param id Resource id
+ * @param type Resource type
  * @param attributes
  * @param relationships
  */

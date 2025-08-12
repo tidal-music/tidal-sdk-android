@@ -12,9 +12,12 @@ import kotlinx.serialization.Serializable
 /**
  * @param albums
  * @param artists
+ * @param genres
  */
 @Serializable
 data class TrackCreateOperationPayloadDataRelationships(
     @SerialName(value = "albums") val albums: TrackCreateOperationPayloadDataRelationshipsAlbums,
     @SerialName(value = "artists") val artists: TrackCreateOperationPayloadDataRelationshipsArtists,
+    @SerialName(value = "genres")
+    val genres: TrackCreateOperationPayloadDataRelationshipsGenres? = null,
 ) {}

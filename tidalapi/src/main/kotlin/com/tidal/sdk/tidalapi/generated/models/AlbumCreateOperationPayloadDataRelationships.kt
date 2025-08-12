@@ -9,8 +9,13 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param artists */
+/**
+ * @param artists
+ * @param genres
+ */
 @Serializable
 data class AlbumCreateOperationPayloadDataRelationships(
-    @SerialName(value = "artists") val artists: AlbumCreateOperationPayloadDataRelationshipsArtists
+    @SerialName(value = "artists") val artists: AlbumCreateOperationPayloadDataRelationshipsArtists,
+    @SerialName(value = "genres")
+    val genres: AlbumCreateOperationPayloadDataRelationshipsGenres? = null,
 ) {}

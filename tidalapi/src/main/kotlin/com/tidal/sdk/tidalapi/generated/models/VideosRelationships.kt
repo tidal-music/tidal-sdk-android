@@ -17,8 +17,8 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class VideosRelationships(
-    @SerialName(value = "albums") val albums: MultiDataRelationshipDoc,
-    @SerialName(value = "artists") val artists: MultiDataRelationshipDoc,
-    @SerialName(value = "providers") val providers: MultiDataRelationshipDoc,
-    @SerialName(value = "thumbnailArt") val thumbnailArt: MultiDataRelationshipDoc,
+    @SerialName(value = "albums") val albums: MultiRelationshipDataDocument,
+    @SerialName(value = "artists") val artists: MultiRelationshipDataDocument,
+    @SerialName(value = "providers") val providers: MultiRelationshipDataDocument,
+    @SerialName(value = "thumbnailArt") val thumbnailArt: MultiRelationshipDataDocument,
 ) {}

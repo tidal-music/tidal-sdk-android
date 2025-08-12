@@ -1,6 +1,6 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
-import com.tidal.sdk.tidalapi.generated.models.UserEntitlementsSingleDataDocument
+import com.tidal.sdk.tidalapi.generated.models.UserEntitlementsSingleResourceDataDocument
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -21,10 +21,10 @@ interface UserEntitlements {
      *   it from fulfilling the request
      *
      * @param id User id
-     * @return [UserEntitlementsSingleDataDocument]
+     * @return [UserEntitlementsSingleResourceDataDocument]
      */
     @GET("userEntitlements/{id}")
     suspend fun userEntitlementsIdGet(
         @Path("id") id: kotlin.String
-    ): Response<UserEntitlementsSingleDataDocument>
+    ): Response<UserEntitlementsSingleResourceDataDocument>
 }

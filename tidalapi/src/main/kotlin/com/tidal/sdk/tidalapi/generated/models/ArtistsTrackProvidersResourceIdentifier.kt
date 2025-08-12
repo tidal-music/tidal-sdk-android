@@ -10,19 +10,17 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * Resource identifier JSON:API object
- *
- * @param id resource unique identifier
- * @param type resource unique type
+ * @param id Resource id
+ * @param type Resource type
  * @param meta
  */
 @Serializable
 data class ArtistsTrackProvidersResourceIdentifier(
 
-    /* resource unique identifier */
+    /* Resource id */
 
     @SerialName(value = "id") val id: kotlin.String,
-    /* resource unique type */
+    /* Resource type */
 
     @SerialName(value = "type") val type: kotlin.String,
     @SerialName(value = "meta") val meta: ArtistsTrackProvidersResourceIdentifierMeta? = null,

@@ -15,6 +15,6 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class LyricsRelationships(
-    @SerialName(value = "owners") val owners: MultiDataRelationshipDoc,
-    @SerialName(value = "track") val track: SingletonDataRelationshipDoc,
+    @SerialName(value = "owners") val owners: MultiRelationshipDataDocument,
+    @SerialName(value = "track") val track: SingleRelationshipDataDocument,
 ) {}

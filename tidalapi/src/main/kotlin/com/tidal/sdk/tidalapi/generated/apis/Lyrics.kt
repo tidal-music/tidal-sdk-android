@@ -1,8 +1,8 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
-import com.tidal.sdk.tidalapi.generated.models.LyricsMultiDataRelationshipDocument
-import com.tidal.sdk.tidalapi.generated.models.LyricsSingleDataDocument
-import com.tidal.sdk.tidalapi.generated.models.LyricsSingletonDataRelationshipDocument
+import com.tidal.sdk.tidalapi.generated.models.LyricsMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.LyricsSingleRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.LyricsSingleResourceDataDocument
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -25,14 +25,14 @@ interface Lyrics {
      * @param id
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: owners, track (optional)
-     * @return [LyricsSingleDataDocument]
+     * @return [LyricsSingleResourceDataDocument]
      */
     @GET("lyrics/{id}")
     suspend fun lyricsIdGet(
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<LyricsSingleDataDocument>
+    ): Response<LyricsSingleResourceDataDocument>
 
     /**
      * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
@@ -55,7 +55,7 @@ interface Lyrics {
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [LyricsMultiDataRelationshipDocument]
+     * @return [LyricsMultiRelationshipDataDocument]
      */
     @GET("lyrics/{id}/relationships/owners")
     suspend fun lyricsIdRelationshipsOwnersGet(
@@ -64,7 +64,7 @@ interface Lyrics {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<LyricsMultiDataRelationshipDocument>
+    ): Response<LyricsMultiRelationshipDataDocument>
 
     /**
      * Get track relationship (\&quot;to-one\&quot;). Retrieves track relationship. Responses:
@@ -85,7 +85,7 @@ interface Lyrics {
      * @param countryCode ISO 3166-1 alpha-2 country code
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: track (optional)
-     * @return [LyricsSingletonDataRelationshipDocument]
+     * @return [LyricsSingleRelationshipDataDocument]
      */
     @GET("lyrics/{id}/relationships/track")
     suspend fun lyricsIdRelationshipsTrackGet(
@@ -93,5 +93,5 @@ interface Lyrics {
         @Query("countryCode") countryCode: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<LyricsSingletonDataRelationshipDocument>
+    ): Response<LyricsSingleRelationshipDataDocument>
 }

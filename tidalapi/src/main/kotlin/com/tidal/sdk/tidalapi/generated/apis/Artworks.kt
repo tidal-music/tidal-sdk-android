@@ -1,9 +1,9 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.ArtworkCreateOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.ArtworksMultiDataDocument
-import com.tidal.sdk.tidalapi.generated.models.ArtworksMultiDataRelationshipDocument
-import com.tidal.sdk.tidalapi.generated.models.ArtworksSingleDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ArtworksMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ArtworksMultiResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ArtworksSingleResourceDataDocument
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -28,7 +28,7 @@ interface Artworks {
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: owners (optional)
      * @param filterId Artwork id (optional)
-     * @return [ArtworksMultiDataDocument]
+     * @return [ArtworksMultiResourceDataDocument]
      */
     @GET("artworks")
     suspend fun artworksGet(
@@ -37,7 +37,7 @@ interface Artworks {
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[id]")
         filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<ArtworksMultiDataDocument>
+    ): Response<ArtworksMultiResourceDataDocument>
 
     /**
      * Get single artwork. Retrieves single artwork by id. Responses:
@@ -58,7 +58,7 @@ interface Artworks {
      * @param countryCode ISO 3166-1 alpha-2 country code
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: owners (optional)
-     * @return [ArtworksSingleDataDocument]
+     * @return [ArtworksSingleResourceDataDocument]
      */
     @GET("artworks/{id}")
     suspend fun artworksIdGet(
@@ -66,7 +66,7 @@ interface Artworks {
         @Query("countryCode") countryCode: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<ArtworksSingleDataDocument>
+    ): Response<ArtworksSingleResourceDataDocument>
 
     /**
      * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
@@ -88,7 +88,7 @@ interface Artworks {
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [ArtworksMultiDataRelationshipDocument]
+     * @return [ArtworksMultiRelationshipDataDocument]
      */
     @GET("artworks/{id}/relationships/owners")
     suspend fun artworksIdRelationshipsOwnersGet(
@@ -96,7 +96,7 @@ interface Artworks {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<ArtworksMultiDataRelationshipDocument>
+    ): Response<ArtworksMultiRelationshipDataDocument>
 
     /**
      * Create single artwork. Creates a new artwork. Responses:
@@ -114,10 +114,10 @@ interface Artworks {
      *   it from fulfilling the request
      *
      * @param artworkCreateOperationPayload (optional)
-     * @return [ArtworksSingleDataDocument]
+     * @return [ArtworksSingleResourceDataDocument]
      */
     @POST("artworks")
     suspend fun artworksPost(
         @Body artworkCreateOperationPayload: ArtworkCreateOperationPayload? = null
-    ): Response<ArtworksSingleDataDocument>
+    ): Response<ArtworksSingleResourceDataDocument>
 }

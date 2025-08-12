@@ -1,8 +1,8 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
-import com.tidal.sdk.tidalapi.generated.models.ArtistBiographiesMultiDataDocument
-import com.tidal.sdk.tidalapi.generated.models.ArtistBiographiesMultiDataRelationshipDocument
-import com.tidal.sdk.tidalapi.generated.models.ArtistBiographiesSingleDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ArtistBiographiesMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ArtistBiographiesMultiResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ArtistBiographiesSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistBiographyUpdateBody
 import retrofit2.Response
 import retrofit2.http.*
@@ -28,7 +28,7 @@ interface ArtistBiographies {
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: owners (optional)
      * @param filterId Artist id (optional)
-     * @return [ArtistBiographiesMultiDataDocument]
+     * @return [ArtistBiographiesMultiResourceDataDocument]
      */
     @GET("artistBiographies")
     suspend fun artistBiographiesGet(
@@ -37,7 +37,7 @@ interface ArtistBiographies {
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[id]")
         filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<ArtistBiographiesMultiDataDocument>
+    ): Response<ArtistBiographiesMultiResourceDataDocument>
 
     /**
      * Get single artistBiographie. Retrieves single artistBiographie by id. Responses:
@@ -58,7 +58,7 @@ interface ArtistBiographies {
      * @param countryCode ISO 3166-1 alpha-2 country code
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: owners (optional)
-     * @return [ArtistBiographiesSingleDataDocument]
+     * @return [ArtistBiographiesSingleResourceDataDocument]
      */
     @GET("artistBiographies/{id}")
     suspend fun artistBiographiesIdGet(
@@ -66,7 +66,7 @@ interface ArtistBiographies {
         @Query("countryCode") countryCode: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<ArtistBiographiesSingleDataDocument>
+    ): Response<ArtistBiographiesSingleResourceDataDocument>
 
     /**
      * Update single artistBiographie. Updates existing artistBiographie. Responses:
@@ -112,7 +112,7 @@ interface ArtistBiographies {
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [ArtistBiographiesMultiDataRelationshipDocument]
+     * @return [ArtistBiographiesMultiRelationshipDataDocument]
      */
     @GET("artistBiographies/{id}/relationships/owners")
     suspend fun artistBiographiesIdRelationshipsOwnersGet(
@@ -120,5 +120,5 @@ interface ArtistBiographies {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<ArtistBiographiesMultiDataRelationshipDocument>
+    ): Response<ArtistBiographiesMultiRelationshipDataDocument>
 }

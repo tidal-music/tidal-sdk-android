@@ -1,7 +1,7 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
-import com.tidal.sdk.tidalapi.generated.models.SearchResultsMultiDataRelationshipDocument
-import com.tidal.sdk.tidalapi.generated.models.SearchResultsSingleDataDocument
+import com.tidal.sdk.tidalapi.generated.models.SearchResultsMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.SearchResultsSingleResourceDataDocument
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -26,7 +26,7 @@ interface SearchResults {
      * @param explicitFilter Explicit filter (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: albums, artists, playlists, topHits, tracks, videos (optional)
-     * @return [SearchResultsSingleDataDocument]
+     * @return [SearchResultsSingleResourceDataDocument]
      */
     @GET("searchResults/{id}")
     suspend fun searchResultsIdGet(
@@ -35,7 +35,7 @@ interface SearchResults {
         @Query("explicitFilter") explicitFilter: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<SearchResultsSingleDataDocument>
+    ): Response<SearchResultsSingleResourceDataDocument>
 
     /**
      * Get albums relationship (\&quot;to-many\&quot;). Retrieves albums relationship. Responses:
@@ -59,7 +59,7 @@ interface SearchResults {
      *   Available options: albums (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [SearchResultsMultiDataRelationshipDocument]
+     * @return [SearchResultsMultiRelationshipDataDocument]
      */
     @GET("searchResults/{id}/relationships/albums")
     suspend fun searchResultsIdRelationshipsAlbumsGet(
@@ -69,7 +69,7 @@ interface SearchResults {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<SearchResultsMultiDataRelationshipDocument>
+    ): Response<SearchResultsMultiRelationshipDataDocument>
 
     /**
      * Get artists relationship (\&quot;to-many\&quot;). Retrieves artists relationship. Responses:
@@ -93,7 +93,7 @@ interface SearchResults {
      *   Available options: artists (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [SearchResultsMultiDataRelationshipDocument]
+     * @return [SearchResultsMultiRelationshipDataDocument]
      */
     @GET("searchResults/{id}/relationships/artists")
     suspend fun searchResultsIdRelationshipsArtistsGet(
@@ -103,7 +103,7 @@ interface SearchResults {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<SearchResultsMultiDataRelationshipDocument>
+    ): Response<SearchResultsMultiRelationshipDataDocument>
 
     /**
      * Get playlists relationship (\&quot;to-many\&quot;). Retrieves playlists relationship.
@@ -128,7 +128,7 @@ interface SearchResults {
      *   Available options: playlists (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [SearchResultsMultiDataRelationshipDocument]
+     * @return [SearchResultsMultiRelationshipDataDocument]
      */
     @GET("searchResults/{id}/relationships/playlists")
     suspend fun searchResultsIdRelationshipsPlaylistsGet(
@@ -138,7 +138,7 @@ interface SearchResults {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<SearchResultsMultiDataRelationshipDocument>
+    ): Response<SearchResultsMultiRelationshipDataDocument>
 
     /**
      * Get topHits relationship (\&quot;to-many\&quot;). Retrieves topHits relationship. Responses:
@@ -162,7 +162,7 @@ interface SearchResults {
      *   Available options: topHits (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [SearchResultsMultiDataRelationshipDocument]
+     * @return [SearchResultsMultiRelationshipDataDocument]
      */
     @GET("searchResults/{id}/relationships/topHits")
     suspend fun searchResultsIdRelationshipsTopHitsGet(
@@ -172,7 +172,7 @@ interface SearchResults {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<SearchResultsMultiDataRelationshipDocument>
+    ): Response<SearchResultsMultiRelationshipDataDocument>
 
     /**
      * Get tracks relationship (\&quot;to-many\&quot;). Retrieves tracks relationship. Responses:
@@ -196,7 +196,7 @@ interface SearchResults {
      *   Available options: tracks (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [SearchResultsMultiDataRelationshipDocument]
+     * @return [SearchResultsMultiRelationshipDataDocument]
      */
     @GET("searchResults/{id}/relationships/tracks")
     suspend fun searchResultsIdRelationshipsTracksGet(
@@ -206,7 +206,7 @@ interface SearchResults {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<SearchResultsMultiDataRelationshipDocument>
+    ): Response<SearchResultsMultiRelationshipDataDocument>
 
     /**
      * Get videos relationship (\&quot;to-many\&quot;). Retrieves videos relationship. Responses:
@@ -230,7 +230,7 @@ interface SearchResults {
      *   Available options: videos (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [SearchResultsMultiDataRelationshipDocument]
+     * @return [SearchResultsMultiRelationshipDataDocument]
      */
     @GET("searchResults/{id}/relationships/videos")
     suspend fun searchResultsIdRelationshipsVideosGet(
@@ -240,5 +240,5 @@ interface SearchResults {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<SearchResultsMultiDataRelationshipDocument>
+    ): Response<SearchResultsMultiRelationshipDataDocument>
 }

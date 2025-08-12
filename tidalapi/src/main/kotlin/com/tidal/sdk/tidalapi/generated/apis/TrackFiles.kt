@@ -1,6 +1,6 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
-import com.tidal.sdk.tidalapi.generated.models.TrackFilesSingleDataDocument
+import com.tidal.sdk.tidalapi.generated.models.TrackFilesSingleResourceDataDocument
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -23,12 +23,12 @@ interface TrackFiles {
      * @param id
      * @param formats
      * @param usage
-     * @return [TrackFilesSingleDataDocument]
+     * @return [TrackFilesSingleResourceDataDocument]
      */
     @GET("trackFiles/{id}")
     suspend fun trackFilesIdGet(
         @Path("id") id: kotlin.String,
         @Query("formats") formats: kotlin.String,
         @Query("usage") usage: kotlin.String,
-    ): Response<TrackFilesSingleDataDocument>
+    ): Response<TrackFilesSingleResourceDataDocument>
 }

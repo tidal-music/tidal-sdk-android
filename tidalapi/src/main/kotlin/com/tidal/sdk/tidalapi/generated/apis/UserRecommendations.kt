@@ -1,7 +1,7 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
-import com.tidal.sdk.tidalapi.generated.models.UserRecommendationsMultiDataRelationshipDocument
-import com.tidal.sdk.tidalapi.generated.models.UserRecommendationsSingleDataDocument
+import com.tidal.sdk.tidalapi.generated.models.UserRecommendationsMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.UserRecommendationsSingleResourceDataDocument
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -26,7 +26,7 @@ interface UserRecommendations {
      * @param locale BCP47 locale code
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: discoveryMixes, myMixes, newArrivalMixes (optional)
-     * @return [UserRecommendationsSingleDataDocument]
+     * @return [UserRecommendationsSingleResourceDataDocument]
      */
     @GET("userRecommendations/{id}")
     suspend fun userRecommendationsIdGet(
@@ -35,7 +35,7 @@ interface UserRecommendations {
         @Query("locale") locale: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<UserRecommendationsSingleDataDocument>
+    ): Response<UserRecommendationsSingleResourceDataDocument>
 
     /**
      * Get discoveryMixes relationship (\&quot;to-many\&quot;). Retrieves discoveryMixes
@@ -60,7 +60,7 @@ interface UserRecommendations {
      *   Available options: discoveryMixes (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [UserRecommendationsMultiDataRelationshipDocument]
+     * @return [UserRecommendationsMultiRelationshipDataDocument]
      */
     @GET("userRecommendations/{id}/relationships/discoveryMixes")
     suspend fun userRecommendationsIdRelationshipsDiscoveryMixesGet(
@@ -70,7 +70,7 @@ interface UserRecommendations {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<UserRecommendationsMultiDataRelationshipDocument>
+    ): Response<UserRecommendationsMultiRelationshipDataDocument>
 
     /**
      * Get myMixes relationship (\&quot;to-many\&quot;). Retrieves myMixes relationship. Responses:
@@ -94,7 +94,7 @@ interface UserRecommendations {
      *   Available options: myMixes (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [UserRecommendationsMultiDataRelationshipDocument]
+     * @return [UserRecommendationsMultiRelationshipDataDocument]
      */
     @GET("userRecommendations/{id}/relationships/myMixes")
     suspend fun userRecommendationsIdRelationshipsMyMixesGet(
@@ -104,7 +104,7 @@ interface UserRecommendations {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<UserRecommendationsMultiDataRelationshipDocument>
+    ): Response<UserRecommendationsMultiRelationshipDataDocument>
 
     /**
      * Get newArrivalMixes relationship (\&quot;to-many\&quot;). Retrieves newArrivalMixes
@@ -129,7 +129,7 @@ interface UserRecommendations {
      *   Available options: newArrivalMixes (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [UserRecommendationsMultiDataRelationshipDocument]
+     * @return [UserRecommendationsMultiRelationshipDataDocument]
      */
     @GET("userRecommendations/{id}/relationships/newArrivalMixes")
     suspend fun userRecommendationsIdRelationshipsNewArrivalMixesGet(
@@ -139,7 +139,7 @@ interface UserRecommendations {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<UserRecommendationsMultiDataRelationshipDocument>
+    ): Response<UserRecommendationsMultiRelationshipDataDocument>
 
     /**
      * Get current user&#39;s userRecommendation(s). This operation is deprecated and will be
@@ -163,7 +163,7 @@ interface UserRecommendations {
      * @param locale BCP47 locale code
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: discoveryMixes, myMixes, newArrivalMixes (optional)
-     * @return [UserRecommendationsSingleDataDocument]
+     * @return [UserRecommendationsSingleResourceDataDocument]
      */
     @Deprecated("This api was deprecated")
     @GET("userRecommendations/me")
@@ -172,5 +172,5 @@ interface UserRecommendations {
         @Query("locale") locale: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<UserRecommendationsSingleDataDocument>
+    ): Response<UserRecommendationsSingleResourceDataDocument>
 }

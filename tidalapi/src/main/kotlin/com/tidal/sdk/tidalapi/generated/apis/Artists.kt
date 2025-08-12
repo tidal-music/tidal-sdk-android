@@ -3,11 +3,11 @@ package com.tidal.sdk.tidalapi.generated.apis
 import com.tidal.sdk.tidalapi.generated.models.ArtistCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.ArtistProfileArtRelationshipUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.ArtistUpdateBody
-import com.tidal.sdk.tidalapi.generated.models.ArtistsMultiDataDocument
-import com.tidal.sdk.tidalapi.generated.models.ArtistsMultiDataRelationshipDocument
-import com.tidal.sdk.tidalapi.generated.models.ArtistsSingleDataDocument
-import com.tidal.sdk.tidalapi.generated.models.ArtistsSingletonDataRelationshipDocument
-import com.tidal.sdk.tidalapi.generated.models.ArtistsTrackProvidersMultiDataRelationshipDocument
+import com.tidal.sdk.tidalapi.generated.models.ArtistsMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ArtistsMultiResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ArtistsSingleRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ArtistsSingleResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ArtistsTrackProvidersMultiRelationshipDataDocument
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -34,7 +34,7 @@ interface Artists {
      *   trackProviders, tracks, videos (optional)
      * @param filterHandle Artist handle (optional)
      * @param filterId Artist id (optional)
-     * @return [ArtistsMultiDataDocument]
+     * @return [ArtistsMultiResourceDataDocument]
      */
     @GET("artists")
     suspend fun artistsGet(
@@ -45,7 +45,7 @@ interface Artists {
         filterHandle: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[id]")
         filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<ArtistsMultiDataDocument>
+    ): Response<ArtistsMultiResourceDataDocument>
 
     /**
      * Get single artist. Retrieves single artist by id. Responses:
@@ -67,7 +67,7 @@ interface Artists {
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: albums, biography, owners, profileArt, radio, roles, similarArtists,
      *   trackProviders, tracks, videos (optional)
-     * @return [ArtistsSingleDataDocument]
+     * @return [ArtistsSingleResourceDataDocument]
      */
     @GET("artists/{id}")
     suspend fun artistsIdGet(
@@ -75,7 +75,7 @@ interface Artists {
         @Query("countryCode") countryCode: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<ArtistsSingleDataDocument>
+    ): Response<ArtistsSingleResourceDataDocument>
 
     /**
      * Update single artist. Updates existing artist. Responses:
@@ -122,7 +122,7 @@ interface Artists {
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: albums (optional)
-     * @return [ArtistsMultiDataRelationshipDocument]
+     * @return [ArtistsMultiRelationshipDataDocument]
      */
     @GET("artists/{id}/relationships/albums")
     suspend fun artistsIdRelationshipsAlbumsGet(
@@ -131,7 +131,7 @@ interface Artists {
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<ArtistsMultiDataRelationshipDocument>
+    ): Response<ArtistsMultiRelationshipDataDocument>
 
     /**
      * Get biography relationship (\&quot;to-one\&quot;). Retrieves biography relationship.
@@ -153,7 +153,7 @@ interface Artists {
      * @param countryCode ISO 3166-1 alpha-2 country code
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: biography (optional)
-     * @return [ArtistsSingletonDataRelationshipDocument]
+     * @return [ArtistsSingleRelationshipDataDocument]
      */
     @GET("artists/{id}/relationships/biography")
     suspend fun artistsIdRelationshipsBiographyGet(
@@ -161,7 +161,7 @@ interface Artists {
         @Query("countryCode") countryCode: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<ArtistsSingletonDataRelationshipDocument>
+    ): Response<ArtistsSingleRelationshipDataDocument>
 
     /**
      * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
@@ -183,7 +183,7 @@ interface Artists {
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [ArtistsMultiDataRelationshipDocument]
+     * @return [ArtistsMultiRelationshipDataDocument]
      */
     @GET("artists/{id}/relationships/owners")
     suspend fun artistsIdRelationshipsOwnersGet(
@@ -191,7 +191,7 @@ interface Artists {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<ArtistsMultiDataRelationshipDocument>
+    ): Response<ArtistsMultiRelationshipDataDocument>
 
     /**
      * Get profileArt relationship (\&quot;to-many\&quot;). Retrieves profileArt relationship.
@@ -215,7 +215,7 @@ interface Artists {
      *   Available options: profileArt (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [ArtistsMultiDataRelationshipDocument]
+     * @return [ArtistsMultiRelationshipDataDocument]
      */
     @GET("artists/{id}/relationships/profileArt")
     suspend fun artistsIdRelationshipsProfileArtGet(
@@ -224,7 +224,7 @@ interface Artists {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<ArtistsMultiDataRelationshipDocument>
+    ): Response<ArtistsMultiRelationshipDataDocument>
 
     /**
      * Update profileArt relationship (\&quot;to-many\&quot;). Updates profileArt relationship.
@@ -275,7 +275,7 @@ interface Artists {
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: radio (optional)
-     * @return [ArtistsMultiDataRelationshipDocument]
+     * @return [ArtistsMultiRelationshipDataDocument]
      */
     @GET("artists/{id}/relationships/radio")
     suspend fun artistsIdRelationshipsRadioGet(
@@ -284,7 +284,7 @@ interface Artists {
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<ArtistsMultiDataRelationshipDocument>
+    ): Response<ArtistsMultiRelationshipDataDocument>
 
     /**
      * Get roles relationship (\&quot;to-many\&quot;). Retrieves roles relationship. Responses:
@@ -306,7 +306,7 @@ interface Artists {
      *   Available options: roles (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [ArtistsMultiDataRelationshipDocument]
+     * @return [ArtistsMultiRelationshipDataDocument]
      */
     @GET("artists/{id}/relationships/roles")
     suspend fun artistsIdRelationshipsRolesGet(
@@ -314,7 +314,7 @@ interface Artists {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<ArtistsMultiDataRelationshipDocument>
+    ): Response<ArtistsMultiRelationshipDataDocument>
 
     /**
      * Get similarArtists relationship (\&quot;to-many\&quot;). Retrieves similarArtists
@@ -338,7 +338,7 @@ interface Artists {
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: similarArtists (optional)
-     * @return [ArtistsMultiDataRelationshipDocument]
+     * @return [ArtistsMultiRelationshipDataDocument]
      */
     @GET("artists/{id}/relationships/similarArtists")
     suspend fun artistsIdRelationshipsSimilarArtistsGet(
@@ -347,7 +347,7 @@ interface Artists {
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<ArtistsMultiDataRelationshipDocument>
+    ): Response<ArtistsMultiRelationshipDataDocument>
 
     /**
      * Get trackProviders relationship (\&quot;to-many\&quot;). Retrieves trackProviders
@@ -370,7 +370,7 @@ interface Artists {
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: trackProviders (optional)
-     * @return [ArtistsTrackProvidersMultiDataRelationshipDocument]
+     * @return [ArtistsTrackProvidersMultiRelationshipDataDocument]
      */
     @GET("artists/{id}/relationships/trackProviders")
     suspend fun artistsIdRelationshipsTrackProvidersGet(
@@ -378,7 +378,7 @@ interface Artists {
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<ArtistsTrackProvidersMultiDataRelationshipDocument>
+    ): Response<ArtistsTrackProvidersMultiRelationshipDataDocument>
 
     /**
      * Get tracks relationship (\&quot;to-many\&quot;). Retrieves tracks relationship. Responses:
@@ -404,7 +404,7 @@ interface Artists {
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: tracks (optional)
-     * @return [ArtistsMultiDataRelationshipDocument]
+     * @return [ArtistsMultiRelationshipDataDocument]
      */
     @GET("artists/{id}/relationships/tracks")
     suspend fun artistsIdRelationshipsTracksGet(
@@ -414,7 +414,7 @@ interface Artists {
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<ArtistsMultiDataRelationshipDocument>
+    ): Response<ArtistsMultiRelationshipDataDocument>
 
     /**
      * Get videos relationship (\&quot;to-many\&quot;). Retrieves videos relationship. Responses:
@@ -437,7 +437,7 @@ interface Artists {
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: videos (optional)
-     * @return [ArtistsMultiDataRelationshipDocument]
+     * @return [ArtistsMultiRelationshipDataDocument]
      */
     @GET("artists/{id}/relationships/videos")
     suspend fun artistsIdRelationshipsVideosGet(
@@ -446,7 +446,7 @@ interface Artists {
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<ArtistsMultiDataRelationshipDocument>
+    ): Response<ArtistsMultiRelationshipDataDocument>
 
     /**
      * Create single artist. Creates a new artist. Responses:
@@ -464,10 +464,10 @@ interface Artists {
      *   it from fulfilling the request
      *
      * @param artistCreateOperationPayload (optional)
-     * @return [ArtistsSingleDataDocument]
+     * @return [ArtistsSingleResourceDataDocument]
      */
     @POST("artists")
     suspend fun artistsPost(
         @Body artistCreateOperationPayload: ArtistCreateOperationPayload? = null
-    ): Response<ArtistsSingleDataDocument>
+    ): Response<ArtistsSingleResourceDataDocument>
 }

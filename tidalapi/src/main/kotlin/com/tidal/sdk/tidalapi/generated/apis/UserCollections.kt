@@ -5,11 +5,11 @@ import com.tidal.sdk.tidalapi.generated.models.UserCollectionAlbumsRelationshipR
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionArtistsRelationshipAddOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionArtistsRelationshipRemoveOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionPlaylistsRelationshipRemoveOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.UserCollectionsAlbumsMultiDataRelationshipDocument
-import com.tidal.sdk.tidalapi.generated.models.UserCollectionsArtistsMultiDataRelationshipDocument
-import com.tidal.sdk.tidalapi.generated.models.UserCollectionsMultiDataRelationshipDocument
-import com.tidal.sdk.tidalapi.generated.models.UserCollectionsPlaylistsMultiDataRelationshipDocument
-import com.tidal.sdk.tidalapi.generated.models.UserCollectionsSingleDataDocument
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionsAlbumsMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionsArtistsMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionsMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionsPlaylistsMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionsSingleResourceDataDocument
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -34,7 +34,7 @@ interface UserCollections {
      * @param countryCode ISO 3166-1 alpha-2 country code
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: albums, artists, owners, playlists (optional)
-     * @return [UserCollectionsSingleDataDocument]
+     * @return [UserCollectionsSingleResourceDataDocument]
      */
     @GET("userCollections/{id}")
     suspend fun userCollectionsIdGet(
@@ -43,7 +43,7 @@ interface UserCollections {
         @Query("countryCode") countryCode: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<UserCollectionsSingleDataDocument>
+    ): Response<UserCollectionsSingleResourceDataDocument>
 
     /**
      * Delete from albums relationship (\&quot;to-many\&quot;). Deletes item(s) from albums
@@ -95,7 +95,7 @@ interface UserCollections {
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: albums (optional)
-     * @return [UserCollectionsAlbumsMultiDataRelationshipDocument]
+     * @return [UserCollectionsAlbumsMultiRelationshipDataDocument]
      */
     @GET("userCollections/{id}/relationships/albums")
     suspend fun userCollectionsIdRelationshipsAlbumsGet(
@@ -105,7 +105,7 @@ interface UserCollections {
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<UserCollectionsAlbumsMultiDataRelationshipDocument>
+    ): Response<UserCollectionsAlbumsMultiRelationshipDataDocument>
 
     /**
      * Add to albums relationship (\&quot;to-many\&quot;). Adds item(s) to albums relationship.
@@ -187,7 +187,7 @@ interface UserCollections {
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: artists (optional)
-     * @return [UserCollectionsArtistsMultiDataRelationshipDocument]
+     * @return [UserCollectionsArtistsMultiRelationshipDataDocument]
      */
     @GET("userCollections/{id}/relationships/artists")
     suspend fun userCollectionsIdRelationshipsArtistsGet(
@@ -197,7 +197,7 @@ interface UserCollections {
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<UserCollectionsArtistsMultiDataRelationshipDocument>
+    ): Response<UserCollectionsArtistsMultiRelationshipDataDocument>
 
     /**
      * Add to artists relationship (\&quot;to-many\&quot;). Adds item(s) to artists relationship.
@@ -249,7 +249,7 @@ interface UserCollections {
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [UserCollectionsMultiDataRelationshipDocument]
+     * @return [UserCollectionsMultiRelationshipDataDocument]
      */
     @GET("userCollections/{id}/relationships/owners")
     suspend fun userCollectionsIdRelationshipsOwnersGet(
@@ -257,7 +257,7 @@ interface UserCollections {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<UserCollectionsMultiDataRelationshipDocument>
+    ): Response<UserCollectionsMultiRelationshipDataDocument>
 
     /**
      * Delete from playlists relationship (\&quot;to-many\&quot;). Deletes item(s) from playlists
@@ -309,7 +309,7 @@ interface UserCollections {
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: playlists (optional)
-     * @return [UserCollectionsPlaylistsMultiDataRelationshipDocument]
+     * @return [UserCollectionsPlaylistsMultiRelationshipDataDocument]
      */
     @GET("userCollections/{id}/relationships/playlists")
     suspend fun userCollectionsIdRelationshipsPlaylistsGet(
@@ -318,7 +318,7 @@ interface UserCollections {
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<UserCollectionsPlaylistsMultiDataRelationshipDocument>
+    ): Response<UserCollectionsPlaylistsMultiRelationshipDataDocument>
 
     /**
      * Add to playlists relationship (\&quot;to-many\&quot;). Adds item(s) to playlists

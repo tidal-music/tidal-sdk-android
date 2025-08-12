@@ -12,12 +12,15 @@ import kotlinx.serialization.Serializable
 /**
  * @param attributes
  * @param id
+ * @param relationships
  * @param type
  */
 @Serializable
 data class AlbumUpdateOperationPayloadData(
     @SerialName(value = "attributes") val attributes: AlbumUpdateOperationPayloadDataAttributes,
     @SerialName(value = "id") val id: kotlin.String,
+    @SerialName(value = "relationships")
+    val relationships: AlbumUpdateOperationPayloadDataRelationships,
     @SerialName(value = "type") val type: AlbumUpdateOperationPayloadData.Type,
 ) {
 

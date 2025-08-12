@@ -6,10 +6,10 @@ import com.tidal.sdk.tidalapi.generated.models.PlaylistItemsRelationshipAddOpera
 import com.tidal.sdk.tidalapi.generated.models.PlaylistItemsRelationshipRemoveOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.PlaylistItemsRelationshipReorderOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.PlaylistUpdateOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.PlaylistsItemsMultiDataRelationshipDocument
-import com.tidal.sdk.tidalapi.generated.models.PlaylistsMultiDataDocument
-import com.tidal.sdk.tidalapi.generated.models.PlaylistsMultiDataRelationshipDocument
-import com.tidal.sdk.tidalapi.generated.models.PlaylistsSingleDataDocument
+import com.tidal.sdk.tidalapi.generated.models.PlaylistsItemsMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.PlaylistsMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.PlaylistsMultiResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.PlaylistsSingleResourceDataDocument
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -37,7 +37,7 @@ interface Playlists {
      *   Available options: coverArt, items, owners (optional)
      * @param filterROwnersId User id (optional)
      * @param filterId Playlist id (optional)
-     * @return [PlaylistsMultiDataDocument]
+     * @return [PlaylistsMultiResourceDataDocument]
      */
     @GET("playlists")
     suspend fun playlistsGet(
@@ -49,7 +49,7 @@ interface Playlists {
         filterROwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[id]")
         filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<PlaylistsMultiDataDocument>
+    ): Response<PlaylistsMultiResourceDataDocument>
 
     /**
      * Delete single playlist. Deletes existing playlist. Responses:
@@ -90,7 +90,7 @@ interface Playlists {
      * @param countryCode ISO 3166-1 alpha-2 country code
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: coverArt, items, owners (optional)
-     * @return [PlaylistsSingleDataDocument]
+     * @return [PlaylistsSingleResourceDataDocument]
      */
     @GET("playlists/{id}")
     suspend fun playlistsIdGet(
@@ -98,7 +98,7 @@ interface Playlists {
         @Query("countryCode") countryCode: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<PlaylistsSingleDataDocument>
+    ): Response<PlaylistsSingleResourceDataDocument>
 
     /**
      * Update single playlist. Updates existing playlist. Responses:
@@ -148,7 +148,7 @@ interface Playlists {
      *   Available options: coverArt (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [PlaylistsMultiDataRelationshipDocument]
+     * @return [PlaylistsMultiRelationshipDataDocument]
      */
     @GET("playlists/{id}/relationships/coverArt")
     suspend fun playlistsIdRelationshipsCoverArtGet(
@@ -157,7 +157,7 @@ interface Playlists {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<PlaylistsMultiDataRelationshipDocument>
+    ): Response<PlaylistsMultiRelationshipDataDocument>
 
     /**
      * Update coverArt relationship (\&quot;to-many\&quot;). Updates coverArt relationship.
@@ -236,7 +236,7 @@ interface Playlists {
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: items (optional)
-     * @return [PlaylistsItemsMultiDataRelationshipDocument]
+     * @return [PlaylistsItemsMultiRelationshipDataDocument]
      */
     @GET("playlists/{id}/relationships/items")
     suspend fun playlistsIdRelationshipsItemsGet(
@@ -245,7 +245,7 @@ interface Playlists {
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<PlaylistsItemsMultiDataRelationshipDocument>
+    ): Response<PlaylistsItemsMultiRelationshipDataDocument>
 
     /**
      * Update items relationship (\&quot;to-many\&quot;). Updates items relationship. Responses:
@@ -325,7 +325,7 @@ interface Playlists {
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [PlaylistsMultiDataRelationshipDocument]
+     * @return [PlaylistsMultiRelationshipDataDocument]
      */
     @GET("playlists/{id}/relationships/owners")
     suspend fun playlistsIdRelationshipsOwnersGet(
@@ -334,7 +334,7 @@ interface Playlists {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<PlaylistsMultiDataRelationshipDocument>
+    ): Response<PlaylistsMultiRelationshipDataDocument>
 
     /**
      * Create single playlist. Creates a new playlist. Responses:
@@ -353,11 +353,11 @@ interface Playlists {
      *
      * @param countryCode ISO 3166-1 alpha-2 country code
      * @param playlistCreateOperationPayload (optional)
-     * @return [PlaylistsSingleDataDocument]
+     * @return [PlaylistsSingleResourceDataDocument]
      */
     @POST("playlists")
     suspend fun playlistsPost(
         @Query("countryCode") countryCode: kotlin.String,
         @Body playlistCreateOperationPayload: PlaylistCreateOperationPayload? = null,
-    ): Response<PlaylistsSingleDataDocument>
+    ): Response<PlaylistsSingleResourceDataDocument>
 }
