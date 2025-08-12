@@ -21,7 +21,6 @@ room = "2.6.1"
 slf4j-api = "2.0.12"
 tickaroo = "0.8.13"
 tidal-androidx-media = "1.2.1.1"
-plugins-tidal = "unspecified"
 
 [libraries]
 converter-kotlinx-serialization = { module = "com.squareup.retrofit2:converter-kotlinx-serialization", version.ref = "converter-kotlinx-serialization" }
@@ -133,7 +132,7 @@ gradle-maven-publish = { id = "com.vanniktech.maven.publish", version = "0.28.0"
 kotlin-dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 kotlin-plugin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-tidal-android-application = { id = "com.tidal-sdk.android.application", version.ref = "plugins-tidal" }
-tidal-android-library = { id = "com.tidal-sdk.android.library", version.ref = "plugins-tidal"  }
-tidal-kotlin-jvm = { id = "com.tidal-sdk.kotlin.jvm", version.ref = "plugins-tidal" }
-tidal-jvm-platform = { id = "com.tidal-sdk.jvm.platform", version.ref = "plugins-tidal" }
+tidal-android-application = { id = "com.tidal-sdk.android.application" }
+tidal-android-library = { id = "com.tidal-sdk.android.library" }
+tidal-kotlin-jvm = { id = "com.tidal-sdk.kotlin.jvm" }
+tidal-jvm-platform = { id = "com.tidal-sdk.jvm.platform" }
