@@ -45,8 +45,8 @@ internal object ExtendedExoPlayerModule {
             DefaultLoadControl.Builder()
                 .setBackBuffer(backBufferDuration.toInt(DurationUnit.MILLISECONDS), true)
                 .setBufferDurationsMs(
-                    minPlaybackBufferAudio.toInt(DurationUnit.MILLISECONDS),
-                    maxPlaybackBufferAudio.toInt(DurationUnit.MILLISECONDS),
+                    minPlaybackBuffer.toInt(DurationUnit.MILLISECONDS),
+                    maxPlaybackBuffer.toInt(DurationUnit.MILLISECONDS),
                     bufferForPlayback.toInt(DurationUnit.MILLISECONDS),
                     bufferForPlaybackAfterRebuffer.toInt(DurationUnit.MILLISECONDS),
                 )
