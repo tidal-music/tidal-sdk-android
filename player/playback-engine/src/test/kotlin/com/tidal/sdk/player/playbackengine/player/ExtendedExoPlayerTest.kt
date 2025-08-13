@@ -6,8 +6,11 @@ import androidx.media3.common.Timeline
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.LoadControl
 import androidx.media3.exoplayer.analytics.AnalyticsListener
+import androidx.media3.exoplayer.analytics.PlayerId
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isFalse
+import assertk.assertions.isSameInstanceAs
 import assertk.assertions.isTrue
 import com.tidal.sdk.player.common.ForwardingMediaProduct
 import com.tidal.sdk.player.common.model.MediaProduct
@@ -21,6 +24,7 @@ import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import org.junit.jupiter.params.provider.NullSource
 import org.mockito.kotlin.any
+import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
@@ -117,22 +121,35 @@ internal class ExtendedExoPlayerTest {
         val totalBufferedDuration = 33L
         val speed = 1F
         val playbackParameters = PlaybackParameters(speed)
+        val timeline = mock<Timeline>()
+        val currentPosition = 1000L
+        val playWhenReady = true
+
         whenever(delegate.playbackParameters).thenReturn(playbackParameters)
-        whenever(extendedExoPlayer.totalBufferedDuration).thenReturn(totalBufferedDuration)
-        whenever(
-                loadControl.shouldStartPlayback(
-                    C.msToUs(totalBufferedDuration),
-                    speed,
-                    false,
-                    C.TIME_UNSET,
-                )
-            )
-            .thenReturn(true)
+        whenever(delegate.totalBufferedDuration).thenReturn(totalBufferedDuration)
+        whenever(delegate.currentTimeline).thenReturn(timeline)
+        whenever(delegate.currentPosition).thenReturn(currentPosition)
+        whenever(delegate.playWhenReady).thenReturn(playWhenReady)
+
+        whenever(loadControl.shouldStartPlayback(any())).thenReturn(true)
 
         val actual = extendedExoPlayer.shouldStartPlaybackAfterUserAction()
 
-        verify(loadControl)
-            .shouldStartPlayback(C.msToUs(totalBufferedDuration), speed, false, C.TIME_UNSET)
+        // Capture the Parameters actually passed to LoadControl
+        val paramsCaptor = argumentCaptor<LoadControl.Parameters>()
+        verify(loadControl).shouldStartPlayback(paramsCaptor.capture())
+        val p = paramsCaptor.firstValue
+
+        assertThat(p.playerId).isEqualTo(PlayerId.UNSET)
+        assertThat(p.timeline).isSameInstanceAs(timeline)
+        assertThat(p.mediaPeriodId).isEqualTo(LoadControl.EMPTY_MEDIA_PERIOD_ID)
+        assertThat(p.playbackPositionUs).isEqualTo(C.msToUs(currentPosition))
+        assertThat(p.bufferedDurationUs).isEqualTo(C.msToUs(totalBufferedDuration))
+        assertThat(p.playbackSpeed).isEqualTo(speed)
+        assertThat(p.playWhenReady).isEqualTo(playWhenReady)
+        assertThat(p.rebuffering).isFalse()
+        assertThat(p.targetLiveOffsetUs).isEqualTo(C.TIME_UNSET)
+
         assertThat(actual).isTrue()
     }
 
