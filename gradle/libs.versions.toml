@@ -20,7 +20,7 @@ retrofit = "2.11.0"
 room = "2.6.1"
 slf4j-api = "2.0.12"
 tickaroo = "0.8.13"
-tidal-androidx-media = "1.2.1.1"
+tidal-androidx-media = "1.5.0.1"
 
 [libraries]
 converter-kotlinx-serialization = { module = "com.squareup.retrofit2:converter-kotlinx-serialization", version.ref = "converter-kotlinx-serialization" }
