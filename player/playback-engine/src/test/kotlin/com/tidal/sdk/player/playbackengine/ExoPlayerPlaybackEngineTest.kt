@@ -2148,7 +2148,7 @@ internal class ExoPlayerPlaybackEngineTest {
             )
         val currentTimeMillis = -38L
         whenever(trueTimeWrapper.currentTimeMillis) doReturn currentTimeMillis
-        val sampleMimeType = "sampleMimeType"
+        val sampleMimeType = "samplemimetype"
         val codecs = "codecs"
         val bitrate = Int.MAX_VALUE
         val width = 0

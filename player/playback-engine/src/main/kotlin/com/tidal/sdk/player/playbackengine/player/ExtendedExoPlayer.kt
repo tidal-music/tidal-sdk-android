@@ -5,6 +5,7 @@ import androidx.media3.common.Timeline
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.LoadControl
 import androidx.media3.exoplayer.analytics.AnalyticsListener
+import androidx.media3.exoplayer.analytics.PlayerId
 import com.tidal.sdk.player.common.ForwardingMediaProduct
 import com.tidal.sdk.player.common.model.MediaProduct
 import com.tidal.sdk.player.playbackengine.mediasource.MediaSourcerer
@@ -65,10 +66,17 @@ internal class ExtendedExoPlayer(
 
     fun shouldStartPlaybackAfterUserAction() =
         loadControl.shouldStartPlayback(
-            C.msToUs(delegate.totalBufferedDuration),
-            delegate.playbackParameters.speed,
-            false,
-            C.TIME_UNSET,
+            LoadControl.Parameters(
+                PlayerId.UNSET,
+                delegate.currentTimeline,
+                LoadControl.EMPTY_MEDIA_PERIOD_ID,
+                C.msToUs(delegate.currentPosition),
+                C.msToUs(delegate.totalBufferedDuration),
+                delegate.playbackParameters.speed,
+                delegate.playWhenReady,
+                false,
+                C.TIME_UNSET,
+            )
         )
 
     fun onCurrentItemFinished() {

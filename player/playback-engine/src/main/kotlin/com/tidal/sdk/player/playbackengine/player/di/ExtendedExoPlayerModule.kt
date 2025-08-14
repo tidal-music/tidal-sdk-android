@@ -45,14 +45,11 @@ internal object ExtendedExoPlayerModule {
             DefaultLoadControl.Builder()
                 .setBackBuffer(backBufferDuration.toInt(DurationUnit.MILLISECONDS), true)
                 .setBufferDurationsMs(
-                    minPlaybackBufferAudio.toInt(DurationUnit.MILLISECONDS),
-                    maxPlaybackBufferAudio.toInt(DurationUnit.MILLISECONDS),
-                    minPlaybackBufferVideo.toInt(DurationUnit.MILLISECONDS),
-                    maxPlaybackBufferVideo.toInt(DurationUnit.MILLISECONDS),
+                    minPlaybackBuffer.toInt(DurationUnit.MILLISECONDS),
+                    maxPlaybackBuffer.toInt(DurationUnit.MILLISECONDS),
                     bufferForPlayback.toInt(DurationUnit.MILLISECONDS),
                     bufferForPlaybackAfterRebuffer.toInt(DurationUnit.MILLISECONDS),
                 )
-                .setBufferSize(audioBufferSize.value.toInt(), videoBufferSize.value.toInt())
                 .setPrioritizeTimeOverSizeThresholds(true)
                 .build()
         }
