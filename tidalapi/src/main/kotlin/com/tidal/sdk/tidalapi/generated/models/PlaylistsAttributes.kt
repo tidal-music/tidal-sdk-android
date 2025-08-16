@@ -17,7 +17,6 @@ import kotlinx.serialization.Serializable
  * @param lastModifiedAt Datetime of last modification of the playlist (ISO 8601)
  * @param name Playlist name
  * @param playlistType The type of the playlist
- * @param privacy Privacy setting of the playlist
  * @param description Playlist description
  * @param duration Duration of playlist (ISO 8601)
  * @param numberOfItems Number of items in the playlist
@@ -44,11 +43,6 @@ data class PlaylistsAttributes(
     /* The type of the playlist */
 
     @SerialName(value = "playlistType") val playlistType: PlaylistsAttributes.PlaylistType,
-    /* Privacy setting of the playlist */
-
-    @SerialName(value = "privacy")
-    @Deprecated(message = "This property is deprecated.")
-    val privacy: PlaylistsAttributes.Privacy,
     /* Playlist description */
 
     @SerialName(value = "description") val description: kotlin.String? = null,
@@ -82,16 +76,5 @@ data class PlaylistsAttributes(
         @SerialName(value = "USER") USER("USER"),
         @SerialName(value = "MIX") MIX("MIX"),
         @SerialName(value = "ARTIST") ARTIST("ARTIST"),
-    }
-
-    /**
-     * Privacy setting of the playlist
-     *
-     * Values: PUBLIC,PRIVATE
-     */
-    @Serializable
-    enum class Privacy(val value: kotlin.String) {
-        @SerialName(value = "PUBLIC") PUBLIC("PUBLIC"),
-        @SerialName(value = "PRIVATE") PRIVATE("PRIVATE"),
     }
 }
