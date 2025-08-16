@@ -1,6 +1,7 @@
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/ApiClient.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/Albums.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/ArtistBiographies.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/ArtistClaims.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/ArtistRoles.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/Artists.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/Artworks.kt
@@ -57,6 +58,21 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistBiographiesSingleR
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistBiographyUpdateBody.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistBiographyUpdateBodyData.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistBiographyUpdateBodyDataAttributes.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistClaimAcceptedArtistsRelationshipUpdateOperationPayload.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistClaimAcceptedArtistsRelationshipUpdateOperationPayloadData.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistClaimId.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistClaimsAttributes.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistClaimsCreateOperationPayload.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistClaimsCreateOperationPayloadData.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistClaimsCreateOperationPayloadDataAttributes.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistClaimsMultiRelationshipDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistClaimsMultiResourceDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistClaimsRelationships.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistClaimsResourceObject.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistClaimsSingleResourceDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistClaimsUpdateOperationPayload.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistClaimsUpdateOperationPayloadData.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistClaimsUpdateOperationPayloadMeta.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistCreateOperationMeta.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistCreateOperationPayload.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistCreateOperationPayloadData.kt
@@ -96,6 +112,7 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtworksResourceObject.k
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtworksSingleResourceDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AttachSourceFileToTrack.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AudioNormalizationData.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/BarcodeId.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/DrmData.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ErrorObject.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ErrorObjectSource.kt
