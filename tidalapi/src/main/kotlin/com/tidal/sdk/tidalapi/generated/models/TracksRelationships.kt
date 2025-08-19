@@ -18,6 +18,7 @@ import kotlinx.serialization.Serializable
  * @param providers
  * @param radio
  * @param similarTracks
+ * @param sourceFile
  * @param trackStatistics
  */
 @Serializable
@@ -30,5 +31,6 @@ data class TracksRelationships(
     @SerialName(value = "providers") val providers: MultiRelationshipDataDocument,
     @SerialName(value = "radio") val radio: MultiRelationshipDataDocument,
     @SerialName(value = "similarTracks") val similarTracks: MultiRelationshipDataDocument,
+    @SerialName(value = "sourceFile") val sourceFile: SingleRelationshipDataDocument,
     @SerialName(value = "trackStatistics") val trackStatistics: SingleRelationshipDataDocument,
 ) {}
