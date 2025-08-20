@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.56] - 2025-08-20
+### Changed
+- Downgrade to Java 17
+
 ## [0.0.55] - 2025-04-02
 ### Changed
 - Update media3 to version 1.5.0
