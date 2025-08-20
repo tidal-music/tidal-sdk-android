@@ -41,8 +41,8 @@ internal class KotlinAndroidLibraryConventionPlugin : Plugin<Project> {
             testOptions { execution = "ANDROIDX_TEST_ORCHESTRATOR" }
 
             compileOptions {
-                sourceCompatibility = JavaVersion.VERSION_21
-                targetCompatibility = JavaVersion.VERSION_21
+                sourceCompatibility = JavaVersion.VERSION_17
+                targetCompatibility = JavaVersion.VERSION_17
             }
 
             buildTypes { release { isMinifyEnabled = false } }
