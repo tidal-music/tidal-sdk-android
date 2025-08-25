@@ -22,7 +22,7 @@ data class ArtistUpdateBodyDataAttributes(
     @SerialName(value = "contributionsSalesPitch")
     val contributionsSalesPitch: kotlin.String? = null,
     @SerialName(value = "externalLinks")
-    val externalLinks: kotlin.collections.List<ExternalLink>? = null,
+    val externalLinks: kotlin.collections.List<ExternalLinkPayload>? = null,
     @SerialName(value = "handle") val handle: kotlin.String? = null,
     @SerialName(value = "name") val name: kotlin.String? = null,
 ) {}

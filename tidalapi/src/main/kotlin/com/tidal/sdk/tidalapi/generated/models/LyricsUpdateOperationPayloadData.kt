@@ -13,20 +13,17 @@ import kotlinx.serialization.Serializable
  * @param attributes
  * @param id
  * @param type
- * @param relationships
  */
 @Serializable
-data class AlbumUpdateOperationPayloadData(
-    @SerialName(value = "attributes") val attributes: AlbumUpdateOperationPayloadDataAttributes,
+data class LyricsUpdateOperationPayloadData(
+    @SerialName(value = "attributes") val attributes: LyricsUpdateOperationPayloadDataAttributes,
     @SerialName(value = "id") val id: kotlin.String,
-    @SerialName(value = "type") val type: AlbumUpdateOperationPayloadData.Type,
-    @SerialName(value = "relationships")
-    val relationships: AlbumUpdateOperationPayloadDataRelationships? = null,
+    @SerialName(value = "type") val type: LyricsUpdateOperationPayloadData.Type,
 ) {
 
-    /** Values: albums */
+    /** Values: lyrics */
     @Serializable
     enum class Type(val value: kotlin.String) {
-        @SerialName(value = "albums") albums("albums")
+        @SerialName(value = "lyrics") lyrics("lyrics")
     }
 }
