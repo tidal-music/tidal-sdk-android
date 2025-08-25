@@ -46,13 +46,12 @@ data class FileStatus(
     /**
      * Technical status for file
      *
-     * Values: UPLOAD_REQUESTED,PROCESSING,FAILED,OK,ERROR
+     * Values: UPLOAD_REQUESTED,PROCESSING,OK,ERROR
      */
     @Serializable
     enum class TechnicalFileStatus(val value: kotlin.String) {
         @SerialName(value = "UPLOAD_REQUESTED") UPLOAD_REQUESTED("UPLOAD_REQUESTED"),
         @SerialName(value = "PROCESSING") PROCESSING("PROCESSING"),
-        @SerialName(value = "FAILED") FAILED("FAILED"),
         @SerialName(value = "OK") OK("OK"),
         @SerialName(value = "ERROR") ERROR("ERROR"),
     }

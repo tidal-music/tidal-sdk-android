@@ -9,5 +9,22 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param text */
-@Serializable data class LyricsAttributes(@SerialName(value = "text") val text: kotlin.String) {}
+/**
+ * @param technicalStatus
+ * @param text
+ */
+@Serializable
+data class LyricsAttributes(
+    @SerialName(value = "technicalStatus") val technicalStatus: LyricsAttributes.TechnicalStatus,
+    @SerialName(value = "text") val text: kotlin.String? = null,
+) {
+
+    /** Values: PENDING,PROCESSING,ERROR,OK */
+    @Serializable
+    enum class TechnicalStatus(val value: kotlin.String) {
+        @SerialName(value = "PENDING") PENDING("PENDING"),
+        @SerialName(value = "PROCESSING") PROCESSING("PROCESSING"),
+        @SerialName(value = "ERROR") ERROR("ERROR"),
+        @SerialName(value = "OK") OK("OK"),
+    }
+}

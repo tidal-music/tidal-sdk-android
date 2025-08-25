@@ -50,12 +50,14 @@ interface ArtistClaims {
      * - 500: Internal server error - The server encountered an unexpected condition that prevented
      *   it from fulfilling the request
      *
+     * @param id Artist claim id
      * @param artistClaimsUpdateOperationPayload (optional)
      * @return [Unit]
      */
     @PATCH("artistClaims/{id}")
     suspend fun artistClaimsIdPatch(
-        @Body artistClaimsUpdateOperationPayload: ArtistClaimsUpdateOperationPayload? = null
+        @Path("id") id: kotlin.String,
+        @Body artistClaimsUpdateOperationPayload: ArtistClaimsUpdateOperationPayload? = null,
     ): Response<Unit>
 
     /**
