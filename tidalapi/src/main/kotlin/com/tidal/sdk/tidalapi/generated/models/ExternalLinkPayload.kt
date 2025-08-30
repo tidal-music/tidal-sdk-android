@@ -11,14 +11,10 @@ import kotlinx.serialization.Serializable
 
 /**
  * @param meta
- * @param forDelete
  * @param href
- * @param mutable
  */
 @Serializable
 data class ExternalLinkPayload(
     @SerialName(value = "meta") val meta: ExternalLinkMeta,
-    @SerialName(value = "forDelete") val forDelete: kotlin.Boolean? = null,
     @SerialName(value = "href") val href: kotlin.String? = null,
-    @SerialName(value = "mutable") val mutable: kotlin.Boolean? = null,
 ) {}
