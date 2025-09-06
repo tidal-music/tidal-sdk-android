@@ -20,8 +20,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class AlbumCreateOperationPayloadDataAttributes(
     @SerialName(value = "title") val title: kotlin.String,
-    @SerialName(value = "copyright")
-    val copyright: AlbumCreateOperationPayloadDataAttributesCopyright? = null,
+    @SerialName(value = "copyright") val copyright: AlbumCopyright? = null,
     @SerialName(value = "explicitLyrics") val explicitLyrics: kotlin.Boolean? = null,
     @SerialName(value = "releaseDate") val releaseDate: kotlin.String? = null,
     @SerialName(value = "upc") val upc: kotlin.String? = null,

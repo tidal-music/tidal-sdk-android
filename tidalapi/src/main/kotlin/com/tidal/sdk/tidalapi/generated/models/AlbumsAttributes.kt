@@ -20,9 +20,10 @@ import kotlinx.serialization.Serializable
  * @param title Album title
  * @param type Album type
  * @param availability Available usage for this album
- * @param copyright Copyright
+ * @param copyright
  * @param externalLinks Album links external to TIDAL API
  * @param releaseDate Release date (ISO-8601)
+ * @param version Album version
  */
 @Serializable
 data class AlbumsAttributes(
@@ -56,9 +57,7 @@ data class AlbumsAttributes(
 
     @SerialName(value = "availability")
     val availability: kotlin.collections.List<AlbumsAttributes.Availability>? = null,
-    /* Copyright */
-
-    @SerialName(value = "copyright") val copyright: kotlin.String? = null,
+    @SerialName(value = "copyright") val copyright: AlbumCopyright? = null,
     /* Album links external to TIDAL API */
 
     @SerialName(value = "externalLinks")
@@ -66,6 +65,9 @@ data class AlbumsAttributes(
     /* Release date (ISO-8601) */
 
     @SerialName(value = "releaseDate") val releaseDate: kotlin.String? = null,
+    /* Album version */
+
+    @SerialName(value = "version") val version: kotlin.String? = null,
 ) {
 
     /**

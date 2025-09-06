@@ -10,11 +10,18 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param text
- * @param year
+ * @param id Resource id
+ * @param type Resource type
+ * @param meta
  */
 @Serializable
-data class AlbumUpdateOperationPayloadDataAttributesCopyright(
-    @SerialName(value = "text") val text: kotlin.String,
-    @SerialName(value = "year") val year: kotlin.Int? = null,
+data class UserCollectionsVideosResourceIdentifier(
+
+    /* Resource id */
+
+    @SerialName(value = "id") val id: kotlin.String,
+    /* Resource type */
+
+    @SerialName(value = "type") val type: kotlin.String,
+    @SerialName(value = "meta") val meta: UserCollectionsVideosResourceIdentifierMeta? = null,
 ) {}
