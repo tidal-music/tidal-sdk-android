@@ -14,15 +14,15 @@ import kotlinx.serialization.Serializable
  * @param type
  */
 @Serializable
-data class UserCollectionAlbumsRelationshipRemoveOperationPayloadData(
+data class UserCollectionTracksRelationshipRemoveOperationPayloadData(
     @SerialName(value = "id") val id: kotlin.String,
     @SerialName(value = "type")
-    val type: UserCollectionAlbumsRelationshipRemoveOperationPayloadData.Type,
+    val type: UserCollectionTracksRelationshipRemoveOperationPayloadData.Type,
 ) {
 
-    /** Values: albums */
+    /** Values: tracks */
     @Serializable
     enum class Type(val value: kotlin.String) {
-        @SerialName(value = "albums") albums("albums")
+        @SerialName(value = "tracks") tracks("tracks")
     }
 }

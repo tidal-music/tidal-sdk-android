@@ -8,7 +8,7 @@
     "description" : "TIDAL API is a [JSON:API](https://jsonapi.org/) Web API that gives access to TIDAL functionality and data.",
     "termsOfService" : "https://developer.tidal.com/documentation/guidelines/guidelines-overview",
     "title" : "TIDAL API - Beta",
-    "version" : "0.1.60"
+    "version" : "0.1.68"
   },
   "externalDocs" : {
     "description" : "TIDAL Developer - Documentation",
@@ -103,7 +103,7 @@
           "description" : "User id",
           "example" : "123456",
           "in" : "query",
-          "name" : "filter[r.owners.id]",
+          "name" : "filter[owners.id]",
           "required" : false,
           "schema" : {
             "type" : "array",
@@ -3944,7 +3944,7 @@
           "description" : "User id",
           "example" : "123456",
           "in" : "query",
-          "name" : "filter[r.owners.id]",
+          "name" : "filter[owners.id]",
           "required" : false,
           "schema" : {
             "type" : "array",
@@ -6407,7 +6407,7 @@
           "description" : "User id",
           "example" : "123456",
           "in" : "query",
-          "name" : "filter[r.owners.id]",
+          "name" : "filter[owners.id]",
           "required" : false,
           "schema" : {
             "type" : "array",
@@ -7567,7 +7567,7 @@
             "type" : "string"
           }
         }, {
-          "description" : "Allows the client to customize which related resources should be returned. Available options: albums, artists, owners, playlists",
+          "description" : "Allows the client to customize which related resources should be returned. Available options: albums, artists, owners, playlists, tracks, videos",
           "example" : "albums",
           "in" : "query",
           "name" : "include",
@@ -8186,15 +8186,6 @@
             "type" : "string"
           }
         }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
           "in" : "query",
           "name" : "page[cursor]",
@@ -8306,6 +8297,426 @@
           "Authorization_Code_PKCE" : [ "collection.write", "w_usr" ]
         } ],
         "summary" : "Add to playlists relationship (\"to-many\").",
+        "tags" : [ "userCollections" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "THIRD_PARTY"
+        }
+      }
+    },
+    "/userCollections/{id}/relationships/tracks" : {
+      "delete" : {
+        "description" : "Deletes item(s) from tracks relationship.",
+        "parameters" : [ {
+          "description" : "User id",
+          "example" : "123456",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/vnd.api+json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/UserCollectionTracksRelationshipRemoveOperation_Payload"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "400" : {
+            "$ref" : "#/components/responses/Bad_Request_Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Not_Found_Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Not_Acceptable_Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Too_Many_Requests_Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Internal_Server_Error_Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "collection.write", "w_usr" ]
+        } ],
+        "summary" : "Delete from tracks relationship (\"to-many\").",
+        "tags" : [ "userCollections" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "THIRD_PARTY"
+        }
+      },
+      "get" : {
+        "description" : "Retrieves tracks relationship.",
+        "parameters" : [ {
+          "description" : "User id",
+          "example" : "123456",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "ISO 3166-1 alpha-2 country code",
+          "example" : "US",
+          "in" : "query",
+          "name" : "countryCode",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "BCP 47 locale",
+          "example" : "en-US",
+          "in" : "query",
+          "name" : "locale",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: tracks",
+          "example" : "tracks",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "tracks"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/UserCollections_Tracks_Multi_Relationship_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Bad_Request_Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Not_Found_Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Not_Acceptable_Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Too_Many_Requests_Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Internal_Server_Error_Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "collection.read", "r_usr" ]
+        } ],
+        "summary" : "Get tracks relationship (\"to-many\").",
+        "tags" : [ "userCollections" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "THIRD_PARTY"
+        }
+      },
+      "post" : {
+        "description" : "Adds item(s) to tracks relationship.",
+        "parameters" : [ {
+          "description" : "User id",
+          "example" : "123456",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "ISO 3166-1 alpha-2 country code",
+          "example" : "US",
+          "in" : "query",
+          "name" : "countryCode",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/vnd.api+json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/UserCollectionTracksRelationshipAddOperation_Payload"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "400" : {
+            "$ref" : "#/components/responses/Bad_Request_Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Not_Found_Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Not_Acceptable_Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Too_Many_Requests_Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Internal_Server_Error_Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "collection.write", "w_usr" ]
+        } ],
+        "summary" : "Add to tracks relationship (\"to-many\").",
+        "tags" : [ "userCollections" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "THIRD_PARTY"
+        }
+      }
+    },
+    "/userCollections/{id}/relationships/videos" : {
+      "delete" : {
+        "description" : "Deletes item(s) from videos relationship.",
+        "parameters" : [ {
+          "description" : "User id",
+          "example" : "123456",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/vnd.api+json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/UserCollectionVideosRelationshipRemoveOperation_Payload"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "400" : {
+            "$ref" : "#/components/responses/Bad_Request_Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Not_Found_Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Not_Acceptable_Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Too_Many_Requests_Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Internal_Server_Error_Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "collection.write", "w_usr" ]
+        } ],
+        "summary" : "Delete from videos relationship (\"to-many\").",
+        "tags" : [ "userCollections" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "THIRD_PARTY"
+        }
+      },
+      "get" : {
+        "description" : "Retrieves videos relationship.",
+        "parameters" : [ {
+          "description" : "User id",
+          "example" : "123456",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "ISO 3166-1 alpha-2 country code",
+          "example" : "US",
+          "in" : "query",
+          "name" : "countryCode",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "BCP 47 locale",
+          "example" : "en-US",
+          "in" : "query",
+          "name" : "locale",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: videos",
+          "example" : "videos",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "videos"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/UserCollections_Videos_Multi_Relationship_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Bad_Request_Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Not_Found_Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Not_Acceptable_Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Too_Many_Requests_Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Internal_Server_Error_Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "collection.read", "r_usr" ]
+        } ],
+        "summary" : "Get videos relationship (\"to-many\").",
+        "tags" : [ "userCollections" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "THIRD_PARTY"
+        }
+      },
+      "post" : {
+        "description" : "Adds item(s) to videos relationship.",
+        "parameters" : [ {
+          "description" : "User id",
+          "example" : "123456",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "ISO 3166-1 alpha-2 country code",
+          "example" : "US",
+          "in" : "query",
+          "name" : "countryCode",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/vnd.api+json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/UserCollectionVideosRelationshipAddOperation_Payload"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "400" : {
+            "$ref" : "#/components/responses/Bad_Request_Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Not_Found_Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Method_Not_Allowed_Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Not_Acceptable_Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Unsupported_Media_Type_Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Too_Many_Requests_Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Internal_Server_Error_Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "collection.write", "w_usr" ]
+        } ],
+        "summary" : "Add to videos relationship (\"to-many\").",
         "tags" : [ "userCollections" ],
         "x-path-item-properties" : {
           "required-access-tier" : "THIRD_PARTY"
@@ -9378,7 +9789,7 @@
       "Bad_Request_Response" : {
         "content" : {
           "application/vnd.api+json" : {
-            "example" : "{\"errors\":[{\"code\":\"GENERIC_REQUEST_ERROR\",\"detail\":\"The request contains validation errors\",\"meta\":{\"category\":\"INVALID_REQUEST_ERROR\"}}]}",
+            "example" : "{\"errors\":[{\"code\":\"GENERIC_REQUEST_ERROR\",\"detail\":\"The request contains validation errors\"}]}",
             "schema" : {
               "$ref" : "#/components/schemas/Errors_Document"
             }
@@ -9389,7 +9800,7 @@
       "Internal_Server_Error_Response" : {
         "content" : {
           "application/vnd.api+json" : {
-            "example" : "{\"errors\":[{\"code\":\"INTERNAL_SERVER_ERROR\",\"detail\":\"The service encountered an error\",\"meta\":{\"category\":\"API_ERROR\"}}]}",
+            "example" : "{\"errors\":[{\"code\":\"INTERNAL_SERVER_ERROR\",\"detail\":\"The service encountered an error\"}]}",
             "schema" : {
               "$ref" : "#/components/schemas/Errors_Document"
             }
@@ -9400,7 +9811,7 @@
       "Method_Not_Allowed_Response" : {
         "content" : {
           "application/vnd.api+json" : {
-            "example" : "{\"errors\":[{\"code\":\"METHOD_NOT_ALLOWED\",\"detail\":\"The resource doesnt support the requested HTTP method: POST\",\"meta\":{\"category\":\"INVALID_REQUEST_ERROR\"}}]}",
+            "example" : "{\"errors\":[{\"code\":\"METHOD_NOT_ALLOWED\",\"detail\":\"The resource doesnt support the requested HTTP method: POST\"}]}",
             "schema" : {
               "$ref" : "#/components/schemas/Errors_Document"
             }
@@ -9411,7 +9822,7 @@
       "Not_Acceptable_Response" : {
         "content" : {
           "application/vnd.api+json" : {
-            "example" : "{\"errors\":[{\"code\":\"NOT_ACCEPTABLE\",\"detail\":\"Not acceptable response media type on client. Supported media types on server: application/vnd.api+json, application/json\",\"meta\":{\"category\":\"INVALID_REQUEST_ERROR\"}}]}",
+            "example" : "{\"errors\":[{\"code\":\"NOT_ACCEPTABLE\",\"detail\":\"Not acceptable response media type on client. Supported media types on server: application/vnd.api+json, application/json\"}]}",
             "schema" : {
               "$ref" : "#/components/schemas/Errors_Document"
             }
@@ -9422,7 +9833,7 @@
       "Not_Found_Response" : {
         "content" : {
           "application/vnd.api+json" : {
-            "example" : "{\"errors\":[{\"code\":\"NOT_FOUND\",\"detail\":\"The requested resource could not be found\",\"meta\":{\"category\":\"INVALID_REQUEST_ERROR\"}}]}",
+            "example" : "{\"errors\":[{\"code\":\"NOT_FOUND\",\"detail\":\"The requested resource could not be found\"}]}",
             "schema" : {
               "$ref" : "#/components/schemas/Errors_Document"
             }
@@ -9445,7 +9856,7 @@
       "Unsupported_Media_Type_Response" : {
         "content" : {
           "application/vnd.api+json" : {
-            "example" : "{\"errors\":[{\"code\":\"UNSUPPORTED_MEDIA_TYPE\",\"detail\":\"Unsupported request media type: application/xml. Expected media type format: application/vnd.api+json\",\"meta\":{\"category\":\"INVALID_REQUEST_ERROR\"}}]}",
+            "example" : "{\"errors\":[{\"code\":\"UNSUPPORTED_MEDIA_TYPE\",\"detail\":\"Unsupported request media type: application/xml. Expected media type format: application/vnd.api+json\"}]}",
             "schema" : {
               "$ref" : "#/components/schemas/Errors_Document"
             }
@@ -9512,7 +9923,7 @@
         "type" : "object",
         "properties" : {
           "copyright" : {
-            "$ref" : "#/components/schemas/AlbumCreateOperation_Payload_Data_Attributes_Copyright"
+            "$ref" : "#/components/schemas/Album_Copyright"
           },
           "explicitLyrics" : {
             "type" : "boolean"
@@ -9522,8 +9933,6 @@
             "format" : "date"
           },
           "title" : {
-            "maxLength" : 300,
-            "minLength" : 1,
             "type" : "string"
           },
           "upc" : {
@@ -9532,24 +9941,7 @@
             "type" : "string"
           },
           "version" : {
-            "maxLength" : 300,
-            "minLength" : 0,
             "type" : "string"
-          }
-        }
-      },
-      "AlbumCreateOperation_Payload_Data_Attributes_Copyright" : {
-        "required" : [ "text" ],
-        "type" : "object",
-        "properties" : {
-          "text" : {
-            "maxLength" : 300,
-            "minLength" : 1,
-            "type" : "string"
-          },
-          "year" : {
-            "type" : "integer",
-            "format" : "int32"
           }
         }
       },
@@ -9629,7 +10021,7 @@
         }
       },
       "AlbumUpdateOperation_Payload_Data" : {
-        "required" : [ "attributes", "id", "type" ],
+        "required" : [ "id", "type" ],
         "type" : "object",
         "properties" : {
           "attributes" : {
@@ -9648,11 +10040,10 @@
         }
       },
       "AlbumUpdateOperation_Payload_Data_Attributes" : {
-        "required" : [ "title" ],
         "type" : "object",
         "properties" : {
           "copyright" : {
-            "$ref" : "#/components/schemas/AlbumUpdateOperation_Payload_Data_Attributes_Copyright"
+            "$ref" : "#/components/schemas/Album_Copyright"
           },
           "explicitLyrics" : {
             "type" : "boolean"
@@ -9662,29 +10053,10 @@
             "format" : "date"
           },
           "title" : {
-            "maxLength" : 300,
-            "minLength" : 1,
             "type" : "string"
           },
           "version" : {
-            "maxLength" : 300,
-            "minLength" : 0,
             "type" : "string"
-          }
-        }
-      },
-      "AlbumUpdateOperation_Payload_Data_Attributes_Copyright" : {
-        "required" : [ "text" ],
-        "type" : "object",
-        "properties" : {
-          "text" : {
-            "maxLength" : 300,
-            "minLength" : 1,
-            "type" : "string"
-          },
-          "year" : {
-            "type" : "integer",
-            "format" : "int32"
           }
         }
       },
@@ -9723,6 +10095,19 @@
           }
         }
       },
+      "Album_Copyright" : {
+        "required" : [ "text" ],
+        "type" : "object",
+        "properties" : {
+          "text" : {
+            "maxLength" : 1024,
+            "minLength" : 1,
+            "type" : "string"
+          }
+        },
+        "description" : "Copyright information",
+        "example" : "(p)(c) 2017 S. CARTER ENTERPRISES, LLC. MARKETED BY ROC NATION & DISTRIBUTED BY ROC NATION/UMG RECORDINGS INC."
+      },
       "Albums_Attributes" : {
         "required" : [ "barcodeId", "duration", "explicit", "mediaTags", "numberOfItems", "numberOfVolumes", "popularity", "title", "type" ],
         "type" : "object",
@@ -9741,9 +10126,7 @@
             "example" : "00854242007552"
           },
           "copyright" : {
-            "type" : "string",
-            "description" : "Copyright",
-            "example" : "(p)(c) 2017 S. CARTER ENTERPRISES, LLC. MARKETED BY ROC NATION & DISTRIBUTED BY ROC NATION/UMG RECORDINGS INC."
+            "$ref" : "#/components/schemas/Album_Copyright"
           },
           "duration" : {
             "type" : "string",
@@ -9803,6 +10186,11 @@
             "type" : "string",
             "description" : "Album type",
             "enum" : [ "ALBUM", "EP", "SINGLE" ]
+          },
+          "version" : {
+            "type" : "string",
+            "description" : "Album version",
+            "example" : "remix"
           }
         }
       },
@@ -11073,17 +11461,11 @@
         "required" : [ "meta" ],
         "type" : "object",
         "properties" : {
-          "forDelete" : {
-            "type" : "boolean"
-          },
           "href" : {
             "type" : "string"
           },
           "meta" : {
             "$ref" : "#/components/schemas/External_Link_Meta"
-          },
-          "mutable" : {
-            "type" : "boolean"
           }
         }
       },
@@ -12921,7 +13303,7 @@
         }
       },
       "TrackUpdateOperation_Payload_Data" : {
-        "required" : [ "attributes", "id", "type" ],
+        "required" : [ "id", "type" ],
         "type" : "object",
         "properties" : {
           "attributes" : {
@@ -12956,18 +13338,6 @@
             "type" : "boolean",
             "description" : "Explicit content",
             "example" : false
-          },
-          "genreTags" : {
-            "maxItems" : 5,
-            "minItems" : 0,
-            "type" : "array",
-            "items" : {
-              "maxLength" : 20,
-              "minLength" : 1,
-              "type" : "string",
-              "description" : "Genre tags",
-              "example" : "indie"
-            }
           },
           "key" : {
             "type" : "string",
@@ -13078,14 +13448,6 @@
             "description" : "Track links external to TIDAL API",
             "items" : {
               "$ref" : "#/components/schemas/External_Link"
-            }
-          },
-          "genreTags" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string",
-              "description" : "Genre tags",
-              "example" : "Pop"
             }
           },
           "isrc" : {
@@ -13308,27 +13670,15 @@
         }
       },
       "UserCollectionAlbumsRelationshipRemoveOperation_Payload_Data" : {
-        "required" : [ "id", "meta", "type" ],
+        "required" : [ "id", "type" ],
         "type" : "object",
         "properties" : {
           "id" : {
             "type" : "string"
           },
-          "meta" : {
-            "$ref" : "#/components/schemas/UserCollectionAlbumsRelationshipRemoveOperation_Payload_Data_Meta"
-          },
           "type" : {
             "type" : "string",
             "enum" : [ "albums" ]
-          }
-        }
-      },
-      "UserCollectionAlbumsRelationshipRemoveOperation_Payload_Data_Meta" : {
-        "required" : [ "itemId" ],
-        "type" : "object",
-        "properties" : {
-          "itemId" : {
-            "type" : "string"
           }
         }
       },
@@ -13374,27 +13724,15 @@
         }
       },
       "UserCollectionArtistsRelationshipRemoveOperation_Payload_Data" : {
-        "required" : [ "id", "meta", "type" ],
+        "required" : [ "id", "type" ],
         "type" : "object",
         "properties" : {
           "id" : {
             "type" : "string"
           },
-          "meta" : {
-            "$ref" : "#/components/schemas/UserCollectionArtistsRelationshipRemoveOperation_Payload_Data_Meta"
-          },
           "type" : {
             "type" : "string",
             "enum" : [ "artists" ]
-          }
-        }
-      },
-      "UserCollectionArtistsRelationshipRemoveOperation_Payload_Data_Meta" : {
-        "required" : [ "itemId" ],
-        "type" : "object",
-        "properties" : {
-          "itemId" : {
-            "type" : "string"
           }
         }
       },
@@ -13425,12 +13763,111 @@
           }
         }
       },
-      "UserCollectionPlaylistsRelationshipRemoveOperation_Payload_Data_Meta" : {
-        "required" : [ "itemId" ],
+      "UserCollectionTracksRelationshipAddOperation_Payload" : {
+        "required" : [ "data" ],
         "type" : "object",
         "properties" : {
-          "itemId" : {
+          "data" : {
+            "maxItems" : 20,
+            "minItems" : 1,
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/UserCollectionTracksRelationshipAddOperation_Payload_Data"
+            }
+          }
+        }
+      },
+      "UserCollectionTracksRelationshipAddOperation_Payload_Data" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
             "type" : "string"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "tracks" ]
+          }
+        }
+      },
+      "UserCollectionTracksRelationshipRemoveOperation_Payload" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "maxItems" : 20,
+            "minItems" : 1,
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/UserCollectionTracksRelationshipRemoveOperation_Payload_Data"
+            }
+          }
+        }
+      },
+      "UserCollectionTracksRelationshipRemoveOperation_Payload_Data" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "tracks" ]
+          }
+        }
+      },
+      "UserCollectionVideosRelationshipAddOperation_Payload" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "maxItems" : 20,
+            "minItems" : 1,
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/UserCollectionVideosRelationshipAddOperation_Payload_Data"
+            }
+          }
+        }
+      },
+      "UserCollectionVideosRelationshipAddOperation_Payload_Data" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "albums", "artistClaims", "artistRoles", "artists", "artworks", "playlists", "providers", "searchResults", "searchSuggestions", "tracks", "trackStatistics", "userCollections", "userEntitlements", "userRecommendations", "userReports", "users", "videos" ]
+          }
+        }
+      },
+      "UserCollectionVideosRelationshipRemoveOperation_Payload" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "maxItems" : 20,
+            "minItems" : 1,
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/UserCollectionVideosRelationshipRemoveOperation_Payload_Data"
+            }
+          }
+        }
+      },
+      "UserCollectionVideosRelationshipRemoveOperation_Payload_Data" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "albums", "artistClaims", "artistRoles", "artists", "artworks", "playlists", "providers", "searchResults", "searchSuggestions", "tracks", "trackStatistics", "userCollections", "userEntitlements", "userRecommendations", "userReports", "users", "videos" ]
           }
         }
       },
@@ -13469,14 +13906,12 @@
         }
       },
       "UserCollections_Albums_Resource_Identifier_Meta" : {
+        "required" : [ "addedAt" ],
         "type" : "object",
         "properties" : {
           "addedAt" : {
             "type" : "string",
             "format" : "date-time"
-          },
-          "itemId" : {
-            "type" : "string"
           }
         }
       },
@@ -13515,14 +13950,12 @@
         }
       },
       "UserCollections_Artists_Resource_Identifier_Meta" : {
+        "required" : [ "addedAt" ],
         "type" : "object",
         "properties" : {
           "addedAt" : {
             "type" : "string",
             "format" : "date-time"
-          },
-          "itemId" : {
-            "type" : "string"
           }
         }
       },
@@ -13600,19 +14033,17 @@
         }
       },
       "UserCollections_Playlists_Resource_Identifier_Meta" : {
+        "required" : [ "addedAt" ],
         "type" : "object",
         "properties" : {
           "addedAt" : {
             "type" : "string",
             "format" : "date-time"
-          },
-          "itemId" : {
-            "type" : "string"
           }
         }
       },
       "UserCollections_Relationships" : {
-        "required" : [ "albums", "artists", "owners", "playlists" ],
+        "required" : [ "albums", "artists", "owners", "playlists", "tracks", "videos" ],
         "properties" : {
           "albums" : {
             "$ref" : "#/components/schemas/UserCollections_Albums_Multi_Relationship_Data_Document"
@@ -13625,6 +14056,12 @@
           },
           "playlists" : {
             "$ref" : "#/components/schemas/UserCollections_Playlists_Multi_Relationship_Data_Document"
+          },
+          "tracks" : {
+            "$ref" : "#/components/schemas/UserCollections_Tracks_Multi_Relationship_Data_Document"
+          },
+          "videos" : {
+            "$ref" : "#/components/schemas/UserCollections_Videos_Multi_Relationship_Data_Document"
           }
         }
       },
@@ -13663,6 +14100,94 @@
           },
           "links" : {
             "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "UserCollections_Tracks_Multi_Relationship_Data_Document" : {
+        "required" : [ "links" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/UserCollections_Tracks_Resource_Identifier"
+            }
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "UserCollections_Tracks_Resource_Identifier" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "description" : "Resource id",
+            "example" : "12345"
+          },
+          "meta" : {
+            "$ref" : "#/components/schemas/UserCollections_Tracks_Resource_Identifier_Meta"
+          },
+          "type" : {
+            "type" : "string",
+            "description" : "Resource type",
+            "example" : "tracks"
+          }
+        }
+      },
+      "UserCollections_Tracks_Resource_Identifier_Meta" : {
+        "required" : [ "addedAt" ],
+        "type" : "object",
+        "properties" : {
+          "addedAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          }
+        }
+      },
+      "UserCollections_Videos_Multi_Relationship_Data_Document" : {
+        "required" : [ "links" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/UserCollections_Videos_Resource_Identifier"
+            }
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "UserCollections_Videos_Resource_Identifier" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "description" : "Resource id",
+            "example" : "12345"
+          },
+          "meta" : {
+            "$ref" : "#/components/schemas/UserCollections_Videos_Resource_Identifier_Meta"
+          },
+          "type" : {
+            "type" : "string",
+            "description" : "Resource type",
+            "example" : "tracks"
+          }
+        }
+      },
+      "UserCollections_Videos_Resource_Identifier_Meta" : {
+        "required" : [ "addedAt" ],
+        "type" : "object",
+        "properties" : {
+          "addedAt" : {
+            "type" : "string",
+            "format" : "date-time"
           }
         }
       },

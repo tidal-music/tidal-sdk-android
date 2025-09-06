@@ -9,8 +9,13 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param itemId */
+/**
+ * @param links
+ * @param `data`
+ */
 @Serializable
-data class UserCollectionAlbumsRelationshipRemoveOperationPayloadDataMeta(
-    @SerialName(value = "itemId") val itemId: kotlin.String
+data class UserCollectionsVideosMultiRelationshipDataDocument(
+    @SerialName(value = "links") val links: Links,
+    @SerialName(value = "data")
+    val `data`: kotlin.collections.List<UserCollectionsVideosResourceIdentifier>? = null,
 ) {}

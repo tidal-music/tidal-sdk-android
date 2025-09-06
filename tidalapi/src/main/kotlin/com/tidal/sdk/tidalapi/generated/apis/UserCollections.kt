@@ -5,11 +5,17 @@ import com.tidal.sdk.tidalapi.generated.models.UserCollectionAlbumsRelationshipR
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionArtistsRelationshipAddOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionArtistsRelationshipRemoveOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionPlaylistsRelationshipRemoveOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionTracksRelationshipAddOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionTracksRelationshipRemoveOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionVideosRelationshipAddOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionVideosRelationshipRemoveOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionsAlbumsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionsArtistsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionsPlaylistsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionsSingleResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionsTracksMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionsVideosMultiRelationshipDataDocument
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -33,7 +39,7 @@ interface UserCollections {
      * @param locale BCP 47 locale
      * @param countryCode ISO 3166-1 alpha-2 country code
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: albums, artists, owners, playlists (optional)
+     *   Available options: albums, artists, owners, playlists, tracks, videos (optional)
      * @return [UserCollectionsSingleResourceDataDocument]
      */
     @GET("userCollections/{id}")
@@ -304,7 +310,6 @@ interface UserCollections {
      *   it from fulfilling the request
      *
      * @param id User id
-     * @param countryCode ISO 3166-1 alpha-2 country code
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
@@ -314,7 +319,6 @@ interface UserCollections {
     @GET("userCollections/{id}/relationships/playlists")
     suspend fun userCollectionsIdRelationshipsPlaylistsGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
@@ -345,6 +349,190 @@ interface UserCollections {
         @Body
         userCollectionPlaylistsRelationshipRemoveOperationPayload:
             UserCollectionPlaylistsRelationshipRemoveOperationPayload? =
+            null,
+    ): Response<Unit>
+
+    /**
+     * Delete from tracks relationship (\&quot;to-many\&quot;). Deletes item(s) from tracks
+     * relationship. Responses:
+     * - 400: Bad request - The request could not be understood by the server due to malformed
+     *   syntax or invalid parameters
+     * - 404: Not found - The requested resource could not be found
+     * - 405: Method not allowed - The request method is not allowed for the requested resource
+     * - 406: Not acceptable - The requested resource is capable of generating only content not
+     *   acceptable according to the Accept headers sent in the request
+     * - 415: Unsupported media type - The request entity has a media type which the server or
+     *   resource does not support
+     * - 429: Too many requests - The user has sent too many requests in a given amount of time
+     * - 500: Internal server error - The server encountered an unexpected condition that prevented
+     *   it from fulfilling the request
+     *
+     * @param id User id
+     * @param userCollectionTracksRelationshipRemoveOperationPayload (optional)
+     * @return [Unit]
+     */
+    @DELETE("userCollections/{id}/relationships/tracks")
+    suspend fun userCollectionsIdRelationshipsTracksDelete(
+        @Path("id") id: kotlin.String,
+        @Body
+        userCollectionTracksRelationshipRemoveOperationPayload:
+            UserCollectionTracksRelationshipRemoveOperationPayload? =
+            null,
+    ): Response<Unit>
+
+    /**
+     * Get tracks relationship (\&quot;to-many\&quot;). Retrieves tracks relationship. Responses:
+     * - 200: Successful response
+     * - 400: Bad request - The request could not be understood by the server due to malformed
+     *   syntax or invalid parameters
+     * - 404: Not found - The requested resource could not be found
+     * - 405: Method not allowed - The request method is not allowed for the requested resource
+     * - 406: Not acceptable - The requested resource is capable of generating only content not
+     *   acceptable according to the Accept headers sent in the request
+     * - 415: Unsupported media type - The request entity has a media type which the server or
+     *   resource does not support
+     * - 429: Too many requests - The user has sent too many requests in a given amount of time
+     * - 500: Internal server error - The server encountered an unexpected condition that prevented
+     *   it from fulfilling the request
+     *
+     * @param id User id
+     * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param locale BCP 47 locale
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: tracks (optional)
+     * @return [UserCollectionsTracksMultiRelationshipDataDocument]
+     */
+    @GET("userCollections/{id}/relationships/tracks")
+    suspend fun userCollectionsIdRelationshipsTracksGet(
+        @Path("id") id: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String,
+        @Query("locale") locale: kotlin.String,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+    ): Response<UserCollectionsTracksMultiRelationshipDataDocument>
+
+    /**
+     * Add to tracks relationship (\&quot;to-many\&quot;). Adds item(s) to tracks relationship.
+     * Responses:
+     * - 400: Bad request - The request could not be understood by the server due to malformed
+     *   syntax or invalid parameters
+     * - 404: Not found - The requested resource could not be found
+     * - 405: Method not allowed - The request method is not allowed for the requested resource
+     * - 406: Not acceptable - The requested resource is capable of generating only content not
+     *   acceptable according to the Accept headers sent in the request
+     * - 415: Unsupported media type - The request entity has a media type which the server or
+     *   resource does not support
+     * - 429: Too many requests - The user has sent too many requests in a given amount of time
+     * - 500: Internal server error - The server encountered an unexpected condition that prevented
+     *   it from fulfilling the request
+     *
+     * @param id User id
+     * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param userCollectionTracksRelationshipAddOperationPayload (optional)
+     * @return [Unit]
+     */
+    @POST("userCollections/{id}/relationships/tracks")
+    suspend fun userCollectionsIdRelationshipsTracksPost(
+        @Path("id") id: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String,
+        @Body
+        userCollectionTracksRelationshipAddOperationPayload:
+            UserCollectionTracksRelationshipAddOperationPayload? =
+            null,
+    ): Response<Unit>
+
+    /**
+     * Delete from videos relationship (\&quot;to-many\&quot;). Deletes item(s) from videos
+     * relationship. Responses:
+     * - 400: Bad request - The request could not be understood by the server due to malformed
+     *   syntax or invalid parameters
+     * - 404: Not found - The requested resource could not be found
+     * - 405: Method not allowed - The request method is not allowed for the requested resource
+     * - 406: Not acceptable - The requested resource is capable of generating only content not
+     *   acceptable according to the Accept headers sent in the request
+     * - 415: Unsupported media type - The request entity has a media type which the server or
+     *   resource does not support
+     * - 429: Too many requests - The user has sent too many requests in a given amount of time
+     * - 500: Internal server error - The server encountered an unexpected condition that prevented
+     *   it from fulfilling the request
+     *
+     * @param id User id
+     * @param userCollectionVideosRelationshipRemoveOperationPayload (optional)
+     * @return [Unit]
+     */
+    @DELETE("userCollections/{id}/relationships/videos")
+    suspend fun userCollectionsIdRelationshipsVideosDelete(
+        @Path("id") id: kotlin.String,
+        @Body
+        userCollectionVideosRelationshipRemoveOperationPayload:
+            UserCollectionVideosRelationshipRemoveOperationPayload? =
+            null,
+    ): Response<Unit>
+
+    /**
+     * Get videos relationship (\&quot;to-many\&quot;). Retrieves videos relationship. Responses:
+     * - 200: Successful response
+     * - 400: Bad request - The request could not be understood by the server due to malformed
+     *   syntax or invalid parameters
+     * - 404: Not found - The requested resource could not be found
+     * - 405: Method not allowed - The request method is not allowed for the requested resource
+     * - 406: Not acceptable - The requested resource is capable of generating only content not
+     *   acceptable according to the Accept headers sent in the request
+     * - 415: Unsupported media type - The request entity has a media type which the server or
+     *   resource does not support
+     * - 429: Too many requests - The user has sent too many requests in a given amount of time
+     * - 500: Internal server error - The server encountered an unexpected condition that prevented
+     *   it from fulfilling the request
+     *
+     * @param id User id
+     * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param locale BCP 47 locale
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: videos (optional)
+     * @return [UserCollectionsVideosMultiRelationshipDataDocument]
+     */
+    @GET("userCollections/{id}/relationships/videos")
+    suspend fun userCollectionsIdRelationshipsVideosGet(
+        @Path("id") id: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String,
+        @Query("locale") locale: kotlin.String,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+    ): Response<UserCollectionsVideosMultiRelationshipDataDocument>
+
+    /**
+     * Add to videos relationship (\&quot;to-many\&quot;). Adds item(s) to videos relationship.
+     * Responses:
+     * - 400: Bad request - The request could not be understood by the server due to malformed
+     *   syntax or invalid parameters
+     * - 404: Not found - The requested resource could not be found
+     * - 405: Method not allowed - The request method is not allowed for the requested resource
+     * - 406: Not acceptable - The requested resource is capable of generating only content not
+     *   acceptable according to the Accept headers sent in the request
+     * - 415: Unsupported media type - The request entity has a media type which the server or
+     *   resource does not support
+     * - 429: Too many requests - The user has sent too many requests in a given amount of time
+     * - 500: Internal server error - The server encountered an unexpected condition that prevented
+     *   it from fulfilling the request
+     *
+     * @param id User id
+     * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param userCollectionVideosRelationshipAddOperationPayload (optional)
+     * @return [Unit]
+     */
+    @POST("userCollections/{id}/relationships/videos")
+    suspend fun userCollectionsIdRelationshipsVideosPost(
+        @Path("id") id: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String,
+        @Body
+        userCollectionVideosRelationshipAddOperationPayload:
+            UserCollectionVideosRelationshipAddOperationPayload? =
             null,
     ): Response<Unit>
 }

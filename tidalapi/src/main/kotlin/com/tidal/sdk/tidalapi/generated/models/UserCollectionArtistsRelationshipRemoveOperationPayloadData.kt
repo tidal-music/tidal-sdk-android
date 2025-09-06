@@ -11,14 +11,11 @@ import kotlinx.serialization.Serializable
 
 /**
  * @param id
- * @param meta
  * @param type
  */
 @Serializable
 data class UserCollectionArtistsRelationshipRemoveOperationPayloadData(
     @SerialName(value = "id") val id: kotlin.String,
-    @SerialName(value = "meta")
-    val meta: UserCollectionArtistsRelationshipRemoveOperationPayloadDataMeta,
     @SerialName(value = "type")
     val type: UserCollectionArtistsRelationshipRemoveOperationPayloadData.Type,
 ) {

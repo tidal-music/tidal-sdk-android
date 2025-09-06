@@ -11,6 +11,6 @@ import kotlinx.serialization.Serializable
 
 /** @param addedAt */
 @Serializable
-data class UserCollectionsAlbumsResourceIdentifierMeta(
+data class UserCollectionsVideosResourceIdentifierMeta(
     @SerialName(value = "addedAt") val addedAt: kotlin.String
 ) {}

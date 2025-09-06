@@ -9,8 +9,9 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param addedAt */
+/** @param `data` */
 @Serializable
-data class UserCollectionsAlbumsResourceIdentifierMeta(
-    @SerialName(value = "addedAt") val addedAt: kotlin.String
+data class UserCollectionTracksRelationshipAddOperationPayload(
+    @SerialName(value = "data")
+    val `data`: kotlin.collections.List<UserCollectionTracksRelationshipAddOperationPayloadData>
 ) {}

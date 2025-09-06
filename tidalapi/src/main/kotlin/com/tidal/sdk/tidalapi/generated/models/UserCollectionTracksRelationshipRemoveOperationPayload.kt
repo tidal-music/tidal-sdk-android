@@ -9,12 +9,9 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/**
- * @param text
- * @param year
- */
+/** @param `data` */
 @Serializable
-data class AlbumCreateOperationPayloadDataAttributesCopyright(
-    @SerialName(value = "text") val text: kotlin.String,
-    @SerialName(value = "year") val year: kotlin.Int? = null,
+data class UserCollectionTracksRelationshipRemoveOperationPayload(
+    @SerialName(value = "data")
+    val `data`: kotlin.collections.List<UserCollectionTracksRelationshipRemoveOperationPayloadData>
 ) {}

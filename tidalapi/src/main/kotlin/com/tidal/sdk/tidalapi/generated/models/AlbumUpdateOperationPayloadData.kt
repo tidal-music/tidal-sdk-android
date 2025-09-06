@@ -10,16 +10,17 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param attributes
  * @param id
  * @param type
+ * @param attributes
  * @param relationships
  */
 @Serializable
 data class AlbumUpdateOperationPayloadData(
-    @SerialName(value = "attributes") val attributes: AlbumUpdateOperationPayloadDataAttributes,
     @SerialName(value = "id") val id: kotlin.String,
     @SerialName(value = "type") val type: AlbumUpdateOperationPayloadData.Type,
+    @SerialName(value = "attributes")
+    val attributes: AlbumUpdateOperationPayloadDataAttributes? = null,
     @SerialName(value = "relationships")
     val relationships: AlbumUpdateOperationPayloadDataRelationships? = null,
 ) {

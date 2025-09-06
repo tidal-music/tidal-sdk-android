@@ -13,7 +13,6 @@ import kotlinx.serialization.Serializable
  * @param accessType Access type
  * @param bpm
  * @param explicit Explicit content
- * @param genreTags
  * @param key
  * @param keyScale
  * @param title
@@ -30,7 +29,6 @@ data class TrackUpdateOperationPayloadDataAttributes(
     /* Explicit content */
 
     @SerialName(value = "explicit") val explicit: kotlin.Boolean? = null,
-    @SerialName(value = "genreTags") val genreTags: kotlin.collections.List<kotlin.String>? = null,
     @SerialName(value = "key") val key: TrackUpdateOperationPayloadDataAttributes.Key? = null,
     @SerialName(value = "keyScale")
     val keyScale: TrackUpdateOperationPayloadDataAttributes.KeyScale? = null,
