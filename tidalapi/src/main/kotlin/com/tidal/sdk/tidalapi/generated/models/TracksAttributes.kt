@@ -24,7 +24,6 @@ import kotlinx.serialization.Serializable
  * @param copyright Copyright
  * @param createdAt Datetime of track creation (ISO 8601)
  * @param externalLinks Track links external to TIDAL API
- * @param genreTags
  * @param spotlighted Is the track spotlighted?
  * @param toneTags
  * @param version Track version, complements title
@@ -74,7 +73,6 @@ data class TracksAttributes(
 
     @SerialName(value = "externalLinks")
     val externalLinks: kotlin.collections.List<ExternalLink>? = null,
-    @SerialName(value = "genreTags") val genreTags: kotlin.collections.List<kotlin.String>? = null,
     /* Is the track spotlighted? */
 
     @SerialName(value = "spotlighted") val spotlighted: kotlin.Boolean? = null,
