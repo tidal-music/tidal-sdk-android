@@ -22,7 +22,6 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/UserRecommendations.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/UserReports.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/Users.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/Videos.kt
-src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumCopyright.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumCoverArtRelationshipUpdateOperationPayload.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumCoverArtRelationshipUpdateOperationPayloadData.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumCreateOperationPayload.kt
@@ -112,6 +111,7 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtworksSingleResourceDa
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AttachSourceFileToTrack.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AudioNormalizationData.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/BarcodeId.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/Copyright.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/DrmData.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ErrorObject.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ErrorObjectSource.kt
