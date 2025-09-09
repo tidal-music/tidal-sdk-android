@@ -14,4 +14,4 @@ import kotlinx.serialization.Serializable
  *
  * @param text
  */
-@Serializable data class AlbumCopyright(@SerialName(value = "text") val text: kotlin.String) {}
+@Serializable data class Copyright(@SerialName(value = "text") val text: kotlin.String) {}

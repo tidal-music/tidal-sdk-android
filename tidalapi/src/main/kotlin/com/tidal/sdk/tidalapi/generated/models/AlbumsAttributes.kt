@@ -57,7 +57,7 @@ data class AlbumsAttributes(
 
     @SerialName(value = "availability")
     val availability: kotlin.collections.List<AlbumsAttributes.Availability>? = null,
-    @SerialName(value = "copyright") val copyright: AlbumCopyright? = null,
+    @SerialName(value = "copyright") val copyright: Copyright? = null,
     /* Album links external to TIDAL API */
 
     @SerialName(value = "externalLinks")

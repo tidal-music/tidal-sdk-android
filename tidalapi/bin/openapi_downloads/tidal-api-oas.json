@@ -8,7 +8,7 @@
     "description" : "TIDAL API is a [JSON:API](https://jsonapi.org/) Web API that gives access to TIDAL functionality and data.",
     "termsOfService" : "https://developer.tidal.com/documentation/guidelines/guidelines-overview",
     "title" : "TIDAL API - Beta",
-    "version" : "0.1.68"
+    "version" : "0.1.69"
   },
   "externalDocs" : {
     "description" : "TIDAL Developer - Documentation",
@@ -9923,7 +9923,7 @@
         "type" : "object",
         "properties" : {
           "copyright" : {
-            "$ref" : "#/components/schemas/Album_Copyright"
+            "$ref" : "#/components/schemas/Copyright"
           },
           "explicitLyrics" : {
             "type" : "boolean"
@@ -10043,7 +10043,7 @@
         "type" : "object",
         "properties" : {
           "copyright" : {
-            "$ref" : "#/components/schemas/Album_Copyright"
+            "$ref" : "#/components/schemas/Copyright"
           },
           "explicitLyrics" : {
             "type" : "boolean"
@@ -10095,19 +10095,6 @@
           }
         }
       },
-      "Album_Copyright" : {
-        "required" : [ "text" ],
-        "type" : "object",
-        "properties" : {
-          "text" : {
-            "maxLength" : 1024,
-            "minLength" : 1,
-            "type" : "string"
-          }
-        },
-        "description" : "Copyright information",
-        "example" : "(p)(c) 2017 S. CARTER ENTERPRISES, LLC. MARKETED BY ROC NATION & DISTRIBUTED BY ROC NATION/UMG RECORDINGS INC."
-      },
       "Albums_Attributes" : {
         "required" : [ "barcodeId", "duration", "explicit", "mediaTags", "numberOfItems", "numberOfVolumes", "popularity", "title", "type" ],
         "type" : "object",
@@ -10126,7 +10113,7 @@
             "example" : "00854242007552"
           },
           "copyright" : {
-            "$ref" : "#/components/schemas/Album_Copyright"
+            "$ref" : "#/components/schemas/Copyright"
           },
           "duration" : {
             "type" : "string",
@@ -11358,6 +11345,18 @@
         },
         "description" : "Barcode Id",
         "example" : 196589525444
+      },
+      "Copyright" : {
+        "required" : [ "text" ],
+        "type" : "object",
+        "properties" : {
+          "text" : {
+            "maxLength" : 1024,
+            "minLength" : 1,
+            "type" : "string"
+          }
+        },
+        "description" : "Copyright information"
       },
       "DrmData" : {
         "type" : "object",
@@ -13424,9 +13423,7 @@
             "example" : 60.0
           },
           "copyright" : {
-            "type" : "string",
-            "description" : "Copyright",
-            "example" : "(p)(c) 2017 S. CARTER ENTERPRISES, LLC. MARKETED BY ROC NATION & DISTRIBUTED BY ROC NATION/UMG RECORDINGS INC."
+            "$ref" : "#/components/schemas/Copyright"
           },
           "createdAt" : {
             "type" : "string",
@@ -14599,9 +14596,7 @@
             }
           },
           "copyright" : {
-            "type" : "string",
-            "description" : "Copyright",
-            "example" : "(p)(c) 2017 S. CARTER ENTERPRISES, LLC. MARKETED BY ROC NATION & DISTRIBUTED BY ROC NATION/UMG RECORDINGS INC."
+            "$ref" : "#/components/schemas/Copyright"
           },
           "duration" : {
             "type" : "string",

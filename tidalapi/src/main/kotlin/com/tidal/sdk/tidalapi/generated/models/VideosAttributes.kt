@@ -16,7 +16,7 @@ import kotlinx.serialization.Serializable
  * @param popularity Popularity (0.0 - 1.0)
  * @param title Video title
  * @param availability Available usage for this video
- * @param copyright Copyright
+ * @param copyright
  * @param externalLinks Video links external to TIDAL API
  * @param releaseDate Release date (ISO-8601)
  * @param version Video version, complements title
@@ -43,9 +43,7 @@ data class VideosAttributes(
 
     @SerialName(value = "availability")
     val availability: kotlin.collections.List<VideosAttributes.Availability>? = null,
-    /* Copyright */
-
-    @SerialName(value = "copyright") val copyright: kotlin.String? = null,
+    @SerialName(value = "copyright") val copyright: Copyright? = null,
     /* Video links external to TIDAL API */
 
     @SerialName(value = "externalLinks")

@@ -21,7 +21,7 @@ import kotlinx.serialization.Serializable
  * @param accessType Access type
  * @param availability Available usage for this track
  * @param bpm Beats per minute
- * @param copyright Copyright
+ * @param copyright
  * @param createdAt Datetime of track creation (ISO 8601)
  * @param externalLinks Track links external to TIDAL API
  * @param spotlighted Is the track spotlighted?
@@ -63,9 +63,7 @@ data class TracksAttributes(
     /* Beats per minute */
 
     @SerialName(value = "bpm") val bpm: kotlin.Float? = null,
-    /* Copyright */
-
-    @SerialName(value = "copyright") val copyright: kotlin.String? = null,
+    @SerialName(value = "copyright") val copyright: Copyright? = null,
     /* Datetime of track creation (ISO 8601) */
 
     @SerialName(value = "createdAt") val createdAt: kotlin.String? = null,
