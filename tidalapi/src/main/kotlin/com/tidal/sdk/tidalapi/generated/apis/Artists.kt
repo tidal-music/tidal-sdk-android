@@ -1,8 +1,12 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.ArtistCreateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.ArtistFollowingRelationshipAddOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.ArtistFollowingRelationshipRemoveOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.ArtistProfileArtRelationshipUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.ArtistUpdateBody
+import com.tidal.sdk.tidalapi.generated.models.ArtistsFollowersMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ArtistsFollowingMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistsMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistsSingleRelationshipDataDocument
@@ -30,8 +34,8 @@ interface Artists {
      *
      * @param countryCode ISO 3166-1 alpha-2 country code
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: albums, biography, owners, profileArt, radio, roles, similarArtists,
-     *   trackProviders, tracks, videos (optional)
+     *   Available options: albums, biography, followers, following, owners, profileArt, radio,
+     *   roles, similarArtists, trackProviders, tracks, videos (optional)
      * @param filterHandle Artist handle (optional)
      * @param filterId Artist id (optional)
      * @return [ArtistsMultiResourceDataDocument]
@@ -65,8 +69,8 @@ interface Artists {
      * @param id Artist id
      * @param countryCode ISO 3166-1 alpha-2 country code
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: albums, biography, owners, profileArt, radio, roles, similarArtists,
-     *   trackProviders, tracks, videos (optional)
+     *   Available options: albums, biography, followers, following, owners, profileArt, radio,
+     *   roles, similarArtists, trackProviders, tracks, videos (optional)
      * @return [ArtistsSingleResourceDataDocument]
      */
     @GET("artists/{id}")
@@ -162,6 +166,130 @@ interface Artists {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<ArtistsSingleRelationshipDataDocument>
+
+    /**
+     * Get followers relationship (\&quot;to-many\&quot;). Retrieves followers relationship.
+     * Responses:
+     * - 200: Successful response
+     * - 400: Bad request - The request could not be understood by the server due to malformed
+     *   syntax or invalid parameters
+     * - 404: Not found - The requested resource could not be found
+     * - 405: Method not allowed - The request method is not allowed for the requested resource
+     * - 406: Not acceptable - The requested resource is capable of generating only content not
+     *   acceptable according to the Accept headers sent in the request
+     * - 415: Unsupported media type - The request entity has a media type which the server or
+     *   resource does not support
+     * - 429: Too many requests - The user has sent too many requests in a given amount of time
+     * - 500: Internal server error - The server encountered an unexpected condition that prevented
+     *   it from fulfilling the request
+     *
+     * @param id Artist id
+     * @param viewerContext (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: followers (optional)
+     * @return [ArtistsFollowersMultiRelationshipDataDocument]
+     */
+    @GET("artists/{id}/relationships/followers")
+    suspend fun artistsIdRelationshipsFollowersGet(
+        @Path("id") id: kotlin.String,
+        @Query("viewerContext") viewerContext: kotlin.String? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+    ): Response<ArtistsFollowersMultiRelationshipDataDocument>
+
+    /**
+     * Delete from following relationship (\&quot;to-many\&quot;). Deletes item(s) from following
+     * relationship. Responses:
+     * - 400: Bad request - The request could not be understood by the server due to malformed
+     *   syntax or invalid parameters
+     * - 404: Not found - The requested resource could not be found
+     * - 405: Method not allowed - The request method is not allowed for the requested resource
+     * - 406: Not acceptable - The requested resource is capable of generating only content not
+     *   acceptable according to the Accept headers sent in the request
+     * - 415: Unsupported media type - The request entity has a media type which the server or
+     *   resource does not support
+     * - 429: Too many requests - The user has sent too many requests in a given amount of time
+     * - 500: Internal server error - The server encountered an unexpected condition that prevented
+     *   it from fulfilling the request
+     *
+     * @param id Artist id
+     * @param artistFollowingRelationshipRemoveOperationPayload (optional)
+     * @return [Unit]
+     */
+    @DELETE("artists/{id}/relationships/following")
+    suspend fun artistsIdRelationshipsFollowingDelete(
+        @Path("id") id: kotlin.String,
+        @Body
+        artistFollowingRelationshipRemoveOperationPayload:
+            ArtistFollowingRelationshipRemoveOperationPayload? =
+            null,
+    ): Response<Unit>
+
+    /**
+     * Get following relationship (\&quot;to-many\&quot;). Retrieves following relationship.
+     * Responses:
+     * - 200: Successful response
+     * - 400: Bad request - The request could not be understood by the server due to malformed
+     *   syntax or invalid parameters
+     * - 404: Not found - The requested resource could not be found
+     * - 405: Method not allowed - The request method is not allowed for the requested resource
+     * - 406: Not acceptable - The requested resource is capable of generating only content not
+     *   acceptable according to the Accept headers sent in the request
+     * - 415: Unsupported media type - The request entity has a media type which the server or
+     *   resource does not support
+     * - 429: Too many requests - The user has sent too many requests in a given amount of time
+     * - 500: Internal server error - The server encountered an unexpected condition that prevented
+     *   it from fulfilling the request
+     *
+     * @param id Artist id
+     * @param viewerContext (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: following (optional)
+     * @return [ArtistsFollowingMultiRelationshipDataDocument]
+     */
+    @GET("artists/{id}/relationships/following")
+    suspend fun artistsIdRelationshipsFollowingGet(
+        @Path("id") id: kotlin.String,
+        @Query("viewerContext") viewerContext: kotlin.String? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+    ): Response<ArtistsFollowingMultiRelationshipDataDocument>
+
+    /**
+     * Add to following relationship (\&quot;to-many\&quot;). Adds item(s) to following
+     * relationship. Responses:
+     * - 400: Bad request - The request could not be understood by the server due to malformed
+     *   syntax or invalid parameters
+     * - 404: Not found - The requested resource could not be found
+     * - 405: Method not allowed - The request method is not allowed for the requested resource
+     * - 406: Not acceptable - The requested resource is capable of generating only content not
+     *   acceptable according to the Accept headers sent in the request
+     * - 415: Unsupported media type - The request entity has a media type which the server or
+     *   resource does not support
+     * - 429: Too many requests - The user has sent too many requests in a given amount of time
+     * - 500: Internal server error - The server encountered an unexpected condition that prevented
+     *   it from fulfilling the request
+     *
+     * @param id Artist id
+     * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param artistFollowingRelationshipAddOperationPayload (optional)
+     * @return [Unit]
+     */
+    @POST("artists/{id}/relationships/following")
+    suspend fun artistsIdRelationshipsFollowingPost(
+        @Path("id") id: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String,
+        @Body
+        artistFollowingRelationshipAddOperationPayload:
+            ArtistFollowingRelationshipAddOperationPayload? =
+            null,
+    ): Response<Unit>
 
     /**
      * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:

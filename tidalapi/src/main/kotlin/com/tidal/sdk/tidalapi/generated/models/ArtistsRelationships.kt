@@ -12,6 +12,8 @@ import kotlinx.serialization.Serializable
 /**
  * @param albums
  * @param biography
+ * @param followers
+ * @param following
  * @param owners
  * @param profileArt
  * @param radio
@@ -25,6 +27,8 @@ import kotlinx.serialization.Serializable
 data class ArtistsRelationships(
     @SerialName(value = "albums") val albums: MultiRelationshipDataDocument,
     @SerialName(value = "biography") val biography: SingleRelationshipDataDocument,
+    @SerialName(value = "followers") val followers: ArtistsFollowersMultiRelationshipDataDocument,
+    @SerialName(value = "following") val following: ArtistsFollowingMultiRelationshipDataDocument,
     @SerialName(value = "owners") val owners: MultiRelationshipDataDocument,
     @SerialName(value = "profileArt") val profileArt: MultiRelationshipDataDocument,
     @SerialName(value = "radio") val radio: MultiRelationshipDataDocument,

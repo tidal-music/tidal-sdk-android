@@ -2,6 +2,7 @@ package com.tidal.sdk.tidalapi.generated
 
 import com.tidal.sdk.auth.CredentialsProvider
 import com.tidal.sdk.tidalapi.generated.apis.Albums
+import com.tidal.sdk.tidalapi.generated.apis.Appreciations
 import com.tidal.sdk.tidalapi.generated.apis.ArtistBiographies
 import com.tidal.sdk.tidalapi.generated.apis.ArtistClaims
 import com.tidal.sdk.tidalapi.generated.apis.ArtistRoles
@@ -22,6 +23,7 @@ import com.tidal.sdk.tidalapi.generated.apis.UserCollections
 import com.tidal.sdk.tidalapi.generated.apis.UserEntitlements
 import com.tidal.sdk.tidalapi.generated.apis.UserRecommendations
 import com.tidal.sdk.tidalapi.generated.apis.UserReports
+import com.tidal.sdk.tidalapi.generated.apis.UserShares
 import com.tidal.sdk.tidalapi.generated.apis.Users
 import com.tidal.sdk.tidalapi.generated.apis.Videos
 import com.tidal.sdk.tidalapi.networking.RetrofitProvider
@@ -35,6 +37,11 @@ class TidalApiClient(credentialsProvider: CredentialsProvider, baseUrl: String =
     /** Returns an instance of the [Albums] which can be used to make API calls to the */
     fun createAlbums(): Albums {
         return retrofit.create(Albums::class.java)
+    }
+
+    /** Returns an instance of the [Appreciations] which can be used to make API calls to the */
+    fun createAppreciations(): Appreciations {
+        return retrofit.create(Appreciations::class.java)
     }
 
     /** Returns an instance of the [ArtistBiographies] which can be used to make API calls to the */
@@ -137,6 +144,11 @@ class TidalApiClient(credentialsProvider: CredentialsProvider, baseUrl: String =
     /** Returns an instance of the [UserReports] which can be used to make API calls to the */
     fun createUserReports(): UserReports {
         return retrofit.create(UserReports::class.java)
+    }
+
+    /** Returns an instance of the [UserShares] which can be used to make API calls to the */
+    fun createUserShares(): UserShares {
+        return retrofit.create(UserShares::class.java)
     }
 
     /** Returns an instance of the [Users] which can be used to make API calls to the */

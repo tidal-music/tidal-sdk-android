@@ -6,25 +6,23 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
+ * @param relationships
  * @param type
- * @param attributes
- * @param id
  */
 @Serializable
-data class ArtistClaimsUpdateOperationPayloadData(
-    @SerialName(value = "type") val type: ArtistClaimsUpdateOperationPayloadData.Type,
-    @Contextual @SerialName(value = "attributes") val attributes: kotlin.Any? = null,
-    @SerialName(value = "id") val id: kotlin.String? = null,
+data class UserSharesCreateOperationPayloadData(
+    @SerialName(value = "relationships")
+    val relationships: UserSharesCreateOperationPayloadDataRelationships,
+    @SerialName(value = "type") val type: UserSharesCreateOperationPayloadData.Type,
 ) {
 
-    /** Values: artistClaims */
+    /** Values: userShares */
     @Serializable
     enum class Type(val value: kotlin.String) {
-        @SerialName(value = "artistClaims") artistClaims("artistClaims")
+        @SerialName(value = "userShares") userShares("userShares")
     }
 }
