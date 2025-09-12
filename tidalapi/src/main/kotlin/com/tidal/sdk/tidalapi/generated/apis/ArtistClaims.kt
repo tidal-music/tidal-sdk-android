@@ -195,11 +195,13 @@ interface ArtistClaims {
      * - 500: Internal server error - The server encountered an unexpected condition that prevented
      *   it from fulfilling the request
      *
+     * @param countryCode ISO 3166-1 alpha-2 country code
      * @param artistClaimsCreateOperationPayload (optional)
      * @return [ArtistClaimsSingleResourceDataDocument]
      */
     @POST("artistClaims")
     suspend fun artistClaimsPost(
-        @Body artistClaimsCreateOperationPayload: ArtistClaimsCreateOperationPayload? = null
+        @Query("countryCode") countryCode: kotlin.String,
+        @Body artistClaimsCreateOperationPayload: ArtistClaimsCreateOperationPayload? = null,
     ): Response<ArtistClaimsSingleResourceDataDocument>
 }

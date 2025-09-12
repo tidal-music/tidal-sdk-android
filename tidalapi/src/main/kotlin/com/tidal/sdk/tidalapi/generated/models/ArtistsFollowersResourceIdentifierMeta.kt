@@ -9,10 +9,8 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/**
- * Artist claim id
- *
- * @param `value`
- */
+/** @param viewer */
 @Serializable
-data class ArtistClaimId(@SerialName(value = "value") val `value`: kotlin.String? = null) {}
+data class ArtistsFollowersResourceIdentifierMeta(
+    @SerialName(value = "viewer") val viewer: ArtistsFollowersResourceMetaViewerContext? = null
+) {}

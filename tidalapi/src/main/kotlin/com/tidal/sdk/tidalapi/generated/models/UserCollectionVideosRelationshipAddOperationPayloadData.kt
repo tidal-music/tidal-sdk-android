@@ -22,11 +22,12 @@ data class UserCollectionVideosRelationshipAddOperationPayloadData(
 
     /**
      * Values:
-     * albums,artistClaims,artistRoles,artists,artworks,playlists,providers,searchResults,searchSuggestions,tracks,trackStatistics,userCollections,userEntitlements,userRecommendations,userReports,users,videos
+     * albums,appreciations,artistClaims,artistRoles,artists,artworks,playlists,providers,searchResults,searchSuggestions,tracks,trackStatistics,userCollections,userEntitlements,userRecommendations,userReports,users,videos
      */
     @Serializable
     enum class Type(val value: kotlin.String) {
         @SerialName(value = "albums") albums("albums"),
+        @SerialName(value = "appreciations") appreciations("appreciations"),
         @SerialName(value = "artistClaims") artistClaims("artistClaims"),
         @SerialName(value = "artistRoles") artistRoles("artistRoles"),
         @SerialName(value = "artists") artists("artists"),
