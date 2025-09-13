@@ -106,7 +106,7 @@ interface Lyrics {
      *   it from fulfilling the request
      *
      * @param id Lyrics Id
-     * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param countryCode ISO 3166-1 alpha-2 country code (default to "US")
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -116,7 +116,7 @@ interface Lyrics {
     @GET("lyrics/{id}/relationships/owners")
     suspend fun lyricsIdRelationshipsOwnersGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String = "US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
@@ -138,7 +138,7 @@ interface Lyrics {
      *   it from fulfilling the request
      *
      * @param id Lyrics Id
-     * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param countryCode ISO 3166-1 alpha-2 country code (default to "US")
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: track (optional)
      * @return [LyricsSingleRelationshipDataDocument]
@@ -146,7 +146,7 @@ interface Lyrics {
     @GET("lyrics/{id}/relationships/track")
     suspend fun lyricsIdRelationshipsTrackGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String = "US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<LyricsSingleRelationshipDataDocument>

@@ -154,7 +154,7 @@ interface Artists {
      *   it from fulfilling the request
      *
      * @param id Artist id
-     * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param countryCode ISO 3166-1 alpha-2 country code (default to "US")
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: biography (optional)
      * @return [ArtistsSingleRelationshipDataDocument]
@@ -162,7 +162,7 @@ interface Artists {
     @GET("artists/{id}/relationships/biography")
     suspend fun artistsIdRelationshipsBiographyGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String = "US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<ArtistsSingleRelationshipDataDocument>
@@ -277,14 +277,14 @@ interface Artists {
      *   it from fulfilling the request
      *
      * @param id Artist id
-     * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param countryCode ISO 3166-1 alpha-2 country code (default to "US")
      * @param artistFollowingRelationshipAddOperationPayload (optional)
      * @return [Unit]
      */
     @POST("artists/{id}/relationships/following")
     suspend fun artistsIdRelationshipsFollowingPost(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String = "US",
         @Body
         artistFollowingRelationshipAddOperationPayload:
             ArtistFollowingRelationshipAddOperationPayload? =
@@ -338,7 +338,7 @@ interface Artists {
      *   it from fulfilling the request
      *
      * @param id Artist id
-     * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param countryCode ISO 3166-1 alpha-2 country code (default to "US")
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: profileArt (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -348,7 +348,7 @@ interface Artists {
     @GET("artists/{id}/relationships/profileArt")
     suspend fun artistsIdRelationshipsProfileArtGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String = "US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,

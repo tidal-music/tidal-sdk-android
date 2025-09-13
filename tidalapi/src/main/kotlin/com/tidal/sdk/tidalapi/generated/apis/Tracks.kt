@@ -26,7 +26,7 @@ interface Tracks {
      * - 500: Internal server error - The server encountered an unexpected condition that prevented
      *   it from fulfilling the request
      *
-     * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param countryCode ISO 3166-1 alpha-2 country code (default to "US")
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
@@ -39,7 +39,7 @@ interface Tracks {
      */
     @GET("tracks")
     suspend fun tracksGet(
-        @Query("countryCode") countryCode: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String = "US",
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
@@ -86,7 +86,7 @@ interface Tracks {
      *   it from fulfilling the request
      *
      * @param id A Tidal catalogue ID
-     * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param countryCode ISO 3166-1 alpha-2 country code (default to "US")
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: albums, artists, genres, lyrics, owners, providers, radio,
      *   similarTracks, sourceFile, trackStatistics (optional)
@@ -95,7 +95,7 @@ interface Tracks {
     @GET("tracks/{id}")
     suspend fun tracksIdGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String = "US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<TracksSingleResourceDataDocument>
