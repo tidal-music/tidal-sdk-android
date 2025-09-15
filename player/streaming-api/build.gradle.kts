@@ -1,12 +1,14 @@
 plugins {
-    alias(libs.plugins.tidal.kotlin.jvm)
+    alias(libs.plugins.tidal.android.library)
     alias(libs.plugins.google.devtools.ksp)
 }
+
+android { namespace = "com.tidal.sdk.player.streamingapi" }
 
 dependencies {
     ksp(libs.dagger.compiler)
 
-    compileOnly(libs.androidx.annotations)
+    implementation(libs.androidx.annotations)
 
     implementation(libs.dagger)
     implementation(libs.gson)
@@ -15,6 +17,7 @@ dependencies {
     implementation(libs.retrofit.converter.gson)
     api(libs.retrofit)
     implementation(project(":player:common"))
+    implementation(project(":tidalapi"))
 
     testImplementation(libs.kotlin.reflect)
     testImplementation(libs.kotlinxCoroutinesCore)
