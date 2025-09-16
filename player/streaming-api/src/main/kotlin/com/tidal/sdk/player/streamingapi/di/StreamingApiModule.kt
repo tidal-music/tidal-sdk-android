@@ -14,6 +14,7 @@ import com.tidal.sdk.tidalapi.generated.apis.TrackManifests
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
+import javax.inject.Named
 import retrofit2.Converter
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -58,5 +59,7 @@ internal object StreamingApiModule {
     fun streamingApiDefault(
         playbackInfoRepository: PlaybackInfoRepository,
         drmLicenseRepository: DrmLicenseRepository,
-    ): StreamingApi = StreamingApiDefault(playbackInfoRepository, drmLicenseRepository)
+        @Named("useTopPlaybackInfo") useTopPlaybackInfo: Boolean,
+    ): StreamingApi =
+        StreamingApiDefault(playbackInfoRepository, drmLicenseRepository, useTopPlaybackInfo)
 }

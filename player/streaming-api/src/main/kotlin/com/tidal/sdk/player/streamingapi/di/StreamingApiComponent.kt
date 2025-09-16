@@ -8,6 +8,7 @@ import com.tidal.sdk.player.streamingapi.StreamingApiTimeoutConfig
 import com.tidal.sdk.player.streamingapi.playbackinfo.offline.OfflinePlaybackInfoProvider
 import dagger.BindsInstance
 import dagger.Component
+import javax.inject.Named
 import javax.inject.Qualifier
 import javax.inject.Singleton
 import okhttp3.OkHttpClient
@@ -36,6 +37,7 @@ interface StreamingApiComponent {
             @BindsInstance apiErrorFactory: ApiError.Factory,
             @BindsInstance offlinePlaybackInfoProvider: OfflinePlaybackInfoProvider?,
             @BindsInstance credentialsProvider: CredentialsProvider,
+            @BindsInstance @Named("useTopPlaybackInfo") useTopPlaybackInfo: Boolean,
         ): StreamingApiComponent
     }
 

@@ -14,6 +14,7 @@ class StreamingApiModuleRoot(
     apiErrorFactory: ApiError.Factory,
     offlinePlaybackInfoProvider: OfflinePlaybackInfoProvider?,
     credentialsProvider: CredentialsProvider,
+    useTopPlaybackInfo: Boolean,
 ) {
 
     val streamingApi =
@@ -25,6 +26,7 @@ class StreamingApiModuleRoot(
                 apiErrorFactory,
                 offlinePlaybackInfoProvider,
                 credentialsProvider,
+                useTopPlaybackInfo,
             )
             .streamingApi
 }
