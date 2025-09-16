@@ -6,6 +6,7 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isEqualToIgnoringGivenProperties
 import com.google.gson.Gson
 import com.google.gson.JsonParseException
+import com.tidal.sdk.auth.CredentialsProvider
 import com.tidal.sdk.player.MockWebServerExtensions.enqueueResponse
 import com.tidal.sdk.player.common.model.ApiError
 import com.tidal.sdk.player.common.model.AudioQuality
@@ -26,6 +27,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
+import org.mockito.kotlin.mock
 
 /**
  * Test that the [StreamingApi] returns correct in various situations, using real
@@ -36,10 +38,13 @@ internal class StreamingApiDefaultTest {
     @get:ExtendWith val server = MockWebServer()
 
     private lateinit var streamingApi: StreamingApi
+    private lateinit var credentialsProviderMock: CredentialsProvider
 
     @BeforeEach
     fun setUp() {
         val gson = Gson()
+        credentialsProviderMock = mock<CredentialsProvider>()
+
         streamingApi =
             DaggerStreamingApiComponent.factory()
                 .create(
@@ -59,6 +64,7 @@ internal class StreamingApiDefaultTest {
                     streamingApiTimeoutConfig = StreamingApiTimeoutConfig(),
                     gson = gson,
                     offlinePlaybackInfoProvider = OfflinePlaybackInfoProviderStub(),
+                    credentialsProvider = credentialsProviderMock,
                 )
                 .streamingApi
     }
