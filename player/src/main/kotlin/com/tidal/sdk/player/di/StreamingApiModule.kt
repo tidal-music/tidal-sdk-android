@@ -1,6 +1,7 @@
 package com.tidal.sdk.player.di
 
 import com.google.gson.Gson
+import com.tidal.sdk.auth.CredentialsProvider
 import com.tidal.sdk.player.common.model.ApiError
 import com.tidal.sdk.player.offlineplay.OfflinePlayProvider
 import com.tidal.sdk.player.streamingapi.StreamingApiModuleRoot
@@ -24,6 +25,7 @@ internal object StreamingApiModule {
         gson: Gson,
         apiErrorFactory: ApiError.Factory,
         offlinePlayProvider: OfflinePlayProvider?,
+        credentialsProvider: CredentialsProvider,
     ) =
         StreamingApiModuleRoot(
                 okHttpClient,
@@ -31,6 +33,7 @@ internal object StreamingApiModule {
                 gson,
                 apiErrorFactory,
                 offlinePlayProvider?.offlinePlaybackInfoProvider,
+                credentialsProvider,
             )
             .streamingApi
 }
