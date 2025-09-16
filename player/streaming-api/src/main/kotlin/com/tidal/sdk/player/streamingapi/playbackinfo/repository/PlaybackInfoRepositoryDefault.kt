@@ -9,6 +9,7 @@ import com.tidal.sdk.player.streamingapi.playbackinfo.model.ManifestMimeType
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackMode
 import com.tidal.sdk.player.streamingapi.playbackinfo.offline.OfflinePlaybackInfoProvider
+import com.tidal.sdk.tidalapi.generated.apis.TrackManifests
 import dagger.Lazy
 import retrofit2.HttpException
 
@@ -24,6 +25,7 @@ internal class PlaybackInfoRepositoryDefault(
     private val offlinePlaybackInfoProvider: OfflinePlaybackInfoProvider?,
     private val playbackInfoService: PlaybackInfoService,
     private val apiErrorMapperLazy: Lazy<ApiErrorMapper>,
+    private val trackManifests: TrackManifests,
 ) : PlaybackInfoRepository {
 
     override suspend fun getTrackPlaybackInfo(

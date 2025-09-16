@@ -10,6 +10,7 @@ import com.tidal.sdk.player.streamingapi.playbackinfo.mapper.ApiErrorMapper
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.ManifestMimeType
 import com.tidal.sdk.player.streamingapi.playbackinfo.repository.PlaybackInfoRepository
 import com.tidal.sdk.tidalapi.generated.TidalApiClient
+import com.tidal.sdk.tidalapi.generated.apis.TrackManifests
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
@@ -46,6 +47,11 @@ internal object StreamingApiModule {
     @Reusable
     fun provideTidalApiClient(credentialsProvider: CredentialsProvider): TidalApiClient =
         TidalApiClient(credentialsProvider)
+
+    @Provides
+    @Reusable
+    fun provideTrackManifests(tidalApiClient: TidalApiClient): TrackManifests =
+        tidalApiClient.createTrackManifests()
 
     @Provides
     @Reusable
