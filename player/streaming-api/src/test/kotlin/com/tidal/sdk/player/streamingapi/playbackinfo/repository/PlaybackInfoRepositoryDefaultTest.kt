@@ -15,6 +15,7 @@ import com.tidal.sdk.player.streamingapi.playbackinfo.api.PlaybackInfoServiceStu
 import com.tidal.sdk.player.streamingapi.playbackinfo.mapper.ApiErrorMapper
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackMode
+import com.tidal.sdk.tidalapi.generated.apis.TrackManifests
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.mock
@@ -25,11 +26,13 @@ internal class PlaybackInfoRepositoryDefaultTest {
     private val offlinePlaybackInfoProvider = OfflinePlaybackInfoProviderStub()
     private val playbackInfoService = PlaybackInfoServiceStub()
     private val apiErrorMapperLazy = { mock<ApiErrorMapper>() }
+    private val trackManifests = mock<TrackManifests>()
     private val playbackInfoRepository =
         PlaybackInfoRepositoryDefault(
             offlinePlaybackInfoProvider,
             playbackInfoService,
             apiErrorMapperLazy,
+            trackManifests,
         )
 
     @Test
