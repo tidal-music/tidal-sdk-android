@@ -1,6 +1,7 @@
 package com.tidal.sdk.player.streamingapi.playbackinfo.repository
 
 import com.tidal.sdk.player.common.model.AssetPresentation
+import com.tidal.sdk.player.common.model.AudioMode
 import com.tidal.sdk.player.common.model.AudioQuality
 import com.tidal.sdk.player.common.model.VideoQuality
 import com.tidal.sdk.player.streamingapi.playbackinfo.api.PlaybackInfoService
@@ -49,6 +50,67 @@ internal class PlaybackInfoRepositoryDefault(
         } catch (e: HttpException) {
             throw apiErrorMapperLazy.get().map(e)
         }
+
+    override suspend fun getTrackPlaybackInfoTop(
+        trackId: String,
+        audioQuality: AudioQuality,
+        playbackMode: PlaybackMode,
+        immersiveAudio: Boolean,
+        streamingSessionId: String,
+        playlistUuid: String?,
+    ) =
+        try {
+            val data =
+                trackManifests
+                    .trackManifestsIdGet(
+                        trackId,
+                        MANIFEST_TYPE,
+                        audioQuality.toFormats(),
+                        DATA_URI_SCHEME,
+                        if (playbackMode == PlaybackMode.STREAM) PLAYBACK_USAGE else DOWNLOAD_USAGE,
+                        "false",
+                    )
+                    .body()
+                    ?.data
+            PlaybackInfo.Track(
+                data?.id?.toInt() ?: -1,
+                AudioQuality.HI_RES_LOSSLESS,
+                if (data?.attributes?.trackPresentation?.name == TRACK_PREVIEW_PRESENTATION)
+                    AssetPresentation.PREVIEW
+                else AssetPresentation.FULL,
+                AudioMode.STEREO,
+                null,
+                null,
+                data?.attributes?.hash.orEmpty(),
+                streamingSessionId,
+                ManifestMimeType.DASH,
+                extractManifest(data?.attributes?.uri.orEmpty()),
+                data?.attributes?.drmData?.licenseUrl,
+                data?.attributes?.albumAudioNormalizationData?.replayGain ?: -1f,
+                data?.attributes?.albumAudioNormalizationData?.peakAmplitude ?: -1f,
+                data?.attributes?.trackAudioNormalizationData?.replayGain ?: -1f,
+                data?.attributes?.trackAudioNormalizationData?.peakAmplitude ?: -1f,
+                -1,
+                -1,
+            )
+        } catch (e: HttpException) {
+            throw apiErrorMapperLazy.get().map(e)
+        }
+
+    private fun AudioQuality.toFormats(): String {
+        return when (this) {
+            AudioQuality.LOW -> "HEAACV1"
+            AudioQuality.HIGH -> "HEAACV1,AACLC"
+            AudioQuality.LOSSLESS -> "HEAACV1,AACLC,FLAC"
+            AudioQuality.HI_RES_LOSSLESS -> "HEAACV1,AACLC,FLAC,FLAC_HIRES"
+        }
+    }
+
+    private fun extractManifest(dataUrl: String): String {
+        val commaIndex = dataUrl.indexOf(',')
+        require(commaIndex >= 0) { "Invalid manifest" }
+        return dataUrl.substring(commaIndex + 1)
+    }
 
     override suspend fun getVideoPlaybackInfo(
         videoId: String,
@@ -106,4 +168,12 @@ internal class PlaybackInfoRepositoryDefault(
     override suspend fun getOfflineVideoPlaybackInfo(videoId: String, streamingSessionId: String) =
         offlinePlaybackInfoProvider?.getOfflineVideoPlaybackInfo(videoId, streamingSessionId)
             ?: throw NullPointerException("No OfflinePlaybackInfoProvider provided")
+
+    private companion object {
+        const val MANIFEST_TYPE = "MPEG_DASH"
+        const val DATA_URI_SCHEME = "DATA"
+        const val PLAYBACK_USAGE = "PLAYBACK"
+        const val DOWNLOAD_USAGE = "DOWNLOAD"
+        const val TRACK_PREVIEW_PRESENTATION = "PREVIEW"
+    }
 }
