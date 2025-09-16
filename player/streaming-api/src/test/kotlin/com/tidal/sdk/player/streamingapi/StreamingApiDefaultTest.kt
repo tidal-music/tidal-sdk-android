@@ -65,6 +65,7 @@ internal class StreamingApiDefaultTest {
                     gson = gson,
                     offlinePlaybackInfoProvider = OfflinePlaybackInfoProviderStub(),
                     credentialsProvider = credentialsProviderMock,
+                    useTopPlaybackInfo = false,
                 )
                 .streamingApi
     }

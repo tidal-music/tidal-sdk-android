@@ -17,6 +17,7 @@ import com.tidal.sdk.player.streamingapi.playbackinfo.repository.PlaybackInfoRep
 internal class StreamingApiDefault(
     private val playbackInfoRepository: PlaybackInfoRepository,
     private val drmLicenseRepository: DrmLicenseRepository,
+    private val useTopPlaybackInfo: Boolean,
 ) : StreamingApi {
 
     override suspend fun getTrackPlaybackInfo(
@@ -27,14 +28,25 @@ internal class StreamingApiDefault(
         streamingSessionId: String,
         playlistUuid: String?,
     ) =
-        playbackInfoRepository.getTrackPlaybackInfo(
-            trackId,
-            audioQuality,
-            playbackMode,
-            immersiveAudio,
-            streamingSessionId,
-            playlistUuid,
-        )
+        if (useTopPlaybackInfo) {
+            playbackInfoRepository.getTrackPlaybackInfoTop(
+                trackId,
+                audioQuality,
+                playbackMode,
+                immersiveAudio,
+                streamingSessionId,
+                playlistUuid,
+            )
+        } else {
+            playbackInfoRepository.getTrackPlaybackInfo(
+                trackId,
+                audioQuality,
+                playbackMode,
+                immersiveAudio,
+                streamingSessionId,
+                playlistUuid,
+            )
+        }
 
     override suspend fun getVideoPlaybackInfo(
         videoId: String,

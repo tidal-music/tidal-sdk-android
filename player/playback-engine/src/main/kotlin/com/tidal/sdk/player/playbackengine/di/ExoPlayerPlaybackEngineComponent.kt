@@ -47,6 +47,7 @@ interface ExoPlayerPlaybackEngineComponent {
             @BindsInstance cacheProvider: CacheProvider,
             @BindsInstance configuration: Configuration,
             @BindsInstance @Named("useLibflacAudioRenderer") useLibflacAudioRenderer: Boolean,
+            @BindsInstance @Named("useTopPlaybackInfo") useTopPlaybackInfo: Boolean,
             @BindsInstance appSpecificCacheDir: File,
             @BindsInstance streamingApi: StreamingApi,
             @BindsInstance @Local okHttpClient: OkHttpClient,

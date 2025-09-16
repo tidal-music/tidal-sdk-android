@@ -9,6 +9,7 @@ import com.tidal.sdk.player.streamingapi.StreamingApiTimeoutConfig
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
+import javax.inject.Named
 import javax.inject.Singleton
 import okhttp3.OkHttpClient
 
@@ -26,6 +27,7 @@ internal object StreamingApiModule {
         apiErrorFactory: ApiError.Factory,
         offlinePlayProvider: OfflinePlayProvider?,
         credentialsProvider: CredentialsProvider,
+        @Named("useTopPlaybackInfo") useTopPlaybackInfo: Boolean,
     ) =
         StreamingApiModuleRoot(
                 okHttpClient,
@@ -34,6 +36,7 @@ internal object StreamingApiModule {
                 apiErrorFactory,
                 offlinePlayProvider?.offlinePlaybackInfoProvider,
                 credentialsProvider,
+                useTopPlaybackInfo,
             )
             .streamingApi
 }
