@@ -2,6 +2,7 @@ name: Check API Spec Changes
 
 on:
   push:
+    branches:
   schedule:
     # Runs at 00:00 UTC every day
     - cron: '0 0 * * *'
@@ -39,7 +40,24 @@ jobs:
           # Save the spec to a location that can be used by the regeneration workflow
           mkdir -p tidalapi/bin/openapi_downloads
           cp /tmp/api-check/latest-api.json tidalapi/bin/openapi_downloads/tidal-api-oas.json
-      
+
+      - name: Log API spec versions being compared
+        run: |
+          python3 - <<'PY'
+          import json
+          def read_version(path: str) -> str:
+              try:
+                  with open(path, 'r', encoding='utf-8') as f:
+                      data = json.load(f)
+                  return (data.get('info') or {}).get('version') or 'unknown'
+              except Exception:
+                  return 'unknown'
+
+          old_version = read_version('tidalapi/bin/tidal-api.json')
+          new_version = read_version('/tmp/api-check/latest-api.json')
+          print(f"Comparing {old_version} with {new_version}")
+          PY
+
       - name: Compare API specs
         id: compare
         run: |
@@ -53,7 +71,6 @@ jobs:
             diff -u "tidalapi/bin/tidal-api.json" "/tmp/api-check/latest-api.json" || true
             echo "::endgroup::"
           fi
-          
       - name: Upload API spec as artifact
         if: steps.compare.outputs.changes_found == 'true'
         uses: actions/upload-artifact@v4
