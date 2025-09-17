@@ -302,8 +302,15 @@ jobs:
               echo "commit_made=true" >> $GITHUB_OUTPUT
             fi
           else
-            # Create new branch for new PR
-            git checkout -b "$standard_branch_name"
+            # Create or reuse branch for new PR
+            git fetch origin "$standard_branch_name" || true
+            if git show-ref --verify --quiet "refs/remotes/origin/$standard_branch_name"; then
+              echo "Remote branch '$standard_branch_name' exists without an open PR - reusing it"
+              git checkout -B "$standard_branch_name" "origin/$standard_branch_name"
+            else
+              echo "Creating new branch '$standard_branch_name'"
+              git checkout -b "$standard_branch_name"
+            fi
             git commit -m "$commit_title"$'\n\n'"$commit_body"
             branch_name="$standard_branch_name"
             echo "branch_name=$branch_name" >> $GITHUB_OUTPUT
@@ -323,7 +330,7 @@ jobs:
           else
             # Push new branch
             echo "Pushing new branch: ${{env.BRANCH_NAME}}"
-            git push --set-upstream origin "${{env.BRANCH_NAME}}"
+            git push --set-upstream origin "${{env.BRANCH_NAME}}" --force-with-lease
           fi
 
       - name: Create or Update Pull Request
