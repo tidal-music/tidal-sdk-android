@@ -125,6 +125,14 @@ jobs:
             exit 0
           fi
           
+          # If the new generated folder does not exist, treat as breaking (minor bump)
+          if [ ! -d "$GENERATED_FOLDER" ]; then
+            echo "New generated folder '$GENERATED_FOLDER' does not exist. Treating as breaking change (minor bump)."
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "version_bump=minor" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          
           # Compare the generated folders
           if diff -rq "/tmp/api-backup/generated" "$GENERATED_FOLDER" > /dev/null; then
             echo "No changes detected in generated API files"
@@ -135,10 +143,9 @@ jobs:
           echo "Changes detected, analyzing for breaking changes..."
           echo "has_changes=true" >> $GITHUB_OUTPUT
           
-          # Use the Python analysis script
-          cd ${{ env.API_MODULE_DIR }}/bin
-          chmod +x analyze_breaking_changes.py
-          ANALYSIS_OUTPUT=$(python3 analyze_breaking_changes.py "/tmp/api-backup/generated" "$GENERATED_FOLDER")
+          # Use the Python analysis script (avoid relative path issues by not changing directories)
+          chmod +x ${{ env.API_MODULE_DIR }}/bin/analyze_breaking_changes.py
+          ANALYSIS_OUTPUT=$(python3 ${{ env.API_MODULE_DIR }}/bin/analyze_breaking_changes.py "/tmp/api-backup/generated" "$GITHUB_WORKSPACE/$GENERATED_FOLDER")
           
           if echo "$ANALYSIS_OUTPUT" | grep -q "BREAKING"; then
             echo "Breaking changes detected, bumping minor version"
