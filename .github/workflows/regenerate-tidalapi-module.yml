@@ -86,6 +86,14 @@ jobs:
           chmod +x ${{ env.API_MODULE_DIR }}/bin/generate-api.sh
           chmod +x ${{ env.API_MODULE_DIR }}/bin/openapi-generator-cli.jar
 
+      - name: Store current state before generation
+        run: |
+          # Create backup of previously generated files to detect changes
+          mkdir -p /tmp/api-backup
+          if [ -d "${{ env.API_MODULE_DIR }}/src/main/kotlin/com/tidal/sdk/tidalapi/generated" ]; then
+            cp -r "${{ env.API_MODULE_DIR }}/src/main/kotlin/com/tidal/sdk/tidalapi/generated" /tmp/api-backup/
+          fi
+
       - name: Generate TidalAPI code
         run: |
           cd ${{ env.API_MODULE_DIR }}/bin
@@ -104,6 +112,114 @@ jobs:
             ./generate-api.sh
           fi
 
+      - name: Analyze changes and determine version bump
+        id: analyze_changes
+        env:
+          GENERATED_FOLDER: "${{ env.API_MODULE_DIR }}/src/main/kotlin/com/tidal/sdk/tidalapi/generated"
+        run: |
+          # Check if there are any changes in the generated folder
+          if [ ! -d "/tmp/api-backup/generated" ]; then
+            echo "No previous version found, treating as minor change"
+            echo "version_bump=minor" >> $GITHUB_OUTPUT
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          
+          # Compare the generated folders
+          if diff -rq "/tmp/api-backup/generated" "$GENERATED_FOLDER" > /dev/null; then
+            echo "No changes detected in generated API files"
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          
+          echo "Changes detected, analyzing for breaking changes..."
+          echo "has_changes=true" >> $GITHUB_OUTPUT
+          
+          # Use the Python analysis script
+          cd ${{ env.API_MODULE_DIR }}/bin
+          chmod +x analyze_breaking_changes.py
+          ANALYSIS_OUTPUT=$(python3 analyze_breaking_changes.py "/tmp/api-backup/generated" "$GENERATED_FOLDER")
+          
+          if echo "$ANALYSIS_OUTPUT" | grep -q "BREAKING"; then
+            echo "Breaking changes detected, bumping minor version"
+            echo "version_bump=minor" >> $GITHUB_OUTPUT
+          else
+            echo "No breaking changes detected, bumping patch version"
+            echo "version_bump=patch" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Update version and changelog
+        id: update_version
+        if: steps.analyze_changes.outputs.has_changes == 'true'
+        env:
+          VERSION_BUMP: ${{ steps.analyze_changes.outputs.version_bump }}
+        run: |
+          cd ${{ env.API_MODULE_DIR }}
+          
+          # Read current version
+          CURRENT_VERSION=$(grep "version=" gradle.properties | cut -d'=' -f2)
+          echo "Current version: $CURRENT_VERSION"
+          
+          # Parse version components (assuming format X.Y.Z)
+          IFS='.' read -r major minor patch <<< "$CURRENT_VERSION"
+          
+          # Bump version based on change type
+          if [ "$VERSION_BUMP" == "minor" ]; then
+            minor=$((minor + 1))
+            patch=0
+          else
+            patch=$((patch + 1))
+          fi
+          
+          NEW_VERSION="${major}.${minor}.${patch}"
+          echo "New version: $NEW_VERSION"
+          
+          # Update gradle.properties
+          sed -i "s/version=.*/version=${NEW_VERSION}/" gradle.properties
+          
+          # Update CHANGELOG.md
+          CURRENT_DATE=$(date +%Y-%m-%d)
+          
+          # Determine spec JSON file to read version from
+          SPEC_FILE=""
+          if [ -f "/tmp/api-check/latest-api.json" ]; then
+            SPEC_FILE="/tmp/api-check/latest-api.json"
+          elif [ -f "bin/openapi_downloads/tidal-api-oas.json" ]; then
+            SPEC_FILE="bin/openapi_downloads/tidal-api-oas.json"
+          elif [ -f "bin/tidal-api.json" ]; then
+            SPEC_FILE="bin/tidal-api.json"
+          fi
+          
+          # Extract spec version (fallback to 'unknown' if not found)
+          if [ -n "$SPEC_FILE" ]; then
+            SPEC_VERSION=$(jq -r '.info.version // empty' "$SPEC_FILE" 2>/dev/null)
+          fi
+          if [ -z "$SPEC_VERSION" ] || [ "$SPEC_VERSION" = "null" ]; then
+            SPEC_VERSION="unknown"
+          fi
+          
+          # Create temporary file with new changelog entry
+          cat > /tmp/new_entry.txt << EOF
+          ## [${NEW_VERSION}] - ${CURRENT_DATE}
+          ### Changed
+          - Generated api based on spec version ${SPEC_VERSION}
+          EOF
+          
+          # Insert the new entry after the "## [Unreleased]" line
+          awk '
+            /## \[Unreleased\]/ {
+              print $0
+              print ""
+              system("cat /tmp/new_entry.txt")
+              print ""
+              next
+            }
+            { print }
+          ' CHANGELOG.md > CHANGELOG.md.tmp && mv CHANGELOG.md.tmp CHANGELOG.md
+          
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+          echo "Updated version to $NEW_VERSION and added changelog entry"
+
       - name: Check for changes
         id: check_changes
         env:
@@ -111,12 +227,17 @@ jobs:
         run: |
           git add ./tidalapi
           changes_in_generated=$(git status -s $GENERATED_FOLDER_NAME | sed 's/"//g')
+          changes_in_version=$(git status -s tidalapi/gradle.properties tidalapi/CHANGELOG.md | sed 's/"//g')
+          all_changes=$(git status -s ./tidalapi | sed 's/"//g')
+          
           echo "Changes in $GENERATED_FOLDER_NAME:"
           echo "$changes_in_generated"
+          echo "Changes in version files:"
+          echo "$changes_in_version"
           
-          if [ -n "$changes_in_generated" ]; then
+          if [ -n "$all_changes" ]; then
             changes_detected="true"
-            changed_file_count=$(echo "$changes_in_generated" | wc -l)
+            changed_file_count=$(echo "$all_changes" | wc -l)
           else
             changes_detected="false"
             changed_file_count=0
@@ -125,7 +246,7 @@ jobs:
           
           {
             echo 'changed_files<<EOF'
-            echo "$changes_in_generated"
+            echo "$all_changes"
             echo 'EOF'
           } >> $GITHUB_OUTPUT
           
@@ -147,17 +268,21 @@ jobs:
           # Use a consistent branch name for API updates, so we can edit the PR later
           standard_branch_name="tidal-music-tools/auto-update-tidal-api"
           
-          # Generate commit message with the number of changed files in the title and the list in the body
-          commit_title="Update Tidal API - ${{ steps.check_changes.outputs.changed_file_count }} files changed"
-          commit_body="Changed files:\n${{ steps.check_changes.outputs.changed_files }}"
+          # Update commit message to include version info
+          if [ "${{ steps.update_version.outputs.new_version }}" != "" ]; then
+            commit_title="Update Tidal API to v${{ steps.update_version.outputs.new_version }} - ${{ steps.check_changes.outputs.changed_file_count }} files changed"
+          else
+            commit_title="Update Tidal API - ${{ steps.check_changes.outputs.changed_file_count }} files changed"
+          fi
+          commit_body="Changed files:\n${{ steps.check_changes.outputs.changed_files }}\n\nAutomatically generated on $(date)\n\nThis PR is automatically updated when API changes are detected."
           
           if [ "${{ steps.check_pr.outputs.existing_pr }}" == "true" ]; then
             # Use the branch name from the existing PR
             branch_name="${{ steps.check_pr.outputs.pr_branch }}"
-            
+          
             # Fetch the existing PR branch to compare against
             git fetch origin "$branch_name" || true
-            
+          
             # Check if current changes are different from existing PR branch
             if git diff --quiet "origin/$branch_name" HEAD -- tidalapi/; then
               echo "No new changes compared to existing PR branch - skipping update"
@@ -202,8 +327,14 @@ jobs:
           CHANGED_FILE_COUNT: ${{ steps.check_changes.outputs.changed_file_count }}
           BRANCH_NAME: ${{ steps.commit_changes.outputs.branch_name }}
         run: |
-          pr_title="Automatic Tidal API module update - ${{env.CHANGED_FILE_COUNT}} files changed"
-          pr_body="Changed files:\n\n${{ env.CHANGED_FILES }}\n\nAutomatically generated on $(date)\n\nThis PR is automatically updated when API changes are detected."
+          # Update PR title to include version info
+          if [ "${{ steps.update_version.outputs.new_version }}" != "" ]; then
+            pr_title="Automatic Tidal API module update to v${{ steps.update_version.outputs.new_version }} - ${{env.CHANGED_FILE_COUNT}} files changed"
+            pr_body="Updated TidalAPI module to version ${{ steps.update_version.outputs.new_version }}\n\nChanged files:\n\n${{ env.CHANGED_FILES }}\n\nAutomatically generated on $(date)\n\nThis PR is automatically updated when API changes are detected."
+          else
+            pr_title="Automatic Tidal API module update - ${{env.CHANGED_FILE_COUNT}} files changed"
+            pr_body="Changed files:\n\n${{ env.CHANGED_FILES }}\n\nAutomatically generated on $(date)\n\nThis PR is automatically updated when API changes are detected."
+          fi
           pr_body=$(echo -e "$pr_body")
           
           if [ "${{ steps.check_pr.outputs.existing_pr }}" == "true" ]; then
@@ -211,13 +342,13 @@ jobs:
             pr_data=$(jq -n --arg title "$pr_title" \
                               --arg body "$pr_body" \
                               '{title: $title, body: $body}')
-            
+          
             curl -X PATCH \
               -H "Authorization: token $GITHUB_TOKEN" \
               -H "Accept: application/vnd.github.v3+json" \
               -d "$pr_data" \
               "https://api.github.com/repos/${{ github.repository }}/pulls/${{ steps.check_pr.outputs.pr_number }}"
-            
+          
             echo "Updated existing PR #${{ steps.check_pr.outputs.pr_number }}"
           else
             # Create new PR
@@ -226,12 +357,12 @@ jobs:
                               --arg base "${{ inputs.target_branch }}" \
                               --arg body "$pr_body" \
                               '{title: $title, head: $head, base: $base, body: $body}')
-            
+          
             curl -X POST \
               -H "Authorization: token $GITHUB_TOKEN" \
               -H "Accept: application/vnd.github.v3+json" \
               -d "$pr_data" \
               "https://api.github.com/repos/${{ github.repository }}/pulls"
-            
+          
             echo "Created new PR"
           fi
