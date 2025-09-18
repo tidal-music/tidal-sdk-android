@@ -140,19 +140,44 @@ jobs:
             exit 0
           fi
           
-          echo "Changes detected, analyzing for breaking changes..."
+          echo "Changes detected, determining version bump based on API spec version change..."
           echo "has_changes=true" >> $GITHUB_OUTPUT
           
-          # Use the Python analysis script (avoid relative path issues by not changing directories)
-          chmod +x ${{ env.API_MODULE_DIR }}/bin/analyze_breaking_changes.py
-          ANALYSIS_OUTPUT=$(python3 ${{ env.API_MODULE_DIR }}/bin/analyze_breaking_changes.py "/tmp/api-backup/generated" "$GITHUB_WORKSPACE/$GENERATED_FOLDER")
+          # Get old and new API spec versions
+          OLD_SPEC_VERSION=$(jq -r '.info.version // "unknown"' "${{ env.API_MODULE_DIR }}/bin/tidal-api.json" 2>/dev/null || echo "unknown")
           
-          if echo "$ANALYSIS_OUTPUT" | grep -q "BREAKING"; then
-            echo "Breaking changes detected, bumping minor version"
+          NEW_SPEC_VERSION="unknown"
+          for spec_file in "/tmp/api-check/latest-api.json" "${{ env.API_MODULE_DIR }}/bin/openapi_downloads/tidal-api-oas.json" "${{ env.API_MODULE_DIR }}/bin/tidal-api.json"; do
+            if [ -f "$spec_file" ]; then
+              NEW_SPEC_VERSION=$(jq -r '.info.version // "unknown"' "$spec_file" 2>/dev/null || echo "unknown")
+              [ "$NEW_SPEC_VERSION" != "unknown" ] && break
+            fi
+          done
+          
+          echo "Old API spec version: $OLD_SPEC_VERSION"
+          echo "New API spec version: $NEW_SPEC_VERSION"
+          
+          # Fail if either version is unknown
+          if [ "$NEW_SPEC_VERSION" = "unknown" ]; then
+            echo "Error: Unable to determine API spec version"
+            exit 1
+          fi
+          
+          # Parse versions (X.Y.Z) and compare
+          OLD_MAJOR_MINOR=$(echo "$OLD_SPEC_VERSION" | cut -d. -f1,2)
+          NEW_MAJOR_MINOR=$(echo "$NEW_SPEC_VERSION" | cut -d. -f1,2)
+          
+          if [ "$OLD_MAJOR_MINOR" != "$NEW_MAJOR_MINOR" ]; then
+            echo "Spec major/minor changed, using minor bump"
             echo "version_bump=minor" >> $GITHUB_OUTPUT
           else
-            echo "No breaking changes detected, bumping patch version"
-            echo "version_bump=patch" >> $GITHUB_OUTPUT
+            if [ "$OLD_SPEC_VERSION" != "$NEW_SPEC_VERSION" ]; then
+              echo "Spec patch changed, using patch bump"
+              echo "version_bump=patch" >> $GITHUB_OUTPUT
+            else
+              echo "Spec version unchanged, but files changed, using patch bump"
+              echo "version_bump=patch" >> $GITHUB_OUTPUT
+            fi
           fi
 
       - name: Update version and changelog
