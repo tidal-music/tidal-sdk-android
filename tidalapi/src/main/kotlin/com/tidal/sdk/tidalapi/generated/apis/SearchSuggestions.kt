@@ -22,8 +22,8 @@ interface SearchSuggestions {
      *   it from fulfilling the request
      *
      * @param id
-     * @param countryCode ISO 3166-1 alpha-2 country code
-     * @param explicitFilter Explicit filter (optional)
+     * @param countryCode ISO 3166-1 alpha-2 country code (default to "US")
+     * @param explicitFilter Explicit filter (optional, default to "INCLUDE")
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: directHits (optional)
      * @return [SearchSuggestionsSingleResourceDataDocument]
@@ -31,8 +31,8 @@ interface SearchSuggestions {
     @GET("searchSuggestions/{id}")
     suspend fun searchSuggestionsIdGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
-        @Query("explicitFilter") explicitFilter: kotlin.String? = null,
+        @Query("countryCode") countryCode: kotlin.String = "US",
+        @Query("explicitFilter") explicitFilter: kotlin.String? = "INCLUDE",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<SearchSuggestionsSingleResourceDataDocument>
@@ -54,8 +54,8 @@ interface SearchSuggestions {
      *   it from fulfilling the request
      *
      * @param id
-     * @param countryCode ISO 3166-1 alpha-2 country code
-     * @param explicitFilter Explicit filter (optional)
+     * @param countryCode ISO 3166-1 alpha-2 country code (default to "US")
+     * @param explicitFilter Explicit filter (optional, default to "INCLUDE")
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: directHits (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -65,8 +65,8 @@ interface SearchSuggestions {
     @GET("searchSuggestions/{id}/relationships/directHits")
     suspend fun searchSuggestionsIdRelationshipsDirectHitsGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
-        @Query("explicitFilter") explicitFilter: kotlin.String? = null,
+        @Query("countryCode") countryCode: kotlin.String = "US",
+        @Query("explicitFilter") explicitFilter: kotlin.String? = "INCLUDE",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
