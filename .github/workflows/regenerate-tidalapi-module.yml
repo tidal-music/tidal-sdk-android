@@ -98,10 +98,10 @@ jobs:
             # Copy the artifact to the expected location
             cp /tmp/api-check/latest-api.json openapi_downloads/tidal-api-oas.json
             # Use the local file parameter that's already supported by the script
-            ./generate-api.sh --local-file "$(pwd)/openapi_downloads/tidal-api-oas.json"
+            ./generate-api.sh --local-file "$(pwd)/openapi_downloads/tidal-api-oas.json" --bump
           else
             echo "Downloading API spec as part of generation"
-            ./generate-api.sh
+            ./generate-api.sh --bump
           fi
 
       - name: Check for changes
