@@ -50,6 +50,7 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumsRelationships.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumsResourceObject.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumsSingleResourceDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AppreciationsAttributes.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AppreciationsCreateOperationMeta.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AppreciationsCreateOperationPayload.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AppreciationsCreateOperationPayloadData.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AppreciationsCreateOperationPayloadDataRelationships.kt

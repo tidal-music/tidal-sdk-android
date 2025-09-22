@@ -9,12 +9,8 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/**
- * @param `data`
- * @param meta
- */
+/** @param dryRun */
 @Serializable
-data class AppreciationsCreateOperationPayload(
-    @SerialName(value = "data") val `data`: AppreciationsCreateOperationPayloadData,
-    @SerialName(value = "meta") val meta: AppreciationsCreateOperationMeta? = null,
+data class AppreciationsCreateOperationMeta(
+    @SerialName(value = "dryRun") val dryRun: kotlin.Boolean? = null
 ) {}
