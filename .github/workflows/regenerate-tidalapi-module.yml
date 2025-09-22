@@ -28,7 +28,7 @@ on:
         required: true
 env:
   API_MODULE_DIR: tidalapi
-
+  GH_TOKEN: ${{ secrets.token }}
 permissions:
   contents: write
   pull-requests: write
@@ -64,10 +64,7 @@ jobs:
           repo_owner="tidal-music"
           repo_name="openapi-generator"
           
-          curl -s -H -v "Authorization: token ${{ secrets.token }}" \
-            "https://api.github.com/repos/$repo_owner/$repo_name/releases/latest" > release_info.json
-          # Extract the download URL for the desired asset
-          ASSET_URL=$(jq -r '.assets[] | select(.name == "openapi-generator-cli.jar") | .browser_download_url' release_info.json)
+          ASSET_URL=$(gh api "repos/$repo_owner/$repo_name/releases/latest" --jq '.assets[] | select(.name == "openapi-generator-cli.jar") | .browser_download_url')
           
           echo "asset_url=$ASSET_URL" >> $GITHUB_OUTPUT
 
@@ -76,10 +73,7 @@ jobs:
           ASSET_URL: ${{ steps.get_release.outputs.asset_url }}
         run: |
           echo "Downloading from ${{ env.ASSET_URL }}"
-          curl -L -H "Authorization: token ${{ secrets.token }}" \
-            -H "Accept: application/octet-stream" \
-            -o tidalapi/bin/openapi-generator-cli.jar \
-            "${{ env.ASSET_URL }}"
+          gh release download --repo tidal-music/openapi-generator --pattern "openapi-generator-cli.jar" --dir tidalapi/bin/
 
       - name: Make scripts executable
         run: |
@@ -208,30 +202,20 @@ jobs:
           
           if [ "${{ steps.check_pr.outputs.existing_pr }}" == "true" ]; then
             # Update existing PR
-            pr_data=$(jq -n --arg title "$pr_title" \
-                              --arg body "$pr_body" \
-                              '{title: $title, body: $body}')
-            
-            curl -X PATCH \
-              -H "Authorization: token $GITHUB_TOKEN" \
-              -H "Accept: application/vnd.github.v3+json" \
-              -d "$pr_data" \
-              "https://api.github.com/repos/${{ github.repository }}/pulls/${{ steps.check_pr.outputs.pr_number }}"
+            gh api "repos/${{ github.repository }}/pulls/${{ steps.check_pr.outputs.pr_number }}" \
+              --method PATCH \
+              --field title="$pr_title" \
+              --field body="$pr_body"
             
             echo "Updated existing PR #${{ steps.check_pr.outputs.pr_number }}"
           else
             # Create new PR
-            pr_data=$(jq -n --arg title "$pr_title" \
-                              --arg head "${{env.BRANCH_NAME}}" \
-                              --arg base "${{ inputs.target_branch }}" \
-                              --arg body "$pr_body" \
-                              '{title: $title, head: $head, base: $base, body: $body}')
-            
-            curl -X POST \
-              -H "Authorization: token $GITHUB_TOKEN" \
-              -H "Accept: application/vnd.github.v3+json" \
-              -d "$pr_data" \
-              "https://api.github.com/repos/${{ github.repository }}/pulls"
+            gh api "repos/${{ github.repository }}/pulls" \
+              --method POST \
+              --field title="$pr_title" \
+              --field head="${{env.BRANCH_NAME}}" \
+              --field base="${{ inputs.target_branch }}" \
+              --field body="$pr_body"
             
             echo "Created new PR"
           fi
