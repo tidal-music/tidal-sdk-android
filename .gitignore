@@ -13,3 +13,7 @@ gradle-user-home
 profile-out*/
 local.settings.gradle.kts
 static-analysis/bin
+
+# TidalAPI generation temporary files
+tidalapi/bin/venv/
+tidalapi/bin/__pycache__/
