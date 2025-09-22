@@ -73,7 +73,7 @@ jobs:
           ASSET_URL: ${{ steps.get_release.outputs.asset_url }}
         run: |
           echo "Downloading from ${{ env.ASSET_URL }}"
-          gh release download --repo tidal-music/openapi-generator --pattern "openapi-generator-cli.jar" --dir tidalapi/bin/
+          gh release download --repo tidal-music/openapi-generator --pattern "openapi-generator-cli.jar" --dir tidalapi/bin/ --clobber
 
       - name: Make scripts executable
         run: |
