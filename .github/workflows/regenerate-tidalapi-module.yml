@@ -131,6 +131,24 @@ jobs:
         if: steps.check_changes.outputs.changes_detected == 'true'
         uses: ./.github/actions/check-api-pr
 
+      - name: Extract version information
+        id: extract_versions
+        if: steps.check_changes.outputs.changes_detected == 'true'
+        run: |
+          
+          # Get API version from the json spec
+          if [ -f "tidalapi/bin/tidal-api.json" ]; then
+            API_VERSION=$(jq -r '.info.version // "unknown"' tidalapi/bin/tidal-api.json)
+          else
+            API_VERSION="unknown"
+          fi
+          
+          # Get module version from gradle.properties
+          MODULE_VERSION=$(grep "^version=" tidalapi/gradle.properties | cut -d'=' -f2)
+          
+          echo "api_version=$API_VERSION" >> $GITHUB_OUTPUT
+          echo "module_version=$MODULE_VERSION" >> $GITHUB_OUTPUT
+
       - name: Commit changes
         id: commit_changes
         if: steps.check_changes.outputs.changes_detected == 'true'
@@ -195,9 +213,11 @@ jobs:
           CHANGED_FILES: ${{ steps.check_changes.outputs.changed_files }}
           CHANGED_FILE_COUNT: ${{ steps.check_changes.outputs.changed_file_count }}
           BRANCH_NAME: ${{ steps.commit_changes.outputs.branch_name }}
+          API_VERSION: ${{ steps.extract_versions.outputs.api_version }}
+          MODULE_VERSION: ${{ steps.extract_versions.outputs.module_version }}
         run: |
           pr_title="Automatic Tidal API module update - ${{env.CHANGED_FILE_COUNT}} files changed"
-          pr_body="Changed files:\n\n${{ env.CHANGED_FILES }}\n\nAutomatically generated on $(date)\n\nThis PR is automatically updated when API changes are detected."
+          pr_body="Changed files:\n\n${{ env.CHANGED_FILES }}\n\nAPI Version: ${{ env.API_VERSION }}\nNew module Version: ${{ env.MODULE_VERSION }}\n\nAutomatically generated on $(date)\n\nThis PR is automatically updated when API changes are detected."
           pr_body=$(echo -e "$pr_body")
           
           if [ "${{ steps.check_pr.outputs.existing_pr }}" == "true" ]; then
