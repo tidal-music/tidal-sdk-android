@@ -28,7 +28,7 @@ on:
         required: true
 env:
   API_MODULE_DIR: tidalapi
-
+  GH_TOKEN: ${{ secrets.token }}
 permissions:
   contents: write
   pull-requests: write
@@ -64,10 +64,7 @@ jobs:
           repo_owner="tidal-music"
           repo_name="openapi-generator"
           
-          curl -s -H -v "Authorization: token ${{ secrets.token }}" \
-            "https://api.github.com/repos/$repo_owner/$repo_name/releases/latest" > release_info.json
-          # Extract the download URL for the desired asset
-          ASSET_URL=$(jq -r '.assets[] | select(.name == "openapi-generator-cli.jar") | .browser_download_url' release_info.json)
+          ASSET_URL=$(gh api "repos/$repo_owner/$repo_name/releases/latest" --jq '.assets[] | select(.name == "openapi-generator-cli.jar") | .browser_download_url')
           
           echo "asset_url=$ASSET_URL" >> $GITHUB_OUTPUT
 
@@ -76,10 +73,7 @@ jobs:
           ASSET_URL: ${{ steps.get_release.outputs.asset_url }}
         run: |
           echo "Downloading from ${{ env.ASSET_URL }}"
-          curl -L -H "Authorization: token ${{ secrets.token }}" \
-            -H "Accept: application/octet-stream" \
-            -o tidalapi/bin/openapi-generator-cli.jar \
-            "${{ env.ASSET_URL }}"
+          gh release download --repo tidal-music/openapi-generator --pattern "openapi-generator-cli.jar" --dir tidalapi/bin/ --clobber
 
       - name: Make scripts executable
         run: |
@@ -98,10 +92,10 @@ jobs:
             # Copy the artifact to the expected location
             cp /tmp/api-check/latest-api.json openapi_downloads/tidal-api-oas.json
             # Use the local file parameter that's already supported by the script
-            ./generate-api.sh --local-file "$(pwd)/openapi_downloads/tidal-api-oas.json"
+            ./generate-api.sh --local-file "$(pwd)/openapi_downloads/tidal-api-oas.json" --bump
           else
             echo "Downloading API spec as part of generation"
-            ./generate-api.sh
+            ./generate-api.sh --bump
           fi
 
       - name: Check for changes
@@ -136,6 +130,24 @@ jobs:
         id: check_pr
         if: steps.check_changes.outputs.changes_detected == 'true'
         uses: ./.github/actions/check-api-pr
+
+      - name: Extract version information
+        id: extract_versions
+        if: steps.check_changes.outputs.changes_detected == 'true'
+        run: |
+          
+          # Get API version from the json spec
+          if [ -f "tidalapi/bin/tidal-api.json" ]; then
+            API_VERSION=$(jq -r '.info.version // "unknown"' tidalapi/bin/tidal-api.json)
+          else
+            API_VERSION="unknown"
+          fi
+          
+          # Get module version from gradle.properties
+          MODULE_VERSION=$(grep "^version=" tidalapi/gradle.properties | cut -d'=' -f2)
+          
+          echo "api_version=$API_VERSION" >> $GITHUB_OUTPUT
+          echo "module_version=$MODULE_VERSION" >> $GITHUB_OUTPUT
 
       - name: Commit changes
         id: commit_changes
@@ -201,37 +213,29 @@ jobs:
           CHANGED_FILES: ${{ steps.check_changes.outputs.changed_files }}
           CHANGED_FILE_COUNT: ${{ steps.check_changes.outputs.changed_file_count }}
           BRANCH_NAME: ${{ steps.commit_changes.outputs.branch_name }}
+          API_VERSION: ${{ steps.extract_versions.outputs.api_version }}
+          MODULE_VERSION: ${{ steps.extract_versions.outputs.module_version }}
         run: |
           pr_title="Automatic Tidal API module update - ${{env.CHANGED_FILE_COUNT}} files changed"
-          pr_body="Changed files:\n\n${{ env.CHANGED_FILES }}\n\nAutomatically generated on $(date)\n\nThis PR is automatically updated when API changes are detected."
+          pr_body="Changed files:\n\n${{ env.CHANGED_FILES }}\n\nAPI Version: ${{ env.API_VERSION }}\nNew module Version: ${{ env.MODULE_VERSION }}\n\nAutomatically generated on $(date)\n\nThis PR is automatically updated when API changes are detected."
           pr_body=$(echo -e "$pr_body")
           
           if [ "${{ steps.check_pr.outputs.existing_pr }}" == "true" ]; then
             # Update existing PR
-            pr_data=$(jq -n --arg title "$pr_title" \
-                              --arg body "$pr_body" \
-                              '{title: $title, body: $body}')
-            
-            curl -X PATCH \
-              -H "Authorization: token $GITHUB_TOKEN" \
-              -H "Accept: application/vnd.github.v3+json" \
-              -d "$pr_data" \
-              "https://api.github.com/repos/${{ github.repository }}/pulls/${{ steps.check_pr.outputs.pr_number }}"
+            gh api "repos/${{ github.repository }}/pulls/${{ steps.check_pr.outputs.pr_number }}" \
+              --method PATCH \
+              --field title="$pr_title" \
+              --field body="$pr_body"
             
             echo "Updated existing PR #${{ steps.check_pr.outputs.pr_number }}"
           else
             # Create new PR
-            pr_data=$(jq -n --arg title "$pr_title" \
-                              --arg head "${{env.BRANCH_NAME}}" \
-                              --arg base "${{ inputs.target_branch }}" \
-                              --arg body "$pr_body" \
-                              '{title: $title, head: $head, base: $base, body: $body}')
-            
-            curl -X POST \
-              -H "Authorization: token $GITHUB_TOKEN" \
-              -H "Accept: application/vnd.github.v3+json" \
-              -d "$pr_data" \
-              "https://api.github.com/repos/${{ github.repository }}/pulls"
+            gh api "repos/${{ github.repository }}/pulls" \
+              --method POST \
+              --field title="$pr_title" \
+              --field head="${{env.BRANCH_NAME}}" \
+              --field base="${{ inputs.target_branch }}" \
+              --field body="$pr_body"
             
             echo "Created new PR"
           fi
