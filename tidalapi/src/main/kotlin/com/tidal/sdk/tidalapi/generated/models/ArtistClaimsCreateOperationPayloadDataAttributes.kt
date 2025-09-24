@@ -9,11 +9,15 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param provider */
+/**
+ * @param artistId
+ * @param provider
+ */
 @Serializable
 data class ArtistClaimsCreateOperationPayloadDataAttributes(
+    @SerialName(value = "artistId") val artistId: kotlin.String,
     @SerialName(value = "provider")
-    val provider: ArtistClaimsCreateOperationPayloadDataAttributes.Provider
+    val provider: ArtistClaimsCreateOperationPayloadDataAttributes.Provider,
 ) {
 
     /** Values: DISTROKID,CDBABY,TUNECORE */

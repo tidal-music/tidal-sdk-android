@@ -82,14 +82,14 @@ interface UserCollections {
 
     /** enum for parameter sort */
     enum class SortUserCollectionsIdRelationshipsAlbumsGet(val value: kotlin.String) {
-        @SerialName(value = "albums.addedAt") albumsAdedAtAsc("albums.addedAt"),
-        @SerialName(value = "-albums.addedAt") albumsAddedAtDesc("-albums.addedAt"),
-        @SerialName(value = "albums.artists.name") albumsArtistsNameAsc("albums.artists.name"),
-        @SerialName(value = "-albums.artists.name") albumsArtistsNameDesc("-albums.artists.name"),
-        @SerialName(value = "albums.releaseDate") albumsReleaseDateAsc("albums.releaseDate"),
-        @SerialName(value = "-albums.releaseDate") albumsReleaseDateDesc("-albums.releaseDate"),
-        @SerialName(value = "albums.title") albumsTitleAsc("albums.title"),
-        @SerialName(value = "-albums.title") albumsTitleDesc("-albums.title"),
+        @SerialName(value = "albums.addedAt") AlbumsAddedAtAsc("albums.addedAt"),
+        @SerialName(value = "-albums.addedAt") AlbumsAddedAtDesc("-albums.addedAt"),
+        @SerialName(value = "albums.artists.name") AlbumsArtistsNameAsc("albums.artists.name"),
+        @SerialName(value = "-albums.artists.name") AlbumsArtistsNameDesc("-albums.artists.name"),
+        @SerialName(value = "albums.releaseDate") AlbumsReleaseDateAsc("albums.releaseDate"),
+        @SerialName(value = "-albums.releaseDate") AlbumsReleaseDateDesc("-albums.releaseDate"),
+        @SerialName(value = "albums.title") AlbumsTitleAsc("albums.title"),
+        @SerialName(value = "-albums.title") AlbumsTitleDesc("-albums.title"),
     }
 
     /**
@@ -189,10 +189,10 @@ interface UserCollections {
 
     /** enum for parameter sort */
     enum class SortUserCollectionsIdRelationshipsArtistsGet(val value: kotlin.String) {
-        @SerialName(value = "artists.addedAt") artistsAddedAtAsc("artists.addedAt"),
-        @SerialName(value = "-artists.addedAt") artistsAddedAtDesc("-artists.addedAt"),
-        @SerialName(value = "artists.name") artistsNameAsc("artists.name"),
-        @SerialName(value = "-artists.name") artistsNameDesc("-artists.name"),
+        @SerialName(value = "artists.addedAt") ArtistsAddedAtAsc("artists.addedAt"),
+        @SerialName(value = "-artists.addedAt") ArtistsAddedAtDesc("-artists.addedAt"),
+        @SerialName(value = "artists.name") ArtistsNameAsc("artists.name"),
+        @SerialName(value = "-artists.name") ArtistsNameDesc("-artists.name"),
     }
 
     /**
@@ -322,14 +322,14 @@ interface UserCollections {
 
     /** enum for parameter sort */
     enum class SortUserCollectionsIdRelationshipsPlaylistsGet(val value: kotlin.String) {
-        @SerialName(value = "playlists.addedAt") playlistsAddedAtAsc("playlists.addedAt"),
-        @SerialName(value = "-playlists.addedAt") playlistsAddedAtDesc("-playlists.addedAt"),
+        @SerialName(value = "playlists.addedAt") PlaylistsAddedAtAsc("playlists.addedAt"),
+        @SerialName(value = "-playlists.addedAt") PlaylistsAddedAtDesc("-playlists.addedAt"),
         @SerialName(value = "playlists.lastUpdatedAt")
-        playlistsLastUpdatedAtAsc("playlists.lastUpdatedAt"),
+        PlaylistsLastUpdatedAtAsc("playlists.lastUpdatedAt"),
         @SerialName(value = "-playlists.lastUpdatedAt")
-        playlistsLastUpdatedAtDesc("-playlists.lastUpdatedAt"),
-        @SerialName(value = "playlists.name") playlistsNameAsc("playlists.name"),
-        @SerialName(value = "-playlists.name") playlistNameDesc("-playlists.name"),
+        PlaylistsLastUpdatedAtDesc("-playlists.lastUpdatedAt"),
+        @SerialName(value = "playlists.name") PlaylistsNameAsc("playlists.name"),
+        @SerialName(value = "-playlists.name") PlaylistsNameDesc("-playlists.name"),
     }
 
     /**
@@ -424,16 +424,16 @@ interface UserCollections {
 
     /** enum for parameter sort */
     enum class SortUserCollectionsIdRelationshipsTracksGet(val value: kotlin.String) {
-        @SerialName(value = "tracks.addedAt") tracksAddedAtAsc("tracks.addedAt"),
-        @SerialName(value = "-tracks.addedAt") tracksAddedAtDesc("-tracks.addedAt"),
-        @SerialName(value = "tracks.albums.title") tracksAlbumsTitleAsc("tracks.albums.title"),
-        @SerialName(value = "-tracks.albums.title") tracksAlbumsTitleDesc("-tracks.albums.title"),
-        @SerialName(value = "tracks.artists.name") tracksArtistsNameAsc("tracks.artists.name"),
-        @SerialName(value = "-tracks.artists.name") tracksArtistsNameDesc("-tracks.artists.name"),
-        @SerialName(value = "tracks.duration") tracksDurationAsc("tracks.duration"),
-        @SerialName(value = "-tracks.duration") tracksDurationDesc("-tracks.duration"),
-        @SerialName(value = "tracks.title") tracksTitleAsc("tracks.title"),
-        @SerialName(value = "-tracks.title") tracksTitleDesc("-tracks.title"),
+        @SerialName(value = "tracks.addedAt") TracksAddedAtAsc("tracks.addedAt"),
+        @SerialName(value = "-tracks.addedAt") TracksAddedAtDesc("-tracks.addedAt"),
+        @SerialName(value = "tracks.albums.title") TracksAlbumsTitleAsc("tracks.albums.title"),
+        @SerialName(value = "-tracks.albums.title") TracksAlbumsTitleDesc("-tracks.albums.title"),
+        @SerialName(value = "tracks.artists.name") TracksArtistsNameAsc("tracks.artists.name"),
+        @SerialName(value = "-tracks.artists.name") TracksArtistsNameDesc("-tracks.artists.name"),
+        @SerialName(value = "tracks.duration") TracksDurationAsc("tracks.duration"),
+        @SerialName(value = "-tracks.duration") TracksDurationDesc("-tracks.duration"),
+        @SerialName(value = "tracks.title") TracksTitleAsc("tracks.title"),
+        @SerialName(value = "-tracks.title") TracksTitleDesc("-tracks.title"),
     }
 
     /**
@@ -533,14 +533,14 @@ interface UserCollections {
 
     /** enum for parameter sort */
     enum class SortUserCollectionsIdRelationshipsVideosGet(val value: kotlin.String) {
-        @SerialName(value = "videos.addedAt") videosAddedAtAsc("videos.addedAt"),
-        @SerialName(value = "-videos.addedAt") videosAddedAtDesc("-videos.addedAt"),
-        @SerialName(value = "videos.artists.name") videosArtistsNameAsc("videos.artists.name"),
-        @SerialName(value = "-videos.artists.name") videosArtistsNameDesc("-videos.artists.name"),
-        @SerialName(value = "videos.duration") videosDurationAsc("videos.duration"),
-        @SerialName(value = "-videos.duration") videosDurationDesc("-videos.duration"),
-        @SerialName(value = "videos.title") videosTitleAsc("videos.title"),
-        @SerialName(value = "-videos.title") videosTitleDesc("-videos.title"),
+        @SerialName(value = "videos.addedAt") VideosAddedAtAsc("videos.addedAt"),
+        @SerialName(value = "-videos.addedAt") VideosAddedAtDesc("-videos.addedAt"),
+        @SerialName(value = "videos.artists.name") VideosArtistsNameAsc("videos.artists.name"),
+        @SerialName(value = "-videos.artists.name") VideosArtistsNameDesc("-videos.artists.name"),
+        @SerialName(value = "videos.duration") VideosDurationAsc("videos.duration"),
+        @SerialName(value = "-videos.duration") VideosDurationDesc("-videos.duration"),
+        @SerialName(value = "videos.title") VideosTitleAsc("videos.title"),
+        @SerialName(value = "-videos.title") VideosTitleDesc("-videos.title"),
     }
 
     /**
