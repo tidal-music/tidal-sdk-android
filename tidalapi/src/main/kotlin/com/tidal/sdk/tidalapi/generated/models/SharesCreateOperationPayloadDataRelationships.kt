@@ -9,15 +9,9 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/**
- * @param links
- * @param `data`
- * @param included
- */
+/** @param sharedResources */
 @Serializable
-data class UserCollectionsAlbumsMultiRelationshipDataDocument(
-    @SerialName(value = "links") val links: Links,
-    @SerialName(value = "data")
-    val `data`: kotlin.collections.List<UserCollectionsAlbumsResourceIdentifier>? = null,
-    @SerialName(value = "included") val included: kotlin.collections.List<IncludedInner>? = null,
+data class SharesCreateOperationPayloadDataRelationships(
+    @SerialName(value = "sharedResources")
+    val sharedResources: SharesCreateOperationPayloadDataRelationshipsSharedResources
 ) {}

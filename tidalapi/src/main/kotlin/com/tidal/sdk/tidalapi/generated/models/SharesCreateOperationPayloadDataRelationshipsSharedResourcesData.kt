@@ -14,10 +14,10 @@ import kotlinx.serialization.Serializable
  * @param type
  */
 @Serializable
-data class UserSharesCreateOperationPayloadDataRelationshipsSharedResourcesData(
+data class SharesCreateOperationPayloadDataRelationshipsSharedResourcesData(
     @SerialName(value = "id") val id: kotlin.String,
     @SerialName(value = "type")
-    val type: UserSharesCreateOperationPayloadDataRelationshipsSharedResourcesData.Type,
+    val type: SharesCreateOperationPayloadDataRelationshipsSharedResourcesData.Type,
 ) {
 
     /** Values: tracks */

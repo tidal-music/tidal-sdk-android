@@ -11,6 +11,8 @@ import kotlinx.serialization.Serializable
 
 /** @param `data` */
 @Serializable
-data class UserSharesCreateOperationPayload(
-    @SerialName(value = "data") val `data`: UserSharesCreateOperationPayloadData
+data class SharesCreateOperationPayloadDataRelationshipsSharedResources(
+    @SerialName(value = "data")
+    val `data`:
+        kotlin.collections.List<SharesCreateOperationPayloadDataRelationshipsSharedResourcesData>
 ) {}

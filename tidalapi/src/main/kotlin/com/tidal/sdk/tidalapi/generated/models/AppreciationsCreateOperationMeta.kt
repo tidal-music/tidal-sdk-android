@@ -9,12 +9,8 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/**
- * @param owners
- * @param sharedResources
- */
+/** @param dryRun */
 @Serializable
-data class UserSharesRelationships(
-    @SerialName(value = "owners") val owners: MultiRelationshipDataDocument,
-    @SerialName(value = "sharedResources") val sharedResources: MultiRelationshipDataDocument,
+data class AppreciationsCreateOperationMeta(
+    @SerialName(value = "dryRun") val dryRun: kotlin.Boolean? = null
 ) {}

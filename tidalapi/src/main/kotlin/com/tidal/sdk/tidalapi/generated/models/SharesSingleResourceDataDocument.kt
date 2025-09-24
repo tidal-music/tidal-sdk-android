@@ -10,13 +10,13 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param links
  * @param `data`
+ * @param links
  * @param included
  */
 @Serializable
-data class UserSharesMultiRelationshipDataDocument(
+data class SharesSingleResourceDataDocument(
+    @SerialName(value = "data") val `data`: SharesResourceObject,
     @SerialName(value = "links") val links: Links,
-    @SerialName(value = "data") val `data`: kotlin.collections.List<ResourceIdentifier>? = null,
     @SerialName(value = "included") val included: kotlin.collections.List<IncludedInner>? = null,
 ) {}
