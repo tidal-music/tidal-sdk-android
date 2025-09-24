@@ -1,3 +1,10 @@
+# Automated Release Creation and Publishing
+#
+# This workflow is triggered by post-merge.yml when version changes are detected
+# in module gradle.properties files. It automatically:
+# 1. Creates a release with the new version tag
+# 2. Publishes the release
+# 3. Triggers publish-release.yml to publish packages to Maven Central
 name: Create release
 
 on:
@@ -30,8 +37,8 @@ jobs:
           tag="${{ inputs.module }}-$version"
           echo "version=$version" >> $GITHUB_OUTPUT
           echo "tag=$tag" >> $GITHUB_OUTPUT
-  
-  create-release:
+
+  create-and-publish-release:
     runs-on: ubuntu-latest
     needs: [ expose-tag ]
     permissions: 
@@ -47,11 +54,20 @@ jobs:
         java-version: 17
         distribution: temurin
 
-    - name: Generate Release Draft
-      id: generate-release
+    - name: Extract changelog content
+      id: changelog
+      run: |
+        changelog_file="${{ env.name }}/CHANGELOG.md"
+        version_section=$(awk "/^## \[${{ env.version }}\]/{flag=1; next} /^## \[/{flag=0} flag" "$changelog_file")
+        echo "$version_section" > /tmp/changelog_content.md
+
+    - name: Create and publish release
+      id: create-release
       uses: ncipollo/release-action@v1
       with:
-        tag: ${{ env.tag }}  
-        allowUpdates: true
-        draft: true
-        body: "This is a release draft for ${{ env.tag }}"
+        tag: ${{ env.tag }}
+        name: ${{ env.tag }}
+        bodyFile: /tmp/changelog_content.md
+        draft: false
+        prerelease: false
+        allowUpdates: false

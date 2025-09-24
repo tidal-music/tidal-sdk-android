@@ -38,13 +38,5 @@ After confirming the name, a new directory will be created with the basic module
     version=1.0.0
     ```
     Change `version` to the new value. This follows [Semantic Versioning](https://semver.org/). Also, you cannot downgrade - the CI/CD pipeline will refuse to work with downgrades.
-
-2. Open a Pull Request with your version bump, get it approved and merge it. A release draft will be created for the module you changed.
-
-3. Find your draft in the [releases list](https://github.com/tidal-music/tidal-sdk-android/releases) and add some meaningful sentences about the release, changelog style (Note: This paragraph is temporary, as we will automate and regulate changelog creation, but for now, you are free to type)
-
-4. Check in with your teammates, lead, the module's owner etc. to make sure the release is ready to go.
-
-5. Click `Publish` at the bottom of your draft release. This will trigger a workflow to publish a package of the new version
-
-6. Find your newly published package [here](https://github.com/orgs/tidal-music/packages?repo_name=tidal-sdk-android). 
+2. Each new release must have a changelog entry for the corresponding version code. So don't forget to add that too.
+3. Open a Pull Request with your version bump, get it approved and merge it. A release will be created for te changed module. It will be pushed to MavenCentral automatically. The release description will be pulled from the changelog.
