@@ -9,12 +9,12 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param `data` */
+/**
+ * @param owners
+ * @param sharedResources
+ */
 @Serializable
-data class UserSharesCreateOperationPayloadDataRelationshipsSharedResources(
-    @SerialName(value = "data")
-    val `data`:
-        kotlin.collections.List<
-            UserSharesCreateOperationPayloadDataRelationshipsSharedResourcesData
-        >
+data class SharesRelationships(
+    @SerialName(value = "owners") val owners: MultiRelationshipDataDocument,
+    @SerialName(value = "sharedResources") val sharedResources: MultiRelationshipDataDocument,
 ) {}

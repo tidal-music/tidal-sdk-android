@@ -11,16 +11,16 @@ import kotlinx.serialization.Serializable
 
 /**
  * @param code Share code
- * @param createdAt Datetime of userShare creation (ISO 8601)
+ * @param createdAt Datetime of share creation (ISO 8601)
  * @param externalLinks Links external to TIDAL API
  */
 @Serializable
-data class UserSharesAttributes(
+data class SharesAttributes(
 
     /* Share code */
 
     @SerialName(value = "code") val code: kotlin.String,
-    /* Datetime of userShare creation (ISO 8601) */
+    /* Datetime of share creation (ISO 8601) */
 
     @SerialName(value = "createdAt") val createdAt: kotlin.String,
     /* Links external to TIDAL API */

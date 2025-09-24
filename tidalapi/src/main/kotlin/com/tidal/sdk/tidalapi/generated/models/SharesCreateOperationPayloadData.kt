@@ -14,15 +14,15 @@ import kotlinx.serialization.Serializable
  * @param type
  */
 @Serializable
-data class UserSharesCreateOperationPayloadData(
+data class SharesCreateOperationPayloadData(
     @SerialName(value = "relationships")
-    val relationships: UserSharesCreateOperationPayloadDataRelationships,
-    @SerialName(value = "type") val type: UserSharesCreateOperationPayloadData.Type,
+    val relationships: SharesCreateOperationPayloadDataRelationships,
+    @SerialName(value = "type") val type: SharesCreateOperationPayloadData.Type,
 ) {
 
-    /** Values: userShares */
+    /** Values: shares */
     @Serializable
     enum class Type(val value: kotlin.String) {
-        @SerialName(value = "userShares") userShares("userShares")
+        @SerialName(value = "shares") shares("shares")
     }
 }

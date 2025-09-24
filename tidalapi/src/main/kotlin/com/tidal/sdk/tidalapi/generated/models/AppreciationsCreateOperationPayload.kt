@@ -16,5 +16,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class AppreciationsCreateOperationPayload(
     @SerialName(value = "data") val `data`: AppreciationsCreateOperationPayloadData,
-    @SerialName(value = "meta") val meta: ArtistCreateOperationMeta? = null,
+    @SerialName(value = "meta") val meta: AppreciationsCreateOperationMeta? = null,
 ) {}

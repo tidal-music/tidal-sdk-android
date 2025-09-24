@@ -10,10 +10,22 @@ import com.tidal.sdk.tidalapi.generated.models.PlaylistsItemsMultiRelationshipDa
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsSingleResourceDataDocument
+import kotlinx.serialization.SerialName
 import retrofit2.Response
 import retrofit2.http.*
 
 interface Playlists {
+
+    /** enum for parameter sort */
+    enum class SortPlaylistsGet(val value: kotlin.String) {
+        @SerialName(value = "createdAt") createdAtAsc("createdAt"),
+        @SerialName(value = "-createdAt") createdAtDesc("-createdAt"),
+        @SerialName(value = "lastModifiedAt") lastModifiedAtAsc("lastModifiedAt"),
+        @SerialName(value = "-lastModifiedAt") lastModifiedAtDesc("-lastModifiedAt"),
+        @SerialName(value = "name") nameAsc("name"),
+        @SerialName(value = "-name") nameDesc("-name"),
+    }
+
     /**
      * Get multiple playlists. Retrieves multiple playlists by available filters, or without if
      * applicable. Responses:
@@ -30,9 +42,11 @@ interface Playlists {
      * - 500: Internal server error - The server encountered an unexpected condition that prevented
      *   it from fulfilling the request
      *
-     * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param countryCode ISO 3166-1 alpha-2 country code (default to "US")
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param sort Values prefixed with \&quot;-\&quot; are sorted descending; values without it are
+     *   sorted ascending. (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: coverArt, items, owners (optional)
      * @param filterOwnersId User id (optional)
@@ -41,8 +55,9 @@ interface Playlists {
      */
     @GET("playlists")
     suspend fun playlistsGet(
-        @Query("countryCode") countryCode: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String = "US",
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("sort") sort: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[owners.id]")
@@ -87,7 +102,7 @@ interface Playlists {
      *   it from fulfilling the request
      *
      * @param id Playlist id
-     * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param countryCode ISO 3166-1 alpha-2 country code (default to "US")
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: coverArt, items, owners (optional)
      * @return [PlaylistsSingleResourceDataDocument]
@@ -95,7 +110,7 @@ interface Playlists {
     @GET("playlists/{id}")
     suspend fun playlistsIdGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String = "US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<PlaylistsSingleResourceDataDocument>
@@ -115,14 +130,14 @@ interface Playlists {
      *   it from fulfilling the request
      *
      * @param id Playlist id
-     * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param countryCode ISO 3166-1 alpha-2 country code (default to "US")
      * @param playlistUpdateOperationPayload (optional)
      * @return [Unit]
      */
     @PATCH("playlists/{id}")
     suspend fun playlistsIdPatch(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String = "US",
         @Body playlistUpdateOperationPayload: PlaylistUpdateOperationPayload? = null,
     ): Response<Unit>
 
@@ -143,7 +158,7 @@ interface Playlists {
      *   it from fulfilling the request
      *
      * @param id Playlist id
-     * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param countryCode ISO 3166-1 alpha-2 country code (default to "US")
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: coverArt (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -153,7 +168,7 @@ interface Playlists {
     @GET("playlists/{id}/relationships/coverArt")
     suspend fun playlistsIdRelationshipsCoverArtGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String = "US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
@@ -231,7 +246,7 @@ interface Playlists {
      *   it from fulfilling the request
      *
      * @param id Playlist id
-     * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param countryCode ISO 3166-1 alpha-2 country code (default to "US")
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
@@ -241,7 +256,7 @@ interface Playlists {
     @GET("playlists/{id}/relationships/items")
     suspend fun playlistsIdRelationshipsItemsGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String = "US",
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
@@ -290,14 +305,14 @@ interface Playlists {
      *   it from fulfilling the request
      *
      * @param id Playlist id
-     * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param countryCode ISO 3166-1 alpha-2 country code (default to "US")
      * @param playlistItemsRelationshipAddOperationPayload (optional)
      * @return [Unit]
      */
     @POST("playlists/{id}/relationships/items")
     suspend fun playlistsIdRelationshipsItemsPost(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String = "US",
         @Body
         playlistItemsRelationshipAddOperationPayload:
             PlaylistItemsRelationshipAddOperationPayload? =
@@ -320,7 +335,7 @@ interface Playlists {
      *   it from fulfilling the request
      *
      * @param id Playlist id
-     * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param countryCode ISO 3166-1 alpha-2 country code (default to "US")
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -330,7 +345,7 @@ interface Playlists {
     @GET("playlists/{id}/relationships/owners")
     suspend fun playlistsIdRelationshipsOwnersGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String = "US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
@@ -351,13 +366,13 @@ interface Playlists {
      * - 500: Internal server error - The server encountered an unexpected condition that prevented
      *   it from fulfilling the request
      *
-     * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param countryCode ISO 3166-1 alpha-2 country code (default to "US")
      * @param playlistCreateOperationPayload (optional)
      * @return [PlaylistsSingleResourceDataDocument]
      */
     @POST("playlists")
     suspend fun playlistsPost(
-        @Query("countryCode") countryCode: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String = "US",
         @Body playlistCreateOperationPayload: PlaylistCreateOperationPayload? = null,
     ): Response<PlaylistsSingleResourceDataDocument>
 }

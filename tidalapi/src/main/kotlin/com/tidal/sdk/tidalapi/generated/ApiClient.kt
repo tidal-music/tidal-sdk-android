@@ -14,6 +14,7 @@ import com.tidal.sdk.tidalapi.generated.apis.Playlists
 import com.tidal.sdk.tidalapi.generated.apis.Providers
 import com.tidal.sdk.tidalapi.generated.apis.SearchResults
 import com.tidal.sdk.tidalapi.generated.apis.SearchSuggestions
+import com.tidal.sdk.tidalapi.generated.apis.Shares
 import com.tidal.sdk.tidalapi.generated.apis.TrackFiles
 import com.tidal.sdk.tidalapi.generated.apis.TrackManifests
 import com.tidal.sdk.tidalapi.generated.apis.TrackSourceFiles
@@ -23,7 +24,6 @@ import com.tidal.sdk.tidalapi.generated.apis.UserCollections
 import com.tidal.sdk.tidalapi.generated.apis.UserEntitlements
 import com.tidal.sdk.tidalapi.generated.apis.UserRecommendations
 import com.tidal.sdk.tidalapi.generated.apis.UserReports
-import com.tidal.sdk.tidalapi.generated.apis.UserShares
 import com.tidal.sdk.tidalapi.generated.apis.Users
 import com.tidal.sdk.tidalapi.generated.apis.Videos
 import com.tidal.sdk.tidalapi.networking.RetrofitProvider
@@ -99,6 +99,11 @@ class TidalApiClient(credentialsProvider: CredentialsProvider, baseUrl: String =
         return retrofit.create(SearchSuggestions::class.java)
     }
 
+    /** Returns an instance of the [Shares] which can be used to make API calls to the */
+    fun createShares(): Shares {
+        return retrofit.create(Shares::class.java)
+    }
+
     /** Returns an instance of the [TrackFiles] which can be used to make API calls to the */
     fun createTrackFiles(): TrackFiles {
         return retrofit.create(TrackFiles::class.java)
@@ -144,11 +149,6 @@ class TidalApiClient(credentialsProvider: CredentialsProvider, baseUrl: String =
     /** Returns an instance of the [UserReports] which can be used to make API calls to the */
     fun createUserReports(): UserReports {
         return retrofit.create(UserReports::class.java)
-    }
-
-    /** Returns an instance of the [UserShares] which can be used to make API calls to the */
-    fun createUserShares(): UserShares {
-        return retrofit.create(UserShares::class.java)
     }
 
     /** Returns an instance of the [Users] which can be used to make API calls to the */

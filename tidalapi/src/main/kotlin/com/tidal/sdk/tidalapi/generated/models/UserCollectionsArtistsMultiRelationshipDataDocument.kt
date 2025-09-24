@@ -12,10 +12,12 @@ import kotlinx.serialization.Serializable
 /**
  * @param links
  * @param `data`
+ * @param included
  */
 @Serializable
 data class UserCollectionsArtistsMultiRelationshipDataDocument(
     @SerialName(value = "links") val links: Links,
     @SerialName(value = "data")
     val `data`: kotlin.collections.List<UserCollectionsArtistsResourceIdentifier>? = null,
+    @SerialName(value = "included") val included: kotlin.collections.List<IncludedInner>? = null,
 ) {}
