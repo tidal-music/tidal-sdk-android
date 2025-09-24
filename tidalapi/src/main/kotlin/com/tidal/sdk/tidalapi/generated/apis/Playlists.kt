@@ -18,12 +18,12 @@ interface Playlists {
 
     /** enum for parameter sort */
     enum class SortPlaylistsGet(val value: kotlin.String) {
-        @SerialName(value = "createdAt") createdAtAsc("createdAt"),
-        @SerialName(value = "-createdAt") createdAtDesc("-createdAt"),
-        @SerialName(value = "lastModifiedAt") lastModifiedAtAsc("lastModifiedAt"),
-        @SerialName(value = "-lastModifiedAt") lastModifiedAtDesc("-lastModifiedAt"),
-        @SerialName(value = "name") nameAsc("name"),
-        @SerialName(value = "-name") nameDesc("-name"),
+        @SerialName(value = "createdAt") CreatedAtAsc("createdAt"),
+        @SerialName(value = "-createdAt") CreatedAtDesc("-createdAt"),
+        @SerialName(value = "lastModifiedAt") LastModifiedAtAsc("lastModifiedAt"),
+        @SerialName(value = "-lastModifiedAt") LastModifiedAtDesc("-lastModifiedAt"),
+        @SerialName(value = "name") NameAsc("name"),
+        @SerialName(value = "-name") NameDesc("-name"),
     }
 
     /**

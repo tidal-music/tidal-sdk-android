@@ -10,18 +10,25 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
+ * @param artistId The artist id which is being claimed
  * @param provider The DSP used for authentication
+ * @param status Current status of this claim
  * @param recommendation The recommended claim resolution
  * @param redirectUrl The DSP redirect url used for authentication
  * @param retrievedUpcs List of UPCs retrieved from the DSP
- * @param status Current status of this claim
  */
 @Serializable
 data class ArtistClaimsAttributes(
 
+    /* The artist id which is being claimed */
+
+    @SerialName(value = "artistId") val artistId: kotlin.String,
     /* The DSP used for authentication */
 
     @SerialName(value = "provider") val provider: ArtistClaimsAttributes.Provider,
+    /* Current status of this claim */
+
+    @SerialName(value = "status") val status: ArtistClaimsAttributes.Status,
     /* The recommended claim resolution */
 
     @SerialName(value = "recommendation")
@@ -33,9 +40,6 @@ data class ArtistClaimsAttributes(
 
     @SerialName(value = "retrievedUpcs")
     val retrievedUpcs: kotlin.collections.List<BarcodeId>? = null,
-    /* Current status of this claim */
-
-    @SerialName(value = "status") val status: ArtistClaimsAttributes.Status? = null,
 ) {
 
     /**
@@ -48,19 +52,6 @@ data class ArtistClaimsAttributes(
         @SerialName(value = "DISTROKID") DISTROKID("DISTROKID"),
         @SerialName(value = "CDBABY") CDBABY("CDBABY"),
         @SerialName(value = "TUNECORE") TUNECORE("TUNECORE"),
-    }
-
-    /**
-     * The recommended claim resolution
-     *
-     * Values: DSP_PROFILE_CLAIMED,CONTENT_MIGRATED_TO_UPLOADS,NO_CONTENT_MATCHED
-     */
-    @Serializable
-    enum class Recommendation(val value: kotlin.String) {
-        @SerialName(value = "DSP_PROFILE_CLAIMED") DSP_PROFILE_CLAIMED("DSP_PROFILE_CLAIMED"),
-        @SerialName(value = "CONTENT_MIGRATED_TO_UPLOADS")
-        CONTENT_MIGRATED_TO_UPLOADS("CONTENT_MIGRATED_TO_UPLOADS"),
-        @SerialName(value = "NO_CONTENT_MATCHED") NO_CONTENT_MATCHED("NO_CONTENT_MATCHED"),
     }
 
     /**
@@ -80,5 +71,18 @@ data class ArtistClaimsAttributes(
         @SerialName(value = "COMPLETED") COMPLETED("COMPLETED"),
         @SerialName(value = "FAILED") FAILED("FAILED"),
         @SerialName(value = "CANCELLED") CANCELLED("CANCELLED"),
+    }
+
+    /**
+     * The recommended claim resolution
+     *
+     * Values: DSP_PROFILE_CLAIMED,CONTENT_MIGRATED_TO_UPLOADS,NO_CONTENT_MATCHED
+     */
+    @Serializable
+    enum class Recommendation(val value: kotlin.String) {
+        @SerialName(value = "DSP_PROFILE_CLAIMED") DSP_PROFILE_CLAIMED("DSP_PROFILE_CLAIMED"),
+        @SerialName(value = "CONTENT_MIGRATED_TO_UPLOADS")
+        CONTENT_MIGRATED_TO_UPLOADS("CONTENT_MIGRATED_TO_UPLOADS"),
+        @SerialName(value = "NO_CONTENT_MATCHED") NO_CONTENT_MATCHED("NO_CONTENT_MATCHED"),
     }
 }
