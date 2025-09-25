@@ -19,7 +19,7 @@ on:
 
 jobs:
   expose-tag:
-    name: Expose Tag
+    name: Expose tag and version
     runs-on: ubuntu-latest
     outputs:
       module-tag: ${{ steps.expose-tag.outputs.tag }}
@@ -38,7 +38,8 @@ jobs:
           echo "version=$version" >> $GITHUB_OUTPUT
           echo "tag=$tag" >> $GITHUB_OUTPUT
 
-  create-and-publish-release:
+  publish-to-gh-packages:
+    name: Publish packages to Github Packages
     runs-on: ubuntu-latest
     needs: [ expose-tag ]
     permissions: 
@@ -72,10 +73,10 @@ jobs:
         prerelease: false
         allowUpdates: false
 
-  publish-packages:
+  publish-to-maven-central:
     name: Publish packages to Maven Central
     runs-on: ubuntu-latest
-    needs: [ expose-tag, create-and-publish-release ]
+    needs: [ expose-tag ]
     permissions:
       contents: read
     env:
