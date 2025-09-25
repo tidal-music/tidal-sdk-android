@@ -39,4 +39,4 @@ After confirming the name, a new directory will be created with the basic module
     ```
     Change `version` to the new value. This follows [Semantic Versioning](https://semver.org/). Also, you cannot downgrade - the CI/CD pipeline will refuse to work with downgrades.
 2. Each new release must have a changelog entry for the corresponding version code. So don't forget to add that too.
-3. Open a Pull Request with your version bump, get it approved and merge it. A release will be created for te changed module. It will be pushed to MavenCentral automatically. The release description will be pulled from the changelog.
+3. Open a Pull Request with your version bump, get it approved and merge it. A release will be created for te changed module. It will be pushed to GH packages and MavenCentral automatically. The release description will be pulled from the changelog.

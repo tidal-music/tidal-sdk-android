@@ -19,7 +19,7 @@ on:
 
 jobs:
   expose-tag:
-    name: Expose Tag
+    name: Expose tag and version
     runs-on: ubuntu-latest
     outputs:
       module-tag: ${{ steps.expose-tag.outputs.tag }}
@@ -38,7 +38,8 @@ jobs:
           echo "version=$version" >> $GITHUB_OUTPUT
           echo "tag=$tag" >> $GITHUB_OUTPUT
 
-  create-and-publish-release:
+  publish-to-gh-packages:
+    name: Publish packages to Github Packages
     runs-on: ubuntu-latest
     needs: [ expose-tag ]
     permissions: 
@@ -61,7 +62,7 @@ jobs:
         version_section=$(awk "/^## \[${{ env.version }}\]/{flag=1; next} /^## \[/{flag=0} flag" "$changelog_file")
         echo "$version_section" > /tmp/changelog_content.md
 
-    - name: Create and publish release
+    - name: Create and publish release to GH packages
       id: create-release
       uses: ncipollo/release-action@v1
       with:
@@ -71,3 +72,31 @@ jobs:
         draft: false
         prerelease: false
         allowUpdates: false
+
+  publish-to-maven-central:
+    name: Publish packages to Maven Central
+    runs-on: ubuntu-latest
+    needs: [ expose-tag ]
+    permissions:
+      contents: read
+    env:
+      name: ${{ inputs.module}}
+      tag: ${{ needs.expose-tag.outputs.module-tag}}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - uses: gradle/actions/setup-gradle@v3
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@b231772637bb498f11fdbc86052b6e8a8dc9fc92
+      - name: Publish package
+        run: |
+          ./gradlew publish-sdk-module-${{ env.name }} --continue
+        env:
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USER }}
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.GPG_SIGNING_KEY_ID }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.GPG_SIGNING_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_SIGNING_IN_MEMORY_KEY }}
