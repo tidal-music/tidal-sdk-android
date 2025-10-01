@@ -11,11 +11,17 @@ import kotlinx.serialization.Serializable
 
 /**
  * @param technicalStatus
+ * @param direction
+ * @param lrcText
+ * @param provider
  * @param text
  */
 @Serializable
 data class LyricsAttributes(
     @SerialName(value = "technicalStatus") val technicalStatus: LyricsAttributes.TechnicalStatus,
+    @SerialName(value = "direction") val direction: LyricsAttributes.Direction? = null,
+    @SerialName(value = "lrcText") val lrcText: kotlin.String? = null,
+    @SerialName(value = "provider") val provider: LyricsAttributesProvider? = null,
     @SerialName(value = "text") val text: kotlin.String? = null,
 ) {
 
@@ -26,5 +32,12 @@ data class LyricsAttributes(
         @SerialName(value = "PROCESSING") PROCESSING("PROCESSING"),
         @SerialName(value = "ERROR") ERROR("ERROR"),
         @SerialName(value = "OK") OK("OK"),
+    }
+
+    /** Values: LEFT_TO_RIGHT,RIGHT_TO_LEFT */
+    @Serializable
+    enum class Direction(val value: kotlin.String) {
+        @SerialName(value = "LEFT_TO_RIGHT") LEFT_TO_RIGHT("LEFT_TO_RIGHT"),
+        @SerialName(value = "RIGHT_TO_LEFT") RIGHT_TO_LEFT("RIGHT_TO_LEFT"),
     }
 }

@@ -40,4 +40,8 @@ fun getOneOfSerializer() = SerializersModule {
         subclass(UsersResourceObject::class, UsersResourceObject.serializer())
         subclass(VideosResourceObject::class, VideosResourceObject.serializer())
     }
+    polymorphic(LyricsAttributesProvider::class) {
+        subclass(ThirdParty::class, ThirdParty.serializer())
+        subclass(Tidal::class, Tidal.serializer())
+    }
 }

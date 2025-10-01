@@ -30,7 +30,7 @@ interface Tracks {
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: albums, artists, genres, lyrics, owners, providers, radio,
+     *   Available options: albums, artists, genres, lyrics, owners, providers, radio, shares,
      *   similarTracks, sourceFile, trackStatistics (optional)
      * @param filterOwnersId User id (optional)
      * @param filterIsrc International Standard Recording Code (ISRC) (optional)
@@ -88,7 +88,7 @@ interface Tracks {
      * @param id A Tidal catalogue ID
      * @param countryCode ISO 3166-1 alpha-2 country code (default to "US")
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: albums, artists, genres, lyrics, owners, providers, radio,
+     *   Available options: albums, artists, genres, lyrics, owners, providers, radio, shares,
      *   similarTracks, sourceFile, trackStatistics (optional)
      * @return [TracksSingleResourceDataDocument]
      */
@@ -337,6 +337,36 @@ interface Tracks {
      */
     @GET("tracks/{id}/relationships/radio")
     suspend fun tracksIdRelationshipsRadioGet(
+        @Path("id") id: kotlin.String,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
+    ): Response<TracksMultiRelationshipDataDocument>
+
+    /**
+     * Get shares relationship (\&quot;to-many\&quot;). Retrieves shares relationship. Responses:
+     * - 200: Successful response
+     * - 400: Bad request - The request could not be understood by the server due to malformed
+     *   syntax or invalid parameters
+     * - 404: Not found - The requested resource could not be found
+     * - 405: Method not allowed - The request method is not allowed for the requested resource
+     * - 406: Not acceptable - The requested resource is capable of generating only content not
+     *   acceptable according to the Accept headers sent in the request
+     * - 415: Unsupported media type - The request entity has a media type which the server or
+     *   resource does not support
+     * - 429: Too many requests - The user has sent too many requests in a given amount of time
+     * - 500: Internal server error - The server encountered an unexpected condition that prevented
+     *   it from fulfilling the request
+     *
+     * @param id A Tidal catalogue ID
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: shares (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
+     * @return [TracksMultiRelationshipDataDocument]
+     */
+    @GET("tracks/{id}/relationships/shares")
+    suspend fun tracksIdRelationshipsSharesGet(
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
