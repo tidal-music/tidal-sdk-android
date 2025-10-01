@@ -152,6 +152,7 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/IncludedInner.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/Links.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/LinksMeta.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/LyricsAttributes.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/LyricsAttributesProvider.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/LyricsCreateOperationPayload.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/LyricsCreateOperationPayloadData.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/LyricsCreateOperationPayloadDataAttributes.kt
@@ -160,6 +161,7 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/LyricsCreateOperationPay
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/LyricsCreateOperationPayloadMeta.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/LyricsMultiRelationshipDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/LyricsMultiResourceDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/LyricsProvider.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/LyricsRelationships.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/LyricsResourceObject.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/LyricsSingleRelationshipDataDocument.kt
@@ -228,6 +230,8 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/SharesRelationships.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/SharesResourceObject.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/SharesSingleResourceDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/SingleRelationshipDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ThirdParty.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/Tidal.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/TrackCreateOperationPayload.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/TrackCreateOperationPayloadData.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/TrackCreateOperationPayloadDataAttributes.kt
