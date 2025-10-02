@@ -19,7 +19,6 @@ plugin-android = "8.2.2"
 retrofit = "2.11.0"
 room = "2.6.1"
 slf4j-api = "2.0.12"
-tickaroo = "0.8.13"
 tidal-androidx-media = "1.5.0.1"
 
 [libraries]
@@ -78,6 +77,7 @@ room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version = "0.5.0" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.6.3" }
 kotlinx-serialization-retrofit-converter = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter", version = "1.0.0" }
+kotlinx-serialization-xml = { module = "io.github.pdvrieze.xmlutil:serialization", version = "0.86.2" }
 
 # SDK
 tidal-sdk-common = { module = "com.tidal.sdk:common", version = "0.2.5" }
@@ -102,11 +102,6 @@ test-mockito-android = { module = "org.mockito:mockito-android", version.ref = "
 test-mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito-kotlin" }
 test-turbine = { module = "app.cash.turbine:turbine", version = "1.0.0" }
 
-#Tickaroo
-tickaroo-annotation = { module = "com.tickaroo.tikxml:annotation", version.ref = "tickaroo" }
-tickaroo-core = { module = "com.tickaroo.tikxml:core", version.ref = "tickaroo" }
-tickaroo-processor = { module = "com.tickaroo.tikxml:processor", version.ref = "tickaroo" }
-tickaroo-retrofitConverter = { module = "com.tickaroo.tikxml:retrofit-converter", version.ref = "tickaroo" }
 
 tidal-exoPlayer-core = { module = "com.tidal.androidx.media3:media3-exoplayer", version.ref = "tidal-androidx-media" }
 tidal-exoPlayer-dash = { module = "com.tidal.androidx.media3:media3-exoplayer-dash", version.ref = "tidal-androidx-media" }
