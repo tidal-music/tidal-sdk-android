@@ -38,7 +38,7 @@ dependencies {
     testImplementation(libs.okhttp.mockwebserver)
     testImplementation(libs.kotlinx.coroutines.test)
 
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
     testApi(libs.test.androidx.junit)
-    testApi(libs.test.junit5Api)
-    testApi(libs.test.junit5Engine)
 }
