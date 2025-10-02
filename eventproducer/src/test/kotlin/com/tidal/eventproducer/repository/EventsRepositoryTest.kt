@@ -156,7 +156,7 @@ class EventsRepositoryTest {
         runTest {
             // given
             val sqsParameters = mapOf("SendMessageBatchRequestEntry.1.Id" to "1")
-            val response = SendMessageBatchResponse(SendMessageBatchResult(null))
+            val response = SendMessageBatchResponse(SendMessageBatchResult(emptyList()))
             every { sqsParametersConverter.getSendEventsParameters(any()) } returns sqsParameters
             every { repositoryHelper.isUserLoggedIn() } returns true
             coEvery { sqsService.sendEventsBatch(any()) } returns response
@@ -173,7 +173,7 @@ class EventsRepositoryTest {
         runTest {
             // given
             val sqsParameters = mapOf("SendMessageBatchRequestEntry.1.Id" to "1")
-            val response = SendMessageBatchResponse(SendMessageBatchResult(null))
+            val response = SendMessageBatchResponse(SendMessageBatchResult(emptyList()))
             every { sqsParametersConverter.getSendEventsParameters(any()) } returns sqsParameters
             every { repositoryHelper.isUserLoggedIn() } returns false
             coEvery { sqsService.sendEventsBatchPublic(any()) } returns response
@@ -189,7 +189,7 @@ class EventsRepositoryTest {
     fun `send events returns success result with payload returned by service`() = runTest {
         // given
         val sqsParameters = mapOf("SendMessageBatchRequestEntry.1.Id" to "1")
-        val serviceResponse = SendMessageBatchResponse(SendMessageBatchResult(null))
+        val serviceResponse = SendMessageBatchResponse(SendMessageBatchResult(emptyList()))
         every { sqsParametersConverter.getSendEventsParameters(any()) } returns sqsParameters
         every { repositoryHelper.isUserLoggedIn() } returns false
         coEvery { sqsService.sendEventsBatchPublic(any()) } returns serviceResponse
@@ -273,7 +273,7 @@ class EventsRepositoryTest {
                 MonitoringInfo(mutableMapOf("event1" to 1), mutableMapOf(), mutableMapOf())
             val monitoringEvent = Event("1", "eventName", emptyMap(), "payload")
             val sqsParameters = mapOf("SendMessageBatchRequestEntry.1.Id" to "1")
-            val serviceResponse = SendMessageBatchResponse(SendMessageBatchResult(null))
+            val serviceResponse = SendMessageBatchResponse(SendMessageBatchResult(emptyList()))
             every { monitoringDataSource.getMonitoringInfo() } returns monitoringInfo
             every { repositoryHelper.getMonitoringEvent(monitoringInfo) } returns monitoringEvent
             every { repositoryHelper.isUserLoggedIn() } returns true
