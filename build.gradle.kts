@@ -6,7 +6,6 @@ plugins {
     alias(libs.plugins.tidal.android.application) apply false
     alias(libs.plugins.tidal.android.library) apply false
     alias(libs.plugins.tidal.kotlin.jvm) apply false
-    alias(libs.plugins.kotlin.kapt) apply false
     alias(libs.plugins.tidal.jvm.platform) apply false
 }
 

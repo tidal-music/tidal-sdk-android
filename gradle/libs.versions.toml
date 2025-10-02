@@ -19,7 +19,6 @@ plugin-android = "8.2.2"
 retrofit = "2.11.0"
 room = "2.6.1"
 slf4j-api = "2.0.12"
-tickaroo = "0.8.13"
 tidal-androidx-media = "1.5.0.1"
 
 [libraries]
@@ -69,6 +68,7 @@ okhttp-loggingInterceptor = { module = "com.squareup.okhttp3:logging-interceptor
 okhttp-mockwebserver = { module = "com.squareup.okhttp3:mockwebserver", version.ref = "okhttp3" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 retrofit-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
+retrofit-converter-simplexml = { module = "com.squareup.retrofit2:converter-simplexml", version.ref = "retrofit" }
 
 # Room
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
@@ -102,12 +102,6 @@ test-mockito-android = { module = "org.mockito:mockito-android", version.ref = "
 test-mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito-kotlin" }
 test-turbine = { module = "app.cash.turbine:turbine", version = "1.0.0" }
 
-#Tickaroo
-tickaroo-annotation = { module = "com.tickaroo.tikxml:annotation", version.ref = "tickaroo" }
-tickaroo-core = { module = "com.tickaroo.tikxml:core", version.ref = "tickaroo" }
-tickaroo-processor = { module = "com.tickaroo.tikxml:processor", version.ref = "tickaroo" }
-tickaroo-retrofitConverter = { module = "com.tickaroo.tikxml:retrofit-converter", version.ref = "tickaroo" }
-
 tidal-exoPlayer-core = { module = "com.tidal.androidx.media3:media3-exoplayer", version.ref = "tidal-androidx-media" }
 tidal-exoPlayer-dash = { module = "com.tidal.androidx.media3:media3-exoplayer-dash", version.ref = "tidal-androidx-media" }
 tidal-exoPlayer-hls = { module = "com.tidal.androidx.media3:media3-exoplayer-hls", version.ref = "tidal-androidx-media" }
@@ -130,7 +124,6 @@ android-junit5 = { id = "de.mannodermaus.android-junit5", version = "1.10.0.0" }
 google-devtools-ksp = { id = "com.google.devtools.ksp", version = "1.9.23-1.0.20" }
 gradle-maven-publish = { id = "com.vanniktech.maven.publish", version = "0.28.0" }
 kotlin-dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 kotlin-plugin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 tidal-android-application = { id = "com.tidal-sdk.android.application" }
 tidal-android-library = { id = "com.tidal-sdk.android.library" }
