@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.14] - 2025-10-02
+### Changed
+- Manual fix on Artists artistsIdRelationshipsFollowingDelete method
+
 ## [0.3.13] - 2025-10-01
 ### Changed
 - Updated generated code using api spec version 0.1.83
