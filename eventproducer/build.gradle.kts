@@ -23,6 +23,7 @@ dependencies {
     implementation(libs.okhttp.loggingInterceptor)
     implementation(libs.truetime)
 
+    // Simple XML for XML parsing (no annotation processing needed)
     implementation(libs.retrofit.converter.simplexml)
 
     ksp(libs.dagger.compiler)
@@ -34,7 +35,7 @@ dependencies {
     testImplementation(libs.okhttp.mockwebserver)
     testImplementation(libs.kotlinx.coroutines.test)
 
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
     testApi(libs.test.androidx.junit)
-    testApi(libs.test.junit5Api)
-    testApi(libs.test.junit5Engine)
 }

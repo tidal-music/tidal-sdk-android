@@ -36,9 +36,7 @@ dependencies {
     implementation(libs.dagger)
 
     testImplementation(libs.test.assertk)
-    testImplementation(libs.test.junit5Api)
     testImplementation(libs.test.mockito.kotlin)
-    testRuntimeOnly(libs.test.junit5Engine)
     testImplementation(libs.test.junit5Params)
     testImplementation(project(":player:testutil"))
 
