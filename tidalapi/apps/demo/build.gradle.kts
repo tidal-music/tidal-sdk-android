@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.tidal.android.application)
-    alias(libs.plugins.kotlin.kapt)
 }
 
 android {

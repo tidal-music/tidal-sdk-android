@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.tidal.android.library)
-    alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.android.junit5)
     alias(libs.plugins.kotlin.plugin.serialization)
 }
