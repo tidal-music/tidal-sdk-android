@@ -68,5 +68,4 @@ jobs:
     uses: ./.github/workflows/create-release.yml
     with:
       module: ${{ matrix.module }}
-    secrets:
-      pat: ${{ secrets.PACKAGES_PAT }}
+    secrets: inherit

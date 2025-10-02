@@ -13,9 +13,6 @@ on:
       module:
         required: true
         type: string
-    secrets:
-      pat:
-        required: true
 
 jobs:
   expose-tag:
