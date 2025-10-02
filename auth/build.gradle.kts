@@ -14,7 +14,6 @@ dependencies {
     implementation(libs.dagger)
     implementation(libs.kotlinxCoroutinesAndroid)
     implementation(libs.kotlinxCoroutinesCore)
-    implementation(libs.kotlinx.coroutines.test)
     implementation(libs.kotlinx.datetime)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.serialization.retrofit.converter)
@@ -23,20 +22,18 @@ dependencies {
 
     ksp(libs.dagger.compiler)
 
+    testImplementation(libs.test.androidx.junit)
     testImplementation(libs.test.junit5Api)
     testImplementation(libs.test.mockk)
     testImplementation(libs.test.kotlin.test)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.test.fluidtime)
+    testImplementation(libs.test.turbine)
 
     testRuntimeOnly(libs.test.junit5Engine)
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     kspTest(libs.dagger.compiler)
-
-    testApi(libs.test.androidx.junit)
-    testApi(libs.test.junit5Api)
-    testApi(libs.test.junit5Engine)
-    testApi(libs.test.turbine)
 
     androidTestImplementation(libs.test.androidx.junit)
     androidTestImplementation(libs.test.androidx.espresso.core)

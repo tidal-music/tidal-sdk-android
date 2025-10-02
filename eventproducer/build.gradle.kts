@@ -23,6 +23,7 @@ dependencies {
     implementation(libs.okhttp.loggingInterceptor)
     implementation(libs.truetime)
 
+    // Simple XML for XML parsing (no annotation processing needed)
     implementation(libs.retrofit.converter.simplexml)
 
     ksp(libs.dagger.compiler)
