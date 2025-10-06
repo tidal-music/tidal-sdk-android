@@ -23,15 +23,11 @@ dependencies {
     ksp(libs.dagger.compiler)
 
     testImplementation(libs.test.androidx.junit)
-    testImplementation(libs.test.junit5Api)
     testImplementation(libs.test.mockk)
     testImplementation(libs.test.kotlin.test)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.test.fluidtime)
     testImplementation(libs.test.turbine)
-
-    testRuntimeOnly(libs.test.junit5Engine)
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     kspTest(libs.dagger.compiler)
 
