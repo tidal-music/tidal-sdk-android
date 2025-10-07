@@ -14,7 +14,6 @@ import kotlinx.serialization.Serializable
  * @param source
  */
 @Serializable
-@SerialName(value = "tidal")
 data class Tidal(
     @SerialName(value = "name") override val name: kotlin.String? = null,
     @SerialName(value = "source") override val source: LyricsProvider.Source? = null,

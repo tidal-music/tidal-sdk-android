@@ -6,8 +6,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonContentPolymorphicSerializer
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
 
 /**
  * @param commonTrackId
@@ -15,4 +19,20 @@ import kotlinx.serialization.Serializable
  * @param name
  * @param source
  */
-@Serializable @Polymorphic sealed interface LyricsAttributesProvider
+@Serializable(with = LyricsAttributesProviderSerializer::class)
+sealed interface LyricsAttributesProvider
+
+object LyricsAttributesProviderSerializer :
+    JsonContentPolymorphicSerializer<LyricsAttributesProvider>(LyricsAttributesProvider::class) {
+    override fun selectDeserializer(
+        element: JsonElement
+    ): DeserializationStrategy<LyricsAttributesProvider> {
+        val source = element.jsonObject["source"]?.jsonPrimitive?.content
+        return when (source) {
+            "TIDAL" -> Tidal.serializer()
+            "THIRD_PARTY" -> ThirdParty.serializer()
+            else ->
+                throw IllegalArgumentException("Unknown LyricsAttributesProvider source: $source")
+        }
+    }
+}
