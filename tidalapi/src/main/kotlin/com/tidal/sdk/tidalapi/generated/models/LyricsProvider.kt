@@ -13,6 +13,7 @@ import kotlinx.serialization.Serializable
  * @param name
  * @param source
  */
+@Serializable
 interface LyricsProvider {
 
     @SerialName(value = "name") val name: kotlin.String?

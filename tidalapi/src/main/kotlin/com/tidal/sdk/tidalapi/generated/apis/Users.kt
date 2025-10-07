@@ -6,7 +6,7 @@ import retrofit2.http.*
 
 interface Users {
     /**
-     * Get current user&#39;s user(s). Retrieves current user&#39;s user(s). Responses:
+     * Get current user&#39;s user. Retrieves current user&#39;s user. Responses:
      * - 200: Successful response
      * - 400: Bad request - The request could not be understood by the server due to malformed
      *   syntax or invalid parameters
