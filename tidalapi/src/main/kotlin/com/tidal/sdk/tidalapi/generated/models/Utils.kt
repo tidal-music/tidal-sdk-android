@@ -1,9 +1,12 @@
 package com.tidal.sdk.tidalapi.generated.models
 
 import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.contextual
 import kotlinx.serialization.modules.polymorphic
 
 fun getOneOfSerializer() = SerializersModule {
+    contextual(LyricsAttributesProvider::class, LyricsAttributesProviderSerializer)
+
     polymorphic(IncludedInner::class) {
         subclass(AlbumsResourceObject::class, AlbumsResourceObject.serializer())
         subclass(AppreciationsResourceObject::class, AppreciationsResourceObject.serializer())
@@ -39,9 +42,5 @@ fun getOneOfSerializer() = SerializersModule {
         subclass(UserReportsResourceObject::class, UserReportsResourceObject.serializer())
         subclass(UsersResourceObject::class, UsersResourceObject.serializer())
         subclass(VideosResourceObject::class, VideosResourceObject.serializer())
-    }
-    polymorphic(LyricsAttributesProvider::class) {
-        subclass(ThirdParty::class, ThirdParty.serializer())
-        subclass(Tidal::class, Tidal.serializer())
     }
 }

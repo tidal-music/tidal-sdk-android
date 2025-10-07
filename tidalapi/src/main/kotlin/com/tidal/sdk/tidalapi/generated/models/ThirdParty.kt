@@ -16,7 +16,6 @@ import kotlinx.serialization.Serializable
  * @param source
  */
 @Serializable
-@SerialName(value = "thirdParty")
 data class ThirdParty(
     @SerialName(value = "name") override val name: kotlin.String,
     @SerialName(value = "commonTrackId") val commonTrackId: kotlin.String,
