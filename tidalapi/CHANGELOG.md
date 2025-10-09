@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.16] - 2025-10-09
+### Changed
+- Updated generated code using api spec version 0.1.85
+
 ## [0.3.15] - 2025-10-07
 ### Fixed
 - Manual fix to circumvent a generator bug with non-standard discriminator 'source'
