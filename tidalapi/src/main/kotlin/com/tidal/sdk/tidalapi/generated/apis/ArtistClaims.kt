@@ -51,12 +51,14 @@ interface ArtistClaims {
      *   it from fulfilling the request
      *
      * @param id Artist claim id
+     * @param countryCode ISO 3166-1 alpha-2 country code (default to "US")
      * @param artistClaimsUpdateOperationPayload (optional)
      * @return [Unit]
      */
     @PATCH("artistClaims/{id}")
     suspend fun artistClaimsIdPatch(
         @Path("id") id: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String = "US",
         @Body artistClaimsUpdateOperationPayload: ArtistClaimsUpdateOperationPayload? = null,
     ): Response<Unit>
 

@@ -8,6 +8,7 @@ package com.tidal.sdk.tidalapi.generated.models
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 /**
  * @param name
@@ -16,5 +17,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Tidal(
     @SerialName(value = "name") override val name: kotlin.String? = null,
-    @SerialName(value = "source") override val source: LyricsProvider.Source? = null,
-) : LyricsAttributesProvider, LyricsProvider
+    @Transient @SerialName(value = "source") override val source: LyricsProvider.Source? = null,
+) : LyricsAttributesProvider, LyricsProvider {}

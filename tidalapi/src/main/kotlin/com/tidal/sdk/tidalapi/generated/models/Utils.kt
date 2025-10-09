@@ -5,8 +5,6 @@ import kotlinx.serialization.modules.contextual
 import kotlinx.serialization.modules.polymorphic
 
 fun getOneOfSerializer() = SerializersModule {
-    contextual(LyricsAttributesProvider::class, LyricsAttributesProviderSerializer)
-
     polymorphic(IncludedInner::class) {
         subclass(AlbumsResourceObject::class, AlbumsResourceObject.serializer())
         subclass(AppreciationsResourceObject::class, AppreciationsResourceObject.serializer())
@@ -20,6 +18,7 @@ fun getOneOfSerializer() = SerializersModule {
         subclass(ArtworksResourceObject::class, ArtworksResourceObject.serializer())
         subclass(GenresResourceObject::class, GenresResourceObject.serializer())
         subclass(LyricsResourceObject::class, LyricsResourceObject.serializer())
+        subclass(PlayQueuesResourceObject::class, PlayQueuesResourceObject.serializer())
         subclass(PlaylistsResourceObject::class, PlaylistsResourceObject.serializer())
         subclass(ProvidersResourceObject::class, ProvidersResourceObject.serializer())
         subclass(SearchResultsResourceObject::class, SearchResultsResourceObject.serializer())
@@ -43,4 +42,5 @@ fun getOneOfSerializer() = SerializersModule {
         subclass(UsersResourceObject::class, UsersResourceObject.serializer())
         subclass(VideosResourceObject::class, VideosResourceObject.serializer())
     }
+    contextual(LyricsAttributesProvider::class, LyricsAttributesProviderSerializer)
 }
