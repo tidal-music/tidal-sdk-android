@@ -24,7 +24,10 @@ include("bom")
 
 fun includeFromDefaultHierarchy(sdkModuleName: String) {
     include(sdkModuleName)
-    include("$sdkModuleName:apps:demo")
+    val demoDir = file("$sdkModuleName/apps/demo")
+    if (demoDir.exists() && demoDir.isDirectory) {
+        include("$sdkModuleName:apps:demo")
+    }
 }
 
 includeFromDefaultHierarchy("player")

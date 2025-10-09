@@ -23,9 +23,7 @@ dependencies {
     testImplementation(project(":player:testutil"))
     testImplementation(libs.test.assertk)
     testImplementation(libs.test.mockito.kotlin)
-    testImplementation(libs.test.junit5Api)
     testImplementation(libs.test.junit5Params)
-    testRuntimeOnly(libs.test.junit5Engine)
 
     androidTestImplementation(libs.test.androidx.junit)
     androidTestImplementation(libs.test.androidx.espresso.core)

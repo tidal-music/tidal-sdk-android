@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.tidal.android.library)
-    alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.google.devtools.ksp)
     alias(libs.plugins.android.junit5)
 }
@@ -22,22 +21,21 @@ dependencies {
     implementation(libs.room.runtime)
     implementation(libs.moshi)
     implementation(libs.okhttp.loggingInterceptor)
-    implementation(libs.tickaroo.annotation)
-    implementation(libs.tickaroo.core)
-    implementation(libs.tickaroo.retrofitConverter)
     implementation(libs.truetime)
 
+    // Simple XML for XML parsing (no annotation processing needed)
+    implementation(libs.retrofit.converter.simplexml)
+
     ksp(libs.dagger.compiler)
-    kapt(libs.room.compiler)
-    kapt(libs.tickaroo.processor)
-    kapt(libs.moshi.codegen)
+    ksp(libs.room.compiler)
+    ksp(libs.moshi.codegen)
 
     testImplementation(libs.test.assertk)
     testImplementation(libs.test.mockk)
     testImplementation(libs.okhttp.mockwebserver)
     testImplementation(libs.kotlinx.coroutines.test)
 
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
     testApi(libs.test.androidx.junit)
-    testApi(libs.test.junit5Api)
-    testApi(libs.test.junit5Engine)
 }
