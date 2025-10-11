@@ -10,11 +10,11 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param `data`
- * @param meta
+ * @param redirectUrl
+ * @param nonce
  */
 @Serializable
-data class ArtistClaimsCreateOperationPayload(
-    @SerialName(value = "data") val `data`: ArtistClaimsCreateOperationPayloadData,
-    @SerialName(value = "meta") val meta: ArtistClaimsCreateOperationPayloadMeta,
+data class ArtistClaimsCreateOperationPayloadMeta(
+    @SerialName(value = "redirectUrl") val redirectUrl: kotlin.String,
+    @SerialName(value = "nonce") val nonce: kotlin.String? = null,
 ) {}

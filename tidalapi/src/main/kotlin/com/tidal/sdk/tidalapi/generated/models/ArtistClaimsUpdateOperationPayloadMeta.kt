@@ -9,8 +9,12 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param authorizationCode */
+/**
+ * @param authorizationCode
+ * @param redirectUri
+ */
 @Serializable
 data class ArtistClaimsUpdateOperationPayloadMeta(
-    @SerialName(value = "authorizationCode") val authorizationCode: kotlin.String
+    @SerialName(value = "authorizationCode") val authorizationCode: kotlin.String,
+    @SerialName(value = "redirectUri") val redirectUri: kotlin.String,
 ) {}
