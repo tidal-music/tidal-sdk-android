@@ -9,8 +9,22 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param shuffled */
+/**
+ * @param repeat
+ * @param shuffled
+ */
 @Serializable
 data class PlayQueueUpdateOperationPayloadDataAttributes(
-    @SerialName(value = "shuffled") val shuffled: kotlin.Boolean? = null
-) {}
+    @SerialName(value = "repeat")
+    val repeat: PlayQueueUpdateOperationPayloadDataAttributes.Repeat? = null,
+    @SerialName(value = "shuffled") val shuffled: kotlin.Boolean? = null,
+) {
+
+    /** Values: NONE,ONE,BATCH */
+    @Serializable
+    enum class Repeat(val value: kotlin.String) {
+        @SerialName(value = "NONE") NONE("NONE"),
+        @SerialName(value = "ONE") ONE("ONE"),
+        @SerialName(value = "BATCH") BATCH("BATCH"),
+    }
+}

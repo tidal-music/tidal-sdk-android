@@ -6,18 +6,13 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/**
- * @param attributes
- * @param type
- */
+/** @param type */
 @Serializable
 data class PlayQueueCreateOperationPayloadData(
-    @Contextual @SerialName(value = "attributes") val attributes: kotlin.Any,
-    @SerialName(value = "type") val type: PlayQueueCreateOperationPayloadData.Type,
+    @SerialName(value = "type") val type: PlayQueueCreateOperationPayloadData.Type
 ) {
 
     /** Values: playQueues */

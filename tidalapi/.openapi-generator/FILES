@@ -75,6 +75,7 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistClaimsAttributes.k
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistClaimsCreateOperationPayload.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistClaimsCreateOperationPayloadData.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistClaimsCreateOperationPayloadDataAttributes.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistClaimsCreateOperationPayloadMeta.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistClaimsMultiRelationshipDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistClaimsMultiResourceDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtistClaimsRelationships.kt

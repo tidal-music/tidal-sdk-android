@@ -35,12 +35,12 @@ data class PlayQueuesAttributes(
     /**
      * Queue's repeat mode
      *
-     * Values: OFF,ONE,RANGE
+     * Values: NONE,ONE,BATCH
      */
     @Serializable
     enum class Repeat(val value: kotlin.String) {
-        @SerialName(value = "OFF") OFF("OFF"),
+        @SerialName(value = "NONE") NONE("NONE"),
         @SerialName(value = "ONE") ONE("ONE"),
-        @SerialName(value = "RANGE") RANGE("RANGE"),
+        @SerialName(value = "BATCH") BATCH("BATCH"),
     }
 }
