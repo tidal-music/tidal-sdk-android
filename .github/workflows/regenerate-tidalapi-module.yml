@@ -28,7 +28,7 @@ on:
         required: true
 env:
   API_MODULE_DIR: tidalapi
-  GH_TOKEN: ${{ secrets.token }}
+  GH_TOKEN: ${{ secrets.PACKAGES_PAT }}
 permissions:
   contents: write
   pull-requests: write
@@ -193,7 +193,7 @@ jobs:
       - name: Push changes
         if: steps.check_changes.outputs.changes_detected == 'true' && steps.commit_changes.outputs.commit_made == 'true'
         env:
-          GITHUB_TOKEN: ${{ secrets.token }}
+          GITHUB_TOKEN: ${{ secrets.PACKAGES_PAT }}
           BRANCH_NAME: ${{ steps.commit_changes.outputs.branch_name }}
         run: |
           if [ "${{ steps.check_pr.outputs.existing_pr }}" == "true" ]; then
@@ -209,7 +209,7 @@ jobs:
       - name: Create or Update Pull Request
         if: steps.check_changes.outputs.changes_detected == 'true' && steps.commit_changes.outputs.commit_made == 'true'
         env:
-          GITHUB_TOKEN: ${{ secrets.token }}
+          GITHUB_TOKEN: ${{ secrets.PACKAGES_PAT }}
           CHANGED_FILES: ${{ steps.check_changes.outputs.changed_files }}
           CHANGED_FILE_COUNT: ${{ steps.check_changes.outputs.changed_file_count }}
           BRANCH_NAME: ${{ steps.commit_changes.outputs.branch_name }}
