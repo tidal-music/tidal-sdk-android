@@ -60,6 +60,8 @@ jobs:
 
       - name: Get link to released openapi-generator fork .jar
         id: get_release
+        env:
+          GH_TOKEN: ${{ secrets.PACKAGES_PAT }}
         run: |
           repo_owner="tidal-music"
           repo_name="openapi-generator"
