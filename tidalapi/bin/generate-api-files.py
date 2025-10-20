@@ -193,6 +193,30 @@ def main():
     target_line = "import com.tidal.sdk.tidalapi.generated.infrastructure.CollectionFormats.*"
     remove_specific_line_from_files(f"{project_root}/src", target_line)
 
+    # Fix DELETE methods with body parameters to use @HTTP annotation in all API files
+    logging.info("Fixing DELETE operations with request bodies in all API files...")
+    apis_dir = os.path.join(generated_files_dir, "apis")
+    if os.path.exists(apis_dir):
+        fixed_files = 0
+        for api_file in os.listdir(apis_dir):
+            if api_file.endswith('.kt'):
+                api_file_path = os.path.join(apis_dir, api_file)
+                fix_result = subprocess.run([
+                    "python3", "fix-delete-with-body.py", api_file_path
+                ], capture_output=True, text=True)
+                if fix_result.returncode == 0 and "Fixed DELETE with body annotations" in fix_result.stdout:
+                    fixed_files += 1
+                    logging.info(f"Fixed DELETE operations in {api_file}")
+                elif fix_result.returncode != 0:
+                    logging.warning(f"Failed to process {api_file}: {fix_result.stderr}")
+        
+        if fixed_files > 0:
+            logging.info(f"Successfully fixed DELETE operations with bodies in {fixed_files} file(s)")
+        else:
+            logging.info("No DELETE operations with bodies found in API files")
+    else:
+        logging.warning(f"APIs directory not found at {apis_dir}")
+
     logging.info("Generation complete and cleaned up.")
 
 
