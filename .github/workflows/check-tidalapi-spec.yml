@@ -44,7 +44,7 @@ jobs:
         run: |
           if cmp -s "tidalapi/bin/tidal-api.json" "/tmp/api-check/latest-api.json"; then
             echo "No changes found in the API specification"
-            echo "changes_found=false" >> $GITHUB_OUTPUT
+            echo "changes_found=true" >> $GITHUB_OUTPUT
           else
             echo "Changes found in the API specification"
             echo "changes_found=true" >> $GITHUB_OUTPUT
