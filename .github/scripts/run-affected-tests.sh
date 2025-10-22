@@ -38,7 +38,7 @@ cd "$PROJECT_ROOT"
 # Run the tests
 echo -e "${BLUE}🧪 Running affected tests...${NC}"
 
-if ./gradlew $TEST_TASKS "${GRADLE_ARGS[@]}" --continue; then
+if ./gradlew $TEST_TASKS "${GRADLE_ARGS[@]:-}" --continue; then
     echo -e "${GREEN}✅ All affected tests passed!${NC}"
 else
     echo -e "\033[0;31m❌ Some tests failed!${NC}"
