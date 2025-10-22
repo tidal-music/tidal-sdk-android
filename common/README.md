@@ -6,3 +6,4 @@ This currently includes globlally shared error and message classes.
 ## Usage
 
 Just add a dependency to this module and use it.
+# Test change
