@@ -28,7 +28,7 @@ on:
         required: true
 env:
   API_MODULE_DIR: tidalapi
-  GH_TOKEN: ${{ secrets.PACKAGES_PAT }}
+  GH_TOKEN: ${{ secrets.token }}
 permissions:
   contents: write
   pull-requests: write
@@ -60,6 +60,8 @@ jobs:
 
       - name: Get link to released openapi-generator fork .jar
         id: get_release
+        env:
+          GH_TOKEN: ${{ secrets.token }}
         run: |
           repo_owner="tidal-music"
           repo_name="openapi-generator"
@@ -71,6 +73,7 @@ jobs:
       - name: Download generator binary
         env:
           ASSET_URL: ${{ steps.get_release.outputs.asset_url }}
+          GH_TOKEN: ${{ secrets.token }}
         run: |
           echo "Downloading from ${{ env.ASSET_URL }}"
           gh release download --repo tidal-music/openapi-generator --pattern "openapi-generator-cli.jar" --dir tidalapi/bin/ --clobber
@@ -193,7 +196,7 @@ jobs:
       - name: Push changes
         if: steps.check_changes.outputs.changes_detected == 'true' && steps.commit_changes.outputs.commit_made == 'true'
         env:
-          GITHUB_TOKEN: ${{ secrets.PACKAGES_PAT }}
+          GITHUB_TOKEN: ${{ secrets.token }}
           BRANCH_NAME: ${{ steps.commit_changes.outputs.branch_name }}
         run: |
           if [ "${{ steps.check_pr.outputs.existing_pr }}" == "true" ]; then
@@ -209,7 +212,7 @@ jobs:
       - name: Create or Update Pull Request
         if: steps.check_changes.outputs.changes_detected == 'true' && steps.commit_changes.outputs.commit_made == 'true'
         env:
-          GITHUB_TOKEN: ${{ secrets.PACKAGES_PAT }}
+          GITHUB_TOKEN: ${{ secrets.token }}
           CHANGED_FILES: ${{ steps.check_changes.outputs.changed_files }}
           CHANGED_FILE_COUNT: ${{ steps.check_changes.outputs.changed_file_count }}
           BRANCH_NAME: ${{ steps.commit_changes.outputs.branch_name }}
