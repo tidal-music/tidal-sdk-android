@@ -219,7 +219,7 @@ interface Artists {
      * @param artistFollowingRelationshipRemoveOperationPayload (optional)
      * @return [Unit]
      */
-    @HTTP(method = "DELETE", path = "artists/{id}/relationships/following", hasBody = true)
+    @DELETE("artists/{id}/relationships/following")
     suspend fun artistsIdRelationshipsFollowingDelete(
         @Path("id") id: kotlin.String,
         @Body

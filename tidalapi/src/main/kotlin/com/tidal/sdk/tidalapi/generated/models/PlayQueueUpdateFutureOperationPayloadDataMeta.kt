@@ -10,4 +10,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /** @param itemId */
-@Serializable data class ItemMeta(@SerialName(value = "itemId") val itemId: kotlin.String) {}
+@Serializable
+data class PlayQueueUpdateFutureOperationPayloadDataMeta(
+    @SerialName(value = "itemId") val itemId: kotlin.String
+) {}

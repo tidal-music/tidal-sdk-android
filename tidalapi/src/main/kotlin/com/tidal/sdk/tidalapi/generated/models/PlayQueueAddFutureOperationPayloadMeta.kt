@@ -6,13 +6,18 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param mode */
+/**
+ * @param mode
+ * @param batchId
+ */
 @Serializable
 data class PlayQueueAddFutureOperationPayloadMeta(
-    @SerialName(value = "mode") val mode: PlayQueueAddFutureOperationPayloadMeta.Mode
+    @SerialName(value = "mode") val mode: PlayQueueAddFutureOperationPayloadMeta.Mode,
+    @Contextual @SerialName(value = "batchId") val batchId: java.util.UUID? = null,
 ) {
 
     /** Values: ADD_TO_FRONT,ADD_TO_BACK,REPLACE_ALL */
