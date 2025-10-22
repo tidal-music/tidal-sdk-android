@@ -172,6 +172,11 @@ modules_to_gradle_tasks() {
     for module in "${modules[@]}"; do
         while IFS=':' read -r module_name gradle_path dir_path dependencies; do
             if [[ "$module_name" == "$module" ]]; then
+                # Skip modules that don't have test tasks
+                if [[ "$module_name" == "buildlogic" ]] || [[ "$module_name" == "template" ]] || [[ "$module_name" == "bom" ]]; then
+                    break
+                fi
+                
                 # Add test task for the module
                 gradle_tasks+=(":${gradle_path}:test")
                 
@@ -197,8 +202,8 @@ get_all_test_tasks() {
     local all_tasks=()
     
     while IFS=':' read -r module_name gradle_path dir_path dependencies; do
-        # Skip buildlogic and template modules for testing
-        if [[ "$module_name" == "buildlogic" ]] || [[ "$module_name" == "template" ]]; then
+        # Skip modules that don't have test tasks
+        if [[ "$module_name" == "buildlogic" ]] || [[ "$module_name" == "template" ]] || [[ "$module_name" == "bom" ]]; then
             continue
         fi
         
