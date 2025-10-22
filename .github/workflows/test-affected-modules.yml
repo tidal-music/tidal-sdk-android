@@ -1,0 +1,122 @@
+name: Test Affected Modules
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+  push:
+    branches: [ main, develop ]
+
+jobs:
+  detect-affected-modules:
+    runs-on: ubuntu-latest
+    outputs:
+      test-tasks: ${{ steps.detect.outputs.test-tasks }}
+      run-all-tests: ${{ steps.detect.outputs.run-all-tests }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch full history for git diff
+
+      - name: Detect affected modules
+        id: detect
+        run: |
+          # Make script executable
+          chmod +x .github/scripts/detect-affected-modules.sh
+          
+          # Detect affected modules
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            BASE_COMMIT="${{ github.event.pull_request.base.sha }}"
+          else
+            BASE_COMMIT="HEAD~1"
+          fi
+          
+          echo "Detecting changes since: $BASE_COMMIT"
+          TEST_TASKS=$(.github/scripts/detect-affected-modules.sh "$BASE_COMMIT")
+          
+          # Check if we need to run all tests
+          if [[ "$TEST_TASKS" == *":auth:test"* && "$TEST_TASKS" == *":player:test"* && "$TEST_TASKS" == *":eventproducer:test"* ]]; then
+            echo "run-all-tests=true" >> $GITHUB_OUTPUT
+          else
+            echo "run-all-tests=false" >> $GITHUB_OUTPUT
+          fi
+          
+          echo "test-tasks=$TEST_TASKS" >> $GITHUB_OUTPUT
+          echo "Detected test tasks: $TEST_TASKS"
+
+  run-tests:
+    needs: detect-affected-modules
+    runs-on: ubuntu-latest
+    if: needs.detect-affected-modules.outputs.test-tasks != ''
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+        with:
+          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
+
+      - name: Run affected tests
+        run: |
+          TEST_TASKS="${{ needs.detect-affected-modules.outputs.test-tasks }}"
+          
+          if [[ -n "$TEST_TASKS" ]]; then
+            echo "Running tests for affected modules: $TEST_TASKS"
+            ./gradlew $TEST_TASKS --continue
+          else
+            echo "No tests to run"
+          fi
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results
+          path: |
+            **/build/test-results/test/
+            **/build/reports/tests/test/
+          retention-days: 30
+
+  # Optional: Run all tests if critical files changed
+  run-all-tests:
+    needs: detect-affected-modules
+    runs-on: ubuntu-latest
+    if: needs.detect-affected-modules.outputs.run-all-tests == 'true'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+        with:
+          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
+
+      - name: Run all tests
+        run: |
+          echo "Running all tests due to critical file changes"
+          ./gradlew test --continue
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: all-test-results
+          path: |
+            **/build/test-results/test/
+            **/build/reports/tests/test/
+          retention-days: 30

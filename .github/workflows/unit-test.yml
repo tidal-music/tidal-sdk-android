@@ -1,6 +1,12 @@
 name: Run unit tests
 on:
   workflow_call:
+    inputs:
+      run_all_tests:
+        description: 'Force run all tests instead of selective testing'
+        type: boolean
+        required: false
+        default: false
     secrets:
       pat:
         required: true
@@ -11,9 +17,53 @@ jobs:
     name: Run unit tests
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Fetch enough history to detect changes
+          fetch-depth: 0
+      
       - uses: actions/setup-java@v4
         with:
           java-version: 17
           distribution: temurin
-      - name: Run unit tests
-        run: ./gradlew test
+      
+      - name: Make scripts executable
+        run: chmod +x .github/scripts/*.sh
+      
+      - name: Detect affected modules
+        id: affected_modules
+        if: ${{ !inputs.run_all_tests }}
+        run: |
+          echo "Detecting affected modules..."
+          AFFECTED_MODULES=$(./.github/scripts/detect-affected-modules.sh)
+          echo "affected_modules=$AFFECTED_MODULES" >> $GITHUB_OUTPUT
+          echo "Affected modules: $AFFECTED_MODULES"
+          
+          # Check if we should run all tests (empty result means run all)
+          if [ -z "$AFFECTED_MODULES" ]; then
+            echo "No affected modules detected, running all tests"
+            echo "run_all=true" >> $GITHUB_OUTPUT
+          else
+            echo "run_all=false" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Run selective unit tests
+        if: ${{ !inputs.run_all_tests && steps.affected_modules.outputs.run_all != 'true' }}
+        run: |
+          echo "Running tests for affected modules: ${{ steps.affected_modules.outputs.affected_modules }}"
+          ./gradlew ${{ steps.affected_modules.outputs.affected_modules }}
+      
+      - name: Run all unit tests
+        if: ${{ inputs.run_all_tests || steps.affected_modules.outputs.run_all == 'true' }}
+        run: |
+          echo "Running all unit tests"
+          ./gradlew test
+      
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-results
+          path: |
+            **/build/test-results/test*/
+            **/build/reports/tests/
+          retention-days: 7
