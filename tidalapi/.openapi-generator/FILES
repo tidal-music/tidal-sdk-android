@@ -151,7 +151,6 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/GenresMultiResourceDataD
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/GenresResourceObject.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/GenresSingleResourceDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/IncludedInner.kt
-src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ItemMeta.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/Links.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/LinksMeta.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/LyricsAttributes.kt
@@ -182,12 +181,15 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlayQueueRemoveFutureOpe
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlayQueueRemoveFutureOperationPayloadData.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlayQueueUpdateCurrentOperationsPayload.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlayQueueUpdateCurrentOperationsPayloadData.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlayQueueUpdateCurrentOperationsPayloadDataMeta.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlayQueueUpdateFutureOperationPayload.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlayQueueUpdateFutureOperationPayloadData.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlayQueueUpdateFutureOperationPayloadDataMeta.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlayQueueUpdateFutureOperationPayloadMeta.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlayQueueUpdateOperationPayload.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlayQueueUpdateOperationPayloadData.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlayQueueUpdateOperationPayloadDataAttributes.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlayQueueUpdateRemoveOperationPayloadDataMeta.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlayQueuesAttributes.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlayQueuesFutureMultiRelationshipDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlayQueuesFutureResourceIdentifier.kt

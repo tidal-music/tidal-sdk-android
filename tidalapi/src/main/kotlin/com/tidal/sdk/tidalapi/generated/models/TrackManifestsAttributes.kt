@@ -44,7 +44,7 @@ data class TrackManifestsAttributes(
     /**
      * Formats present in manifest
      *
-     * Values: HEAACV1,AACLC,FLAC,FLAC_HIRES
+     * Values: HEAACV1,AACLC,FLAC,FLAC_HIRES,EAC3_JOC
      */
     @Serializable
     enum class Formats(val value: kotlin.String) {
@@ -52,6 +52,7 @@ data class TrackManifestsAttributes(
         @SerialName(value = "AACLC") AACLC("AACLC"),
         @SerialName(value = "FLAC") FLAC("FLAC"),
         @SerialName(value = "FLAC_HIRES") FLAC_HIRES("FLAC_HIRES"),
+        @SerialName(value = "EAC3_JOC") EAC3_JOC("EAC3_JOC"),
     }
 
     /**

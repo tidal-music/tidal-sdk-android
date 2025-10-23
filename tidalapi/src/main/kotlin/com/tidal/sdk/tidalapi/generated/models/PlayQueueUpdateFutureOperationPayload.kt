@@ -17,5 +17,5 @@ import kotlinx.serialization.Serializable
 data class PlayQueueUpdateFutureOperationPayload(
     @SerialName(value = "data")
     val `data`: kotlin.collections.List<PlayQueueUpdateFutureOperationPayloadData>,
-    @SerialName(value = "meta") val meta: PlayQueueUpdateFutureOperationPayloadMeta? = null,
+    @SerialName(value = "meta") val meta: PlayQueueUpdateFutureOperationPayloadMeta,
 ) {}
