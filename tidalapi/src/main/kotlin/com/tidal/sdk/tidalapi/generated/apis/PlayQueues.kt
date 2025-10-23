@@ -190,7 +190,7 @@ interface PlayQueues {
      * @param playQueueRemoveFutureOperationPayload (optional)
      * @return [Unit]
      */
-    @DELETE("playQueues/{id}/relationships/future")
+    @HTTP(method = "DELETE", path = "playQueues/{id}/relationships/future", hasBody = true)
     suspend fun playQueuesIdRelationshipsFutureDelete(
         @Path("id") id: kotlin.String,
         @Body playQueueRemoveFutureOperationPayload: PlayQueueRemoveFutureOperationPayload? = null,

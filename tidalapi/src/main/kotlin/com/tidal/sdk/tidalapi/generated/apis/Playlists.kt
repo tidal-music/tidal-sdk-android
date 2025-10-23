@@ -221,7 +221,7 @@ interface Playlists {
      * @param playlistItemsRelationshipRemoveOperationPayload (optional)
      * @return [Unit]
      */
-    @DELETE("playlists/{id}/relationships/items")
+    @HTTP(method = "DELETE", path = "playlists/{id}/relationships/items", hasBody = true)
     suspend fun playlistsIdRelationshipsItemsDelete(
         @Path("id") id: kotlin.String,
         @Body

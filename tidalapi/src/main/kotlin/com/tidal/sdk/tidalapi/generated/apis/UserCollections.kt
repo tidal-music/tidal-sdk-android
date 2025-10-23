@@ -71,7 +71,7 @@ interface UserCollections {
      * @param userCollectionAlbumsRelationshipRemoveOperationPayload (optional)
      * @return [Unit]
      */
-    @DELETE("userCollections/{id}/relationships/albums")
+    @HTTP(method = "DELETE", path = "userCollections/{id}/relationships/albums", hasBody = true)
     suspend fun userCollectionsIdRelationshipsAlbumsDelete(
         @Path("id") id: kotlin.String,
         @Body
@@ -178,7 +178,7 @@ interface UserCollections {
      * @param userCollectionArtistsRelationshipRemoveOperationPayload (optional)
      * @return [Unit]
      */
-    @DELETE("userCollections/{id}/relationships/artists")
+    @HTTP(method = "DELETE", path = "userCollections/{id}/relationships/artists", hasBody = true)
     suspend fun userCollectionsIdRelationshipsArtistsDelete(
         @Path("id") id: kotlin.String,
         @Body
@@ -311,7 +311,7 @@ interface UserCollections {
      * @param userCollectionPlaylistsRelationshipRemoveOperationPayload (optional)
      * @return [Unit]
      */
-    @DELETE("userCollections/{id}/relationships/playlists")
+    @HTTP(method = "DELETE", path = "userCollections/{id}/relationships/playlists", hasBody = true)
     suspend fun userCollectionsIdRelationshipsPlaylistsDelete(
         @Path("id") id: kotlin.String,
         @Body
@@ -413,7 +413,7 @@ interface UserCollections {
      * @param userCollectionTracksRelationshipRemoveOperationPayload (optional)
      * @return [Unit]
      */
-    @DELETE("userCollections/{id}/relationships/tracks")
+    @HTTP(method = "DELETE", path = "userCollections/{id}/relationships/tracks", hasBody = true)
     suspend fun userCollectionsIdRelationshipsTracksDelete(
         @Path("id") id: kotlin.String,
         @Body
@@ -522,7 +522,7 @@ interface UserCollections {
      * @param userCollectionVideosRelationshipRemoveOperationPayload (optional)
      * @return [Unit]
      */
-    @DELETE("userCollections/{id}/relationships/videos")
+    @HTTP(method = "DELETE", path = "userCollections/{id}/relationships/videos", hasBody = true)
     suspend fun userCollectionsIdRelationshipsVideosDelete(
         @Path("id") id: kotlin.String,
         @Body

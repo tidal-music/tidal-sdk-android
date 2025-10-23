@@ -6,11 +6,16 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param itemId */
+/**
+ * @param batchId
+ * @param itemId
+ */
 @Serializable
 data class PlayQueuesPastResourceIdentifierMeta(
-    @SerialName(value = "itemId") val itemId: kotlin.String
+    @Contextual @SerialName(value = "batchId") val batchId: java.util.UUID,
+    @SerialName(value = "itemId") val itemId: kotlin.String,
 ) {}

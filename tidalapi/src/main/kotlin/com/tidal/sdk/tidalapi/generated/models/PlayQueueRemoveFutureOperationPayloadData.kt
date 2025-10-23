@@ -17,7 +17,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class PlayQueueRemoveFutureOperationPayloadData(
     @SerialName(value = "id") val id: kotlin.String,
-    @SerialName(value = "meta") val meta: ItemMeta,
+    @SerialName(value = "meta") val meta: PlayQueueUpdateRemoveOperationPayloadDataMeta,
     @SerialName(value = "type") val type: PlayQueueRemoveFutureOperationPayloadData.Type,
 ) {
 
