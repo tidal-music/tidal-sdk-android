@@ -9,12 +9,9 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/**
- * @param lrcText
- * @param text
- */
+/** @param `data` */
 @Serializable
-data class LyricsUpdateOperationPayloadDataAttributes(
-    @SerialName(value = "lrcText") val lrcText: kotlin.String? = null,
-    @SerialName(value = "text") val text: kotlin.String? = null,
+data class TrackAlbumsRelationshipUpdateOperationPayload(
+    @SerialName(value = "data")
+    val `data`: kotlin.collections.List<TrackAlbumsRelationshipUpdateOperationPayloadData>
 ) {}

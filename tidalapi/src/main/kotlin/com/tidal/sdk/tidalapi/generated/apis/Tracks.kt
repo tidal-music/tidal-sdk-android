@@ -1,5 +1,6 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.models.TrackAlbumsRelationshipUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.TrackCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.TrackUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.TracksMultiRelationshipDataDocument
@@ -155,6 +156,33 @@ interface Tracks {
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
     ): Response<TracksMultiRelationshipDataDocument>
+
+    /**
+     * Update albums relationship (\&quot;to-many\&quot;). Updates albums relationship. Responses:
+     * - 400: Bad request - The request could not be understood by the server due to malformed
+     *   syntax or invalid parameters
+     * - 404: Not found - The requested resource could not be found
+     * - 405: Method not allowed - The request method is not allowed for the requested resource
+     * - 406: Not acceptable - The requested resource is capable of generating only content not
+     *   acceptable according to the Accept headers sent in the request
+     * - 415: Unsupported media type - The request entity has a media type which the server or
+     *   resource does not support
+     * - 429: Too many requests - The user has sent too many requests in a given amount of time
+     * - 500: Internal server error - The server encountered an unexpected condition that prevented
+     *   it from fulfilling the request
+     *
+     * @param id A Tidal catalogue ID
+     * @param trackAlbumsRelationshipUpdateOperationPayload (optional)
+     * @return [Unit]
+     */
+    @PATCH("tracks/{id}/relationships/albums")
+    suspend fun tracksIdRelationshipsAlbumsPatch(
+        @Path("id") id: kotlin.String,
+        @Body
+        trackAlbumsRelationshipUpdateOperationPayload:
+            TrackAlbumsRelationshipUpdateOperationPayload? =
+            null,
+    ): Response<Unit>
 
     /**
      * Get artists relationship (\&quot;to-many\&quot;). Retrieves artists relationship. Responses:

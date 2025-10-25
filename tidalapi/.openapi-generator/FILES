@@ -265,6 +265,8 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/SharesSingleResourceData
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/SingleRelationshipDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ThirdParty.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/Tidal.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/TrackAlbumsRelationshipUpdateOperationPayload.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/TrackAlbumsRelationshipUpdateOperationPayloadData.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/TrackCreateOperationPayload.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/TrackCreateOperationPayloadData.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/TrackCreateOperationPayloadDataAttributes.kt
