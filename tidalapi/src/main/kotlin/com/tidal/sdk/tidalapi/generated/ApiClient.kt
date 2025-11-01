@@ -21,6 +21,7 @@ import com.tidal.sdk.tidalapi.generated.apis.TrackManifests
 import com.tidal.sdk.tidalapi.generated.apis.TrackSourceFiles
 import com.tidal.sdk.tidalapi.generated.apis.TrackStatistics
 import com.tidal.sdk.tidalapi.generated.apis.Tracks
+import com.tidal.sdk.tidalapi.generated.apis.UserCollectionFolders
 import com.tidal.sdk.tidalapi.generated.apis.UserCollections
 import com.tidal.sdk.tidalapi.generated.apis.UserEntitlements
 import com.tidal.sdk.tidalapi.generated.apis.UserRecommendations
@@ -133,6 +134,13 @@ class TidalApiClient(credentialsProvider: CredentialsProvider, baseUrl: String =
     /** Returns an instance of the [Tracks] which can be used to make API calls to the */
     fun createTracks(): Tracks {
         return retrofit.create(Tracks::class.java)
+    }
+
+    /**
+     * Returns an instance of the [UserCollectionFolders] which can be used to make API calls to the
+     */
+    fun createUserCollectionFolders(): UserCollectionFolders {
+        return retrofit.create(UserCollectionFolders::class.java)
     }
 
     /** Returns an instance of the [UserCollections] which can be used to make API calls to the */
