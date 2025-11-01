@@ -27,9 +27,9 @@ interface Albums {
      * - 500: Internal server error - The server encountered an unexpected condition that prevented
      *   it from fulfilling the request
      *
-     * @param countryCode ISO 3166-1 alpha-2 country code (default to "US")
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: artists, coverArt, genres, items, owners, providers, similarAlbums
      *   (optional)
@@ -40,8 +40,8 @@ interface Albums {
      */
     @GET("albums")
     suspend fun albumsGet(
-        @Query("countryCode") countryCode: kotlin.String = "US",
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[owners.id]")

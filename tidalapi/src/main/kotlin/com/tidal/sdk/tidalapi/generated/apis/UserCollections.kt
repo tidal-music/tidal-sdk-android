@@ -38,7 +38,7 @@ interface UserCollections {
      *
      * @param id User id
      * @param locale BCP 47 locale (default to "en-US")
-     * @param countryCode ISO 3166-1 alpha-2 country code (default to "US")
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: albums, artists, owners, playlists, tracks, videos (optional)
      * @return [UserCollectionsSingleResourceDataDocument]
@@ -47,7 +47,7 @@ interface UserCollections {
     suspend fun userCollectionsIdGet(
         @Path("id") id: kotlin.String,
         @Query("locale") locale: kotlin.String = "en-US",
-        @Query("countryCode") countryCode: kotlin.String = "US",
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<UserCollectionsSingleResourceDataDocument>
@@ -108,12 +108,12 @@ interface UserCollections {
      *   it from fulfilling the request
      *
      * @param id User id
-     * @param countryCode ISO 3166-1 alpha-2 country code (default to "US")
      * @param locale BCP 47 locale (default to "en-US")
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param sort Values prefixed with \&quot;-\&quot; are sorted descending; values without it are
      *   sorted ascending. (optional)
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: albums (optional)
      * @return [UserCollectionsAlbumsMultiRelationshipDataDocument]
@@ -121,10 +121,10 @@ interface UserCollections {
     @GET("userCollections/{id}/relationships/albums")
     suspend fun userCollectionsIdRelationshipsAlbumsGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String = "US",
         @Query("locale") locale: kotlin.String = "en-US",
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("sort") sort: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<UserCollectionsAlbumsMultiRelationshipDataDocument>
@@ -145,14 +145,14 @@ interface UserCollections {
      *   it from fulfilling the request
      *
      * @param id User id
-     * @param countryCode ISO 3166-1 alpha-2 country code (default to "US")
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param userCollectionAlbumsRelationshipAddOperationPayload (optional)
      * @return [Unit]
      */
     @POST("userCollections/{id}/relationships/albums")
     suspend fun userCollectionsIdRelationshipsAlbumsPost(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String = "US",
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Body
         userCollectionAlbumsRelationshipAddOperationPayload:
             UserCollectionAlbumsRelationshipAddOperationPayload? =
@@ -211,12 +211,12 @@ interface UserCollections {
      *   it from fulfilling the request
      *
      * @param id User id
-     * @param countryCode ISO 3166-1 alpha-2 country code (default to "US")
      * @param locale BCP 47 locale (default to "en-US")
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param sort Values prefixed with \&quot;-\&quot; are sorted descending; values without it are
      *   sorted ascending. (optional)
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: artists (optional)
      * @return [UserCollectionsArtistsMultiRelationshipDataDocument]
@@ -224,10 +224,10 @@ interface UserCollections {
     @GET("userCollections/{id}/relationships/artists")
     suspend fun userCollectionsIdRelationshipsArtistsGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String = "US",
         @Query("locale") locale: kotlin.String = "en-US",
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("sort") sort: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<UserCollectionsArtistsMultiRelationshipDataDocument>
@@ -248,14 +248,14 @@ interface UserCollections {
      *   it from fulfilling the request
      *
      * @param id User id
-     * @param countryCode ISO 3166-1 alpha-2 country code (default to "US")
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param userCollectionArtistsRelationshipAddOperationPayload (optional)
      * @return [Unit]
      */
     @POST("userCollections/{id}/relationships/artists")
     suspend fun userCollectionsIdRelationshipsArtistsPost(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String = "US",
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Body
         userCollectionArtistsRelationshipAddOperationPayload:
             UserCollectionArtistsRelationshipAddOperationPayload? =
@@ -349,6 +349,7 @@ interface UserCollections {
      *   it from fulfilling the request
      *
      * @param id User id
+     * @param collectionView (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param sort Values prefixed with \&quot;-\&quot; are sorted descending; values without it are
@@ -360,6 +361,7 @@ interface UserCollections {
     @GET("userCollections/{id}/relationships/playlists")
     suspend fun userCollectionsIdRelationshipsPlaylistsGet(
         @Path("id") id: kotlin.String,
+        @Query("collectionView") collectionView: kotlin.String? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("sort") sort: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("include")
@@ -452,12 +454,12 @@ interface UserCollections {
      *   it from fulfilling the request
      *
      * @param id User id
-     * @param countryCode ISO 3166-1 alpha-2 country code (default to "US")
      * @param locale BCP 47 locale (default to "en-US")
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param sort Values prefixed with \&quot;-\&quot; are sorted descending; values without it are
      *   sorted ascending. (optional)
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: tracks (optional)
      * @return [UserCollectionsTracksMultiRelationshipDataDocument]
@@ -465,10 +467,10 @@ interface UserCollections {
     @GET("userCollections/{id}/relationships/tracks")
     suspend fun userCollectionsIdRelationshipsTracksGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String = "US",
         @Query("locale") locale: kotlin.String = "en-US",
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("sort") sort: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<UserCollectionsTracksMultiRelationshipDataDocument>
@@ -489,14 +491,14 @@ interface UserCollections {
      *   it from fulfilling the request
      *
      * @param id User id
-     * @param countryCode ISO 3166-1 alpha-2 country code (default to "US")
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param userCollectionTracksRelationshipAddOperationPayload (optional)
      * @return [Unit]
      */
     @POST("userCollections/{id}/relationships/tracks")
     suspend fun userCollectionsIdRelationshipsTracksPost(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String = "US",
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Body
         userCollectionTracksRelationshipAddOperationPayload:
             UserCollectionTracksRelationshipAddOperationPayload? =
@@ -559,12 +561,12 @@ interface UserCollections {
      *   it from fulfilling the request
      *
      * @param id User id
-     * @param countryCode ISO 3166-1 alpha-2 country code (default to "US")
      * @param locale BCP 47 locale (default to "en-US")
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param sort Values prefixed with \&quot;-\&quot; are sorted descending; values without it are
      *   sorted ascending. (optional)
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: videos (optional)
      * @return [UserCollectionsVideosMultiRelationshipDataDocument]
@@ -572,10 +574,10 @@ interface UserCollections {
     @GET("userCollections/{id}/relationships/videos")
     suspend fun userCollectionsIdRelationshipsVideosGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String = "US",
         @Query("locale") locale: kotlin.String = "en-US",
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("sort") sort: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<UserCollectionsVideosMultiRelationshipDataDocument>
@@ -596,14 +598,14 @@ interface UserCollections {
      *   it from fulfilling the request
      *
      * @param id User id
-     * @param countryCode ISO 3166-1 alpha-2 country code (default to "US")
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param userCollectionVideosRelationshipAddOperationPayload (optional)
      * @return [Unit]
      */
     @POST("userCollections/{id}/relationships/videos")
     suspend fun userCollectionsIdRelationshipsVideosPost(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String = "US",
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Body
         userCollectionVideosRelationshipAddOperationPayload:
             UserCollectionVideosRelationshipAddOperationPayload? =
