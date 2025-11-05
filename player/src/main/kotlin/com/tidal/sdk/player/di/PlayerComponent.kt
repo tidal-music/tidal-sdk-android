@@ -45,6 +45,7 @@ internal interface PlayerComponent {
             @BindsInstance credentialsProvider: CredentialsProvider,
             @BindsInstance eventSender: EventSender,
             @BindsInstance @Named("useLibflacAudioRenderer") useLibflacAudioRenderer: Boolean,
+            @BindsInstance @Named("useTopPlaybackInfo") useTopPlaybackInfo: Boolean,
             @BindsInstance userClientIdSupplier: (() -> Int)?,
             @BindsInstance version: String,
             @BindsInstance bufferConfiguration: BufferConfiguration,
