@@ -3,7 +3,6 @@ package com.tidal.sdk.player.streamingapi.playbackinfo.api
 import com.tidal.sdk.player.common.model.AssetPresentation
 import com.tidal.sdk.player.common.model.AudioQuality
 import com.tidal.sdk.player.common.model.VideoQuality
-import com.tidal.sdk.player.streamingapi.BroadcastPlaybackInfoFactory
 import com.tidal.sdk.player.streamingapi.TrackPlaybackInfoFactory
 import com.tidal.sdk.player.streamingapi.VideoPlaybackInfoFactory
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackMode
@@ -47,13 +46,7 @@ internal class PlaybackInfoServiceStub : PlaybackInfoService {
         }
 
     override suspend fun getBroadcastPlaybackInfo(djSessionId: String, audioQuality: AudioQuality) =
-        when (djSessionId) {
-            PLAYBACK_INFO_ID_FOR_UNCAUGHT_EXCEPTION -> throw NullPointerException()
-            PLAYBACK_INFO_ID_SUCCESS ->
-                BroadcastPlaybackInfoFactory.DEFAULT_MISSING_STREAMING_SESSION_ID
-
-            else -> fail("Unsupported call")
-        }
+        fail("Unsupported call")
 
     companion object {
         const val PLAYBACK_INFO_ID_SUCCESS = "0"
