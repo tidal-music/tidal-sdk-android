@@ -408,9 +408,8 @@ internal object MediaSourcererModule {
     @Reusable
     fun tidalMediaDrmCallbackFactory(
         streamingApiRepository: StreamingApiRepository,
-        base64Codec: Base64Codec,
         @ExtendedExoPlayerComponent.Local okHttpClient: OkHttpClient,
-    ) = TidalMediaDrmCallbackFactory(streamingApiRepository, base64Codec, okHttpClient)
+    ) = TidalMediaDrmCallbackFactory(streamingApiRepository, okHttpClient)
 
     @Provides
     @Reusable
