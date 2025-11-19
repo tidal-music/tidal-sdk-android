@@ -7,7 +7,6 @@ import assertk.assertions.isEqualTo
 import com.tidal.sdk.player.common.model.AudioQuality
 import com.tidal.sdk.player.common.model.VideoQuality
 import com.tidal.sdk.player.streamingapi.ApiConstants
-import com.tidal.sdk.player.streamingapi.BroadcastPlaybackInfoFactory
 import com.tidal.sdk.player.streamingapi.TrackPlaybackInfoFactory
 import com.tidal.sdk.player.streamingapi.UCPlaybackInfoFactory
 import com.tidal.sdk.player.streamingapi.VideoPlaybackInfoFactory
@@ -88,34 +87,6 @@ internal class PlaybackInfoRepositoryDefaultTest {
             PlaybackMode.STREAM,
             "streamingSessionId",
             null,
-        )
-
-    @Test
-    fun getBroadcastPlaybackInfoShouldThrowWhenUncaughtExceptionIsThrown() {
-        assertFailure {
-                runBlocking {
-                    getBroadcastPlaybackInfo(
-                        PlaybackInfoServiceStub.PLAYBACK_INFO_ID_FOR_UNCAUGHT_EXCEPTION
-                    )
-                }
-            }
-            .hasClass(NullPointerException::class)
-    }
-
-    @Test
-    fun getBroadcastPlaybackInfoShouldReturnCorrectAndFillMissingStreamingSessionIdWhenPlaybackInfoIsReturned() =
-        runBlocking {
-            val playbackInfo =
-                getBroadcastPlaybackInfo(PlaybackInfoServiceStub.PLAYBACK_INFO_ID_SUCCESS)
-
-            assertThat(playbackInfo).isEqualTo(BroadcastPlaybackInfoFactory.DEFAULT)
-        }
-
-    private suspend fun getBroadcastPlaybackInfo(djSessionId: String) =
-        playbackInfoRepository.getBroadcastPlaybackInfo(
-            djSessionId,
-            BroadcastPlaybackInfoFactory.DEFAULT.streamingSessionId,
-            AudioQuality.LOW,
         )
 
     @Test
