@@ -3,6 +3,7 @@ import java.time.LocalDate
 
 plugins {
     alias(libs.plugins.kotlin.dokka)
+    alias(libs.plugins.compose.compiler) apply false
     alias(libs.plugins.tidal.android.application) apply false
     alias(libs.plugins.tidal.android.library) apply false
     alias(libs.plugins.tidal.kotlin.jvm) apply false

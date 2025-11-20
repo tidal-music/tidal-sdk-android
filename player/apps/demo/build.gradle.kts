@@ -1,6 +1,9 @@
 import com.tidal.sdk.plugins.extensions.loadLocalProperties
 
-plugins { alias(libs.plugins.tidal.android.application) }
+plugins {
+    alias(libs.plugins.tidal.android.application)
+    alias(libs.plugins.compose.compiler)
+}
 
 android {
     namespace = "com.tidal.sdk.player"
@@ -25,8 +28,6 @@ android {
             signingConfig = signingConfigs.getByName("debug")
         }
     }
-
-    composeOptions { kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get() }
 
     kotlinOptions {
         freeCompilerArgs += "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api"
