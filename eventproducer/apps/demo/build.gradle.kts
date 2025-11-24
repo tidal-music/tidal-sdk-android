@@ -1,4 +1,7 @@
-plugins { alias(libs.plugins.tidal.android.application) }
+plugins {
+    alias(libs.plugins.tidal.android.application)
+    alias(libs.plugins.compose.compiler)
+}
 
 android {
     namespace = "com.tidal.sdk.eventproducer.demo"
@@ -9,10 +12,7 @@ android {
         versionName = "0.1.0"
     }
 
-    buildTypes {
-        debug {}
-        composeOptions { kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get() }
-    }
+    buildTypes { debug {} }
     packagingOptions {
         resources.excludes.apply {
             add("META-INF/LICENSE.md")

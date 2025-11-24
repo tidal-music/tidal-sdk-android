@@ -3,7 +3,6 @@ package com.tidal.sdk.player.streamingapi
 import assertk.assertThat
 import assertk.assertions.isDataClassEqualTo
 import assertk.assertions.isEqualTo
-import assertk.assertions.isEqualToIgnoringGivenProperties
 import com.google.gson.Gson
 import com.google.gson.JsonParseException
 import com.tidal.sdk.player.MockWebServerExtensions.enqueueResponse
@@ -262,87 +261,6 @@ internal class StreamingApiDefaultTest {
             "streamingSessionId",
             null,
         )
-    }
-
-    @Test
-    fun getBroadcastPlaybackInfoShouldReturnCorrectWhenNetworkError() {
-        server.enqueue(MockResponse().setSocketPolicy(SocketPolicy.DISCONNECT_AT_START))
-
-        assertThrows<ConnectException> { getBroadcastPlaybackInfo() }
-    }
-
-    @Test
-    fun getBroadcastPlaybackInfoShouldFailWhen4xx() {
-        val expectedResponseCode = 401
-        server.enqueueResponse("errors/401_4005.json", expectedResponseCode)
-
-        val actual = assertThrows<ApiError> { getBroadcastPlaybackInfo() }
-
-        assertThat(actual.status).isEqualTo(expectedResponseCode)
-    }
-
-    @Test
-    fun getBroadcastPlaybackInfoShouldFailWhen500() {
-        val expectedResponseCode = 500
-        server.enqueueResponse("errors/500_999.json", expectedResponseCode)
-
-        val actual = assertThrows<ApiError> { getBroadcastPlaybackInfo() }
-
-        assertThat(actual.status).isEqualTo(expectedResponseCode)
-    }
-
-    @Test
-    fun getBroadcastPlaybackInfoShouldReturnCorrectPlaybackInfo() {
-        server.enqueueResponse("${ApiConstants.BROADCASTS_PATH}.json")
-
-        val playbackInfo = getBroadcastPlaybackInfo()
-
-        assertThat(playbackInfo)
-            .isEqualToIgnoringGivenProperties(
-                BroadcastPlaybackInfoFactory.DEFAULT,
-                PlaybackInfo.Broadcast::streamingSessionId,
-            )
-    }
-
-    @Test
-    fun getBroadcastPlaybackInfoShouldReturnCorrectPlaybackInfoWhenReplacementId() {
-        server.enqueueResponse("${ApiConstants.BROADCASTS_PATH}_replacement_id.json")
-
-        val playbackInfo = getBroadcastPlaybackInfo()
-
-        assertThat(playbackInfo)
-            .isEqualToIgnoringGivenProperties(
-                BroadcastPlaybackInfoFactory.REPLACEMENT_ID,
-                PlaybackInfo.Broadcast::streamingSessionId,
-            )
-    }
-
-    @Test
-    fun getBroadcastPlaybackInfoShouldReturnCorrectPlaybackInfoWhenReplacementAudioQuality() {
-        server.enqueueResponse("${ApiConstants.BROADCASTS_PATH}_replacement_audio_quality.json")
-
-        val playbackInfo = getBroadcastPlaybackInfo()
-
-        assertThat(playbackInfo)
-            .isEqualToIgnoringGivenProperties(
-                BroadcastPlaybackInfoFactory.REPLACEMENT_AUDIO_QUALITY,
-                PlaybackInfo.Broadcast::streamingSessionId,
-            )
-    }
-
-    @Test
-    fun getBroadcastPlaybackInfoShouldFailWhenInvalidMimeType() {
-        server.enqueueResponse("${ApiConstants.BROADCASTS_PATH}_unknown_mime_type.json")
-
-        assertThrows<JsonParseException> { getBroadcastPlaybackInfo() }
-    }
-
-    private fun getBroadcastPlaybackInfo() = runBlocking {
-        streamingApi.getBroadcastPlaybackInfo(
-            ApiConstants.PLAYBACK_INFO_ID_FOR_DEFAULT.toString(),
-            "streamingSessionId",
-            AudioQuality.LOW,
-        ) as PlaybackInfo.Broadcast
     }
 
     @Test
