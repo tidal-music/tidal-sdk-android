@@ -1,16 +1,19 @@
 package com.tidal.sdk.eventproducer.network.service
 
-import com.tickaroo.tikxml.annotation.Element
-import com.tickaroo.tikxml.annotation.PropertyElement
-import com.tickaroo.tikxml.annotation.Xml
+import org.simpleframework.xml.Element
+import org.simpleframework.xml.ElementList
+import org.simpleframework.xml.Root
 
-@Xml(name = "SendMessageBatchResponse")
-internal data class SendMessageBatchResponse(@Element val result: SendMessageBatchResult)
-
-@Xml(name = "SendMessageBatchResult")
-internal data class SendMessageBatchResult(
-    @Element val successfullySentEntries: List<SendMessageBatchResultEntry>?
+@Root(name = "SendMessageBatchResponse", strict = false)
+internal data class SendMessageBatchResponse(
+    @field:Element(name = "SendMessageBatchResult") var result: SendMessageBatchResult? = null
 )
 
-@Xml(name = "SendMessageBatchResultEntry")
-internal data class SendMessageBatchResultEntry(@PropertyElement(name = "Id") val id: String)
+@Root(name = "SendMessageBatchResult", strict = false)
+internal data class SendMessageBatchResult(
+    @field:ElementList(inline = true, entry = "SendMessageBatchResultEntry", required = false)
+    var successfullySentEntries: List<SendMessageBatchResultEntry>? = null
+)
+
+@Root(name = "SendMessageBatchResultEntry", strict = false)
+internal data class SendMessageBatchResultEntry(@field:Element(name = "Id") var id: String = "")
