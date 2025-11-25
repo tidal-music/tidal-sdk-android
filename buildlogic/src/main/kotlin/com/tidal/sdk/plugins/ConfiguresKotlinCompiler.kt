@@ -9,12 +9,7 @@ internal class ConfiguresKotlinCompiler : (Project) -> Unit {
     override fun invoke(target: Project) =
         with(target) {
             tasks.withType<KotlinCompile>().configureEach {
-                compilerOptions {
-                    kotlinOptions {
-                        jvmTarget = "17"
-                        freeCompilerArgs = freeCompilerArgs + listOf("-Xjvm-default=all")
-                    }
-                }
+                kotlinOptions { freeCompilerArgs = freeCompilerArgs + listOf("-Xjvm-default=all") }
             }
         }
 }

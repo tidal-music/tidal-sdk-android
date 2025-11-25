@@ -4,6 +4,7 @@ object ApiConstants {
 
     const val TRACKS_PATH = "playbackinfo/tracks/get_1"
     const val VIDEOS_PATH = "playbackinfo/videos/get_1"
+    const val BROADCASTS_PATH = "playbackinfo/broadcasts/get_1"
     const val LICENSE_PATH = "drm/licenses/widevine/post"
 
     const val PLAYBACK_INFO_ID_FOR_DEFAULT = "1"
