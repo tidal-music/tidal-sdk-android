@@ -1,9 +1,6 @@
 import com.tidal.sdk.plugins.extensions.loadLocalProperties
 
-plugins {
-    alias(libs.plugins.tidal.android.application)
-    alias(libs.plugins.compose.compiler)
-}
+plugins { alias(libs.plugins.tidal.android.application) }
 
 android {
     namespace = "com.tidal.sdk.auth.demo"
@@ -23,6 +20,7 @@ android {
             )
         }
         debug {}
+        composeOptions { kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get() }
     }
     packagingOptions {
         resources.excludes.apply {

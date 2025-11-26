@@ -10,7 +10,7 @@ import kotlinx.datetime.Clock
 class TestTimeProvider : TimeProvider {
     val clock = ManualClock().apply { set(Clock.System.now()) }
 
-    override val now: Long
+    override val now
         get() = clock.now().epochSeconds
 
     fun advanceSeconds(seconds: Int) =
