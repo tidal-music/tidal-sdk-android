@@ -29,8 +29,8 @@ object LyricsAttributesProviderSerializer :
     ): DeserializationStrategy<LyricsAttributesProvider> {
         val source = element.jsonObject["source"]?.jsonPrimitive?.content
         return when (source) {
-            "TIDAL" -> Tidal.serializer()
-            "THIRD_PARTY" -> ThirdParty.serializer()
+            "THIRD_PARTY" -> ThirdPartyLyricsProvider.serializer()
+            "TIDAL" -> TidalLyricsProvider.serializer()
             else ->
                 throw IllegalArgumentException("Unknown LyricsAttributesProvider source: $source")
         }

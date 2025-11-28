@@ -17,7 +17,7 @@ import kotlinx.serialization.Transient
  * @param source
  */
 @Serializable
-data class ThirdParty(
+data class ThirdPartyLyricsProvider(
     @SerialName(value = "name") override val name: kotlin.String,
     @SerialName(value = "commonTrackId") val commonTrackId: kotlin.String,
     @SerialName(value = "lyricsId") val lyricsId: kotlin.String,

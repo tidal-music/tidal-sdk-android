@@ -13,8 +13,8 @@ import kotlinx.serialization.Serializable
  * @param artistId The artist id which is being claimed
  * @param provider The DSP used for authentication
  * @param status Current status of this claim
+ * @param externalLinks Artist claim links external to TIDAL API
  * @param recommendation The recommended claim resolution
- * @param redirectUrl The DSP redirect url used for authentication
  * @param retrievedUpcs List of UPCs retrieved from the DSP
  */
 @Serializable
@@ -29,13 +29,14 @@ data class ArtistClaimsAttributes(
     /* Current status of this claim */
 
     @SerialName(value = "status") val status: ArtistClaimsAttributes.Status,
+    /* Artist claim links external to TIDAL API */
+
+    @SerialName(value = "externalLinks")
+    val externalLinks: kotlin.collections.List<ExternalLink>? = null,
     /* The recommended claim resolution */
 
     @SerialName(value = "recommendation")
     val recommendation: ArtistClaimsAttributes.Recommendation? = null,
-    /* The DSP redirect url used for authentication */
-
-    @SerialName(value = "redirectUrl") val redirectUrl: kotlin.String? = null,
     /* List of UPCs retrieved from the DSP */
 
     @SerialName(value = "retrievedUpcs")
@@ -76,13 +77,11 @@ data class ArtistClaimsAttributes(
     /**
      * The recommended claim resolution
      *
-     * Values: DSP_PROFILE_CLAIMED,CONTENT_MIGRATED_TO_UPLOADS,NO_CONTENT_MATCHED
+     * Values: PROFILE,CONTENT
      */
     @Serializable
     enum class Recommendation(val value: kotlin.String) {
-        @SerialName(value = "DSP_PROFILE_CLAIMED") DSP_PROFILE_CLAIMED("DSP_PROFILE_CLAIMED"),
-        @SerialName(value = "CONTENT_MIGRATED_TO_UPLOADS")
-        CONTENT_MIGRATED_TO_UPLOADS("CONTENT_MIGRATED_TO_UPLOADS"),
-        @SerialName(value = "NO_CONTENT_MATCHED") NO_CONTENT_MATCHED("NO_CONTENT_MATCHED"),
+        @SerialName(value = "CLAIM_PROFILE") PROFILE("CLAIM_PROFILE"),
+        @SerialName(value = "CLAIM_CONTENT") CONTENT("CLAIM_CONTENT"),
     }
 }

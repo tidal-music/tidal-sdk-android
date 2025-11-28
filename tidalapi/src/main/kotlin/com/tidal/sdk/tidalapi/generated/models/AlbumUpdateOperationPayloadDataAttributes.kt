@@ -10,6 +10,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
+ * @param accessType Access type
  * @param copyright
  * @param explicitLyrics
  * @param releaseDate
@@ -18,9 +19,27 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class AlbumUpdateOperationPayloadDataAttributes(
+
+    /* Access type */
+
+    @SerialName(value = "accessType")
+    val accessType: AlbumUpdateOperationPayloadDataAttributes.AccessType? = null,
     @SerialName(value = "copyright") val copyright: Copyright? = null,
     @SerialName(value = "explicitLyrics") val explicitLyrics: kotlin.Boolean? = null,
     @SerialName(value = "releaseDate") val releaseDate: kotlin.String? = null,
     @SerialName(value = "title") val title: kotlin.String? = null,
     @SerialName(value = "version") val version: kotlin.String? = null,
-) {}
+) {
+
+    /**
+     * Access type
+     *
+     * Values: PUBLIC,UNLISTED,PRIVATE
+     */
+    @Serializable
+    enum class AccessType(val value: kotlin.String) {
+        @SerialName(value = "PUBLIC") PUBLIC("PUBLIC"),
+        @SerialName(value = "UNLISTED") UNLISTED("UNLISTED"),
+        @SerialName(value = "PRIVATE") PRIVATE("PRIVATE"),
+    }
+}

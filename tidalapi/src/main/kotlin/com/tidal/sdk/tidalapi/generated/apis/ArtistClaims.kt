@@ -12,17 +12,14 @@ interface ArtistClaims {
     /**
      * Get single artistClaim. Retrieves single artistClaim by id. Responses:
      * - 200: Successful response
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
      * @param id Artist claim id
      * @param include Allows the client to customize which related resources should be returned.
@@ -38,27 +35,24 @@ interface ArtistClaims {
 
     /**
      * Update single artistClaim. Updates existing artistClaim. Responses:
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
      * @param id Artist claim id
-     * @param countryCode ISO 3166-1 alpha-2 country code (default to "US")
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param artistClaimsUpdateOperationPayload (optional)
      * @return [Unit]
      */
     @PATCH("artistClaims/{id}")
     suspend fun artistClaimsIdPatch(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String = "US",
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Body artistClaimsUpdateOperationPayload: ArtistClaimsUpdateOperationPayload? = null,
     ): Response<Unit>
 
@@ -66,17 +60,14 @@ interface ArtistClaims {
      * Get acceptedArtists relationship (\&quot;to-many\&quot;). Retrieves acceptedArtists
      * relationship. Responses:
      * - 200: Successful response
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
      * @param id Artist claim id
      * @param include Allows the client to customize which related resources should be returned.
@@ -96,25 +87,24 @@ interface ArtistClaims {
     /**
      * Update acceptedArtists relationship (\&quot;to-many\&quot;). Updates acceptedArtists
      * relationship. Responses:
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
      * @param id Artist claim id
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param artistClaimAcceptedArtistsRelationshipUpdateOperationPayload (optional)
      * @return [Unit]
      */
     @PATCH("artistClaims/{id}/relationships/acceptedArtists")
     suspend fun artistClaimsIdRelationshipsAcceptedArtistsPatch(
         @Path("id") id: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Body
         artistClaimAcceptedArtistsRelationshipUpdateOperationPayload:
             ArtistClaimAcceptedArtistsRelationshipUpdateOperationPayload? =
@@ -124,17 +114,14 @@ interface ArtistClaims {
     /**
      * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
      * - 200: Successful response
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
      * @param id Artist claim id
      * @param include Allows the client to customize which related resources should be returned.
@@ -155,17 +142,14 @@ interface ArtistClaims {
      * Get recommendedArtists relationship (\&quot;to-many\&quot;). Retrieves recommendedArtists
      * relationship. Responses:
      * - 200: Successful response
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
      * @param id Artist claim id
      * @param include Allows the client to customize which related resources should be returned.
@@ -185,25 +169,22 @@ interface ArtistClaims {
     /**
      * Create single artistClaim. Creates a new artistClaim. Responses:
      * - 201: Successful response
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
-     * @param countryCode ISO 3166-1 alpha-2 country code (default to "US")
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param artistClaimsCreateOperationPayload (optional)
      * @return [ArtistClaimsSingleResourceDataDocument]
      */
     @POST("artistClaims")
     suspend fun artistClaimsPost(
-        @Query("countryCode") countryCode: kotlin.String = "US",
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Body artistClaimsCreateOperationPayload: ArtistClaimsCreateOperationPayload? = null,
     ): Response<ArtistClaimsSingleResourceDataDocument>
 }

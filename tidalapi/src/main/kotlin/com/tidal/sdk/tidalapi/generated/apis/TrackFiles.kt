@@ -1,24 +1,42 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.TrackFilesSingleResourceDataDocument
+import kotlinx.serialization.SerialName
 import retrofit2.Response
 import retrofit2.http.*
 
 interface TrackFiles {
+
+    /** enum for parameter formats */
+    enum class FormatsTrackFilesIdGet(val value: kotlin.String) {
+        @SerialName(value = "HEAACV1") HEAACV1("HEAACV1"),
+        @SerialName(value = "AACLC") AACLC("AACLC"),
+        @SerialName(value = "FLAC") FLAC("FLAC"),
+        @SerialName(value = "FLAC_HIRES") FLAC_HIRES("FLAC_HIRES"),
+        @SerialName(value = "EAC3_JOC") EAC3_JOC("EAC3_JOC"),
+    }
+
+    /** enum for parameter usage */
+    enum class UsageTrackFilesIdGet(val value: kotlin.String) {
+        @SerialName(value = "PLAYBACK") PLAYBACK("PLAYBACK"),
+        @SerialName(value = "DOWNLOAD") DOWNLOAD("DOWNLOAD"),
+    }
+
     /**
      * Get single trackFile. Retrieves single trackFile by id. Responses:
      * - 200: Successful response
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 403: Cannot fulfill this request because required prerequisites are missing; The requested
+     *   content is not available in your location; The requested content must be purchased to be
+     *   accessed; Client is not allowed to access this content; This account is playing on another
+     *   app or device
+     * - 404: The requested content does not exist or is no longer available
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
      * @param id
      * @param formats
@@ -28,7 +46,7 @@ interface TrackFiles {
     @GET("trackFiles/{id}")
     suspend fun trackFilesIdGet(
         @Path("id") id: kotlin.String,
-        @Query("formats") formats: kotlin.String,
-        @Query("usage") usage: kotlin.String,
+        @Query("formats") formats: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
+        @Query("usage") usage: UsageTrackFilesIdGet,
     ): Response<TrackFilesSingleResourceDataDocument>
 }
