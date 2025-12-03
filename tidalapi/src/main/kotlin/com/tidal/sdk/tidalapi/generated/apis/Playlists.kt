@@ -30,23 +30,20 @@ interface Playlists {
      * Get multiple playlists. Retrieves multiple playlists by available filters, or without if
      * applicable. Responses:
      * - 200: Successful response
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
-     * @param countryCode ISO 3166-1 alpha-2 country code (default to "US")
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param sort Values prefixed with \&quot;-\&quot; are sorted descending; values without it are
      *   sorted ascending. (optional)
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: coverArt, items, owners (optional)
      * @param filterOwnersId User id (optional)
@@ -55,9 +52,9 @@ interface Playlists {
      */
     @GET("playlists")
     suspend fun playlistsGet(
-        @Query("countryCode") countryCode: kotlin.String = "US",
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("sort") sort: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[owners.id]")
@@ -68,17 +65,14 @@ interface Playlists {
 
     /**
      * Delete single playlist. Deletes existing playlist. Responses:
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
      * @param id Playlist id
      * @return [Unit]
@@ -89,20 +83,17 @@ interface Playlists {
     /**
      * Get single playlist. Retrieves single playlist by id. Responses:
      * - 200: Successful response
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
      * @param id Playlist id
-     * @param countryCode ISO 3166-1 alpha-2 country code (default to "US")
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: coverArt, items, owners (optional)
      * @return [PlaylistsSingleResourceDataDocument]
@@ -110,34 +101,31 @@ interface Playlists {
     @GET("playlists/{id}")
     suspend fun playlistsIdGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String = "US",
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<PlaylistsSingleResourceDataDocument>
 
     /**
      * Update single playlist. Updates existing playlist. Responses:
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
      * @param id Playlist id
-     * @param countryCode ISO 3166-1 alpha-2 country code (default to "US")
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param playlistUpdateOperationPayload (optional)
      * @return [Unit]
      */
     @PATCH("playlists/{id}")
     suspend fun playlistsIdPatch(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String = "US",
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Body playlistUpdateOperationPayload: PlaylistUpdateOperationPayload? = null,
     ): Response<Unit>
 
@@ -145,20 +133,17 @@ interface Playlists {
      * Get coverArt relationship (\&quot;to-many\&quot;). Retrieves coverArt relationship.
      * Responses:
      * - 200: Successful response
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
      * @param id Playlist id
-     * @param countryCode ISO 3166-1 alpha-2 country code (default to "US")
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: coverArt (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -168,7 +153,7 @@ interface Playlists {
     @GET("playlists/{id}/relationships/coverArt")
     suspend fun playlistsIdRelationshipsCoverArtGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String = "US",
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
@@ -177,17 +162,14 @@ interface Playlists {
     /**
      * Update coverArt relationship (\&quot;to-many\&quot;). Updates coverArt relationship.
      * Responses:
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
      * @param id Playlist id
      * @param playlistCoverArtRelationshipUpdateOperationPayload (optional)
@@ -205,17 +187,14 @@ interface Playlists {
     /**
      * Delete from items relationship (\&quot;to-many\&quot;). Deletes item(s) from items
      * relationship. Responses:
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
      * @param id Playlist id
      * @param playlistItemsRelationshipRemoveOperationPayload (optional)
@@ -233,22 +212,19 @@ interface Playlists {
     /**
      * Get items relationship (\&quot;to-many\&quot;). Retrieves items relationship. Responses:
      * - 200: Successful response
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
      * @param id Playlist id
-     * @param countryCode ISO 3166-1 alpha-2 country code (default to "US")
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: items (optional)
      * @return [PlaylistsItemsMultiRelationshipDataDocument]
@@ -256,25 +232,22 @@ interface Playlists {
     @GET("playlists/{id}/relationships/items")
     suspend fun playlistsIdRelationshipsItemsGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String = "US",
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<PlaylistsItemsMultiRelationshipDataDocument>
 
     /**
      * Update items relationship (\&quot;to-many\&quot;). Updates items relationship. Responses:
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
      * @param id Playlist id
      * @param playlistItemsRelationshipReorderOperationPayload (optional)
@@ -292,27 +265,24 @@ interface Playlists {
     /**
      * Add to items relationship (\&quot;to-many\&quot;). Adds item(s) to items relationship.
      * Responses:
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
      * @param id Playlist id
-     * @param countryCode ISO 3166-1 alpha-2 country code (default to "US")
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param playlistItemsRelationshipAddOperationPayload (optional)
      * @return [Unit]
      */
     @POST("playlists/{id}/relationships/items")
     suspend fun playlistsIdRelationshipsItemsPost(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String = "US",
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Body
         playlistItemsRelationshipAddOperationPayload:
             PlaylistItemsRelationshipAddOperationPayload? =
@@ -322,20 +292,17 @@ interface Playlists {
     /**
      * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
      * - 200: Successful response
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
      * @param id Playlist id
-     * @param countryCode ISO 3166-1 alpha-2 country code (default to "US")
+     * @param countryCode ISO 3166-1 alpha-2 country code
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -345,7 +312,7 @@ interface Playlists {
     @GET("playlists/{id}/relationships/owners")
     suspend fun playlistsIdRelationshipsOwnersGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String = "US",
+        @Query("countryCode") countryCode: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
@@ -354,25 +321,22 @@ interface Playlists {
     /**
      * Create single playlist. Creates a new playlist. Responses:
      * - 201: Successful response
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
-     * @param countryCode ISO 3166-1 alpha-2 country code (default to "US")
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param playlistCreateOperationPayload (optional)
      * @return [PlaylistsSingleResourceDataDocument]
      */
     @POST("playlists")
     suspend fun playlistsPost(
-        @Query("countryCode") countryCode: kotlin.String = "US",
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Body playlistCreateOperationPayload: PlaylistCreateOperationPayload? = null,
     ): Response<PlaylistsSingleResourceDataDocument>
 }

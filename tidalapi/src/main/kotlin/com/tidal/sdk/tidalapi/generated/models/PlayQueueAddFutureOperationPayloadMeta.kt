@@ -13,18 +13,21 @@ import kotlinx.serialization.Serializable
 /**
  * @param mode
  * @param batchId
+ * @param positionBefore
  */
 @Serializable
 data class PlayQueueAddFutureOperationPayloadMeta(
     @SerialName(value = "mode") val mode: PlayQueueAddFutureOperationPayloadMeta.Mode,
     @Contextual @SerialName(value = "batchId") val batchId: java.util.UUID? = null,
+    @SerialName(value = "positionBefore") val positionBefore: kotlin.String? = null,
 ) {
 
-    /** Values: ADD_TO_FRONT,ADD_TO_BACK,REPLACE_ALL */
+    /** Values: ADD_TO_FRONT,ADD_TO_BACK,ADD_BEFORE,REPLACE_ALL */
     @Serializable
     enum class Mode(val value: kotlin.String) {
         @SerialName(value = "ADD_TO_FRONT") ADD_TO_FRONT("ADD_TO_FRONT"),
         @SerialName(value = "ADD_TO_BACK") ADD_TO_BACK("ADD_TO_BACK"),
+        @SerialName(value = "ADD_BEFORE") ADD_BEFORE("ADD_BEFORE"),
         @SerialName(value = "REPLACE_ALL") REPLACE_ALL("REPLACE_ALL"),
     }
 }
