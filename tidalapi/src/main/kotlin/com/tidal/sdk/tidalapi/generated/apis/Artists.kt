@@ -12,6 +12,7 @@ import com.tidal.sdk.tidalapi.generated.models.ArtistsMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistsSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistsSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistsTrackProvidersMultiRelationshipDataDocument
+import kotlinx.serialization.SerialName
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -20,17 +21,14 @@ interface Artists {
      * Get multiple artists. Retrieves multiple artists by available filters, or without if
      * applicable. Responses:
      * - 200: Successful response
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
      * @param countryCode ISO 3166-1 alpha-2 country code
      * @param include Allows the client to customize which related resources should be returned.
@@ -54,17 +52,14 @@ interface Artists {
     /**
      * Get single artist. Retrieves single artist by id. Responses:
      * - 200: Successful response
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
      * @param id Artist id
      * @param countryCode ISO 3166-1 alpha-2 country code
@@ -83,17 +78,14 @@ interface Artists {
 
     /**
      * Update single artist. Updates existing artist. Responses:
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
      * @param id Artist id
      * @param artistUpdateBody (optional)
@@ -108,17 +100,14 @@ interface Artists {
     /**
      * Get albums relationship (\&quot;to-many\&quot;). Retrieves albums relationship. Responses:
      * - 200: Successful response
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
      * @param id Artist id
      * @param countryCode ISO 3166-1 alpha-2 country code
@@ -141,20 +130,17 @@ interface Artists {
      * Get biography relationship (\&quot;to-one\&quot;). Retrieves biography relationship.
      * Responses:
      * - 200: Successful response
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
      * @param id Artist id
-     * @param countryCode ISO 3166-1 alpha-2 country code (default to "US")
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: biography (optional)
      * @return [ArtistsSingleRelationshipDataDocument]
@@ -162,7 +148,7 @@ interface Artists {
     @GET("artists/{id}/relationships/biography")
     suspend fun artistsIdRelationshipsBiographyGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String = "US",
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<ArtistsSingleRelationshipDataDocument>
@@ -171,17 +157,14 @@ interface Artists {
      * Get followers relationship (\&quot;to-many\&quot;). Retrieves followers relationship.
      * Responses:
      * - 200: Successful response
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
      * @param id Artist id
      * @param viewerContext (optional)
@@ -203,17 +186,14 @@ interface Artists {
     /**
      * Delete from following relationship (\&quot;to-many\&quot;). Deletes item(s) from following
      * relationship. Responses:
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
      * @param id Artist id
      * @param artistFollowingRelationshipRemoveOperationPayload (optional)
@@ -232,17 +212,14 @@ interface Artists {
      * Get following relationship (\&quot;to-many\&quot;). Retrieves following relationship.
      * Responses:
      * - 200: Successful response
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
      * @param id Artist id
      * @param viewerContext (optional)
@@ -264,27 +241,24 @@ interface Artists {
     /**
      * Add to following relationship (\&quot;to-many\&quot;). Adds item(s) to following
      * relationship. Responses:
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
      * @param id Artist id
-     * @param countryCode ISO 3166-1 alpha-2 country code (default to "US")
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param artistFollowingRelationshipAddOperationPayload (optional)
      * @return [Unit]
      */
     @POST("artists/{id}/relationships/following")
     suspend fun artistsIdRelationshipsFollowingPost(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String = "US",
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Body
         artistFollowingRelationshipAddOperationPayload:
             ArtistFollowingRelationshipAddOperationPayload? =
@@ -294,17 +268,14 @@ interface Artists {
     /**
      * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
      * - 200: Successful response
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
      * @param id Artist id
      * @param include Allows the client to customize which related resources should be returned.
@@ -325,20 +296,17 @@ interface Artists {
      * Get profileArt relationship (\&quot;to-many\&quot;). Retrieves profileArt relationship.
      * Responses:
      * - 200: Successful response
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
      * @param id Artist id
-     * @param countryCode ISO 3166-1 alpha-2 country code (default to "US")
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: profileArt (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -348,7 +316,7 @@ interface Artists {
     @GET("artists/{id}/relationships/profileArt")
     suspend fun artistsIdRelationshipsProfileArtGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String = "US",
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
@@ -357,17 +325,14 @@ interface Artists {
     /**
      * Update profileArt relationship (\&quot;to-many\&quot;). Updates profileArt relationship.
      * Responses:
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
      * @param id Artist id
      * @param artistProfileArtRelationshipUpdateOperationPayload (optional)
@@ -385,17 +350,14 @@ interface Artists {
     /**
      * Get radio relationship (\&quot;to-many\&quot;). Retrieves radio relationship. Responses:
      * - 200: Successful response
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
      * @param id Artist id
      * @param countryCode ISO 3166-1 alpha-2 country code
@@ -417,17 +379,14 @@ interface Artists {
     /**
      * Get roles relationship (\&quot;to-many\&quot;). Retrieves roles relationship. Responses:
      * - 200: Successful response
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
      * @param id Artist id
      * @param include Allows the client to customize which related resources should be returned.
@@ -448,17 +407,14 @@ interface Artists {
      * Get similarArtists relationship (\&quot;to-many\&quot;). Retrieves similarArtists
      * relationship. Responses:
      * - 200: Successful response
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
      * @param id Artist id
      * @param countryCode ISO 3166-1 alpha-2 country code
@@ -481,17 +437,14 @@ interface Artists {
      * Get trackProviders relationship (\&quot;to-many\&quot;). Retrieves trackProviders
      * relationship. Responses:
      * - 200: Successful response
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
      * @param id Artist id
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -508,26 +461,29 @@ interface Artists {
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<ArtistsTrackProvidersMultiRelationshipDataDocument>
 
+    /** enum for parameter collapseBy */
+    enum class CollapseByArtistsIdRelationshipsTracksGet(val value: kotlin.String) {
+        @SerialName(value = "FINGERPRINT") FINGERPRINT("FINGERPRINT"),
+        @SerialName(value = "NONE") NONE("NONE"),
+    }
+
     /**
      * Get tracks relationship (\&quot;to-many\&quot;). Retrieves tracks relationship. Responses:
      * - 200: Successful response
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
      * @param id Artist id
-     * @param countryCode ISO 3166-1 alpha-2 country code
      * @param collapseBy Collapse by options for getting artist tracks. Available options:
      *   FINGERPRINT, ID. FINGERPRINT option might collapse similar tracks based entry fingerprints
      *   while collapsing by ID always returns all available items.
+     * @param countryCode ISO 3166-1 alpha-2 country code
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
@@ -537,8 +493,8 @@ interface Artists {
     @GET("artists/{id}/relationships/tracks")
     suspend fun artistsIdRelationshipsTracksGet(
         @Path("id") id: kotlin.String,
+        @Query("collapseBy") collapseBy: CollapseByArtistsIdRelationshipsTracksGet,
         @Query("countryCode") countryCode: kotlin.String,
-        @Query("collapseBy") collapseBy: kotlin.String,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
@@ -547,17 +503,14 @@ interface Artists {
     /**
      * Get videos relationship (\&quot;to-many\&quot;). Retrieves videos relationship. Responses:
      * - 200: Successful response
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
      * @param id Artist id
      * @param countryCode ISO 3166-1 alpha-2 country code
@@ -579,17 +532,14 @@ interface Artists {
     /**
      * Create single artist. Creates a new artist. Responses:
      * - 201: Successful response
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
      * @param artistCreateOperationPayload (optional)
      * @return [ArtistsSingleResourceDataDocument]

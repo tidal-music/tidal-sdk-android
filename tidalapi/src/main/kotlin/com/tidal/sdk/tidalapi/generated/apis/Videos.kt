@@ -11,17 +11,14 @@ interface Videos {
      * Get multiple videos. Retrieves multiple videos by available filters, or without if
      * applicable. Responses:
      * - 200: Successful response
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
      * @param countryCode ISO 3166-1 alpha-2 country code
      * @param include Allows the client to customize which related resources should be returned.
@@ -46,17 +43,14 @@ interface Videos {
     /**
      * Get single video. Retrieves single video by id. Responses:
      * - 200: Successful response
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
      * @param id Video id
      * @param countryCode ISO 3166-1 alpha-2 country code
@@ -75,17 +69,14 @@ interface Videos {
     /**
      * Get albums relationship (\&quot;to-many\&quot;). Retrieves albums relationship. Responses:
      * - 200: Successful response
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
      * @param id Video id
      * @param countryCode ISO 3166-1 alpha-2 country code
@@ -107,17 +98,14 @@ interface Videos {
     /**
      * Get artists relationship (\&quot;to-many\&quot;). Retrieves artists relationship. Responses:
      * - 200: Successful response
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
      * @param id Video id
      * @param countryCode ISO 3166-1 alpha-2 country code
@@ -140,17 +128,14 @@ interface Videos {
      * Get providers relationship (\&quot;to-many\&quot;). Retrieves providers relationship.
      * Responses:
      * - 200: Successful response
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
      * @param id Video id
      * @param countryCode ISO 3166-1 alpha-2 country code
@@ -173,17 +158,14 @@ interface Videos {
      * Get thumbnailArt relationship (\&quot;to-many\&quot;). Retrieves thumbnailArt relationship.
      * Responses:
      * - 200: Successful response
-     * - 400: Bad request - The request could not be understood by the server due to malformed
-     *   syntax or invalid parameters
-     * - 404: Not found - The requested resource could not be found
-     * - 405: Method not allowed - The request method is not allowed for the requested resource
-     * - 406: Not acceptable - The requested resource is capable of generating only content not
-     *   acceptable according to the Accept headers sent in the request
-     * - 415: Unsupported media type - The request entity has a media type which the server or
-     *   resource does not support
-     * - 429: Too many requests - The user has sent too many requests in a given amount of time
-     * - 500: Internal server error - The server encountered an unexpected condition that prevented
-     *   it from fulfilling the request
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
      *
      * @param id Video id
      * @param countryCode ISO 3166-1 alpha-2 country code

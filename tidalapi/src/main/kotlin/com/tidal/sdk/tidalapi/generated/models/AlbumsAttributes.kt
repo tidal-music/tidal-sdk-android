@@ -19,6 +19,7 @@ import kotlinx.serialization.Serializable
  * @param popularity Popularity (0.0 - 1.0)
  * @param title Album title
  * @param type Album type
+ * @param accessType Access type
  * @param availability Available usage for this album
  * @param copyright
  * @param externalLinks Album links external to TIDAL API
@@ -53,6 +54,9 @@ data class AlbumsAttributes(
     /* Album type */
 
     @SerialName(value = "type") val type: AlbumsAttributes.Type,
+    /* Access type */
+
+    @SerialName(value = "accessType") val accessType: AlbumsAttributes.AccessType? = null,
     /* Available usage for this album */
 
     @SerialName(value = "availability")
@@ -80,6 +84,18 @@ data class AlbumsAttributes(
         @SerialName(value = "ALBUM") ALBUM("ALBUM"),
         @SerialName(value = "EP") EP("EP"),
         @SerialName(value = "SINGLE") SINGLE("SINGLE"),
+    }
+
+    /**
+     * Access type
+     *
+     * Values: PUBLIC,UNLISTED,PRIVATE
+     */
+    @Serializable
+    enum class AccessType(val value: kotlin.String) {
+        @SerialName(value = "PUBLIC") PUBLIC("PUBLIC"),
+        @SerialName(value = "UNLISTED") UNLISTED("UNLISTED"),
+        @SerialName(value = "PRIVATE") PRIVATE("PRIVATE"),
     }
 
     /**

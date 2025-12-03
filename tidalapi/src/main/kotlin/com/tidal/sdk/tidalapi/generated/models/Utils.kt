@@ -32,6 +32,10 @@ fun getOneOfSerializer() = SerializersModule {
         subclass(TrackSourceFilesResourceObject::class, TrackSourceFilesResourceObject.serializer())
         subclass(TrackStatisticsResourceObject::class, TrackStatisticsResourceObject.serializer())
         subclass(TracksResourceObject::class, TracksResourceObject.serializer())
+        subclass(
+            UserCollectionFoldersResourceObject::class,
+            UserCollectionFoldersResourceObject.serializer(),
+        )
         subclass(UserCollectionsResourceObject::class, UserCollectionsResourceObject.serializer())
         subclass(UserEntitlementsResourceObject::class, UserEntitlementsResourceObject.serializer())
         subclass(

@@ -12,11 +12,14 @@ import kotlinx.serialization.Serializable
 /**
  * @param id
  * @param type
+ * @param meta
  */
 @Serializable
 data class PlaylistItemsRelationshipAddOperationPayloadData(
     @SerialName(value = "id") val id: kotlin.String,
     @SerialName(value = "type") val type: PlaylistItemsRelationshipAddOperationPayloadData.Type,
+    @SerialName(value = "meta")
+    val meta: PlaylistItemsRelationshipAddOperationPayloadDataMeta? = null,
 ) {
 
     /** Values: tracks,videos */
