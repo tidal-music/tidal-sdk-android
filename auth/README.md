@@ -90,3 +90,4 @@ For devices with limited input capabilities, such as TVs, an alternative login m
 6. Retrieve a token by calling `.credentialsProvider.getCredentials`.
 
 > 💡 Many modern apps feature a QR-Code for scanning, which you can also generate. Ensure it includes `verificationUriComplete`, as provided in the response.
+# Test change
