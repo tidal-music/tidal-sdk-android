@@ -9,18 +9,18 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param entitlements entitlements for user */
+/** @param entitlements Entitlements for user */
 @Serializable
 data class UserEntitlementsAttributes(
 
-    /* entitlements for user */
+    /* Entitlements for user */
 
     @SerialName(value = "entitlements")
     val entitlements: kotlin.collections.List<UserEntitlementsAttributes.Entitlements>
 ) {
 
     /**
-     * entitlements for user
+     * Entitlements for user
      *
      * Values: MUSIC,DJ
      */

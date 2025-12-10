@@ -45,9 +45,9 @@ interface Playlists {
      *   sorted ascending. (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: coverArt, items, owners (optional)
-     * @param filterOwnersId User id (optional)
+     *   Available options: coverArt, items, ownerProfiles, owners (optional)
      * @param filterId Playlist id (optional)
+     * @param filterOwnersId User id (optional)
      * @return [PlaylistsMultiResourceDataDocument]
      */
     @GET("playlists")
@@ -57,10 +57,10 @@ interface Playlists {
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[owners.id]")
-        filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[id]")
         filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("filter[owners.id]")
+        filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<PlaylistsMultiResourceDataDocument>
 
     /**
@@ -95,7 +95,7 @@ interface Playlists {
      * @param id Playlist id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: coverArt, items, owners (optional)
+     *   Available options: coverArt, items, ownerProfiles, owners (optional)
      * @return [PlaylistsSingleResourceDataDocument]
      */
     @GET("playlists/{id}")
@@ -288,6 +288,36 @@ interface Playlists {
             PlaylistItemsRelationshipAddOperationPayload? =
             null,
     ): Response<Unit>
+
+    /**
+     * Get ownerProfiles relationship (\&quot;to-many\&quot;). Retrieves ownerProfiles relationship.
+     * Responses:
+     * - 200: Successful response
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
+     *
+     * @param id Playlist id
+     * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: ownerProfiles (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
+     * @return [PlaylistsMultiRelationshipDataDocument]
+     */
+    @GET("playlists/{id}/relationships/ownerProfiles")
+    suspend fun playlistsIdRelationshipsOwnerProfilesGet(
+        @Path("id") id: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
+    ): Response<PlaylistsMultiRelationshipDataDocument>
 
     /**
      * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:

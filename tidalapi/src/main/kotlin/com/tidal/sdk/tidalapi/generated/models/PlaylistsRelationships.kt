@@ -12,11 +12,13 @@ import kotlinx.serialization.Serializable
 /**
  * @param coverArt
  * @param items
+ * @param ownerProfiles
  * @param owners
  */
 @Serializable
 data class PlaylistsRelationships(
     @SerialName(value = "coverArt") val coverArt: MultiRelationshipDataDocument,
     @SerialName(value = "items") val items: PlaylistsItemsMultiRelationshipDataDocument,
+    @SerialName(value = "ownerProfiles") val ownerProfiles: MultiRelationshipDataDocument,
     @SerialName(value = "owners") val owners: MultiRelationshipDataDocument,
 ) {}

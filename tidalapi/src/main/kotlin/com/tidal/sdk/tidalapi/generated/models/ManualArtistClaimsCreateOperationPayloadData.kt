@@ -10,22 +10,19 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param id
+ * @param attributes
  * @param type
- * @param meta
  */
 @Serializable
-data class UserCollectionTracksRelationshipAddOperationPayloadData(
-    @SerialName(value = "id") val id: kotlin.String,
-    @SerialName(value = "type")
-    val type: UserCollectionTracksRelationshipAddOperationPayloadData.Type,
-    @SerialName(value = "meta")
-    val meta: UserCollectionTracksRelationshipAddOperationPayloadDataMeta? = null,
+data class ManualArtistClaimsCreateOperationPayloadData(
+    @SerialName(value = "attributes")
+    val attributes: ManualArtistClaimsCreateOperationPayloadDataAttributes,
+    @SerialName(value = "type") val type: ManualArtistClaimsCreateOperationPayloadData.Type,
 ) {
 
-    /** Values: tracks */
+    /** Values: manualArtistClaims */
     @Serializable
     enum class Type(val value: kotlin.String) {
-        @SerialName(value = "tracks") tracks("tracks")
+        @SerialName(value = "manualArtistClaims") manualArtistClaims("manualArtistClaims")
     }
 }

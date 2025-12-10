@@ -20,29 +20,9 @@ data class UserCollectionVideosRelationshipAddOperationPayloadData(
     val type: UserCollectionVideosRelationshipAddOperationPayloadData.Type,
 ) {
 
-    /**
-     * Values:
-     * albums,appreciations,artistClaims,artistRoles,artists,artworks,playlists,providers,searchResults,searchSuggestions,tracks,trackStatistics,userCollections,userEntitlements,userRecommendations,userReports,users,videos
-     */
+    /** Values: videos */
     @Serializable
     enum class Type(val value: kotlin.String) {
-        @SerialName(value = "albums") albums("albums"),
-        @SerialName(value = "appreciations") appreciations("appreciations"),
-        @SerialName(value = "artistClaims") artistClaims("artistClaims"),
-        @SerialName(value = "artistRoles") artistRoles("artistRoles"),
-        @SerialName(value = "artists") artists("artists"),
-        @SerialName(value = "artworks") artworks("artworks"),
-        @SerialName(value = "playlists") playlists("playlists"),
-        @SerialName(value = "providers") providers("providers"),
-        @SerialName(value = "searchResults") searchResults("searchResults"),
-        @SerialName(value = "searchSuggestions") searchSuggestions("searchSuggestions"),
-        @SerialName(value = "tracks") tracks("tracks"),
-        @SerialName(value = "trackStatistics") trackStatistics("trackStatistics"),
-        @SerialName(value = "userCollections") userCollections("userCollections"),
-        @SerialName(value = "userEntitlements") userEntitlements("userEntitlements"),
-        @SerialName(value = "userRecommendations") userRecommendations("userRecommendations"),
-        @SerialName(value = "userReports") userReports("userReports"),
-        @SerialName(value = "users") users("users"),
-        @SerialName(value = "videos") videos("videos"),
+        @SerialName(value = "videos") videos("videos")
     }
 }

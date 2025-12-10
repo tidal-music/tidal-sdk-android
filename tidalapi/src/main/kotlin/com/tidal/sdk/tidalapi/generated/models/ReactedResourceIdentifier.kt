@@ -12,20 +12,20 @@ import kotlinx.serialization.Serializable
 /**
  * @param id
  * @param type
- * @param meta
  */
 @Serializable
-data class UserCollectionTracksRelationshipAddOperationPayloadData(
+data class ReactedResourceIdentifier(
     @SerialName(value = "id") val id: kotlin.String,
-    @SerialName(value = "type")
-    val type: UserCollectionTracksRelationshipAddOperationPayloadData.Type,
-    @SerialName(value = "meta")
-    val meta: UserCollectionTracksRelationshipAddOperationPayloadDataMeta? = null,
+    @SerialName(value = "type") val type: ReactedResourceIdentifier.Type,
 ) {
 
-    /** Values: tracks */
+    /** Values: albums,tracks,artists,videos,playlists */
     @Serializable
     enum class Type(val value: kotlin.String) {
-        @SerialName(value = "tracks") tracks("tracks")
+        @SerialName(value = "albums") albums("albums"),
+        @SerialName(value = "tracks") tracks("tracks"),
+        @SerialName(value = "artists") artists("artists"),
+        @SerialName(value = "videos") videos("videos"),
+        @SerialName(value = "playlists") playlists("playlists"),
     }
 }

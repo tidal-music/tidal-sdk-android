@@ -23,10 +23,8 @@ interface Videos {
      * @param countryCode ISO 3166-1 alpha-2 country code
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: albums, artists, providers, thumbnailArt (optional)
-     * @param filterIsrc Allows to filter the collection of resources based on isrc attribute value
-     *   (optional)
-     * @param filterId Allows to filter the collection of resources based on id attribute value
-     *   (optional)
+     * @param filterId Video id (optional)
+     * @param filterIsrc International Standard Recording Code (ISRC) (optional)
      * @return [VideosMultiResourceDataDocument]
      */
     @GET("videos")
@@ -34,10 +32,10 @@ interface Videos {
         @Query("countryCode") countryCode: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[isrc]")
-        filterIsrc: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[id]")
         filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("filter[isrc]")
+        filterIsrc: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<VideosMultiResourceDataDocument>
 
     /**
@@ -80,19 +78,19 @@ interface Videos {
      *
      * @param id Video id
      * @param countryCode ISO 3166-1 alpha-2 country code
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: albums (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: albums (optional)
      * @return [VideosMultiRelationshipDataDocument]
      */
     @GET("videos/{id}/relationships/albums")
     suspend fun videosIdRelationshipsAlbumsGet(
         @Path("id") id: kotlin.String,
         @Query("countryCode") countryCode: kotlin.String,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
     ): Response<VideosMultiRelationshipDataDocument>
 
     /**
@@ -109,19 +107,19 @@ interface Videos {
      *
      * @param id Video id
      * @param countryCode ISO 3166-1 alpha-2 country code
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: artists (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: artists (optional)
      * @return [VideosMultiRelationshipDataDocument]
      */
     @GET("videos/{id}/relationships/artists")
     suspend fun videosIdRelationshipsArtistsGet(
         @Path("id") id: kotlin.String,
         @Query("countryCode") countryCode: kotlin.String,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
     ): Response<VideosMultiRelationshipDataDocument>
 
     /**
@@ -139,19 +137,19 @@ interface Videos {
      *
      * @param id Video id
      * @param countryCode ISO 3166-1 alpha-2 country code
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: providers (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: providers (optional)
      * @return [VideosMultiRelationshipDataDocument]
      */
     @GET("videos/{id}/relationships/providers")
     suspend fun videosIdRelationshipsProvidersGet(
         @Path("id") id: kotlin.String,
         @Query("countryCode") countryCode: kotlin.String,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
     ): Response<VideosMultiRelationshipDataDocument>
 
     /**
@@ -169,18 +167,18 @@ interface Videos {
      *
      * @param id Video id
      * @param countryCode ISO 3166-1 alpha-2 country code
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: thumbnailArt (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: thumbnailArt (optional)
      * @return [VideosMultiRelationshipDataDocument]
      */
     @GET("videos/{id}/relationships/thumbnailArt")
     suspend fun videosIdRelationshipsThumbnailArtGet(
         @Path("id") id: kotlin.String,
         @Query("countryCode") countryCode: kotlin.String,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
     ): Response<VideosMultiRelationshipDataDocument>
 }

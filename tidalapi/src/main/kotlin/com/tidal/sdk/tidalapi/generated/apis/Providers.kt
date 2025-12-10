@@ -19,8 +19,7 @@ interface Providers {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param filterId Allows to filter the collection of resources based on id attribute value
-     *   (optional)
+     * @param filterId Provider ID (optional)
      * @return [ProvidersMultiResourceDataDocument]
      */
     @GET("providers")
@@ -41,7 +40,7 @@ interface Providers {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id Provider id
+     * @param id Provider ID
      * @return [ProvidersSingleResourceDataDocument]
      */
     @GET("providers/{id}")

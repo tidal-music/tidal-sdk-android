@@ -9,6 +9,11 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param name */
+/** @param name Name of the artist role */
 @Serializable
-data class ArtistRolesAttributes(@SerialName(value = "name") val name: kotlin.String? = null) {}
+data class ArtistRolesAttributes(
+
+    /* Name of the artist role */
+
+    @SerialName(value = "name") val name: kotlin.String
+) {}

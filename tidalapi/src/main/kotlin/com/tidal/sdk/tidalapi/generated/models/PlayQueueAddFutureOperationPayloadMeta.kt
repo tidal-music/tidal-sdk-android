@@ -13,12 +13,14 @@ import kotlinx.serialization.Serializable
 /**
  * @param mode
  * @param batchId
+ * @param legacySource
  * @param positionBefore
  */
 @Serializable
 data class PlayQueueAddFutureOperationPayloadMeta(
     @SerialName(value = "mode") val mode: PlayQueueAddFutureOperationPayloadMeta.Mode,
     @Contextual @SerialName(value = "batchId") val batchId: java.util.UUID? = null,
+    @SerialName(value = "legacySource") val legacySource: LegacySource? = null,
     @SerialName(value = "positionBefore") val positionBefore: kotlin.String? = null,
 ) {
 
