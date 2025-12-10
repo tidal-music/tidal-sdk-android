@@ -18,9 +18,14 @@ fun getOneOfSerializer() = SerializersModule {
         subclass(ArtworksResourceObject::class, ArtworksResourceObject.serializer())
         subclass(GenresResourceObject::class, GenresResourceObject.serializer())
         subclass(LyricsResourceObject::class, LyricsResourceObject.serializer())
+        subclass(
+            ManualArtistClaimsResourceObject::class,
+            ManualArtistClaimsResourceObject.serializer(),
+        )
         subclass(PlayQueuesResourceObject::class, PlayQueuesResourceObject.serializer())
         subclass(PlaylistsResourceObject::class, PlaylistsResourceObject.serializer())
         subclass(ProvidersResourceObject::class, ProvidersResourceObject.serializer())
+        subclass(ReactionsResourceObject::class, ReactionsResourceObject.serializer())
         subclass(SearchResultsResourceObject::class, SearchResultsResourceObject.serializer())
         subclass(
             SearchSuggestionsResourceObject::class,

@@ -18,9 +18,10 @@ interface UserRecommendations {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id User id
+     * @param id User recommendations id
      * @param countryCode ISO 3166-1 alpha-2 country code
-     * @param locale BCP47 locale code
+     * @param locale BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or
+     *   unsupported. (optional, default to "en-US")
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: discoveryMixes, myMixes, newArrivalMixes (optional)
      * @return [UserRecommendationsSingleResourceDataDocument]
@@ -29,7 +30,7 @@ interface UserRecommendations {
     suspend fun userRecommendationsIdGet(
         @Path("id") id: kotlin.String,
         @Query("countryCode") countryCode: kotlin.String,
-        @Query("locale") locale: kotlin.String,
+        @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<UserRecommendationsSingleResourceDataDocument>
@@ -47,23 +48,24 @@ interface UserRecommendations {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id User id
+     * @param id User recommendations id
      * @param countryCode ISO 3166-1 alpha-2 country code
-     * @param locale BCP47 locale code
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: discoveryMixes (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param locale BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or
+     *   unsupported. (optional, default to "en-US")
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: discoveryMixes (optional)
      * @return [UserRecommendationsMultiRelationshipDataDocument]
      */
     @GET("userRecommendations/{id}/relationships/discoveryMixes")
     suspend fun userRecommendationsIdRelationshipsDiscoveryMixesGet(
         @Path("id") id: kotlin.String,
         @Query("countryCode") countryCode: kotlin.String,
-        @Query("locale") locale: kotlin.String,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
     ): Response<UserRecommendationsMultiRelationshipDataDocument>
 
     /**
@@ -78,23 +80,24 @@ interface UserRecommendations {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id User id
+     * @param id User recommendations id
      * @param countryCode ISO 3166-1 alpha-2 country code
-     * @param locale BCP47 locale code
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: myMixes (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param locale BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or
+     *   unsupported. (optional, default to "en-US")
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: myMixes (optional)
      * @return [UserRecommendationsMultiRelationshipDataDocument]
      */
     @GET("userRecommendations/{id}/relationships/myMixes")
     suspend fun userRecommendationsIdRelationshipsMyMixesGet(
         @Path("id") id: kotlin.String,
         @Query("countryCode") countryCode: kotlin.String,
-        @Query("locale") locale: kotlin.String,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
     ): Response<UserRecommendationsMultiRelationshipDataDocument>
 
     /**
@@ -110,22 +113,23 @@ interface UserRecommendations {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id User id
+     * @param id User recommendations id
      * @param countryCode ISO 3166-1 alpha-2 country code
-     * @param locale BCP47 locale code
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: newArrivalMixes (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param locale BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or
+     *   unsupported. (optional, default to "en-US")
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: newArrivalMixes (optional)
      * @return [UserRecommendationsMultiRelationshipDataDocument]
      */
     @GET("userRecommendations/{id}/relationships/newArrivalMixes")
     suspend fun userRecommendationsIdRelationshipsNewArrivalMixesGet(
         @Path("id") id: kotlin.String,
         @Query("countryCode") countryCode: kotlin.String,
-        @Query("locale") locale: kotlin.String,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
     ): Response<UserRecommendationsMultiRelationshipDataDocument>
 }

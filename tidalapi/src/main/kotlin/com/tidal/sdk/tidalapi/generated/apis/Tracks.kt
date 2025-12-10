@@ -30,9 +30,9 @@ interface Tracks {
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: albums, artists, genres, lyrics, owners, providers, radio, shares,
      *   similarTracks, sourceFile, trackStatistics (optional)
-     * @param filterOwnersId User id (optional)
-     * @param filterIsrc International Standard Recording Code (ISRC) (optional)
      * @param filterId A Tidal catalogue ID (optional)
+     * @param filterIsrc International Standard Recording Code (ISRC) (optional)
+     * @param filterOwnersId User id (optional)
      * @return [TracksMultiResourceDataDocument]
      */
     @GET("tracks")
@@ -41,12 +41,12 @@ interface Tracks {
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[owners.id]")
-        filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[isrc]")
-        filterIsrc: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[id]")
         filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("filter[isrc]")
+        filterIsrc: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("filter[owners.id]")
+        filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<TracksMultiResourceDataDocument>
 
     /**

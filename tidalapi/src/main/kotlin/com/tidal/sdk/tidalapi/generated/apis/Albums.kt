@@ -32,9 +32,9 @@ interface Albums {
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: artists, coverArt, genres, items, owners, providers, similarAlbums,
      *   suggestedCoverArts (optional)
-     * @param filterOwnersId User id (optional)
-     * @param filterId Album id (optional)
      * @param filterBarcodeId Barcode Id (optional)
+     * @param filterId Album id (optional)
+     * @param filterOwnersId User id (optional)
      * @return [AlbumsMultiResourceDataDocument]
      */
     @GET("albums")
@@ -43,12 +43,12 @@ interface Albums {
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[owners.id]")
-        filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[id]")
-        filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[barcodeId]")
         filterBarcodeId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("filter[id]")
+        filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("filter[owners.id]")
+        filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<AlbumsMultiResourceDataDocument>
 
     /**

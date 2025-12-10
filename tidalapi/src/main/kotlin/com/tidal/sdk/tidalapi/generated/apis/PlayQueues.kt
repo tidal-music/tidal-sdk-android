@@ -6,11 +6,11 @@ import com.tidal.sdk.tidalapi.generated.models.PlayQueueRemoveFutureOperationPay
 import com.tidal.sdk.tidalapi.generated.models.PlayQueueUpdateCurrentOperationsPayload
 import com.tidal.sdk.tidalapi.generated.models.PlayQueueUpdateFutureOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.PlayQueueUpdateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.PlayQueuesCurrentSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlayQueuesFutureMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlayQueuesMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlayQueuesMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlayQueuesPastMultiRelationshipDataDocument
-import com.tidal.sdk.tidalapi.generated.models.PlayQueuesSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlayQueuesSingleResourceDataDocument
 import retrofit2.Response
 import retrofit2.http.*
@@ -122,14 +122,14 @@ interface PlayQueues {
      * @param id Play queue id
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: current (optional)
-     * @return [PlayQueuesSingleRelationshipDataDocument]
+     * @return [PlayQueuesCurrentSingleRelationshipDataDocument]
      */
     @GET("playQueues/{id}/relationships/current")
     suspend fun playQueuesIdRelationshipsCurrentGet(
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<PlayQueuesSingleRelationshipDataDocument>
+    ): Response<PlayQueuesCurrentSingleRelationshipDataDocument>
 
     /**
      * Update current relationship (\&quot;to-one\&quot;). Updates current relationship. Responses:

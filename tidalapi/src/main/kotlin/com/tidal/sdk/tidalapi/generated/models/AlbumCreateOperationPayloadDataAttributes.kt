@@ -11,6 +11,7 @@ import kotlinx.serialization.Serializable
 
 /**
  * @param title
+ * @param albumType
  * @param copyright
  * @param explicitLyrics
  * @param releaseDate
@@ -20,9 +21,20 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class AlbumCreateOperationPayloadDataAttributes(
     @SerialName(value = "title") val title: kotlin.String,
+    @SerialName(value = "albumType")
+    val albumType: AlbumCreateOperationPayloadDataAttributes.AlbumType? = null,
     @SerialName(value = "copyright") val copyright: Copyright? = null,
     @SerialName(value = "explicitLyrics") val explicitLyrics: kotlin.Boolean? = null,
     @SerialName(value = "releaseDate") val releaseDate: kotlin.String? = null,
     @SerialName(value = "upc") val upc: kotlin.String? = null,
     @SerialName(value = "version") val version: kotlin.String? = null,
-) {}
+) {
+
+    /** Values: ALBUM,EP,SINGLE */
+    @Serializable
+    enum class AlbumType(val value: kotlin.String) {
+        @SerialName(value = "ALBUM") ALBUM("ALBUM"),
+        @SerialName(value = "EP") EP("EP"),
+        @SerialName(value = "SINGLE") SINGLE("SINGLE"),
+    }
+}

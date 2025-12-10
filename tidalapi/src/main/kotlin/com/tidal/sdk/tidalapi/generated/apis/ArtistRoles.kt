@@ -19,8 +19,7 @@ interface ArtistRoles {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param filterId Allows to filter the collection of resources based on id attribute value
-     *   (optional)
+     * @param filterId Artist role id (optional)
      * @return [ArtistRolesMultiResourceDataDocument]
      */
     @GET("artistRoles")

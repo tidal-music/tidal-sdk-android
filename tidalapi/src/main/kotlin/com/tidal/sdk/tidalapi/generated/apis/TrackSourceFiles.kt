@@ -86,7 +86,9 @@ interface TrackSourceFiles {
     ): Response<TrackSourceFilesMultiRelationshipDataDocument>
 
     /**
-     * Create single trackSourceFile. Creates a new trackSourceFile. Responses:
+     * Create single trackSourceFile. Create a track source file. &lt;p/&gt; The response contains a
+     * upload link that must be used to upload the actual content.&lt;p/&gt; The headers in the
+     * upload link response must be sent doing the actual upload. Responses:
      * - 201: Successful response
      * - 400: The request is malformed or invalid
      * - 404: The requested resource was not found
