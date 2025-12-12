@@ -16,6 +16,7 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/Reactions.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/SearchResults.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/SearchSuggestions.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/Shares.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/StripeConnections.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/TrackFiles.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/TrackManifests.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/TrackSourceFiles.kt
@@ -320,6 +321,15 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/SharesRelationships.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/SharesResourceObject.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/SharesSingleResourceDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/SingleRelationshipDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/StripeConnectionsAttributes.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/StripeConnectionsCreateOperationPayload.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/StripeConnectionsCreateOperationPayloadData.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/StripeConnectionsCreateOperationPayloadDataAttributes.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/StripeConnectionsMultiRelationshipDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/StripeConnectionsMultiResourceDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/StripeConnectionsRelationships.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/StripeConnectionsResourceObject.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/StripeConnectionsSingleResourceDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ThirdPartyLyricsProvider.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/TidalLyricsProvider.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/TrackAlbumsRelationshipUpdateOperationPayload.kt

@@ -30,7 +30,7 @@ interface Tracks {
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: albums, artists, genres, lyrics, owners, providers, radio, shares,
      *   similarTracks, sourceFile, trackStatistics (optional)
-     * @param filterId A Tidal catalogue ID (optional)
+     * @param filterId Track id (optional)
      * @param filterIsrc International Standard Recording Code (ISRC) (optional)
      * @param filterOwnersId User id (optional)
      * @return [TracksMultiResourceDataDocument]
@@ -60,7 +60,7 @@ interface Tracks {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id A Tidal catalogue ID
+     * @param id Track id
      * @return [Unit]
      */
     @DELETE("tracks/{id}") suspend fun tracksIdDelete(@Path("id") id: kotlin.String): Response<Unit>
@@ -77,7 +77,7 @@ interface Tracks {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id A Tidal catalogue ID
+     * @param id Track id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: albums, artists, genres, lyrics, owners, providers, radio, shares,
@@ -103,7 +103,7 @@ interface Tracks {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id A Tidal catalogue ID
+     * @param id Track id
      * @param trackUpdateOperationPayload (optional)
      * @return [Unit]
      */
@@ -125,7 +125,7 @@ interface Tracks {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id A Tidal catalogue ID
+     * @param id Track id
      * @param countryCode ISO 3166-1 alpha-2 country code
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: albums (optional)
@@ -153,7 +153,7 @@ interface Tracks {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id A Tidal catalogue ID
+     * @param id Track id
      * @param trackAlbumsRelationshipUpdateOperationPayload (optional)
      * @return [Unit]
      */
@@ -178,7 +178,7 @@ interface Tracks {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id A Tidal catalogue ID
+     * @param id Track id
      * @param countryCode ISO 3166-1 alpha-2 country code
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
@@ -207,7 +207,7 @@ interface Tracks {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id A Tidal catalogue ID
+     * @param id Track id
      * @param countryCode ISO 3166-1 alpha-2 country code
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: genres (optional)
@@ -236,7 +236,7 @@ interface Tracks {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id A Tidal catalogue ID
+     * @param id Track id
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: lyrics (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -263,7 +263,7 @@ interface Tracks {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id A Tidal catalogue ID
+     * @param id Track id
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -291,7 +291,7 @@ interface Tracks {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id A Tidal catalogue ID
+     * @param id Track id
      * @param countryCode ISO 3166-1 alpha-2 country code
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: providers (optional)
@@ -320,7 +320,7 @@ interface Tracks {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id A Tidal catalogue ID
+     * @param id Track id
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: radio (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -347,7 +347,7 @@ interface Tracks {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id A Tidal catalogue ID
+     * @param id Track id
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: shares (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -375,7 +375,7 @@ interface Tracks {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id A Tidal catalogue ID
+     * @param id Track id
      * @param countryCode ISO 3166-1 alpha-2 country code
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
@@ -405,7 +405,7 @@ interface Tracks {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id A Tidal catalogue ID
+     * @param id Track id
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: sourceFile (optional)
      * @return [TracksSingleRelationshipDataDocument]
@@ -430,7 +430,7 @@ interface Tracks {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id A Tidal catalogue ID
+     * @param id Track id
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: trackStatistics (optional)
      * @return [TracksSingleRelationshipDataDocument]
