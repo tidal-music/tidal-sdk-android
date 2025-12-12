@@ -32,6 +32,10 @@ fun getOneOfSerializer() = SerializersModule {
             SearchSuggestionsResourceObject.serializer(),
         )
         subclass(SharesResourceObject::class, SharesResourceObject.serializer())
+        subclass(
+            StripeConnectionsResourceObject::class,
+            StripeConnectionsResourceObject.serializer(),
+        )
         subclass(TrackFilesResourceObject::class, TrackFilesResourceObject.serializer())
         subclass(TrackManifestsResourceObject::class, TrackManifestsResourceObject.serializer())
         subclass(TrackSourceFilesResourceObject::class, TrackSourceFilesResourceObject.serializer())

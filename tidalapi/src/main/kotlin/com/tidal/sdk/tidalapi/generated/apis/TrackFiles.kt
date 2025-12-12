@@ -38,7 +38,7 @@ interface TrackFiles {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id
+     * @param id Track file id
      * @param formats
      * @param usage
      * @return [TrackFilesSingleResourceDataDocument]

@@ -18,6 +18,7 @@ import com.tidal.sdk.tidalapi.generated.apis.Reactions
 import com.tidal.sdk.tidalapi.generated.apis.SearchResults
 import com.tidal.sdk.tidalapi.generated.apis.SearchSuggestions
 import com.tidal.sdk.tidalapi.generated.apis.Shares
+import com.tidal.sdk.tidalapi.generated.apis.StripeConnections
 import com.tidal.sdk.tidalapi.generated.apis.TrackFiles
 import com.tidal.sdk.tidalapi.generated.apis.TrackManifests
 import com.tidal.sdk.tidalapi.generated.apis.TrackSourceFiles
@@ -123,6 +124,11 @@ class TidalApiClient(credentialsProvider: CredentialsProvider, baseUrl: String =
     /** Returns an instance of the [Shares] which can be used to make API calls to the */
     fun createShares(): Shares {
         return retrofit.create(Shares::class.java)
+    }
+
+    /** Returns an instance of the [StripeConnections] which can be used to make API calls to the */
+    fun createStripeConnections(): StripeConnections {
+        return retrofit.create(StripeConnections::class.java)
     }
 
     /** Returns an instance of the [TrackFiles] which can be used to make API calls to the */

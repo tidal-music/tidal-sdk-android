@@ -8,7 +8,7 @@
     "description" : "The TIDAL API is a [JSON:API](https://jsonapi.org/)–compliant web API that exposes TIDAL’s music, metadata, and user-related functionality through a consistent, resource-oriented design. More information and API management are available at [developer.tidal.com](developer.tidal.com)",
     "termsOfService" : "https://developer.tidal.com/documentation/guidelines/guidelines-overview",
     "title" : "TIDAL API",
-    "version" : "1.0.23"
+    "version" : "1.0.27"
   },
   "externalDocs" : {
     "description" : "TIDAL Developer - Documentation",
@@ -52,6 +52,8 @@
     "name" : "searchSuggestions"
   }, {
     "name" : "shares"
+  }, {
+    "name" : "stripeConnections"
   }, {
     "name" : "trackFiles"
   }, {
@@ -1413,8 +1415,8 @@
       "get" : {
         "description" : "Retrieves single artistBiographie by id.",
         "parameters" : [ {
-          "description" : "Artist id",
-          "example" : "1566",
+          "description" : "Artist biography id",
+          "example" : "123456",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -1494,8 +1496,8 @@
       "patch" : {
         "description" : "Updates existing artistBiographie.",
         "parameters" : [ {
-          "description" : "Artist id",
-          "example" : "1566",
+          "description" : "Artist biography id",
+          "example" : "123456",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -1552,8 +1554,8 @@
       "get" : {
         "description" : "Retrieves owners relationship.",
         "parameters" : [ {
-          "description" : "Artist id",
-          "example" : "1566",
+          "description" : "Artist biography id",
+          "example" : "123456",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -7094,7 +7096,7 @@
         "description" : "Retrieves single searchResult by id.",
         "parameters" : [ {
           "description" : "Search query string used as the resource identifier",
-          "example" : "beatles",
+          "example" : "hello",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -7188,7 +7190,7 @@
         "description" : "Retrieves albums relationship.",
         "parameters" : [ {
           "description" : "Search query string used as the resource identifier",
-          "example" : "beatles",
+          "example" : "hello",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -7290,7 +7292,7 @@
         "description" : "Retrieves artists relationship.",
         "parameters" : [ {
           "description" : "Search query string used as the resource identifier",
-          "example" : "beatles",
+          "example" : "hello",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -7392,7 +7394,7 @@
         "description" : "Retrieves playlists relationship.",
         "parameters" : [ {
           "description" : "Search query string used as the resource identifier",
-          "example" : "beatles",
+          "example" : "hello",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -7494,7 +7496,7 @@
         "description" : "Retrieves topHits relationship.",
         "parameters" : [ {
           "description" : "Search query string used as the resource identifier",
-          "example" : "beatles",
+          "example" : "hello",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -7596,7 +7598,7 @@
         "description" : "Retrieves tracks relationship.",
         "parameters" : [ {
           "description" : "Search query string used as the resource identifier",
-          "example" : "beatles",
+          "example" : "hello",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -7698,7 +7700,7 @@
         "description" : "Retrieves videos relationship.",
         "parameters" : [ {
           "description" : "Search query string used as the resource identifier",
-          "example" : "beatles",
+          "example" : "hello",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -7799,6 +7801,8 @@
       "get" : {
         "description" : "Retrieves single searchSuggestion by id.",
         "parameters" : [ {
+          "description" : "Search query string used as the resource identifier",
+          "example" : "hello",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -7891,6 +7895,8 @@
       "get" : {
         "description" : "Retrieves directHits relationship.",
         "parameters" : [ {
+          "description" : "Search query string used as the resource identifier",
+          "example" : "hello",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -8373,10 +8379,234 @@
         }
       }
     },
+    "/stripeConnections" : {
+      "get" : {
+        "description" : "Retrieves multiple stripeConnections by available filters, or without if applicable.",
+        "parameters" : [ {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: owners",
+          "example" : "owners",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "owners"
+            }
+          }
+        }, {
+          "description" : "User id",
+          "example" : "123456",
+          "in" : "query",
+          "name" : "filter[owners.id]",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "123456"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/StripeConnections_Multi_Resource_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Default400Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Default404Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Default405Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Default406Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Default415Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Default429Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Default500Response"
+          },
+          "503" : {
+            "$ref" : "#/components/responses/Default503Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "r_usr" ]
+        } ],
+        "summary" : "Get multiple stripeConnections.",
+        "tags" : [ "stripeConnections" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      },
+      "post" : {
+        "description" : "Creates a new stripeConnection.",
+        "parameters" : [ {
+          "description" : "ISO 3166-1 alpha-2 country code",
+          "example" : "US",
+          "in" : "query",
+          "name" : "countryCode",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/vnd.api+json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/StripeConnectionsCreateOperation_Payload"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/StripeConnections_Single_Resource_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Default400Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Default404Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Default405Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Default406Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Default415Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Default429Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Default500Response"
+          },
+          "503" : {
+            "$ref" : "#/components/responses/Default503Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "w_usr" ]
+        } ],
+        "summary" : "Create single stripeConnection.",
+        "tags" : [ "stripeConnections" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      }
+    },
+    "/stripeConnections/{id}/relationships/owners" : {
+      "get" : {
+        "description" : "Retrieves owners relationship.",
+        "parameters" : [ {
+          "description" : "Stripe connection id (same as user id)",
+          "example" : "39791222",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: owners",
+          "example" : "owners",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "owners"
+            }
+          }
+        }, {
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/StripeConnections_Multi_Relationship_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Default400Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Default404Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Default405Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Default406Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Default415Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Default429Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Default500Response"
+          },
+          "503" : {
+            "$ref" : "#/components/responses/Default503Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "r_usr" ]
+        } ],
+        "summary" : "Get owners relationship (\"to-many\").",
+        "tags" : [ "stripeConnections" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      }
+    },
     "/trackFiles/{id}" : {
       "get" : {
         "description" : "Retrieves single trackFile by id.",
         "parameters" : [ {
+          "description" : "Track file id",
+          "example" : "123456",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -8458,6 +8688,8 @@
       "get" : {
         "description" : "Retrieves single trackManifest by id.",
         "parameters" : [ {
+          "description" : "Track manifest id",
+          "example" : "123456",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -8860,7 +9092,7 @@
             }
           }
         }, {
-          "description" : "A Tidal catalogue ID",
+          "description" : "Track id",
           "example" : "75413016",
           "in" : "query",
           "name" : "filter[id]",
@@ -8923,8 +9155,8 @@
       "get" : {
         "description" : "Retrieves single trackStatistic by id.",
         "parameters" : [ {
-          "description" : "A Tidal catalogue ID",
-          "example" : "75413016",
+          "description" : "Track statistic id",
+          "example" : "123456",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -8995,8 +9227,8 @@
       "get" : {
         "description" : "Retrieves owners relationship.",
         "parameters" : [ {
-          "description" : "A Tidal catalogue ID",
-          "example" : "75413016",
+          "description" : "Track statistic id",
+          "example" : "123456",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -9105,7 +9337,7 @@
             }
           }
         }, {
-          "description" : "A Tidal catalogue ID",
+          "description" : "Track id",
           "example" : "75413016",
           "in" : "query",
           "name" : "filter[id]",
@@ -9253,7 +9485,7 @@
       "delete" : {
         "description" : "Deletes existing track.",
         "parameters" : [ {
-          "description" : "A Tidal catalogue ID",
+          "description" : "Track id",
           "example" : "75413016",
           "in" : "path",
           "name" : "id",
@@ -9300,7 +9532,7 @@
       "get" : {
         "description" : "Retrieves single track by id.",
         "parameters" : [ {
-          "description" : "A Tidal catalogue ID",
+          "description" : "Track id",
           "example" : "75413016",
           "in" : "path",
           "name" : "id",
@@ -9381,7 +9613,7 @@
       "patch" : {
         "description" : "Updates existing track.",
         "parameters" : [ {
-          "description" : "A Tidal catalogue ID",
+          "description" : "Track id",
           "example" : "75413016",
           "in" : "path",
           "name" : "id",
@@ -9439,7 +9671,7 @@
       "get" : {
         "description" : "Retrieves albums relationship.",
         "parameters" : [ {
-          "description" : "A Tidal catalogue ID",
+          "description" : "Track id",
           "example" : "75413016",
           "in" : "path",
           "name" : "id",
@@ -9528,7 +9760,7 @@
       "patch" : {
         "description" : "Updates albums relationship.",
         "parameters" : [ {
-          "description" : "A Tidal catalogue ID",
+          "description" : "Track id",
           "example" : "75413016",
           "in" : "path",
           "name" : "id",
@@ -9586,7 +9818,7 @@
       "get" : {
         "description" : "Retrieves artists relationship.",
         "parameters" : [ {
-          "description" : "A Tidal catalogue ID",
+          "description" : "Track id",
           "example" : "75413016",
           "in" : "path",
           "name" : "id",
@@ -9677,7 +9909,7 @@
       "get" : {
         "description" : "Retrieves genres relationship.",
         "parameters" : [ {
-          "description" : "A Tidal catalogue ID",
+          "description" : "Track id",
           "example" : "75413016",
           "in" : "path",
           "name" : "id",
@@ -9768,7 +10000,7 @@
       "get" : {
         "description" : "Retrieves lyrics relationship.",
         "parameters" : [ {
-          "description" : "A Tidal catalogue ID",
+          "description" : "Track id",
           "example" : "75413016",
           "in" : "path",
           "name" : "id",
@@ -9850,7 +10082,7 @@
       "get" : {
         "description" : "Retrieves owners relationship.",
         "parameters" : [ {
-          "description" : "A Tidal catalogue ID",
+          "description" : "Track id",
           "example" : "75413016",
           "in" : "path",
           "name" : "id",
@@ -9932,7 +10164,7 @@
       "get" : {
         "description" : "Retrieves providers relationship.",
         "parameters" : [ {
-          "description" : "A Tidal catalogue ID",
+          "description" : "Track id",
           "example" : "75413016",
           "in" : "path",
           "name" : "id",
@@ -10023,7 +10255,7 @@
       "get" : {
         "description" : "Retrieves radio relationship.",
         "parameters" : [ {
-          "description" : "A Tidal catalogue ID",
+          "description" : "Track id",
           "example" : "75413016",
           "in" : "path",
           "name" : "id",
@@ -10105,7 +10337,7 @@
       "get" : {
         "description" : "Retrieves shares relationship.",
         "parameters" : [ {
-          "description" : "A Tidal catalogue ID",
+          "description" : "Track id",
           "example" : "75413016",
           "in" : "path",
           "name" : "id",
@@ -10185,7 +10417,7 @@
       "get" : {
         "description" : "Retrieves similarTracks relationship.",
         "parameters" : [ {
-          "description" : "A Tidal catalogue ID",
+          "description" : "Track id",
           "example" : "75413016",
           "in" : "path",
           "name" : "id",
@@ -10276,7 +10508,7 @@
       "get" : {
         "description" : "Retrieves sourceFile relationship.",
         "parameters" : [ {
-          "description" : "A Tidal catalogue ID",
+          "description" : "Track id",
           "example" : "75413016",
           "in" : "path",
           "name" : "id",
@@ -10350,7 +10582,7 @@
       "get" : {
         "description" : "Retrieves trackStatistics relationship.",
         "parameters" : [ {
-          "description" : "A Tidal catalogue ID",
+          "description" : "Track id",
           "example" : "75413016",
           "in" : "path",
           "name" : "id",
@@ -11017,7 +11249,7 @@
       "get" : {
         "description" : "Retrieves single userCollection by id.",
         "parameters" : [ {
-          "description" : "User id",
+          "description" : "User collection id",
           "example" : "123456",
           "in" : "path",
           "name" : "id",
@@ -11108,7 +11340,7 @@
       "delete" : {
         "description" : "Deletes item(s) from albums relationship.",
         "parameters" : [ {
-          "description" : "User id",
+          "description" : "User collection id",
           "example" : "123456",
           "in" : "path",
           "name" : "id",
@@ -11164,7 +11396,7 @@
       "get" : {
         "description" : "Retrieves albums relationship.",
         "parameters" : [ {
-          "description" : "User id",
+          "description" : "User collection id",
           "example" : "123456",
           "in" : "path",
           "name" : "id",
@@ -11276,7 +11508,7 @@
       "post" : {
         "description" : "Adds item(s) to albums relationship.",
         "parameters" : [ {
-          "description" : "User id",
+          "description" : "User collection id",
           "example" : "123456",
           "in" : "path",
           "name" : "id",
@@ -11343,7 +11575,7 @@
       "delete" : {
         "description" : "Deletes item(s) from artists relationship.",
         "parameters" : [ {
-          "description" : "User id",
+          "description" : "User collection id",
           "example" : "123456",
           "in" : "path",
           "name" : "id",
@@ -11399,7 +11631,7 @@
       "get" : {
         "description" : "Retrieves artists relationship.",
         "parameters" : [ {
-          "description" : "User id",
+          "description" : "User collection id",
           "example" : "123456",
           "in" : "path",
           "name" : "id",
@@ -11511,7 +11743,7 @@
       "post" : {
         "description" : "Adds item(s) to artists relationship.",
         "parameters" : [ {
-          "description" : "User id",
+          "description" : "User collection id",
           "example" : "123456",
           "in" : "path",
           "name" : "id",
@@ -11578,7 +11810,7 @@
       "get" : {
         "description" : "Retrieves owners relationship.",
         "parameters" : [ {
-          "description" : "User id",
+          "description" : "User collection id",
           "example" : "123456",
           "in" : "path",
           "name" : "id",
@@ -11658,7 +11890,7 @@
       "delete" : {
         "description" : "Deletes item(s) from playlists relationship.",
         "parameters" : [ {
-          "description" : "User id",
+          "description" : "User collection id",
           "example" : "123456",
           "in" : "path",
           "name" : "id",
@@ -11714,7 +11946,7 @@
       "get" : {
         "description" : "Retrieves playlists relationship.",
         "parameters" : [ {
-          "description" : "User id",
+          "description" : "User collection id",
           "example" : "123456",
           "in" : "path",
           "name" : "id",
@@ -11815,7 +12047,7 @@
       "post" : {
         "description" : "Adds item(s) to playlists relationship.",
         "parameters" : [ {
-          "description" : "User id",
+          "description" : "User collection id",
           "example" : "123456",
           "in" : "path",
           "name" : "id",
@@ -11873,7 +12105,7 @@
       "delete" : {
         "description" : "Deletes item(s) from tracks relationship.",
         "parameters" : [ {
-          "description" : "User id",
+          "description" : "User collection id",
           "example" : "123456",
           "in" : "path",
           "name" : "id",
@@ -11929,7 +12161,7 @@
       "get" : {
         "description" : "Retrieves tracks relationship.",
         "parameters" : [ {
-          "description" : "User id",
+          "description" : "User collection id",
           "example" : "123456",
           "in" : "path",
           "name" : "id",
@@ -12041,7 +12273,7 @@
       "post" : {
         "description" : "Adds item(s) to tracks relationship.",
         "parameters" : [ {
-          "description" : "User id",
+          "description" : "User collection id",
           "example" : "123456",
           "in" : "path",
           "name" : "id",
@@ -12108,7 +12340,7 @@
       "delete" : {
         "description" : "Deletes item(s) from videos relationship.",
         "parameters" : [ {
-          "description" : "User id",
+          "description" : "User collection id",
           "example" : "123456",
           "in" : "path",
           "name" : "id",
@@ -12164,7 +12396,7 @@
       "get" : {
         "description" : "Retrieves videos relationship.",
         "parameters" : [ {
-          "description" : "User id",
+          "description" : "User collection id",
           "example" : "123456",
           "in" : "path",
           "name" : "id",
@@ -12276,7 +12508,7 @@
       "post" : {
         "description" : "Adds item(s) to videos relationship.",
         "parameters" : [ {
-          "description" : "User id",
+          "description" : "User collection id",
           "example" : "123456",
           "in" : "path",
           "name" : "id",
@@ -15953,7 +16185,7 @@
         "properties" : {
           "type" : {
             "type" : "string",
-            "enum" : [ "TIDAL_SHARING", "TIDAL_USER_SHARING", "TIDAL_AUTOPLAY_ANDROID", "TIDAL_AUTOPLAY_IOS", "TIDAL_AUTOPLAY_WEB", "TWITTER", "FACEBOOK", "INSTAGRAM", "TIKTOK", "SNAPCHAT", "OFFICIAL_HOMEPAGE", "CASHAPP_CONTRIBUTIONS", "ARTIST_CLAIM_PROVIDER_REDIRECT" ]
+            "enum" : [ "TIDAL_SHARING", "TIDAL_USER_SHARING", "TIDAL_AUTOPLAY_ANDROID", "TIDAL_AUTOPLAY_IOS", "TIDAL_AUTOPLAY_WEB", "TWITTER", "FACEBOOK", "INSTAGRAM", "TIKTOK", "SNAPCHAT", "OFFICIAL_HOMEPAGE", "CASHAPP_CONTRIBUTIONS", "ARTIST_CLAIM_PROVIDER_REDIRECT", "STRIPE_AUTHORIZATION_REDIRECT" ]
           }
         },
         "description" : "metadata about an external link"
@@ -16153,6 +16385,7 @@
               "searchResults" : "#/components/schemas/SearchResults_Resource_Object",
               "searchSuggestions" : "#/components/schemas/SearchSuggestions_Resource_Object",
               "shares" : "#/components/schemas/Shares_Resource_Object",
+              "stripeConnections" : "#/components/schemas/StripeConnections_Resource_Object",
               "trackFiles" : "#/components/schemas/TrackFiles_Resource_Object",
               "trackManifests" : "#/components/schemas/TrackManifests_Resource_Object",
               "trackSourceFiles" : "#/components/schemas/TrackSourceFiles_Resource_Object",
@@ -16202,6 +16435,8 @@
             "$ref" : "#/components/schemas/SearchSuggestions_Resource_Object"
           }, {
             "$ref" : "#/components/schemas/Shares_Resource_Object"
+          }, {
+            "$ref" : "#/components/schemas/StripeConnections_Resource_Object"
           }, {
             "$ref" : "#/components/schemas/TrackFiles_Resource_Object"
           }, {
@@ -17528,7 +17763,7 @@
         }
       },
       "Playlists_Attributes" : {
-        "required" : [ "accessType", "bounded", "createdAt", "externalLinks", "lastModifiedAt", "name", "playlistType" ],
+        "required" : [ "accessType", "bounded", "createdAt", "externalLinks", "lastModifiedAt", "name", "numberOfFollowers", "playlistType" ],
         "type" : "object",
         "properties" : {
           "accessType" : {
@@ -17570,6 +17805,11 @@
             "minLength" : 1,
             "type" : "string",
             "description" : "Playlist name"
+          },
+          "numberOfFollowers" : {
+            "type" : "integer",
+            "description" : "The amount of followers of the playlist",
+            "format" : "int32"
           },
           "numberOfItems" : {
             "type" : "integer",
@@ -18399,6 +18639,162 @@
         "properties" : {
           "data" : {
             "$ref" : "#/components/schemas/Resource_Identifier"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "StripeConnectionsCreateOperation_Payload" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/StripeConnectionsCreateOperation_Payload_Data"
+          }
+        }
+      },
+      "StripeConnectionsCreateOperation_Payload_Data" : {
+        "required" : [ "attributes", "type" ],
+        "type" : "object",
+        "properties" : {
+          "attributes" : {
+            "$ref" : "#/components/schemas/StripeConnectionsCreateOperation_Payload_Data_Attributes"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "stripeConnections" ]
+          }
+        }
+      },
+      "StripeConnectionsCreateOperation_Payload_Data_Attributes" : {
+        "required" : [ "integrationType" ],
+        "type" : "object",
+        "properties" : {
+          "integrationType" : {
+            "type" : "string",
+            "description" : "Integration type for Stripe onboarding",
+            "example" : "REDIRECT",
+            "enum" : [ "REDIRECT", "EMBEDDED" ],
+            "default" : "REDIRECT"
+          },
+          "refreshUrl" : {
+            "type" : "string",
+            "description" : "REDIRECT only: URL to redirect to if seller drops from onboarding",
+            "example" : "https://www.tidal.com/artist/upload/onboarding"
+          },
+          "returnUrl" : {
+            "type" : "string",
+            "description" : "REDIRECT only: URL to redirect to after completed onboarding",
+            "example" : "https://www.tidal.com/artist/124"
+          }
+        }
+      },
+      "StripeConnections_Attributes" : {
+        "required" : [ "status" ],
+        "type" : "object",
+        "properties" : {
+          "createdAt" : {
+            "type" : "string",
+            "description" : "Timestamp when the connection was created",
+            "format" : "date-time"
+          },
+          "externalLinks" : {
+            "type" : "array",
+            "description" : "External links for Stripe connection",
+            "items" : {
+              "$ref" : "#/components/schemas/External_Link"
+            }
+          },
+          "lastModifiedAt" : {
+            "type" : "string",
+            "description" : "Timestamp when the connection was last modified",
+            "format" : "date-time"
+          },
+          "status" : {
+            "minLength" : 1,
+            "type" : "string",
+            "description" : "Current status of this Stripe connection",
+            "enum" : [ "PENDING_REQUIREMENTS", "UNDER_REVIEW", "ACCEPTED", "REJECTED" ]
+          }
+        }
+      },
+      "StripeConnections_Multi_Relationship_Data_Document" : {
+        "required" : [ "links" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Resource_Identifier"
+            }
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "StripeConnections_Multi_Resource_Data_Document" : {
+        "required" : [ "data", "links" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/StripeConnections_Resource_Object"
+            }
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "StripeConnections_Relationships" : {
+        "required" : [ "owners" ],
+        "properties" : {
+          "owners" : {
+            "$ref" : "#/components/schemas/Multi_Relationship_Data_Document"
+          }
+        }
+      },
+      "StripeConnections_Resource_Object" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "attributes" : {
+            "$ref" : "#/components/schemas/StripeConnections_Attributes"
+          },
+          "id" : {
+            "type" : "string",
+            "description" : "Resource id",
+            "example" : "12345"
+          },
+          "relationships" : {
+            "$ref" : "#/components/schemas/StripeConnections_Relationships"
+          },
+          "type" : {
+            "minLength" : 1,
+            "type" : "string",
+            "description" : "Resource type",
+            "example" : "tracks"
+          }
+        }
+      },
+      "StripeConnections_Single_Resource_Data_Document" : {
+        "required" : [ "data", "links" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/StripeConnections_Resource_Object"
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
           },
           "links" : {
             "$ref" : "#/components/schemas/Links"
