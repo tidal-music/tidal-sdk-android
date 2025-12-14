@@ -29,6 +29,26 @@ internal interface PlaybackInfoRepository {
     ): PlaybackInfo
 
     /**
+     * Returns a [PlaybackInfo] which we can use for playback of a track from Top.
+     *
+     * @param[trackId] The requested track id as [String].
+     * @param[audioQuality] The requested audio quality as [AudioQuality].
+     * @param[playbackMode] The requested playback mode as [PlaybackMode].
+     * @param[immersiveAudio] The requested option to include immersive audio or not.
+     * @param[streamingSessionId] The streaming session uuid as [String], created by the client, for
+     *   this streaming session.
+     * @param[playlistUuid] The playlistUuid this play originates from as [String]. May be null.
+     */
+    suspend fun getTrackPlaybackInfoTop(
+        trackId: String,
+        audioQuality: AudioQuality,
+        playbackMode: PlaybackMode,
+        immersiveAudio: Boolean,
+        streamingSessionId: String,
+        playlistUuid: String?,
+    ): PlaybackInfo
+
+    /**
      * Returns a [PlaybackInfo] which we can use for playback of a video.
      *
      * @param[videoId] The requested video id as [String].
