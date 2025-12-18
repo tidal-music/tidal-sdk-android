@@ -50,7 +50,7 @@ interface TrackManifests {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id
+     * @param id Track manifest id
      * @param manifestType
      * @param formats
      * @param uriScheme

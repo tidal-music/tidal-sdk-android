@@ -16,6 +16,7 @@ import kotlinx.serialization.Serializable
  * @param externalLinks
  * @param lastModifiedAt Datetime of last modification of the playlist (ISO 8601)
  * @param name Playlist name
+ * @param numberOfFollowers The amount of followers of the playlist
  * @param playlistType The type of the playlist
  * @param description Playlist description
  * @param duration Duration of playlist (ISO 8601)
@@ -40,6 +41,9 @@ data class PlaylistsAttributes(
     /* Playlist name */
 
     @SerialName(value = "name") val name: kotlin.String,
+    /* The amount of followers of the playlist */
+
+    @SerialName(value = "numberOfFollowers") val numberOfFollowers: kotlin.Int,
     /* The type of the playlist */
 
     @SerialName(value = "playlistType") val playlistType: PlaylistsAttributes.PlaylistType,

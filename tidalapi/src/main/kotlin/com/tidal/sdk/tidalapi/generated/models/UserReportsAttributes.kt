@@ -28,7 +28,7 @@ data class UserReportsAttributes(
      * Reason
      *
      * Values:
-     * SEXUAL_CONTENT_OR_NUDITY,VIOLENT_OR_DANGEROUS_CONTENT,HATEFUL_OR_ABUSIVE_CONTENT,HARASSMENT,PRIVACY_VIOLATION,SCAMS_OR_FRAUD,SPAM,COPYRIGHT_INFRINGEMENT,UNKNOWN
+     * SEXUAL_CONTENT_OR_NUDITY,VIOLENT_OR_DANGEROUS_CONTENT,HATEFUL_OR_ABUSIVE_CONTENT,HARASSMENT,PRIVACY_VIOLATION,SCAMS_OR_FRAUD,SPAM,COPYRIGHT_INFRINGEMENT,APPEAL,UNKNOWN
      */
     @Serializable
     enum class Reason(val value: kotlin.String) {
@@ -44,6 +44,7 @@ data class UserReportsAttributes(
         @SerialName(value = "SPAM") SPAM("SPAM"),
         @SerialName(value = "COPYRIGHT_INFRINGEMENT")
         COPYRIGHT_INFRINGEMENT("COPYRIGHT_INFRINGEMENT"),
+        @SerialName(value = "APPEAL") APPEAL("APPEAL"),
         @SerialName(value = "UNKNOWN") UNKNOWN("UNKNOWN"),
     }
 }
