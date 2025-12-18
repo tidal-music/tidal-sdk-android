@@ -26,12 +26,17 @@ fun getOneOfSerializer() = SerializersModule {
         subclass(PlaylistsResourceObject::class, PlaylistsResourceObject.serializer())
         subclass(ProvidersResourceObject::class, ProvidersResourceObject.serializer())
         subclass(ReactionsResourceObject::class, ReactionsResourceObject.serializer())
+        subclass(SavedSharesResourceObject::class, SavedSharesResourceObject.serializer())
         subclass(SearchResultsResourceObject::class, SearchResultsResourceObject.serializer())
         subclass(
             SearchSuggestionsResourceObject::class,
             SearchSuggestionsResourceObject.serializer(),
         )
         subclass(SharesResourceObject::class, SharesResourceObject.serializer())
+        subclass(
+            StripeConnectionsResourceObject::class,
+            StripeConnectionsResourceObject.serializer(),
+        )
         subclass(TrackFilesResourceObject::class, TrackFilesResourceObject.serializer())
         subclass(TrackManifestsResourceObject::class, TrackManifestsResourceObject.serializer())
         subclass(TrackSourceFilesResourceObject::class, TrackSourceFilesResourceObject.serializer())

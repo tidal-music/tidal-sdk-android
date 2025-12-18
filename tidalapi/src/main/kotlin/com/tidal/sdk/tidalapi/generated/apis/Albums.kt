@@ -35,6 +35,8 @@ interface Albums {
      * @param filterBarcodeId Barcode Id (optional)
      * @param filterId Album id (optional)
      * @param filterOwnersId User id (optional)
+     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
+     *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [AlbumsMultiResourceDataDocument]
      */
     @GET("albums")
@@ -49,6 +51,7 @@ interface Albums {
         filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[owners.id]")
         filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<AlbumsMultiResourceDataDocument>
 
     /**
@@ -84,6 +87,8 @@ interface Albums {
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: artists, coverArt, genres, items, owners, providers, similarAlbums,
      *   suggestedCoverArts (optional)
+     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
+     *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [AlbumsSingleResourceDataDocument]
      */
     @GET("albums/{id}")
@@ -92,6 +97,7 @@ interface Albums {
         @Query("countryCode") countryCode: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<AlbumsSingleResourceDataDocument>
 
     /**
@@ -133,6 +139,8 @@ interface Albums {
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: artists (optional)
+     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
+     *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [AlbumsMultiRelationshipDataDocument]
      */
     @GET("albums/{id}/relationships/artists")
@@ -142,6 +150,7 @@ interface Albums {
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<AlbumsMultiRelationshipDataDocument>
 
     /**
@@ -163,6 +172,8 @@ interface Albums {
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: coverArt (optional)
+     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
+     *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [AlbumsMultiRelationshipDataDocument]
      */
     @GET("albums/{id}/relationships/coverArt")
@@ -172,6 +183,7 @@ interface Albums {
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<AlbumsMultiRelationshipDataDocument>
 
     /**
@@ -217,6 +229,8 @@ interface Albums {
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: genres (optional)
+     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
+     *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [AlbumsMultiRelationshipDataDocument]
      */
     @GET("albums/{id}/relationships/genres")
@@ -226,6 +240,7 @@ interface Albums {
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<AlbumsMultiRelationshipDataDocument>
 
     /**
@@ -246,6 +261,8 @@ interface Albums {
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: items (optional)
+     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
+     *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [AlbumsItemsMultiRelationshipDataDocument]
      */
     @GET("albums/{id}/relationships/items")
@@ -255,6 +272,7 @@ interface Albums {
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<AlbumsItemsMultiRelationshipDataDocument>
 
     /**
@@ -298,6 +316,8 @@ interface Albums {
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
+     *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [AlbumsMultiRelationshipDataDocument]
      */
     @GET("albums/{id}/relationships/owners")
@@ -306,6 +326,7 @@ interface Albums {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<AlbumsMultiRelationshipDataDocument>
 
     /**
@@ -327,6 +348,8 @@ interface Albums {
      *   Available options: providers (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
+     *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [AlbumsMultiRelationshipDataDocument]
      */
     @GET("albums/{id}/relationships/providers")
@@ -336,6 +359,7 @@ interface Albums {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<AlbumsMultiRelationshipDataDocument>
 
     /**
@@ -357,6 +381,8 @@ interface Albums {
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: similarAlbums (optional)
+     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
+     *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [AlbumsMultiRelationshipDataDocument]
      */
     @GET("albums/{id}/relationships/similarAlbums")
@@ -366,6 +392,7 @@ interface Albums {
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<AlbumsMultiRelationshipDataDocument>
 
     /**
@@ -386,6 +413,8 @@ interface Albums {
      *   Available options: suggestedCoverArts (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
+     *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [AlbumsSuggestedCoverArtsMultiRelationshipDataDocument]
      */
     @GET("albums/{id}/relationships/suggestedCoverArts")
@@ -394,6 +423,7 @@ interface Albums {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<AlbumsSuggestedCoverArtsMultiRelationshipDataDocument>
 
     /**
