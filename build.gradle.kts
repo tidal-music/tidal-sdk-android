@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.tidal.kotlin.jvm) apply false
     alias(libs.plugins.kotlin.kapt) apply false
     alias(libs.plugins.tidal.jvm.platform) apply false
+    id("com.tidal.sdk.affected-test-detection")
 }
 
 tasks.register("printSdkModules") { doLast { sdkModules.forEach { println(it.name) } } }

@@ -15,5 +15,77 @@ jobs:
         with:
           java-version: 17
           distribution: temurin
-      - name: Run unit tests
-        run: ./gradlew test
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+        with:
+          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
+
+      - name: Detect affected modules
+        id: detect_modules
+        if: ${{ !inputs.run_all_tests }}
+        run: |
+          echo "Detecting affected modules..."
+
+          # Determine base ref for comparison
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            BASE_REF="origin/${{ github.event.pull_request.base.ref }}"
+          else
+            BASE_REF="HEAD~1"
+          fi
+
+          echo "Base ref: $BASE_REF"
+
+          # Run Gradle task to detect affected modules
+          # We need to distinguish between "detection failed" and "no modules affected"
+          set +e  # Don't exit on error
+          GRADLE_OUTPUT=$(./gradlew detectAffectedModules -PbaseRef="$BASE_REF" --console=plain --quiet --no-daemon 2>&1)
+          GRADLE_EXIT_CODE=$?
+          set -e  # Re-enable exit on error
+
+          if [ $GRADLE_EXIT_CODE -ne 0 ]; then
+            echo "Module detection failed (exit code: $GRADLE_EXIT_CODE), will run all tests as fallback"
+            echo "run_all=true" >> $GITHUB_OUTPUT
+            echo "affected_modules=" >> $GITHUB_OUTPUT
+          else
+            # Detection succeeded, parse the output
+            AFFECTED_MODULES=$(echo "$GRADLE_OUTPUT" | tail -1)
+            echo "Affected modules: $AFFECTED_MODULES"
+            echo "affected_modules=$AFFECTED_MODULES" >> $GITHUB_OUTPUT
+
+            if [ -z "$AFFECTED_MODULES" ]; then
+              echo "No modules were affected by the changes - skipping tests"
+              echo "run_all=false" >> $GITHUB_OUTPUT
+              echo "skip_tests=true" >> $GITHUB_OUTPUT
+            else
+              echo "run_all=false" >> $GITHUB_OUTPUT
+              echo "skip_tests=false" >> $GITHUB_OUTPUT
+            fi
+          fi
+
+      - name: Run selective unit tests
+        if: ${{ !inputs.run_all_tests && steps.detect_modules.outputs.skip_tests != 'true' && steps.detect_modules.outputs.run_all != 'true' && steps.detect_modules.outputs.affected_modules != '' }}
+        run: |
+          echo "Running tests for affected modules: ${{ steps.detect_modules.outputs.affected_modules }}"
+          ./gradlew ${{ steps.detect_modules.outputs.affected_modules }} --continue
+
+      - name: Run all unit tests
+        if: ${{ inputs.run_all_tests || steps.detect_modules.outputs.run_all == 'true' }}
+        run: |
+          echo "Running all unit tests"
+          ./gradlew test --continue
+
+      - name: Skip tests
+        if: ${{ !inputs.run_all_tests && steps.detect_modules.outputs.skip_tests == 'true' }}
+        run: |
+          echo "No modules were affected by the changes - skipping all tests"
+      
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-results
+          path: |
+            **/build/test-results/test*/
+            **/build/reports/tests/
+          retention-days: 7
