@@ -25,38 +25,52 @@ jobs:
         with:
           java-version: 17
           distribution: temurin
-      
-      - name: Make scripts executable
-        run: chmod +x .github/scripts/*.sh
-      
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+        with:
+          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
+
       - name: Detect affected modules
-        id: affected_modules
+        id: detect_modules
         if: ${{ !inputs.run_all_tests }}
         run: |
           echo "Detecting affected modules..."
-          AFFECTED_MODULES=$(./.github/scripts/detect-affected-modules.sh)
-          echo "affected_modules=$AFFECTED_MODULES" >> $GITHUB_OUTPUT
+
+          # Determine base ref for comparison
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            BASE_REF="origin/${{ github.event.pull_request.base.ref }}"
+          else
+            BASE_REF="HEAD~1"
+          fi
+
+          echo "Base ref: $BASE_REF"
+
+          # Run Gradle task to detect affected modules
+          AFFECTED_MODULES=$(./gradlew detectAffectedModules -PbaseRef="$BASE_REF" --quiet 2>/dev/null || echo "")
+
           echo "Affected modules: $AFFECTED_MODULES"
-          
-          # Check if we should run all tests (empty result means run all)
+          echo "affected_modules=$AFFECTED_MODULES" >> $GITHUB_OUTPUT
+
+          # Check if we should run all tests (empty result or detection failed)
           if [ -z "$AFFECTED_MODULES" ]; then
-            echo "No affected modules detected, running all tests"
+            echo "No specific modules detected, will run all tests"
             echo "run_all=true" >> $GITHUB_OUTPUT
           else
             echo "run_all=false" >> $GITHUB_OUTPUT
           fi
-      
+
       - name: Run selective unit tests
-        if: ${{ !inputs.run_all_tests && steps.affected_modules.outputs.run_all != 'true' }}
+        if: ${{ !inputs.run_all_tests && steps.detect_modules.outputs.run_all != 'true' && steps.detect_modules.outputs.affected_modules != '' }}
         run: |
-          echo "Running tests for affected modules: ${{ steps.affected_modules.outputs.affected_modules }}"
-          ./gradlew ${{ steps.affected_modules.outputs.affected_modules }}
-      
+          echo "Running tests for affected modules: ${{ steps.detect_modules.outputs.affected_modules }}"
+          ./gradlew ${{ steps.detect_modules.outputs.affected_modules }} --continue
+
       - name: Run all unit tests
-        if: ${{ inputs.run_all_tests || steps.affected_modules.outputs.run_all == 'true' }}
+        if: ${{ inputs.run_all_tests || steps.detect_modules.outputs.run_all == 'true' || steps.detect_modules.outputs.affected_modules == '' }}
         run: |
           echo "Running all unit tests"
-          ./gradlew test
+          ./gradlew test --continue
       
       - name: Upload test results
         if: always()
