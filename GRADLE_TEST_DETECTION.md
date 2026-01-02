@@ -10,9 +10,9 @@ Instead of using a complex bash script to determine which modules are affected b
 
 ### 1. The Gradle Convention Plugin
 
-The `detectAffectedModules` task is provided by the `RootProjectConventionPlugin` in the `buildlogic` module. This follows Gradle best practices by implementing build logic as a convention plugin rather than directly in the root build file.
+The `detectAffectedModules` task is provided by the `AffectedTestDetectionPlugin` in the `buildlogic` module. This follows Gradle best practices by implementing build logic as a convention plugin rather than directly in the root build file.
 
-The plugin (`buildlogic/src/main/kotlin/com/tidal/sdk/plugins/RootProjectConventionPlugin.kt`):
+The plugin (`buildlogic/src/main/kotlin/com/tidal/sdk/plugins/AffectedTestDetectionPlugin.kt`):
 
 - Detects changed files using `git diff`
 - Maps files to their containing Gradle projects

@@ -6,13 +6,15 @@ import org.gradle.api.artifacts.ProjectDependency
 import org.gradle.kotlin.dsl.register
 
 /**
- * Convention plugin for the root project that adds tasks for CI/CD and development workflows.
+ * Plugin that detects which modules are affected by code changes and determines which tests to run.
+ * Uses Git diff and Gradle's dependency graph to accurately identify all affected modules including
+ * transitive dependencies.
  */
-class RootProjectConventionPlugin : Plugin<Project> {
+class AffectedTestDetectionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             require(this == rootProject) {
-                "RootProjectConventionPlugin can only be applied to the root project"
+                "AffectedTestDetectionPlugin can only be applied to the root project"
             }
 
             // Register the detectAffectedModules task

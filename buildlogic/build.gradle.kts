@@ -34,10 +34,10 @@ gradlePlugin {
             implementationClass = "com.tidal.sdk.plugins.JvmPlatformConventionPlugin"
         }
 
-        register("tidal-sdk-root-project") {
-            id = "com.tidal.sdk.root-project"
+        register("tidal-sdk-affected-test-detection") {
+            id = "com.tidal.sdk.affected-test-detection"
             version = "1.0.0"
-            implementationClass = "com.tidal.sdk.plugins.RootProjectConventionPlugin"
+            implementationClass = "com.tidal.sdk.plugins.AffectedTestDetectionPlugin"
         }
     }
 }
