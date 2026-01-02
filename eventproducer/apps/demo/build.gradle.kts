@@ -1,4 +1,7 @@
-plugins { alias(libs.plugins.tidal.android.application) }
+plugins {
+    alias(libs.plugins.tidal.android.application)
+    alias(libs.plugins.kotlin.compose)
+}
 
 android {
     namespace = "com.tidal.sdk.eventproducer.demo"
@@ -11,7 +14,6 @@ android {
 
     buildTypes {
         debug {}
-        composeOptions { kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get() }
     }
     packagingOptions {
         resources.excludes.apply {
