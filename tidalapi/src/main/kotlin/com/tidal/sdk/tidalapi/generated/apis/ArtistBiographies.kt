@@ -48,7 +48,7 @@ interface ArtistBiographies {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id Artist id
+     * @param id Artist biography id
      * @param countryCode ISO 3166-1 alpha-2 country code
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: owners (optional)
@@ -73,7 +73,7 @@ interface ArtistBiographies {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id Artist id
+     * @param id Artist biography id
      * @param artistBiographyUpdateBody (optional)
      * @return [Unit]
      */
@@ -95,7 +95,7 @@ interface ArtistBiographies {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id Artist id
+     * @param id Artist biography id
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,

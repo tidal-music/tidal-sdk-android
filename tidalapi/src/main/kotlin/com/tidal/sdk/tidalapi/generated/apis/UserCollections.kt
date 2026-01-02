@@ -33,7 +33,7 @@ interface UserCollections {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id User id
+     * @param id User collection id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param locale BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or
      *   unsupported. (optional, default to "en-US")
@@ -62,7 +62,7 @@ interface UserCollections {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id User id
+     * @param id User collection id
      * @param userCollectionAlbumsRelationshipRemoveOperationPayload (optional)
      * @return [Unit]
      */
@@ -99,7 +99,7 @@ interface UserCollections {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id User id
+     * @param id User collection id
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param sort Values prefixed with \&quot;-\&quot; are sorted descending; values without it are
@@ -134,7 +134,7 @@ interface UserCollections {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id User id
+     * @param id User collection id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param userCollectionAlbumsRelationshipAddOperationPayload (optional)
      * @return [Unit]
@@ -161,7 +161,7 @@ interface UserCollections {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id User id
+     * @param id User collection id
      * @param userCollectionArtistsRelationshipRemoveOperationPayload (optional)
      * @return [Unit]
      */
@@ -194,7 +194,7 @@ interface UserCollections {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id User id
+     * @param id User collection id
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param sort Values prefixed with \&quot;-\&quot; are sorted descending; values without it are
@@ -229,7 +229,7 @@ interface UserCollections {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id User id
+     * @param id User collection id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param userCollectionArtistsRelationshipAddOperationPayload (optional)
      * @return [Unit]
@@ -256,7 +256,7 @@ interface UserCollections {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id User id
+     * @param id User collection id
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -283,7 +283,7 @@ interface UserCollections {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id User id
+     * @param id User collection id
      * @param userCollectionPlaylistsRelationshipRemoveOperationPayload (optional)
      * @return [Unit]
      */
@@ -326,7 +326,7 @@ interface UserCollections {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id User id
+     * @param id User collection id
      * @param collectionView (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
@@ -359,7 +359,7 @@ interface UserCollections {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id User id
+     * @param id User collection id
      * @param userCollectionPlaylistsRelationshipRemoveOperationPayload (optional)
      * @return [Unit]
      */
@@ -384,7 +384,7 @@ interface UserCollections {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id User id
+     * @param id User collection id
      * @param userCollectionTracksRelationshipRemoveOperationPayload (optional)
      * @return [Unit]
      */
@@ -423,7 +423,7 @@ interface UserCollections {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id User id
+     * @param id User collection id
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param sort Values prefixed with \&quot;-\&quot; are sorted descending; values without it are
@@ -458,7 +458,7 @@ interface UserCollections {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id User id
+     * @param id User collection id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param userCollectionTracksRelationshipAddOperationPayload (optional)
      * @return [Unit]
@@ -485,7 +485,7 @@ interface UserCollections {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id User id
+     * @param id User collection id
      * @param userCollectionVideosRelationshipRemoveOperationPayload (optional)
      * @return [Unit]
      */
@@ -522,7 +522,7 @@ interface UserCollections {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id User id
+     * @param id User collection id
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param sort Values prefixed with \&quot;-\&quot; are sorted descending; values without it are
@@ -557,7 +557,7 @@ interface UserCollections {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id User id
+     * @param id User collection id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param userCollectionVideosRelationshipAddOperationPayload (optional)
      * @return [Unit]

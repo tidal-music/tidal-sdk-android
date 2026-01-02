@@ -30,9 +30,11 @@ interface Tracks {
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: albums, artists, genres, lyrics, owners, providers, radio, shares,
      *   similarTracks, sourceFile, trackStatistics (optional)
-     * @param filterId A Tidal catalogue ID (optional)
+     * @param filterId Track id (optional)
      * @param filterIsrc International Standard Recording Code (ISRC) (optional)
      * @param filterOwnersId User id (optional)
+     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
+     *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [TracksMultiResourceDataDocument]
      */
     @GET("tracks")
@@ -47,6 +49,7 @@ interface Tracks {
         filterIsrc: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[owners.id]")
         filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<TracksMultiResourceDataDocument>
 
     /**
@@ -60,7 +63,7 @@ interface Tracks {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id A Tidal catalogue ID
+     * @param id Track id
      * @return [Unit]
      */
     @DELETE("tracks/{id}") suspend fun tracksIdDelete(@Path("id") id: kotlin.String): Response<Unit>
@@ -77,11 +80,13 @@ interface Tracks {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id A Tidal catalogue ID
+     * @param id Track id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: albums, artists, genres, lyrics, owners, providers, radio, shares,
      *   similarTracks, sourceFile, trackStatistics (optional)
+     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
+     *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [TracksSingleResourceDataDocument]
      */
     @GET("tracks/{id}")
@@ -90,6 +95,7 @@ interface Tracks {
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<TracksSingleResourceDataDocument>
 
     /**
@@ -103,7 +109,7 @@ interface Tracks {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id A Tidal catalogue ID
+     * @param id Track id
      * @param trackUpdateOperationPayload (optional)
      * @return [Unit]
      */
@@ -125,12 +131,14 @@ interface Tracks {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id A Tidal catalogue ID
+     * @param id Track id
      * @param countryCode ISO 3166-1 alpha-2 country code
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: albums (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
+     *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [TracksMultiRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/albums")
@@ -140,6 +148,7 @@ interface Tracks {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<TracksMultiRelationshipDataDocument>
 
     /**
@@ -153,7 +162,7 @@ interface Tracks {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id A Tidal catalogue ID
+     * @param id Track id
      * @param trackAlbumsRelationshipUpdateOperationPayload (optional)
      * @return [Unit]
      */
@@ -178,12 +187,14 @@ interface Tracks {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id A Tidal catalogue ID
+     * @param id Track id
      * @param countryCode ISO 3166-1 alpha-2 country code
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: artists (optional)
+     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
+     *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [TracksMultiRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/artists")
@@ -193,6 +204,7 @@ interface Tracks {
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<TracksMultiRelationshipDataDocument>
 
     /**
@@ -207,12 +219,14 @@ interface Tracks {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id A Tidal catalogue ID
+     * @param id Track id
      * @param countryCode ISO 3166-1 alpha-2 country code
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: genres (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
+     *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [TracksMultiRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/genres")
@@ -222,6 +236,7 @@ interface Tracks {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<TracksMultiRelationshipDataDocument>
 
     /**
@@ -236,11 +251,13 @@ interface Tracks {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id A Tidal catalogue ID
+     * @param id Track id
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: lyrics (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
+     *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [TracksMultiRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/lyrics")
@@ -249,6 +266,7 @@ interface Tracks {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<TracksMultiRelationshipDataDocument>
 
     /**
@@ -263,11 +281,13 @@ interface Tracks {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id A Tidal catalogue ID
+     * @param id Track id
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
+     *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [TracksMultiRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/owners")
@@ -276,6 +296,7 @@ interface Tracks {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<TracksMultiRelationshipDataDocument>
 
     /**
@@ -291,12 +312,14 @@ interface Tracks {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id A Tidal catalogue ID
+     * @param id Track id
      * @param countryCode ISO 3166-1 alpha-2 country code
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: providers (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
+     *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [TracksMultiRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/providers")
@@ -306,6 +329,7 @@ interface Tracks {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<TracksMultiRelationshipDataDocument>
 
     /**
@@ -320,11 +344,13 @@ interface Tracks {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id A Tidal catalogue ID
+     * @param id Track id
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: radio (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
+     *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [TracksMultiRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/radio")
@@ -333,6 +359,7 @@ interface Tracks {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<TracksMultiRelationshipDataDocument>
 
     /**
@@ -347,11 +374,13 @@ interface Tracks {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id A Tidal catalogue ID
+     * @param id Track id
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: shares (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
+     *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [TracksMultiRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/shares")
@@ -360,6 +389,7 @@ interface Tracks {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<TracksMultiRelationshipDataDocument>
 
     /**
@@ -375,12 +405,14 @@ interface Tracks {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id A Tidal catalogue ID
+     * @param id Track id
      * @param countryCode ISO 3166-1 alpha-2 country code
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: similarTracks (optional)
+     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
+     *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [TracksMultiRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/similarTracks")
@@ -390,6 +422,7 @@ interface Tracks {
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<TracksMultiRelationshipDataDocument>
 
     /**
@@ -405,9 +438,11 @@ interface Tracks {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id A Tidal catalogue ID
+     * @param id Track id
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: sourceFile (optional)
+     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
+     *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [TracksSingleRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/sourceFile")
@@ -415,6 +450,7 @@ interface Tracks {
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<TracksSingleRelationshipDataDocument>
 
     /**
@@ -430,9 +466,11 @@ interface Tracks {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id A Tidal catalogue ID
+     * @param id Track id
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: trackStatistics (optional)
+     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
+     *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [TracksSingleRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/trackStatistics")
@@ -440,6 +478,7 @@ interface Tracks {
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<TracksSingleRelationshipDataDocument>
 
     /**
