@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.tidal.android.application)
+    alias(libs.plugins.kotlin.compose)
 }
 
 android {
@@ -15,7 +16,6 @@ android {
         debug {}
     }
 
-    composeOptions { kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get() }
 
     packaging {
         resources.excludes.apply {
