@@ -33,5 +33,11 @@ gradlePlugin {
             version = libs.plugins.tidal.jvm.platform.get().version
             implementationClass = "com.tidal.sdk.plugins.JvmPlatformConventionPlugin"
         }
+
+        register("tidal-sdk-root-project") {
+            id = "com.tidal.sdk.root-project"
+            version = "1.0.0"
+            implementationClass = "com.tidal.sdk.plugins.RootProjectConventionPlugin"
+        }
     }
 }
