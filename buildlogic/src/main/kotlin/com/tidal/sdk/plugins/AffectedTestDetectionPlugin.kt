@@ -11,6 +11,7 @@ import org.gradle.kotlin.dsl.register
  * transitive dependencies.
  */
 class AffectedTestDetectionPlugin : Plugin<Project> {
+    @Suppress("ComplexMethod", "LongMethod")
     override fun apply(target: Project) {
         with(target) {
             require(this == rootProject) {
@@ -42,6 +43,7 @@ class AffectedTestDetectionPlugin : Plugin<Project> {
                         if (exitCode != 0) {
                             logger.error("Git command failed with exit code $exitCode")
                             logger.error(process.errorStream.bufferedReader().use { it.readText() })
+                            @Suppress("TooGenericExceptionThrown")
                             throw RuntimeException("Failed to get git diff")
                         }
 
