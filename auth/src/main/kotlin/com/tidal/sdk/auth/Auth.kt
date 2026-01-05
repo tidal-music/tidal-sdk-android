@@ -17,7 +17,7 @@ import com.tidal.sdk.common.logger
  * Main entry point for authentication and authorization operations. This class provides functions
  * to initialize and finalize login processes, handle device logins, and manage user credentials.
  */
-// Test change for selective auth module testing only
+// Test change for selective auth module testing only - v2
 class Auth internal constructor(private val loginRepository: LoginRepository) {
 
     /**
