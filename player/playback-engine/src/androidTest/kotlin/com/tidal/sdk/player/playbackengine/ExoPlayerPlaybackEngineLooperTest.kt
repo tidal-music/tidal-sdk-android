@@ -2,7 +2,7 @@ package com.tidal.sdk.player.playbackengine
 
 import androidx.test.platform.app.InstrumentationRegistry
 import assertk.assertThat
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import com.google.gson.Gson
 import com.tidal.sdk.player.common.Configuration
 import com.tidal.sdk.player.common.UUIDWrapper
@@ -56,6 +56,6 @@ internal class ExoPlayerPlaybackEngineLooperTest {
         val extendedExoPlayer = exoPlayerPlaybackEngine.reflectionExtendedExoPlayer
         val handler = exoPlayerPlaybackEngine.reflectionInternalHandler
 
-        assertThat(extendedExoPlayer.applicationLooper).isSameAs(handler.looper)
+        assertThat(extendedExoPlayer.applicationLooper).isSameInstanceAs(handler.looper)
     }
 }

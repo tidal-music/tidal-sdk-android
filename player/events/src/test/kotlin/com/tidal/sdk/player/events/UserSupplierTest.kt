@@ -2,7 +2,7 @@ package com.tidal.sdk.player.events
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import com.tidal.sdk.auth.CredentialsProvider
 import com.tidal.sdk.auth.model.AuthResult
 import com.tidal.sdk.auth.model.Credentials
@@ -72,7 +72,7 @@ class UserSupplierTest {
         val actualUser = userSupplier.invoke()
 
         assertThat(actualUser.reflectionId).isEqualTo(-1)
-        assertThat(actualUser.reflectionSessionId).isSameAs("")
+        assertThat(actualUser.reflectionSessionId).isSameInstanceAs("")
         verify(credentialsProvider).getCredentials()
         verify(authResult).successData
         Unit

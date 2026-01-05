@@ -7,7 +7,7 @@ import androidx.media3.exoplayer.drm.DrmSessionManagerProvider
 import androidx.media3.exoplayer.hls.HlsMediaSource
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import assertk.assertThat
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import com.tidal.sdk.player.playbackengine.drm.DrmSessionManagerFactory
 import com.tidal.sdk.player.playbackengine.drm.DrmSessionManagerProviderFactory
 import com.tidal.sdk.player.streamingapi.offline.Storage
@@ -76,7 +76,7 @@ internal class TidalMediaSourceCreatorTest {
 
         val actual = tidalMediaSourceCreator.invoke(mediaItem, playbackInfo, emptyMap())
 
-        assertThat(actual).isSameAs(expectedDashMediaSource)
+        assertThat(actual).isSameInstanceAs(expectedDashMediaSource)
     }
 
     @Test
@@ -110,7 +110,7 @@ internal class TidalMediaSourceCreatorTest {
 
         val actual = tidalMediaSourceCreator.invoke(mediaItem, playbackInfo, emptyMap())
 
-        assertThat(actual).isSameAs(expectedHlsMediaSource)
+        assertThat(actual).isSameInstanceAs(expectedHlsMediaSource)
     }
 
     @Test
@@ -141,7 +141,7 @@ internal class TidalMediaSourceCreatorTest {
 
         val actual = tidalMediaSourceCreator.invoke(mediaItem, playbackInfo, emptyMap())
 
-        assertThat(actual).isSameAs(expectedHlsMediaSource)
+        assertThat(actual).isSameInstanceAs(expectedHlsMediaSource)
     }
 
     @Test
@@ -158,7 +158,7 @@ internal class TidalMediaSourceCreatorTest {
 
         val actual = tidalMediaSourceCreator.invoke(mediaItem, playbackInfo, emptyMap())
 
-        assertThat(actual).isSameAs(expectedProgressiveMediaSource)
+        assertThat(actual).isSameInstanceAs(expectedProgressiveMediaSource)
     }
 
     @Test
@@ -184,7 +184,7 @@ internal class TidalMediaSourceCreatorTest {
 
         val actual = tidalMediaSourceCreator.invoke(mediaItem, playbackInfoOfflineTrack, emptyMap())
 
-        assertThat(actual).isSameAs(expectedProgressiveMediaSource)
+        assertThat(actual).isSameInstanceAs(expectedProgressiveMediaSource)
     }
 
     @Test
@@ -210,7 +210,7 @@ internal class TidalMediaSourceCreatorTest {
 
         val actual = tidalMediaSourceCreator.invoke(mediaItem, playbackInfoOfflineTrack, emptyMap())
 
-        assertThat(actual).isSameAs(expectedProgressiveMediaSource)
+        assertThat(actual).isSameInstanceAs(expectedProgressiveMediaSource)
     }
 
     @Test
@@ -264,6 +264,6 @@ internal class TidalMediaSourceCreatorTest {
 
         val actual = tidalMediaSourceCreator.invoke(mediaItem, playbackInfoOfflineTrack, emptyMap())
 
-        assertThat(actual).isSameAs(expectedDashMediaSource)
+        assertThat(actual).isSameInstanceAs(expectedDashMediaSource)
     }
 }

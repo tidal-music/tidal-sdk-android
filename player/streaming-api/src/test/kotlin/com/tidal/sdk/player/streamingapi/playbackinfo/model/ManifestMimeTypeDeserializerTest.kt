@@ -1,7 +1,7 @@
 package com.tidal.sdk.player.streamingapi.playbackinfo.model
 
 import assertk.assertThat
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import com.google.gson.JsonParseException
 import com.google.gson.JsonPrimitive
 import org.junit.jupiter.api.Test
@@ -21,7 +21,7 @@ internal class ManifestMimeTypeDeserializerTest {
 
         val actual = deserializer.deserialize(jsonElement, mock(), mock())
 
-        assertThat(actual).isSameAs(manifestMimeType)
+        assertThat(actual).isSameInstanceAs(manifestMimeType)
     }
 
     @Test

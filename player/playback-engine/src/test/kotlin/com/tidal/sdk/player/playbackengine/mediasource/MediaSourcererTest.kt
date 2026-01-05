@@ -3,7 +3,7 @@ package com.tidal.sdk.player.playbackengine.mediasource
 import androidx.media3.exoplayer.ExoPlayer
 import assertk.assertThat
 import assertk.assertions.isNull
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import com.tidal.sdk.player.common.ForwardingMediaProduct
 import com.tidal.sdk.player.common.model.MediaProduct
 import com.tidal.sdk.player.common.model.ProductType
@@ -67,7 +67,7 @@ internal class MediaSourcererTest {
         mediaSourcerer.load(mediaProduct)
 
         assertThat(mediaSourcerer.reflectionCurrentStreamingSession)
-            .isSameAs(explicitStreamingSession)
+            .isSameInstanceAs(explicitStreamingSession)
         verify(explicitStreamingSessionCreator).createAndReportStart(productType, productId, null)
         verify(playbackInfoMediaSourceFactory).create(explicitStreamingSession, mediaProduct)
         verify(exoPlayer).setMediaSource(mediaSource)
@@ -97,7 +97,7 @@ internal class MediaSourcererTest {
         mediaSourcerer.setNext(mediaProductNext)
 
         assertThat(mediaSourcerer.reflectionNextStreamingSession)
-            .isSameAs(implicitStreamingSessionNext)
+            .isSameInstanceAs(implicitStreamingSessionNext)
         verify(exoPlayer).mediaItemCount
         verify(implicitStreamingSessionCreator).createAndReportStart(productType, productId, null)
         verify(playbackInfoMediaSourceFactory)
@@ -129,7 +129,7 @@ internal class MediaSourcererTest {
         mediaSourcerer.setNext(mediaProductNext)
 
         assertThat(mediaSourcerer.reflectionNextStreamingSession)
-            .isSameAs(implicitStreamingSessionNewNext)
+            .isSameInstanceAs(implicitStreamingSessionNewNext)
         verify(exoPlayer).mediaItemCount
         verify(implicitStreamingSessionCreator).createAndReportStart(productType, productId, null)
         verify(playbackInfoMediaSourceFactory)

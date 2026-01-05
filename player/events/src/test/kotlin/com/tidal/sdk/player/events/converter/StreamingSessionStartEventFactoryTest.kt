@@ -1,7 +1,7 @@
 package com.tidal.sdk.player.events.converter
 
 import assertk.assertThat
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import com.tidal.sdk.player.common.UUIDWrapper
 import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
 import com.tidal.sdk.player.events.ClientSupplier
@@ -84,7 +84,7 @@ internal class StreamingSessionStartEventFactoryTest {
         verify(streamingSessionStartPayloadDecorator).decorate(payload)
         verify(streamingSessionStartFactory)
             .create(currentTimeMillis, randomUUID, user, client, decoratedPayload, emptyMap())
-        assertThat(actual).isSameAs(expected)
+        assertThat(actual).isSameInstanceAs(expected)
         verifyNoMoreInteractions(randomUUID, user, client, payload, decoratedPayload, expected)
     }
 }

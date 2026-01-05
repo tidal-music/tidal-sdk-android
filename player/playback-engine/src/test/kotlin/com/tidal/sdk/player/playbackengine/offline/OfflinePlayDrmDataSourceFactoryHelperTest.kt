@@ -3,7 +3,7 @@ package com.tidal.sdk.player.playbackengine.offline
 import androidx.media3.datasource.cache.Cache
 import androidx.media3.datasource.cache.CacheDataSource
 import assertk.assertThat
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import com.tidal.sdk.player.playbackengine.offline.cache.OfflineCacheProvider
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
@@ -31,7 +31,7 @@ internal class OfflinePlayDrmDataSourceFactoryHelperTest {
 
         val actualDataSourceFactory = offlinePlayDrmDataSourceFactoryHelper.create(cache)
 
-        assertThat(actualDataSourceFactory).isSameAs(cacheDataSourceFactory)
+        assertThat(actualDataSourceFactory).isSameInstanceAs(cacheDataSourceFactory)
         verify(cacheDataSourceFactory).setCache(cache)
         verify(cacheDataSourceFactory).setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR)
         verifyNoMoreInteractions(cache, cacheDataSourceFactory)

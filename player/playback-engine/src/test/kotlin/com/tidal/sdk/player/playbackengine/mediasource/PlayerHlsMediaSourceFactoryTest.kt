@@ -5,7 +5,7 @@ import androidx.media3.common.MimeTypes
 import androidx.media3.exoplayer.drm.DrmSessionManagerProvider
 import androidx.media3.exoplayer.hls.HlsMediaSource
 import assertk.assertThat
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import com.tidal.sdk.player.playbackengine.emu.EmuManifest
 import com.tidal.sdk.player.playbackengine.emu.EmuManifestFactory
 import org.junit.jupiter.api.AfterEach
@@ -54,7 +54,7 @@ internal class PlayerHlsMediaSourceFactoryTest {
                 drmSessionManagerProvider,
             )
 
-        assertThat(actualHlsMediaSource).isSameAs(expectedHlsMediaSource)
+        assertThat(actualHlsMediaSource).isSameInstanceAs(expectedHlsMediaSource)
         verify(emuManifestFactory).create(ENCODED_MANIFEST)
         verify(mediaItem).buildUpon()
         verify(mediaItemBuilder).setUri(emuManifest.urls.firstOrNull())

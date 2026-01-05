@@ -1,7 +1,7 @@
 package com.tidal.sdk.player.playbackengine.quality
 
 import assertk.assertThat
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import com.tidal.sdk.player.common.model.AudioQuality
 import com.tidal.sdk.player.playbackengine.network.NetworkTransportHelper
 import org.junit.jupiter.api.AfterEach
@@ -26,7 +26,7 @@ internal class AudioQualityRepositoryTest {
 
         val actual = audioQualityRepository.streamingQuality
 
-        assertThat(actual).isSameAs(audioQuality)
+        assertThat(actual).isSameInstanceAs(audioQuality)
         verify(networkTransportHelper).isWifiOrEthernet()
     }
 
@@ -42,7 +42,7 @@ internal class AudioQualityRepositoryTest {
 
         val actual = audioQualityRepository.streamingQuality
 
-        assertThat(actual).isSameAs(audioQuality)
+        assertThat(actual).isSameInstanceAs(audioQuality)
         verify(networkTransportHelper).isWifiOrEthernet()
     }
 }

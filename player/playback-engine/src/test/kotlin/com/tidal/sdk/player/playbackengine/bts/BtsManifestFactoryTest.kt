@@ -1,7 +1,7 @@
 package com.tidal.sdk.player.playbackengine.bts
 
 import assertk.assertThat
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import com.google.gson.Gson
 import com.tidal.sdk.player.commonandroid.Base64Codec
 import org.junit.jupiter.api.AfterEach
@@ -34,7 +34,7 @@ internal class BtsManifestFactoryTest {
 
         val actualBtsManifest = btsManifestFactory.create(ENCODED_MANIFEST, CHARSET)
 
-        assertThat(actualBtsManifest).isSameAs(expectedBtsManifest)
+        assertThat(actualBtsManifest).isSameInstanceAs(expectedBtsManifest)
         verify(base64Codec).decode(ENCODED_MANIFEST.toByteArray(CHARSET))
         verify(gson).fromJson(decodedManifest.toString(CHARSET), BtsManifest::class.java)
         verifyNoInteractions(expectedBtsManifest)

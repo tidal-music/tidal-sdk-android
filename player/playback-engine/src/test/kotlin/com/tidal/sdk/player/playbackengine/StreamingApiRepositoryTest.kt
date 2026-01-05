@@ -5,7 +5,7 @@ import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.hasCause
 import assertk.assertions.isInstanceOf
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import com.tidal.sdk.player.common.ForwardingMediaProduct
 import com.tidal.sdk.player.common.model.AudioQuality
 import com.tidal.sdk.player.common.model.ProductQuality
@@ -74,7 +74,7 @@ internal class StreamingApiRepositoryTest {
 
         val actual = streamingApiRepository.getDrmLicense(drmLicenseRequest, emptyMap())
 
-        assertThat(actual).isSameAs(expectedDrmLicense)
+        assertThat(actual).isSameInstanceAs(expectedDrmLicense)
         verify(eventReporter)
             .report(
                 DrmLicenseFetch.Payload(
@@ -110,7 +110,7 @@ internal class StreamingApiRepositoryTest {
             .thenReturn(errorCode)
 
         assertFailure { streamingApiRepository.getDrmLicense(drmLicenseRequest, emptyMap()) }
-            .isSameAs(mediaDrmCallbackException)
+            .isSameInstanceAs(mediaDrmCallbackException)
 
         verify(eventReporter)
             .report(
@@ -195,7 +195,7 @@ internal class StreamingApiRepositoryTest {
             val actual =
                 streamingApiRepository.getPlaybackInfoForStreaming(streamingSessionId, mediaProduct)
 
-            assertThat(actual).isSameAs(expected)
+            assertThat(actual).isSameInstanceAs(expected)
             verify(eventReporter)
                 .report(
                     PlaybackInfoFetch.Payload(

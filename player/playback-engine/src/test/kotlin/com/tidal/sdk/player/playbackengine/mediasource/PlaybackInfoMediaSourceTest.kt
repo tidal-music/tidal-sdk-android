@@ -15,7 +15,7 @@ import androidx.media3.exoplayer.upstream.LoadErrorHandlingPolicy
 import androidx.media3.exoplayer.upstream.LoadErrorHandlingPolicy.LoadErrorInfo
 import androidx.media3.exoplayer.upstream.Loader
 import assertk.assertThat
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import com.tidal.sdk.player.common.ForwardingMediaProduct
 import com.tidal.sdk.player.common.model.MediaProduct
 import com.tidal.sdk.player.playbackengine.mediasource.loadable.PlaybackInfoLoadable
@@ -66,7 +66,7 @@ internal class PlaybackInfoMediaSourceTest {
     fun mediaItemShouldReturnTheMediaItem() {
         val actual = playbackInfoMediaSource.mediaItem
 
-        assertThat(actual).isSameAs(expectedMediaItem)
+        assertThat(actual).isSameInstanceAs(expectedMediaItem)
     }
 
     @Test
@@ -142,7 +142,7 @@ internal class PlaybackInfoMediaSourceTest {
         val actual = playbackInfoMediaSource.createPeriod(id, allocator, startPositionUs)
 
         verify(selectedMediaSource).createPeriod(id, allocator, startPositionUs)
-        assertThat(actual).isSameAs(mediaPeriod)
+        assertThat(actual).isSameInstanceAs(mediaPeriod)
     }
 
     @Test

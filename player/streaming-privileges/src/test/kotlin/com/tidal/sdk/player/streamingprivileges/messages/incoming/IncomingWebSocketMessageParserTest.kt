@@ -2,7 +2,7 @@ package com.tidal.sdk.player.streamingprivileges.messages.incoming
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import com.google.gson.Gson
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
@@ -38,7 +38,7 @@ internal class IncomingWebSocketMessageParserTest {
         verify(gson).fromJson(msgString, JsonObject::class.java)
         verify(jsonObject)["type"]
         verify(typeElement).asString
-        assertThat(actual).isSameAs(WebSocketMessage.Incoming.Reconnect)
+        assertThat(actual).isSameInstanceAs(WebSocketMessage.Incoming.Reconnect)
         verifyNoMoreInteractions(typeElement, jsonObject)
     }
 

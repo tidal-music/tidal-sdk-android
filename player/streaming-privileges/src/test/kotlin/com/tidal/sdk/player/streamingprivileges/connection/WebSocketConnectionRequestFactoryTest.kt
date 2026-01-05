@@ -1,7 +1,7 @@
 package com.tidal.sdk.player.streamingprivileges.connection
 
 import assertk.assertThat
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import com.tidal.sdk.player.common.RequestBuilderFactory
 import okhttp3.Request
 import org.junit.jupiter.api.AfterEach
@@ -39,7 +39,7 @@ internal class WebSocketConnectionRequestFactoryTest {
             verify(requestBuilder).url(url)
             verify(requestBuilder).build()
         }
-        assertThat(actual).isSameAs(expected)
+        assertThat(actual).isSameInstanceAs(expected)
         verifyNoMoreInteractions(requestBuilder, expected)
     }
 }

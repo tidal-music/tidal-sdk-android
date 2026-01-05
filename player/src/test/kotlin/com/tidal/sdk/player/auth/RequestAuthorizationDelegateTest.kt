@@ -2,7 +2,7 @@ package com.tidal.sdk.player.auth
 
 import assertk.assertThat
 import assertk.assertions.isNull
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import com.tidal.sdk.auth.model.Credentials
 import okhttp3.HttpUrl
 import okhttp3.Request
@@ -52,7 +52,7 @@ internal class RequestAuthorizationDelegateTest {
             verify(newBuilder).header(HEADER_AUTHORIZATION, "${TokenType.BEARER.type} $tokenString")
             verify(newBuilder).build()
         }
-        assertThat(actual).isSameAs(expected)
+        assertThat(actual).isSameInstanceAs(expected)
         verifyNoMoreInteractions(requestUrl, expected, newBuilder, request, credentials)
     }
 
@@ -114,7 +114,7 @@ internal class RequestAuthorizationDelegateTest {
             verify(newBuilder).header(HEADER_AUTHORIZATION, "${TokenType.BEARER.type} $tokenString")
             verify(newBuilder).build()
         }
-        assertThat(actual).isSameAs(expected)
+        assertThat(actual).isSameInstanceAs(expected)
         verifyNoMoreInteractions(
             requestUrl,
             expected,

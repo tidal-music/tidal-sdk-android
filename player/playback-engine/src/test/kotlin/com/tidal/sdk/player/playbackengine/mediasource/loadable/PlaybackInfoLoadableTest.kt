@@ -3,7 +3,7 @@ package com.tidal.sdk.player.playbackengine.mediasource.loadable
 import assertk.assertThat
 import assertk.assertions.isFalse
 import assertk.assertions.isNull
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import assertk.assertions.isTrue
 import com.tidal.sdk.player.common.ForwardingMediaProduct
 import com.tidal.sdk.player.common.model.MediaProduct
@@ -81,7 +81,7 @@ internal class PlaybackInfoLoadableTest {
         verify(extendedExoPlayerState).playbackInfoListener
         verify(playbackInfoListener)
             .onPlaybackInfoFetched(streamingSession, forwardingMediaProduct, playbackInfo)
-        assertThat(playbackInfoLoadable.playbackInfo).isSameAs(playbackInfo)
+        assertThat(playbackInfoLoadable.playbackInfo).isSameInstanceAs(playbackInfo)
     }
 
     @Test
@@ -99,7 +99,7 @@ internal class PlaybackInfoLoadableTest {
 
         val actual = assertThrows<PlaybackInfoFetchException> { playbackInfoLoadable.load() }
 
-        assertThat(actual.requestedMediaProduct).isSameAs(forwardingMediaProduct)
+        assertThat(actual.requestedMediaProduct).isSameInstanceAs(forwardingMediaProduct)
         assertThat(playbackInfoLoadable.playbackInfo).isNull()
         verify(streamingSession).id
         verifyNoMoreInteractions(thrown)
@@ -145,7 +145,7 @@ internal class PlaybackInfoLoadableTest {
         playbackInfoLoadable.cancelLoad()
         playbackInfoLoadable.load()
 
-        assertThat(playbackInfoLoadable.playbackInfo).isSameAs(playbackInfo2)
+        assertThat(playbackInfoLoadable.playbackInfo).isSameInstanceAs(playbackInfo2)
         assertThat(playbackInfoLoadable.reflectionCoroutineScope.isActive).isTrue()
         verify(streamingSession).id
     }

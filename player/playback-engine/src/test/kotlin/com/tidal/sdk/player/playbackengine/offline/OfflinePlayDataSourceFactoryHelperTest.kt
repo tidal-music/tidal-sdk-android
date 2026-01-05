@@ -2,7 +2,7 @@ package com.tidal.sdk.player.playbackengine.offline
 
 import androidx.media3.datasource.cache.Cache
 import assertk.assertThat
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import com.tidal.sdk.player.playbackengine.datasource.CacheKeyAesCipherDataSourceFactoryFactory
 import com.tidal.sdk.player.playbackengine.offline.cache.OfflineCacheProvider
 import com.tidal.sdk.player.playbackengine.offline.crypto.CacheKeyAesCipherDataSourceFactory
@@ -37,7 +37,7 @@ internal class OfflinePlayDataSourceFactoryHelperTest {
 
         val actualDataSourceFactory = offlinePlayDataSourceFactoryHelper.create(cache)
 
-        assertThat(actualDataSourceFactory).isSameAs(cacheKeyAesCipherDataSourceFactory)
+        assertThat(actualDataSourceFactory).isSameInstanceAs(cacheKeyAesCipherDataSourceFactory)
         verify(cacheKeyAesCipherDataSourceFactoryFactory).create(cache)
         verifyNoMoreInteractions(cache, cacheKeyAesCipherDataSourceFactory)
     }

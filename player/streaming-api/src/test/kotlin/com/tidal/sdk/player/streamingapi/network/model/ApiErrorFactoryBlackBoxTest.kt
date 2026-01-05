@@ -2,7 +2,7 @@ package com.tidal.sdk.player.streamingapi.network.model
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.tidal.sdk.player.common.model.ApiError
@@ -48,7 +48,7 @@ internal class ApiErrorFactoryBlackBoxTest {
         val cause = mock<RuntimeException>()
         val actual = apiErrorFactory.fromJsonStringOrCause(null, cause)
 
-        assertThat(actual).isSameAs(cause)
+        assertThat(actual).isSameInstanceAs(cause)
         verifyNoMoreInteractions(cause)
     }
 

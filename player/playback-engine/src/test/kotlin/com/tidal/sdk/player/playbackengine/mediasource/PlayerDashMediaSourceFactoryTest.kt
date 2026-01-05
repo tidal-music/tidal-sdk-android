@@ -5,7 +5,7 @@ import androidx.media3.exoplayer.dash.DashMediaSource
 import androidx.media3.exoplayer.dash.manifest.DashManifest
 import androidx.media3.exoplayer.drm.DrmSessionManagerProvider
 import assertk.assertThat
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import com.tidal.sdk.player.playbackengine.dash.DashManifestFactory
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.mock
@@ -41,6 +41,6 @@ internal class PlayerDashMediaSourceFactoryTest {
             )
 
         verify(dashMediaSourceFactory).setDrmSessionManagerProvider(drmSessionManagerProvider)
-        assertThat(actualDashMediaSource).isSameAs(expectedDashMediaSource)
+        assertThat(actualDashMediaSource).isSameInstanceAs(expectedDashMediaSource)
     }
 }

@@ -4,7 +4,7 @@ import android.net.Uri
 import androidx.media3.exoplayer.dash.manifest.DashManifest
 import androidx.media3.exoplayer.upstream.ParsingLoadable
 import assertk.assertThat
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import com.tidal.sdk.player.commonandroid.Base64Codec
 import java.io.ByteArrayInputStream
 import org.junit.jupiter.api.Test
@@ -35,6 +35,6 @@ internal class DashManifestFactoryTest {
 
         val actualDashManifest = dashManifestFactory.create(ENCODED_MANIFEST, Charsets.ISO_8859_1)
 
-        assertThat(actualDashManifest).isSameAs(expectedDashManifest)
+        assertThat(actualDashManifest).isSameInstanceAs(expectedDashManifest)
     }
 }

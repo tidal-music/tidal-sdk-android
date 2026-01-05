@@ -6,7 +6,7 @@ import android.media.AudioManager
 import android.os.Handler
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
@@ -47,7 +47,7 @@ internal class OutputDeviceManagerTest {
             val callbackArg = it.arguments[0] as AudioDeviceCallback
             val handlerArg = it.arguments[1] as Handler
             callbackArg.onAudioDevicesAdded(arrayOf(audioDeviceInfo))
-            assertThat(handlerArg).isSameAs(handler)
+            assertThat(handlerArg).isSameInstanceAs(handler)
         }
 
         outputDeviceManager.start(callback)
@@ -71,7 +71,7 @@ internal class OutputDeviceManagerTest {
             val callbackArg = it.arguments[0] as AudioDeviceCallback
             val handlerArg = it.arguments[1] as Handler
             callbackArg.onAudioDevicesRemoved(arrayOf(audioDeviceInfo))
-            assertThat(handlerArg).isSameAs(handler)
+            assertThat(handlerArg).isSameInstanceAs(handler)
         }
 
         outputDeviceManager.start(callback)

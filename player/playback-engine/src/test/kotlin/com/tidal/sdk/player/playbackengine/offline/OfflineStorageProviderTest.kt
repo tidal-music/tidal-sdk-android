@@ -2,7 +2,7 @@ package com.tidal.sdk.player.playbackengine.offline
 
 import androidx.media3.datasource.DataSource
 import assertk.assertThat
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import com.tidal.sdk.player.streamingapi.offline.Storage
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
@@ -41,7 +41,7 @@ internal class OfflineStorageProviderTest {
             offlineStorageProvider.getDataSourceFactoryForOfflinePlay(storage, isDrmProtected)
 
         assertThat(actualDataSourceFactoryForOfflinePlay)
-            .isSameAs(expectedDataSourceFactoryForOfflinePlay)
+            .isSameInstanceAs(expectedDataSourceFactoryForOfflinePlay)
         verify(offlinePlayDataSourceFactoryHelper).getInternal(storage.path)
     }
 
@@ -57,7 +57,7 @@ internal class OfflineStorageProviderTest {
             offlineStorageProvider.getDataSourceFactoryForOfflinePlay(storage, isDrmProtected)
 
         assertThat(actualDataSourceFactoryForOfflinePlay)
-            .isSameAs(expectedDataSourceFactoryForOfflinePlay)
+            .isSameInstanceAs(expectedDataSourceFactoryForOfflinePlay)
         verify(offlinePlayDataSourceFactoryHelper).getExternal(storage.path)
     }
 
@@ -73,7 +73,7 @@ internal class OfflineStorageProviderTest {
             offlineStorageProvider.getDataSourceFactoryForOfflinePlay(storage, isDrmProtected)
 
         assertThat(actualDataSourceFactoryForOfflinePlay)
-            .isSameAs(expectedDataSourceFactoryForOfflinePlay)
+            .isSameInstanceAs(expectedDataSourceFactoryForOfflinePlay)
         verify(offlinePlayDrmDataSourceFactoryHelper).getInternal(storage.path)
     }
 
@@ -89,7 +89,7 @@ internal class OfflineStorageProviderTest {
             offlineStorageProvider.getDataSourceFactoryForOfflinePlay(storage, isDrmProtected)
 
         assertThat(actualDataSourceFactoryForOfflinePlay)
-            .isSameAs(expectedDataSourceFactoryForOfflinePlay)
+            .isSameInstanceAs(expectedDataSourceFactoryForOfflinePlay)
         verify(offlinePlayDrmDataSourceFactoryHelper).getExternal(storage.path)
     }
 }
