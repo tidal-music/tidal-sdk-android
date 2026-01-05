@@ -23,6 +23,7 @@ import kotlinx.coroutines.launch
  * Additionally, it keeps track of the transportation layer's status through the exposure of the
  * [outageState]
  */
+// Test change for eventproducer module
 class EventProducer private constructor(coroutineScope: CoroutineScope) {
 
     private var _outageState: MutableStateFlow<OutageState> =
