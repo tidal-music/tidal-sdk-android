@@ -12,10 +12,7 @@ android {
         versionName = "0.1.0"
     }
 
-    buildTypes {
-        debug {}
-    }
-
+    buildTypes { debug {} }
 
     packaging {
         resources.excludes.apply {
