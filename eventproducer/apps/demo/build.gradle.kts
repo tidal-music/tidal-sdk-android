@@ -12,9 +12,7 @@ android {
         versionName = "0.1.0"
     }
 
-    buildTypes {
-        debug {}
-    }
+    buildTypes { debug {} }
     packagingOptions {
         resources.excludes.apply {
             add("META-INF/LICENSE.md")
