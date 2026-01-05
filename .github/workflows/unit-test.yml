@@ -47,7 +47,7 @@ jobs:
           echo "Base ref: $BASE_REF"
 
           # Run Gradle task to detect affected modules
-          AFFECTED_MODULES=$(./gradlew detectAffectedModules -PbaseRef="$BASE_REF" --quiet 2>/dev/null || echo "")
+          AFFECTED_MODULES=$(./gradlew detectAffectedModules -PbaseRef="$BASE_REF" --console=plain --quiet --no-daemon 2>/dev/null || echo "")
 
           echo "Affected modules: $AFFECTED_MODULES"
           echo "affected_modules=$AFFECTED_MODULES" >> $GITHUB_OUTPUT

@@ -69,7 +69,7 @@ class AffectedTestDetectionPlugin : Plugin<Project> {
                     }
 
                     if (hasRootLevelChanges) {
-                        logger.lifecycle("Root-level changes detected - will run all tests")
+                        logger.debug("Root-level changes detected - will run all tests")
                     }
 
                     // Map changed files to their containing projects
@@ -92,7 +92,7 @@ class AffectedTestDetectionPlugin : Plugin<Project> {
                         }
                     }
 
-                    logger.lifecycle("Directly affected projects: ${directlyAffectedProjects.map { it.path }}")
+                    logger.debug("Directly affected projects: ${directlyAffectedProjects.map { it.path }}")
 
                     // Find all projects that depend on the affected projects
                     val allAffectedProjects = mutableSetOf<Project>()
@@ -136,7 +136,7 @@ class AffectedTestDetectionPlugin : Plugin<Project> {
                         foundNew = allAffectedProjects.size > currentSize
                     }
 
-                    logger.lifecycle("All affected projects (including dependents): ${allAffectedProjects.map { it.path }}")
+                    logger.debug("All affected projects (including dependents): ${allAffectedProjects.map { it.path }}")
 
                     // Generate test tasks for affected projects
                     val testTasks = mutableListOf<String>()
@@ -182,10 +182,10 @@ class AffectedTestDetectionPlugin : Plugin<Project> {
                     val output = testTasks.distinct().sorted().joinToString(" ")
 
                     if (output.isBlank()) {
-                        logger.lifecycle("No test tasks to run")
+                        logger.debug("No test tasks to run")
                         println("") // Empty output means no tests
                     } else {
-                        logger.lifecycle("Test tasks to run: $output")
+                        logger.debug("Test tasks to run: $output")
                         println(output) // This is captured by the GitHub workflow
                     }
 
