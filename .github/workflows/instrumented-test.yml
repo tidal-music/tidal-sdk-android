@@ -2,6 +2,11 @@ name: Instrumented Tests
 
 on:
   workflow_call:
+    inputs:
+      run_all_tests:
+        description: 'Force run all instrumented tests regardless of changes'
+        type: boolean
+        default: false
     secrets:
       pat:
         required: true
@@ -13,20 +18,76 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - name: Enable KVM group perms
-        run: |
-          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
-          sudo udevadm control --reload-rules
-          sudo udevadm trigger --name-match=kvm
+        with:
+          fetch-depth: 0  # Need full history for git diff
       - uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v3
+
+      - name: Detect if player module is affected
+        id: detect_player
+        if: ${{ !inputs.run_all_tests }}
+        run: |
+          echo "Detecting if player module is affected..."
+
+          # Determine base ref for comparison
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            BASE_REF="origin/${{ github.event.pull_request.base.ref }}"
+          else
+            BASE_REF="HEAD~1"
+          fi
+
+          echo "Base ref: $BASE_REF"
+
+          # Run Gradle task to detect affected modules
+          set +e  # Don't exit on error
+          GRADLE_OUTPUT=$(./gradlew detectAffectedModules -PbaseRef="$BASE_REF" --console=plain --quiet --no-daemon 2>&1)
+          GRADLE_EXIT_CODE=$?
+          set -e  # Re-enable exit on error
+
+          if [ $GRADLE_EXIT_CODE -ne 0 ]; then
+            echo "Module detection failed, will run instrumented tests as fallback"
+            echo "should_run=true" >> $GITHUB_OUTPUT
+          else
+            # Detection succeeded, check if player module is affected
+            AFFECTED_MODULES=$(echo "$GRADLE_OUTPUT" | tail -1)
+            echo "Affected modules: $AFFECTED_MODULES"
+
+            # Check if any player-related module is in the list
+            if echo "$AFFECTED_MODULES" | grep -q ":player"; then
+              echo "Player module is affected, will run instrumented tests"
+              echo "should_run=true" >> $GITHUB_OUTPUT
+            else
+              echo "Player module is not affected, skipping instrumented tests"
+              echo "should_run=false" >> $GITHUB_OUTPUT
+            fi
+          fi
+
+      - name: Enable KVM group perms
+        if: ${{ inputs.run_all_tests || steps.detect_player.outputs.should_run == 'true' }}
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
       - name: Validate Gradle wrapper
+        if: ${{ inputs.run_all_tests || steps.detect_player.outputs.should_run == 'true' }}
         uses: gradle/wrapper-validation-action@b231772637bb498f11fdbc86052b6e8a8dc9fc92
-      - uses: reactivecircus/android-emulator-runner@v2.33.0
+
+      - name: Run instrumented tests on emulator
+        if: ${{ inputs.run_all_tests || steps.detect_player.outputs.should_run == 'true' }}
+        uses: reactivecircus/android-emulator-runner@v2.33.0
         with:
           api-level: 29
           arch: x86_64
           script: ./gradlew -Dorg.gradle.logging.level=quiet connectedCheck
           target: google_apis
+
+      - name: Skip instrumented tests
+        if: ${{ !inputs.run_all_tests && steps.detect_player.outputs.should_run == 'false' }}
+        run: |
+          echo "Skipping instrumented tests - player module not affected by changes"
