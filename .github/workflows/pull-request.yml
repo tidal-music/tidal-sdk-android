@@ -1,6 +1,7 @@
 name: Pull Request
 
 on:
+  push:
   pull_request:
   merge_group:
     types: [checks_requested]
