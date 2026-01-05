@@ -4,6 +4,7 @@ import android.os.Handler
 import com.tidal.sdk.player.common.model.AudioQuality
 import com.tidal.sdk.player.common.model.LoudnessNormalizationMode
 import com.tidal.sdk.player.common.model.MediaProduct
+import com.tidal.sdk.player.common.model.UsbDacExclusiveMode
 import com.tidal.sdk.player.playbackengine.view.AspectRatioAdjustingSurfaceView
 
 /**
@@ -46,6 +47,14 @@ internal class SingleHandlerPlaybackEngine(
     override var immersiveAudio: Boolean
         get() = delegate.immersiveAudio
         set(value) = postOrThrow { delegate.immersiveAudio = value }
+
+    override var usbDacExclusiveMode: UsbDacExclusiveMode
+        get() = delegate.usbDacExclusiveMode
+        set(value) = postOrThrow { delegate.usbDacExclusiveMode = value }
+
+    override val connectedUsbDevice by delegate::connectedUsbDevice
+
+    override val isExclusiveModeActive by delegate::isExclusiveModeActive
 
     override var videoSurfaceView: AspectRatioAdjustingSurfaceView?
         set(value) = postOrThrow { delegate.videoSurfaceView = value }
