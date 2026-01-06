@@ -4,7 +4,7 @@ import android.os.Handler
 import android.os.HandlerThread
 import android.view.SurfaceHolder
 import assertk.assertThat
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
 import org.junit.Test
@@ -80,7 +80,7 @@ internal class SynchronousSurfaceHolderCallbackThreadingTest {
             }
         }
 
-        assertThat(executionThread).isSameAs(handlerThread)
+        assertThat(executionThread).isSameInstanceAs(handlerThread)
         verifyNoInteractions(surfaceHolder)
     }
 
@@ -94,7 +94,7 @@ internal class SynchronousSurfaceHolderCallbackThreadingTest {
             }
         }
 
-        assertThat(executionThread).isSameAs(handlerThread)
+        assertThat(executionThread).isSameInstanceAs(handlerThread)
         verifyNoInteractions(surfaceHolder)
     }
 }

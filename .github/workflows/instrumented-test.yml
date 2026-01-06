@@ -13,18 +13,49 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@b231772637bb498f11fdbc86052b6e8a8dc9fc92
+
+      - name: Detect affected modules
+        id: detect_modules
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            BASE_REF="origin/${{ github.event.pull_request.base.ref }}"
+          else
+            BASE_REF="origin/main"
+          fi
+
+          set +e
+          ./gradlew detectAffectedModules -PbaseRef="$BASE_REF" --console=plain --quiet > /dev/null 2>&1
+          EXIT_CODE=$?
+          set -e
+
+          if [ $EXIT_CODE -ne 0 ]; then
+            echo "run_tests=true" >> $GITHUB_OUTPUT
+          elif [ -f build/affected-tests.txt ] && grep -q "player" build/affected-tests.txt; then
+            echo "run_tests=true" >> $GITHUB_OUTPUT
+          else
+            echo "run_tests=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Enable KVM group perms
+        if: ${{ steps.detect_modules.outputs.run_tests == 'true' }}
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
+
       - uses: actions/setup-java@v4
+        if: ${{ steps.detect_modules.outputs.run_tests == 'true' }}
         with:
           java-version: '17'
           distribution: 'temurin'
-      - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@b231772637bb498f11fdbc86052b6e8a8dc9fc92
+
       - uses: reactivecircus/android-emulator-runner@v2.33.0
+        if: ${{ steps.detect_modules.outputs.run_tests == 'true' }}
         with:
           api-level: 29
           arch: x86_64

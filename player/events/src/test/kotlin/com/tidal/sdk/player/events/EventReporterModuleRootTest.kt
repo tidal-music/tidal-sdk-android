@@ -3,7 +3,7 @@ package com.tidal.sdk.player.events
 import android.content.Context
 import android.net.ConnectivityManager
 import assertk.assertThat
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import com.google.gson.Gson
 import com.tidal.sdk.eventproducer.EventSender
 import com.tidal.sdk.player.common.Configuration
@@ -116,6 +116,6 @@ internal class EventReporterModuleRootTest {
             )
         verify(component).eventReporter
         verifyNoMoreInteractions(expected, component, componentFactory)
-        assertThat(actual).isSameAs(expected)
+        assertThat(actual).isSameInstanceAs(expected)
     }
 }

@@ -2,7 +2,7 @@ package com.tidal.sdk.player.streamingprivileges
 
 import android.net.ConnectivityManager
 import assertk.assertThat
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import com.google.gson.Gson
 import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
 import com.tidal.sdk.player.streamingprivileges.di.StreamingPrivilegesComponent
@@ -58,6 +58,6 @@ internal class StreamingPrivilegesModuleRootTest {
         verify(componentFactory).create(connectivityManager, okHttpClient, gson, trueTimeWrapper)
         verify(component).streamingPrivileges
         verifyNoMoreInteractions(expected, component, componentFactory)
-        assertThat(actual).isSameAs(expected)
+        assertThat(actual).isSameInstanceAs(expected)
     }
 }

@@ -5,7 +5,7 @@ import androidx.media3.common.MimeTypes
 import androidx.media3.exoplayer.drm.DrmSessionManagerProvider
 import androidx.media3.exoplayer.hls.HlsMediaSource
 import assertk.assertThat
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.mockito.Answers
@@ -43,7 +43,7 @@ internal class PlayerAuthHlsMediaSourceFactoryTest {
         val actualHlsMediaSource =
             playerAuthHlsMediaSourceFactory.create(mediaItem, url, drmSessionManagerProvider)
 
-        assertThat(actualHlsMediaSource).isSameAs(expectedHlsMediaSource)
+        assertThat(actualHlsMediaSource).isSameInstanceAs(expectedHlsMediaSource)
         verify(mediaItem).buildUpon()
         verify(mediaItemBuilder).setUri(url)
         verify(mediaItemBuilder).setMimeType(MIME_TYPE)

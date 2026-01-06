@@ -33,5 +33,11 @@ gradlePlugin {
             version = libs.plugins.tidal.jvm.platform.get().version
             implementationClass = "com.tidal.sdk.plugins.JvmPlatformConventionPlugin"
         }
+
+        register("tidal-sdk-affected-test-detection") {
+            id = "com.tidal.sdk.affected-test-detection"
+            version = "1.0.0"
+            implementationClass = "com.tidal.sdk.plugins.AffectedTestDetectionPlugin"
+        }
     }
 }

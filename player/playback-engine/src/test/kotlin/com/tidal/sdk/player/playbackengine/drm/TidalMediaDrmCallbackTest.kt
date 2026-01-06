@@ -4,7 +4,7 @@ import androidx.media3.common.C
 import androidx.media3.common.util.Util
 import androidx.media3.exoplayer.drm.ExoMediaDrm
 import assertk.assertThat
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import com.tidal.sdk.player.commonandroid.Base64Codec
 import com.tidal.sdk.player.playbackengine.StreamingApiRepository
 import com.tidal.sdk.player.streamingapi.drm.model.DrmLicense
@@ -61,7 +61,7 @@ internal class TidalMediaDrmCallbackTest {
 
         val actual = tidalMediaDrmCallback.executeKeyRequest(C.WIDEVINE_UUID, request)
 
-        assertThat(actual).isSameAs(expectedDrmLicensePayload)
+        assertThat(actual).isSameInstanceAs(expectedDrmLicensePayload)
     }
 
     @Test
@@ -80,7 +80,7 @@ internal class TidalMediaDrmCallbackTest {
             assertThrows<RuntimeException> {
                 tidalMediaDrmCallback.executeKeyRequest(C.WIDEVINE_UUID, request)
             }
-        assertThat(actual).isSameAs(expected)
+        assertThat(actual).isSameInstanceAs(expected)
     }
 
     @Test
@@ -104,6 +104,6 @@ internal class TidalMediaDrmCallbackTest {
 
         val actual = tidalMediaDrmCallback.executeProvisionRequest(C.WIDEVINE_UUID, request)
 
-        assertThat(actual).isSameAs(expectedByteArray)
+        assertThat(actual).isSameInstanceAs(expectedByteArray)
     }
 }

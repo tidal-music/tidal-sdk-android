@@ -9,7 +9,7 @@ import androidx.media3.exoplayer.upstream.LoadErrorHandlingPolicy
 import androidx.media3.exoplayer.upstream.reflectionType
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import com.tidal.sdk.player.playbackengine.mediasource.TidalMediaSourceCreator
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
 import java.io.IOException
@@ -76,7 +76,8 @@ internal class PlaybackInfoLoadableLoaderCallbackTest {
         verify(loadEventInfoF).invoke(elapsedRealtimeMs, loadDurationMs)
         verify(eventDispatcher).loadCompleted(loadEventInfo, C.DATA_TYPE_MANIFEST)
         verify(prepareChildSourceF).invoke(mediaSource)
-        assertThat(playbackInfoLoadableLoaderCallback.selectedMediaSource).isSameAs(mediaSource)
+        assertThat(playbackInfoLoadableLoaderCallback.selectedMediaSource)
+            .isSameInstanceAs(mediaSource)
     }
 
     @ParameterizedTest

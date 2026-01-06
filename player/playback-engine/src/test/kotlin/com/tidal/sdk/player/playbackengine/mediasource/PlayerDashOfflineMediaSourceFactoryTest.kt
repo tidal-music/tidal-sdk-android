@@ -7,7 +7,7 @@ import androidx.media3.exoplayer.dash.manifest.DashManifest
 import androidx.media3.exoplayer.drm.DrmSessionManager
 import androidx.media3.exoplayer.drm.DrmSessionManagerProvider
 import assertk.assertThat
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import com.tidal.sdk.player.playbackengine.dash.DashManifestFactory
 import com.tidal.sdk.player.playbackengine.offline.OfflineDrmHelper
 import com.tidal.sdk.player.playbackengine.offline.OfflineStorageProvider
@@ -78,7 +78,7 @@ internal class PlayerDashOfflineMediaSourceFactoryTest {
                 drmSessionManagerProvider,
             )
 
-        assertThat(actualDashMediaSource).isSameAs(expectedDashMediaSource)
+        assertThat(actualDashMediaSource).isSameInstanceAs(expectedDashMediaSource)
         verify(dashManifestFactory).create(ENCODED_MANIFEST)
         verify(offlineStorageProvider).getDataSourceFactoryForOfflinePlay(storage, isDrmProtected)
         verify(drmSessionManagerProvider).get(mediaItem)
@@ -133,7 +133,7 @@ internal class PlayerDashOfflineMediaSourceFactoryTest {
                 drmSessionManagerProvider,
             )
 
-        assertThat(actualDashMediaSource).isSameAs(expectedDashMediaSource)
+        assertThat(actualDashMediaSource).isSameInstanceAs(expectedDashMediaSource)
         verify(dashManifestFactory).create(ENCODED_MANIFEST)
         verify(offlineStorageProvider).getDataSourceFactoryForOfflinePlay(storage, isDrmProtected)
         verify(dashMediaSourceFactoryFactory).create(dataSourceFactoryForOfflinePlay)

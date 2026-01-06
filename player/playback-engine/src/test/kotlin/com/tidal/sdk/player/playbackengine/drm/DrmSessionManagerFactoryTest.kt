@@ -4,7 +4,7 @@ import androidx.media3.exoplayer.drm.DefaultDrmSessionManager
 import androidx.media3.exoplayer.drm.DrmSessionManager
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.doReturn
@@ -54,7 +54,7 @@ internal class DrmSessionManagerFactoryTest {
         val actual =
             drmSessionManagerFactory.createDrmSessionManagerForOnlinePlay(playbackInfo, emptyMap())
 
-        assertThat(actual).isSameAs(defaultDrmSessionManager)
+        assertThat(actual).isSameInstanceAs(defaultDrmSessionManager)
     }
 
     @Test
@@ -82,6 +82,6 @@ internal class DrmSessionManagerFactoryTest {
         val actual =
             drmSessionManagerFactory.createDrmSessionManagerForOfflinePlay(playbackInfo, emptyMap())
 
-        assertThat(actual).isSameAs(defaultDrmSessionManager)
+        assertThat(actual).isSameInstanceAs(defaultDrmSessionManager)
     }
 }

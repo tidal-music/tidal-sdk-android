@@ -10,7 +10,7 @@ import androidx.media3.exoplayer.source.BehindLiveWindowException
 import androidx.media3.exoplayer.upstream.Loader
 import assertk.assertThat
 import assertk.assertions.isInstanceOf
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import com.tidal.sdk.player.common.model.ApiError
 import com.tidal.sdk.player.common.model.ProductType
 import com.tidal.sdk.player.playbackengine.model.Event
@@ -59,7 +59,7 @@ internal class ErrorHandlerTest {
             errorHandler.getErrorCode(throwable, ErrorCodeFactory.Extra.DrmLicenseFetch)
 
         verify(errorCodeFactory).createForApiError(status, subStatus.code)
-        assertThat(actualErrorCode).isSameAs(expectedErrorCode)
+        assertThat(actualErrorCode).isSameInstanceAs(expectedErrorCode)
     }
 
     @Test
@@ -72,7 +72,7 @@ internal class ErrorHandlerTest {
         val actualErrorCode = errorHandler.getErrorCode(throwable, extra)
 
         verify(errorCodeFactory).createForTimeout(extra)
-        assertThat(actualErrorCode).isSameAs(expectedErrorCode)
+        assertThat(actualErrorCode).isSameInstanceAs(expectedErrorCode)
     }
 
     @ParameterizedTest
@@ -88,7 +88,7 @@ internal class ErrorHandlerTest {
         val actualErrorCode = errorHandler.getErrorCode(throwable, extra)
 
         verify(errorCodeFactory).createForNetwork(extra)
-        assertThat(actualErrorCode).isSameAs(expectedErrorCode)
+        assertThat(actualErrorCode).isSameInstanceAs(expectedErrorCode)
     }
 
     @Test
@@ -101,7 +101,7 @@ internal class ErrorHandlerTest {
         val actualErrorCode = errorHandler.getErrorCode(throwable, extra)
 
         verify(errorCodeFactory).createForOther(extra)
-        assertThat(actualErrorCode).isSameAs(expectedErrorCode)
+        assertThat(actualErrorCode).isSameInstanceAs(expectedErrorCode)
     }
 
     @ParameterizedTest
@@ -123,8 +123,8 @@ internal class ErrorHandlerTest {
 
         verify(errorCodeFactory).createForApiError(status, subStatus.code)
         assertThat(actualErrorEvent).isInstanceOf(Event.Error.NotAllowed::class)
-        assertThat(actualErrorEvent.errorCode).isSameAs(expectedErrorCode)
-        assertThat(actualErrorEvent.cause).isSameAs(throwable)
+        assertThat(actualErrorEvent.errorCode).isSameInstanceAs(expectedErrorCode)
+        assertThat(actualErrorEvent.cause).isSameInstanceAs(throwable)
     }
 
     @ParameterizedTest
@@ -146,8 +146,8 @@ internal class ErrorHandlerTest {
 
         verify(errorCodeFactory).createForApiError(status, subStatus.code)
         assertThat(actualErrorEvent).isInstanceOf(Event.Error.ContentNotAvailableInLocation::class)
-        assertThat(actualErrorEvent.errorCode).isSameAs(expectedErrorCode)
-        assertThat(actualErrorEvent.cause).isSameAs(throwable)
+        assertThat(actualErrorEvent.errorCode).isSameInstanceAs(expectedErrorCode)
+        assertThat(actualErrorEvent.cause).isSameInstanceAs(throwable)
     }
 
     @Test
@@ -167,8 +167,8 @@ internal class ErrorHandlerTest {
 
         verify(errorCodeFactory).createForApiError(status, subStatus.code)
         assertThat(actualErrorEvent).isInstanceOf(Event.Error.MonthlyStreamQuotaExceeded::class)
-        assertThat(actualErrorEvent.errorCode).isSameAs(expectedErrorCode)
-        assertThat(actualErrorEvent.cause).isSameAs(throwable)
+        assertThat(actualErrorEvent.errorCode).isSameInstanceAs(expectedErrorCode)
+        assertThat(actualErrorEvent.cause).isSameInstanceAs(throwable)
     }
 
     @Test
@@ -189,8 +189,8 @@ internal class ErrorHandlerTest {
         verify(errorCodeFactory).createForApiError(status, subStatus.code)
         assertThat(actualErrorEvent)
             .isInstanceOf(Event.Error.ContentNotAvailableForSubscription::class)
-        assertThat(actualErrorEvent.errorCode).isSameAs(expectedErrorCode)
-        assertThat(actualErrorEvent.cause).isSameAs(throwable)
+        assertThat(actualErrorEvent.errorCode).isSameInstanceAs(expectedErrorCode)
+        assertThat(actualErrorEvent.cause).isSameInstanceAs(throwable)
     }
 
     @ParameterizedTest
@@ -212,8 +212,8 @@ internal class ErrorHandlerTest {
 
         verify(errorCodeFactory).createForApiError(code, subStatus.code)
         assertThat(actualErrorEvent).isInstanceOf(Event.Error.Retryable::class)
-        assertThat(actualErrorEvent.errorCode).isSameAs(expectedErrorCode)
-        assertThat(actualErrorEvent.cause).isSameAs(throwable)
+        assertThat(actualErrorEvent.errorCode).isSameInstanceAs(expectedErrorCode)
+        assertThat(actualErrorEvent.cause).isSameInstanceAs(throwable)
     }
 
     @ParameterizedTest
@@ -235,8 +235,8 @@ internal class ErrorHandlerTest {
 
         verify(errorCodeFactory).createForApiError(code, subStatus.code)
         assertThat(actualErrorEvent).isInstanceOf(Event.Error.Unexpected::class)
-        assertThat(actualErrorEvent.errorCode).isSameAs(expectedErrorCode)
-        assertThat(actualErrorEvent.cause).isSameAs(throwable)
+        assertThat(actualErrorEvent.errorCode).isSameInstanceAs(expectedErrorCode)
+        assertThat(actualErrorEvent.cause).isSameInstanceAs(throwable)
     }
 
     @Test
@@ -262,8 +262,8 @@ internal class ErrorHandlerTest {
 
         verify(errorCodeFactory).createForInvalidResponseCode(responseCode, exoPlayerErrorCode)
         assertThat(actualErrorEvent).isInstanceOf(Event.Error.Retryable::class)
-        assertThat(actualErrorEvent.errorCode).isSameAs(expectedErrorCode)
-        assertThat(actualErrorEvent.cause).isSameAs(cause)
+        assertThat(actualErrorEvent.errorCode).isSameInstanceAs(expectedErrorCode)
+        assertThat(actualErrorEvent.cause).isSameInstanceAs(cause)
     }
 
     @Test
@@ -281,8 +281,8 @@ internal class ErrorHandlerTest {
 
         verify(errorCodeFactory).createForHttpDataSource(type, exoPlayerErrorCode)
         assertThat(actualErrorEvent).isInstanceOf(Event.Error.Network::class)
-        assertThat(actualErrorEvent.errorCode).isSameAs(expectedErrorCode)
-        assertThat(actualErrorEvent.cause).isSameAs(cause)
+        assertThat(actualErrorEvent.errorCode).isSameInstanceAs(expectedErrorCode)
+        assertThat(actualErrorEvent.cause).isSameInstanceAs(cause)
     }
 
     @Test
@@ -300,8 +300,8 @@ internal class ErrorHandlerTest {
 
         verify(errorCodeFactory).createForDrmSession(extra, exoPlayerErrorCode)
         assertThat(actualErrorEvent).isInstanceOf(Event.Error.Retryable::class)
-        assertThat(actualErrorEvent.errorCode).isSameAs(expectedErrorCode)
-        assertThat(actualErrorEvent.cause).isSameAs(cause)
+        assertThat(actualErrorEvent.errorCode).isSameInstanceAs(expectedErrorCode)
+        assertThat(actualErrorEvent.cause).isSameInstanceAs(cause)
     }
 
     @Test
@@ -319,8 +319,8 @@ internal class ErrorHandlerTest {
 
         verify(errorCodeFactory).createForUnexpectedLoader(extra, exoPlayerErrorCode)
         assertThat(actualErrorEvent).isInstanceOf(Event.Error.NotAllowed::class)
-        assertThat(actualErrorEvent.errorCode).isSameAs(expectedErrorCode)
-        assertThat(actualErrorEvent.cause).isSameAs(cause)
+        assertThat(actualErrorEvent.errorCode).isSameInstanceAs(expectedErrorCode)
+        assertThat(actualErrorEvent.cause).isSameInstanceAs(cause)
     }
 
     @Test
@@ -339,8 +339,8 @@ internal class ErrorHandlerTest {
 
         verify(errorCodeFactory).createForOther(extra, exoPlayerErrorCode)
         assertThat(actualErrorEvent).isInstanceOf(Event.Error.NotAllowed::class)
-        assertThat(actualErrorEvent.errorCode).isSameAs(expectedErrorCode)
-        assertThat(actualErrorEvent.cause).isSameAs(cause)
+        assertThat(actualErrorEvent.errorCode).isSameInstanceAs(expectedErrorCode)
+        assertThat(actualErrorEvent.cause).isSameInstanceAs(cause)
     }
 
     @Test
@@ -358,8 +358,8 @@ internal class ErrorHandlerTest {
 
         verify(errorCodeFactory).createForUnexpectedLoader(extra, exoPlayerErrorCode)
         assertThat(actualErrorEvent).isInstanceOf(Event.Error.Retryable::class)
-        assertThat(actualErrorEvent.errorCode).isSameAs(expectedErrorCode)
-        assertThat(actualErrorEvent.cause).isSameAs(cause)
+        assertThat(actualErrorEvent.errorCode).isSameInstanceAs(expectedErrorCode)
+        assertThat(actualErrorEvent.cause).isSameInstanceAs(cause)
     }
 
     @Test
@@ -377,8 +377,8 @@ internal class ErrorHandlerTest {
 
         verify(errorCodeFactory).createForBehindLiveWindow(extra, exoPlayerErrorCode)
         assertThat(actualErrorEvent).isInstanceOf(Event.Error.Retryable::class)
-        assertThat(actualErrorEvent.errorCode).isSameAs(expectedErrorCode)
-        assertThat(actualErrorEvent.cause).isSameAs(cause)
+        assertThat(actualErrorEvent.errorCode).isSameInstanceAs(expectedErrorCode)
+        assertThat(actualErrorEvent.cause).isSameInstanceAs(cause)
     }
 
     @Test
@@ -396,8 +396,8 @@ internal class ErrorHandlerTest {
 
         verify(errorCodeFactory).createForOther(extra, exoPlayerErrorCode)
         assertThat(actualErrorEvent).isInstanceOf(Event.Error.Retryable::class)
-        assertThat(actualErrorEvent.errorCode).isSameAs(expectedErrorCode)
-        assertThat(actualErrorEvent.cause).isSameAs(throwable)
+        assertThat(actualErrorEvent.errorCode).isSameInstanceAs(expectedErrorCode)
+        assertThat(actualErrorEvent.cause).isSameInstanceAs(throwable)
     }
 
     @Test
@@ -415,8 +415,8 @@ internal class ErrorHandlerTest {
 
         verify(errorCodeFactory).createForNetwork(extra, exoPlayerErrorCode)
         assertThat(actualErrorEvent).isInstanceOf(Event.Error.Network::class)
-        assertThat(actualErrorEvent.errorCode).isSameAs(expectedErrorCode)
-        assertThat(actualErrorEvent.cause).isSameAs(throwable)
+        assertThat(actualErrorEvent.errorCode).isSameInstanceAs(expectedErrorCode)
+        assertThat(actualErrorEvent.cause).isSameInstanceAs(throwable)
     }
 
     @Test
@@ -434,8 +434,8 @@ internal class ErrorHandlerTest {
 
         verify(errorCodeFactory).createForTimeout(extra, exoPlayerErrorCode)
         assertThat(actualErrorEvent).isInstanceOf(Event.Error.Network::class)
-        assertThat(actualErrorEvent.errorCode).isSameAs(expectedErrorCode)
-        assertThat(actualErrorEvent.cause).isSameAs(throwable)
+        assertThat(actualErrorEvent.errorCode).isSameInstanceAs(expectedErrorCode)
+        assertThat(actualErrorEvent.cause).isSameInstanceAs(throwable)
     }
 
     @Test
@@ -451,8 +451,8 @@ internal class ErrorHandlerTest {
 
         verify(errorCodeFactory).createForTimeout(extra, 0)
         assertThat(actualErrorEvent).isInstanceOf(Event.Error.Network::class)
-        assertThat(actualErrorEvent.errorCode).isSameAs(expectedErrorCode)
-        assertThat(actualErrorEvent.cause).isSameAs(cause)
+        assertThat(actualErrorEvent.errorCode).isSameInstanceAs(expectedErrorCode)
+        assertThat(actualErrorEvent.cause).isSameInstanceAs(cause)
     }
 
     @ParameterizedTest
@@ -471,8 +471,8 @@ internal class ErrorHandlerTest {
 
         verify(errorCodeFactory).createForNetwork(extra, 0)
         assertThat(actualErrorEvent).isInstanceOf(Event.Error.Network::class)
-        assertThat(actualErrorEvent.errorCode).isSameAs(expectedErrorCode)
-        assertThat(actualErrorEvent.cause).isSameAs(cause)
+        assertThat(actualErrorEvent.errorCode).isSameInstanceAs(expectedErrorCode)
+        assertThat(actualErrorEvent.cause).isSameInstanceAs(cause)
     }
 
     @Test
@@ -487,8 +487,8 @@ internal class ErrorHandlerTest {
 
         verify(errorCodeFactory).createForOther(extra, 0)
         assertThat(actualErrorEvent).isInstanceOf(Event.Error.Unexpected::class)
-        assertThat(actualErrorEvent.errorCode).isSameAs(expectedErrorCode)
-        assertThat(actualErrorEvent.cause).isSameAs(throwable)
+        assertThat(actualErrorEvent.errorCode).isSameInstanceAs(expectedErrorCode)
+        assertThat(actualErrorEvent.cause).isSameInstanceAs(throwable)
     }
 
     @Test
@@ -507,8 +507,8 @@ internal class ErrorHandlerTest {
 
         verify(errorCodeFactory).createForDrmSession(extra, exoPlayerErrorCode)
         assertThat(actualErrorEvent).isInstanceOf(Event.Error.NotAllowed::class)
-        assertThat(actualErrorEvent.errorCode).isSameAs(expectedErrorCode)
-        assertThat(actualErrorEvent.cause).isSameAs(cause)
+        assertThat(actualErrorEvent.errorCode).isSameInstanceAs(expectedErrorCode)
+        assertThat(actualErrorEvent.cause).isSameInstanceAs(cause)
     }
 
     @Test
@@ -527,8 +527,8 @@ internal class ErrorHandlerTest {
 
         verify(errorCodeFactory).createForAudioSinkInitialization(extra, exoPlayerErrorCode)
         assertThat(actualErrorEvent).isInstanceOf(Event.Error.NotAllowed::class)
-        assertThat(actualErrorEvent.errorCode).isSameAs(expectedErrorCode)
-        assertThat(actualErrorEvent.cause).isSameAs(cause)
+        assertThat(actualErrorEvent.errorCode).isSameInstanceAs(expectedErrorCode)
+        assertThat(actualErrorEvent.cause).isSameInstanceAs(cause)
     }
 
     @Test
@@ -543,8 +543,8 @@ internal class ErrorHandlerTest {
 
         verify(errorCodeFactory).createForOther(extra, 0)
         assertThat(actualErrorEvent).isInstanceOf(Event.Error.Unexpected::class)
-        assertThat(actualErrorEvent.errorCode).isSameAs(expectedErrorCode)
-        assertThat(actualErrorEvent.cause).isSameAs(throwable)
+        assertThat(actualErrorEvent.errorCode).isSameInstanceAs(expectedErrorCode)
+        assertThat(actualErrorEvent.cause).isSameInstanceAs(throwable)
     }
 
     @Test
@@ -559,8 +559,8 @@ internal class ErrorHandlerTest {
 
         verify(errorCodeFactory).createForOther(extra, 0)
         assertThat(actualErrorEvent).isInstanceOf(Event.Error.Unexpected::class)
-        assertThat(actualErrorEvent.errorCode).isSameAs(expectedErrorCode)
-        assertThat(actualErrorEvent.cause).isSameAs(throwable)
+        assertThat(actualErrorEvent.errorCode).isSameInstanceAs(expectedErrorCode)
+        assertThat(actualErrorEvent.cause).isSameInstanceAs(throwable)
     }
 
     @Test
@@ -577,8 +577,8 @@ internal class ErrorHandlerTest {
 
         verify(errorCodeFactory).createForOther(extra, PlaybackException.ERROR_CODE_REMOTE_ERROR)
         assertThat(actualErrorEvent).isInstanceOf(Event.Error.Unexpected::class)
-        assertThat(actualErrorEvent.errorCode).isSameAs(expectedErrorCode)
-        assertThat(actualErrorEvent.cause).isSameAs(throwable)
+        assertThat(actualErrorEvent.errorCode).isSameInstanceAs(expectedErrorCode)
+        assertThat(actualErrorEvent.cause).isSameInstanceAs(throwable)
     }
 
     @Test
@@ -592,8 +592,8 @@ internal class ErrorHandlerTest {
 
         verify(errorCodeFactory).createForTimeout(extra, null)
         assertThat(actualErrorEvent).isInstanceOf(Event.Error.Network::class)
-        assertThat(actualErrorEvent.errorCode).isSameAs(expectedErrorCode)
-        assertThat(actualErrorEvent.cause).isSameAs(throwable)
+        assertThat(actualErrorEvent.errorCode).isSameInstanceAs(expectedErrorCode)
+        assertThat(actualErrorEvent.cause).isSameInstanceAs(throwable)
     }
 
     @ParameterizedTest
@@ -610,8 +610,8 @@ internal class ErrorHandlerTest {
 
         verify(errorCodeFactory).createForNetwork(extra, null)
         assertThat(actualErrorEvent).isInstanceOf(Event.Error.Network::class)
-        assertThat(actualErrorEvent.errorCode).isSameAs(expectedErrorCode)
-        assertThat(actualErrorEvent.cause).isSameAs(throwable)
+        assertThat(actualErrorEvent.errorCode).isSameInstanceAs(expectedErrorCode)
+        assertThat(actualErrorEvent.cause).isSameInstanceAs(throwable)
     }
 
     @Test
@@ -625,8 +625,8 @@ internal class ErrorHandlerTest {
 
         verify(errorCodeFactory).createForOther(extra, null)
         assertThat(actualErrorEvent).isInstanceOf(Event.Error.NotAllowed::class)
-        assertThat(actualErrorEvent.errorCode).isSameAs(expectedErrorCode)
-        assertThat(actualErrorEvent.cause).isSameAs(throwable)
+        assertThat(actualErrorEvent.errorCode).isSameInstanceAs(expectedErrorCode)
+        assertThat(actualErrorEvent.cause).isSameInstanceAs(throwable)
     }
 
     @Test
@@ -640,8 +640,8 @@ internal class ErrorHandlerTest {
 
         verify(errorCodeFactory).createForOther(extra, null)
         assertThat(actualErrorEvent).isInstanceOf(Event.Error.Unexpected::class)
-        assertThat(actualErrorEvent.errorCode).isSameAs(expectedErrorCode)
-        assertThat(actualErrorEvent.cause).isSameAs(throwable)
+        assertThat(actualErrorEvent.errorCode).isSameInstanceAs(expectedErrorCode)
+        assertThat(actualErrorEvent.cause).isSameInstanceAs(throwable)
     }
 
     companion object {

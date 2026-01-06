@@ -4,7 +4,7 @@ import androidx.media3.common.MediaItem
 import androidx.media3.datasource.DataSource
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import assertk.assertThat
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import com.tidal.sdk.player.playbackengine.bts.BtsManifest
 import com.tidal.sdk.player.playbackengine.bts.BtsManifestFactory
 import com.tidal.sdk.player.playbackengine.offline.OfflineStorageProvider
@@ -66,7 +66,7 @@ internal class PlayerProgressiveOfflineMediaSourceFactoryTest {
         val actualProgressiveMediaSource =
             playerProgressiveOfflineMediaSourceFactory.create(mediaItem, ENCODED_MANIFEST, storage)
 
-        assertThat(actualProgressiveMediaSource).isSameAs(expectedProgressiveMediaSource)
+        assertThat(actualProgressiveMediaSource).isSameInstanceAs(expectedProgressiveMediaSource)
         verify(btsManifestFactory).create(ENCODED_MANIFEST)
         verify(mediaItem).buildUpon()
         verify(mediaItemBuilder).setUri(btsManifest.urls.firstOrNull())

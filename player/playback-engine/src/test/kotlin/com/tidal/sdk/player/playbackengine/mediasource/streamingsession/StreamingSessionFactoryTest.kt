@@ -1,7 +1,7 @@
 package com.tidal.sdk.player.playbackengine.mediasource.streamingsession
 
 import assertk.assertThat
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import com.tidal.sdk.player.common.Configuration
 import com.tidal.sdk.player.common.UUIDWrapper
 import java.util.UUID
@@ -33,7 +33,7 @@ internal abstract class StreamingSessionFactoryTest {
         val actual = streamingSessionFactory.create(emptyMap())
 
         verify(uuidWrapper).randomUUID
-        assertThat(actual.id).isSameAs(expectedUUID)
+        assertThat(actual.id).isSameInstanceAs(expectedUUID)
         verifyNoMoreInteractions(expectedUUID)
     }
 }

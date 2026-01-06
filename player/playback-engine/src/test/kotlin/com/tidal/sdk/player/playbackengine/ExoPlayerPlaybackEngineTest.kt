@@ -19,7 +19,7 @@ import androidx.media3.exoplayer.hls.reflectionSetMediaPlaylist
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import com.tidal.sdk.player.common.ForwardingMediaProduct
 import com.tidal.sdk.player.common.model.AssetPresentation
 import com.tidal.sdk.player.common.model.AudioMode
@@ -729,14 +729,16 @@ internal class ExoPlayerPlaybackEngineTest {
             playbackInfo,
         )
 
-        assertThat(playbackEngine.reflectionCurrentPlaybackStatistics).isSameAs(playbackStatistics)
+        assertThat(playbackEngine.reflectionCurrentPlaybackStatistics)
+            .isSameInstanceAs(playbackStatistics)
         verify(currentMediaSource, atLeastOnce()).forwardingMediaProduct
         verify(currentForwardingMediaProduct, atLeastOnce()).delegate
         verify(currentMediaProduct).referenceId
         verify(playbackContextFactory).create(playbackInfo, referenceId)
         assertThat(playbackEngine.playbackContext).isEqualTo(playbackContext)
         assertThat(playbackEngine.reflectionNextPlaybackContext).isNull()
-        assertThat(playbackEngine.reflectionCurrentPlaybackSession).isSameAs(playbackSession)
+        assertThat(playbackEngine.reflectionCurrentPlaybackSession)
+            .isSameInstanceAs(playbackSession)
         verify(volumeHelper).getVolume(playbackInfo)
         verify(initialExtendedExoPlayer).volume = 1.0F
         verify(undeterminedPlaybackSessionResolver)(
@@ -794,7 +796,8 @@ internal class ExoPlayerPlaybackEngineTest {
             playbackInfo,
         )
 
-        assertThat(playbackEngine.reflectionNextPlaybackStatistics).isSameAs(playbackStatistics)
+        assertThat(playbackEngine.reflectionNextPlaybackStatistics)
+            .isSameInstanceAs(playbackStatistics)
         verify(nextMediaSource).forwardingMediaProduct
         verify(nextForwardingMediaProduct).delegate
         verify(nextMediaProduct).referenceId
@@ -1299,10 +1302,11 @@ internal class ExoPlayerPlaybackEngineTest {
         playbackEngine.onPositionDiscontinuity(mock(), mock(), newPositionInfo, reason)
 
         verify(initialExtendedExoPlayer).updatePosition(positionMs)
-        assertThat(playbackEngine.mediaProduct).isSameAs(forwardingMediaProduct.delegate)
-        assertThat(playbackEngine.testNextMediaSource).isSameAs(nextMediaSource)
-        assertThat(playbackEngine.playbackContext).isSameAs(playbackContext)
-        assertThat(playbackEngine.reflectionNextPlaybackContext).isSameAs(nextPlaybackContext)
+        assertThat(playbackEngine.mediaProduct).isSameInstanceAs(forwardingMediaProduct.delegate)
+        assertThat(playbackEngine.testNextMediaSource).isSameInstanceAs(nextMediaSource)
+        assertThat(playbackEngine.playbackContext).isSameInstanceAs(playbackContext)
+        assertThat(playbackEngine.reflectionNextPlaybackContext)
+            .isSameInstanceAs(nextPlaybackContext)
         verifyNoMoreInteractions(initialExtendedExoPlayer, newPositionInfo)
     }
 
@@ -1434,12 +1438,12 @@ internal class ExoPlayerPlaybackEngineTest {
             }
         }
 
-        assertThat(playbackEngine.mediaProduct).isSameAs(nextMediaProduct)
+        assertThat(playbackEngine.mediaProduct).isSameInstanceAs(nextMediaProduct)
         assertThat(playbackEngine.testNextMediaSource).isNull()
         assertThat(playbackEngine.playbackContext).isEqualTo(nextPlaybackContext)
         assertThat(playbackEngine.reflectionNextPlaybackContext).isNull()
         assertThat(playbackEngine.reflectionCurrentPlaybackStatistics)
-            .isSameAs(startedPlaybackStatistics)
+            .isSameInstanceAs(startedPlaybackStatistics)
         assertThat(playbackEngine.reflectionNextPlaybackStatistics).isNull()
         assertThat(playbackEngine.reflectionCurrentPlaybackSession).isEqualTo(nextPlaybackSession)
         assertThat(playbackEngine.reflectionNextPlaybackSession).isNull()
@@ -1586,12 +1590,12 @@ internal class ExoPlayerPlaybackEngineTest {
             }
         }
 
-        assertThat(playbackEngine.mediaProduct).isSameAs(currentMediaProduct)
+        assertThat(playbackEngine.mediaProduct).isSameInstanceAs(currentMediaProduct)
         assertThat(playbackEngine.testNextMediaSource).isNull()
         assertThat(playbackEngine.playbackContext).isEqualTo(newCurrentPlaybackContext)
         assertThat(playbackEngine.reflectionNextPlaybackContext).isNull()
         assertThat(playbackEngine.reflectionCurrentPlaybackStatistics)
-            .isSameAs(startedPlaybackStatistics)
+            .isSameInstanceAs(startedPlaybackStatistics)
         assertThat(playbackEngine.reflectionNextPlaybackStatistics).isNull()
         assertThat(playbackEngine.reflectionCurrentPlaybackSession)
             .isEqualTo(currentPlaybackSession)
@@ -1868,7 +1872,7 @@ internal class ExoPlayerPlaybackEngineTest {
 
         playbackEngine.onTimelineChanged(eventTime, Player.TIMELINE_CHANGE_REASON_SOURCE_UPDATE)
 
-        assertThat(playbackEngine.playbackContext).isSameAs(playbackContext)
+        assertThat(playbackEngine.playbackContext).isSameInstanceAs(playbackContext)
         verify(timeline, atLeastOnce()).windowCount
         verify(timeline, atLeastOnce()).getWindow(eq(windowIndex), any())
         verifyNoMoreInteractions(initialExtendedExoPlayer, timeline)
@@ -1951,7 +1955,7 @@ internal class ExoPlayerPlaybackEngineTest {
             }
         }
 
-        assertThat(playbackEngine.mediaProduct).isSameAs(mediaProduct)
+        assertThat(playbackEngine.mediaProduct).isSameInstanceAs(mediaProduct)
         assertThat(playbackEngine.playbackContext).isEqualTo(updatedPlaybackContext)
         verify(timeline, atLeastOnce()).getWindow(eq(windowIndex), any())
         verify(timeline).windowCount
@@ -2040,7 +2044,7 @@ internal class ExoPlayerPlaybackEngineTest {
         playbackEngine.onAudioPositionAdvancing(eventTime, -7)
 
         assertThat(playbackEngine.reflectionCurrentPlaybackStatistics)
-            .isSameAs(currentPlaybackStatistics)
+            .isSameInstanceAs(currentPlaybackStatistics)
         verifyNoMoreInteractions(currentPlaybackStatistics)
     }
 
@@ -2095,7 +2099,7 @@ internal class ExoPlayerPlaybackEngineTest {
         verify(preparedPlaybackStatistics).toStarted(currentTimeMillis)
         verify(currentPlaybackSession).startTimestamp = currentTimeMillis
         assertThat(playbackEngine.reflectionCurrentPlaybackStatistics)
-            .isSameAs(startedPlaybackStatistics)
+            .isSameInstanceAs(startedPlaybackStatistics)
         verifyNoMoreInteractions(
             startedPlaybackStatistics,
             preparedPlaybackStatistics,
@@ -2205,7 +2209,7 @@ internal class ExoPlayerPlaybackEngineTest {
                         )
                 }
             )
-            .isSameAs(updatedPlaybackStatistics)
+            .isSameInstanceAs(updatedPlaybackStatistics)
         verifyNoMoreInteractions(targetPlaybackStatistics, updatedPlaybackStatistics)
     }
 
@@ -2346,7 +2350,7 @@ internal class ExoPlayerPlaybackEngineTest {
         verify(currentPlaybackStatistics) + completedStall
         assertThat(playbackEngine.reflectionCurrentStall).isNull()
         assertThat(playbackEngine.reflectionCurrentPlaybackStatistics)
-            .isSameAs(updatedPlaybackStatistics)
+            .isSameInstanceAs(updatedPlaybackStatistics)
         verifyNoMoreInteractions(
             currentPlaybackStatistics,
             initialCurrentStartedStall,
@@ -2361,7 +2365,7 @@ internal class ExoPlayerPlaybackEngineTest {
 
         playbackEngine.reflectionSetDelegatedCurrentStall(newCurrentStall)
 
-        assertThat(playbackEngine.reflectionCurrentStall).isSameAs(newCurrentStall)
+        assertThat(playbackEngine.reflectionCurrentStall).isSameInstanceAs(newCurrentStall)
         verifyNoMoreInteractions(newCurrentStall)
     }
 

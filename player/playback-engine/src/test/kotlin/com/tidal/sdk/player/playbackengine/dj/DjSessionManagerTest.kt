@@ -3,7 +3,7 @@ package com.tidal.sdk.player.playbackengine.dj
 import android.os.Handler
 import assertk.assertThat
 import assertk.assertions.isNull
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
@@ -87,7 +87,7 @@ internal class DjSessionManagerTest {
 
         verify(hlsTagsParser).parse(tags)
         verify(listener).onDjSessionUpdated(productId, status)
-        assertThat(djSessionManager.reflectionCurrentDateRange).isSameAs(dateRanges[0])
+        assertThat(djSessionManager.reflectionCurrentDateRange).isSameInstanceAs(dateRanges[0])
     }
 
     @Test
@@ -124,7 +124,7 @@ internal class DjSessionManagerTest {
 
         verify(hlsTagsParser).parse(tags)
         verify(listener).onDjSessionUpdated(productId, status)
-        assertThat(djSessionManager.reflectionCurrentDateRange).isSameAs(dateRanges[0])
+        assertThat(djSessionManager.reflectionCurrentDateRange).isSameInstanceAs(dateRanges[0])
         verify(handler).removeCallbacksAndMessages(null)
         verify(handler).postDelayed(any(), eq(333))
     }
@@ -163,6 +163,6 @@ internal class DjSessionManagerTest {
 
         verify(hlsTagsParser).parse(tags)
         verify(listener).onDjSessionUpdated(productIdNext, statusNext)
-        assertThat(djSessionManager.reflectionCurrentDateRange).isSameAs(dateRanges[1])
+        assertThat(djSessionManager.reflectionCurrentDateRange).isSameInstanceAs(dateRanges[1])
     }
 }
