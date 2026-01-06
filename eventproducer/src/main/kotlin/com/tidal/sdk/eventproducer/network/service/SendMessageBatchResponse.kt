@@ -10,7 +10,7 @@ import nl.adaptivity.xmlutil.serialization.XmlSerialName
 internal data class SendMessageBatchResponse(
     @XmlElement(true)
     @XmlSerialName("SendMessageBatchResult")
-    val result: SendMessageBatchResult? = null
+    val result: SendMessageBatchResult
 )
 
 @Serializable
@@ -18,7 +18,7 @@ internal data class SendMessageBatchResponse(
 internal data class SendMessageBatchResult(
     @XmlElement(true)
     @XmlSerialName("SendMessageBatchResultEntry")
-    val successfullySentEntries: List<SendMessageBatchResultEntry> = emptyList()
+    val successfullySentEntries: List<SendMessageBatchResultEntry>? = null
 )
 
 @Serializable
@@ -26,5 +26,5 @@ internal data class SendMessageBatchResult(
 internal data class SendMessageBatchResultEntry(
     @XmlElement(true)
     @XmlSerialName("Id")
-    val id: String = ""
+    val id: String
 )
