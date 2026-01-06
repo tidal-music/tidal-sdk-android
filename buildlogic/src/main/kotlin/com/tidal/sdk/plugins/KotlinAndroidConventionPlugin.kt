@@ -11,5 +11,6 @@ internal class KotlinAndroidConventionPlugin : Plugin<Project> {
             pluginManager.apply(PluginId.KOTLIN_ANDROID_PLUGIN_ID)
             ConfiguresKotlinCompiler()(this)
             ConfiguresJUnit5()(this)
+            ConfiguresAndroidLint()(this)
         }
 }
