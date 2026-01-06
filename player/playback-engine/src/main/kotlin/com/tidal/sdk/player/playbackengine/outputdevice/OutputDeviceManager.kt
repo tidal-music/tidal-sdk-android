@@ -37,6 +37,12 @@ constructor(private val audioManager: AudioManager, private val handler: Handler
             intArrayOf(AudioDeviceInfo.TYPE_BLUETOOTH_A2DP)
         }
 
+    private val usbDeviceTypes =
+        intArrayOf(
+            AudioDeviceInfo.TYPE_USB_DEVICE,
+            AudioDeviceInfo.TYPE_USB_HEADSET,
+        )
+
     var outputDevice: OutputDevice by
         Delegates.observable(OutputDevice.TYPE_BUILTIN_SPEAKER) { _, oldValue, newValue ->
             if (oldValue != newValue) {
@@ -45,10 +51,23 @@ constructor(private val audioManager: AudioManager, private val handler: Handler
         }
         private set
 
-    private var callback: ((OutputDevice) -> Unit)? = null
+    var connectedUsbDevice: UsbAudioDevice? by
+        Delegates.observable(null) { _, oldValue, newValue ->
+            if (oldValue != newValue) {
+                usbDeviceCallback?.invoke(newValue)
+            }
+        }
+        private set
 
-    fun start(callback: (OutputDevice) -> Unit) {
+    private var callback: ((OutputDevice) -> Unit)? = null
+    private var usbDeviceCallback: ((UsbAudioDevice?) -> Unit)? = null
+
+    fun start(
+        callback: (OutputDevice) -> Unit,
+        usbDeviceCallback: ((UsbAudioDevice?) -> Unit)? = null,
+    ) {
         this.callback = callback
+        this.usbDeviceCallback = usbDeviceCallback
         audioManager.registerAudioDeviceCallback(
             object : AudioDeviceCallback() {
                 override fun onAudioDevicesAdded(addedDevices: Array<out AudioDeviceInfo>?) {
@@ -64,9 +83,24 @@ constructor(private val audioManager: AudioManager, private val handler: Handler
     }
 
     private fun update() {
-        audioManager
-            .getDevices(AudioManager.GET_DEVICES_OUTPUTS)
-            .firstOrNull { it.type in bluetoothTypes }
+        val devices = audioManager.getDevices(AudioManager.GET_DEVICES_OUTPUTS)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            devices.firstOrNull { it.type in usbDeviceTypes }?.let { usbDevice ->
+                outputDevice = OutputDevice.TYPE_USB_DAC
+                connectedUsbDevice = UsbAudioDevice(
+                    deviceInfo = usbDevice,
+                    supportedSampleRates = usbDevice.sampleRates,
+                    supportedEncodings = usbDevice.encodings,
+                    productName = usbDevice.productName,
+                )
+                return
+            }
+        }
+
+        connectedUsbDevice = null
+
+        devices.firstOrNull { it.type in bluetoothTypes }
             ?.let { outputDevice = OutputDevice.TYPE_BLUETOOTH }
             ?: run { outputDevice = OutputDevice.TYPE_BUILTIN_SPEAKER }
     }
@@ -75,4 +109,5 @@ constructor(private val audioManager: AudioManager, private val handler: Handler
 enum class OutputDevice {
     TYPE_BUILTIN_SPEAKER,
     TYPE_BLUETOOTH,
+    TYPE_USB_DAC,
 }

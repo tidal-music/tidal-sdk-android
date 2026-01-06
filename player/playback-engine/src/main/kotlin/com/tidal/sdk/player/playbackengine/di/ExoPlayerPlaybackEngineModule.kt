@@ -24,6 +24,7 @@ import com.tidal.sdk.player.playbackengine.dj.DjSessionManager
 import com.tidal.sdk.player.playbackengine.dj.HlsTagsParser
 import com.tidal.sdk.player.playbackengine.error.ErrorCodeFactory
 import com.tidal.sdk.player.playbackengine.error.ErrorHandler
+import com.tidal.sdk.player.playbackengine.exclusivemode.UsbDacExclusiveModeRepository
 import com.tidal.sdk.player.playbackengine.mediasource.streamingsession.UndeterminedPlaybackSessionResolver
 import com.tidal.sdk.player.playbackengine.mediasource.streamingsession.VersionedCdm
 import com.tidal.sdk.player.playbackengine.model.Event
@@ -136,6 +137,8 @@ internal object ExoPlayerPlaybackEngineModule {
 
     @Provides @Singleton fun audioModeRepository() = AudioModeRepository()
 
+    @Provides @Singleton fun usbDacExclusiveModeRepository() = UsbDacExclusiveModeRepository()
+
     @Provides
     @Singleton
     fun provideDatabaseProvider(context: Context): DatabaseProvider =
@@ -178,6 +181,7 @@ internal object ExoPlayerPlaybackEngineModule {
         undeterminedPlaybackSessionResolver: UndeterminedPlaybackSessionResolver,
         outputDeviceManager: OutputDeviceManager,
         playerCache: PlayerCache,
+        usbDacExclusiveModeRepository: UsbDacExclusiveModeRepository,
     ) =
         ExoPlayerPlaybackEngine(
             coroutineScope,
@@ -197,6 +201,7 @@ internal object ExoPlayerPlaybackEngineModule {
             undeterminedPlaybackSessionResolver,
             outputDeviceManager,
             playerCache,
+            usbDacExclusiveModeRepository,
         )
 
     @Provides

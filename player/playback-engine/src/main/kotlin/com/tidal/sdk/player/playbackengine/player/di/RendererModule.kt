@@ -6,6 +6,7 @@ import androidx.media3.exoplayer.RenderersFactory
 import androidx.media3.exoplayer.audio.AudioCapabilities
 import androidx.media3.exoplayer.audio.DefaultAudioSink
 import androidx.media3.exoplayer.audio.DefaultAudioTrackBufferSizeProvider
+import com.tidal.sdk.player.playbackengine.exclusivemode.ExclusiveModeAudioSinkProvider
 import com.tidal.sdk.player.playbackengine.model.BufferConfiguration
 import com.tidal.sdk.player.playbackengine.player.renderer.PlayerRenderersFactory
 import com.tidal.sdk.player.playbackengine.player.renderer.audio.fallback.FallbackAudioRendererFactory
@@ -51,6 +52,13 @@ internal object RendererModule {
             .build()
 
     @Provides @Reusable fun audioProcessors() = emptyArray<AudioProcessor>()
+
+    @Provides
+    @Reusable
+    fun exclusiveModeAudioSinkProvider(
+        context: Context,
+        defaultAudioTrackBufferSizeProvider: DefaultAudioTrackBufferSizeProvider,
+    ) = ExclusiveModeAudioSinkProvider(context, defaultAudioTrackBufferSizeProvider)
 
     @Provides
     @ExtendedExoPlayerComponent.Scoped

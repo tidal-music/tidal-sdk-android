@@ -3,10 +3,12 @@ package com.tidal.sdk.player.playbackengine
 import com.tidal.sdk.player.common.model.AudioQuality
 import com.tidal.sdk.player.common.model.LoudnessNormalizationMode
 import com.tidal.sdk.player.common.model.MediaProduct
+import com.tidal.sdk.player.common.model.UsbDacExclusiveMode
 import com.tidal.sdk.player.playbackengine.model.Event
 import com.tidal.sdk.player.playbackengine.model.PlaybackContext
 import com.tidal.sdk.player.playbackengine.model.PlaybackState
 import com.tidal.sdk.player.playbackengine.outputdevice.OutputDevice
+import com.tidal.sdk.player.playbackengine.outputdevice.UsbAudioDevice
 import com.tidal.sdk.player.playbackengine.view.AspectRatioAdjustingSurfaceView
 import kotlinx.coroutines.flow.Flow
 
@@ -131,6 +133,12 @@ interface Query {
     /** Gets the current output device, as [OutputDevice]. */
     val outputDevice: OutputDevice
 
+    /** Gets the currently connected USB audio device, if any. Only available on API 34+. */
+    val connectedUsbDevice: UsbAudioDevice?
+
+    /** Returns true if exclusive mode is currently active for playback. */
+    val isExclusiveModeActive: Boolean
+
     /**
      * Gets the stream of events describing happenings that consumers may want to react to.
      * Backpressure not handled.
@@ -158,4 +166,13 @@ interface Configuration {
 
     /** Get or set [immersiveAudio] as [Boolean] to use when playing. */
     var immersiveAudio: Boolean
+
+    /**
+     * Get or set [UsbDacExclusiveMode] to use when playing.
+     * When set to [UsbDacExclusiveMode.AUTO], exclusive mode will be enabled automatically
+     * when a USB DAC is connected and playing lossless content on API 34+.
+     * For bit-perfect playback, also set [loudnessNormalizationMode] to
+     * [LoudnessNormalizationMode.NONE].
+     */
+    var usbDacExclusiveMode: UsbDacExclusiveMode
 }

@@ -49,6 +49,7 @@ import com.tidal.sdk.player.playbackengine.mediasource.streamingsession.Undeterm
 import com.tidal.sdk.player.playbackengine.model.Event
 import com.tidal.sdk.player.playbackengine.model.PlaybackContext
 import com.tidal.sdk.player.playbackengine.model.PlaybackState
+import com.tidal.sdk.player.playbackengine.exclusivemode.UsbDacExclusiveModeRepository
 import com.tidal.sdk.player.playbackengine.outputdevice.OutputDeviceManager
 import com.tidal.sdk.player.playbackengine.player.ExtendedExoPlayer
 import com.tidal.sdk.player.playbackengine.player.ExtendedExoPlayerFactory
@@ -120,6 +121,7 @@ internal class ExoPlayerPlaybackEngineTest {
     private val undeterminedPlaybackSessionResolver = mock<UndeterminedPlaybackSessionResolver>()
     private val outputDeviceManager = mock<OutputDeviceManager>()
     private val playerCache = mock<PlayerCache.Internal>()
+    private val usbDacExclusiveModeRepository = mock<UsbDacExclusiveModeRepository>()
     private lateinit var playbackEngine: ExoPlayerPlaybackEngine
 
     private val forwardingMediaProduct =
@@ -151,6 +153,7 @@ internal class ExoPlayerPlaybackEngineTest {
                 undeterminedPlaybackSessionResolver,
                 outputDeviceManager,
                 playerCache,
+                usbDacExclusiveModeRepository,
             )
     }
 
