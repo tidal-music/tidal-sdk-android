@@ -13,7 +13,7 @@ import java.util.UUID
 @Suppress("UnusedPrivateMember")
 data class StreamingSessionStart
 @AssistedInject
-internal constructor(
+constructor(
     @Assisted override val ts: Long,
     @Assisted override val uuid: UUID,
     @Assisted override val user: User,
@@ -37,7 +37,7 @@ internal constructor(
     @Keep
     data class DecoratedPayload
     @AssistedInject
-    internal constructor(
+    constructor(
         @Assisted("streamingSessionId") override val streamingSessionId: String,
         @Assisted private val timestamp: Long,
         @Assisted("isOfflineModeStart") private val isOfflineModeStart: Boolean,
