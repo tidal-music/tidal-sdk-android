@@ -1,6 +1,9 @@
 import com.tidal.sdk.plugins.extensions.loadLocalProperties
 
-plugins { alias(libs.plugins.tidal.android.application) }
+plugins {
+    alias(libs.plugins.tidal.android.application)
+    alias(libs.plugins.kotlin.compose)
+}
 
 android {
     namespace = "com.tidal.sdk.player"
@@ -26,11 +29,17 @@ android {
         }
     }
 
-    composeOptions { kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get() }
-
     kotlinOptions {
-        freeCompilerArgs += "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api"
-        freeCompilerArgs += "-opt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi"
+        freeCompilerArgs +=
+            listOf(
+                "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
+                "-opt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi",
+            )
+    }
+
+    lint {
+        // Disable due to Kotlin metadata version incompatibility with Kotlin 2.2.21
+        disable.add("FlowOperatorInvokedInComposition")
     }
 }
 
