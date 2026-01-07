@@ -1,6 +1,5 @@
 package com.tidal.sdk.eventproducer.network.service
 
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import nl.adaptivity.xmlutil.serialization.XmlElement
 import nl.adaptivity.xmlutil.serialization.XmlSerialName
@@ -8,9 +7,7 @@ import nl.adaptivity.xmlutil.serialization.XmlSerialName
 @Serializable
 @XmlSerialName("SendMessageBatchResponse")
 internal data class SendMessageBatchResponse(
-    @XmlElement(true)
-    @XmlSerialName("SendMessageBatchResult")
-    val result: SendMessageBatchResult
+    @XmlElement(true) @XmlSerialName("SendMessageBatchResult") val result: SendMessageBatchResult
 )
 
 @Serializable
@@ -24,7 +21,5 @@ internal data class SendMessageBatchResult(
 @Serializable
 @XmlSerialName("SendMessageBatchResultEntry")
 internal data class SendMessageBatchResultEntry(
-    @XmlElement(true)
-    @XmlSerialName("Id")
-    val id: String
+    @XmlElement(true) @XmlSerialName("Id") val id: String
 )

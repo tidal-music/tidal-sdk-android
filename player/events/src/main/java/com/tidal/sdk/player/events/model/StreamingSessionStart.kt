@@ -91,7 +91,7 @@ constructor(
     }
 
     @Keep
-    internal enum class NetworkType {
+    enum class NetworkType {
 
         ETHERNET,
         WIFI,
