@@ -36,6 +36,11 @@ android {
                 "-opt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi",
             )
     }
+
+    lint {
+        // Disable due to Kotlin metadata version incompatibility with Kotlin 2.2.21
+        disable.add("FlowOperatorInvokedInComposition")
+    }
 }
 
 dependencies {
