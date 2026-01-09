@@ -399,6 +399,7 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/TracksSingleRelationship
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/TracksSingleResourceDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionAlbumsRelationshipAddOperationPayload.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionAlbumsRelationshipAddOperationPayloadData.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionAlbumsRelationshipAddOperationPayloadDataMeta.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionAlbumsRelationshipRemoveOperationPayload.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionAlbumsRelationshipRemoveOperationPayloadData.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionArtistsRelationshipAddOperationPayload.kt

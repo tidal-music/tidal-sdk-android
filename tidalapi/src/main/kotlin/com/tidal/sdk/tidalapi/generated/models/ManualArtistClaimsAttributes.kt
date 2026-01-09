@@ -15,11 +15,14 @@ import kotlinx.serialization.Serializable
  * @param legalLastName Legal last name
  * @param websiteOrSocialLink Website or social link
  * @param acceptedTerms Accepted terms and conditions
+ * @param createdAt Timestamp when the claim was created
  * @param distributorName Distributor name
+ * @param enrollmentType Enrollment type
  * @param errorReason Error reason if claim failed
  * @param labelContactEmail Label contact email
  * @param labelContactName Label contact name
  * @param labelName Label name
+ * @param lastModifiedAt Timestamp when the claim was last modified
  * @param managerEmail Manager email
  * @param managerName Manager name
  * @param role Role
@@ -45,9 +48,15 @@ data class ManualArtistClaimsAttributes(
     /* Accepted terms and conditions */
 
     @SerialName(value = "acceptedTerms") val acceptedTerms: kotlin.Boolean? = null,
+    /* Timestamp when the claim was created */
+
+    @SerialName(value = "createdAt") val createdAt: kotlin.String? = null,
     /* Distributor name */
 
     @SerialName(value = "distributorName") val distributorName: kotlin.String? = null,
+    /* Enrollment type */
+
+    @SerialName(value = "enrollmentType") val enrollmentType: kotlin.String? = null,
     /* Error reason if claim failed */
 
     @SerialName(value = "errorReason") val errorReason: kotlin.String? = null,
@@ -60,6 +69,9 @@ data class ManualArtistClaimsAttributes(
     /* Label name */
 
     @SerialName(value = "labelName") val labelName: kotlin.String? = null,
+    /* Timestamp when the claim was last modified */
+
+    @SerialName(value = "lastModifiedAt") val lastModifiedAt: kotlin.String? = null,
     /* Manager email */
 
     @SerialName(value = "managerEmail") val managerEmail: kotlin.String? = null,
