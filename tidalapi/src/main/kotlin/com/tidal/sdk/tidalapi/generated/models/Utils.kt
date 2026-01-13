@@ -16,6 +16,7 @@ fun getOneOfSerializer() = SerializersModule {
         subclass(ArtistRolesResourceObject::class, ArtistRolesResourceObject.serializer())
         subclass(ArtistsResourceObject::class, ArtistsResourceObject.serializer())
         subclass(ArtworksResourceObject::class, ArtworksResourceObject.serializer())
+        subclass(DynamicPagesResourceObject::class, DynamicPagesResourceObject.serializer())
         subclass(GenresResourceObject::class, GenresResourceObject.serializer())
         subclass(LyricsResourceObject::class, LyricsResourceObject.serializer())
         subclass(

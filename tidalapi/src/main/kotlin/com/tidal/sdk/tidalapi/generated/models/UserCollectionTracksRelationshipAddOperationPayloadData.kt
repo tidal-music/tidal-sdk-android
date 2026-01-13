@@ -12,6 +12,7 @@ import kotlinx.serialization.Serializable
 /**
  * @param id
  * @param type
+ * @param addedAt
  * @param meta
  */
 @Serializable
@@ -19,6 +20,7 @@ data class UserCollectionTracksRelationshipAddOperationPayloadData(
     @SerialName(value = "id") val id: kotlin.String,
     @SerialName(value = "type")
     val type: UserCollectionTracksRelationshipAddOperationPayloadData.Type,
+    @SerialName(value = "addedAt") val addedAt: kotlin.String? = null,
     @SerialName(value = "meta")
     val meta: UserCollectionTracksRelationshipAddOperationPayloadDataMeta? = null,
 ) {

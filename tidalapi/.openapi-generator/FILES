@@ -6,6 +6,7 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/ArtistClaims.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/ArtistRoles.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/Artists.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/Artworks.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/DynamicPages.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/Genres.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/Lyrics.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/ManualArtistClaims.kt
@@ -171,6 +172,12 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/Default500ResponseBodyEr
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/Default503ResponseBody.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/Default503ResponseBodyErrorsInner.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/DrmData.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/DynamicPagesAttributes.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/DynamicPagesMultiResourceDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/DynamicPagesRelationships.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/DynamicPagesResourceObject.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/DynamicPagesSingleRelationshipDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/DynamicPagesSingleResourceDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ErrorObject.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ErrorObjectSource.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ErrorsDocument.kt
@@ -399,6 +406,7 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/TracksSingleRelationship
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/TracksSingleResourceDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionAlbumsRelationshipAddOperationPayload.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionAlbumsRelationshipAddOperationPayloadData.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionAlbumsRelationshipAddOperationPayloadDataMeta.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionAlbumsRelationshipRemoveOperationPayload.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionAlbumsRelationshipRemoveOperationPayloadData.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionArtistsRelationshipAddOperationPayload.kt
