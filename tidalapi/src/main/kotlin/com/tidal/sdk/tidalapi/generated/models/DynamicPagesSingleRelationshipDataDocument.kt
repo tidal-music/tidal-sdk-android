@@ -9,8 +9,14 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param addedAt */
+/**
+ * @param links
+ * @param `data`
+ * @param included
+ */
 @Serializable
-data class UserCollectionTracksRelationshipAddOperationPayloadDataMeta(
-    @SerialName(value = "addedAt") val addedAt: kotlin.String? = null
+data class DynamicPagesSingleRelationshipDataDocument(
+    @SerialName(value = "links") val links: Links,
+    @SerialName(value = "data") val `data`: ResourceIdentifier? = null,
+    @SerialName(value = "included") val included: kotlin.collections.List<IncludedInner>? = null,
 ) {}

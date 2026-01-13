@@ -8,6 +8,7 @@ import com.tidal.sdk.tidalapi.generated.apis.ArtistClaims
 import com.tidal.sdk.tidalapi.generated.apis.ArtistRoles
 import com.tidal.sdk.tidalapi.generated.apis.Artists
 import com.tidal.sdk.tidalapi.generated.apis.Artworks
+import com.tidal.sdk.tidalapi.generated.apis.DynamicPages
 import com.tidal.sdk.tidalapi.generated.apis.Genres
 import com.tidal.sdk.tidalapi.generated.apis.Lyrics
 import com.tidal.sdk.tidalapi.generated.apis.ManualArtistClaims
@@ -73,6 +74,11 @@ class TidalApiClient(credentialsProvider: CredentialsProvider, baseUrl: String =
     /** Returns an instance of the [Artworks] which can be used to make API calls to the */
     fun createArtworks(): Artworks {
         return retrofit.create(Artworks::class.java)
+    }
+
+    /** Returns an instance of the [DynamicPages] which can be used to make API calls to the */
+    fun createDynamicPages(): DynamicPages {
+        return retrofit.create(DynamicPages::class.java)
     }
 
     /** Returns an instance of the [Genres] which can be used to make API calls to the */

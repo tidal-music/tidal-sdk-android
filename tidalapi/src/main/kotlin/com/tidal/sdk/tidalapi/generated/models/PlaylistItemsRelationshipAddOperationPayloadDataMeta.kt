@@ -12,5 +12,5 @@ import kotlinx.serialization.Serializable
 /** @param addedAt */
 @Serializable
 data class PlaylistItemsRelationshipAddOperationPayloadDataMeta(
-    @SerialName(value = "addedAt") val addedAt: kotlin.String
+    @SerialName(value = "addedAt") val addedAt: kotlin.String? = null
 ) {}
