@@ -19,7 +19,6 @@ dependencies {
     testImplementation(libs.kotlin.reflect)
     testImplementation(libs.kotlinxCoroutinesCore)
     testImplementation(libs.test.assertk)
-    testImplementation(libs.test.junit5Api)
     testImplementation(libs.test.junit5Params)
     testImplementation(libs.test.mockito.kotlin)
     testImplementation(libs.okhttp.mockwebserver) {
@@ -28,4 +27,5 @@ dependencies {
     testImplementation(project(":player:testutil"))
 
     testRuntimeOnly(libs.test.junit5Engine)
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }

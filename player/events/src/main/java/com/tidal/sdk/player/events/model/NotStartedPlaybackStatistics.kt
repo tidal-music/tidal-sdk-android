@@ -11,7 +11,7 @@ import java.util.UUID
 @Keep
 data class NotStartedPlaybackStatistics
 @AssistedInject
-internal constructor(
+constructor(
     @Assisted override val ts: Long,
     @Assisted override val uuid: UUID,
     @Assisted override val user: User,

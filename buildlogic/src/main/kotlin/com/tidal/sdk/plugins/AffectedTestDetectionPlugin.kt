@@ -190,12 +190,13 @@ private class AffectedModuleDetector(private val project: Project) {
     ): Boolean {
         return when (dependency) {
             is ProjectDependency -> {
-                @Suppress("DEPRECATION")
-                val isAffected = dependency.dependencyProject in sourceProjects
+                // In Gradle 9.x, dependencyProject is removed, we need to resolve it differently
+                // ProjectDependency still has a path that we can use to find the project
+                val targetProject = dependentProject.rootProject.findProject(dependency.path)
+                val isAffected = targetProject != null && targetProject in sourceProjects
                 if (isAffected) {
-                    @Suppress("DEPRECATION")
                     logger.debug(
-                        "Project ${dependentProject.path} depends on affected project ${dependency.dependencyProject.path}"
+                        "Project ${dependentProject.path} depends on affected project ${targetProject.path}"
                     )
                 }
                 isAffected
@@ -204,7 +205,7 @@ private class AffectedModuleDetector(private val project: Project) {
             is ExternalModuleDependency -> {
                 val localProject = mapExternalDependencyToLocalProject(dependency)
                 val isAffected = localProject != null && localProject in sourceProjects
-                if (isAffected && localProject != null) {
+                if (isAffected) {
                     logger.debug(
                         "Project ${dependentProject.path} depends on affected project ${localProject.path} via Maven artifact ${dependency.group}:${dependency.name}"
                     )

@@ -31,8 +31,6 @@ dependencies {
     implementation(project(":player:streaming-privileges"))
 
     testImplementation(libs.test.assertk)
-    testImplementation(libs.test.junit5Api)
-    testRuntimeOnly(libs.test.junit5Engine)
     testImplementation(libs.test.junit5Params)
     testImplementation(project(":player:testutil"))
     testImplementation(libs.test.mockito.kotlin)

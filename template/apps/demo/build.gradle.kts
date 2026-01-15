@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.tidal.android.application)
-    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.kotlin.compose)
 }
 
 android {
@@ -12,10 +12,7 @@ android {
         versionName = "0.1.0"
     }
 
-    buildTypes {
-        debug {}
-        composeOptions { kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get() }
-    }
+    buildTypes { debug {} }
     packagingOptions {
         resources.excludes.apply {
             add("META-INF/LICENSE.md")

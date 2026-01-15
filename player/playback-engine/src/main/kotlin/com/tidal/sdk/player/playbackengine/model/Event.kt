@@ -18,20 +18,22 @@ sealed interface Event {
      * by the previously reported [MediaProductTransition] event (or previous ones) and will be
      * reported as a cause of both implicit and explicit transitions.
      */
-    data class MediaProductTransition
-    internal constructor(val mediaProduct: MediaProduct, val playbackContext: PlaybackContext) :
-        Event
+    data class MediaProductTransition(
+        val mediaProduct: MediaProduct,
+        val playbackContext: PlaybackContext,
+    ) : Event
 
     /** A playing mediaProduct has ended. */
-    data class MediaProductEnded
-    internal constructor(val mediaProduct: MediaProduct, val playbackContext: PlaybackContext) :
-        Event
+    data class MediaProductEnded(
+        val mediaProduct: MediaProduct,
+        val playbackContext: PlaybackContext,
+    ) : Event
 
     /**
      * A change in [PlaybackEngine.playbackState]. Updates to state using the same value are not
      * considered changes and will therefore not trigger [PlaybackStateChange] events.
      */
-    data class PlaybackStateChange internal constructor(val playbackState: PlaybackState) : Event
+    data class PlaybackStateChange(val playbackState: PlaybackState) : Event
 
     /**
      * A loss of streaming permission. This event will cause playback to pause if possible, and
@@ -40,15 +42,13 @@ sealed interface Event {
      * @param privilegedClientDisplayName A human-readable description of the device causing the
      *   streaming privilege loss for this instance.
      */
-    data class StreamingPrivilegesRevoked
-    internal constructor(val privilegedClientDisplayName: String?) : Event
+    data class StreamingPrivilegesRevoked(val privilegedClientDisplayName: String?) : Event
 
     /** A DJ session product has been updated. */
-    data class DjSessionUpdate
-    internal constructor(val productId: String, val status: DjSessionStatus) : Event
+    data class DjSessionUpdate(val productId: String, val status: DjSessionStatus) : Event
 
     /** The output device has been updated. */
-    data class OutputDeviceUpdated internal constructor(val outputDevice: OutputDevice) : Event
+    data class OutputDeviceUpdated(val outputDevice: OutputDevice) : Event
 
     /** Indicates that the PlaybackEngine has been released. */
     object Release : Event
