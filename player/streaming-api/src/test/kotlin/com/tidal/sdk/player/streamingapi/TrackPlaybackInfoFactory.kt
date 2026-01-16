@@ -16,8 +16,6 @@ object TrackPlaybackInfoFactory {
             AudioQuality.LOW,
             AssetPresentation.FULL,
             AudioMode.STEREO,
-            16,
-            44100,
             ApiConstants.MANIFEST_HASH,
             ApiConstants.STREAMING_SESSION_ID,
             ManifestMimeType.DASH,
@@ -37,7 +35,7 @@ object TrackPlaybackInfoFactory {
 
     val REPLACEMENT_AUDIO_QUALITY = DEFAULT.copy(audioQuality = AudioQuality.HIGH)
 
-    val PROTECTED = DEFAULT.copy(licenseSecurityToken = ApiConstants.LICENSE_SECURITY_TOKEN)
+    val PROTECTED = DEFAULT.copy(licenseUrl = ApiConstants.LICENSE_URL)
 
     val OFFLINE =
         DEFAULT.copy(

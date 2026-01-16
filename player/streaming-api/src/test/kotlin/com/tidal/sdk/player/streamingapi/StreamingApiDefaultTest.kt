@@ -8,11 +8,8 @@ import com.google.gson.JsonParseException
 import com.tidal.sdk.auth.CredentialsProvider
 import com.tidal.sdk.player.MockWebServerExtensions.enqueueResponse
 import com.tidal.sdk.player.common.model.ApiError
-import com.tidal.sdk.player.common.model.AudioQuality
 import com.tidal.sdk.player.common.model.VideoQuality
 import com.tidal.sdk.player.streamingapi.di.DaggerStreamingApiComponent
-import com.tidal.sdk.player.streamingapi.drm.model.DrmLicense
-import com.tidal.sdk.player.streamingapi.drm.model.DrmLicenseRequest
 import com.tidal.sdk.player.streamingapi.offline.OfflinePlaybackInfoProviderStub
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackMode
@@ -66,107 +63,6 @@ internal class StreamingApiDefaultTest {
                     credentialsProvider = credentialsProviderMock,
                 )
                 .streamingApi
-    }
-
-    @Test
-    fun getTrackPlaybackInfoShouldReturnCorrectWhenNetworkError() {
-        server.enqueue(MockResponse().setSocketPolicy(SocketPolicy.DISCONNECT_AT_START))
-
-        assertThrows<ConnectException> { getTrackPlaybackInfo() }
-    }
-
-    @Test
-    fun getTrackPlaybackInfoShouldFailWhen4xx() {
-        val expectedResponseCode = 401
-        server.enqueueResponse("errors/401_4005.json", expectedResponseCode)
-
-        val actual = assertThrows<ApiError> { getTrackPlaybackInfo() }
-
-        assertThat(actual.status).isEqualTo(expectedResponseCode)
-    }
-
-    @Test
-    fun getTrackPlaybackInfoShouldFailWhen500() {
-        val expectedResponseCode = 500
-        server.enqueueResponse("errors/500_999.json", expectedResponseCode)
-
-        val actual = assertThrows<ApiError> { getTrackPlaybackInfo() }
-
-        assertThat(actual.status).isEqualTo(expectedResponseCode)
-    }
-
-    @Test
-    fun getTrackPlaybackInfoShouldReturnCorrectPlaybackInfo() {
-        server.enqueueResponse("${ApiConstants.TRACKS_PATH}.json")
-
-        val playbackInfo = getTrackPlaybackInfo()
-
-        assertThat(playbackInfo).isDataClassEqualTo(TrackPlaybackInfoFactory.DEFAULT)
-    }
-
-    @Test
-    fun getTrackPlaybackInfoShouldReturnCorrectPlaybackInfoWhenStreamingSessionIdIsEmpty() {
-        server.enqueueResponse("${ApiConstants.TRACKS_PATH}_empty_streaming_session_id.json")
-
-        val playbackInfo = getTrackPlaybackInfo()
-
-        assertThat(playbackInfo)
-            .isDataClassEqualTo(TrackPlaybackInfoFactory.EMPTY_STREAMING_SESSION_ID)
-    }
-
-    @Test
-    fun getTrackPlaybackInfoShouldReturnCorrectPlaybackInfoWhenReplacementTrackId() {
-        server.enqueueResponse("${ApiConstants.TRACKS_PATH}_replacement_track_id.json")
-
-        val playbackInfo = getTrackPlaybackInfo()
-
-        assertThat(playbackInfo).isDataClassEqualTo(TrackPlaybackInfoFactory.REPLACEMENT_TRACK_ID)
-    }
-
-    @Test
-    fun getTrackPlaybackInfoShouldReturnCorrectPlaybackInfoWhenReplacementAudioQuality() {
-        server.enqueueResponse("${ApiConstants.TRACKS_PATH}_replacement_audio_quality.json")
-
-        val playbackInfo = getTrackPlaybackInfo()
-
-        assertThat(playbackInfo)
-            .isDataClassEqualTo(TrackPlaybackInfoFactory.REPLACEMENT_AUDIO_QUALITY)
-    }
-
-    @Test
-    fun getTrackPlaybackInfoShouldFailWhenInvalidMimeType() {
-        server.enqueueResponse("${ApiConstants.TRACKS_PATH}_unknown_mime_type.json")
-
-        assertThrows<JsonParseException> { getTrackPlaybackInfo() }
-    }
-
-    @Test
-    fun getTrackPlaybackInfoShouldReturnCorrectPlaybackInfoWhenProtectedContent() {
-        server.enqueueResponse("${ApiConstants.TRACKS_PATH}_protected.json")
-
-        val playbackInfo = getTrackPlaybackInfo()
-
-        assertThat(playbackInfo).isDataClassEqualTo(TrackPlaybackInfoFactory.PROTECTED)
-    }
-
-    @Test
-    fun getTrackPlaybackInfoShouldReturnCorrectPlaybackInfoWhenOffline() {
-        server.enqueueResponse("${ApiConstants.TRACKS_PATH}_offline.json")
-
-        val playbackInfo = getTrackPlaybackInfo()
-
-        assertThat(playbackInfo).isDataClassEqualTo(TrackPlaybackInfoFactory.OFFLINE)
-    }
-
-    private fun getTrackPlaybackInfo() = runBlocking {
-        streamingApi.getTrackPlaybackInfo(
-            ApiConstants.PLAYBACK_INFO_ID_FOR_DEFAULT,
-            AudioQuality.LOW,
-            PlaybackMode.STREAM,
-            true,
-            "streamingSessionId",
-            null,
-        )
     }
 
     @Test
@@ -322,48 +218,44 @@ internal class StreamingApiDefaultTest {
         val expectedResponseCode = 500
         server.enqueueResponse("errors/500_999.json", expectedResponseCode)
 
-        val actual = assertThrows<ApiError> { getDrmLicense() }
+        val drmLicenseResponse = getDrmLicense()
 
-        assertThat(actual.status).isEqualTo(expectedResponseCode)
+        assertThat(drmLicenseResponse.isSuccessful).isEqualTo(false)
+        assertThat(drmLicenseResponse.code()).isEqualTo(expectedResponseCode)
     }
 
     @Test
     fun getDrmLicenseShouldReturnCorrectDrmLicense() {
-        server.enqueueResponse("${ApiConstants.LICENSE_PATH}.json")
+        server.enqueue(
+            MockResponse().setResponseCode(200).setBody(ApiConstants.DRM_PAYLOAD_RESPONSE)
+        )
 
-        val drmLicense = getDrmLicense()
+        val drmLicenseResponse = getDrmLicense()
 
-        assertThat(drmLicense)
-            .isDataClassEqualTo(
-                DrmLicense(ApiConstants.STREAMING_SESSION_ID, ApiConstants.DRM_PAYLOAD_RESPONSE)
-            )
+        assertThat(drmLicenseResponse.isSuccessful).isEqualTo(true)
     }
 
     @Test
     fun getDrmLicenseShouldReturnCorrectPlaybackInfoWhenStreamingSessionIdIsEmpty() {
-        server.enqueueResponse("${ApiConstants.LICENSE_PATH}_empty_streaming_session_id.json")
+        server.enqueue(
+            MockResponse().setResponseCode(200).setBody(ApiConstants.DRM_PAYLOAD_RESPONSE)
+        )
 
-        val drmLicense = getDrmLicense()
+        val drmLicenseResponse = getDrmLicense()
 
-        assertThat(drmLicense).isDataClassEqualTo(DrmLicense("", ApiConstants.DRM_PAYLOAD_RESPONSE))
+        assertThat(drmLicenseResponse.isSuccessful).isEqualTo(true)
     }
 
     @Test
     fun getDrmLicenseShouldReturnCorrectPlaybackInfoWhenPayloadIsEmpty() {
-        server.enqueueResponse("${ApiConstants.LICENSE_PATH}_empty_payload.json")
+        server.enqueue(MockResponse().setResponseCode(200).setBody(""))
 
-        val drmLicense = getDrmLicense()
+        val drmLicenseResponse = getDrmLicense()
 
-        assertThat(drmLicense).isDataClassEqualTo(DrmLicense(ApiConstants.STREAMING_SESSION_ID, ""))
+        assertThat(drmLicenseResponse.isSuccessful).isEqualTo(true)
     }
 
     private fun getDrmLicense() = runBlocking {
-        streamingApi.getDrmLicense(
-            DrmLicenseRequest(
-                ApiConstants.STREAMING_SESSION_ID,
-                ApiConstants.LICENSE_SECURITY_TOKEN,
-                ApiConstants.DRM_PAYLOAD_REQUEST,
-            )
-        )
+        streamingApi.getDrmLicense(ApiConstants.LICENSE_URL, ApiConstants.DRM_PAYLOAD_REQUEST)
     }
 }

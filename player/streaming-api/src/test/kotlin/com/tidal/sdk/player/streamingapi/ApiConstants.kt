@@ -5,6 +5,7 @@ object ApiConstants {
     const val TRACKS_PATH = "playbackinfo/tracks/get_1"
     const val VIDEOS_PATH = "playbackinfo/videos/get_1"
     const val LICENSE_PATH = "drm/licenses/widevine/post"
+    const val LICENSE_URL = "licenseUrl"
 
     const val PLAYBACK_INFO_ID_FOR_DEFAULT = "1"
     const val PLAYBACK_INFO_ID_FOR_DEFAULT_2 = "2"
@@ -44,11 +45,7 @@ object ApiConstants {
             "Q1FnSlZVdy5tM3U4P3Rva2VuPTE2ODczNjk5NTh+T1RRMVpERTVOR1F3TlRJNVpqRXhNakU1Tm1GbVpqSXhP" +
             "VFF3T0dVeE56STROalZoWmpJM09RPT0iXX0="
 
-    const val LICENSE_SECURITY_TOKEN =
-        "ver~1.hmac~A9w4Ucp-qvBgVreEsNQQFt3O4j9pvBddNDSKM5t5U5A=.exp~1639043236911.kids~m0b-B" +
-            "pGVNqC59UZ3GL6j-w=="
-
-    const val DRM_PAYLOAD_REQUEST = "payload"
+    val DRM_PAYLOAD_REQUEST = "payload".toByteArray()
     const val DRM_PAYLOAD_RESPONSE =
         "CAIS0wIKVAogMjAzNkVDNUJBNDIzQkU5N0Y2MDIwMDAwMDAwMDAwMDA" +
             "SIDIwMzZFQzVCQTQyM0JFOTdGNjAyMDAwMDAwMDAwMDAwGgAgASgAOABAAEjo1c+PBhICCAEaZhIQWO15WFI" +
