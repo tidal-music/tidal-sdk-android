@@ -5,6 +5,7 @@ import com.tidal.sdk.player.common.model.MediaProduct
 import com.tidal.sdk.player.playbackengine.PlaybackEngine
 import com.tidal.sdk.player.playbackengine.dj.DjSessionStatus
 import com.tidal.sdk.player.playbackengine.outputdevice.OutputDevice
+import com.tidal.sdk.player.playbackengine.outputdevice.UsbAudioDevice
 
 /**
  * Events that can be used to track happenings related to Player's functionality.
@@ -49,6 +50,12 @@ sealed interface Event {
 
     /** The output device has been updated. */
     data class OutputDeviceUpdated(val outputDevice: OutputDevice) : Event
+
+    /** The connected USB audio device has changed. Only emitted on API 34+. */
+    data class UsbDeviceChanged internal constructor(val usbDevice: UsbAudioDevice?) : Event
+
+    /** The exclusive mode state has changed. */
+    data class ExclusiveModeStateChanged internal constructor(val isActive: Boolean) : Event
 
     /** Indicates that the PlaybackEngine has been released. */
     object Release : Event

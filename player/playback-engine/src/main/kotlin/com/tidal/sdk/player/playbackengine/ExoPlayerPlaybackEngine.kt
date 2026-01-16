@@ -20,6 +20,7 @@ import com.tidal.sdk.player.common.model.AudioQuality
 import com.tidal.sdk.player.common.model.LoudnessNormalizationMode
 import com.tidal.sdk.player.common.model.MediaProduct
 import com.tidal.sdk.player.common.model.ProductType
+import com.tidal.sdk.player.common.model.UsbDacExclusiveMode
 import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
 import com.tidal.sdk.player.events.EventReporter
 import com.tidal.sdk.player.events.model.AudioPlaybackSession
@@ -39,6 +40,7 @@ import com.tidal.sdk.player.playbackengine.audiomode.AudioModeRepository
 import com.tidal.sdk.player.playbackengine.dj.DjSessionManager
 import com.tidal.sdk.player.playbackengine.dj.DjSessionStatus
 import com.tidal.sdk.player.playbackengine.error.ErrorHandler
+import com.tidal.sdk.player.playbackengine.exclusivemode.UsbDacExclusiveModeRepository
 import com.tidal.sdk.player.playbackengine.mediasource.PlaybackInfoMediaSource
 import com.tidal.sdk.player.playbackengine.mediasource.loadable.PlaybackInfoFetchException
 import com.tidal.sdk.player.playbackengine.mediasource.loadable.PlaybackInfoListener
@@ -53,6 +55,7 @@ import com.tidal.sdk.player.playbackengine.model.PlaybackContext
 import com.tidal.sdk.player.playbackengine.model.PlaybackState
 import com.tidal.sdk.player.playbackengine.outputdevice.OutputDevice
 import com.tidal.sdk.player.playbackengine.outputdevice.OutputDeviceManager
+import com.tidal.sdk.player.playbackengine.outputdevice.UsbAudioDevice
 import com.tidal.sdk.player.playbackengine.player.ExtendedExoPlayerFactory
 import com.tidal.sdk.player.playbackengine.player.PlayerCache
 import com.tidal.sdk.player.playbackengine.quality.AudioQualityRepository
@@ -93,6 +96,7 @@ internal class ExoPlayerPlaybackEngine(
     private val undeterminedPlaybackSessionResolver: UndeterminedPlaybackSessionResolver,
     private val outputDeviceManager: OutputDeviceManager,
     private val playerCache: PlayerCache,
+    private val usbDacExclusiveModeRepository: UsbDacExclusiveModeRepository,
 ) :
     PlaybackEngine,
     StreamingPrivilegesListener,
@@ -207,6 +211,32 @@ internal class ExoPlayerPlaybackEngine(
             audioModeRepository.immersiveAudio = value
         }
 
+    override var usbDacExclusiveMode: UsbDacExclusiveMode
+        get() = usbDacExclusiveModeRepository.usbDacExclusiveMode
+        set(value) {
+            val wasActive = isExclusiveModeActive
+            usbDacExclusiveModeRepository.usbDacExclusiveMode = value
+            val isActive = isExclusiveModeActive
+            if (wasActive != isActive) {
+                coroutineScope.launch { eventSink.emit(Event.ExclusiveModeStateChanged(isActive)) }
+            }
+        }
+
+    override val connectedUsbDevice: UsbAudioDevice?
+        get() = outputDeviceManager.connectedUsbDevice
+
+    override val isExclusiveModeActive: Boolean
+        get() = usbDacExclusiveModeRepository.shouldUseExclusiveMode(
+            outputDeviceManager.outputDevice,
+            outputDeviceManager.connectedUsbDevice,
+            playbackContext?.let {
+                when (it) {
+                    is PlaybackContext.Track -> it.audioQuality
+                    is PlaybackContext.Video -> null
+                }
+            },
+        )
+
     private var extendedExoPlayer by
         Delegates.observable(extendedExoPlayerFactory.create(this, this)) { _, oldValue, newValue ->
             videoSurfaceViewAndSurfaceHolder?.second?.let {
@@ -267,9 +297,21 @@ internal class ExoPlayerPlaybackEngine(
                 listOf(PlaybackState.PLAYING, PlaybackState.NOT_PLAYING, PlaybackState.STALLED)
 
     init {
-        outputDeviceManager.start {
-            coroutineScope.launch { eventSink.emit(Event.OutputDeviceUpdated(it)) }
-        }
+        outputDeviceManager.start(
+            callback = { outputDevice ->
+                coroutineScope.launch { eventSink.emit(Event.OutputDeviceUpdated(outputDevice)) }
+            },
+            usbDeviceCallback = { usbDevice ->
+                coroutineScope.launch {
+                    eventSink.emit(Event.UsbDeviceChanged(usbDevice))
+                    val isActive = isExclusiveModeActive
+                    eventSink.emit(Event.ExclusiveModeStateChanged(isActive))
+                    if (usbDevice == null && playbackState == PlaybackState.PLAYING) {
+                        internalHandler.post { pause() }
+                    }
+                }
+            },
+        )
     }
 
     override fun load(mediaProduct: MediaProduct) {
