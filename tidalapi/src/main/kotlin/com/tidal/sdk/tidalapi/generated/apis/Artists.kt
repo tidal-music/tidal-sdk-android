@@ -30,7 +30,7 @@ interface Artists {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: albums, biography, followers, following, owners, profileArt, radio,
      *   roles, similarArtists, trackProviders, tracks, videos (optional)
@@ -40,7 +40,7 @@ interface Artists {
      */
     @GET("artists")
     suspend fun artistsGet(
-        @Query("countryCode") countryCode: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[handle]")
@@ -62,7 +62,7 @@ interface Artists {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Artist id
-     * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: albums, biography, followers, following, owners, profileArt, radio,
      *   roles, similarArtists, trackProviders, tracks, videos (optional)
@@ -71,7 +71,7 @@ interface Artists {
     @GET("artists/{id}")
     suspend fun artistsIdGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<ArtistsSingleResourceDataDocument>
@@ -110,9 +110,9 @@ interface Artists {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Artist id
-     * @param countryCode ISO 3166-1 alpha-2 country code
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: albums (optional)
      * @return [ArtistsMultiRelationshipDataDocument]
@@ -120,8 +120,8 @@ interface Artists {
     @GET("artists/{id}/relationships/albums")
     suspend fun artistsIdRelationshipsAlbumsGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<ArtistsMultiRelationshipDataDocument>
@@ -360,9 +360,9 @@ interface Artists {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Artist id
-     * @param countryCode ISO 3166-1 alpha-2 country code
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: radio (optional)
      * @return [ArtistsMultiRelationshipDataDocument]
@@ -370,8 +370,8 @@ interface Artists {
     @GET("artists/{id}/relationships/radio")
     suspend fun artistsIdRelationshipsRadioGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<ArtistsMultiRelationshipDataDocument>
@@ -417,9 +417,9 @@ interface Artists {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Artist id
-     * @param countryCode ISO 3166-1 alpha-2 country code
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: similarArtists (optional)
      * @return [ArtistsMultiRelationshipDataDocument]
@@ -427,8 +427,8 @@ interface Artists {
     @GET("artists/{id}/relationships/similarArtists")
     suspend fun artistsIdRelationshipsSimilarArtistsGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<ArtistsMultiRelationshipDataDocument>
@@ -483,9 +483,9 @@ interface Artists {
      * @param collapseBy Collapse by options for getting artist tracks. Available options:
      *   FINGERPRINT, ID. FINGERPRINT option might collapse similar tracks based entry fingerprints
      *   while collapsing by ID always returns all available items.
-     * @param countryCode ISO 3166-1 alpha-2 country code
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: tracks (optional)
      * @return [ArtistsMultiRelationshipDataDocument]
@@ -494,8 +494,8 @@ interface Artists {
     suspend fun artistsIdRelationshipsTracksGet(
         @Path("id") id: kotlin.String,
         @Query("collapseBy") collapseBy: CollapseByArtistsIdRelationshipsTracksGet,
-        @Query("countryCode") countryCode: kotlin.String,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<ArtistsMultiRelationshipDataDocument>
@@ -513,9 +513,9 @@ interface Artists {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Artist id
-     * @param countryCode ISO 3166-1 alpha-2 country code
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: videos (optional)
      * @return [ArtistsMultiRelationshipDataDocument]
@@ -523,8 +523,8 @@ interface Artists {
     @GET("artists/{id}/relationships/videos")
     suspend fun artistsIdRelationshipsVideosGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<ArtistsMultiRelationshipDataDocument>

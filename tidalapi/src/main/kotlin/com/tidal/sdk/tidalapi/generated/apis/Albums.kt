@@ -7,6 +7,7 @@ import com.tidal.sdk.tidalapi.generated.models.AlbumUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.AlbumsItemsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.AlbumsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.AlbumsMultiResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.AlbumsSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.AlbumsSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.AlbumsSuggestedCoverArtsMultiRelationshipDataDocument
 import retrofit2.Response
@@ -30,8 +31,8 @@ interface Albums {
      *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: artists, coverArt, genres, items, owners, providers, similarAlbums,
-     *   suggestedCoverArts (optional)
+     *   Available options: artists, coverArt, genres, items, owners, providers, replacement,
+     *   similarAlbums, suggestedCoverArts (optional)
      * @param filterBarcodeId Barcode Id (optional)
      * @param filterId Album id (optional)
      * @param filterOwnersId User id (optional)
@@ -83,10 +84,10 @@ interface Albums {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Album id
-     * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: artists, coverArt, genres, items, owners, providers, similarAlbums,
-     *   suggestedCoverArts (optional)
+     *   Available options: artists, coverArt, genres, items, owners, providers, replacement,
+     *   similarAlbums, suggestedCoverArts (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [AlbumsSingleResourceDataDocument]
@@ -94,7 +95,7 @@ interface Albums {
     @GET("albums/{id}")
     suspend fun albumsIdGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
@@ -134,9 +135,9 @@ interface Albums {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Album id
-     * @param countryCode ISO 3166-1 alpha-2 country code
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: artists (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
@@ -146,8 +147,8 @@ interface Albums {
     @GET("albums/{id}/relationships/artists")
     suspend fun albumsIdRelationshipsArtistsGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
@@ -167,9 +168,9 @@ interface Albums {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Album id
-     * @param countryCode ISO 3166-1 alpha-2 country code
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: coverArt (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
@@ -179,8 +180,8 @@ interface Albums {
     @GET("albums/{id}/relationships/coverArt")
     suspend fun albumsIdRelationshipsCoverArtGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
@@ -224,9 +225,9 @@ interface Albums {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Album id
-     * @param countryCode ISO 3166-1 alpha-2 country code
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: genres (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
@@ -236,8 +237,8 @@ interface Albums {
     @GET("albums/{id}/relationships/genres")
     suspend fun albumsIdRelationshipsGenresGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
@@ -256,9 +257,9 @@ interface Albums {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Album id
-     * @param countryCode ISO 3166-1 alpha-2 country code
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: items (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
@@ -268,8 +269,8 @@ interface Albums {
     @GET("albums/{id}/relationships/items")
     suspend fun albumsIdRelationshipsItemsGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
@@ -343,7 +344,7 @@ interface Albums {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Album id
-     * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: providers (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -355,12 +356,42 @@ interface Albums {
     @GET("albums/{id}/relationships/providers")
     suspend fun albumsIdRelationshipsProvidersGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<AlbumsMultiRelationshipDataDocument>
+
+    /**
+     * Get replacement relationship (\&quot;to-one\&quot;). Retrieves replacement relationship.
+     * Responses:
+     * - 200: Successful response
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
+     *
+     * @param id Album id
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: replacement (optional)
+     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
+     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @return [AlbumsSingleRelationshipDataDocument]
+     */
+    @GET("albums/{id}/relationships/replacement")
+    suspend fun albumsIdRelationshipsReplacementGet(
+        @Path("id") id: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String? = null,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
+    ): Response<AlbumsSingleRelationshipDataDocument>
 
     /**
      * Get similarAlbums relationship (\&quot;to-many\&quot;). Retrieves similarAlbums relationship.
@@ -376,9 +407,9 @@ interface Albums {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Album id
-     * @param countryCode ISO 3166-1 alpha-2 country code
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: similarAlbums (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
@@ -388,8 +419,8 @@ interface Albums {
     @GET("albums/{id}/relationships/similarAlbums")
     suspend fun albumsIdRelationshipsSimilarAlbumsGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
