@@ -19,7 +19,7 @@ interface UserRecommendations {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id User recommendations id
-     * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param locale BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or
      *   unsupported. (optional, default to "en-US")
      * @param include Allows the client to customize which related resources should be returned.
@@ -29,7 +29,7 @@ interface UserRecommendations {
     @GET("userRecommendations/{id}")
     suspend fun userRecommendationsIdGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
@@ -49,9 +49,9 @@ interface UserRecommendations {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id User recommendations id
-     * @param countryCode ISO 3166-1 alpha-2 country code
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param locale BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or
      *   unsupported. (optional, default to "en-US")
      * @param include Allows the client to customize which related resources should be returned.
@@ -61,8 +61,8 @@ interface UserRecommendations {
     @GET("userRecommendations/{id}/relationships/discoveryMixes")
     suspend fun userRecommendationsIdRelationshipsDiscoveryMixesGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
@@ -81,9 +81,9 @@ interface UserRecommendations {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id User recommendations id
-     * @param countryCode ISO 3166-1 alpha-2 country code
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param locale BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or
      *   unsupported. (optional, default to "en-US")
      * @param include Allows the client to customize which related resources should be returned.
@@ -93,8 +93,8 @@ interface UserRecommendations {
     @GET("userRecommendations/{id}/relationships/myMixes")
     suspend fun userRecommendationsIdRelationshipsMyMixesGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
@@ -114,9 +114,9 @@ interface UserRecommendations {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id User recommendations id
-     * @param countryCode ISO 3166-1 alpha-2 country code
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param locale BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or
      *   unsupported. (optional, default to "en-US")
      * @param include Allows the client to customize which related resources should be returned.
@@ -126,8 +126,8 @@ interface UserRecommendations {
     @GET("userRecommendations/{id}/relationships/newArrivalMixes")
     suspend fun userRecommendationsIdRelationshipsNewArrivalMixesGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,

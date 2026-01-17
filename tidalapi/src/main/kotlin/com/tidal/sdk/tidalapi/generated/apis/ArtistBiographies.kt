@@ -21,7 +21,7 @@ interface ArtistBiographies {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: owners (optional)
      * @param filterId Artist id (optional)
@@ -29,7 +29,7 @@ interface ArtistBiographies {
      */
     @GET("artistBiographies")
     suspend fun artistBiographiesGet(
-        @Query("countryCode") countryCode: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[id]")
@@ -49,7 +49,7 @@ interface ArtistBiographies {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Artist biography id
-     * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: owners (optional)
      * @return [ArtistBiographiesSingleResourceDataDocument]
@@ -57,7 +57,7 @@ interface ArtistBiographies {
     @GET("artistBiographies/{id}")
     suspend fun artistBiographiesIdGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<ArtistBiographiesSingleResourceDataDocument>
