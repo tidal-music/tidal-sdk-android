@@ -15,10 +15,10 @@ internal class PlaybackContextFactory {
                 PlaybackContext.Track(
                     playbackInfo.audioMode,
                     playbackInfo.audioQuality,
-                    playbackInfo.audioQuality.toBitRate(),
-                    playbackInfo.bitDepth,
+                    null,
+                    null,
                     getCodec(playbackInfo.audioMode, playbackInfo.audioQuality),
-                    playbackInfo.sampleRate,
+                    null,
                     playbackInfo.trackId.toString(),
                     playbackInfo.assetPresentation,
                     0F,
@@ -45,7 +45,7 @@ internal class PlaybackContextFactory {
                 PlaybackContext.Track(
                     AudioMode.STEREO,
                     playbackInfo.audioQuality,
-                    playbackInfo.audioQuality.toBitRate(),
+                    null,
                     null,
                     getCodec(AudioMode.STEREO, playbackInfo.audioQuality),
                     null,
@@ -79,10 +79,10 @@ internal class PlaybackContextFactory {
                 PlaybackContext.Track(
                     playbackInfo.track.audioMode,
                     playbackInfo.track.audioQuality,
-                    playbackInfo.track.audioQuality.toBitRate(),
-                    playbackInfo.track.bitDepth,
+                    null,
+                    null,
                     getCodec(playbackInfo.track.audioMode, playbackInfo.track.audioQuality),
-                    playbackInfo.track.sampleRate,
+                    null,
                     playbackInfo.track.trackId.toString(),
                     playbackInfo.track.assetPresentation,
                     0F,
@@ -105,14 +105,6 @@ internal class PlaybackContextFactory {
         }
     }
 
-    private fun AudioQuality.toBitRate(): Int? {
-        return when (this) {
-            AudioQuality.LOW -> BIT_RATE_LOW
-            AudioQuality.HIGH -> BIT_RATE_HIGH
-            else -> null
-        }
-    }
-
     private fun getCodec(audioMode: AudioMode, audioQuality: AudioQuality): String? {
         if (audioMode != AudioMode.STEREO) return null
         return when (audioQuality) {
@@ -124,9 +116,6 @@ internal class PlaybackContextFactory {
     }
 
     private companion object {
-        private const val BIT_RATE_LOW = 96_000
-        private const val BIT_RATE_HIGH = 320_000
-
         private const val CODEC_AAC = "aac"
         private const val CODEC_FLAC = "flac"
     }

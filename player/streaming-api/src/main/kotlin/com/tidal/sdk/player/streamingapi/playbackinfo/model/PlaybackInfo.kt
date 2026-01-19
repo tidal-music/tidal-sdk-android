@@ -40,8 +40,6 @@ sealed interface PlaybackInfo {
      * @property[audioQuality] The actual audio quality.
      * @property[assetPresentation] The actual asset presentation.
      * @property[audioMode] The actual audio mode.
-     * @property[bitDepth] The actual bit depth.
-     * @property[audioMode] The actual sample rate.
      * @property[manifestHash] Unique id for the manifest and the content it refers to.
      */
     @Keep
@@ -50,8 +48,6 @@ sealed interface PlaybackInfo {
         val audioQuality: AudioQuality,
         val assetPresentation: AssetPresentation,
         val audioMode: AudioMode,
-        val bitDepth: Int?,
-        val sampleRate: Int?,
         val manifestHash: String,
         override val streamingSessionId: String,
         override val manifestMimeType: ManifestMimeType,

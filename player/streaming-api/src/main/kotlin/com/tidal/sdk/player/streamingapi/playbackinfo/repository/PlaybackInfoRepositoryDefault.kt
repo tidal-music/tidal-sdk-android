@@ -62,8 +62,6 @@ internal class PlaybackInfoRepositoryDefault(
                 audioQuality = getAudioQualityFromFormats(data?.attributes?.formats, audioQuality),
                 assetPresentation = convertTrackPresentation(data?.attributes?.trackPresentation),
                 audioMode = getAudioModeFromFormats(data?.attributes?.formats),
-                bitDepth = null, // Not available in new API
-                sampleRate = null, // Not available in new API
                 manifestHash = data?.attributes?.hash.orEmpty(),
                 streamingSessionId = streamingSessionId,
                 manifestMimeType = ManifestMimeType.DASH,
