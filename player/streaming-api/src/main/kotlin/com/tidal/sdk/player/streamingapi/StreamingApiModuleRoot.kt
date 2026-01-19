@@ -17,7 +17,7 @@ class StreamingApiModuleRoot(
 ) {
 
     val streamingApi =
-        DaggerStreamingApiComponent.factory()
+        componentFactoryF()
             .create(
                 okHttpClient,
                 streamingApiTimeoutConfig,
@@ -27,4 +27,9 @@ class StreamingApiModuleRoot(
                 credentialsProvider,
             )
             .streamingApi
+
+    companion object {
+
+        private var componentFactoryF = { DaggerStreamingApiComponent.factory() }
+    }
 }

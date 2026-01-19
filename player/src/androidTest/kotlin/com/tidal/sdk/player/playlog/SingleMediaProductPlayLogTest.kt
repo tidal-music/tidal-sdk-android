@@ -27,6 +27,10 @@ import com.tidal.sdk.player.events.reflectionComponentFactoryF
 import com.tidal.sdk.player.playbackengine.model.Event
 import com.tidal.sdk.player.playbackengine.model.Event.MediaProductEnded
 import com.tidal.sdk.player.setBodyFromFile
+import com.tidal.sdk.player.streamingapi.StreamingApiModuleRoot
+import com.tidal.sdk.player.streamingapi.di.StreamingApiComponent
+import com.tidal.sdk.player.streamingapi.playlogtest.PlayLogTestStreamingApiComponentFactory
+import com.tidal.sdk.player.streamingapi.reflectionComponentFactoryF
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.Dispatchers
@@ -77,15 +81,16 @@ internal class SingleMediaProductPlayLogTest {
         EventReporterModuleRoot.reflectionComponentFactoryF = {
             PlayLogTestDefaultEventReporterComponentFactory(eventReporterCoroutineScope)
         }
-        responseDispatcher[
-            "https://api.tidal.com/v1/tracks/${mediaProduct.productId}/playbackinfo?playbackmode=STREAM&assetpresentation=FULL&audioquality=LOW&immersiveaudio=true"
-                .toHttpUrl(),
-        ] =
-            {
-                MockResponse()
-                    .setBodyFromFile("api-responses/playbackinfo/tracks/playlogtest/get_1_bts.json")
-            }
-        responseDispatcher["https://test.audio.tidal.com/1_bts.m4a".toHttpUrl()] = {
+        val audioUrl = "https://test.audio.tidal.com/1_bts.m4a"
+        val trackPlaybackInfo =
+            PlayLogTestStreamingApiComponentFactory.createTrackPlaybackInfo(
+                trackId = mediaProduct.productId.toInt(),
+                audioUrl = audioUrl,
+            )
+        StreamingApiModuleRoot.reflectionComponentFactoryF = {
+            PlayLogTestStreamingApiComponentFactory(trackPlaybackInfo)
+        }
+        responseDispatcher[audioUrl.toHttpUrl()] = {
             MockResponse().setBodyFromFile("raw/playlogtest/1_bts.m4a")
         }
         server.dispatcher = responseDispatcher
@@ -130,12 +135,16 @@ internal class SingleMediaProductPlayLogTest {
     companion object {
         private lateinit var originalEventReporterComponentFactoryF:
             () -> DefaultEventReporterComponent.Factory
+        private lateinit var originalStreamingApiComponentFactoryF:
+            () -> StreamingApiComponent.Factory
 
         @BeforeClass
         @JvmStatic
         fun beforeAll() {
             originalEventReporterComponentFactoryF =
                 EventReporterModuleRoot.reflectionComponentFactoryF
+            originalStreamingApiComponentFactoryF =
+                StreamingApiModuleRoot.reflectionComponentFactoryF
         }
     }
 
@@ -144,6 +153,8 @@ internal class SingleMediaProductPlayLogTest {
         val job = launch { player.playbackEngine.events.first { it is Event.Release } }
         player.release()
         job.join()
+        EventReporterModuleRoot.reflectionComponentFactoryF = originalEventReporterComponentFactoryF
+        StreamingApiModuleRoot.reflectionComponentFactoryF = originalStreamingApiComponentFactoryF
         verify(eventSender, atMost(Int.MAX_VALUE))
             .sendEvent(
                 argThat { !contentEquals("playback_session") },
