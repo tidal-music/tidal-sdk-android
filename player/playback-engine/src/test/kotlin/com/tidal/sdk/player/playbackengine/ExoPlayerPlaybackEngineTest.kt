@@ -732,7 +732,7 @@ internal class ExoPlayerPlaybackEngineTest {
         assertThat(playbackEngine.reflectionCurrentPlaybackStatistics)
             .isSameInstanceAs(playbackStatistics)
         verify(currentMediaSource, atLeastOnce()).forwardingMediaProduct
-        verify(currentForwardingMediaProduct, atLeastOnce()).delegate
+        verify(currentForwardingMediaProduct).delegate
         verify(currentMediaProduct).referenceId
         verify(playbackContextFactory).create(playbackInfo, referenceId)
         assertThat(playbackEngine.playbackContext).isEqualTo(playbackContext)

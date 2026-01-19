@@ -112,7 +112,7 @@ internal class ExoPlayerPlaybackEngine(
 
     override var playbackContext: PlaybackContext? by
         Delegates.observable(null) { _, old, new ->
-            if (old == new) {
+            if (old?.playbackSessionId == new?.playbackSessionId) {
                 return@observable
             }
             val mediaProduct = mediaProduct ?: return@observable
