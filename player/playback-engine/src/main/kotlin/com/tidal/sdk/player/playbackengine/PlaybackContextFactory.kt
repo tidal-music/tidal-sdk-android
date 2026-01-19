@@ -2,7 +2,6 @@ package com.tidal.sdk.player.playbackengine
 
 import com.tidal.sdk.player.common.model.AssetPresentation
 import com.tidal.sdk.player.common.model.AudioMode
-import com.tidal.sdk.player.common.model.AudioQuality
 import com.tidal.sdk.player.playbackengine.model.PlaybackContext
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
 
@@ -17,7 +16,7 @@ internal class PlaybackContextFactory {
                     playbackInfo.audioQuality,
                     null,
                     null,
-                    getCodec(playbackInfo.audioMode, playbackInfo.audioQuality),
+                    null,
                     null,
                     playbackInfo.trackId.toString(),
                     playbackInfo.assetPresentation,
@@ -47,7 +46,7 @@ internal class PlaybackContextFactory {
                     playbackInfo.audioQuality,
                     null,
                     null,
-                    getCodec(AudioMode.STEREO, playbackInfo.audioQuality),
+                    null,
                     null,
                     playbackInfo.id,
                     AssetPresentation.FULL,
@@ -81,7 +80,7 @@ internal class PlaybackContextFactory {
                     playbackInfo.track.audioQuality,
                     null,
                     null,
-                    getCodec(playbackInfo.track.audioMode, playbackInfo.track.audioQuality),
+                    null,
                     null,
                     playbackInfo.track.trackId.toString(),
                     playbackInfo.track.assetPresentation,
@@ -103,20 +102,5 @@ internal class PlaybackContextFactory {
                     referenceId,
                 )
         }
-    }
-
-    private fun getCodec(audioMode: AudioMode, audioQuality: AudioQuality): String? {
-        if (audioMode != AudioMode.STEREO) return null
-        return when (audioQuality) {
-            AudioQuality.LOW,
-            AudioQuality.HIGH -> CODEC_AAC
-            AudioQuality.LOSSLESS,
-            AudioQuality.HI_RES_LOSSLESS -> CODEC_FLAC
-        }
-    }
-
-    private companion object {
-        private const val CODEC_AAC = "aac"
-        private const val CODEC_FLAC = "flac"
     }
 }
