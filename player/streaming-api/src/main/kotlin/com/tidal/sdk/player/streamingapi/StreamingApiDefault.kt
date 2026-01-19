@@ -2,7 +2,6 @@ package com.tidal.sdk.player.streamingapi
 
 import com.tidal.sdk.player.common.model.AudioQuality
 import com.tidal.sdk.player.common.model.VideoQuality
-import com.tidal.sdk.player.streamingapi.drm.model.DrmLicenseRequest
 import com.tidal.sdk.player.streamingapi.drm.repository.DrmLicenseRepository
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackMode
 import com.tidal.sdk.player.streamingapi.playbackinfo.repository.PlaybackInfoRepository
@@ -71,6 +70,6 @@ internal class StreamingApiDefault(
     override suspend fun getOfflineVideoPlaybackInfo(videoId: String, streamingSessionId: String) =
         playbackInfoRepository.getOfflineVideoPlaybackInfo(videoId, streamingSessionId)
 
-    override suspend fun getDrmLicense(drmLicenseRequest: DrmLicenseRequest) =
-        drmLicenseRepository.getDrmLicense(drmLicenseRequest)
+    override suspend fun getDrmLicense(licenseUrl: String, payload: ByteArray) =
+        drmLicenseRepository.getDrmLicense(licenseUrl, payload)
 }

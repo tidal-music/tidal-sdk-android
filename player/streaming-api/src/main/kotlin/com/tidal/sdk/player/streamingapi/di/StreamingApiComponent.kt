@@ -1,6 +1,7 @@
 package com.tidal.sdk.player.streamingapi.di
 
 import com.google.gson.Gson
+import com.tidal.sdk.auth.CredentialsProvider
 import com.tidal.sdk.player.common.model.ApiError
 import com.tidal.sdk.player.streamingapi.StreamingApi
 import com.tidal.sdk.player.streamingapi.StreamingApiTimeoutConfig
@@ -34,6 +35,7 @@ interface StreamingApiComponent {
             @BindsInstance gson: Gson,
             @BindsInstance apiErrorFactory: ApiError.Factory,
             @BindsInstance offlinePlaybackInfoProvider: OfflinePlaybackInfoProvider?,
+            @BindsInstance credentialsProvider: CredentialsProvider,
         ): StreamingApiComponent
     }
 

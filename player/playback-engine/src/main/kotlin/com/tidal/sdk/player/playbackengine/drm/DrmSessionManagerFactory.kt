@@ -14,10 +14,15 @@ internal class DrmSessionManagerFactory(
         playbackInfo: PlaybackInfo,
         extras: Extras?,
     ): DrmSessionManager {
-        if (playbackInfo.licenseSecurityToken.isNullOrEmpty()) {
+        val licenseUrl = playbackInfo.licenseUrl
+        if (licenseUrl.isNullOrEmpty()) {
             return DrmSessionManager.DRM_UNSUPPORTED
         }
-        return createDefaultDrmSessionManager(playbackInfo, extras = extras)
+        return createDefaultDrmSessionManager(
+            playbackInfo,
+            licenseUrl = licenseUrl,
+            extras = extras,
+        )
     }
 
     fun createDrmSessionManagerForOfflinePlay(
@@ -27,16 +32,26 @@ internal class DrmSessionManagerFactory(
         if (playbackInfo.offlineLicense!!.isEmpty()) {
             return DrmSessionManager.DRM_UNSUPPORTED
         }
-        return createDefaultDrmSessionManager(playbackInfo.delegate, extras = extras)
+        return createDefaultDrmSessionManager(
+            playbackInfo.delegate,
+            licenseUrl = "",
+            extras = extras,
+        )
     }
 
     private fun createDefaultDrmSessionManager(
         playbackInfo: PlaybackInfo,
+        licenseUrl: String,
         drmMode: DrmMode = DrmMode.Streaming,
         extras: Extras?,
     ): DefaultDrmSessionManager {
         return defaultDrmSessionManagerBuilder.build(
-            tidalMediaDrmCallbackFactory.create(playbackInfo, drmMode, extras)
+            tidalMediaDrmCallbackFactory.create(
+                licenseUrl,
+                playbackInfo.streamingSessionId,
+                drmMode,
+                extras,
+            )
         )
     }
 

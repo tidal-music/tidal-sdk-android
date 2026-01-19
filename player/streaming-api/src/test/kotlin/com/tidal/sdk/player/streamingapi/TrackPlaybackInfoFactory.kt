@@ -37,7 +37,7 @@ object TrackPlaybackInfoFactory {
 
     val REPLACEMENT_AUDIO_QUALITY = DEFAULT.copy(audioQuality = AudioQuality.HIGH)
 
-    val PROTECTED = DEFAULT.copy(licenseSecurityToken = ApiConstants.LICENSE_SECURITY_TOKEN)
+    val PROTECTED = DEFAULT.copy(licenseUrl = ApiConstants.LICENSE_URL)
 
     val OFFLINE =
         DEFAULT.copy(

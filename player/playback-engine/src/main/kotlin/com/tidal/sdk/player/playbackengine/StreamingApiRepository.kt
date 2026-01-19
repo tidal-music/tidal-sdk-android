@@ -18,11 +18,11 @@ import com.tidal.sdk.player.playbackengine.error.ErrorHandler
 import com.tidal.sdk.player.playbackengine.quality.AudioQualityRepository
 import com.tidal.sdk.player.playbackengine.quality.VideoQualityRepository
 import com.tidal.sdk.player.streamingapi.StreamingApi
-import com.tidal.sdk.player.streamingapi.drm.model.DrmLicense
-import com.tidal.sdk.player.streamingapi.drm.model.DrmLicenseRequest
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackMode
 import java.io.IOException
+import okhttp3.ResponseBody
+import retrofit2.Response
 
 /**
  * Communicates with the streaming api, but with additional operations that do not belong in the
@@ -51,15 +51,27 @@ internal class StreamingApiRepository(
     private val errorHandler: ErrorHandler,
 ) {
 
-    /** Get the drm license as [DrmLicense] for a given [DrmLicenseRequest]. */
+    /**
+     * Get the drm license as response body for a given payload.
+     *
+     * @param[licenseUrl] The drm license url.
+     * @param[payload] The binary payload to send to backend.
+     * @param[streamingSessionId] The streaming session ID for event reporting.
+     * @param[extras] Additional extras for event reporting.
+     */
     @SuppressWarnings("TooGenericExceptionCaught") // We rethrow it, so no issue
-    suspend fun getDrmLicense(drmLicenseRequest: DrmLicenseRequest, extras: Extras?): DrmLicense {
+    suspend fun getDrmLicense(
+        licenseUrl: String,
+        payload: ByteArray,
+        streamingSessionId: String,
+        extras: Extras?,
+    ): Response<ResponseBody> {
         val startTimestamp = trueTimeWrapper.currentTimeMillis
         var errorMessage: String? = null
         var errorCode: String? = null
         lateinit var endReason: EndReason
         try {
-            val ret = streamingApi.getDrmLicense(drmLicenseRequest)
+            val ret = streamingApi.getDrmLicense(licenseUrl, payload)
             endReason = EndReason.COMPLETE
             return ret
         } catch (throwable: Throwable) {
@@ -70,7 +82,7 @@ internal class StreamingApiRepository(
         } finally {
             eventReporter.report(
                 DrmLicenseFetch.Payload(
-                    drmLicenseRequest.streamingSessionId,
+                    streamingSessionId,
                     startTimestamp,
                     trueTimeWrapper.currentTimeMillis,
                     endReason,

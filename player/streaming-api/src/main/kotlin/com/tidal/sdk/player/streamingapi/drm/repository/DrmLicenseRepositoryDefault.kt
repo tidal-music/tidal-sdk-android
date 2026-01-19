@@ -1,9 +1,10 @@
 package com.tidal.sdk.player.streamingapi.drm.repository
 
 import com.tidal.sdk.player.streamingapi.drm.api.DrmLicenseService
-import com.tidal.sdk.player.streamingapi.drm.model.DrmLicenseRequest
 import com.tidal.sdk.player.streamingapi.playbackinfo.mapper.ApiErrorMapper
 import dagger.Lazy
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.HttpException
 
 /**
@@ -17,9 +18,12 @@ internal class DrmLicenseRepositoryDefault(
     private val apiErrorMapperLazy: Lazy<ApiErrorMapper>,
 ) : DrmLicenseRepository {
 
-    override suspend fun getDrmLicense(drmLicenseRequest: DrmLicenseRequest) =
+    private val octetStream = "application/octet-stream".toMediaType()
+
+    override suspend fun getDrmLicense(licenseUrl: String, payload: ByteArray) =
         try {
-            drmLicenseService.getWidevineLicense(drmLicenseRequest)
+            val requestBody = payload.toRequestBody(octetStream)
+            drmLicenseService.getWidevineLicense(licenseUrl, requestBody)
         } catch (e: HttpException) {
             throw apiErrorMapperLazy.get().map(e)
         }

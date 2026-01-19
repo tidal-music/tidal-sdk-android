@@ -2,10 +2,10 @@ package com.tidal.sdk.player.streamingapi
 
 import com.tidal.sdk.player.common.model.AudioQuality
 import com.tidal.sdk.player.common.model.VideoQuality
-import com.tidal.sdk.player.streamingapi.drm.model.DrmLicense
-import com.tidal.sdk.player.streamingapi.drm.model.DrmLicenseRequest
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackMode
+import okhttp3.ResponseBody
+import retrofit2.Response
 
 /**
  * The streaming api, where the main focus is to give you playback info or drm license for a track
@@ -98,10 +98,9 @@ interface StreamingApi {
     ): PlaybackInfo
 
     /**
-     * Returns a [DrmLicense] which we can use for decrypting a protected track or video.
+     * Returns the DRM binary response.
      *
-     * @param[drmLicenseRequest] The request we send to backend for getting a drm license back, as
-     *   [DrmLicenseRequest]
+     * @param[payload] The binary payload to send to backend for getting a drm license back.
      */
-    suspend fun getDrmLicense(drmLicenseRequest: DrmLicenseRequest): DrmLicense
+    suspend fun getDrmLicense(licenseUrl: String, payload: ByteArray): Response<ResponseBody>
 }

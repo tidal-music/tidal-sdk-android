@@ -27,7 +27,7 @@ private constructor(val cdm: PlaybackStatistics.Payload.Cdm, val version: String
             }
 
         operator fun invoke(playbackInfo: PlaybackInfo) =
-            if (playbackInfo.licenseSecurityToken.isNullOrEmpty()) {
+            if (playbackInfo.licenseUrl.isNullOrEmpty()) {
                 VersionedCdm(PlaybackStatistics.Payload.Cdm.NONE, null)
             } else {
                 widevine
