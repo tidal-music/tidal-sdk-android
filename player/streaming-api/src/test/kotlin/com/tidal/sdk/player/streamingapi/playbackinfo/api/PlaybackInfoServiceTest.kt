@@ -8,10 +8,8 @@ import com.google.gson.GsonBuilder
 import com.google.gson.JsonParseException
 import com.tidal.sdk.player.MockWebServerExtensions.enqueueResponse
 import com.tidal.sdk.player.common.model.AssetPresentation
-import com.tidal.sdk.player.common.model.AudioQuality
 import com.tidal.sdk.player.common.model.VideoQuality
 import com.tidal.sdk.player.streamingapi.ApiConstants
-import com.tidal.sdk.player.streamingapi.TrackPlaybackInfoFactory
 import com.tidal.sdk.player.streamingapi.VideoPlaybackInfoFactory
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.ManifestMimeType
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
@@ -58,102 +56,6 @@ internal class PlaybackInfoServiceTest {
                 .build()
 
         playbackInfoService = retrofit.create(PlaybackInfoService::class.java)
-    }
-
-    @Test
-    fun getTrackPlaybackInfoShouldFailWhenNetworkError() {
-        server.enqueue(MockResponse().throttleBody(1024, 1, TimeUnit.SECONDS))
-
-        assertFailure { getTrackPlaybackInfo() }.isInstanceOf(IOException::class.java)
-    }
-
-    @Test
-    fun getTrackPlaybackInfoShouldFailWhen404() {
-        server.enqueue(MockResponse().setResponseCode(404))
-
-        assertFailure { getTrackPlaybackInfo() }.isInstanceOf(HttpException::class.java)
-    }
-
-    @Test
-    fun getTrackPlaybackInfoShouldFailWhen500() {
-        server.enqueue(MockResponse().setResponseCode(500))
-
-        assertFailure { getTrackPlaybackInfo() }.isInstanceOf(HttpException::class.java)
-    }
-
-    @Test
-    fun getTrackPlaybackInfoShouldReturnCorrectPlaybackInfo() {
-        server.enqueueResponse("${ApiConstants.TRACKS_PATH}.json")
-
-        val playbackInfo = getTrackPlaybackInfo()
-
-        assertThat(playbackInfo).isDataClassEqualTo(TrackPlaybackInfoFactory.DEFAULT)
-    }
-
-    @Test
-    fun getTrackPlaybackInfoShouldReturnCorrectPlaybackInfoWhenStreamingSessionIdIsEmpty() {
-        server.enqueueResponse("${ApiConstants.TRACKS_PATH}_empty_streaming_session_id.json")
-
-        val playbackInfo = getTrackPlaybackInfo()
-
-        assertThat(playbackInfo)
-            .isDataClassEqualTo(TrackPlaybackInfoFactory.EMPTY_STREAMING_SESSION_ID)
-    }
-
-    @Test
-    fun getTrackPlaybackInfoShouldReturnCorrectPlaybackInfoWhenReplacementTrackId() {
-        server.enqueueResponse("${ApiConstants.TRACKS_PATH}_replacement_track_id.json")
-
-        val playbackInfo = getTrackPlaybackInfo()
-
-        assertThat(playbackInfo).isDataClassEqualTo(TrackPlaybackInfoFactory.REPLACEMENT_TRACK_ID)
-    }
-
-    @Test
-    fun getTrackPlaybackInfoShouldReturnCorrectPlaybackInfoWhenReplacementAudioQuality() {
-        server.enqueueResponse("${ApiConstants.TRACKS_PATH}_replacement_audio_quality.json")
-
-        val playbackInfo = getTrackPlaybackInfo()
-
-        assertThat(playbackInfo)
-            .isDataClassEqualTo(TrackPlaybackInfoFactory.REPLACEMENT_AUDIO_QUALITY)
-    }
-
-    @Test
-    fun getTrackPlaybackInfoShouldFailWhenInvalidMimeType() {
-        server.enqueueResponse("${ApiConstants.TRACKS_PATH}_unknown_mime_type.json")
-
-        assertThrows<JsonParseException> { getTrackPlaybackInfo() }
-    }
-
-    @Test
-    fun getTrackPlaybackInfoShouldReturnCorrectPlaybackInfoWhenProtectedContent() {
-        server.enqueueResponse("${ApiConstants.TRACKS_PATH}_protected.json")
-
-        val playbackInfo = getTrackPlaybackInfo()
-
-        assertThat(playbackInfo).isDataClassEqualTo(TrackPlaybackInfoFactory.PROTECTED)
-    }
-
-    @Test
-    fun getTrackPlaybackInfoShouldReturnCorrectPlaybackInfoWhenOffline() {
-        server.enqueueResponse("${ApiConstants.TRACKS_PATH}_offline.json")
-
-        val playbackInfo = getTrackPlaybackInfo()
-
-        assertThat(playbackInfo).isDataClassEqualTo(TrackPlaybackInfoFactory.OFFLINE)
-    }
-
-    private fun getTrackPlaybackInfo() = runBlocking {
-        playbackInfoService.getTrackPlaybackInfo(
-            ApiConstants.PLAYBACK_INFO_ID_FOR_DEFAULT,
-            PlaybackMode.STREAM,
-            AssetPresentation.FULL,
-            AudioQuality.LOW,
-            true,
-            ApiConstants.STREAMING_SESSION_ID,
-            null,
-        )
     }
 
     @Test

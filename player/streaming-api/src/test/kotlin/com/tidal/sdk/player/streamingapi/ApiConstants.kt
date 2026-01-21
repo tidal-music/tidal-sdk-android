@@ -2,7 +2,6 @@ package com.tidal.sdk.player.streamingapi
 
 object ApiConstants {
 
-    const val TRACKS_PATH = "playbackinfo/tracks/get_1"
     const val VIDEOS_PATH = "playbackinfo/videos/get_1"
     const val LICENSE_PATH = "drm/licenses/widevine/post"
     const val LICENSE_URL = "licenseUrl"
