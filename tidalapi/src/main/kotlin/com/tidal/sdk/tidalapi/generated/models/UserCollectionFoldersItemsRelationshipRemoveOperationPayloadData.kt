@@ -10,11 +10,13 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param md5Hash
- * @param propertySize
+ * @param id
+ * @param resourceType
  */
 @Serializable
-data class TrackSourceFileCreateOperationPayloadDataAttributes(
-    @SerialName(value = "md5Hash") val md5Hash: kotlin.String,
-    @SerialName(value = "size") val propertySize: kotlin.Long,
+data class UserCollectionFoldersItemsRelationshipRemoveOperationPayloadData(
+    @SerialName(value = "id") val id: kotlin.String,
+    @SerialName(value = "resourceType")
+    @Deprecated(message = "This property is deprecated.")
+    val resourceType: kotlin.String? = null,
 ) {}

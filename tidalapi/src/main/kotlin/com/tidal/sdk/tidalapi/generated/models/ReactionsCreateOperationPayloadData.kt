@@ -15,17 +15,16 @@ import kotlinx.serialization.Serializable
  * @param type
  */
 @Serializable
-data class TrackSourceFileCreateOperationPayloadData(
-    @SerialName(value = "attributes")
-    val attributes: TrackSourceFileCreateOperationPayloadDataAttributes,
+data class ReactionsCreateOperationPayloadData(
+    @SerialName(value = "attributes") val attributes: ReactionsCreateOperationPayloadDataAttributes,
     @SerialName(value = "relationships")
-    val relationships: TrackSourceFileCreateOperationPayloadDataRelationships,
-    @SerialName(value = "type") val type: TrackSourceFileCreateOperationPayloadData.Type,
+    val relationships: ReactionsCreateOperationPayloadDataRelationships,
+    @SerialName(value = "type") val type: ReactionsCreateOperationPayloadData.Type,
 ) {
 
-    /** Values: trackSourceFiles */
+    /** Values: reactions */
     @Serializable
     enum class Type(val value: kotlin.String) {
-        @SerialName(value = "trackSourceFiles") trackSourceFiles("trackSourceFiles")
+        @SerialName(value = "reactions") reactions("reactions")
     }
 }

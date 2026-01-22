@@ -303,7 +303,7 @@ interface Playlists {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Playlist id
-     * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: ownerProfiles (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -313,7 +313,7 @@ interface Playlists {
     @GET("playlists/{id}/relationships/ownerProfiles")
     suspend fun playlistsIdRelationshipsOwnerProfilesGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
@@ -332,7 +332,7 @@ interface Playlists {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Playlist id
-     * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -342,7 +342,7 @@ interface Playlists {
     @GET("playlists/{id}/relationships/owners")
     suspend fun playlistsIdRelationshipsOwnersGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,

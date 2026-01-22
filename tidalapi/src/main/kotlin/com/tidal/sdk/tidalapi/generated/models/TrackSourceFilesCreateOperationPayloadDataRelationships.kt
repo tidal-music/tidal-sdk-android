@@ -9,8 +9,9 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param `data` */
+/** @param track */
 @Serializable
-data class RemovePayload(
-    @SerialName(value = "data") val `data`: kotlin.collections.List<Data>? = null
+data class TrackSourceFilesCreateOperationPayloadDataRelationships(
+    @SerialName(value = "track")
+    val track: TrackSourceFilesCreateOperationPayloadDataRelationshipsTrack
 ) {}

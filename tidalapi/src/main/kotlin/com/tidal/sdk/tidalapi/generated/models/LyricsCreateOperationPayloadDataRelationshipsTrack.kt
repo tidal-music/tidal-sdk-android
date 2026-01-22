@@ -10,13 +10,20 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
+ * @param `data`
  * @param id
  * @param type
  */
 @Serializable
 data class LyricsCreateOperationPayloadDataRelationshipsTrack(
-    @SerialName(value = "id") val id: kotlin.String,
-    @SerialName(value = "type") val type: LyricsCreateOperationPayloadDataRelationshipsTrack.Type,
+    @SerialName(value = "data")
+    val `data`: LyricsCreateOperationPayloadDataRelationshipsTrackData? = null,
+    @SerialName(value = "id")
+    @Deprecated(message = "This property is deprecated.")
+    val id: kotlin.String? = null,
+    @SerialName(value = "type")
+    @Deprecated(message = "This property is deprecated.")
+    val type: LyricsCreateOperationPayloadDataRelationshipsTrack.Type? = null,
 ) {
 
     /** Values: tracks */

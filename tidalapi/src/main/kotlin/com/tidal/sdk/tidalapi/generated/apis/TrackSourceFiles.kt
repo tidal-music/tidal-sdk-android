@@ -1,6 +1,6 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
-import com.tidal.sdk.tidalapi.generated.models.TrackSourceFileCreateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.TrackSourceFilesCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.TrackSourceFilesMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.TrackSourceFilesMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.TrackSourceFilesSingleResourceDataDocument
@@ -99,11 +99,11 @@ interface TrackSourceFiles {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param trackSourceFileCreateOperationPayload (optional)
+     * @param trackSourceFilesCreateOperationPayload (optional)
      * @return [TrackSourceFilesSingleResourceDataDocument]
      */
     @POST("trackSourceFiles")
     suspend fun trackSourceFilesPost(
-        @Body trackSourceFileCreateOperationPayload: TrackSourceFileCreateOperationPayload? = null
+        @Body trackSourceFilesCreateOperationPayload: TrackSourceFilesCreateOperationPayload? = null
     ): Response<TrackSourceFilesSingleResourceDataDocument>
 }

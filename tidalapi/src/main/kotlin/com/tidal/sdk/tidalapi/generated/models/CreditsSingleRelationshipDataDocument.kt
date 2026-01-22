@@ -10,16 +10,13 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param createdAt Datetime of the reaction creation (ISO 8601)
- * @param emoji The type of reaction representing an emoji
+ * @param links
+ * @param `data`
+ * @param included
  */
 @Serializable
-data class ReactionsAttributes(
-
-    /* Datetime of the reaction creation (ISO 8601) */
-
-    @SerialName(value = "createdAt") val createdAt: kotlin.String,
-    /* The type of reaction representing an emoji */
-
-    @SerialName(value = "emoji") val emoji: kotlin.String,
+data class CreditsSingleRelationshipDataDocument(
+    @SerialName(value = "links") val links: Links,
+    @SerialName(value = "data") val `data`: ResourceIdentifier? = null,
+    @SerialName(value = "included") val included: kotlin.collections.List<IncludedInner>? = null,
 ) {}

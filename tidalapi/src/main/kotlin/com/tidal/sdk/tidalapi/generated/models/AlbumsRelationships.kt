@@ -16,6 +16,7 @@ import kotlinx.serialization.Serializable
  * @param items
  * @param owners
  * @param providers
+ * @param replacement
  * @param similarAlbums
  * @param suggestedCoverArts
  */
@@ -27,6 +28,7 @@ data class AlbumsRelationships(
     @SerialName(value = "items") val items: AlbumsItemsMultiRelationshipDataDocument,
     @SerialName(value = "owners") val owners: MultiRelationshipDataDocument,
     @SerialName(value = "providers") val providers: MultiRelationshipDataDocument,
+    @SerialName(value = "replacement") val replacement: SingleRelationshipDataDocument,
     @SerialName(value = "similarAlbums") val similarAlbums: MultiRelationshipDataDocument,
     @SerialName(value = "suggestedCoverArts")
     val suggestedCoverArts: AlbumsSuggestedCoverArtsMultiRelationshipDataDocument,

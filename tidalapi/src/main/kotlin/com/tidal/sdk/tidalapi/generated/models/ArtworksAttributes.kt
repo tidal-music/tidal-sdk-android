@@ -13,6 +13,7 @@ import kotlinx.serialization.Serializable
  * @param files Artwork files
  * @param mediaType Media type of artwork files
  * @param sourceFile
+ * @param visualMetadata
  */
 @Serializable
 data class ArtworksAttributes(
@@ -24,6 +25,7 @@ data class ArtworksAttributes(
 
     @SerialName(value = "mediaType") val mediaType: ArtworksAttributes.MediaType,
     @SerialName(value = "sourceFile") val sourceFile: ArtworkSourceFile? = null,
+    @SerialName(value = "visualMetadata") val visualMetadata: ArtworkVisualMetadata? = null,
 ) {
 
     /**

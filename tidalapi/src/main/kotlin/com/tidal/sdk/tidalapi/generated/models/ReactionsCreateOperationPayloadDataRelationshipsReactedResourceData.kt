@@ -14,9 +14,10 @@ import kotlinx.serialization.Serializable
  * @param type
  */
 @Serializable
-data class ReactedResourceIdentifier(
+data class ReactionsCreateOperationPayloadDataRelationshipsReactedResourceData(
     @SerialName(value = "id") val id: kotlin.String,
-    @SerialName(value = "type") val type: ReactedResourceIdentifier.Type,
+    @SerialName(value = "type")
+    val type: ReactionsCreateOperationPayloadDataRelationshipsReactedResourceData.Type,
 ) {
 
     /** Values: albums,tracks,artists,videos,playlists */

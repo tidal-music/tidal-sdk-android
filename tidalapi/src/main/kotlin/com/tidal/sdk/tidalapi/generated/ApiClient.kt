@@ -8,6 +8,7 @@ import com.tidal.sdk.tidalapi.generated.apis.ArtistClaims
 import com.tidal.sdk.tidalapi.generated.apis.ArtistRoles
 import com.tidal.sdk.tidalapi.generated.apis.Artists
 import com.tidal.sdk.tidalapi.generated.apis.Artworks
+import com.tidal.sdk.tidalapi.generated.apis.Credits
 import com.tidal.sdk.tidalapi.generated.apis.DynamicPages
 import com.tidal.sdk.tidalapi.generated.apis.Genres
 import com.tidal.sdk.tidalapi.generated.apis.Lyrics
@@ -26,6 +27,7 @@ import com.tidal.sdk.tidalapi.generated.apis.TrackManifests
 import com.tidal.sdk.tidalapi.generated.apis.TrackSourceFiles
 import com.tidal.sdk.tidalapi.generated.apis.TrackStatistics
 import com.tidal.sdk.tidalapi.generated.apis.Tracks
+import com.tidal.sdk.tidalapi.generated.apis.TracksMetadataStatus
 import com.tidal.sdk.tidalapi.generated.apis.UserCollectionFolders
 import com.tidal.sdk.tidalapi.generated.apis.UserCollections
 import com.tidal.sdk.tidalapi.generated.apis.UserEntitlements
@@ -74,6 +76,11 @@ class TidalApiClient(credentialsProvider: CredentialsProvider, baseUrl: String =
     /** Returns an instance of the [Artworks] which can be used to make API calls to the */
     fun createArtworks(): Artworks {
         return retrofit.create(Artworks::class.java)
+    }
+
+    /** Returns an instance of the [Credits] which can be used to make API calls to the */
+    fun createCredits(): Credits {
+        return retrofit.create(Credits::class.java)
     }
 
     /** Returns an instance of the [DynamicPages] which can be used to make API calls to the */
@@ -166,6 +173,13 @@ class TidalApiClient(credentialsProvider: CredentialsProvider, baseUrl: String =
     /** Returns an instance of the [Tracks] which can be used to make API calls to the */
     fun createTracks(): Tracks {
         return retrofit.create(Tracks::class.java)
+    }
+
+    /**
+     * Returns an instance of the [TracksMetadataStatus] which can be used to make API calls to the
+     */
+    fun createTracksMetadataStatus(): TracksMetadataStatus {
+        return retrofit.create(TracksMetadataStatus::class.java)
     }
 
     /**
