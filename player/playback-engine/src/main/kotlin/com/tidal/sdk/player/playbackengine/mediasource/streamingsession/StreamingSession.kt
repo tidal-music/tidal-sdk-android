@@ -10,16 +10,29 @@ import com.tidal.sdk.player.events.EventReporter
 import com.tidal.sdk.player.events.model.StreamingSessionStart
 import com.tidal.sdk.player.playbackengine.mediasource.streamingsession.StreamingSession.Explicit
 import com.tidal.sdk.player.playbackengine.mediasource.streamingsession.StreamingSession.Implicit
+import com.tidal.sdk.player.playbackengine.quality.AudioQualityRepository
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
 import java.util.UUID
 
 internal sealed class StreamingSession
-private constructor(val id: UUID, val configuration: Configuration, val extras: Extras?) {
+private constructor(
+    val id: UUID,
+    val configuration: Configuration,
+    val extras: Extras?,
+    val isAdaptivePlayback: Boolean,
+) {
 
     fun createUndeterminedPlaybackStatistics(
         idealStartTimestampMs: PlaybackStatistics.IdealStartTimestampMs,
         extras: Extras?,
-    ) = PlaybackStatistics.Undetermined(id, idealStartTimestampMs, emptyList(), extras)
+    ) =
+        PlaybackStatistics.Undetermined(
+            id,
+            idealStartTimestampMs,
+            emptyList(),
+            extras,
+            isAdaptivePlayback,
+        )
 
     fun createPlaybackSession(
         playbackInfo: PlaybackInfo,
@@ -98,17 +111,26 @@ private constructor(val id: UUID, val configuration: Configuration, val extras: 
                 )
         }
 
-    class Explicit(id: UUID, configuration: Configuration, extras: Extras?) :
-        StreamingSession(id, configuration, extras)
+    class Explicit(
+        id: UUID,
+        configuration: Configuration,
+        extras: Extras?,
+        isAdaptivePlayback: Boolean,
+    ) : StreamingSession(id, configuration, extras, isAdaptivePlayback)
 
-    class Implicit(id: UUID, configuration: Configuration, extras: Extras?) :
-        StreamingSession(id, configuration, extras)
+    class Implicit(
+        id: UUID,
+        configuration: Configuration,
+        extras: Extras?,
+        isAdaptivePlayback: Boolean,
+    ) : StreamingSession(id, configuration, extras, isAdaptivePlayback)
 
     sealed class Creator<T : Factory>
     private constructor(
         private val factory: T,
         private val trueTimeWrapper: TrueTimeWrapper,
         private val eventReporter: EventReporter,
+        private val audioQualityRepository: AudioQualityRepository,
     ) {
 
         abstract val startReason: StreamingSessionStart.StartReason
@@ -117,8 +139,9 @@ private constructor(val id: UUID, val configuration: Configuration, val extras: 
             sessionProductType: ProductType,
             sessionProductId: String,
             extras: Extras?,
-        ) =
-            factory.create(extras).also {
+        ): StreamingSession {
+            val isAdaptivePlayback = audioQualityRepository.enableAdaptive
+            return factory.create(extras, isAdaptivePlayback).also {
                 eventReporter.report(
                     StreamingSessionStart.Payload(
                         it.id.toString(),
@@ -131,12 +154,20 @@ private constructor(val id: UUID, val configuration: Configuration, val extras: 
                     extras,
                 )
             }
+        }
 
         class Explicit(
             factory: Factory.Explicit,
             trueTimeWrapper: TrueTimeWrapper,
             eventReporter: EventReporter,
-        ) : Creator<Factory.Explicit>(factory, trueTimeWrapper, eventReporter) {
+            audioQualityRepository: AudioQualityRepository,
+        ) :
+            Creator<Factory.Explicit>(
+                factory,
+                trueTimeWrapper,
+                eventReporter,
+                audioQualityRepository,
+            ) {
 
             override val startReason = StreamingSessionStart.StartReason.EXPLICIT
         }
@@ -145,7 +176,14 @@ private constructor(val id: UUID, val configuration: Configuration, val extras: 
             factory: Factory.Implicit,
             trueTimeWrapper: TrueTimeWrapper,
             eventReporter: EventReporter,
-        ) : Creator<Factory.Implicit>(factory, trueTimeWrapper, eventReporter) {
+            audioQualityRepository: AudioQualityRepository,
+        ) :
+            Creator<Factory.Implicit>(
+                factory,
+                trueTimeWrapper,
+                eventReporter,
+                audioQualityRepository,
+            ) {
 
             override val startReason = StreamingSessionStart.StartReason.IMPLICIT
         }
@@ -157,20 +195,20 @@ private constructor(val id: UUID, val configuration: Configuration, val extras: 
         protected val configuration: Configuration,
     ) {
 
-        abstract fun create(extras: Extras?): StreamingSession
+        abstract fun create(extras: Extras?, isAdaptivePlayback: Boolean): StreamingSession
 
         class Explicit(uuidWrapper: UUIDWrapper, configuration: Configuration) :
             Factory(uuidWrapper, configuration) {
 
-            override fun create(extras: Extras?): StreamingSession =
-                Explicit(uuidWrapper.randomUUID, configuration, extras)
+            override fun create(extras: Extras?, isAdaptivePlayback: Boolean): StreamingSession =
+                Explicit(uuidWrapper.randomUUID, configuration, extras, isAdaptivePlayback)
         }
 
         class Implicit(uuidWrapper: UUIDWrapper, configuration: Configuration) :
             Factory(uuidWrapper, configuration) {
 
-            override fun create(extras: Extras?): StreamingSession =
-                Implicit(uuidWrapper.randomUUID, configuration, extras)
+            override fun create(extras: Extras?, isAdaptivePlayback: Boolean): StreamingSession =
+                Implicit(uuidWrapper.randomUUID, configuration, extras, isAdaptivePlayback)
         }
     }
 }

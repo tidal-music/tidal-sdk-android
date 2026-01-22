@@ -36,6 +36,7 @@ sealed class PlaybackStatistics<T : PlaybackStatistics.Payload> :
         val endReason: EndReason
         val errorMessage: String?
         val errorCode: String?
+        val tags: List<String>
 
         @Keep
         enum class Cdm {

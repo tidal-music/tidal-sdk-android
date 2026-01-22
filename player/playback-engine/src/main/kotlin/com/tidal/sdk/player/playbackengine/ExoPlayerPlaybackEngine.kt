@@ -1029,6 +1029,7 @@ internal class ExoPlayerPlaybackEngine(
                             endReason,
                             errorMessage,
                             errorCode,
+                            isAdaptivePlayback,
                         )
 
                     is PlaybackStatistics.Success.Prepared.Video ->

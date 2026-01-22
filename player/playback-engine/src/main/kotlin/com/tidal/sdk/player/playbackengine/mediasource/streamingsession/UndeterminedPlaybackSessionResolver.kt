@@ -27,6 +27,7 @@ internal class UndeterminedPlaybackSessionResolver(
                         actualAudioMode = playbackInfo.audioMode,
                         MediaStorage.INTERNET,
                         extras,
+                        isAdaptivePlayback,
                     )
 
                 is PlaybackInfo.Video ->
@@ -41,6 +42,7 @@ internal class UndeterminedPlaybackSessionResolver(
                         actualStreamType = playbackInfo.streamType,
                         MediaStorage.INTERNET,
                         extras,
+                        isAdaptivePlayback,
                     )
 
                 is PlaybackInfo.Broadcast ->
@@ -53,6 +55,7 @@ internal class UndeterminedPlaybackSessionResolver(
                         adaptations,
                         MediaStorage.INTERNET,
                         extras,
+                        isAdaptivePlayback,
                     )
 
                 is PlaybackInfo.UC ->
@@ -64,6 +67,7 @@ internal class UndeterminedPlaybackSessionResolver(
                         adaptations,
                         MediaStorage.INTERNET,
                         extras,
+                        isAdaptivePlayback,
                     )
 
                 is PlaybackInfo.Offline.Track ->
@@ -78,6 +82,7 @@ internal class UndeterminedPlaybackSessionResolver(
                         actualAudioMode = playbackInfo.track.audioMode,
                         playbackInfo.mediaStorage,
                         extras,
+                        isAdaptivePlayback,
                     )
 
                 is PlaybackInfo.Offline.Video ->
@@ -92,6 +97,7 @@ internal class UndeterminedPlaybackSessionResolver(
                         actualStreamType = playbackInfo.video.streamType,
                         playbackInfo.mediaStorage,
                         extras,
+                        isAdaptivePlayback,
                     )
             }
         }

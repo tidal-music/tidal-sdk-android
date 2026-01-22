@@ -29,6 +29,7 @@ constructor(
         override val errorMessage: String?,
         override val errorCode: String,
         override val endReason: EndReason,
+        override val tags: List<String> = emptyList(),
     ) : PlaybackStatistics.Payload {
 
         override val actualStartTimestamp = null

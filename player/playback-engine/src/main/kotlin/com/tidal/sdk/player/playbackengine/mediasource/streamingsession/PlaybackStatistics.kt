@@ -17,6 +17,7 @@ internal sealed interface PlaybackStatistics {
     val streamingSessionId: UUID
     val adaptations: List<Adaptation>
     val extras: Extras?
+    val isAdaptivePlayback: Boolean
 
     operator fun plus(adaptation: Adaptation): PlaybackStatistics
 
@@ -39,6 +40,7 @@ internal sealed interface PlaybackStatistics {
         override val idealStartTimestampMs: IdealStartTimestampMs,
         override val adaptations: List<Adaptation>,
         override val extras: Extras?,
+        override val isAdaptivePlayback: Boolean,
     ) : PlaybackStatistics {
 
         override fun plus(adaptation: Adaptation) =
@@ -72,6 +74,7 @@ internal sealed interface PlaybackStatistics {
                 val actualAudioMode: AudioMode,
                 override val mediaStorage: MediaStorage,
                 override val extras: Extras?,
+                override val isAdaptivePlayback: Boolean,
             ) : Prepared {
 
                 override fun plus(adaptation: Adaptation) =
@@ -93,6 +96,7 @@ internal sealed interface PlaybackStatistics {
                 val actualStreamType: StreamType,
                 override val mediaStorage: MediaStorage,
                 override val extras: Extras?,
+                override val isAdaptivePlayback: Boolean,
             ) : Prepared {
 
                 override fun plus(adaptation: Adaptation) =
@@ -111,6 +115,7 @@ internal sealed interface PlaybackStatistics {
                 override val adaptations: List<Adaptation>,
                 override val mediaStorage: MediaStorage,
                 override val extras: Extras?,
+                override val isAdaptivePlayback: Boolean,
             ) : Prepared {
 
                 override val actualQuality = AudioQuality.LOW
@@ -132,6 +137,7 @@ internal sealed interface PlaybackStatistics {
                 override val adaptations: List<Adaptation>,
                 override val mediaStorage: MediaStorage,
                 override val extras: Extras?,
+                override val isAdaptivePlayback: Boolean,
             ) : Prepared {
 
                 override fun plus(adaptation: Adaptation) =
