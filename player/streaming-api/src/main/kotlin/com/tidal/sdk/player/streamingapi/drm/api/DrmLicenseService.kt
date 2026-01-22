@@ -1,9 +1,11 @@
 package com.tidal.sdk.player.streamingapi.drm.api
 
-import com.tidal.sdk.player.streamingapi.drm.model.DrmLicense
-import com.tidal.sdk.player.streamingapi.drm.model.DrmLicenseRequest
+import okhttp3.RequestBody
+import okhttp3.ResponseBody
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
+import retrofit2.http.Url
 
 /**
  * A service interface for the drm endpoint.
@@ -13,10 +15,14 @@ import retrofit2.http.POST
 internal interface DrmLicenseService {
 
     /**
-     * Returns a [DrmLicense] which we can use for decrypting a protected track or video.
+     * Returns DRM response body.
      *
-     * @param[drmLicenseRequest] The request body as [DrmLicenseRequest].
+     * @param[licenseUrl] The URL to call for the DRM license request.
+     * @param[body] The binary payload from the CDM.
      */
-    @POST("drm/licenses/widevine")
-    suspend fun getWidevineLicense(@Body drmLicenseRequest: DrmLicenseRequest): DrmLicense
+    @POST
+    suspend fun getWidevineLicense(
+        @Url licenseUrl: String,
+        @Body body: RequestBody,
+    ): Response<ResponseBody>
 }

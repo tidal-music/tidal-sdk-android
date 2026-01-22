@@ -5,10 +5,7 @@ import androidx.media3.common.util.Util
 import androidx.media3.exoplayer.drm.ExoMediaDrm
 import assertk.assertThat
 import assertk.assertions.isSameInstanceAs
-import com.tidal.sdk.player.commonandroid.Base64Codec
 import com.tidal.sdk.player.playbackengine.StreamingApiRepository
-import com.tidal.sdk.player.streamingapi.drm.model.DrmLicense
-import com.tidal.sdk.player.streamingapi.drm.model.DrmLicenseRequest
 import kotlinx.coroutines.runBlocking
 import okhttp3.Call
 import okhttp3.OkHttpClient
@@ -25,8 +22,8 @@ import org.mockito.kotlin.whenever
 internal class TidalMediaDrmCallbackTest {
 
     private val streamingApiRepository = mock<StreamingApiRepository>()
-    private val base64Codec = mock<Base64Codec>()
-    private val drmLicenseRequestFactory = mock<DrmLicenseRequestFactory>()
+    private val streamingSessionId = "test-streaming-session-id"
+    private val licenseUrl = "test-license-url"
     private val drmMode = DrmMode.Streaming
     private val okHttpClient = mock<OkHttpClient>()
     private val provisionRequestBuilder = mock<Request.Builder>()
@@ -34,8 +31,8 @@ internal class TidalMediaDrmCallbackTest {
     private val tidalMediaDrmCallback =
         TidalMediaDrmCallback(
             streamingApiRepository,
-            base64Codec,
-            drmLicenseRequestFactory,
+            streamingSessionId,
+            licenseUrl,
             drmMode,
             okHttpClient,
             lazy { provisionRequestBuilder },
@@ -47,17 +44,20 @@ internal class TidalMediaDrmCallbackTest {
     fun executeKeyRequestWithDrmModeStreamingAndResponseSuccess() = runBlocking {
         val request =
             mock<ExoMediaDrm.KeyRequest> { on { data } doReturn "keyRequest".toByteArray() }
-        val encodedRequestData = "encodedRequestData"
-        val drmLicenseRequest = mock<DrmLicenseRequest>()
         val expectedDrmLicensePayload = "expectedDrmLicensePayload".toByteArray()
-        val drmLicense =
-            mock<DrmLicense> { on { payload } doReturn String(expectedDrmLicensePayload) }
-        whenever(base64Codec.encode(request.data)).thenReturn(encodedRequestData.toByteArray())
-        whenever(drmLicenseRequestFactory.create(encodedRequestData)).thenReturn(drmLicenseRequest)
-        whenever(streamingApiRepository.getDrmLicense(drmLicenseRequest, emptyMap()))
-            .thenReturn(drmLicense)
-        whenever(base64Codec.decode(drmLicense.payload.toByteArray()))
-            .thenReturn(expectedDrmLicensePayload)
+        val mockResponseBody =
+            mock<ResponseBody> { on { bytes() } doReturn expectedDrmLicensePayload }
+        val mockResponse =
+            mock<retrofit2.Response<ResponseBody>> { on { body() } doReturn mockResponseBody }
+        whenever(
+                streamingApiRepository.getDrmLicense(
+                    licenseUrl,
+                    request.data,
+                    streamingSessionId,
+                    emptyMap(),
+                )
+            )
+            .thenReturn(mockResponse)
 
         val actual = tidalMediaDrmCallback.executeKeyRequest(C.WIDEVINE_UUID, request)
 
@@ -68,12 +68,15 @@ internal class TidalMediaDrmCallbackTest {
     fun executeKeyRequestWithDrmModeStreamingAndResponseError() = runBlocking {
         val request =
             mock<ExoMediaDrm.KeyRequest> { on { data } doReturn "keyRequest".toByteArray() }
-        val encodedRequestData = "encodedRequestData"
-        val drmLicenseRequest = mock<DrmLicenseRequest>()
         val expected = mock<RuntimeException>()
-        whenever(base64Codec.encode(request.data)).thenReturn(encodedRequestData.toByteArray())
-        whenever(drmLicenseRequestFactory.create(encodedRequestData)).thenReturn(drmLicenseRequest)
-        whenever(streamingApiRepository.getDrmLicense(drmLicenseRequest, emptyMap()))
+        whenever(
+                streamingApiRepository.getDrmLicense(
+                    licenseUrl,
+                    request.data,
+                    streamingSessionId,
+                    emptyMap(),
+                )
+            )
             .thenThrow(expected)
 
         val actual =

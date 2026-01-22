@@ -3,7 +3,6 @@ package com.tidal.sdk.player.streamingapi.playbackinfo.api
 import com.tidal.sdk.player.common.model.AssetPresentation
 import com.tidal.sdk.player.common.model.AudioQuality
 import com.tidal.sdk.player.common.model.VideoQuality
-import com.tidal.sdk.player.streamingapi.TrackPlaybackInfoFactory
 import com.tidal.sdk.player.streamingapi.VideoPlaybackInfoFactory
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackMode
 import org.junit.jupiter.api.fail
@@ -15,21 +14,6 @@ import org.junit.jupiter.api.fail
  */
 @Suppress("ThrowingExceptionsWithoutMessageOrCause")
 internal class PlaybackInfoServiceStub : PlaybackInfoService {
-
-    override suspend fun getTrackPlaybackInfo(
-        trackId: String,
-        playbackMode: PlaybackMode,
-        assetPresentation: AssetPresentation,
-        audioQuality: AudioQuality,
-        immersiveAudio: Boolean,
-        streamingSessionId: String,
-        playlistUuid: String?,
-    ) =
-        when (trackId) {
-            PLAYBACK_INFO_ID_FOR_UNCAUGHT_EXCEPTION -> throw NullPointerException()
-            PLAYBACK_INFO_ID_SUCCESS -> TrackPlaybackInfoFactory.DEFAULT
-            else -> fail("Unsupported call")
-        }
 
     override suspend fun getVideoPlaybackInfo(
         videoId: String,

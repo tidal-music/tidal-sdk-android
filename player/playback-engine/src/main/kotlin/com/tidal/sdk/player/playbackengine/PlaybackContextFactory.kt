@@ -2,7 +2,6 @@ package com.tidal.sdk.player.playbackengine
 
 import com.tidal.sdk.player.common.model.AssetPresentation
 import com.tidal.sdk.player.common.model.AudioMode
-import com.tidal.sdk.player.common.model.AudioQuality
 import com.tidal.sdk.player.playbackengine.model.PlaybackContext
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
 
@@ -15,10 +14,10 @@ internal class PlaybackContextFactory {
                 PlaybackContext.Track(
                     playbackInfo.audioMode,
                     playbackInfo.audioQuality,
-                    playbackInfo.audioQuality.toBitRate(),
-                    playbackInfo.bitDepth,
-                    getCodec(playbackInfo.audioMode, playbackInfo.audioQuality),
-                    playbackInfo.sampleRate,
+                    null,
+                    null,
+                    null,
+                    null,
                     playbackInfo.trackId.toString(),
                     playbackInfo.assetPresentation,
                     0F,
@@ -45,9 +44,9 @@ internal class PlaybackContextFactory {
                 PlaybackContext.Track(
                     AudioMode.STEREO,
                     playbackInfo.audioQuality,
-                    playbackInfo.audioQuality.toBitRate(),
                     null,
-                    getCodec(AudioMode.STEREO, playbackInfo.audioQuality),
+                    null,
+                    null,
                     null,
                     playbackInfo.id,
                     AssetPresentation.FULL,
@@ -79,10 +78,10 @@ internal class PlaybackContextFactory {
                 PlaybackContext.Track(
                     playbackInfo.track.audioMode,
                     playbackInfo.track.audioQuality,
-                    playbackInfo.track.audioQuality.toBitRate(),
-                    playbackInfo.track.bitDepth,
-                    getCodec(playbackInfo.track.audioMode, playbackInfo.track.audioQuality),
-                    playbackInfo.track.sampleRate,
+                    null,
+                    null,
+                    null,
+                    null,
                     playbackInfo.track.trackId.toString(),
                     playbackInfo.track.assetPresentation,
                     0F,
@@ -103,31 +102,5 @@ internal class PlaybackContextFactory {
                     referenceId,
                 )
         }
-    }
-
-    private fun AudioQuality.toBitRate(): Int? {
-        return when (this) {
-            AudioQuality.LOW -> BIT_RATE_LOW
-            AudioQuality.HIGH -> BIT_RATE_HIGH
-            else -> null
-        }
-    }
-
-    private fun getCodec(audioMode: AudioMode, audioQuality: AudioQuality): String? {
-        if (audioMode != AudioMode.STEREO) return null
-        return when (audioQuality) {
-            AudioQuality.LOW,
-            AudioQuality.HIGH -> CODEC_AAC
-            AudioQuality.LOSSLESS,
-            AudioQuality.HI_RES_LOSSLESS -> CODEC_FLAC
-        }
-    }
-
-    private companion object {
-        private const val BIT_RATE_LOW = 96_000
-        private const val BIT_RATE_HIGH = 320_000
-
-        private const val CODEC_AAC = "aac"
-        private const val CODEC_FLAC = "flac"
     }
 }

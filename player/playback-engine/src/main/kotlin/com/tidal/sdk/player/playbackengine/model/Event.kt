@@ -50,6 +50,9 @@ sealed interface Event {
     /** The output device has been updated. */
     data class OutputDeviceUpdated(val outputDevice: OutputDevice) : Event
 
+    /** Playback quality has been updated. */
+    data class PlaybackQualityChanged(val playbackContext: PlaybackContext) : Event
+
     /** Indicates that the PlaybackEngine has been released. */
     object Release : Event
 
