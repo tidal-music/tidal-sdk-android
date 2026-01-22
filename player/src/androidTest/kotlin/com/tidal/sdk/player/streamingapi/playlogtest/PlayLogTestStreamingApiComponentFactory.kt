@@ -87,7 +87,6 @@ private class PlayLogTestStreamingApi(private val trackPlaybackInfo: PlaybackInf
         playbackMode: PlaybackMode,
         immersiveAudio: Boolean,
         streamingSessionId: String,
-        playlistUuid: String?,
     ): PlaybackInfo {
         return trackPlaybackInfo.copy(streamingSessionId = streamingSessionId)
     }

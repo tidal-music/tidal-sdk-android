@@ -39,7 +39,6 @@ internal class PlaybackInfoRepositoryDefault(
         playbackMode: PlaybackMode,
         immersiveAudio: Boolean,
         streamingSessionId: String,
-        playlistUuid: String?,
     ) =
         try {
             val data =
