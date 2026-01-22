@@ -27,6 +27,7 @@ internal sealed class MainActivityState private constructor() {
         val streamingAudioQualityOnCell: AudioQuality,
         val loudnessNormalizationMode: LoudnessNormalizationMode,
         val immersiveAudio: Boolean,
+        val enableAdaptive: Boolean,
         val currentMediaProduct: MediaProduct?,
         val nextMediaProduct: MediaProduct?,
         val playbackState: PlaybackState,
