@@ -59,6 +59,9 @@ internal class SingleHandlerPlaybackEngineThreadingTest {
             override var immersiveAudio = true
                 set(_) = assignThreadAndReleaseLock()
 
+            override var enableAdaptive = false
+                set(_) = assignThreadAndReleaseLock()
+
             override var loudnessNormalizationMode = LoudnessNormalizationMode.ALBUM
                 set(_) = assignThreadAndReleaseLock()
 

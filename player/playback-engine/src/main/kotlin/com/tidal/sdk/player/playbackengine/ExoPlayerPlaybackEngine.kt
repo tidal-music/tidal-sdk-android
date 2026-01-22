@@ -208,6 +208,12 @@ internal class ExoPlayerPlaybackEngine(
             audioModeRepository.immersiveAudio = value
         }
 
+    override var enableAdaptive: Boolean
+        get() = audioQualityRepository.enableAdaptive
+        set(value) {
+            audioQualityRepository.enableAdaptive = value
+        }
+
     private var extendedExoPlayer by
         Delegates.observable(extendedExoPlayerFactory.create(this, this)) { _, oldValue, newValue ->
             videoSurfaceViewAndSurfaceHolder?.second?.let {
