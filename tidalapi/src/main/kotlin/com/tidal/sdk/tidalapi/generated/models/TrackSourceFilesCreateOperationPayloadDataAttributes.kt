@@ -10,16 +10,11 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param createdAt Datetime of the reaction creation (ISO 8601)
- * @param emoji The type of reaction representing an emoji
+ * @param md5Hash
+ * @param propertySize
  */
 @Serializable
-data class ReactionsAttributes(
-
-    /* Datetime of the reaction creation (ISO 8601) */
-
-    @SerialName(value = "createdAt") val createdAt: kotlin.String,
-    /* The type of reaction representing an emoji */
-
-    @SerialName(value = "emoji") val emoji: kotlin.String,
+data class TrackSourceFilesCreateOperationPayloadDataAttributes(
+    @SerialName(value = "md5Hash") val md5Hash: kotlin.String,
+    @SerialName(value = "size") val propertySize: kotlin.Long,
 ) {}

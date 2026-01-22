@@ -1,6 +1,6 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
-import com.tidal.sdk.tidalapi.generated.models.CreateReactionPayload
+import com.tidal.sdk.tidalapi.generated.models.ReactionsCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.ReactionsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ReactionsMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ReactionsSingleResourceDataDocument
@@ -15,6 +15,15 @@ interface Reactions {
         @SerialName(value = "ALL") ALL("ALL"),
         @SerialName(value = "COUNTS_BY_TYPE") COUNTS_BY_TYPE("COUNTS_BY_TYPE"),
         @SerialName(value = "TOTAL_COUNT") TOTAL_COUNT("TOTAL_COUNT"),
+    }
+
+    /** enum for parameter filterReactedResourceType */
+    enum class FilterReactedResourceTypeReactionsGet(val value: kotlin.String) {
+        @SerialName(value = "albums") albums("albums"),
+        @SerialName(value = "tracks") tracks("tracks"),
+        @SerialName(value = "artists") artists("artists"),
+        @SerialName(value = "videos") videos("videos"),
+        @SerialName(value = "playlists") playlists("playlists"),
     }
 
     /**
@@ -36,10 +45,10 @@ interface Reactions {
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: ownerProfiles (optional)
+     * @param filterEmoji Filter by emoji (optional)
      * @param filterOwnerId Filter by owner id (optional)
-     * @param filterReactedResourceId Filter by resource ID (optional)
-     * @param filterReactedResourceType Filter by resource type (optional)
-     * @param filterReactionType Filter by reaction type (optional)
+     * @param filterReactedResourceId Filter by reacted resource ID (optional)
+     * @param filterReactedResourceType Filter by reacted resource type (optional)
      * @return [ReactionsMultiResourceDataDocument]
      */
     @GET("reactions")
@@ -49,6 +58,8 @@ interface Reactions {
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("filter[emoji]")
+        filterEmoji: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[owner.id]")
         filterOwnerId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[reactedResource.id]")
@@ -57,8 +68,6 @@ interface Reactions {
         @Query("filter[reactedResource.type]")
         filterReactedResourceType: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? =
             null,
-        @Query("filter[reactionType]")
-        filterReactionType: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<ReactionsMultiResourceDataDocument>
 
     /**
@@ -118,11 +127,11 @@ interface Reactions {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param createReactionPayload (optional)
+     * @param reactionsCreateOperationPayload (optional)
      * @return [ReactionsSingleResourceDataDocument]
      */
     @POST("reactions")
     suspend fun reactionsPost(
-        @Body createReactionPayload: CreateReactionPayload? = null
+        @Body reactionsCreateOperationPayload: ReactionsCreateOperationPayload? = null
     ): Response<ReactionsSingleResourceDataDocument>
 }

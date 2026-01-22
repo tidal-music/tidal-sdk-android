@@ -1,10 +1,10 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
-import com.tidal.sdk.tidalapi.generated.models.AddPayload
 import com.tidal.sdk.tidalapi.generated.models.FolderCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.FolderUpdateOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.RemovePayload
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersItemsMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersItemsRelationshipAddOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersItemsRelationshipRemoveOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersSingleResourceDataDocument
@@ -114,7 +114,7 @@ interface UserCollectionFolders {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Folder Id
-     * @param removePayload (optional)
+     * @param userCollectionFoldersItemsRelationshipRemoveOperationPayload (optional)
      * @return [Unit]
      */
     @HTTP(
@@ -124,7 +124,10 @@ interface UserCollectionFolders {
     )
     suspend fun userCollectionFoldersIdRelationshipsItemsDelete(
         @Path("id") id: kotlin.String,
-        @Body removePayload: RemovePayload? = null,
+        @Body
+        userCollectionFoldersItemsRelationshipRemoveOperationPayload:
+            UserCollectionFoldersItemsRelationshipRemoveOperationPayload? =
+            null,
     ): Response<Unit>
 
     /** enum for parameter sort */
@@ -181,13 +184,16 @@ interface UserCollectionFolders {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Folder Id
-     * @param addPayload (optional)
+     * @param userCollectionFoldersItemsRelationshipAddOperationPayload (optional)
      * @return [Unit]
      */
     @POST("userCollectionFolders/{id}/relationships/items")
     suspend fun userCollectionFoldersIdRelationshipsItemsPost(
         @Path("id") id: kotlin.String,
-        @Body addPayload: AddPayload? = null,
+        @Body
+        userCollectionFoldersItemsRelationshipAddOperationPayload:
+            UserCollectionFoldersItemsRelationshipAddOperationPayload? =
+            null,
     ): Response<Unit>
 
     /**

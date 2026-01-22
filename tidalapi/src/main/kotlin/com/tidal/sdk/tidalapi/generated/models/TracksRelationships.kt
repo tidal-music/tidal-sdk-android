@@ -12,11 +12,14 @@ import kotlinx.serialization.Serializable
 /**
  * @param albums
  * @param artists
+ * @param credits
  * @param genres
  * @param lyrics
+ * @param metadataStatus
  * @param owners
  * @param providers
  * @param radio
+ * @param replacement
  * @param shares
  * @param similarTracks
  * @param sourceFile
@@ -26,11 +29,14 @@ import kotlinx.serialization.Serializable
 data class TracksRelationships(
     @SerialName(value = "albums") val albums: MultiRelationshipDataDocument,
     @SerialName(value = "artists") val artists: MultiRelationshipDataDocument,
+    @SerialName(value = "credits") val credits: MultiRelationshipDataDocument,
     @SerialName(value = "genres") val genres: MultiRelationshipDataDocument,
     @SerialName(value = "lyrics") val lyrics: MultiRelationshipDataDocument,
+    @SerialName(value = "metadataStatus") val metadataStatus: SingleRelationshipDataDocument,
     @SerialName(value = "owners") val owners: MultiRelationshipDataDocument,
     @SerialName(value = "providers") val providers: MultiRelationshipDataDocument,
     @SerialName(value = "radio") val radio: MultiRelationshipDataDocument,
+    @SerialName(value = "replacement") val replacement: SingleRelationshipDataDocument,
     @SerialName(value = "shares") val shares: MultiRelationshipDataDocument,
     @SerialName(value = "similarTracks") val similarTracks: MultiRelationshipDataDocument,
     @SerialName(value = "sourceFile") val sourceFile: SingleRelationshipDataDocument,

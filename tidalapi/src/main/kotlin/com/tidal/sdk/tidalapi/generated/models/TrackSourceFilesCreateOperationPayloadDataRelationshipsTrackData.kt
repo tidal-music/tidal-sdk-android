@@ -14,9 +14,10 @@ import kotlinx.serialization.Serializable
  * @param type
  */
 @Serializable
-data class AttachSourceFileToTrack(
+data class TrackSourceFilesCreateOperationPayloadDataRelationshipsTrackData(
     @SerialName(value = "id") val id: kotlin.String,
-    @SerialName(value = "type") val type: AttachSourceFileToTrack.Type,
+    @SerialName(value = "type")
+    val type: TrackSourceFilesCreateOperationPayloadDataRelationshipsTrackData.Type,
 ) {
 
     /** Values: tracks */

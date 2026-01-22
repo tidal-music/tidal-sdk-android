@@ -9,8 +9,14 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param `data` */
+/**
+ * @param `data`
+ * @param links
+ * @param included
+ */
 @Serializable
-data class ReactedResourceRelationship(
-    @SerialName(value = "data") val `data`: ReactedResourceIdentifier
+data class CreditsSingleResourceDataDocument(
+    @SerialName(value = "data") val `data`: CreditsResourceObject,
+    @SerialName(value = "links") val links: Links,
+    @SerialName(value = "included") val included: kotlin.collections.List<IncludedInner>? = null,
 ) {}

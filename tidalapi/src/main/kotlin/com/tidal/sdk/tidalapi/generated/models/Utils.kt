@@ -16,6 +16,7 @@ fun getOneOfSerializer() = SerializersModule {
         subclass(ArtistRolesResourceObject::class, ArtistRolesResourceObject.serializer())
         subclass(ArtistsResourceObject::class, ArtistsResourceObject.serializer())
         subclass(ArtworksResourceObject::class, ArtworksResourceObject.serializer())
+        subclass(CreditsResourceObject::class, CreditsResourceObject.serializer())
         subclass(DynamicPagesResourceObject::class, DynamicPagesResourceObject.serializer())
         subclass(GenresResourceObject::class, GenresResourceObject.serializer())
         subclass(LyricsResourceObject::class, LyricsResourceObject.serializer())
@@ -42,6 +43,10 @@ fun getOneOfSerializer() = SerializersModule {
         subclass(TrackManifestsResourceObject::class, TrackManifestsResourceObject.serializer())
         subclass(TrackSourceFilesResourceObject::class, TrackSourceFilesResourceObject.serializer())
         subclass(TrackStatisticsResourceObject::class, TrackStatisticsResourceObject.serializer())
+        subclass(
+            TracksMetadataStatusResourceObject::class,
+            TracksMetadataStatusResourceObject.serializer(),
+        )
         subclass(TracksResourceObject::class, TracksResourceObject.serializer())
         subclass(
             UserCollectionFoldersResourceObject::class,

@@ -9,8 +9,17 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param track */
+/**
+ * @param name Credit name
+ * @param role Credit role
+ */
 @Serializable
-data class TrackSourceFileCreateOperationPayloadDataRelationships(
-    @SerialName(value = "track") val track: AttachSourceFileToTrack
+data class CreditsAttributes(
+
+    /* Credit name */
+
+    @SerialName(value = "name") val name: kotlin.String,
+    /* Credit role */
+
+    @SerialName(value = "role") val role: kotlin.String,
 ) {}

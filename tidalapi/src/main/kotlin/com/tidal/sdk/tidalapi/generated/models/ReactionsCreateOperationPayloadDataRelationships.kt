@@ -9,8 +9,9 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param `data` */
+/** @param reactedResource */
 @Serializable
-data class AddPayload(
-    @SerialName(value = "data") val `data`: kotlin.collections.List<Data>? = null
+data class ReactionsCreateOperationPayloadDataRelationships(
+    @SerialName(value = "reactedResource")
+    val reactedResource: ReactionsCreateOperationPayloadDataRelationshipsReactedResource
 ) {}

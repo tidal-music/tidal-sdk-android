@@ -73,13 +73,13 @@ interface StripeConnections {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param stripeConnectionsCreateOperationPayload (optional)
      * @return [StripeConnectionsSingleResourceDataDocument]
      */
     @POST("stripeConnections")
     suspend fun stripeConnectionsPost(
-        @Query("countryCode") countryCode: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Body
         stripeConnectionsCreateOperationPayload: StripeConnectionsCreateOperationPayload? = null,
     ): Response<StripeConnectionsSingleResourceDataDocument>

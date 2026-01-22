@@ -9,8 +9,15 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param `data` */
+/**
+ * @param `data`
+ * @param links
+ * @param included
+ */
 @Serializable
-data class TrackSourceFileCreateOperationPayload(
-    @SerialName(value = "data") val `data`: TrackSourceFileCreateOperationPayloadData
+data class TracksMetadataStatusMultiResourceDataDocument(
+    @SerialName(value = "data")
+    val `data`: kotlin.collections.List<TracksMetadataStatusResourceObject>,
+    @SerialName(value = "links") val links: Links,
+    @SerialName(value = "included") val included: kotlin.collections.List<IncludedInner>? = null,
 ) {}

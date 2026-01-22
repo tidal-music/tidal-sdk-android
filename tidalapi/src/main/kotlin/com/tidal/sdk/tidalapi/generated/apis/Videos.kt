@@ -2,6 +2,7 @@ package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.VideosMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.VideosMultiResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.VideosSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.VideosSingleResourceDataDocument
 import retrofit2.Response
 import retrofit2.http.*
@@ -20,16 +21,17 @@ interface Videos {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: albums, artists, providers, thumbnailArt (optional)
+     *   Available options: albums, artists, credits, providers, replacement, similarVideos,
+     *   thumbnailArt (optional)
      * @param filterId Video id (optional)
      * @param filterIsrc International Standard Recording Code (ISRC) (optional)
      * @return [VideosMultiResourceDataDocument]
      */
     @GET("videos")
     suspend fun videosGet(
-        @Query("countryCode") countryCode: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[id]")
@@ -51,15 +53,16 @@ interface Videos {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Video id
-     * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: albums, artists, providers, thumbnailArt (optional)
+     *   Available options: albums, artists, credits, providers, replacement, similarVideos,
+     *   thumbnailArt (optional)
      * @return [VideosSingleResourceDataDocument]
      */
     @GET("videos/{id}")
     suspend fun videosIdGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<VideosSingleResourceDataDocument>
@@ -77,9 +80,9 @@ interface Videos {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Video id
-     * @param countryCode ISO 3166-1 alpha-2 country code
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: albums (optional)
      * @return [VideosMultiRelationshipDataDocument]
@@ -87,8 +90,8 @@ interface Videos {
     @GET("videos/{id}/relationships/albums")
     suspend fun videosIdRelationshipsAlbumsGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<VideosMultiRelationshipDataDocument>
@@ -106,9 +109,9 @@ interface Videos {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Video id
-     * @param countryCode ISO 3166-1 alpha-2 country code
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: artists (optional)
      * @return [VideosMultiRelationshipDataDocument]
@@ -116,7 +119,34 @@ interface Videos {
     @GET("videos/{id}/relationships/artists")
     suspend fun videosIdRelationshipsArtistsGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("countryCode") countryCode: kotlin.String? = null,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+    ): Response<VideosMultiRelationshipDataDocument>
+
+    /**
+     * Get credits relationship (\&quot;to-many\&quot;). Retrieves credits relationship. Responses:
+     * - 200: Successful response
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
+     *
+     * @param id Video id
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: credits (optional)
+     * @return [VideosMultiRelationshipDataDocument]
+     */
+    @GET("videos/{id}/relationships/credits")
+    suspend fun videosIdRelationshipsCreditsGet(
+        @Path("id") id: kotlin.String,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
@@ -136,9 +166,9 @@ interface Videos {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Video id
-     * @param countryCode ISO 3166-1 alpha-2 country code
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: providers (optional)
      * @return [VideosMultiRelationshipDataDocument]
@@ -146,8 +176,65 @@ interface Videos {
     @GET("videos/{id}/relationships/providers")
     suspend fun videosIdRelationshipsProvidersGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("countryCode") countryCode: kotlin.String? = null,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+    ): Response<VideosMultiRelationshipDataDocument>
+
+    /**
+     * Get replacement relationship (\&quot;to-one\&quot;). Retrieves replacement relationship.
+     * Responses:
+     * - 200: Successful response
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
+     *
+     * @param id Video id
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: replacement (optional)
+     * @return [VideosSingleRelationshipDataDocument]
+     */
+    @GET("videos/{id}/relationships/replacement")
+    suspend fun videosIdRelationshipsReplacementGet(
+        @Path("id") id: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String? = null,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+    ): Response<VideosSingleRelationshipDataDocument>
+
+    /**
+     * Get similarVideos relationship (\&quot;to-many\&quot;). Retrieves similarVideos relationship.
+     * Responses:
+     * - 200: Successful response
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
+     *
+     * @param id Video id
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: similarVideos (optional)
+     * @return [VideosMultiRelationshipDataDocument]
+     */
+    @GET("videos/{id}/relationships/similarVideos")
+    suspend fun videosIdRelationshipsSimilarVideosGet(
+        @Path("id") id: kotlin.String,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<VideosMultiRelationshipDataDocument>
@@ -166,9 +253,9 @@ interface Videos {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Video id
-     * @param countryCode ISO 3166-1 alpha-2 country code
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: thumbnailArt (optional)
      * @return [VideosMultiRelationshipDataDocument]
@@ -176,8 +263,8 @@ interface Videos {
     @GET("videos/{id}/relationships/thumbnailArt")
     suspend fun videosIdRelationshipsThumbnailArtGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<VideosMultiRelationshipDataDocument>

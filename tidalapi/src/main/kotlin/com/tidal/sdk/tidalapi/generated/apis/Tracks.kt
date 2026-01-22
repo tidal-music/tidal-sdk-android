@@ -28,10 +28,12 @@ interface Tracks {
      *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: albums, artists, genres, lyrics, owners, providers, radio, shares,
-     *   similarTracks, sourceFile, trackStatistics (optional)
+     *   Available options: albums, artists, credits, genres, lyrics, metadataStatus, owners,
+     *   providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics
+     *   (optional)
      * @param filterId Track id (optional)
-     * @param filterIsrc International Standard Recording Code (ISRC) (optional)
+     * @param filterIsrc List of ISRCs. NOTE: Supplying more than one ISRC will currently only
+     *   return one track per ISRC. (optional)
      * @param filterOwnersId User id (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
@@ -83,8 +85,9 @@ interface Tracks {
      * @param id Track id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: albums, artists, genres, lyrics, owners, providers, radio, shares,
-     *   similarTracks, sourceFile, trackStatistics (optional)
+     *   Available options: albums, artists, credits, genres, lyrics, metadataStatus, owners,
+     *   providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics
+     *   (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [TracksSingleResourceDataDocument]
@@ -132,7 +135,7 @@ interface Tracks {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Track id
-     * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: albums (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -144,7 +147,7 @@ interface Tracks {
     @GET("tracks/{id}/relationships/albums")
     suspend fun tracksIdRelationshipsAlbumsGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
@@ -188,9 +191,9 @@ interface Tracks {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Track id
-     * @param countryCode ISO 3166-1 alpha-2 country code
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: artists (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
@@ -200,7 +203,37 @@ interface Tracks {
     @GET("tracks/{id}/relationships/artists")
     suspend fun tracksIdRelationshipsArtistsGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("countryCode") countryCode: kotlin.String? = null,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
+    ): Response<TracksMultiRelationshipDataDocument>
+
+    /**
+     * Get credits relationship (\&quot;to-many\&quot;). Retrieves credits relationship. Responses:
+     * - 200: Successful response
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
+     *
+     * @param id Track id
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: credits (optional)
+     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
+     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @return [TracksMultiRelationshipDataDocument]
+     */
+    @GET("tracks/{id}/relationships/credits")
+    suspend fun tracksIdRelationshipsCreditsGet(
+        @Path("id") id: kotlin.String,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
@@ -220,7 +253,7 @@ interface Tracks {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Track id
-     * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: genres (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -232,7 +265,7 @@ interface Tracks {
     @GET("tracks/{id}/relationships/genres")
     suspend fun tracksIdRelationshipsGenresGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
@@ -268,6 +301,34 @@ interface Tracks {
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<TracksMultiRelationshipDataDocument>
+
+    /**
+     * Get metadataStatus relationship (\&quot;to-one\&quot;). Retrieves metadataStatus
+     * relationship. Responses:
+     * - 200: Successful response
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
+     *
+     * @param id Track id
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: metadataStatus (optional)
+     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
+     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @return [TracksSingleRelationshipDataDocument]
+     */
+    @GET("tracks/{id}/relationships/metadataStatus")
+    suspend fun tracksIdRelationshipsMetadataStatusGet(
+        @Path("id") id: kotlin.String,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
+    ): Response<TracksSingleRelationshipDataDocument>
 
     /**
      * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
@@ -313,7 +374,7 @@ interface Tracks {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Track id
-     * @param countryCode ISO 3166-1 alpha-2 country code
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: providers (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -325,7 +386,7 @@ interface Tracks {
     @GET("tracks/{id}/relationships/providers")
     suspend fun tracksIdRelationshipsProvidersGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
@@ -361,6 +422,36 @@ interface Tracks {
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<TracksMultiRelationshipDataDocument>
+
+    /**
+     * Get replacement relationship (\&quot;to-one\&quot;). Retrieves replacement relationship.
+     * Responses:
+     * - 200: Successful response
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
+     *
+     * @param id Track id
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: replacement (optional)
+     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
+     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @return [TracksSingleRelationshipDataDocument]
+     */
+    @GET("tracks/{id}/relationships/replacement")
+    suspend fun tracksIdRelationshipsReplacementGet(
+        @Path("id") id: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String? = null,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
+    ): Response<TracksSingleRelationshipDataDocument>
 
     /**
      * Get shares relationship (\&quot;to-many\&quot;). Retrieves shares relationship. Responses:
@@ -406,9 +497,9 @@ interface Tracks {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Track id
-     * @param countryCode ISO 3166-1 alpha-2 country code
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: similarTracks (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
@@ -418,8 +509,8 @@ interface Tracks {
     @GET("tracks/{id}/relationships/similarTracks")
     suspend fun tracksIdRelationshipsSimilarTracksGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,

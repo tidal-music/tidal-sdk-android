@@ -11,6 +11,6 @@ import kotlinx.serialization.Serializable
 
 /** @param `data` */
 @Serializable
-data class CreateReactionPayload(
-    @SerialName(value = "data") val `data`: CreateReactionPayloadData
+data class ReactionsCreateOperationPayload(
+    @SerialName(value = "data") val `data`: ReactionsCreateOperationPayloadData
 ) {}
