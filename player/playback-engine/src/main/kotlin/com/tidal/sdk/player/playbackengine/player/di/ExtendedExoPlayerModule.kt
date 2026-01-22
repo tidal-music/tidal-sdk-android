@@ -14,6 +14,8 @@ import androidx.media3.exoplayer.trackselection.AdaptiveTrackSelection
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import androidx.media3.exoplayer.trackselection.ExoTrackSelection
 import androidx.media3.exoplayer.trackselection.TrackSelector
+import androidx.media3.exoplayer.upstream.BandwidthMeter
+import androidx.media3.exoplayer.upstream.DefaultBandwidthMeter
 import com.tidal.sdk.player.playbackengine.mediasource.MediaSourcerer
 import com.tidal.sdk.player.playbackengine.model.BufferConfiguration
 import com.tidal.sdk.player.playbackengine.player.ExtendedExoPlayer
@@ -29,6 +31,11 @@ internal object ExtendedExoPlayerModule {
 
     @Provides
     @Reusable
+    fun bandwidthMeter(context: Context): BandwidthMeter =
+        DefaultBandwidthMeter.Builder(context).setResetOnNetworkTypeChange(true).build()
+
+    @Provides
+    @Reusable
     fun trackSelectionFactory(): ExoTrackSelection.Factory = AdaptiveTrackSelection.Factory()
 
     @Provides
@@ -36,7 +43,16 @@ internal object ExtendedExoPlayerModule {
     fun trackSelector(
         context: Context,
         trackSelectionFactory: ExoTrackSelection.Factory,
-    ): TrackSelector = DefaultTrackSelector(context, trackSelectionFactory)
+    ): TrackSelector =
+        DefaultTrackSelector(context, trackSelectionFactory).apply {
+            parameters =
+                parameters
+                    .buildUpon()
+                    .setAllowAudioMixedMimeTypeAdaptiveness(true)
+                    .setAllowAudioMixedSampleRateAdaptiveness(true)
+                    .setAllowAudioMixedChannelCountAdaptiveness(true)
+                    .build()
+        }
 
     @Provides
     @ExtendedExoPlayerComponent.Scoped
@@ -71,6 +87,7 @@ internal object ExtendedExoPlayerModule {
         renderersFactory: RenderersFactory,
         trackSelector: TrackSelector,
         loadControl: LoadControl,
+        bandwidthMeter: BandwidthMeter,
         looper: Looper,
         priorityTaskManager: PriorityTaskManager,
         audioAttributes: AudioAttributes,
@@ -78,6 +95,7 @@ internal object ExtendedExoPlayerModule {
         ExoPlayer.Builder(context, renderersFactory)
             .setTrackSelector(trackSelector)
             .setLoadControl(loadControl)
+            .setBandwidthMeter(bandwidthMeter)
             .setLooper(looper)
             .setPriorityTaskManager(priorityTaskManager)
             .setHandleAudioBecomingNoisy(true)
