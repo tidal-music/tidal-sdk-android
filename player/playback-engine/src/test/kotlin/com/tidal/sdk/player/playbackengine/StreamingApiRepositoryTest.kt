@@ -163,6 +163,7 @@ internal class StreamingApiRepositoryTest {
                 ProductType.TRACK -> {
                     productQuality = mock<AudioQuality>()
                     whenever(audioQualityRepository.streamingQuality) doReturn productQuality
+                    whenever(audioQualityRepository.enableAdaptive) doReturn false
                     whenever(
                             streamingApi.getTrackPlaybackInfo(
                                 productId,
@@ -170,6 +171,7 @@ internal class StreamingApiRepositoryTest {
                                 playbackMode,
                                 false,
                                 "streamingSessionId",
+                                enableAdaptive = false,
                             )
                         )
                         .thenReturn(expected)
@@ -275,6 +277,7 @@ internal class StreamingApiRepositoryTest {
                 ProductType.TRACK -> {
                     productQuality = mock<AudioQuality>()
                     whenever(audioQualityRepository.streamingQuality) doReturn productQuality
+                    whenever(audioQualityRepository.enableAdaptive) doReturn false
                     whenever(
                             streamingApi.getTrackPlaybackInfo(
                                 productId,
@@ -282,6 +285,7 @@ internal class StreamingApiRepositoryTest {
                                 playbackMode,
                                 false,
                                 "streamingSessionId",
+                                enableAdaptive = false,
                             )
                         )
                         .thenThrow(runtimeException)

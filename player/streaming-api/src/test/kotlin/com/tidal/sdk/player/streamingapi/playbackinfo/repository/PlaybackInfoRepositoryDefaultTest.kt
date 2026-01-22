@@ -109,6 +109,7 @@ internal class PlaybackInfoRepositoryDefaultTest {
             PlaybackMode.STREAM,
             true,
             streamingSessionId,
+            false,
         )
 
     @Test

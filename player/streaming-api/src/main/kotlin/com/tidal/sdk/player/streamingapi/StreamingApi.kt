@@ -22,6 +22,7 @@ interface StreamingApi {
      * @param[immersiveAudio] The requested option to include immersive audio or not.
      * @param[streamingSessionId] The streaming session uuid as [String], created by the client, for
      *   this streaming session.
+     * @param[enableAdaptive] Whether to enable adaptive streaming.
      */
     @Suppress("LongParameterList")
     suspend fun getTrackPlaybackInfo(
@@ -30,6 +31,7 @@ interface StreamingApi {
         playbackMode: PlaybackMode,
         immersiveAudio: Boolean,
         streamingSessionId: String,
+        enableAdaptive: Boolean,
     ): PlaybackInfo
 
     /**
