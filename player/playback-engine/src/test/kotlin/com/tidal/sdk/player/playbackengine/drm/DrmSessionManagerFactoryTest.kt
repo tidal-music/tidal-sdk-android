@@ -30,8 +30,8 @@ internal class DrmSessionManagerFactoryTest {
     }
 
     @Test
-    fun createDrmSessionManagerForOnlinePlayWithEmptyLicenseSecurityToken() {
-        val playbackInfo = mock<PlaybackInfo.Track> { on { licenseSecurityToken } doReturn "" }
+    fun createDrmSessionManagerForOnlinePlayWithEmptyLicenseUrl() {
+        val playbackInfo = mock<PlaybackInfo.Track> { on { licenseUrl } doReturn "" }
 
         val actual =
             drmSessionManagerFactory.createDrmSessionManagerForOnlinePlay(playbackInfo, emptyMap())
@@ -41,12 +41,18 @@ internal class DrmSessionManagerFactoryTest {
 
     @Test
     fun createDrmSessionManagerForOnlinePlayWithDrmModeStreaming() {
-        val playbackInfo =
-            mock<PlaybackInfo.Track> { on { licenseSecurityToken } doReturn "licenseSecurityToken" }
+        val playbackInfo = mock<PlaybackInfo.Track> { on { licenseUrl } doReturn "licenseUrl" }
         val drmMode = DrmMode.Streaming
         val tidalMediaDrmCallback = mock<TidalMediaDrmCallback>()
         val defaultDrmSessionManager = mock<DefaultDrmSessionManager>()
-        whenever(tidalMediaDrmCallbackFactory.create(playbackInfo, drmMode, emptyMap()))
+        whenever(
+                tidalMediaDrmCallbackFactory.create(
+                    playbackInfo.licenseUrl!!,
+                    playbackInfo.streamingSessionId,
+                    drmMode,
+                    emptyMap(),
+                )
+            )
             .thenReturn(tidalMediaDrmCallback)
         whenever(defaultDrmSessionManagerBuilder.build(tidalMediaDrmCallback))
             .thenReturn(defaultDrmSessionManager)
@@ -69,12 +75,24 @@ internal class DrmSessionManagerFactoryTest {
 
     @Test
     fun createDrmSessionManagerForOfflinePlayWithDrmModeStreaming() {
+        val trackPlaybackInfo =
+            mock<PlaybackInfo.Track> { on { streamingSessionId } doReturn "streamingSessionId" }
         val playbackInfo =
-            mock<PlaybackInfo.Offline.Track> { on { offlineLicense } doReturn "offlineLicense" }
+            mock<PlaybackInfo.Offline.Track> {
+                on { offlineLicense } doReturn "offlineLicense"
+                on { track } doReturn trackPlaybackInfo
+            }
         val drmMode = DrmMode.Streaming
         val tidalMediaDrmCallback = mock<TidalMediaDrmCallback>()
         val defaultDrmSessionManager = mock<DefaultDrmSessionManager>()
-        whenever(tidalMediaDrmCallbackFactory.create(playbackInfo.track, drmMode, emptyMap()))
+        whenever(
+                tidalMediaDrmCallbackFactory.create(
+                    "",
+                    trackPlaybackInfo.streamingSessionId,
+                    drmMode,
+                    emptyMap(),
+                )
+            )
             .thenReturn(tidalMediaDrmCallback)
         whenever(defaultDrmSessionManagerBuilder.build(tidalMediaDrmCallback))
             .thenReturn(defaultDrmSessionManager)

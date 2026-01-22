@@ -1,31 +1,30 @@
 package com.tidal.sdk.player.streamingapi.drm.api
 
-import assertk.assertFailure
 import assertk.assertThat
-import assertk.assertions.isDataClassEqualTo
-import assertk.assertions.isInstanceOf
-import com.tidal.sdk.player.MockWebServerExtensions.enqueueResponse
+import assertk.assertions.isEqualTo
+import assertk.assertions.isNotNull
+import assertk.assertions.isTrue
 import com.tidal.sdk.player.streamingapi.ApiConstants
 import com.tidal.sdk.player.streamingapi.DrmLicenseFactory
-import com.tidal.sdk.player.streamingapi.drm.model.DrmLicense
-import com.tidal.sdk.player.streamingapi.drm.model.DrmLicenseRequest
-import java.io.IOException
-import java.util.concurrent.TimeUnit
+import java.net.ConnectException
 import kotlinx.coroutines.runBlocking
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
+import okhttp3.mockwebserver.SocketPolicy
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
-import retrofit2.HttpException
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 /**
- * Test that the [DrmLicenseService] returns correct [DrmLicense] in various situations, or that it
- * fails with an exception.
+ * Test that the [DrmLicenseService] returns correct [Response]<[ResponseBody]> in various
+ * situations, or that it fails with an exception.
  */
 internal class DrmLicenseServiceTest {
 
@@ -48,9 +47,9 @@ internal class DrmLicenseServiceTest {
 
     @Test
     fun getWidevineLicenseShouldFailWhenNetworkError() {
-        server.enqueue(MockResponse().throttleBody(1024, 1, TimeUnit.SECONDS))
+        server.enqueue(MockResponse().setSocketPolicy(SocketPolicy.DISCONNECT_AT_START))
 
-        assertFailure { getWidevineLicense() }.isInstanceOf(IOException::class.java)
+        assertThrows<ConnectException> { getWidevineLicense() }
     }
 
     @ParameterizedTest
@@ -58,43 +57,52 @@ internal class DrmLicenseServiceTest {
     fun getWidevineLicenseShouldFailWhenNonOkStatus(status: Int) {
         server.enqueue(MockResponse().setResponseCode(status))
 
-        assertFailure { getWidevineLicense() }.isInstanceOf(HttpException::class.java)
+        val response = getWidevineLicense()
+
+        assertThat(response.isSuccessful).isEqualTo(false)
+        assertThat(response.code()).isEqualTo(status)
     }
 
     @Test
     fun getWidevineLicenseShouldReturnCorrect() {
-        server.enqueueResponse("${ApiConstants.LICENSE_PATH}.json")
+        server.enqueue(
+            MockResponse().setResponseCode(200).setBody(ApiConstants.DRM_PAYLOAD_RESPONSE)
+        )
 
         val widevineLicense = getWidevineLicense()
+        val expected = DrmLicenseFactory.default()
 
-        assertThat(widevineLicense).isDataClassEqualTo(DrmLicenseFactory.default())
-    }
+        assertThat(widevineLicense.isSuccessful).isEqualTo(expected.isSuccessful)
+        val actualBytes = widevineLicense.body()?.bytes()
+        val expectedBytes = expected.body()?.bytes()
 
-    @Test
-    fun getWidevineLicenseShouldReturnCorrectWhenStreamingSessionIdIsEmpty() {
-        server.enqueueResponse("${ApiConstants.LICENSE_PATH}_empty_streaming_session_id.json")
-
-        val widevineLicense = getWidevineLicense()
-
-        assertThat(widevineLicense).isDataClassEqualTo(DrmLicenseFactory.emptyStreamingSessionId())
+        assertThat(actualBytes).isNotNull()
+        assertThat(expectedBytes).isNotNull()
+        assertThat(actualBytes!!.contentEquals(expectedBytes!!)).isTrue()
     }
 
     @Test
     fun getWidevineLicenseShouldReturnCorrectWhenPayloadIsEmpty() {
-        server.enqueueResponse("${ApiConstants.LICENSE_PATH}_empty_payload.json")
+        server.enqueue(MockResponse().setResponseCode(200).setBody(""))
 
         val widevineLicense = getWidevineLicense()
+        val expected = DrmLicenseFactory.emptyPayload()
 
-        assertThat(widevineLicense).isDataClassEqualTo(DrmLicenseFactory.emptyPayload())
+        assertThat(widevineLicense.isSuccessful).isEqualTo(expected.isSuccessful)
+        val actualBytes = widevineLicense.body()?.bytes()
+        val expectedBytes = expected.body()?.bytes()
+
+        assertThat(actualBytes).isNotNull()
+        assertThat(expectedBytes).isNotNull()
+        assertThat(actualBytes!!.contentEquals(expectedBytes!!)).isTrue()
     }
 
     private fun getWidevineLicense() = runBlocking {
-        drmLicenseService.getWidevineLicense(
-            DrmLicenseRequest(
-                ApiConstants.STREAMING_SESSION_ID,
-                ApiConstants.LICENSE_SECURITY_TOKEN,
+        val requestBody =
+            RequestBody.create(
+                "application/octet-stream".toMediaTypeOrNull(),
                 ApiConstants.DRM_PAYLOAD_REQUEST,
             )
-        )
+        drmLicenseService.getWidevineLicense(ApiConstants.LICENSE_URL, requestBody)
     }
 }

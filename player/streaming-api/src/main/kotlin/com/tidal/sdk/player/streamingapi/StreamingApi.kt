@@ -2,10 +2,10 @@ package com.tidal.sdk.player.streamingapi
 
 import com.tidal.sdk.player.common.model.AudioQuality
 import com.tidal.sdk.player.common.model.VideoQuality
-import com.tidal.sdk.player.streamingapi.drm.model.DrmLicense
-import com.tidal.sdk.player.streamingapi.drm.model.DrmLicenseRequest
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackMode
+import okhttp3.ResponseBody
+import retrofit2.Response
 
 /**
  * The streaming api, where the main focus is to give you playback info or drm license for a track
@@ -22,7 +22,6 @@ interface StreamingApi {
      * @param[immersiveAudio] The requested option to include immersive audio or not.
      * @param[streamingSessionId] The streaming session uuid as [String], created by the client, for
      *   this streaming session.
-     * @param[playlistUuid] The playlistUuid this play originates from as [String]. May be null.
      */
     @Suppress("LongParameterList")
     suspend fun getTrackPlaybackInfo(
@@ -31,7 +30,6 @@ interface StreamingApi {
         playbackMode: PlaybackMode,
         immersiveAudio: Boolean,
         streamingSessionId: String,
-        playlistUuid: String? = null,
     ): PlaybackInfo
 
     /**
@@ -98,10 +96,9 @@ interface StreamingApi {
     ): PlaybackInfo
 
     /**
-     * Returns a [DrmLicense] which we can use for decrypting a protected track or video.
+     * Returns the DRM binary response.
      *
-     * @param[drmLicenseRequest] The request we send to backend for getting a drm license back, as
-     *   [DrmLicenseRequest]
+     * @param[payload] The binary payload to send to backend for getting a drm license back.
      */
-    suspend fun getDrmLicense(drmLicenseRequest: DrmLicenseRequest): DrmLicense
+    suspend fun getDrmLicense(licenseUrl: String, payload: ByteArray): Response<ResponseBody>
 }

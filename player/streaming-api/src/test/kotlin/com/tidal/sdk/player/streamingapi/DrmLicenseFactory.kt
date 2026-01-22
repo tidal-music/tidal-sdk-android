@@ -1,12 +1,22 @@
 package com.tidal.sdk.player.streamingapi
 
-import com.tidal.sdk.player.streamingapi.drm.model.DrmLicense
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.ResponseBody
+import okhttp3.ResponseBody.Companion.toResponseBody
+import retrofit2.Response
 
 object DrmLicenseFactory {
 
-    fun default() = DrmLicense(ApiConstants.STREAMING_SESSION_ID, ApiConstants.DRM_PAYLOAD_RESPONSE)
+    private val octetStream = "application/octet-stream".toMediaType()
 
-    fun emptyStreamingSessionId() = DrmLicense("", ApiConstants.DRM_PAYLOAD_RESPONSE)
+    fun default(): Response<ResponseBody> {
+        val responseBody =
+            ApiConstants.DRM_PAYLOAD_RESPONSE.toByteArray().toResponseBody(octetStream)
+        return Response.success(responseBody)
+    }
 
-    fun emptyPayload() = DrmLicense(ApiConstants.STREAMING_SESSION_ID, "")
+    fun emptyPayload(): Response<ResponseBody> {
+        val responseBody = "".toByteArray().toResponseBody(octetStream)
+        return Response.success(responseBody)
+    }
 }

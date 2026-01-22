@@ -34,7 +34,7 @@ object VideoPlaybackInfoFactory {
 
     val REPLACEMENT_VIDEO_QUALITY = DEFAULT.copy(videoQuality = VideoQuality.HIGH)
 
-    val PROTECTED = DEFAULT.copy(licenseSecurityToken = ApiConstants.LICENSE_SECURITY_TOKEN)
+    val PROTECTED = DEFAULT.copy(licenseUrl = ApiConstants.LICENSE_URL)
 
     val OFFLINE =
         DEFAULT.copy(

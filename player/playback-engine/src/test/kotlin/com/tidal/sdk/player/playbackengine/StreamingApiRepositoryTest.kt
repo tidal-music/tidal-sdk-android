@@ -23,12 +23,12 @@ import com.tidal.sdk.player.playbackengine.error.ErrorHandler
 import com.tidal.sdk.player.playbackengine.quality.AudioQualityRepository
 import com.tidal.sdk.player.playbackengine.quality.VideoQualityRepository
 import com.tidal.sdk.player.streamingapi.StreamingApi
-import com.tidal.sdk.player.streamingapi.drm.model.DrmLicense
-import com.tidal.sdk.player.streamingapi.drm.model.DrmLicenseRequest
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackMode
 import java.io.IOException
 import kotlinx.coroutines.runBlocking
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.ResponseBody
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
@@ -38,6 +38,7 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.verifyNoInteractions
 import org.mockito.kotlin.whenever
+import retrofit2.Response
 
 internal class StreamingApiRepositoryTest {
 
@@ -66,13 +67,22 @@ internal class StreamingApiRepositoryTest {
         val startTimestamp = 1L
         val endTimestamp = -2L
         val streamingSessionId = "streamingSessionId"
-        val drmLicenseRequest =
-            mock<DrmLicenseRequest> { on { it.streamingSessionId } doReturn streamingSessionId }
-        val expectedDrmLicense = mock<DrmLicense>()
+        val licenseUrl = "licenseUrl"
+        val payload = "fake_request_data".toByteArray()
+        val mockBytes = "fake_license_data".toByteArray()
+        val mockResponseBody =
+            ResponseBody.create("application/octet-stream".toMediaTypeOrNull(), mockBytes)
+        val expectedDrmLicense = Response.success(mockResponseBody)
         whenever(trueTimeWrapper.currentTimeMillis).thenReturn(startTimestamp, endTimestamp)
-        whenever(streamingApi.getDrmLicense(drmLicenseRequest)).thenReturn(expectedDrmLicense)
+        whenever(streamingApi.getDrmLicense(licenseUrl, payload)).thenReturn(expectedDrmLicense)
 
-        val actual = streamingApiRepository.getDrmLicense(drmLicenseRequest, emptyMap())
+        val actual =
+            streamingApiRepository.getDrmLicense(
+                licenseUrl,
+                payload,
+                streamingSessionId,
+                emptyMap(),
+            )
 
         assertThat(actual).isSameInstanceAs(expectedDrmLicense)
         verify(eventReporter)
@@ -94,14 +104,14 @@ internal class StreamingApiRepositoryTest {
         val startTimestamp = 1L
         val endTimestamp = -2L
         val streamingSessionId = "streamingSessionId"
-        val drmLicenseRequest =
-            mock<DrmLicenseRequest> { on { it.streamingSessionId } doReturn streamingSessionId }
+        val licenseUrl = "licenseUrl"
+        val payload = "fake_request_data".toByteArray()
         val errorMessage = "errorMessage"
         val runtimeException = mock<RuntimeException> { on { it.message } doReturn errorMessage }
         val errorCode = "errorCode"
         val mediaDrmCallbackException = mock<MediaDrmCallbackException>()
         whenever(trueTimeWrapper.currentTimeMillis).thenReturn(startTimestamp, endTimestamp)
-        whenever(streamingApi.getDrmLicense(drmLicenseRequest)) doThrow runtimeException
+        whenever(streamingApi.getDrmLicense(licenseUrl, payload)) doThrow runtimeException
         whenever(mediaDrmCallbackExceptionFactory.create(runtimeException))
             .thenReturn(mediaDrmCallbackException)
         whenever(
@@ -109,7 +119,14 @@ internal class StreamingApiRepositoryTest {
             )
             .thenReturn(errorCode)
 
-        assertFailure { streamingApiRepository.getDrmLicense(drmLicenseRequest, emptyMap()) }
+        assertFailure {
+                streamingApiRepository.getDrmLicense(
+                    licenseUrl,
+                    payload,
+                    streamingSessionId,
+                    emptyMap(),
+                )
+            }
             .isSameInstanceAs(mediaDrmCallbackException)
 
         verify(eventReporter)

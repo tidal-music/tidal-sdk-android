@@ -18,28 +18,6 @@ import retrofit2.http.Query
 internal interface PlaybackInfoService {
 
     /**
-     * Returns a [PlaybackInfo.Track] which we can use for playback of a track.
-     *
-     * @param[trackId] The requested track id as [String].
-     * @param[playbackMode] The requested playback mode as [PlaybackMode].
-     * @param[assetPresentation] The requested asset presentation as [AssetPresentation].
-     * @param[audioQuality] The requested audio quality as [AudioQuality].
-     * @param[streamingSessionId] The streaming session uuid as [String], created by the client, for
-     *   this streaming session.
-     * @param[playlistUuid] The playlistUuid this play originates from as [String]. May be null.
-     */
-    @GET("tracks/{id}/playbackinfo")
-    suspend fun getTrackPlaybackInfo(
-        @Path("id") trackId: String,
-        @Query("playbackmode") playbackMode: PlaybackMode,
-        @Query("assetpresentation") assetPresentation: AssetPresentation,
-        @Query("audioquality") audioQuality: AudioQuality,
-        @Query("immersiveaudio") immersiveAudio: Boolean,
-        @Header("x-tidal-streamingsessionid") streamingSessionId: String,
-        @Header("x-tidal-playlistuuid") playlistUuid: String?,
-    ): PlaybackInfo.Track
-
-    /**
      * Returns a [PlaybackInfo.Video] which we can use for playback of a video.
      *
      * @param[videoId] The requested video id as [String].

@@ -56,6 +56,7 @@ import com.tidal.sdk.player.playbackengine.outputdevice.OutputDeviceManager
 import com.tidal.sdk.player.playbackengine.player.ExtendedExoPlayerFactory
 import com.tidal.sdk.player.playbackengine.player.PlayerCache
 import com.tidal.sdk.player.playbackengine.quality.AudioQualityRepository
+import com.tidal.sdk.player.playbackengine.util.FormatHelper
 import com.tidal.sdk.player.playbackengine.util.SynchronousSurfaceHolder
 import com.tidal.sdk.player.playbackengine.util.clear
 import com.tidal.sdk.player.playbackengine.view.AspectRatioAdjustingSurfaceView
@@ -903,6 +904,7 @@ internal class ExoPlayerPlaybackEngine(
                 ) {
                     return
                 }
+                updatePlaybackContextWithAudioInfo(format)
                 if (eventTime.eventPlaybackPositionMs > 0) return
                 currentPlaybackStatistics = updatedPlaybackStatisticsF(currentPlaybackStatistics!!)
             }
@@ -1258,6 +1260,31 @@ internal class ExoPlayerPlaybackEngine(
                     null
                 }
             }
+
+    /**
+     * Updates the current playbackContext with audio format info and emits PlaybackQualityChanged.
+     */
+    private fun updatePlaybackContextWithAudioInfo(format: Format) {
+        val currentContext = playbackContext
+        if (currentContext is PlaybackContext.Track) {
+            val audioInfo = FormatHelper.extractAudioFormatInfo(format)
+            val updatedContext =
+                currentContext.copy(
+                    audioQuality = audioInfo?.audioQuality,
+                    audioMode = audioInfo?.audioMode,
+                    audioBitRate = audioInfo?.bitRate,
+                    audioBitDepth = audioInfo?.bitDepth,
+                    audioCodec = audioInfo?.codec,
+                    audioSampleRate = audioInfo?.sampleRate,
+                )
+            if (updatedContext != currentContext) {
+                playbackContext = updatedContext
+                coroutineScope.launch {
+                    eventSink.emit(Event.PlaybackQualityChanged(updatedContext))
+                }
+            }
+        }
+    }
 
     @get:RestrictTo(RestrictTo.Scope.TESTS)
     @set:RestrictTo(RestrictTo.Scope.TESTS)
