@@ -42,11 +42,15 @@ constructor(
         override val endReason: EndReason,
         override val errorMessage: String?,
         override val errorCode: String?,
+        @Transient val isAdaptivePlayback: Boolean = false,
     ) : PlaybackStatistics.Payload {
 
         override val productType = ProductType.TRACK
         override val hasAds = false // TODO Send actual value
         override val actualStreamType = null
+        override val tags: List<String> = buildList {
+            if (isAdaptivePlayback) add(SessionTags.ADAPTIVE_PLAYBACK.name)
+        }
     }
 
     @AssistedFactory

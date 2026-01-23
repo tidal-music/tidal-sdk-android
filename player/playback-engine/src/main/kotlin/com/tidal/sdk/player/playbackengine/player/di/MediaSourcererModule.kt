@@ -494,11 +494,13 @@ internal object MediaSourcererModule {
         streamingSessionFactoryExplicit: StreamingSession.Factory.Explicit,
         trueTimeWrapper: TrueTimeWrapper,
         eventReporter: EventReporter,
+        audioQualityRepository: AudioQualityRepository,
     ) =
         StreamingSession.Creator.Explicit(
             streamingSessionFactoryExplicit,
             trueTimeWrapper,
             eventReporter,
+            audioQualityRepository,
         )
 
     @Provides
@@ -512,11 +514,13 @@ internal object MediaSourcererModule {
         streamingSessionFactoryImplicit: StreamingSession.Factory.Implicit,
         trueTimeWrapper: TrueTimeWrapper,
         eventReporter: EventReporter,
+        audioQualityRepository: AudioQualityRepository,
     ) =
         StreamingSession.Creator.Implicit(
             streamingSessionFactoryImplicit,
             trueTimeWrapper,
             eventReporter,
+            audioQualityRepository,
         )
 
     @Provides

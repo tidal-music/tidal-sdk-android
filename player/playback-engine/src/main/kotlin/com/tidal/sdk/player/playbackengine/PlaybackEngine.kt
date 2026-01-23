@@ -158,4 +158,7 @@ interface Configuration {
 
     /** Get or set [immersiveAudio] as [Boolean] to use when playing. */
     var immersiveAudio: Boolean
+
+    /** Get or set [enableAdaptive] as [Boolean] to enable adaptive streaming. */
+    var enableAdaptive: Boolean
 }

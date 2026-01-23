@@ -5,6 +5,7 @@ import com.tidal.sdk.player.common.model.ProductType
 import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
 import com.tidal.sdk.player.events.EventReporter
 import com.tidal.sdk.player.events.model.StreamingSessionStart
+import com.tidal.sdk.player.playbackengine.quality.AudioQualityRepository
 import java.util.UUID
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
@@ -20,9 +21,12 @@ internal abstract class StreamingSessionCreatorTest<T : StreamingSession.Factory
     protected abstract val factory: T
     protected val trueTimeWrapper = mock<TrueTimeWrapper>()
     protected val eventReporter = mock<EventReporter>()
+    protected val audioQualityRepository = mock<AudioQualityRepository>()
     abstract val streamingSessionCreator: StreamingSession.Creator<T>
 
-    @AfterEach fun afterEach() = verifyNoMoreInteractions(factory, trueTimeWrapper, eventReporter)
+    @AfterEach
+    fun afterEach() =
+        verifyNoMoreInteractions(factory, trueTimeWrapper, eventReporter, audioQualityRepository)
 
     @Test
     fun createAndReportStartCreatesAndReportsStart() {
@@ -35,7 +39,9 @@ internal abstract class StreamingSessionCreatorTest<T : StreamingSession.Factory
                 on { it.id } doReturn id
                 on { it.configuration } doReturn configuration
             }
-        whenever(factory.create(emptyMap())) doReturn streamingSession
+        val isAdaptivePlayback = true
+        whenever(audioQualityRepository.enableAdaptive) doReturn isAdaptivePlayback
+        whenever(factory.create(emptyMap(), isAdaptivePlayback)) doReturn streamingSession
         val expectedCurrentTimeMillis = -8L
         whenever(trueTimeWrapper.currentTimeMillis) doReturn expectedCurrentTimeMillis
         val productType = ProductType.TRACK
@@ -43,7 +49,8 @@ internal abstract class StreamingSessionCreatorTest<T : StreamingSession.Factory
 
         streamingSessionCreator.createAndReportStart(productType, productId, emptyMap())
 
-        verify(factory).create(emptyMap())
+        verify(audioQualityRepository).enableAdaptive
+        verify(factory).create(emptyMap(), isAdaptivePlayback)
         verify(trueTimeWrapper).currentTimeMillis
         verify(streamingSession).id
         verify(streamingSession).configuration

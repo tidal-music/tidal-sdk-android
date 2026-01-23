@@ -116,6 +116,7 @@ internal class StreamingApiRepository(
                             PlaybackMode.STREAM,
                             audioModeRepository.immersiveAudio,
                             streamingSessionId,
+                            audioQualityRepository.enableAdaptive,
                         )
 
                     ProductType.VIDEO ->

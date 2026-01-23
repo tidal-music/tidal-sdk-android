@@ -44,6 +44,7 @@ internal class SingleHandlerPlaybackEngineHandlerPostOrThrowTest {
             override var streamingWifiAudioQuality = AudioQuality.HIGH
             override var streamingCellularAudioQuality = AudioQuality.LOW
             override var immersiveAudio = true
+            override var enableAdaptive = false
             override var loudnessNormalizationMode = LoudnessNormalizationMode.ALBUM
             override var loudnessNormalizationPreAmp = LOUDNESS_NORMALIZATION_PRE_AMP_DEFAULT
             override var videoSurfaceView: AspectRatioAdjustingSurfaceView? = null

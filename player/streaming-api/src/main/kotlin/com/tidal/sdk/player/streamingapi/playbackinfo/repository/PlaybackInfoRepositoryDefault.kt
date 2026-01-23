@@ -39,6 +39,7 @@ internal class PlaybackInfoRepositoryDefault(
         playbackMode: PlaybackMode,
         immersiveAudio: Boolean,
         streamingSessionId: String,
+        enableAdaptive: Boolean,
     ) =
         try {
             val data =
@@ -52,7 +53,7 @@ internal class PlaybackInfoRepositoryDefault(
                             if (playbackMode == PlaybackMode.STREAM)
                                 UsageTrackManifestsIdGet.PLAYBACK
                             else UsageTrackManifestsIdGet.DOWNLOAD,
-                        adaptive = false,
+                        adaptive = enableAdaptive,
                     )
                     .body()
                     ?.data

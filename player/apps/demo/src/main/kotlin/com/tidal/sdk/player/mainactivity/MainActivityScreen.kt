@@ -38,6 +38,7 @@ internal fun MainActivityScreen(
     dispatchSetAudioQualityOnCell: (AudioQuality) -> Unit,
     dispatchSetLoudnessNormalizationMode: (LoudnessNormalizationMode) -> Unit,
     dispatchSetImmersiveAudio: (Boolean) -> Unit,
+    dispatchSetEnableAdaptive: (Boolean) -> Unit,
     dispatchRelease: () -> Unit,
     dispatchSetSnackbarMessage: (String?) -> Unit,
     dispatchCreatePlayerWithExternalCache: (Context, Boolean) -> Unit,
@@ -77,6 +78,7 @@ internal fun MainActivityScreen(
                 dispatchSetAudioQualityOnCell,
                 dispatchSetLoudnessNormalizationMode,
                 dispatchSetImmersiveAudio,
+                dispatchSetEnableAdaptive,
                 dispatchRelease,
             )
 

@@ -244,6 +244,7 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
                                 loudnessNormalizationMode =
                                     player.playbackEngine.loudnessNormalizationMode,
                                 immersiveAudio = player.playbackEngine.immersiveAudio,
+                                enableAdaptive = player.playbackEngine.enableAdaptive,
                             )
                     }
 
@@ -359,6 +360,15 @@ internal class MainActivityViewModel(context: Context) : ViewModel() {
                 override suspend operator fun invoke(state: PlayerInitialized): PlayerInitialized {
                     state.player.playbackEngine.immersiveAudio = immersiveAudio
                     return state.copy(immersiveAudio = immersiveAudio)
+                }
+            }
+
+            class SetEnableAdaptive(private val enableAdaptive: Boolean) :
+                Impure<PlayerInitialized, PlayerInitialized>() {
+
+                override suspend operator fun invoke(state: PlayerInitialized): PlayerInitialized {
+                    state.player.playbackEngine.enableAdaptive = enableAdaptive
+                    return state.copy(enableAdaptive = enableAdaptive)
                 }
             }
 

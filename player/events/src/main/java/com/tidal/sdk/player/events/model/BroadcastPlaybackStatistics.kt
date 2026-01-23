@@ -40,6 +40,7 @@ constructor(
         override val endReason: EndReason,
         override val errorMessage: String?,
         override val errorCode: String?,
+        override val tags: List<String> = emptyList(),
     ) : PlaybackStatistics.Payload {
 
         override val actualAudioMode = AudioMode.STEREO

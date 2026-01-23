@@ -108,6 +108,9 @@ internal class MainActivity : ComponentActivity() {
                                     dispatchSetImmersiveAudio = {
                                         dispatch(Impure.SetImmersiveAudio(it))
                                     },
+                                    dispatchSetEnableAdaptive = {
+                                        dispatch(Impure.SetEnableAdaptive(it))
+                                    },
                                     dispatchRelease = { dispatch(Impure.Release) },
                                     dispatchSetSnackbarMessage = {
                                         dispatch(Impure.SetSnackbarMessage(it))

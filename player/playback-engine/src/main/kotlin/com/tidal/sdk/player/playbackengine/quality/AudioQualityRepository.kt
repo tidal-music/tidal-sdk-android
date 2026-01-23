@@ -11,6 +11,7 @@ internal class AudioQualityRepository(
     private val networkTransportHelper: NetworkTransportHelper,
     var streamingWifiAudioQuality: AudioQuality = AudioQuality.LOW,
     var streamingCellularAudioQuality: AudioQuality = AudioQuality.LOW,
+    var enableAdaptive: Boolean = false,
 ) {
 
     val streamingQuality: AudioQuality

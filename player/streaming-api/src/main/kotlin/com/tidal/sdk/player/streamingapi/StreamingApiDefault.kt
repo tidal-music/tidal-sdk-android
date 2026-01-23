@@ -24,6 +24,7 @@ internal class StreamingApiDefault(
         playbackMode: PlaybackMode,
         immersiveAudio: Boolean,
         streamingSessionId: String,
+        enableAdaptive: Boolean,
     ) =
         playbackInfoRepository.getTrackPlaybackInfo(
             trackId,
@@ -31,6 +32,7 @@ internal class StreamingApiDefault(
             playbackMode,
             immersiveAudio,
             streamingSessionId,
+            enableAdaptive,
         )
 
     override suspend fun getVideoPlaybackInfo(

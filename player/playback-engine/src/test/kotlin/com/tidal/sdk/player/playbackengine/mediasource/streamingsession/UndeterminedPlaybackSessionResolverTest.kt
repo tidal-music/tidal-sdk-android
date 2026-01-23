@@ -33,11 +33,13 @@ internal class UndeterminedPlaybackSessionResolverTest {
         val id = mock<UUID>()
         val startTimestampMs = mock<PlaybackStatistics.IdealStartTimestampMs.Known>()
         val adaptations = mock<List<Adaptation>>()
+        val isAdaptivePlayback = true
         val undetermined =
             mock<PlaybackStatistics.Undetermined> {
                 on { it.streamingSessionId } doReturn id
                 on { it.idealStartTimestampMs } doReturn startTimestampMs
                 on { it.adaptations } doReturn adaptations
+                on { it.isAdaptivePlayback } doReturn isAdaptivePlayback
             }
         val productId = "3"
         val assetPresentation = mock<AssetPresentation>()
@@ -58,6 +60,7 @@ internal class UndeterminedPlaybackSessionResolverTest {
         verify(undetermined).streamingSessionId
         verify(undetermined).idealStartTimestampMs
         verify(undetermined).adaptations
+        verify(undetermined).isAdaptivePlayback
         verify(playbackInfo).trackId
         verify(playbackInfo).assetPresentation
         verify(versionedCdmCalculator)(playbackInfo)
@@ -76,6 +79,7 @@ internal class UndeterminedPlaybackSessionResolverTest {
                     actualAudioMode = audioMode,
                     MediaStorage.INTERNET,
                     emptyMap(),
+                    isAdaptivePlayback,
                 )
             )
         verifyNoMoreInteractions(
@@ -95,11 +99,13 @@ internal class UndeterminedPlaybackSessionResolverTest {
         val id = mock<UUID>()
         val startTimestampMs = mock<PlaybackStatistics.IdealStartTimestampMs.Known>()
         val adaptations = mock<List<Adaptation>>()
+        val isAdaptivePlayback = false
         val undetermined =
             mock<PlaybackStatistics.Undetermined> {
                 on { it.streamingSessionId } doReturn id
                 on { it.idealStartTimestampMs } doReturn startTimestampMs
                 on { it.adaptations } doReturn adaptations
+                on { it.isAdaptivePlayback } doReturn isAdaptivePlayback
             }
         val productId = "${Int.MAX_VALUE}"
         val assetPresentation = mock<AssetPresentation>()
@@ -120,6 +126,7 @@ internal class UndeterminedPlaybackSessionResolverTest {
         verify(undetermined).streamingSessionId
         verify(undetermined).idealStartTimestampMs
         verify(undetermined).adaptations
+        verify(undetermined).isAdaptivePlayback
         verify(playbackInfo).videoId
         verify(playbackInfo).assetPresentation
         verify(versionedCdmCalculator)(playbackInfo)
@@ -138,6 +145,7 @@ internal class UndeterminedPlaybackSessionResolverTest {
                     actualStreamType = streamType,
                     MediaStorage.INTERNET,
                     emptyMap(),
+                    isAdaptivePlayback,
                 )
             )
         verifyNoMoreInteractions(
@@ -157,11 +165,13 @@ internal class UndeterminedPlaybackSessionResolverTest {
         val id = mock<UUID>()
         val startTimestampMs = mock<PlaybackStatistics.IdealStartTimestampMs.Known>()
         val adaptations = mock<List<Adaptation>>()
+        val isAdaptivePlayback = true
         val undetermined =
             mock<PlaybackStatistics.Undetermined> {
                 on { it.streamingSessionId } doReturn id
                 on { it.idealStartTimestampMs } doReturn startTimestampMs
                 on { it.adaptations } doReturn adaptations
+                on { it.isAdaptivePlayback } doReturn isAdaptivePlayback
             }
         val productId = "3"
         val audioQuality = mock<AudioQuality>()
@@ -178,6 +188,7 @@ internal class UndeterminedPlaybackSessionResolverTest {
         verify(undetermined).streamingSessionId
         verify(undetermined).idealStartTimestampMs
         verify(undetermined).adaptations
+        verify(undetermined).isAdaptivePlayback
         verify(playbackInfo).id
         verify(versionedCdmCalculator)(playbackInfo)
         verify(playbackInfo).audioQuality
@@ -192,6 +203,7 @@ internal class UndeterminedPlaybackSessionResolverTest {
                     adaptations,
                     MediaStorage.INTERNET,
                     emptyMap(),
+                    isAdaptivePlayback,
                 )
             )
         verifyNoMoreInteractions(
@@ -209,11 +221,13 @@ internal class UndeterminedPlaybackSessionResolverTest {
         val id = mock<UUID>()
         val startTimestampMs = mock<PlaybackStatistics.IdealStartTimestampMs.Known>()
         val adaptations = mock<List<Adaptation>>()
+        val isAdaptivePlayback = false
         val undetermined =
             mock<PlaybackStatistics.Undetermined> {
                 on { it.streamingSessionId } doReturn id
                 on { it.idealStartTimestampMs } doReturn startTimestampMs
                 on { it.adaptations } doReturn adaptations
+                on { it.isAdaptivePlayback } doReturn isAdaptivePlayback
             }
         val productId = "3"
         val playbackInfo = mock<PlaybackInfo.UC> { on { it.id } doReturn productId }
@@ -225,6 +239,7 @@ internal class UndeterminedPlaybackSessionResolverTest {
         verify(undetermined).streamingSessionId
         verify(undetermined).idealStartTimestampMs
         verify(undetermined).adaptations
+        verify(undetermined).isAdaptivePlayback
         verify(playbackInfo).id
         verify(versionedCdmCalculator)(playbackInfo)
         assertThat(actual)
@@ -237,6 +252,7 @@ internal class UndeterminedPlaybackSessionResolverTest {
                     adaptations,
                     MediaStorage.INTERNET,
                     emptyMap(),
+                    isAdaptivePlayback,
                 )
             )
         verifyNoMoreInteractions(id, undetermined, playbackInfo, versionedCdm, startTimestampMs)
@@ -247,11 +263,13 @@ internal class UndeterminedPlaybackSessionResolverTest {
         val id = mock<UUID>()
         val startTimestampMs = mock<PlaybackStatistics.IdealStartTimestampMs.Known>()
         val adaptations = mock<List<Adaptation>>()
+        val isAdaptivePlayback = true
         val undetermined =
             mock<PlaybackStatistics.Undetermined> {
                 on { it.streamingSessionId } doReturn id
                 on { it.idealStartTimestampMs } doReturn startTimestampMs
                 on { it.adaptations } doReturn adaptations
+                on { it.isAdaptivePlayback } doReturn isAdaptivePlayback
             }
         val productId = "3"
         val assetPresentation = mock<AssetPresentation>()
@@ -275,6 +293,7 @@ internal class UndeterminedPlaybackSessionResolverTest {
         verify(undetermined).streamingSessionId
         verify(undetermined).idealStartTimestampMs
         verify(undetermined).adaptations
+        verify(undetermined).isAdaptivePlayback
         verify(playbackInfoTrack).trackId
         verify(playbackInfoTrack).assetPresentation
         verify(versionedCdmCalculator)(playbackInfoOfflineTrack)
@@ -295,6 +314,7 @@ internal class UndeterminedPlaybackSessionResolverTest {
                     actualAudioMode = audioMode,
                     MediaStorage.DEVICE_INTERNAL,
                     emptyMap(),
+                    isAdaptivePlayback,
                 )
             )
         verifyNoMoreInteractions(
@@ -314,11 +334,13 @@ internal class UndeterminedPlaybackSessionResolverTest {
         val id = mock<UUID>()
         val startTimestampMs = mock<PlaybackStatistics.IdealStartTimestampMs.Known>()
         val adaptations = mock<List<Adaptation>>()
+        val isAdaptivePlayback = false
         val undetermined =
             mock<PlaybackStatistics.Undetermined> {
                 on { it.streamingSessionId } doReturn id
                 on { it.idealStartTimestampMs } doReturn startTimestampMs
                 on { it.adaptations } doReturn adaptations
+                on { it.isAdaptivePlayback } doReturn isAdaptivePlayback
             }
         val productId = "${Int.MAX_VALUE}"
         val assetPresentation = mock<AssetPresentation>()
@@ -342,6 +364,7 @@ internal class UndeterminedPlaybackSessionResolverTest {
         verify(undetermined).streamingSessionId
         verify(undetermined).idealStartTimestampMs
         verify(undetermined).adaptations
+        verify(undetermined).isAdaptivePlayback
         verify(playbackInfoVideo).videoId
         verify(playbackInfoVideo).assetPresentation
         verify(versionedCdmCalculator)(playbackInfoOfflineVideo)
@@ -361,6 +384,7 @@ internal class UndeterminedPlaybackSessionResolverTest {
                     actualStreamType = streamType,
                     MediaStorage.DEVICE_INTERNAL,
                     emptyMap(),
+                    isAdaptivePlayback,
                 )
             )
         verifyNoMoreInteractions(

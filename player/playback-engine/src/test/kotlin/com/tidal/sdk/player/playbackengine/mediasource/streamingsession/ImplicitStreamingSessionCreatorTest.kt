@@ -9,5 +9,10 @@ internal class ImplicitStreamingSessionCreatorTest :
     override val startReason = StreamingSessionStart.StartReason.IMPLICIT
     override val factory = mock<StreamingSession.Factory.Implicit>()
     override val streamingSessionCreator =
-        StreamingSession.Creator.Implicit(factory, trueTimeWrapper, eventReporter)
+        StreamingSession.Creator.Implicit(
+            factory,
+            trueTimeWrapper,
+            eventReporter,
+            audioQualityRepository,
+        )
 }

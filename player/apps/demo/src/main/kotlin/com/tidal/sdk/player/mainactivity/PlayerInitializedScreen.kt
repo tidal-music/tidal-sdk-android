@@ -63,6 +63,7 @@ internal fun PlayerInitializedScreen(
     dispatchSetAudioQualityOnCell: (AudioQuality) -> Unit,
     dispatchSetLoudnessNormalizationMode: (LoudnessNormalizationMode) -> Unit,
     dispatchSetImmersiveAudio: (Boolean) -> Unit,
+    dispatchSetEnableAdaptive: (Boolean) -> Unit,
     dispatchRelease: () -> Unit,
 ) {
     Column(Modifier.padding(paddingValues)) {
@@ -103,6 +104,7 @@ internal fun PlayerInitializedScreen(
                 dispatchSetAudioQualityOnCell,
                 dispatchSetLoudnessNormalizationMode,
                 dispatchSetImmersiveAudio,
+                dispatchSetEnableAdaptive,
                 dispatchRelease,
             )
         }
@@ -172,6 +174,7 @@ private fun PlaybackControls(
     dispatchSetAudioQualityOnCell: (AudioQuality) -> Unit,
     dispatchSetLoudnessNormalizationMode: (LoudnessNormalizationMode) -> Unit,
     dispatchSetImmersiveAudioOnCell: (Boolean) -> Unit,
+    dispatchSetEnableAdaptive: (Boolean) -> Unit,
     dispatchRelease: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
@@ -311,6 +314,20 @@ private fun PlaybackControls(
             Switch(
                 checked = state.immersiveAudio,
                 onCheckedChange = { dispatchSetImmersiveAudioOnCell(it) },
+            )
+        }
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+        ) {
+            Text(
+                text = "Adaptive",
+                modifier = Modifier.padding(PaddingValues(end = 8F.dp)).weight(1F, fill = false),
+            )
+            Switch(
+                checked = state.enableAdaptive,
+                onCheckedChange = { dispatchSetEnableAdaptive(it) },
             )
         }
         Button(onClick = dispatchRelease, modifier = Modifier.fillMaxWidth()) {
