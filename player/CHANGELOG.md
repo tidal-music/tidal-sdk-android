@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.57] - 2026-01-23
+### Changed
+- Added support for adaptive streaming for tracks
+- Migrated to the new track manifest endpoint
+- Fixed media transition bug
+
 ## [0.0.56] - 2025-08-20
 ### Changed
 - Downgrade to Java 17
