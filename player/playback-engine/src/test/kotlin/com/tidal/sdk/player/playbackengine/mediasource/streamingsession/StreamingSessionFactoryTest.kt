@@ -30,7 +30,7 @@ internal abstract class StreamingSessionFactoryTest {
         val expectedUUID = mock<UUID>()
         whenever(uuidWrapper.randomUUID) doReturn expectedUUID
 
-        val actual = streamingSessionFactory.create(emptyMap())
+        val actual = streamingSessionFactory.create(emptyMap(), isAdaptivePlayback = false)
 
         verify(uuidWrapper).randomUUID
         assertThat(actual.id).isSameInstanceAs(expectedUUID)
