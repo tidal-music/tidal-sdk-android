@@ -41,7 +41,7 @@ interface UserCollectionFolders {
 
     /**
      * Delete single userCollectionFolder. Deletes existing userCollectionFolder. Responses:
-     * - 400: The request is malformed or invalid
+     * - 400: Cannot delete folder: only empty folders owned by you can be deleted.
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced

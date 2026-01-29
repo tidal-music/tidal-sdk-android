@@ -16,14 +16,18 @@ fun getOneOfSerializer() = SerializersModule {
         subclass(ArtistRolesResourceObject::class, ArtistRolesResourceObject.serializer())
         subclass(ArtistsResourceObject::class, ArtistsResourceObject.serializer())
         subclass(ArtworksResourceObject::class, ArtworksResourceObject.serializer())
+        subclass(ContentClaimsResourceObject::class, ContentClaimsResourceObject.serializer())
         subclass(CreditsResourceObject::class, CreditsResourceObject.serializer())
+        subclass(DynamicModulesResourceObject::class, DynamicModulesResourceObject.serializer())
         subclass(DynamicPagesResourceObject::class, DynamicPagesResourceObject.serializer())
         subclass(GenresResourceObject::class, GenresResourceObject.serializer())
+        subclass(InstallationsResourceObject::class, InstallationsResourceObject.serializer())
         subclass(LyricsResourceObject::class, LyricsResourceObject.serializer())
         subclass(
             ManualArtistClaimsResourceObject::class,
             ManualArtistClaimsResourceObject.serializer(),
         )
+        subclass(OfflineTasksResourceObject::class, OfflineTasksResourceObject.serializer())
         subclass(PlayQueuesResourceObject::class, PlayQueuesResourceObject.serializer())
         subclass(PlaylistsResourceObject::class, PlaylistsResourceObject.serializer())
         subclass(ProvidersResourceObject::class, ProvidersResourceObject.serializer())
