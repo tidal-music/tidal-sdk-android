@@ -16,6 +16,9 @@ import kotlinx.serialization.Serializable
  * @param contributionsSalesPitch Contributions sales pitch
  * @param externalLinks Artist links external to TIDAL API
  * @param handle Artist handle
+ * @param ownerType Ownership type of the artist profile. LABEL: label-managed profile, USER:
+ *   user-created profile, MIXED: claimed profile with both label and user content. May be null
+ *   during rollout/backfill.
  * @param spotlighted Is the artist spotlighted?
  */
 @Serializable
@@ -41,7 +44,25 @@ data class ArtistsAttributes(
     /* Artist handle */
 
     @SerialName(value = "handle") val handle: kotlin.String? = null,
+    /* Ownership type of the artist profile. LABEL: label-managed profile, USER: user-created profile, MIXED: claimed profile with both label and user content. May be null during rollout/backfill. */
+
+    @SerialName(value = "ownerType") val ownerType: ArtistsAttributes.OwnerType? = null,
     /* Is the artist spotlighted? */
 
     @SerialName(value = "spotlighted") val spotlighted: kotlin.Boolean? = null,
-) {}
+) {
+
+    /**
+     * Ownership type of the artist profile. LABEL: label-managed profile, USER: user-created
+     * profile, MIXED: claimed profile with both label and user content. May be null during
+     * rollout/backfill.
+     *
+     * Values: LABEL,USER,MIXED
+     */
+    @Serializable
+    enum class OwnerType(val value: kotlin.String) {
+        @SerialName(value = "LABEL") LABEL("LABEL"),
+        @SerialName(value = "USER") USER("USER"),
+        @SerialName(value = "MIXED") MIXED("MIXED"),
+    }
+}

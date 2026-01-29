@@ -36,6 +36,7 @@ interface Artists {
      *   roles, similarArtists, trackProviders, tracks, videos (optional)
      * @param filterHandle Artist handle (optional)
      * @param filterId Artist id (optional)
+     * @param filterOwnersId User id (optional)
      * @return [ArtistsMultiResourceDataDocument]
      */
     @GET("artists")
@@ -47,6 +48,8 @@ interface Artists {
         filterHandle: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[id]")
         filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("filter[owners.id]")
+        filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<ArtistsMultiResourceDataDocument>
 
     /**

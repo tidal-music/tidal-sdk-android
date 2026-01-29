@@ -8,11 +8,15 @@ import com.tidal.sdk.tidalapi.generated.apis.ArtistClaims
 import com.tidal.sdk.tidalapi.generated.apis.ArtistRoles
 import com.tidal.sdk.tidalapi.generated.apis.Artists
 import com.tidal.sdk.tidalapi.generated.apis.Artworks
+import com.tidal.sdk.tidalapi.generated.apis.ContentClaims
 import com.tidal.sdk.tidalapi.generated.apis.Credits
+import com.tidal.sdk.tidalapi.generated.apis.DynamicModules
 import com.tidal.sdk.tidalapi.generated.apis.DynamicPages
 import com.tidal.sdk.tidalapi.generated.apis.Genres
+import com.tidal.sdk.tidalapi.generated.apis.Installations
 import com.tidal.sdk.tidalapi.generated.apis.Lyrics
 import com.tidal.sdk.tidalapi.generated.apis.ManualArtistClaims
+import com.tidal.sdk.tidalapi.generated.apis.OfflineTasks
 import com.tidal.sdk.tidalapi.generated.apis.PlayQueues
 import com.tidal.sdk.tidalapi.generated.apis.Playlists
 import com.tidal.sdk.tidalapi.generated.apis.Providers
@@ -78,9 +82,19 @@ class TidalApiClient(credentialsProvider: CredentialsProvider, baseUrl: String =
         return retrofit.create(Artworks::class.java)
     }
 
+    /** Returns an instance of the [ContentClaims] which can be used to make API calls to the */
+    fun createContentClaims(): ContentClaims {
+        return retrofit.create(ContentClaims::class.java)
+    }
+
     /** Returns an instance of the [Credits] which can be used to make API calls to the */
     fun createCredits(): Credits {
         return retrofit.create(Credits::class.java)
+    }
+
+    /** Returns an instance of the [DynamicModules] which can be used to make API calls to the */
+    fun createDynamicModules(): DynamicModules {
+        return retrofit.create(DynamicModules::class.java)
     }
 
     /** Returns an instance of the [DynamicPages] which can be used to make API calls to the */
@@ -93,6 +107,11 @@ class TidalApiClient(credentialsProvider: CredentialsProvider, baseUrl: String =
         return retrofit.create(Genres::class.java)
     }
 
+    /** Returns an instance of the [Installations] which can be used to make API calls to the */
+    fun createInstallations(): Installations {
+        return retrofit.create(Installations::class.java)
+    }
+
     /** Returns an instance of the [Lyrics] which can be used to make API calls to the */
     fun createLyrics(): Lyrics {
         return retrofit.create(Lyrics::class.java)
@@ -103,6 +122,11 @@ class TidalApiClient(credentialsProvider: CredentialsProvider, baseUrl: String =
      */
     fun createManualArtistClaims(): ManualArtistClaims {
         return retrofit.create(ManualArtistClaims::class.java)
+    }
+
+    /** Returns an instance of the [OfflineTasks] which can be used to make API calls to the */
+    fun createOfflineTasks(): OfflineTasks {
+        return retrofit.create(OfflineTasks::class.java)
     }
 
     /** Returns an instance of the [PlayQueues] which can be used to make API calls to the */

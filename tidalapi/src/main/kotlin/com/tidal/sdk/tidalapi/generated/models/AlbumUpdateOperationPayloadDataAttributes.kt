@@ -13,7 +13,9 @@ import kotlinx.serialization.Serializable
  * @param accessType Access type
  * @param albumType
  * @param copyright
- * @param explicitLyrics
+ * @param explicit Explicit content
+ * @param explicitLyrics Explicit content. Deprecated: use 'explicit' instead. This field will be
+ *   removed in a future version.
  * @param releaseDate
  * @param title
  * @param version
@@ -28,7 +30,14 @@ data class AlbumUpdateOperationPayloadDataAttributes(
     @SerialName(value = "albumType")
     val albumType: AlbumUpdateOperationPayloadDataAttributes.AlbumType? = null,
     @SerialName(value = "copyright") val copyright: Copyright? = null,
-    @SerialName(value = "explicitLyrics") val explicitLyrics: kotlin.Boolean? = null,
+    /* Explicit content */
+
+    @SerialName(value = "explicit") val explicit: kotlin.Boolean? = null,
+    /* Explicit content. Deprecated: use 'explicit' instead. This field will be removed in a future version. */
+
+    @SerialName(value = "explicitLyrics")
+    @Deprecated(message = "This property is deprecated.")
+    val explicitLyrics: kotlin.Boolean? = null,
     @SerialName(value = "releaseDate") val releaseDate: kotlin.String? = null,
     @SerialName(value = "title") val title: kotlin.String? = null,
     @SerialName(value = "version") val version: kotlin.String? = null,
