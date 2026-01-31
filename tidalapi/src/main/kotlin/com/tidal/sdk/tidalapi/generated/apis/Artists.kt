@@ -1,17 +1,17 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
-import com.tidal.sdk.tidalapi.generated.models.ArtistCreateOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.ArtistFollowingRelationshipAddOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.ArtistFollowingRelationshipRemoveOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.ArtistProfileArtRelationshipUpdateOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.ArtistUpdateBody
+import com.tidal.sdk.tidalapi.generated.models.ArtistsCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.ArtistsFollowersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistsFollowingMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ArtistsFollowingRelationshipAddOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.ArtistsFollowingRelationshipRemoveOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.ArtistsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistsMultiResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ArtistsProfileArtRelationshipUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.ArtistsSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistsSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistsTrackProvidersMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ArtistsUpdateOperationPayload
 import kotlinx.serialization.SerialName
 import retrofit2.Response
 import retrofit2.http.*
@@ -36,6 +36,7 @@ interface Artists {
      *   roles, similarArtists, trackProviders, tracks, videos (optional)
      * @param filterHandle Artist handle (optional)
      * @param filterId Artist id (optional)
+     * @param filterOwnersId User id (optional)
      * @return [ArtistsMultiResourceDataDocument]
      */
     @GET("artists")
@@ -47,6 +48,8 @@ interface Artists {
         filterHandle: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[id]")
         filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("filter[owners.id]")
+        filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<ArtistsMultiResourceDataDocument>
 
     /**
@@ -88,13 +91,13 @@ interface Artists {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Artist id
-     * @param artistUpdateBody (optional)
+     * @param artistsUpdateOperationPayload (optional)
      * @return [Unit]
      */
     @PATCH("artists/{id}")
     suspend fun artistsIdPatch(
         @Path("id") id: kotlin.String,
-        @Body artistUpdateBody: ArtistUpdateBody? = null,
+        @Body artistsUpdateOperationPayload: ArtistsUpdateOperationPayload? = null,
     ): Response<Unit>
 
     /**
@@ -196,15 +199,15 @@ interface Artists {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Artist id
-     * @param artistFollowingRelationshipRemoveOperationPayload (optional)
+     * @param artistsFollowingRelationshipRemoveOperationPayload (optional)
      * @return [Unit]
      */
     @HTTP(method = "DELETE", path = "artists/{id}/relationships/following", hasBody = true)
     suspend fun artistsIdRelationshipsFollowingDelete(
         @Path("id") id: kotlin.String,
         @Body
-        artistFollowingRelationshipRemoveOperationPayload:
-            ArtistFollowingRelationshipRemoveOperationPayload? =
+        artistsFollowingRelationshipRemoveOperationPayload:
+            ArtistsFollowingRelationshipRemoveOperationPayload? =
             null,
     ): Response<Unit>
 
@@ -252,7 +255,7 @@ interface Artists {
      *
      * @param id Artist id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param artistFollowingRelationshipAddOperationPayload (optional)
+     * @param artistsFollowingRelationshipAddOperationPayload (optional)
      * @return [Unit]
      */
     @POST("artists/{id}/relationships/following")
@@ -260,8 +263,8 @@ interface Artists {
         @Path("id") id: kotlin.String,
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Body
-        artistFollowingRelationshipAddOperationPayload:
-            ArtistFollowingRelationshipAddOperationPayload? =
+        artistsFollowingRelationshipAddOperationPayload:
+            ArtistsFollowingRelationshipAddOperationPayload? =
             null,
     ): Response<Unit>
 
@@ -335,15 +338,15 @@ interface Artists {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Artist id
-     * @param artistProfileArtRelationshipUpdateOperationPayload (optional)
+     * @param artistsProfileArtRelationshipUpdateOperationPayload (optional)
      * @return [Unit]
      */
     @PATCH("artists/{id}/relationships/profileArt")
     suspend fun artistsIdRelationshipsProfileArtPatch(
         @Path("id") id: kotlin.String,
         @Body
-        artistProfileArtRelationshipUpdateOperationPayload:
-            ArtistProfileArtRelationshipUpdateOperationPayload? =
+        artistsProfileArtRelationshipUpdateOperationPayload:
+            ArtistsProfileArtRelationshipUpdateOperationPayload? =
             null,
     ): Response<Unit>
 
@@ -541,11 +544,11 @@ interface Artists {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param artistCreateOperationPayload (optional)
+     * @param artistsCreateOperationPayload (optional)
      * @return [ArtistsSingleResourceDataDocument]
      */
     @POST("artists")
     suspend fun artistsPost(
-        @Body artistCreateOperationPayload: ArtistCreateOperationPayload? = null
+        @Body artistsCreateOperationPayload: ArtistsCreateOperationPayload? = null
     ): Response<ArtistsSingleResourceDataDocument>
 }

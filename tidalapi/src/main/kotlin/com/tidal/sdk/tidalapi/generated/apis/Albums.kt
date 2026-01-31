@@ -1,15 +1,15 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
-import com.tidal.sdk.tidalapi.generated.models.AlbumCoverArtRelationshipUpdateOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.AlbumCreateOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.AlbumItemsRelationshipUpdateOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.AlbumUpdateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.AlbumsCoverArtRelationshipUpdateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.AlbumsCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.AlbumsItemsMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.AlbumsItemsRelationshipUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.AlbumsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.AlbumsMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.AlbumsSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.AlbumsSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.AlbumsSuggestedCoverArtsMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.AlbumsUpdateOperationPayload
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -114,13 +114,13 @@ interface Albums {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Album id
-     * @param albumUpdateOperationPayload (optional)
+     * @param albumsUpdateOperationPayload (optional)
      * @return [Unit]
      */
     @PATCH("albums/{id}")
     suspend fun albumsIdPatch(
         @Path("id") id: kotlin.String,
-        @Body albumUpdateOperationPayload: AlbumUpdateOperationPayload? = null,
+        @Body albumsUpdateOperationPayload: AlbumsUpdateOperationPayload? = null,
     ): Response<Unit>
 
     /**
@@ -201,15 +201,15 @@ interface Albums {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Album id
-     * @param albumCoverArtRelationshipUpdateOperationPayload (optional)
+     * @param albumsCoverArtRelationshipUpdateOperationPayload (optional)
      * @return [Unit]
      */
     @PATCH("albums/{id}/relationships/coverArt")
     suspend fun albumsIdRelationshipsCoverArtPatch(
         @Path("id") id: kotlin.String,
         @Body
-        albumCoverArtRelationshipUpdateOperationPayload:
-            AlbumCoverArtRelationshipUpdateOperationPayload? =
+        albumsCoverArtRelationshipUpdateOperationPayload:
+            AlbumsCoverArtRelationshipUpdateOperationPayload? =
             null,
     ): Response<Unit>
 
@@ -289,15 +289,15 @@ interface Albums {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Album id
-     * @param albumItemsRelationshipUpdateOperationPayload (optional)
+     * @param albumsItemsRelationshipUpdateOperationPayload (optional)
      * @return [Unit]
      */
     @PATCH("albums/{id}/relationships/items")
     suspend fun albumsIdRelationshipsItemsPatch(
         @Path("id") id: kotlin.String,
         @Body
-        albumItemsRelationshipUpdateOperationPayload:
-            AlbumItemsRelationshipUpdateOperationPayload? =
+        albumsItemsRelationshipUpdateOperationPayload:
+            AlbumsItemsRelationshipUpdateOperationPayload? =
             null,
     ): Response<Unit>
 
@@ -470,11 +470,11 @@ interface Albums {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param albumCreateOperationPayload (optional)
+     * @param albumsCreateOperationPayload (optional)
      * @return [AlbumsSingleResourceDataDocument]
      */
     @POST("albums")
     suspend fun albumsPost(
-        @Body albumCreateOperationPayload: AlbumCreateOperationPayload? = null
+        @Body albumsCreateOperationPayload: AlbumsCreateOperationPayload? = null
     ): Response<AlbumsSingleResourceDataDocument>
 }

@@ -1,6 +1,6 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
-import com.tidal.sdk.tidalapi.generated.models.ArtistClaimAcceptedArtistsRelationshipUpdateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.ArtistClaimsAcceptedArtistsRelationshipUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.ArtistClaimsCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.ArtistClaimsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistClaimsSingleResourceDataDocument
@@ -115,7 +115,7 @@ interface ArtistClaims {
      *
      * @param id Artist claim id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param artistClaimAcceptedArtistsRelationshipUpdateOperationPayload (optional)
+     * @param artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload (optional)
      * @return [Unit]
      */
     @PATCH("artistClaims/{id}/relationships/acceptedArtists")
@@ -123,8 +123,8 @@ interface ArtistClaims {
         @Path("id") id: kotlin.String,
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Body
-        artistClaimAcceptedArtistsRelationshipUpdateOperationPayload:
-            ArtistClaimAcceptedArtistsRelationshipUpdateOperationPayload? =
+        artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload:
+            ArtistClaimsAcceptedArtistsRelationshipUpdateOperationPayload? =
             null,
     ): Response<Unit>
 
