@@ -9,12 +9,8 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/**
- * @param addedAt
- * @param lastModifiedAt
- */
+/** @param addedAt */
 @Serializable
 data class UserCollectionFoldersItemsResourceIdentifierMeta(
-    @SerialName(value = "addedAt") val addedAt: kotlin.String,
-    @SerialName(value = "lastModifiedAt") val lastModifiedAt: kotlin.String,
+    @SerialName(value = "addedAt") val addedAt: kotlin.String
 ) {}

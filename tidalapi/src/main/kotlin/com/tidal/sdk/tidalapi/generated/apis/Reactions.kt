@@ -46,7 +46,7 @@ interface Reactions {
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: ownerProfiles (optional)
      * @param filterEmoji Filter by emoji (optional)
-     * @param filterOwnerId Filter by owner id (optional)
+     * @param filterOwnersId Filter by owner id (optional)
      * @param filterReactedResourceId Filter by reacted resource ID (optional)
      * @param filterReactedResourceType Filter by reacted resource type (optional)
      * @return [ReactionsMultiResourceDataDocument]
@@ -60,8 +60,8 @@ interface Reactions {
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[emoji]")
         filterEmoji: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[owner.id]")
-        filterOwnerId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("filter[owners.id]")
+        filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[reactedResource.id]")
         filterReactedResourceId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? =
             null,

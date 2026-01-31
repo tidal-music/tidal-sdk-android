@@ -27,7 +27,8 @@ interface SearchResults {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Search query string used as the resource identifier
-     * @param explicitFilter Explicit filter (optional, default to INCLUDE)
+     * @param explicitFilter Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to
+     *   INCLUDE)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: albums, artists, playlists, topHits, tracks, videos (optional)
@@ -63,7 +64,8 @@ interface SearchResults {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Search query string used as the resource identifier
-     * @param explicitFilter Explicit filter (optional, default to INCLUDE)
+     * @param explicitFilter Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to
+     *   INCLUDE)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
@@ -102,7 +104,8 @@ interface SearchResults {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Search query string used as the resource identifier
-     * @param explicitFilter Explicit filter (optional, default to INCLUDE)
+     * @param explicitFilter Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to
+     *   INCLUDE)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
@@ -142,7 +145,8 @@ interface SearchResults {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Search query string used as the resource identifier
-     * @param explicitFilter Explicit filter (optional, default to INCLUDE)
+     * @param explicitFilter Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to
+     *   INCLUDE)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
@@ -181,7 +185,8 @@ interface SearchResults {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Search query string used as the resource identifier
-     * @param explicitFilter Explicit filter (optional, default to INCLUDE)
+     * @param explicitFilter Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to
+     *   INCLUDE)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
@@ -220,7 +225,8 @@ interface SearchResults {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Search query string used as the resource identifier
-     * @param explicitFilter Explicit filter (optional, default to INCLUDE)
+     * @param explicitFilter Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to
+     *   INCLUDE)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
@@ -259,7 +265,8 @@ interface SearchResults {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Search query string used as the resource identifier
-     * @param explicitFilter Explicit filter (optional, default to INCLUDE)
+     * @param explicitFilter Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to
+     *   INCLUDE)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)

@@ -1,12 +1,12 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
-import com.tidal.sdk.tidalapi.generated.models.TrackAlbumsRelationshipUpdateOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.TrackCreateOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.TrackUpdateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.TracksAlbumsRelationshipUpdateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.TracksCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.TracksMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.TracksMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.TracksSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.TracksSingleResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.TracksUpdateOperationPayload
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -113,13 +113,13 @@ interface Tracks {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Track id
-     * @param trackUpdateOperationPayload (optional)
+     * @param tracksUpdateOperationPayload (optional)
      * @return [Unit]
      */
     @PATCH("tracks/{id}")
     suspend fun tracksIdPatch(
         @Path("id") id: kotlin.String,
-        @Body trackUpdateOperationPayload: TrackUpdateOperationPayload? = null,
+        @Body tracksUpdateOperationPayload: TracksUpdateOperationPayload? = null,
     ): Response<Unit>
 
     /**
@@ -166,15 +166,15 @@ interface Tracks {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Track id
-     * @param trackAlbumsRelationshipUpdateOperationPayload (optional)
+     * @param tracksAlbumsRelationshipUpdateOperationPayload (optional)
      * @return [Unit]
      */
     @PATCH("tracks/{id}/relationships/albums")
     suspend fun tracksIdRelationshipsAlbumsPatch(
         @Path("id") id: kotlin.String,
         @Body
-        trackAlbumsRelationshipUpdateOperationPayload:
-            TrackAlbumsRelationshipUpdateOperationPayload? =
+        tracksAlbumsRelationshipUpdateOperationPayload:
+            TracksAlbumsRelationshipUpdateOperationPayload? =
             null,
     ): Response<Unit>
 
@@ -584,11 +584,11 @@ interface Tracks {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param trackCreateOperationPayload (optional)
+     * @param tracksCreateOperationPayload (optional)
      * @return [TracksSingleResourceDataDocument]
      */
     @POST("tracks")
     suspend fun tracksPost(
-        @Body trackCreateOperationPayload: TrackCreateOperationPayload? = null
+        @Body tracksCreateOperationPayload: TracksCreateOperationPayload? = null
     ): Response<TracksSingleResourceDataDocument>
 }

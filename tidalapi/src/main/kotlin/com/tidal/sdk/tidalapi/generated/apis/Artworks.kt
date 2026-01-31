@@ -1,6 +1,6 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
-import com.tidal.sdk.tidalapi.generated.models.ArtworkCreateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.ArtworksCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.ArtworksMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtworksMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtworksSingleResourceDataDocument
@@ -101,11 +101,11 @@ interface Artworks {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param artworkCreateOperationPayload (optional)
+     * @param artworksCreateOperationPayload (optional)
      * @return [ArtworksSingleResourceDataDocument]
      */
     @POST("artworks")
     suspend fun artworksPost(
-        @Body artworkCreateOperationPayload: ArtworkCreateOperationPayload? = null
+        @Body artworksCreateOperationPayload: ArtworksCreateOperationPayload? = null
     ): Response<ArtworksSingleResourceDataDocument>
 }
