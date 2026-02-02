@@ -25,6 +25,7 @@ internal class ExoPlayerPlaybackEngineLooperTest {
                 InstrumentationRegistry.getInstrumentation().targetContext,
                 mock(),
                 true,
+                true,
                 MutableSharedFlow(),
                 BufferConfiguration(),
                 AssetTimeoutConfig(),
