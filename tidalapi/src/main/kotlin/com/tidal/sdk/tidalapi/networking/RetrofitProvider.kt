@@ -4,8 +4,10 @@ import com.tidal.sdk.auth.CredentialsProvider
 import com.tidal.sdk.common.d
 import com.tidal.sdk.common.logger
 import com.tidal.sdk.tidalapi.generated.models.getOneOfSerializer
+import java.io.File
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
+import okhttp3.Cache
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -22,17 +24,27 @@ class RetrofitProvider {
             createJsonSerializer().asConverterFactory("application/json".toMediaType()),
         )
 
-    private fun provideOkHttpClientBuilder(credentialsProvider: CredentialsProvider): OkHttpClient =
+    private fun provideOkHttpClientBuilder(
+        credentialsProvider: CredentialsProvider,
+        cacheDir: File?,
+        cacheSize: Long,
+    ): OkHttpClient =
         OkHttpClient.Builder()
+            .apply { cacheDir?.let { cache(Cache(it, cacheSize)) } }
             .addInterceptor(AuthInterceptor(credentialsProvider))
             .authenticator(DefaultAuthenticator(credentialsProvider))
             .addInterceptor(getLoggingInterceptor())
             .build()
 
-    fun provideRetrofit(baseUrl: String, credentialsProvider: CredentialsProvider): Retrofit =
+    fun provideRetrofit(
+        baseUrl: String,
+        credentialsProvider: CredentialsProvider,
+        cacheDir: File? = null,
+        cacheSize: Long,
+    ): Retrofit =
         Retrofit.Builder()
             .baseUrl(baseUrl)
-            .client(provideOkHttpClientBuilder(credentialsProvider))
+            .client(provideOkHttpClientBuilder(credentialsProvider, cacheDir, cacheSize))
             .apply { converterFactories.forEach { addConverterFactory(it) } }
             .build()
 

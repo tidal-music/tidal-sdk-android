@@ -36,11 +36,17 @@ import com.tidal.sdk.tidalapi.generated.apis.UserReports
 import com.tidal.sdk.tidalapi.generated.apis.Users
 import com.tidal.sdk.tidalapi.generated.apis.Videos
 import com.tidal.sdk.tidalapi.networking.RetrofitProvider
+import java.io.File
 
-class TidalApiClient(credentialsProvider: CredentialsProvider, baseUrl: String = DEFAULT_BASE_URL) {
+class TidalApiClient(
+    credentialsProvider: CredentialsProvider,
+    baseUrl: String = DEFAULT_BASE_URL,
+    cacheDir: File? = null,
+    cacheSize: Long = DEFAULT_CACHE_SIZE,
+) {
 
     private val retrofit by lazy {
-        RetrofitProvider().provideRetrofit(baseUrl, credentialsProvider)
+        RetrofitProvider().provideRetrofit(baseUrl, credentialsProvider, cacheDir, cacheSize)
     }
 
     /** Returns an instance of the [Albums] which can be used to make API calls to the */
@@ -223,5 +229,6 @@ class TidalApiClient(credentialsProvider: CredentialsProvider, baseUrl: String =
 
     companion object {
         const val DEFAULT_BASE_URL = "https://openapi.tidal.com/v2/"
+        const val DEFAULT_CACHE_SIZE = 10L * 1024 * 1024 // 10 MB
     }
 }
