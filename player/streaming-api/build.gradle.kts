@@ -17,7 +17,7 @@ dependencies {
     implementation(libs.retrofit.converter.gson)
     api(libs.retrofit)
     implementation(project(":player:common"))
-    implementation(project(":tidalapi"))
+    api(libs.tidal.sdk.tidalapi)
 
     testImplementation(libs.kotlin.reflect)
     testImplementation(libs.kotlinxCoroutinesCore)
