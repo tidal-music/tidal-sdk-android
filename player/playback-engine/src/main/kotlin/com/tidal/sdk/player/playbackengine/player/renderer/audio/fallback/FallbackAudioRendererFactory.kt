@@ -11,6 +11,7 @@ import com.tidal.sdk.player.playbackengine.player.renderer.audio.AudioRendererFa
 internal class FallbackAudioRendererFactory(
     private val context: Context,
     private val defaultAudioSink: DefaultAudioSink,
+    private val enableDecoderFallback: Boolean,
 ) : AudioRendererFactory {
 
     override fun create(
@@ -20,7 +21,7 @@ internal class FallbackAudioRendererFactory(
         MediaCodecAudioRenderer(
             context,
             MediaCodecSelector.DEFAULT,
-            false,
+            enableDecoderFallback,
             eventHandler,
             audioRendererEventListener,
             defaultAudioSink,

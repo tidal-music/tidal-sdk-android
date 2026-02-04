@@ -67,8 +67,11 @@ internal object RendererModule {
 
     @Provides
     @Reusable
-    fun fallbackAudioRendererFactory(context: Context, defaultAudioSink: DefaultAudioSink) =
-        FallbackAudioRendererFactory(context, defaultAudioSink)
+    fun fallbackAudioRendererFactory(
+        context: Context,
+        defaultAudioSink: DefaultAudioSink,
+        @Named("enableDecoderFallback") enableDecoderFallback: Boolean,
+    ) = FallbackAudioRendererFactory(context, defaultAudioSink, enableDecoderFallback)
 
     @Provides
     @Reusable
