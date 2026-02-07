@@ -1,14 +1,41 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
-import com.tidal.sdk.tidalapi.generated.models.ArtistClaimAcceptedArtistsRelationshipUpdateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.ArtistClaimsAcceptedArtistsRelationshipUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.ArtistClaimsCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.ArtistClaimsMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ArtistClaimsMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistClaimsSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistClaimsUpdateOperationPayload
 import retrofit2.Response
 import retrofit2.http.*
 
 interface ArtistClaims {
+    /**
+     * Get multiple artistClaims. Retrieves multiple artistClaims by available filters, or without
+     * if applicable. Responses:
+     * - 200: Successful response
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
+     *
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: acceptedArtists, owners, recommendedArtists (optional)
+     * @param filterOwnersId User id (optional)
+     * @return [ArtistClaimsMultiResourceDataDocument]
+     */
+    @GET("artistClaims")
+    suspend fun artistClaimsGet(
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("filter[owners.id]")
+        filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+    ): Response<ArtistClaimsMultiResourceDataDocument>
+
     /**
      * Delete single artistClaim. Deletes existing artistClaim. Responses:
      * - 400: The request is malformed or invalid
@@ -115,7 +142,7 @@ interface ArtistClaims {
      *
      * @param id Artist claim id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param artistClaimAcceptedArtistsRelationshipUpdateOperationPayload (optional)
+     * @param artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload (optional)
      * @return [Unit]
      */
     @PATCH("artistClaims/{id}/relationships/acceptedArtists")
@@ -123,8 +150,8 @@ interface ArtistClaims {
         @Path("id") id: kotlin.String,
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Body
-        artistClaimAcceptedArtistsRelationshipUpdateOperationPayload:
-            ArtistClaimAcceptedArtistsRelationshipUpdateOperationPayload? =
+        artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload:
+            ArtistClaimsAcceptedArtistsRelationshipUpdateOperationPayload? =
             null,
     ): Response<Unit>
 

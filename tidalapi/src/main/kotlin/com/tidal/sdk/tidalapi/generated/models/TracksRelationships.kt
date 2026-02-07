@@ -17,6 +17,7 @@ import kotlinx.serialization.Serializable
  * @param lyrics
  * @param metadataStatus
  * @param owners
+ * @param priceConfig
  * @param providers
  * @param radio
  * @param replacement
@@ -24,6 +25,7 @@ import kotlinx.serialization.Serializable
  * @param similarTracks
  * @param sourceFile
  * @param trackStatistics
+ * @param usageRules
  */
 @Serializable
 data class TracksRelationships(
@@ -34,6 +36,7 @@ data class TracksRelationships(
     @SerialName(value = "lyrics") val lyrics: MultiRelationshipDataDocument,
     @SerialName(value = "metadataStatus") val metadataStatus: SingleRelationshipDataDocument,
     @SerialName(value = "owners") val owners: MultiRelationshipDataDocument,
+    @SerialName(value = "priceConfig") val priceConfig: SingleRelationshipDataDocument,
     @SerialName(value = "providers") val providers: MultiRelationshipDataDocument,
     @SerialName(value = "radio") val radio: MultiRelationshipDataDocument,
     @SerialName(value = "replacement") val replacement: SingleRelationshipDataDocument,
@@ -41,4 +44,5 @@ data class TracksRelationships(
     @SerialName(value = "similarTracks") val similarTracks: MultiRelationshipDataDocument,
     @SerialName(value = "sourceFile") val sourceFile: SingleRelationshipDataDocument,
     @SerialName(value = "trackStatistics") val trackStatistics: SingleRelationshipDataDocument,
+    @SerialName(value = "usageRules") val usageRules: SingleRelationshipDataDocument,
 ) {}

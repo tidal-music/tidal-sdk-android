@@ -1,17 +1,17 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
-import com.tidal.sdk.tidalapi.generated.models.PlayQueueAddFutureOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.PlayQueueCreateOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.PlayQueueRemoveFutureOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.PlayQueueUpdateCurrentOperationsPayload
-import com.tidal.sdk.tidalapi.generated.models.PlayQueueUpdateFutureOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.PlayQueueUpdateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.PlayQueuesCreateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.PlayQueuesCurrentRelationshipUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.PlayQueuesCurrentSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlayQueuesFutureMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.PlayQueuesFutureRelationshipAddOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.PlayQueuesFutureRelationshipRemoveOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.PlayQueuesFutureRelationshipUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.PlayQueuesMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlayQueuesMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlayQueuesPastMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlayQueuesSingleResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.PlayQueuesUpdateOperationPayload
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -98,13 +98,13 @@ interface PlayQueues {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Play queue id
-     * @param playQueueUpdateOperationPayload (optional)
+     * @param playQueuesUpdateOperationPayload (optional)
      * @return [Unit]
      */
     @PATCH("playQueues/{id}")
     suspend fun playQueuesIdPatch(
         @Path("id") id: kotlin.String,
-        @Body playQueueUpdateOperationPayload: PlayQueueUpdateOperationPayload? = null,
+        @Body playQueuesUpdateOperationPayload: PlayQueuesUpdateOperationPayload? = null,
     ): Response<Unit>
 
     /**
@@ -143,14 +143,16 @@ interface PlayQueues {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Play queue id
-     * @param playQueueUpdateCurrentOperationsPayload (optional)
+     * @param playQueuesCurrentRelationshipUpdateOperationPayload (optional)
      * @return [Unit]
      */
     @PATCH("playQueues/{id}/relationships/current")
     suspend fun playQueuesIdRelationshipsCurrentPatch(
         @Path("id") id: kotlin.String,
         @Body
-        playQueueUpdateCurrentOperationsPayload: PlayQueueUpdateCurrentOperationsPayload? = null,
+        playQueuesCurrentRelationshipUpdateOperationPayload:
+            PlayQueuesCurrentRelationshipUpdateOperationPayload? =
+            null,
     ): Response<Unit>
 
     /**
@@ -166,13 +168,16 @@ interface PlayQueues {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Play queue id
-     * @param playQueueRemoveFutureOperationPayload (optional)
+     * @param playQueuesFutureRelationshipRemoveOperationPayload (optional)
      * @return [Unit]
      */
     @HTTP(method = "DELETE", path = "playQueues/{id}/relationships/future", hasBody = true)
     suspend fun playQueuesIdRelationshipsFutureDelete(
         @Path("id") id: kotlin.String,
-        @Body playQueueRemoveFutureOperationPayload: PlayQueueRemoveFutureOperationPayload? = null,
+        @Body
+        playQueuesFutureRelationshipRemoveOperationPayload:
+            PlayQueuesFutureRelationshipRemoveOperationPayload? =
+            null,
     ): Response<Unit>
 
     /**
@@ -214,13 +219,16 @@ interface PlayQueues {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Play queue id
-     * @param playQueueUpdateFutureOperationPayload (optional)
+     * @param playQueuesFutureRelationshipUpdateOperationPayload (optional)
      * @return [Unit]
      */
     @PATCH("playQueues/{id}/relationships/future")
     suspend fun playQueuesIdRelationshipsFuturePatch(
         @Path("id") id: kotlin.String,
-        @Body playQueueUpdateFutureOperationPayload: PlayQueueUpdateFutureOperationPayload? = null,
+        @Body
+        playQueuesFutureRelationshipUpdateOperationPayload:
+            PlayQueuesFutureRelationshipUpdateOperationPayload? =
+            null,
     ): Response<Unit>
 
     /**
@@ -236,13 +244,16 @@ interface PlayQueues {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Play queue id
-     * @param playQueueAddFutureOperationPayload (optional)
+     * @param playQueuesFutureRelationshipAddOperationPayload (optional)
      * @return [Unit]
      */
     @POST("playQueues/{id}/relationships/future")
     suspend fun playQueuesIdRelationshipsFuturePost(
         @Path("id") id: kotlin.String,
-        @Body playQueueAddFutureOperationPayload: PlayQueueAddFutureOperationPayload? = null,
+        @Body
+        playQueuesFutureRelationshipAddOperationPayload:
+            PlayQueuesFutureRelationshipAddOperationPayload? =
+            null,
     ): Response<Unit>
 
     /**
@@ -311,11 +322,11 @@ interface PlayQueues {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param playQueueCreateOperationPayload (optional)
+     * @param playQueuesCreateOperationPayload (optional)
      * @return [PlayQueuesSingleResourceDataDocument]
      */
     @POST("playQueues")
     suspend fun playQueuesPost(
-        @Body playQueueCreateOperationPayload: PlayQueueCreateOperationPayload? = null
+        @Body playQueuesCreateOperationPayload: PlayQueuesCreateOperationPayload? = null
     ): Response<PlayQueuesSingleResourceDataDocument>
 }

@@ -17,6 +17,7 @@ import kotlinx.serialization.Serializable
  * @param replacement
  * @param similarVideos
  * @param thumbnailArt
+ * @param usageRules
  */
 @Serializable
 data class VideosRelationships(
@@ -27,4 +28,5 @@ data class VideosRelationships(
     @SerialName(value = "replacement") val replacement: SingleRelationshipDataDocument,
     @SerialName(value = "similarVideos") val similarVideos: MultiRelationshipDataDocument,
     @SerialName(value = "thumbnailArt") val thumbnailArt: MultiRelationshipDataDocument,
+    @SerialName(value = "usageRules") val usageRules: SingleRelationshipDataDocument,
 ) {}

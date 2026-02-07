@@ -1,21 +1,22 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
-import com.tidal.sdk.tidalapi.generated.models.UserCollectionAlbumsRelationshipAddOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.UserCollectionAlbumsRelationshipRemoveOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.UserCollectionArtistsRelationshipAddOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.UserCollectionArtistsRelationshipRemoveOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.UserCollectionPlaylistsRelationshipRemoveOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.UserCollectionTracksRelationshipAddOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.UserCollectionTracksRelationshipRemoveOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.UserCollectionVideosRelationshipAddOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.UserCollectionVideosRelationshipRemoveOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionsAlbumsMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionsAlbumsRelationshipAddOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionsAlbumsRelationshipRemoveOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionsArtistsMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionsArtistsRelationshipAddOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionsArtistsRelationshipRemoveOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionsPlaylistsMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionsPlaylistsRelationshipAddOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionsPlaylistsRelationshipRemoveOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionsSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionsTracksMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionsTracksRelationshipAddOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionsTracksRelationshipRemoveOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionsVideosMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionsVideosRelationshipAddOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionsVideosRelationshipRemoveOperationPayload
 import kotlinx.serialization.SerialName
 import retrofit2.Response
 import retrofit2.http.*
@@ -63,15 +64,15 @@ interface UserCollections {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id User collection id
-     * @param userCollectionAlbumsRelationshipRemoveOperationPayload (optional)
+     * @param userCollectionsAlbumsRelationshipRemoveOperationPayload (optional)
      * @return [Unit]
      */
     @HTTP(method = "DELETE", path = "userCollections/{id}/relationships/albums", hasBody = true)
     suspend fun userCollectionsIdRelationshipsAlbumsDelete(
         @Path("id") id: kotlin.String,
         @Body
-        userCollectionAlbumsRelationshipRemoveOperationPayload:
-            UserCollectionAlbumsRelationshipRemoveOperationPayload? =
+        userCollectionsAlbumsRelationshipRemoveOperationPayload:
+            UserCollectionsAlbumsRelationshipRemoveOperationPayload? =
             null,
     ): Response<Unit>
 
@@ -129,6 +130,9 @@ interface UserCollections {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: You have reached the maximum number of items allowed for this collection. Please
+     *   remove some items before adding more.; One or more items you are trying to add are already
+     *   in your favorites.
      * - 415: Unsupported request payload media type or content encoding
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
@@ -136,7 +140,7 @@ interface UserCollections {
      *
      * @param id User collection id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param userCollectionAlbumsRelationshipAddOperationPayload (optional)
+     * @param userCollectionsAlbumsRelationshipAddOperationPayload (optional)
      * @return [Unit]
      */
     @POST("userCollections/{id}/relationships/albums")
@@ -144,8 +148,8 @@ interface UserCollections {
         @Path("id") id: kotlin.String,
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Body
-        userCollectionAlbumsRelationshipAddOperationPayload:
-            UserCollectionAlbumsRelationshipAddOperationPayload? =
+        userCollectionsAlbumsRelationshipAddOperationPayload:
+            UserCollectionsAlbumsRelationshipAddOperationPayload? =
             null,
     ): Response<Unit>
 
@@ -162,15 +166,15 @@ interface UserCollections {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id User collection id
-     * @param userCollectionArtistsRelationshipRemoveOperationPayload (optional)
+     * @param userCollectionsArtistsRelationshipRemoveOperationPayload (optional)
      * @return [Unit]
      */
     @HTTP(method = "DELETE", path = "userCollections/{id}/relationships/artists", hasBody = true)
     suspend fun userCollectionsIdRelationshipsArtistsDelete(
         @Path("id") id: kotlin.String,
         @Body
-        userCollectionArtistsRelationshipRemoveOperationPayload:
-            UserCollectionArtistsRelationshipRemoveOperationPayload? =
+        userCollectionsArtistsRelationshipRemoveOperationPayload:
+            UserCollectionsArtistsRelationshipRemoveOperationPayload? =
             null,
     ): Response<Unit>
 
@@ -224,6 +228,9 @@ interface UserCollections {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: You have reached the maximum number of items allowed for this collection. Please
+     *   remove some items before adding more.; One or more items you are trying to add are already
+     *   in your favorites.
      * - 415: Unsupported request payload media type or content encoding
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
@@ -231,7 +238,7 @@ interface UserCollections {
      *
      * @param id User collection id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param userCollectionArtistsRelationshipAddOperationPayload (optional)
+     * @param userCollectionsArtistsRelationshipAddOperationPayload (optional)
      * @return [Unit]
      */
     @POST("userCollections/{id}/relationships/artists")
@@ -239,8 +246,8 @@ interface UserCollections {
         @Path("id") id: kotlin.String,
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Body
-        userCollectionArtistsRelationshipAddOperationPayload:
-            UserCollectionArtistsRelationshipAddOperationPayload? =
+        userCollectionsArtistsRelationshipAddOperationPayload:
+            UserCollectionsArtistsRelationshipAddOperationPayload? =
             null,
     ): Response<Unit>
 
@@ -284,15 +291,15 @@ interface UserCollections {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id User collection id
-     * @param userCollectionPlaylistsRelationshipRemoveOperationPayload (optional)
+     * @param userCollectionsPlaylistsRelationshipRemoveOperationPayload (optional)
      * @return [Unit]
      */
     @HTTP(method = "DELETE", path = "userCollections/{id}/relationships/playlists", hasBody = true)
     suspend fun userCollectionsIdRelationshipsPlaylistsDelete(
         @Path("id") id: kotlin.String,
         @Body
-        userCollectionPlaylistsRelationshipRemoveOperationPayload:
-            UserCollectionPlaylistsRelationshipRemoveOperationPayload? =
+        userCollectionsPlaylistsRelationshipRemoveOperationPayload:
+            UserCollectionsPlaylistsRelationshipRemoveOperationPayload? =
             null,
     ): Response<Unit>
 
@@ -305,10 +312,10 @@ interface UserCollections {
     enum class SortUserCollectionsIdRelationshipsPlaylistsGet(val value: kotlin.String) {
         @SerialName(value = "playlists.addedAt") PlaylistsAddedAtAsc("playlists.addedAt"),
         @SerialName(value = "-playlists.addedAt") PlaylistsAddedAtDesc("-playlists.addedAt"),
-        @SerialName(value = "playlists.lastUpdatedAt")
-        PlaylistsLastUpdatedAtAsc("playlists.lastUpdatedAt"),
-        @SerialName(value = "-playlists.lastUpdatedAt")
-        PlaylistsLastUpdatedAtDesc("-playlists.lastUpdatedAt"),
+        @SerialName(value = "playlists.lastModifiedAt")
+        PlaylistsLastModifiedAtAsc("playlists.lastModifiedAt"),
+        @SerialName(value = "-playlists.lastModifiedAt")
+        PlaylistsLastModifiedAtDesc("-playlists.lastModifiedAt"),
         @SerialName(value = "playlists.name") PlaylistsNameAsc("playlists.name"),
         @SerialName(value = "-playlists.name") PlaylistsNameDesc("-playlists.name"),
     }
@@ -354,21 +361,24 @@ interface UserCollections {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: You have reached the maximum number of items allowed for this collection. Please
+     *   remove some items before adding more.; One or more items you are trying to add are already
+     *   in your favorites.
      * - 415: Unsupported request payload media type or content encoding
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id User collection id
-     * @param userCollectionPlaylistsRelationshipRemoveOperationPayload (optional)
+     * @param userCollectionsPlaylistsRelationshipAddOperationPayload (optional)
      * @return [Unit]
      */
     @POST("userCollections/{id}/relationships/playlists")
     suspend fun userCollectionsIdRelationshipsPlaylistsPost(
         @Path("id") id: kotlin.String,
         @Body
-        userCollectionPlaylistsRelationshipRemoveOperationPayload:
-            UserCollectionPlaylistsRelationshipRemoveOperationPayload? =
+        userCollectionsPlaylistsRelationshipAddOperationPayload:
+            UserCollectionsPlaylistsRelationshipAddOperationPayload? =
             null,
     ): Response<Unit>
 
@@ -385,15 +395,15 @@ interface UserCollections {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id User collection id
-     * @param userCollectionTracksRelationshipRemoveOperationPayload (optional)
+     * @param userCollectionsTracksRelationshipRemoveOperationPayload (optional)
      * @return [Unit]
      */
     @HTTP(method = "DELETE", path = "userCollections/{id}/relationships/tracks", hasBody = true)
     suspend fun userCollectionsIdRelationshipsTracksDelete(
         @Path("id") id: kotlin.String,
         @Body
-        userCollectionTracksRelationshipRemoveOperationPayload:
-            UserCollectionTracksRelationshipRemoveOperationPayload? =
+        userCollectionsTracksRelationshipRemoveOperationPayload:
+            UserCollectionsTracksRelationshipRemoveOperationPayload? =
             null,
     ): Response<Unit>
 
@@ -453,6 +463,9 @@ interface UserCollections {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: You have reached the maximum number of items allowed for this collection. Please
+     *   remove some items before adding more.; One or more items you are trying to add are already
+     *   in your favorites.
      * - 415: Unsupported request payload media type or content encoding
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
@@ -460,7 +473,7 @@ interface UserCollections {
      *
      * @param id User collection id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param userCollectionTracksRelationshipAddOperationPayload (optional)
+     * @param userCollectionsTracksRelationshipAddOperationPayload (optional)
      * @return [Unit]
      */
     @POST("userCollections/{id}/relationships/tracks")
@@ -468,8 +481,8 @@ interface UserCollections {
         @Path("id") id: kotlin.String,
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Body
-        userCollectionTracksRelationshipAddOperationPayload:
-            UserCollectionTracksRelationshipAddOperationPayload? =
+        userCollectionsTracksRelationshipAddOperationPayload:
+            UserCollectionsTracksRelationshipAddOperationPayload? =
             null,
     ): Response<Unit>
 
@@ -486,15 +499,15 @@ interface UserCollections {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id User collection id
-     * @param userCollectionVideosRelationshipRemoveOperationPayload (optional)
+     * @param userCollectionsVideosRelationshipRemoveOperationPayload (optional)
      * @return [Unit]
      */
     @HTTP(method = "DELETE", path = "userCollections/{id}/relationships/videos", hasBody = true)
     suspend fun userCollectionsIdRelationshipsVideosDelete(
         @Path("id") id: kotlin.String,
         @Body
-        userCollectionVideosRelationshipRemoveOperationPayload:
-            UserCollectionVideosRelationshipRemoveOperationPayload? =
+        userCollectionsVideosRelationshipRemoveOperationPayload:
+            UserCollectionsVideosRelationshipRemoveOperationPayload? =
             null,
     ): Response<Unit>
 
@@ -552,6 +565,9 @@ interface UserCollections {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: You have reached the maximum number of items allowed for this collection. Please
+     *   remove some items before adding more.; One or more items you are trying to add are already
+     *   in your favorites.
      * - 415: Unsupported request payload media type or content encoding
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
@@ -559,7 +575,7 @@ interface UserCollections {
      *
      * @param id User collection id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param userCollectionVideosRelationshipAddOperationPayload (optional)
+     * @param userCollectionsVideosRelationshipAddOperationPayload (optional)
      * @return [Unit]
      */
     @POST("userCollections/{id}/relationships/videos")
@@ -567,8 +583,8 @@ interface UserCollections {
         @Path("id") id: kotlin.String,
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Body
-        userCollectionVideosRelationshipAddOperationPayload:
-            UserCollectionVideosRelationshipAddOperationPayload? =
+        userCollectionsVideosRelationshipAddOperationPayload:
+            UserCollectionsVideosRelationshipAddOperationPayload? =
             null,
     ): Response<Unit>
 }

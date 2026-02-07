@@ -19,7 +19,8 @@ import kotlinx.serialization.Serializable
  * @param popularity Popularity (0.0 - 1.0)
  * @param title Track title
  * @param accessType Access type
- * @param availability Available usage for this track
+ * @param availability Available usage for this track. Deprecated: use 'usageRules' instead. This
+ *   field will be removed in a future version.
  * @param bpm Beats per minute
  * @param copyright
  * @param createdAt Datetime of track creation (ISO 8601)
@@ -56,9 +57,10 @@ data class TracksAttributes(
     /* Access type */
 
     @SerialName(value = "accessType") val accessType: TracksAttributes.AccessType? = null,
-    /* Available usage for this track */
+    /* Available usage for this track. Deprecated: use 'usageRules' instead. This field will be removed in a future version. */
 
     @SerialName(value = "availability")
+    @Deprecated(message = "This property is deprecated.")
     val availability: kotlin.collections.List<TracksAttributes.Availability>? = null,
     /* Beats per minute */
 
@@ -139,7 +141,8 @@ data class TracksAttributes(
     }
 
     /**
-     * Available usage for this track
+     * Available usage for this track. Deprecated: use 'usageRules' instead. This field will be
+     * removed in a future version.
      *
      * Values: STREAM,DJ,STEM
      */

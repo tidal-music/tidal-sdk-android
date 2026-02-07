@@ -15,7 +15,8 @@ import kotlinx.serialization.Serializable
  * @param isrc International Standard Recording Code (ISRC)
  * @param popularity Popularity (0.0 - 1.0)
  * @param title Video title
- * @param availability Available usage for this video
+ * @param availability Available usage for this video. Deprecated: use 'usageRules' instead. This
+ *   field will be removed in a future version.
  * @param copyright
  * @param externalLinks Video links external to TIDAL API
  * @param releaseDate Release date (ISO-8601)
@@ -39,9 +40,10 @@ data class VideosAttributes(
     /* Video title */
 
     @SerialName(value = "title") val title: kotlin.String,
-    /* Available usage for this video */
+    /* Available usage for this video. Deprecated: use 'usageRules' instead. This field will be removed in a future version. */
 
     @SerialName(value = "availability")
+    @Deprecated(message = "This property is deprecated.")
     val availability: kotlin.collections.List<VideosAttributes.Availability>? = null,
     @SerialName(value = "copyright") val copyright: Copyright? = null,
     /* Video links external to TIDAL API */
@@ -57,7 +59,8 @@ data class VideosAttributes(
 ) {
 
     /**
-     * Available usage for this video
+     * Available usage for this video. Deprecated: use 'usageRules' instead. This field will be
+     * removed in a future version.
      *
      * Values: STREAM,DJ,STEM
      */
