@@ -10,6 +10,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
+ * @param albumType Album type
  * @param barcodeId Barcode id (EAN-13 or UPC-A)
  * @param duration Duration (ISO 8601)
  * @param explicit Explicit content
@@ -18,17 +19,22 @@ import kotlinx.serialization.Serializable
  * @param numberOfVolumes Number of volumes
  * @param popularity Popularity (0.0 - 1.0)
  * @param title Album title
- * @param type Album type
  * @param accessType Access type
- * @param availability Available usage for this album
+ * @param availability Available usage for this album. Deprecated: use 'usageRules' instead. This
+ *   field will be removed in a future version.
  * @param copyright
  * @param externalLinks Album links external to TIDAL API
  * @param releaseDate Release date (ISO-8601)
+ * @param type Album type. Deprecated: use 'albumType' instead. This field will be removed in a
+ *   future version.
  * @param version Album version
  */
 @Serializable
 data class AlbumsAttributes(
 
+    /* Album type */
+
+    @SerialName(value = "albumType") val albumType: AlbumsAttributes.AlbumType,
     /* Barcode id (EAN-13 or UPC-A) */
 
     @SerialName(value = "barcodeId") val barcodeId: kotlin.String,
@@ -51,15 +57,13 @@ data class AlbumsAttributes(
     /* Album title */
 
     @SerialName(value = "title") val title: kotlin.String,
-    /* Album type */
-
-    @SerialName(value = "type") val type: AlbumsAttributes.Type,
     /* Access type */
 
     @SerialName(value = "accessType") val accessType: AlbumsAttributes.AccessType? = null,
-    /* Available usage for this album */
+    /* Available usage for this album. Deprecated: use 'usageRules' instead. This field will be removed in a future version. */
 
     @SerialName(value = "availability")
+    @Deprecated(message = "This property is deprecated.")
     val availability: kotlin.collections.List<AlbumsAttributes.Availability>? = null,
     @SerialName(value = "copyright") val copyright: Copyright? = null,
     /* Album links external to TIDAL API */
@@ -69,6 +73,11 @@ data class AlbumsAttributes(
     /* Release date (ISO-8601) */
 
     @SerialName(value = "releaseDate") val releaseDate: kotlin.String? = null,
+    /* Album type. Deprecated: use 'albumType' instead. This field will be removed in a future version. */
+
+    @SerialName(value = "type")
+    @Deprecated(message = "This property is deprecated.")
+    val type: AlbumsAttributes.Type? = null,
     /* Album version */
 
     @SerialName(value = "version") val version: kotlin.String? = null,
@@ -80,7 +89,7 @@ data class AlbumsAttributes(
      * Values: ALBUM,EP,SINGLE
      */
     @Serializable
-    enum class Type(val value: kotlin.String) {
+    enum class AlbumType(val value: kotlin.String) {
         @SerialName(value = "ALBUM") ALBUM("ALBUM"),
         @SerialName(value = "EP") EP("EP"),
         @SerialName(value = "SINGLE") SINGLE("SINGLE"),
@@ -99,7 +108,8 @@ data class AlbumsAttributes(
     }
 
     /**
-     * Available usage for this album
+     * Available usage for this album. Deprecated: use 'usageRules' instead. This field will be
+     * removed in a future version.
      *
      * Values: STREAM,DJ,STEM
      */
@@ -108,5 +118,18 @@ data class AlbumsAttributes(
         @SerialName(value = "STREAM") STREAM("STREAM"),
         @SerialName(value = "DJ") DJ("DJ"),
         @SerialName(value = "STEM") STEM("STEM"),
+    }
+
+    /**
+     * Album type. Deprecated: use 'albumType' instead. This field will be removed in a future
+     * version.
+     *
+     * Values: ALBUM,EP,SINGLE
+     */
+    @Serializable
+    enum class Type(val value: kotlin.String) {
+        @SerialName(value = "ALBUM") ALBUM("ALBUM"),
+        @SerialName(value = "EP") EP("EP"),
+        @SerialName(value = "SINGLE") SINGLE("SINGLE"),
     }
 }

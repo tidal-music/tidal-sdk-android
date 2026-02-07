@@ -3,7 +3,7 @@ package com.tidal.sdk.tidalapi.generated.apis
 import com.tidal.sdk.tidalapi.generated.models.ArtistBiographiesMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistBiographiesMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistBiographiesSingleResourceDataDocument
-import com.tidal.sdk.tidalapi.generated.models.ArtistBiographyUpdateBody
+import com.tidal.sdk.tidalapi.generated.models.ArtistBiographiesUpdateOperationPayload
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -74,13 +74,14 @@ interface ArtistBiographies {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Artist biography id
-     * @param artistBiographyUpdateBody (optional)
+     * @param artistBiographiesUpdateOperationPayload (optional)
      * @return [Unit]
      */
     @PATCH("artistBiographies/{id}")
     suspend fun artistBiographiesIdPatch(
         @Path("id") id: kotlin.String,
-        @Body artistBiographyUpdateBody: ArtistBiographyUpdateBody? = null,
+        @Body
+        artistBiographiesUpdateOperationPayload: ArtistBiographiesUpdateOperationPayload? = null,
     ): Response<Unit>
 
     /**

@@ -1,6 +1,6 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
-import com.tidal.sdk.tidalapi.generated.models.UserReportCreateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.UserReportsCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.UserReportsSingleResourceDataDocument
 import retrofit2.Response
 import retrofit2.http.*
@@ -18,11 +18,11 @@ interface UserReports {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param userReportCreateOperationPayload (optional)
+     * @param userReportsCreateOperationPayload (optional)
      * @return [UserReportsSingleResourceDataDocument]
      */
     @POST("userReports")
     suspend fun userReportsPost(
-        @Body userReportCreateOperationPayload: UserReportCreateOperationPayload? = null
+        @Body userReportsCreateOperationPayload: UserReportsCreateOperationPayload? = null
     ): Response<UserReportsSingleResourceDataDocument>
 }
