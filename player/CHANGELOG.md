@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.59] - 2026-02-11
+### Changed
+- Added preview reason
+
 ## [0.0.58] - 2026-02-02
 ### Changed
 - Added enableDecoderFallback
