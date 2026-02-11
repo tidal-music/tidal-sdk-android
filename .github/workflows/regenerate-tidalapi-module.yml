@@ -110,6 +110,36 @@ jobs:
             --output ../api-surface.snapshot
           deactivate
 
+      - name: Analyze API changes
+        id: analyze_changes
+        run: |
+          cd ${{ env.API_MODULE_DIR }}/bin
+          source venv/bin/activate
+          # Get the old spec from the target branch
+          git show origin/${{ inputs.target_branch }}:tidalapi/bin/tidal-api.json > /tmp/old-spec.json 2>/dev/null || cp tidal-api.json /tmp/old-spec.json
+          if ! python3 analyze-api-changes.py \
+            --old-spec /tmp/old-spec.json \
+            --new-spec tidal-api.json \
+            > /tmp/api-change-report.md 2>/tmp/api-change-error.log; then
+            echo "::warning::API change analysis script failed"
+            echo "**API change analysis failed.** Check the CI logs for details." > /tmp/api-change-report.md
+            cat /tmp/api-change-error.log
+          fi
+          deactivate
+          # Truncate report if it exceeds 900KB to stay within GitHub's ~1MB output variable limit
+          if [ "$(wc -c < /tmp/api-change-report.md)" -gt 921600 ]; then
+            head -c 921600 /tmp/api-change-report.md > /tmp/api-change-report-truncated.md
+            echo "" >> /tmp/api-change-report-truncated.md
+            echo "---" >> /tmp/api-change-report-truncated.md
+            echo "**Report truncated.** Full output is available in the CI logs." >> /tmp/api-change-report-truncated.md
+            mv /tmp/api-change-report-truncated.md /tmp/api-change-report.md
+          fi
+          {
+            echo 'change_report<<EOF'
+            cat /tmp/api-change-report.md
+            echo 'EOF'
+          } >> $GITHUB_OUTPUT
+
       - name: Check for changes
         id: check_changes
         env:
@@ -228,9 +258,10 @@ jobs:
           BRANCH_NAME: ${{ steps.commit_changes.outputs.branch_name }}
           API_VERSION: ${{ steps.extract_versions.outputs.api_version }}
           MODULE_VERSION: ${{ steps.extract_versions.outputs.module_version }}
+          CHANGE_REPORT: ${{ steps.analyze_changes.outputs.change_report }}
         run: |
           pr_title="Automatic Tidal API module update - ${{env.CHANGED_FILE_COUNT}} files changed"
-          pr_body="Changed files:\n\n${{ env.CHANGED_FILES }}\n\nAPI Version: ${{ env.API_VERSION }}\nNew module Version: ${{ env.MODULE_VERSION }}\n\nAutomatically generated on $(date)\n\nThis PR is automatically updated when API changes are detected."
+          pr_body="Changed files:\n\n${{ env.CHANGED_FILES }}\n\nAPI Version: ${{ env.API_VERSION }}\nNew module Version: ${{ env.MODULE_VERSION }}\n\nAutomatically generated on $(date)\n\nThis PR is automatically updated when API changes are detected.\n\n---\n\n${{ env.CHANGE_REPORT }}"
           pr_body=$(echo -e "$pr_body")
           
           if [ "${{ steps.check_pr.outputs.existing_pr }}" == "true" ]; then
