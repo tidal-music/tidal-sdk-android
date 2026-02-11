@@ -101,6 +101,15 @@ jobs:
             ./generate-api.sh --bump
           fi
 
+      - name: Generate API surface snapshot
+        run: |
+          cd ${{ env.API_MODULE_DIR }}/bin
+          source venv/bin/activate
+          python3 generate-api-surface-snapshot.py \
+            --spec tidal-api.json \
+            --output ../api-surface.snapshot
+          deactivate
+
       - name: Check for changes
         id: check_changes
         env:
