@@ -3,6 +3,7 @@ package com.tidal.sdk.player.streamingapi.playbackinfo.repository
 import com.tidal.sdk.player.common.model.AssetPresentation
 import com.tidal.sdk.player.common.model.AudioMode
 import com.tidal.sdk.player.common.model.AudioQuality
+import com.tidal.sdk.player.common.model.PreviewReason
 import com.tidal.sdk.player.common.model.VideoQuality
 import com.tidal.sdk.player.streamingapi.playbackinfo.api.PlaybackInfoService
 import com.tidal.sdk.player.streamingapi.playbackinfo.mapper.ApiErrorMapper
@@ -13,6 +14,7 @@ import com.tidal.sdk.player.streamingapi.playbackinfo.offline.OfflinePlaybackInf
 import com.tidal.sdk.tidalapi.generated.apis.TrackManifests
 import com.tidal.sdk.tidalapi.generated.apis.TrackManifests.UriSchemeTrackManifestsIdGet
 import com.tidal.sdk.tidalapi.generated.apis.TrackManifests.UsageTrackManifestsIdGet
+import com.tidal.sdk.tidalapi.generated.models.TrackManifestsAttributes
 import com.tidal.sdk.tidalapi.generated.models.TrackManifestsAttributes.Formats
 import com.tidal.sdk.tidalapi.generated.models.TrackManifestsAttributes.TrackPresentation
 import dagger.Lazy
@@ -62,6 +64,7 @@ internal class PlaybackInfoRepositoryDefault(
                 audioQuality = getAudioQualityFromFormats(data?.attributes?.formats, audioQuality),
                 assetPresentation = convertTrackPresentation(data?.attributes?.trackPresentation),
                 audioMode = getAudioModeFromFormats(data?.attributes?.formats),
+                previewReason = convertPreviewReason(data?.attributes?.previewReason),
                 manifestHash = data?.attributes?.hash.orEmpty(),
                 streamingSessionId = streamingSessionId,
                 manifestMimeType = ManifestMimeType.DASH,
@@ -161,6 +164,18 @@ internal class PlaybackInfoRepositoryDefault(
         val commaIndex = dataUrl.indexOf(',')
         require(commaIndex >= 0) { "Invalid manifest" }
         return dataUrl.substring(commaIndex + 1)
+    }
+
+    private fun convertPreviewReason(
+        previewReason: TrackManifestsAttributes.PreviewReason?
+    ): PreviewReason? {
+        return when (previewReason) {
+            TrackManifestsAttributes.PreviewReason.SUBSCRIPTION -> PreviewReason.SUBSCRIPTION
+            TrackManifestsAttributes.PreviewReason.PURCHASE -> PreviewReason.PURCHASE
+            TrackManifestsAttributes.PreviewReason.HIGHER_ACCESS_TIER ->
+                PreviewReason.HIGHER_ACCESS_TIER
+            null -> null
+        }
     }
 
     override suspend fun getVideoPlaybackInfo(

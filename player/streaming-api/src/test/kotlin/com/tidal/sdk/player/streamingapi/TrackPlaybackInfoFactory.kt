@@ -17,6 +17,7 @@ object TrackPlaybackInfoFactory {
             AssetPresentation.FULL,
             AudioMode.STEREO,
             ApiConstants.MANIFEST_HASH,
+            null,
             ApiConstants.STREAMING_SESSION_ID,
             ManifestMimeType.DASH,
             ApiConstants.MANIFEST,

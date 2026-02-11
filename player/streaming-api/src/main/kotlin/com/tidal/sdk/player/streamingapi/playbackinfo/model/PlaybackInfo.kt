@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName
 import com.tidal.sdk.player.common.model.AssetPresentation
 import com.tidal.sdk.player.common.model.AudioMode
 import com.tidal.sdk.player.common.model.AudioQuality
+import com.tidal.sdk.player.common.model.PreviewReason
 import com.tidal.sdk.player.common.model.StreamType
 import com.tidal.sdk.player.common.model.VideoQuality
 import com.tidal.sdk.player.streamingapi.offline.Storage
@@ -41,6 +42,7 @@ sealed interface PlaybackInfo {
      * @property[assetPresentation] The actual asset presentation.
      * @property[audioMode] The actual audio mode.
      * @property[manifestHash] Unique id for the manifest and the content it refers to.
+     * @property[previewReason] The reason this track is a preview.
      */
     @Keep
     data class Track(
@@ -49,6 +51,7 @@ sealed interface PlaybackInfo {
         val assetPresentation: AssetPresentation,
         val audioMode: AudioMode,
         val manifestHash: String,
+        val previewReason: PreviewReason?,
         override val streamingSessionId: String,
         override val manifestMimeType: ManifestMimeType,
         override val manifest: String,
