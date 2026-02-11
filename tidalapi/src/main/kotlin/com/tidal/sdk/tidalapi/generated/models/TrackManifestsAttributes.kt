@@ -14,6 +14,7 @@ import kotlinx.serialization.Serializable
  * @param drmData
  * @param formats Formats present in manifest
  * @param hash Unique manifest hash
+ * @param previewReason Why a preview is served instead of the full track
  * @param trackAudioNormalizationData
  * @param trackPresentation Track presentation
  * @param uri Manifest URI
@@ -30,6 +31,10 @@ data class TrackManifestsAttributes(
     /* Unique manifest hash */
 
     @SerialName(value = "hash") val hash: kotlin.String? = null,
+    /* Why a preview is served instead of the full track */
+
+    @SerialName(value = "previewReason")
+    val previewReason: TrackManifestsAttributes.PreviewReason? = null,
     @SerialName(value = "trackAudioNormalizationData")
     val trackAudioNormalizationData: AudioNormalizationData? = null,
     /* Track presentation */
@@ -53,6 +58,20 @@ data class TrackManifestsAttributes(
         @SerialName(value = "FLAC") FLAC("FLAC"),
         @SerialName(value = "FLAC_HIRES") FLAC_HIRES("FLAC_HIRES"),
         @SerialName(value = "EAC3_JOC") EAC3_JOC("EAC3_JOC"),
+    }
+
+    /**
+     * Why a preview is served instead of the full track
+     *
+     * Values: SUBSCRIPTION,PURCHASE,HIGHER_ACCESS_TIER
+     */
+    @Serializable
+    enum class PreviewReason(val value: kotlin.String) {
+        @SerialName(value = "FULL_REQUIRES_SUBSCRIPTION")
+        SUBSCRIPTION("FULL_REQUIRES_SUBSCRIPTION"),
+        @SerialName(value = "FULL_REQUIRES_PURCHASE") PURCHASE("FULL_REQUIRES_PURCHASE"),
+        @SerialName(value = "FULL_REQUIRES_HIGHER_ACCESS_TIER")
+        HIGHER_ACCESS_TIER("FULL_REQUIRES_HIGHER_ACCESS_TIER"),
     }
 
     /**

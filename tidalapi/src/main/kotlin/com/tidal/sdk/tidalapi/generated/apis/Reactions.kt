@@ -17,8 +17,8 @@ interface Reactions {
         @SerialName(value = "TOTAL_COUNT") TOTAL_COUNT("TOTAL_COUNT"),
     }
 
-    /** enum for parameter filterReactedResourceType */
-    enum class FilterReactedResourceTypeReactionsGet(val value: kotlin.String) {
+    /** enum for parameter filterSubjectType */
+    enum class FilterSubjectTypeReactionsGet(val value: kotlin.String) {
         @SerialName(value = "albums") albums("albums"),
         @SerialName(value = "tracks") tracks("tracks"),
         @SerialName(value = "artists") artists("artists"),
@@ -41,33 +41,30 @@ interface Reactions {
      *
      * @param stats (optional)
      * @param statsOnly (optional)
+     * @param viewerContext (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: ownerProfiles (optional)
+     *   Available options: ownerProfiles, owners (optional)
      * @param filterEmoji Filter by emoji (optional)
-     * @param filterOwnerId Filter by owner id (optional)
-     * @param filterReactedResourceId Filter by reacted resource ID (optional)
-     * @param filterReactedResourceType Filter by reacted resource type (optional)
+     * @param filterSubjectId Filter by subject resource ID (optional)
+     * @param filterSubjectType Filter by subject resource type (optional)
      * @return [ReactionsMultiResourceDataDocument]
      */
     @GET("reactions")
     suspend fun reactionsGet(
         @Query("stats") stats: StatsReactionsGet? = null,
         @Query("statsOnly") statsOnly: kotlin.Boolean? = null,
+        @Query("viewerContext") viewerContext: kotlin.String? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[emoji]")
         filterEmoji: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[owner.id]")
-        filterOwnerId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[reactedResource.id]")
-        filterReactedResourceId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? =
-            null,
-        @Query("filter[reactedResource.type]")
-        filterReactedResourceType: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? =
-            null,
+        @Query("filter[subject.id]")
+        filterSubjectId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("filter[subject.type]")
+        filterSubjectType: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<ReactionsMultiResourceDataDocument>
 
     /**
@@ -109,6 +106,33 @@ interface Reactions {
      */
     @GET("reactions/{id}/relationships/ownerProfiles")
     suspend fun reactionsIdRelationshipsOwnerProfilesGet(
+        @Path("id") id: kotlin.String,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
+    ): Response<ReactionsMultiRelationshipDataDocument>
+
+    /**
+     * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
+     * - 200: Successful response
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
+     *
+     * @param id Reaction Id
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: owners (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
+     * @return [ReactionsMultiRelationshipDataDocument]
+     */
+    @GET("reactions/{id}/relationships/owners")
+    suspend fun reactionsIdRelationshipsOwnersGet(
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,

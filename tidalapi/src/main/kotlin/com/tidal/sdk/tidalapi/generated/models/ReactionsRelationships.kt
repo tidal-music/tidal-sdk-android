@@ -9,8 +9,12 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param ownerProfiles */
+/**
+ * @param ownerProfiles
+ * @param owners
+ */
 @Serializable
 data class ReactionsRelationships(
-    @SerialName(value = "ownerProfiles") val ownerProfiles: MultiRelationshipDataDocument
+    @SerialName(value = "ownerProfiles") val ownerProfiles: MultiRelationshipDataDocument,
+    @SerialName(value = "owners") val owners: MultiRelationshipDataDocument,
 ) {}

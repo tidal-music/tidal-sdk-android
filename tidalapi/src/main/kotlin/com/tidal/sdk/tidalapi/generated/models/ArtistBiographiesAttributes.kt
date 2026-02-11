@@ -12,6 +12,7 @@ import kotlinx.serialization.Serializable
 /**
  * @param editable Boolean to indicate if the biography is editable (source = tidal or artist)
  * @param text Artist biography
+ * @param source Source the biography is coming from
  */
 @Serializable
 data class ArtistBiographiesAttributes(
@@ -22,4 +23,23 @@ data class ArtistBiographiesAttributes(
     /* Artist biography */
 
     @SerialName(value = "text") val text: kotlin.String,
-) {}
+    /* Source the biography is coming from */
+
+    @SerialName(value = "source") val source: ArtistBiographiesAttributes.Source? = null,
+) {
+
+    /**
+     * Source the biography is coming from
+     *
+     * Values: TIDAL,TiVo,MusicBrainz,Avex,Artist,UNKNOWN
+     */
+    @Serializable
+    enum class Source(val value: kotlin.String) {
+        @SerialName(value = "TIDAL") TIDAL("TIDAL"),
+        @SerialName(value = "TiVo") TiVo("TiVo"),
+        @SerialName(value = "MusicBrainz") MusicBrainz("MusicBrainz"),
+        @SerialName(value = "Avex") Avex("Avex"),
+        @SerialName(value = "Artist") Artist("Artist"),
+        @SerialName(value = "UNKNOWN") UNKNOWN("UNKNOWN"),
+    }
+}

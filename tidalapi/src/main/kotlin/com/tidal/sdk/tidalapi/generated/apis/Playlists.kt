@@ -1,15 +1,15 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
-import com.tidal.sdk.tidalapi.generated.models.PlaylistCoverArtRelationshipUpdateOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.PlaylistCreateOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.PlaylistItemsRelationshipAddOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.PlaylistItemsRelationshipRemoveOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.PlaylistItemsRelationshipReorderOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.PlaylistUpdateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.PlaylistsCoverArtRelationshipUpdateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.PlaylistsCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsItemsMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.PlaylistsItemsRelationshipAddOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.PlaylistsItemsRelationshipRemoveOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.PlaylistsItemsRelationshipUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsSingleResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.PlaylistsUpdateOperationPayload
 import kotlinx.serialization.SerialName
 import retrofit2.Response
 import retrofit2.http.*
@@ -119,14 +119,14 @@ interface Playlists {
      *
      * @param id Playlist id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param playlistUpdateOperationPayload (optional)
+     * @param playlistsUpdateOperationPayload (optional)
      * @return [Unit]
      */
     @PATCH("playlists/{id}")
     suspend fun playlistsIdPatch(
         @Path("id") id: kotlin.String,
         @Query("countryCode") countryCode: kotlin.String? = null,
-        @Body playlistUpdateOperationPayload: PlaylistUpdateOperationPayload? = null,
+        @Body playlistsUpdateOperationPayload: PlaylistsUpdateOperationPayload? = null,
     ): Response<Unit>
 
     /**
@@ -172,15 +172,15 @@ interface Playlists {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Playlist id
-     * @param playlistCoverArtRelationshipUpdateOperationPayload (optional)
+     * @param playlistsCoverArtRelationshipUpdateOperationPayload (optional)
      * @return [Unit]
      */
     @PATCH("playlists/{id}/relationships/coverArt")
     suspend fun playlistsIdRelationshipsCoverArtPatch(
         @Path("id") id: kotlin.String,
         @Body
-        playlistCoverArtRelationshipUpdateOperationPayload:
-            PlaylistCoverArtRelationshipUpdateOperationPayload? =
+        playlistsCoverArtRelationshipUpdateOperationPayload:
+            PlaylistsCoverArtRelationshipUpdateOperationPayload? =
             null,
     ): Response<Unit>
 
@@ -197,15 +197,15 @@ interface Playlists {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Playlist id
-     * @param playlistItemsRelationshipRemoveOperationPayload (optional)
+     * @param playlistsItemsRelationshipRemoveOperationPayload (optional)
      * @return [Unit]
      */
     @HTTP(method = "DELETE", path = "playlists/{id}/relationships/items", hasBody = true)
     suspend fun playlistsIdRelationshipsItemsDelete(
         @Path("id") id: kotlin.String,
         @Body
-        playlistItemsRelationshipRemoveOperationPayload:
-            PlaylistItemsRelationshipRemoveOperationPayload? =
+        playlistsItemsRelationshipRemoveOperationPayload:
+            PlaylistsItemsRelationshipRemoveOperationPayload? =
             null,
     ): Response<Unit>
 
@@ -250,15 +250,15 @@ interface Playlists {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Playlist id
-     * @param playlistItemsRelationshipReorderOperationPayload (optional)
+     * @param playlistsItemsRelationshipUpdateOperationPayload (optional)
      * @return [Unit]
      */
     @PATCH("playlists/{id}/relationships/items")
     suspend fun playlistsIdRelationshipsItemsPatch(
         @Path("id") id: kotlin.String,
         @Body
-        playlistItemsRelationshipReorderOperationPayload:
-            PlaylistItemsRelationshipReorderOperationPayload? =
+        playlistsItemsRelationshipUpdateOperationPayload:
+            PlaylistsItemsRelationshipUpdateOperationPayload? =
             null,
     ): Response<Unit>
 
@@ -276,7 +276,7 @@ interface Playlists {
      *
      * @param id Playlist id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param playlistItemsRelationshipAddOperationPayload (optional)
+     * @param playlistsItemsRelationshipAddOperationPayload (optional)
      * @return [Unit]
      */
     @POST("playlists/{id}/relationships/items")
@@ -284,8 +284,8 @@ interface Playlists {
         @Path("id") id: kotlin.String,
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Body
-        playlistItemsRelationshipAddOperationPayload:
-            PlaylistItemsRelationshipAddOperationPayload? =
+        playlistsItemsRelationshipAddOperationPayload:
+            PlaylistsItemsRelationshipAddOperationPayload? =
             null,
     ): Response<Unit>
 
@@ -361,12 +361,12 @@ interface Playlists {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param playlistCreateOperationPayload (optional)
+     * @param playlistsCreateOperationPayload (optional)
      * @return [PlaylistsSingleResourceDataDocument]
      */
     @POST("playlists")
     suspend fun playlistsPost(
         @Query("countryCode") countryCode: kotlin.String? = null,
-        @Body playlistCreateOperationPayload: PlaylistCreateOperationPayload? = null,
+        @Body playlistsCreateOperationPayload: PlaylistsCreateOperationPayload? = null,
     ): Response<PlaylistsSingleResourceDataDocument>
 }

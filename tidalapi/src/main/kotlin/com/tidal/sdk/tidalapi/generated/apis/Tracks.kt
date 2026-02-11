@@ -1,12 +1,12 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
-import com.tidal.sdk.tidalapi.generated.models.TrackAlbumsRelationshipUpdateOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.TrackCreateOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.TrackUpdateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.TracksAlbumsRelationshipUpdateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.TracksCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.TracksMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.TracksMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.TracksSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.TracksSingleResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.TracksUpdateOperationPayload
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -29,8 +29,8 @@ interface Tracks {
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: albums, artists, credits, genres, lyrics, metadataStatus, owners,
-     *   providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics
-     *   (optional)
+     *   priceConfig, providers, radio, replacement, shares, similarTracks, sourceFile,
+     *   trackStatistics, usageRules (optional)
      * @param filterId Track id (optional)
      * @param filterIsrc List of ISRCs. NOTE: Supplying more than one ISRC will currently only
      *   return one track per ISRC. (optional)
@@ -86,8 +86,8 @@ interface Tracks {
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: albums, artists, credits, genres, lyrics, metadataStatus, owners,
-     *   providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics
-     *   (optional)
+     *   priceConfig, providers, radio, replacement, shares, similarTracks, sourceFile,
+     *   trackStatistics, usageRules (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [TracksSingleResourceDataDocument]
@@ -113,13 +113,13 @@ interface Tracks {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Track id
-     * @param trackUpdateOperationPayload (optional)
+     * @param tracksUpdateOperationPayload (optional)
      * @return [Unit]
      */
     @PATCH("tracks/{id}")
     suspend fun tracksIdPatch(
         @Path("id") id: kotlin.String,
-        @Body trackUpdateOperationPayload: TrackUpdateOperationPayload? = null,
+        @Body tracksUpdateOperationPayload: TracksUpdateOperationPayload? = null,
     ): Response<Unit>
 
     /**
@@ -166,15 +166,15 @@ interface Tracks {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Track id
-     * @param trackAlbumsRelationshipUpdateOperationPayload (optional)
+     * @param tracksAlbumsRelationshipUpdateOperationPayload (optional)
      * @return [Unit]
      */
     @PATCH("tracks/{id}/relationships/albums")
     suspend fun tracksIdRelationshipsAlbumsPatch(
         @Path("id") id: kotlin.String,
         @Body
-        trackAlbumsRelationshipUpdateOperationPayload:
-            TrackAlbumsRelationshipUpdateOperationPayload? =
+        tracksAlbumsRelationshipUpdateOperationPayload:
+            TracksAlbumsRelationshipUpdateOperationPayload? =
             null,
     ): Response<Unit>
 
@@ -359,6 +359,36 @@ interface Tracks {
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<TracksMultiRelationshipDataDocument>
+
+    /**
+     * Get priceConfig relationship (\&quot;to-one\&quot;). Retrieves priceConfig relationship.
+     * Responses:
+     * - 200: Successful response
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
+     *
+     * @param id Track id
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: priceConfig (optional)
+     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
+     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @return [TracksSingleRelationshipDataDocument]
+     */
+    @GET("tracks/{id}/relationships/priceConfig")
+    suspend fun tracksIdRelationshipsPriceConfigGet(
+        @Path("id") id: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String? = null,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
+    ): Response<TracksSingleRelationshipDataDocument>
 
     /**
      * Get providers relationship (\&quot;to-many\&quot;). Retrieves providers relationship.
@@ -573,6 +603,36 @@ interface Tracks {
     ): Response<TracksSingleRelationshipDataDocument>
 
     /**
+     * Get usageRules relationship (\&quot;to-one\&quot;). Retrieves usageRules relationship.
+     * Responses:
+     * - 200: Successful response
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
+     *
+     * @param id Track id
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: usageRules (optional)
+     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
+     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @return [TracksSingleRelationshipDataDocument]
+     */
+    @GET("tracks/{id}/relationships/usageRules")
+    suspend fun tracksIdRelationshipsUsageRulesGet(
+        @Path("id") id: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String? = null,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
+    ): Response<TracksSingleRelationshipDataDocument>
+
+    /**
      * Create single track. Creates a new track. Responses:
      * - 201: Successful response
      * - 400: The request is malformed or invalid
@@ -584,11 +644,11 @@ interface Tracks {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param trackCreateOperationPayload (optional)
+     * @param tracksCreateOperationPayload (optional)
      * @return [TracksSingleResourceDataDocument]
      */
     @POST("tracks")
     suspend fun tracksPost(
-        @Body trackCreateOperationPayload: TrackCreateOperationPayload? = null
+        @Body tracksCreateOperationPayload: TracksCreateOperationPayload? = null
     ): Response<TracksSingleResourceDataDocument>
 }
