@@ -1,5 +1,7 @@
 package com.tidal.sdk.player.mainactivity
 
+import com.tidal.sdk.player.playbackengine.model.PlaybackContext
+
 internal class DeriveUiState {
 
     operator fun invoke(mainActivityViewModelState: MainActivityViewModelState) =
@@ -20,7 +22,9 @@ internal class DeriveUiState {
                 is MainActivityViewModelState.PlayerNotInitialized ->
                     MainActivityState.PlayerNotInitialized(snackbarMessage)
 
-                is MainActivityViewModelState.PlayerInitialized ->
+                is MainActivityViewModelState.PlayerInitialized -> {
+                    val playbackContext = player.playbackEngine.playbackContext
+                    val previewReason = (playbackContext as? PlaybackContext.Track)?.previewReason
                     MainActivityState.PlayerInitialized(
                         snackbarMessage,
                         streamingAudioQualityWifi,
@@ -34,9 +38,11 @@ internal class DeriveUiState {
                         player.playbackEngine.outputDevice,
                         isRepeatOneEnabled,
                         player.configuration.isOfflineMode,
-                        player.playbackEngine.playbackContext?.duration,
+                        playbackContext?.duration,
                         draggedPositionSeconds ?: player.playbackEngine.assetPosition,
+                        previewReason,
                     )
+                }
             }
         }
 }

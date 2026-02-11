@@ -4,6 +4,7 @@ import android.net.Uri
 import com.tidal.sdk.player.common.model.AudioQuality
 import com.tidal.sdk.player.common.model.LoudnessNormalizationMode
 import com.tidal.sdk.player.common.model.MediaProduct
+import com.tidal.sdk.player.common.model.PreviewReason
 import com.tidal.sdk.player.playbackengine.model.PlaybackState
 import com.tidal.sdk.player.playbackengine.outputdevice.OutputDevice
 
@@ -36,5 +37,6 @@ internal sealed class MainActivityState private constructor() {
         val isOfflineModeEnabled: Boolean,
         val durationSeconds: Float?,
         val positionSeconds: Float,
+        val previewReason: PreviewReason?,
     ) : MainActivityState()
 }

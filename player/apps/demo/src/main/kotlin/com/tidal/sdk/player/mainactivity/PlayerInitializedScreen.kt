@@ -330,6 +330,17 @@ private fun PlaybackControls(
                 onCheckedChange = { dispatchSetEnableAdaptive(it) },
             )
         }
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
+        ) {
+            Text(
+                text = "PREVIEW REASON",
+                modifier = Modifier.padding(PaddingValues(end = 8F.dp)).weight(1F, fill = false),
+            )
+            Text(text = state.previewReason?.name ?: "N/A")
+        }
         Button(onClick = dispatchRelease, modifier = Modifier.fillMaxWidth()) {
             Text(text = "RELEASE PLAYER")
         }
