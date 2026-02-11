@@ -9,8 +9,12 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param subject */
+/**
+ * @param dynamicModules
+ * @param subject
+ */
 @Serializable
 data class DynamicPagesRelationships(
-    @SerialName(value = "subject") val subject: SingleRelationshipDataDocument
+    @SerialName(value = "dynamicModules") val dynamicModules: MultiRelationshipDataDocument,
+    @SerialName(value = "subject") val subject: SingleRelationshipDataDocument,
 ) {}

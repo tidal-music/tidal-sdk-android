@@ -15,10 +15,12 @@ import kotlinx.serialization.Serializable
  * @param genres
  * @param items
  * @param owners
+ * @param priceConfig
  * @param providers
  * @param replacement
  * @param similarAlbums
  * @param suggestedCoverArts
+ * @param usageRules
  */
 @Serializable
 data class AlbumsRelationships(
@@ -27,9 +29,11 @@ data class AlbumsRelationships(
     @SerialName(value = "genres") val genres: MultiRelationshipDataDocument,
     @SerialName(value = "items") val items: AlbumsItemsMultiRelationshipDataDocument,
     @SerialName(value = "owners") val owners: MultiRelationshipDataDocument,
+    @SerialName(value = "priceConfig") val priceConfig: SingleRelationshipDataDocument,
     @SerialName(value = "providers") val providers: MultiRelationshipDataDocument,
     @SerialName(value = "replacement") val replacement: SingleRelationshipDataDocument,
     @SerialName(value = "similarAlbums") val similarAlbums: MultiRelationshipDataDocument,
     @SerialName(value = "suggestedCoverArts")
     val suggestedCoverArts: AlbumsSuggestedCoverArtsMultiRelationshipDataDocument,
+    @SerialName(value = "usageRules") val usageRules: SingleRelationshipDataDocument,
 ) {}

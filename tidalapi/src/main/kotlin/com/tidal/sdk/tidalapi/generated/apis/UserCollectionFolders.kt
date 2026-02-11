@@ -1,13 +1,13 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
-import com.tidal.sdk.tidalapi.generated.models.FolderCreateOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.FolderUpdateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersItemsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersItemsRelationshipAddOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersItemsRelationshipRemoveOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersSingleResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersUpdateOperationPayload
 import kotlinx.serialization.SerialName
 import retrofit2.Response
 import retrofit2.http.*
@@ -41,7 +41,7 @@ interface UserCollectionFolders {
 
     /**
      * Delete single userCollectionFolder. Deletes existing userCollectionFolder. Responses:
-     * - 400: The request is malformed or invalid
+     * - 400: Cannot delete folder: only empty folders owned by you can be deleted.
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
@@ -92,13 +92,15 @@ interface UserCollectionFolders {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Folder Id
-     * @param folderUpdateOperationPayload (optional)
+     * @param userCollectionFoldersUpdateOperationPayload (optional)
      * @return [Unit]
      */
     @PATCH("userCollectionFolders/{id}")
     suspend fun userCollectionFoldersIdPatch(
         @Path("id") id: kotlin.String,
-        @Body folderUpdateOperationPayload: FolderUpdateOperationPayload? = null,
+        @Body
+        userCollectionFoldersUpdateOperationPayload: UserCollectionFoldersUpdateOperationPayload? =
+            null,
     ): Response<Unit>
 
     /**
@@ -132,13 +134,12 @@ interface UserCollectionFolders {
 
     /** enum for parameter sort */
     enum class SortUserCollectionFoldersIdRelationshipsItemsGet(val value: kotlin.String) {
-        @SerialName(value = "items.addedAt") ItemsAddedAtAsc("items.addedAt"),
-        @SerialName(value = "-items.addedAt") ItemsAddedAtDesc("-items.addedAt"),
-        @SerialName(value = "items.lastModifiedAt") ItemsLastModifiedAtAsc("items.lastModifiedAt"),
-        @SerialName(value = "-items.lastModifiedAt")
-        ItemsLastModifiedAtDesc("-items.lastModifiedAt"),
-        @SerialName(value = "items.name") ItemsNameAsc("items.name"),
-        @SerialName(value = "-items.name") ItemsNameDesc("-items.name"),
+        @SerialName(value = "addedAt") AddedAtAsc("addedAt"),
+        @SerialName(value = "-addedAt") AddedAtDesc("-addedAt"),
+        @SerialName(value = "lastModifiedAt") LastModifiedAtAsc("lastModifiedAt"),
+        @SerialName(value = "-lastModifiedAt") LastModifiedAtDesc("-lastModifiedAt"),
+        @SerialName(value = "name") NameAsc("name"),
+        @SerialName(value = "-name") NameDesc("-name"),
     }
 
     /**
@@ -235,11 +236,13 @@ interface UserCollectionFolders {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param folderCreateOperationPayload (optional)
+     * @param userCollectionFoldersCreateOperationPayload (optional)
      * @return [UserCollectionFoldersSingleResourceDataDocument]
      */
     @POST("userCollectionFolders")
     suspend fun userCollectionFoldersPost(
-        @Body folderCreateOperationPayload: FolderCreateOperationPayload? = null
+        @Body
+        userCollectionFoldersCreateOperationPayload: UserCollectionFoldersCreateOperationPayload? =
+            null
     ): Response<UserCollectionFoldersSingleResourceDataDocument>
 }

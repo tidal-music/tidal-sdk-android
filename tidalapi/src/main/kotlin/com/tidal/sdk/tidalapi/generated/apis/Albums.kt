@@ -1,15 +1,15 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
-import com.tidal.sdk.tidalapi.generated.models.AlbumCoverArtRelationshipUpdateOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.AlbumCreateOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.AlbumItemsRelationshipUpdateOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.AlbumUpdateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.AlbumsCoverArtRelationshipUpdateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.AlbumsCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.AlbumsItemsMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.AlbumsItemsRelationshipUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.AlbumsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.AlbumsMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.AlbumsSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.AlbumsSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.AlbumsSuggestedCoverArtsMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.AlbumsUpdateOperationPayload
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -31,8 +31,8 @@ interface Albums {
      *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: artists, coverArt, genres, items, owners, providers, replacement,
-     *   similarAlbums, suggestedCoverArts (optional)
+     *   Available options: artists, coverArt, genres, items, owners, priceConfig, providers,
+     *   replacement, similarAlbums, suggestedCoverArts, usageRules (optional)
      * @param filterBarcodeId List of barcode IDs (EAN-13 or UPC-A). NOTE: Supplying more than one
      *   barcode ID will currently only return one album per barcode ID. (optional)
      * @param filterId Album id (optional)
@@ -87,8 +87,8 @@ interface Albums {
      * @param id Album id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: artists, coverArt, genres, items, owners, providers, replacement,
-     *   similarAlbums, suggestedCoverArts (optional)
+     *   Available options: artists, coverArt, genres, items, owners, priceConfig, providers,
+     *   replacement, similarAlbums, suggestedCoverArts, usageRules (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [AlbumsSingleResourceDataDocument]
@@ -114,13 +114,13 @@ interface Albums {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Album id
-     * @param albumUpdateOperationPayload (optional)
+     * @param albumsUpdateOperationPayload (optional)
      * @return [Unit]
      */
     @PATCH("albums/{id}")
     suspend fun albumsIdPatch(
         @Path("id") id: kotlin.String,
-        @Body albumUpdateOperationPayload: AlbumUpdateOperationPayload? = null,
+        @Body albumsUpdateOperationPayload: AlbumsUpdateOperationPayload? = null,
     ): Response<Unit>
 
     /**
@@ -201,15 +201,15 @@ interface Albums {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Album id
-     * @param albumCoverArtRelationshipUpdateOperationPayload (optional)
+     * @param albumsCoverArtRelationshipUpdateOperationPayload (optional)
      * @return [Unit]
      */
     @PATCH("albums/{id}/relationships/coverArt")
     suspend fun albumsIdRelationshipsCoverArtPatch(
         @Path("id") id: kotlin.String,
         @Body
-        albumCoverArtRelationshipUpdateOperationPayload:
-            AlbumCoverArtRelationshipUpdateOperationPayload? =
+        albumsCoverArtRelationshipUpdateOperationPayload:
+            AlbumsCoverArtRelationshipUpdateOperationPayload? =
             null,
     ): Response<Unit>
 
@@ -289,15 +289,15 @@ interface Albums {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Album id
-     * @param albumItemsRelationshipUpdateOperationPayload (optional)
+     * @param albumsItemsRelationshipUpdateOperationPayload (optional)
      * @return [Unit]
      */
     @PATCH("albums/{id}/relationships/items")
     suspend fun albumsIdRelationshipsItemsPatch(
         @Path("id") id: kotlin.String,
         @Body
-        albumItemsRelationshipUpdateOperationPayload:
-            AlbumItemsRelationshipUpdateOperationPayload? =
+        albumsItemsRelationshipUpdateOperationPayload:
+            AlbumsItemsRelationshipUpdateOperationPayload? =
             null,
     ): Response<Unit>
 
@@ -330,6 +330,36 @@ interface Albums {
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<AlbumsMultiRelationshipDataDocument>
+
+    /**
+     * Get priceConfig relationship (\&quot;to-one\&quot;). Retrieves priceConfig relationship.
+     * Responses:
+     * - 200: Successful response
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
+     *
+     * @param id Album id
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: priceConfig (optional)
+     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
+     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @return [AlbumsSingleRelationshipDataDocument]
+     */
+    @GET("albums/{id}/relationships/priceConfig")
+    suspend fun albumsIdRelationshipsPriceConfigGet(
+        @Path("id") id: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String? = null,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
+    ): Response<AlbumsSingleRelationshipDataDocument>
 
     /**
      * Get providers relationship (\&quot;to-many\&quot;). Retrieves providers relationship.
@@ -459,6 +489,36 @@ interface Albums {
     ): Response<AlbumsSuggestedCoverArtsMultiRelationshipDataDocument>
 
     /**
+     * Get usageRules relationship (\&quot;to-one\&quot;). Retrieves usageRules relationship.
+     * Responses:
+     * - 200: Successful response
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
+     *
+     * @param id Album id
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: usageRules (optional)
+     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
+     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @return [AlbumsSingleRelationshipDataDocument]
+     */
+    @GET("albums/{id}/relationships/usageRules")
+    suspend fun albumsIdRelationshipsUsageRulesGet(
+        @Path("id") id: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String? = null,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
+    ): Response<AlbumsSingleRelationshipDataDocument>
+
+    /**
      * Create single album. Creates a new album. Responses:
      * - 201: Successful response
      * - 400: The request is malformed or invalid
@@ -470,11 +530,11 @@ interface Albums {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param albumCreateOperationPayload (optional)
+     * @param albumsCreateOperationPayload (optional)
      * @return [AlbumsSingleResourceDataDocument]
      */
     @POST("albums")
     suspend fun albumsPost(
-        @Body albumCreateOperationPayload: AlbumCreateOperationPayload? = null
+        @Body albumsCreateOperationPayload: AlbumsCreateOperationPayload? = null
     ): Response<AlbumsSingleResourceDataDocument>
 }
