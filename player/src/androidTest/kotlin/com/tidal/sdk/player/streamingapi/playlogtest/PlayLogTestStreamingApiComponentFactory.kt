@@ -62,6 +62,7 @@ class PlayLogTestStreamingApiComponentFactory(private val trackPlaybackInfo: Pla
                 assetPresentation = AssetPresentation.FULL,
                 audioMode = AudioMode.STEREO,
                 manifestHash = "test-manifest-hash",
+                previewReason = null,
                 streamingSessionId = streamingSessionId,
                 manifestMimeType = ManifestMimeType.BTS,
                 manifest = encodedManifest,

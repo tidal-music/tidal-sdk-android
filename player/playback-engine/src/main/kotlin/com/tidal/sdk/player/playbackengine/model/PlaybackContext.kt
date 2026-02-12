@@ -3,6 +3,7 @@ package com.tidal.sdk.player.playbackengine.model
 import com.tidal.sdk.player.common.model.AssetPresentation
 import com.tidal.sdk.player.common.model.AudioMode
 import com.tidal.sdk.player.common.model.AudioQuality
+import com.tidal.sdk.player.common.model.PreviewReason
 import com.tidal.sdk.player.common.model.StreamType
 import com.tidal.sdk.player.common.model.VideoQuality
 import com.tidal.sdk.player.playbackengine.AssetSource
@@ -51,6 +52,7 @@ sealed interface PlaybackContext {
         val audioBitDepth: Int?,
         val audioCodec: String?,
         val audioSampleRate: Int?,
+        val previewReason: PreviewReason?,
         override val productId: String,
         override val assetPresentation: AssetPresentation,
         override val duration: Float,

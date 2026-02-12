@@ -30,6 +30,7 @@ internal class SingleHandlerPlaybackEngineHandlerPostOrThrowTest {
                     16,
                     "aac",
                     44100,
+                    null,
                     "123",
                     AssetPresentation.FULL,
                     100F,

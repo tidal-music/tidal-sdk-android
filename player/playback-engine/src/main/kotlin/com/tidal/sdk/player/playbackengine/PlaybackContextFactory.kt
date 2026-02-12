@@ -18,6 +18,7 @@ internal class PlaybackContextFactory {
                     null,
                     null,
                     null,
+                    playbackInfo.previewReason,
                     playbackInfo.trackId.toString(),
                     playbackInfo.assetPresentation,
                     0F,
@@ -48,6 +49,7 @@ internal class PlaybackContextFactory {
                     null,
                     null,
                     null,
+                    null,
                     playbackInfo.id,
                     AssetPresentation.FULL,
                     0F,
@@ -60,6 +62,7 @@ internal class PlaybackContextFactory {
             is PlaybackInfo.UC -> {
                 PlaybackContext.Track(
                     AudioMode.STEREO,
+                    null,
                     null,
                     null,
                     null,
@@ -78,6 +81,7 @@ internal class PlaybackContextFactory {
                 PlaybackContext.Track(
                     playbackInfo.track.audioMode,
                     playbackInfo.track.audioQuality,
+                    null,
                     null,
                     null,
                     null,

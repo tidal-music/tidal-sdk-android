@@ -88,6 +88,7 @@ internal class PlaybackInfoRepositoryDefaultTest {
                 assetPresentation = AssetPresentation.FULL,
                 audioMode = AudioMode.STEREO,
                 manifestHash = ApiConstants.MANIFEST_HASH,
+                previewReason = null,
                 streamingSessionId = streamingSessionId,
                 manifestMimeType = ManifestMimeType.DASH,
                 manifest = ApiConstants.MANIFEST,
