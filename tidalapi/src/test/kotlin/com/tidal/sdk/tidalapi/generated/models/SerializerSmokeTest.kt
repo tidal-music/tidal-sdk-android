@@ -37,10 +37,7 @@ class SerializerSmokeTest {
             .filter { it.contains("/models/") && it.endsWith(".kt") }
             .mapNotNull { filePath ->
                 val className =
-                    filePath
-                        .removePrefix("src/main/kotlin/")
-                        .removeSuffix(".kt")
-                        .replace('/', '.')
+                    filePath.removePrefix("src/main/kotlin/").removeSuffix(".kt").replace('/', '.')
                 try {
                     val clazz = Class.forName(className).kotlin
                     // Skip interfaces, abstract classes, enums, and companion objects
@@ -120,7 +117,10 @@ class SerializerSmokeTest {
             }
         }
 
-        assertTrue(testedCount > 100, "Expected to test at least 100 serializers, tested $testedCount")
+        assertTrue(
+            testedCount > 100,
+            "Expected to test at least 100 serializers, tested $testedCount",
+        )
     }
 
     @Test

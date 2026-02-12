@@ -25,7 +25,7 @@ class FakeCredentialsProvider(
                     userId = null,
                     expires = Long.MAX_VALUE,
                     token = token,
-                ),
+                )
             )
         } else {
             AuthResult.Failure(null)

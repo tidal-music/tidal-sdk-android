@@ -26,8 +26,7 @@ class DefaultAuthenticatorTest {
     @Test
     fun `retries with fresh token on 401`() {
         val provider = FakeCredentialsProvider(token = "refreshed-token")
-        val client =
-            OkHttpClient.Builder().authenticator(DefaultAuthenticator(provider)).build()
+        val client = OkHttpClient.Builder().authenticator(DefaultAuthenticator(provider)).build()
 
         // First response is 401, second succeeds
         server.enqueue(MockResponse().setResponseCode(401))
@@ -45,8 +44,7 @@ class DefaultAuthenticatorTest {
     @Test
     fun `gives up when credentials fail`() {
         val provider = FakeCredentialsProvider(shouldSucceed = false)
-        val client =
-            OkHttpClient.Builder().authenticator(DefaultAuthenticator(provider)).build()
+        val client = OkHttpClient.Builder().authenticator(DefaultAuthenticator(provider)).build()
 
         server.enqueue(MockResponse().setResponseCode(401))
 
