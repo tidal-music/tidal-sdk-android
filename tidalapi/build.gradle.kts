@@ -19,6 +19,12 @@ dependencies {
     implementation(libs.converter.kotlinx.serialization)
     implementation(libs.converter.scalars)
 
+    testImplementation(libs.test.junit5Api)
+    testRuntimeOnly(libs.test.junit5Engine)
+    testImplementation(libs.okhttp.mockwebserver)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.kotlin.reflect)
+
     androidTestImplementation(libs.test.androidx.junit)
     androidTestImplementation(libs.test.androidx.espresso.core)
 }
