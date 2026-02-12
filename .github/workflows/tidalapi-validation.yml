@@ -1,0 +1,53 @@
+name: TidalAPI Validation
+
+on:
+  pull_request:
+    paths:
+      - 'tidalapi/**'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    name: Validate tidalapi module
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: temurin
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+        with:
+          cache-read-only: true
+
+      - name: Run tidalapi unit tests
+        run: ./gradlew :tidalapi:test --continue
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Verify API surface snapshot is up to date
+        run: |
+          python3 tidalapi/bin/generate-api-surface-snapshot.py \
+            --spec tidalapi/bin/tidal-api.json \
+            --output /tmp/snapshot-check.txt
+          if ! diff -q tidalapi/api-surface.snapshot /tmp/snapshot-check.txt > /dev/null 2>&1; then
+            echo "::error::API surface snapshot is out of date. Regenerate with: python3 tidalapi/bin/generate-api-surface-snapshot.py --spec tidalapi/bin/tidal-api.json --output tidalapi/api-surface.snapshot"
+            diff tidalapi/api-surface.snapshot /tmp/snapshot-check.txt || true
+            exit 1
+          fi
+          echo "API surface snapshot is up to date."
+
+      - name: Analyze API changes vs main
+        if: github.event_name == 'pull_request'
+        run: |
+          git show origin/${{ github.event.pull_request.base.ref }}:tidalapi/bin/tidal-api.json > /tmp/old-spec.json 2>/dev/null || cp tidalapi/bin/tidal-api.json /tmp/old-spec.json
+          python3 tidalapi/bin/analyze-api-changes.py \
+            --old-spec /tmp/old-spec.json \
+            --new-spec tidalapi/bin/tidal-api.json || true
