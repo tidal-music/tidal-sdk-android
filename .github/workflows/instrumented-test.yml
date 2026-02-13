@@ -54,10 +54,10 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - uses: reactivecircus/android-emulator-runner@v2.33.0
+      - uses: reactivecircus/android-emulator-runner@v2.35.0
         if: ${{ steps.detect_modules.outputs.run_tests == 'true' }}
         with:
           api-level: 29
           arch: x86_64
-          script: ./gradlew -Dorg.gradle.logging.level=quiet connectedCheck
+          script: ./gradlew connectedCheck
           target: google_apis
