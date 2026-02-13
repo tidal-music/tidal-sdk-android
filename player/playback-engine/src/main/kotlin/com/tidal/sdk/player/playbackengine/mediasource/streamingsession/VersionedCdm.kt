@@ -19,9 +19,13 @@ private constructor(val cdm: PlaybackStatistics.Payload.Cdm, val version: String
                     PlaybackStatistics.Payload.Cdm.WIDEVINE,
                     run {
                         val exoMediaDrm = exoMediaDrmProvider.acquireExoMediaDrm(C.WIDEVINE_UUID)
-                        val version = exoMediaDrm.getPropertyString(MediaDrm.PROPERTY_VERSION)
-                        exoMediaDrm.release()
-                        version
+                        try {
+                            exoMediaDrm.getPropertyString(MediaDrm.PROPERTY_VERSION)
+                        } catch (_: UnsupportedOperationException) {
+                            null
+                        } finally {
+                            exoMediaDrm.release()
+                        }
                     },
                 )
             }

@@ -7,10 +7,12 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
 import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import com.tidal.sdk.player.events.model.PlaybackStatistics
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
+import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.inOrder
 import org.mockito.kotlin.mock
@@ -57,6 +59,31 @@ internal class VersionedCdmCalculatorTest {
         }
         assertThat(actual.cdm).isSameAs(PlaybackStatistics.Payload.Cdm.WIDEVINE)
         assertThat(actual.version).isEqualTo(expectedVersion)
+        verifyNoMoreInteractions(playbackInfo, exoMediaDrm)
+    }
+
+    @Test
+    fun invokeOnLicensedPlaybackInfoWhenGetPropertyStringThrows() {
+        val playbackInfo = mock<PlaybackInfo.Track> { on { licenseUrl } doReturn "licenseUrl" }
+        val exoMediaDrm =
+            mock<ExoMediaDrm> {
+                on { getPropertyString(MediaDrm.PROPERTY_VERSION) } doAnswer
+                    {
+                        throw UnsupportedOperationException()
+                    }
+            }
+        whenever(exoMediaDrmProvider.acquireExoMediaDrm(C.WIDEVINE_UUID)) doReturn exoMediaDrm
+
+        val actual = versionedCdmCalculator(playbackInfo)
+
+        verify(playbackInfo).licenseUrl
+        verify(exoMediaDrmProvider).acquireExoMediaDrm(C.WIDEVINE_UUID)
+        inOrder(exoMediaDrm).apply {
+            verify(exoMediaDrm).getPropertyString(MediaDrm.PROPERTY_VERSION)
+            verify(exoMediaDrm).release()
+        }
+        assertThat(actual.cdm).isSameInstanceAs(PlaybackStatistics.Payload.Cdm.WIDEVINE)
+        assertThat(actual.version).isNull()
         verifyNoMoreInteractions(playbackInfo, exoMediaDrm)
     }
 }
