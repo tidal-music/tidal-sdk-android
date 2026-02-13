@@ -5,6 +5,10 @@ on:
     paths:
       - 'tidalapi/**'
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   validate:
     runs-on: ubuntu-latest
@@ -46,8 +50,17 @@ jobs:
 
       - name: Analyze API changes vs main
         if: github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           git show origin/${{ github.event.pull_request.base.ref }}:tidalapi/bin/tidal-api.json > /tmp/old-spec.json 2>/dev/null || cp tidalapi/bin/tidal-api.json /tmp/old-spec.json
           python3 tidalapi/bin/analyze-api-changes.py \
             --old-spec /tmp/old-spec.json \
-            --new-spec tidalapi/bin/tidal-api.json || true
+            --new-spec tidalapi/bin/tidal-api.json \
+            > /tmp/api-change-report.md || true
+
+          REPORT=$(cat /tmp/api-change-report.md)
+          # Only post a comment if there are actual API changes
+          if ! echo "$REPORT" | grep -q "No API surface changes detected"; then
+            gh pr comment ${{ github.event.pull_request.number }} --body "$REPORT"
+          fi
