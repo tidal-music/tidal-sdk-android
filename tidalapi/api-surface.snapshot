@@ -1102,6 +1102,7 @@ Albums_Attributes
   title: string (required)
   accessType: enum[PUBLIC, UNLISTED, PRIVATE] (optional)
   availability: array[enum[STREAM, DJ, STEM]] (optional)
+  ciTestDummyField: string (optional)
   copyright: Copyright (optional)
   externalLinks: array[External_Link] (optional)
   releaseDate: string(date) (optional)

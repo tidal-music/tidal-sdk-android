@@ -20843,6 +20843,10 @@
             "description" : "Barcode id (EAN-13 or UPC-A)",
             "example" : "00854242007552"
           },
+          "ciTestDummyField" : {
+            "type" : "string",
+            "description" : "Temporary field to test CI comment posting. Remove after verification."
+          },
           "copyright" : {
             "$ref" : "#/components/schemas/Copyright"
           },
