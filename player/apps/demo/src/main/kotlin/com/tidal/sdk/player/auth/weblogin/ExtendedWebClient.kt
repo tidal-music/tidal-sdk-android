@@ -1,6 +1,5 @@
 package com.tidal.sdk.player.auth.weblogin
 
-import com.tidal.sdk.player.demo.BuildConfig
 import android.annotation.TargetApi
 import android.content.Context
 import android.net.Uri
@@ -10,7 +9,7 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.media3.common.util.UnstableApi
-import com.tidal.sdk.player.BuildConfig
+import com.tidal.sdk.player.demo.BuildConfig
 
 @UnstableApi
 internal class ExtendedWebClient(

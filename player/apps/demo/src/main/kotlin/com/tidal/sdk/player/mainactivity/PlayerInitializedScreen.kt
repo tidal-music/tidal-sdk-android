@@ -1,6 +1,5 @@
 package com.tidal.sdk.player.mainactivity
 
-import com.tidal.sdk.player.demo.BuildConfig
 import android.text.format.DateUtils
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -34,7 +33,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.tidal.sdk.auth.model.Credentials
-import com.tidal.sdk.player.BuildConfig
+import com.tidal.sdk.player.demo.BuildConfig
 import com.tidal.sdk.player.common.model.AudioQuality
 import com.tidal.sdk.player.common.model.LoudnessNormalizationMode
 import com.tidal.sdk.player.common.model.MediaProduct

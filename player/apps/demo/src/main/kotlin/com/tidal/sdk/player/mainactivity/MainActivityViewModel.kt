@@ -1,6 +1,5 @@
 package com.tidal.sdk.player.mainactivity
 
-import com.tidal.sdk.player.demo.BuildConfig
 import android.app.Application
 import android.content.Context
 import android.net.Uri
@@ -20,7 +19,7 @@ import com.tidal.sdk.auth.model.LoginConfig
 import com.tidal.sdk.auth.model.QueryParameter
 import com.tidal.sdk.eventproducer.EventProducer
 import com.tidal.sdk.eventproducer.model.EventsConfig
-import com.tidal.sdk.player.BuildConfig
+import com.tidal.sdk.player.demo.BuildConfig
 import com.tidal.sdk.player.Player
 import com.tidal.sdk.player.common.model.AudioQuality
 import com.tidal.sdk.player.common.model.LoudnessNormalizationMode
