@@ -1,5 +1,6 @@
 package com.tidal.sdk.player.auth.weblogin
 
+import com.tidal.sdk.player.demo.BuildConfig
 import android.annotation.TargetApi
 import android.content.Context
 import android.net.Uri

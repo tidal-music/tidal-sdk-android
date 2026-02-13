@@ -1,5 +1,6 @@
 package com.tidal.sdk.player.mainactivity
 
+import com.tidal.sdk.player.demo.BuildConfig
 import android.app.Application
 import android.content.Context
 import android.net.Uri

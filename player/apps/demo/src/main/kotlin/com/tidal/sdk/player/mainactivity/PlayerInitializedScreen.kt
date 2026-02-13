@@ -1,5 +1,6 @@
 package com.tidal.sdk.player.mainactivity
 
+import com.tidal.sdk.player.demo.BuildConfig
 import android.text.format.DateUtils
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
