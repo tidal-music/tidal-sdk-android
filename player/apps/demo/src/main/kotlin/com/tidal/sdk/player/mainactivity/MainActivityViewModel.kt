@@ -19,11 +19,11 @@ import com.tidal.sdk.auth.model.LoginConfig
 import com.tidal.sdk.auth.model.QueryParameter
 import com.tidal.sdk.eventproducer.EventProducer
 import com.tidal.sdk.eventproducer.model.EventsConfig
-import com.tidal.sdk.player.demo.BuildConfig
 import com.tidal.sdk.player.Player
 import com.tidal.sdk.player.common.model.AudioQuality
 import com.tidal.sdk.player.common.model.LoudnessNormalizationMode
 import com.tidal.sdk.player.common.model.MediaProduct
+import com.tidal.sdk.player.demo.BuildConfig
 import com.tidal.sdk.player.mainactivity.MainActivityViewModelState.AwaitingLoginFlowChoice
 import com.tidal.sdk.player.mainactivity.MainActivityViewModelState.LoggingIn
 import com.tidal.sdk.player.mainactivity.MainActivityViewModelState.PlayerInitialized

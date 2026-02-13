@@ -33,11 +33,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.tidal.sdk.auth.model.Credentials
-import com.tidal.sdk.player.demo.BuildConfig
 import com.tidal.sdk.player.common.model.AudioQuality
 import com.tidal.sdk.player.common.model.LoudnessNormalizationMode
 import com.tidal.sdk.player.common.model.MediaProduct
 import com.tidal.sdk.player.common.model.ProductType
+import com.tidal.sdk.player.demo.BuildConfig
 import com.tidal.sdk.player.playbackengine.model.PlaybackState
 import com.tidal.sdk.player.playbackengine.view.AspectRatioAdjustingSurfaceView
 
