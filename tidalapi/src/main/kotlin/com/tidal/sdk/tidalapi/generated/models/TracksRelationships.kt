@@ -24,6 +24,7 @@ import kotlinx.serialization.Serializable
  * @param shares
  * @param similarTracks
  * @param sourceFile
+ * @param suggestedTracks
  * @param trackStatistics
  * @param usageRules
  */
@@ -43,6 +44,7 @@ data class TracksRelationships(
     @SerialName(value = "shares") val shares: MultiRelationshipDataDocument,
     @SerialName(value = "similarTracks") val similarTracks: MultiRelationshipDataDocument,
     @SerialName(value = "sourceFile") val sourceFile: SingleRelationshipDataDocument,
+    @SerialName(value = "suggestedTracks") val suggestedTracks: MultiRelationshipDataDocument,
     @SerialName(value = "trackStatistics") val trackStatistics: SingleRelationshipDataDocument,
     @SerialName(value = "usageRules") val usageRules: SingleRelationshipDataDocument,
 ) {}

@@ -46,8 +46,9 @@ interface Playlists {
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: coverArt, items, ownerProfiles, owners (optional)
-     * @param filterId Playlist id (optional)
-     * @param filterOwnersId User id (optional)
+     * @param filterId Playlist id (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;)
+     *   (optional)
+     * @param filterOwnersId User id (e.g. &#x60;123456&#x60;) (optional)
      * @return [PlaylistsMultiResourceDataDocument]
      */
     @GET("playlists")

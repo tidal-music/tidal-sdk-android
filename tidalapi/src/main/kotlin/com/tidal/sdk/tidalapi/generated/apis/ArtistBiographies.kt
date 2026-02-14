@@ -24,7 +24,7 @@ interface ArtistBiographies {
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: owners (optional)
-     * @param filterId Artist id (optional)
+     * @param filterId Artist id (e.g. &#x60;1566&#x60;) (optional)
      * @return [ArtistBiographiesMultiResourceDataDocument]
      */
     @GET("artistBiographies")

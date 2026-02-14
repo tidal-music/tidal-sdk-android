@@ -23,7 +23,8 @@ interface TrackSourceFiles {
      *
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: owners (optional)
-     * @param filterId Track source file id (optional)
+     * @param filterId Track source file id (e.g. &#x60;a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11&#x60;)
+     *   (optional)
      * @return [TrackSourceFilesMultiResourceDataDocument]
      */
     @GET("trackSourceFiles")

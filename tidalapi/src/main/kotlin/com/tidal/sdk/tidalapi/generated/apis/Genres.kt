@@ -24,7 +24,8 @@ interface Genres {
      * @param locale BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or
      *   unsupported. (optional, default to "en-US")
      * @param filterId Allows filtering by genre id(s). USER_SELECTABLE is special value used to
-     *   return specific genres which users can select from (optional)
+     *   return specific genres which users can select from (e.g. &#x60;&#39;1,2,3&#39; or
+     *   &#39;USER_SELECTABLE&#39;&#x60;) (optional)
      * @return [GenresMultiResourceDataDocument]
      */
     @GET("genres")
