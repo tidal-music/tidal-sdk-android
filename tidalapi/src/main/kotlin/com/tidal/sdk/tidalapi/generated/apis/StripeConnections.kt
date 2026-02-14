@@ -23,7 +23,7 @@ interface StripeConnections {
      *
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: owners (optional)
-     * @param filterOwnersId User id (optional)
+     * @param filterOwnersId User id (e.g. &#x60;123456&#x60;) (optional)
      * @return [StripeConnectionsMultiResourceDataDocument]
      */
     @GET("stripeConnections")

@@ -12,5 +12,6 @@ import kotlinx.serialization.Serializable
 /** @param subject */
 @Serializable
 data class UsageRulesCreateOperationPayloadDataRelationships(
-    @SerialName(value = "subject") val subject: UsageRulesCreateOperationPayloadSubject
+    @SerialName(value = "subject")
+    val subject: UsageRulesCreateOperationPayloadDataRelationshipsSubject
 ) {}

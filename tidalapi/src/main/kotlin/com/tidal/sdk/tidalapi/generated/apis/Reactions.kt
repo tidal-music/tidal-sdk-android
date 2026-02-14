@@ -46,9 +46,9 @@ interface Reactions {
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: ownerProfiles, owners (optional)
-     * @param filterEmoji Filter by emoji (optional)
-     * @param filterSubjectId Filter by subject resource ID (optional)
-     * @param filterSubjectType Filter by subject resource type (optional)
+     * @param filterEmoji Filter by emoji (e.g. &#x60;👍&#x60;) (optional)
+     * @param filterSubjectId Filter by subject resource ID (e.g. &#x60;12345&#x60;) (optional)
+     * @param filterSubjectType Filter by subject resource type (e.g. &#x60;albums&#x60;) (optional)
      * @return [ReactionsMultiResourceDataDocument]
      */
     @GET("reactions")

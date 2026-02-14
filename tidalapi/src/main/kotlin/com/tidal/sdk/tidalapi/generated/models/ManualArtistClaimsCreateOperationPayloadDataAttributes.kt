@@ -25,13 +25,14 @@ import kotlinx.serialization.Serializable
  * @param role
  * @param selectedAlbums
  * @param selectedSingles
+ * @param socialLink
  */
 @Serializable
 data class ManualArtistClaimsCreateOperationPayloadDataAttributes(
     @SerialName(value = "artistId") val artistId: kotlin.String,
     @SerialName(value = "legalFirstName") val legalFirstName: kotlin.String,
     @SerialName(value = "legalLastName") val legalLastName: kotlin.String,
-    @SerialName(value = "websiteOrSocialLink") val websiteOrSocialLink: kotlin.String,
+    @SerialName(value = "websiteOrSocialLink") val websiteOrSocialLink: LinkObject,
     @SerialName(value = "acceptedTerms") val acceptedTerms: kotlin.Boolean? = null,
     @SerialName(value = "distributorName") val distributorName: kotlin.String? = null,
     @SerialName(value = "errorReason") val errorReason: kotlin.String? = null,
@@ -45,4 +46,5 @@ data class ManualArtistClaimsCreateOperationPayloadDataAttributes(
     val selectedAlbums: kotlin.collections.List<kotlin.String>? = null,
     @SerialName(value = "selectedSingles")
     val selectedSingles: kotlin.collections.List<kotlin.String>? = null,
+    @SerialName(value = "socialLink") val socialLink: LinkObject? = null,
 ) {}

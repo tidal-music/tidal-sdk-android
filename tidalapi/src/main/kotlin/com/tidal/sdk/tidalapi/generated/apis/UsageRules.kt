@@ -20,7 +20,7 @@ interface UsageRules {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param filterId Usage rules id (optional)
+     * @param filterId Usage rules id (e.g. &#x60;VFJBQ0tTOjEyMzpOTw&#x60;) (optional)
      * @return [UsageRulesMultiResourceDataDocument]
      */
     @GET("usageRules")

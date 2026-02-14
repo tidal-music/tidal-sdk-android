@@ -25,7 +25,7 @@ interface ArtistClaims {
      *
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: acceptedArtists, owners, recommendedArtists (optional)
-     * @param filterOwnersId User id (optional)
+     * @param filterOwnersId User id (e.g. &#x60;123456&#x60;) (optional)
      * @return [ArtistClaimsMultiResourceDataDocument]
      */
     @GET("artistClaims")

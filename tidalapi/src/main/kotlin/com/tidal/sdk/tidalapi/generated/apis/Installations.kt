@@ -29,9 +29,10 @@ interface Installations {
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: offlineInventory, owners (optional)
-     * @param filterClientProvidedInstallationId Client provided installation identifier (optional)
-     * @param filterId Installation id (optional)
-     * @param filterOwnersId User id (optional)
+     * @param filterClientProvidedInstallationId Client provided installation identifier (e.g.
+     *   &#x60;a468bee88def&#x60;) (optional)
+     * @param filterId Installation id (e.g. &#x60;a468bee88def&#x60;) (optional)
+     * @param filterOwnersId User id (e.g. &#x60;123456&#x60;) (optional)
      * @return [InstallationsMultiResourceDataDocument]
      */
     @GET("installations")
@@ -109,7 +110,6 @@ interface Installations {
         @SerialName(value = "videos") videos("videos"),
         @SerialName(value = "albums") albums("albums"),
         @SerialName(value = "playlists") playlists("playlists"),
-        @SerialName(value = "userCollections") userCollections("userCollections"),
     }
 
     /**
@@ -130,7 +130,8 @@ interface Installations {
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: offlineInventory (optional)
-     * @param filterType One of: tracks, videos, albums, playlists, userCollections (optional)
+     * @param filterType One of: tracks, videos, albums, playlists (e.g. &#x60;tracks&#x60;)
+     *   (optional)
      * @return [InstallationsOfflineInventoryMultiRelationshipDataDocument]
      */
     @GET("installations/{id}/relationships/offlineInventory")

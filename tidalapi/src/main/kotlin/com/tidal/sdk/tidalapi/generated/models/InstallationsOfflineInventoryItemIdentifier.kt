@@ -19,13 +19,12 @@ data class InstallationsOfflineInventoryItemIdentifier(
     @SerialName(value = "type") val type: InstallationsOfflineInventoryItemIdentifier.Type,
 ) {
 
-    /** Values: tracks,videos,albums,playlists,userCollections */
+    /** Values: tracks,videos,albums,playlists */
     @Serializable
     enum class Type(val value: kotlin.String) {
         @SerialName(value = "tracks") tracks("tracks"),
         @SerialName(value = "videos") videos("videos"),
         @SerialName(value = "albums") albums("albums"),
         @SerialName(value = "playlists") playlists("playlists"),
-        @SerialName(value = "userCollections") userCollections("userCollections"),
     }
 }

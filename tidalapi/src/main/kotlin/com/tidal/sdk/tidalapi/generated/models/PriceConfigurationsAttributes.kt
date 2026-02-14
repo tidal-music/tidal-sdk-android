@@ -6,13 +6,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
  * @param currency Currency code (ISO 4217)
- * @param price
+ * @param price Price amount with max 2 decimal places
  */
 @Serializable
 data class PriceConfigurationsAttributes(
@@ -20,7 +19,9 @@ data class PriceConfigurationsAttributes(
     /* Currency code (ISO 4217) */
 
     @SerialName(value = "currency") val currency: PriceConfigurationsAttributes.Currency,
-    @Contextual @SerialName(value = "price") val price: java.math.BigDecimal,
+    /* Price amount with max 2 decimal places */
+
+    @SerialName(value = "price") val price: kotlin.String,
 ) {
 
     /**

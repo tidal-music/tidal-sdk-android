@@ -23,8 +23,8 @@ interface Shares {
      *
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: owners, sharedResources (optional)
-     * @param filterCode Share code (optional)
-     * @param filterId User share id (optional)
+     * @param filterCode Share code (e.g. &#x60;xyz&#x60;) (optional)
+     * @param filterId User share id (e.g. &#x60;a468bee88def&#x60;) (optional)
      * @return [SharesMultiResourceDataDocument]
      */
     @GET("shares")

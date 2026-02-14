@@ -13,7 +13,7 @@ import kotlinx.serialization.Serializable
  * @param artistId Artist ID being claimed
  * @param legalFirstName Legal first name
  * @param legalLastName Legal last name
- * @param websiteOrSocialLink Website or social link
+ * @param websiteOrSocialLink
  * @param acceptedTerms Accepted terms and conditions
  * @param createdAt Timestamp when the claim was created
  * @param distributorName Distributor name
@@ -28,6 +28,7 @@ import kotlinx.serialization.Serializable
  * @param role Role
  * @param selectedAlbums Album IDs selected by user
  * @param selectedSingles Single IDs selected by user
+ * @param socialLink
  * @param status Claim status
  */
 @Serializable
@@ -42,9 +43,7 @@ data class ManualArtistClaimsAttributes(
     /* Legal last name */
 
     @SerialName(value = "legalLastName") val legalLastName: kotlin.String,
-    /* Website or social link */
-
-    @SerialName(value = "websiteOrSocialLink") val websiteOrSocialLink: kotlin.String,
+    @SerialName(value = "websiteOrSocialLink") val websiteOrSocialLink: LinkObject,
     /* Accepted terms and conditions */
 
     @SerialName(value = "acceptedTerms") val acceptedTerms: kotlin.Boolean? = null,
@@ -89,6 +88,7 @@ data class ManualArtistClaimsAttributes(
 
     @SerialName(value = "selectedSingles")
     val selectedSingles: kotlin.collections.List<kotlin.String>? = null,
+    @SerialName(value = "socialLink") val socialLink: LinkObject? = null,
     /* Claim status */
 
     @SerialName(value = "status") val status: ManualArtistClaimsAttributes.Status? = null,
