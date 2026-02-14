@@ -54,3 +54,6 @@ includeFromDefaultHierarchy("common")
 includeFromDefaultHierarchy("eventproducer")
 
 includeFromDefaultHierarchy("tidalapi")
+
+// Simple Music Player - Your custom app!
+include("simple-player")
