@@ -6,8 +6,8 @@ import okio.source
 
 fun MockResponse.setBodyFromFile(fileName: String): MockResponse {
     val buffer = Buffer()
-    val inputStream = javaClass.classLoader.getResourceAsStream(fileName)
-        ?: error("Resource not found: $fileName (classLoader: ${javaClass.classLoader})")
-    inputStream.use { buffer.use { buf -> buf.writeAll(it.source()) } }
+    javaClass.classLoader.getResourceAsStream(fileName)?.use { inputStream ->
+        buffer.use { it.writeAll(inputStream.source()) }
+    }
     return setBody(buffer)
 }
