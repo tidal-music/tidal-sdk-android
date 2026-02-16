@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.tidal.sdk.player"
+    namespace = "com.tidal.sdk.player.demo"
 
     defaultConfig {
         applicationId = "com.tidal.sdk.player"
