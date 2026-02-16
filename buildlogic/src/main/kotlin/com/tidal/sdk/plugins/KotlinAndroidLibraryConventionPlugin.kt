@@ -34,7 +34,10 @@ internal class KotlinAndroidLibraryConventionPlugin : Plugin<Project> {
             defaultConfig {
                 minSdk = Config.ANDROID_MIN_SDK
                 testInstrumentationRunner = Config.ANDROID_TEST_RUNNER_JUNIT
-                consumerProguardFiles("consumer-rules.pro")
+                val consumerRules = project.file("consumer-rules.pro")
+                if (consumerRules.exists()) {
+                    consumerProguardFiles(consumerRules)
+                }
                 testInstrumentationRunnerArguments["clearPackageData"] = "true"
             }
 
