@@ -59,5 +59,14 @@ jobs:
         with:
           api-level: 29
           arch: x86_64
-          script: ./gradlew -Dorg.gradle.logging.level=quiet connectedCheck
+          script: ./gradlew connectedCheck
           target: google_apis
+
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: |
+            **/build/reports/androidTests/
+            **/build/outputs/androidTest-results/
