@@ -25,7 +25,7 @@ interface Lyrics {
      *
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: owners, track (optional)
-     * @param filterId Lyrics Id (optional)
+     * @param filterId Lyrics Id (e.g. &#x60;nejMcAhh5N8S3EQ4LaqysVdI0cZZ&#x60;) (optional)
      * @return [LyricsMultiResourceDataDocument]
      */
     @GET("lyrics")

@@ -357,6 +357,7 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PriceConfigurationsCreat
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PriceConfigurationsCreateOperationPayloadData.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PriceConfigurationsCreateOperationPayloadDataAttributes.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PriceConfigurationsCreateOperationPayloadDataRelationships.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PriceConfigurationsCreateOperationPayloadDataRelationshipsSubjects.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PriceConfigurationsCreateOperationPayloadSubjects.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PriceConfigurationsMultiResourceDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PriceConfigurationsResourceObject.kt
@@ -492,6 +493,7 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UsageRulesCreateOperatio
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UsageRulesCreateOperationPayloadData.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UsageRulesCreateOperationPayloadDataAttributes.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UsageRulesCreateOperationPayloadDataRelationships.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UsageRulesCreateOperationPayloadDataRelationshipsSubject.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UsageRulesCreateOperationPayloadSubject.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UsageRulesMultiResourceDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UsageRulesResourceObject.kt

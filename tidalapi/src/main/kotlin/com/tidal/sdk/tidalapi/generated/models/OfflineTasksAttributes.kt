@@ -11,11 +11,11 @@ import kotlinx.serialization.Serializable
 
 /**
  * @param action Action to perform
- * @param collection Collection reference associated with task
- * @param member Collection-member reference associated with task
- * @param position Collection position related to member
+ * @param collectionReference Collection reference associated with task
+ * @param memberReference Collection-member reference associated with task
+ * @param position Collection position of item
  * @param state Task state
- * @param volume Collection volume related to member
+ * @param volume Collection volume of item
  */
 @Serializable
 data class OfflineTasksAttributes(
@@ -25,17 +25,21 @@ data class OfflineTasksAttributes(
     @SerialName(value = "action") val action: OfflineTasksAttributes.Action,
     /* Collection reference associated with task */
 
-    @SerialName(value = "collection") val collection: kotlin.String,
+    @SerialName(value = "collectionReference")
+    @Deprecated(message = "This property is deprecated.")
+    val collectionReference: kotlin.String,
     /* Collection-member reference associated with task */
 
-    @SerialName(value = "member") val member: kotlin.String,
-    /* Collection position related to member */
+    @SerialName(value = "memberReference")
+    @Deprecated(message = "This property is deprecated.")
+    val memberReference: kotlin.String,
+    /* Collection position of item */
 
     @SerialName(value = "position") val position: kotlin.Int? = null,
     /* Task state */
 
     @SerialName(value = "state") val state: OfflineTasksAttributes.State? = null,
-    /* Collection volume related to member */
+    /* Collection volume of item */
 
     @SerialName(value = "volume") val volume: kotlin.Int? = null,
 ) {

@@ -9,9 +9,9 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param subjects */
+/** @param `data` */
 @Serializable
-data class PriceConfigurationsCreateOperationPayloadDataRelationships(
-    @SerialName(value = "subjects")
-    val subjects: PriceConfigurationsCreateOperationPayloadDataRelationshipsSubjects
+data class PriceConfigurationsCreateOperationPayloadDataRelationshipsSubjects(
+    @SerialName(value = "data")
+    val `data`: kotlin.collections.List<PriceConfigurationsCreateOperationPayloadSubjects>
 ) {}

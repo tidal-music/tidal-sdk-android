@@ -5,10 +5,10 @@
       "name" : "TIDAL Developer - Discussions",
       "url" : "https://github.com/orgs/tidal-music/discussions"
     },
-    "description" : "The TIDAL API is a [JSON:API](https://jsonapi.org/)–compliant web API that exposes TIDAL’s music, metadata, and user-related functionality through a consistent, resource-oriented design. More information and API management are available at [developer.tidal.com](developer.tidal.com)",
+    "description" : "The TIDAL API is a [JSON:API](https://jsonapi.org/)–compliant web API that exposes TIDAL’s music, metadata, and user-related functionality through a consistent, resource-oriented design. More information and API management are available at [developer.tidal.com](https://developer.tidal.com)",
     "termsOfService" : "https://developer.tidal.com/documentation/guidelines/guidelines-overview",
     "title" : "TIDAL API",
-    "version" : "1.1.12"
+    "version" : "1.1.25"
   },
   "externalDocs" : {
     "description" : "TIDAL Developer - Documentation",
@@ -19,74 +19,106 @@
     "description" : "Production"
   } ],
   "tags" : [ {
+    "description" : "A music album, consisting of one or more tracks.",
     "name" : "albums"
   }, {
+    "description" : "A user's appreciation of a piece of content.",
     "name" : "appreciations"
   }, {
+    "description" : "A biography text for an artist.",
     "name" : "artistBiographies"
   }, {
+    "description" : "A claim by an artist to own an artist profile via DSP authentication.",
     "name" : "artistClaims"
   }, {
+    "description" : "A role describing an artist's contribution, such as performer or producer.",
     "name" : "artistRoles"
   }, {
+    "description" : "A music artist.",
     "name" : "artists"
   }, {
+    "description" : "Artwork images and videos used for albums, artists, tracks, and playlists.",
     "name" : "artworks"
   }, {
+    "description" : "A claim by an artist asserting ownership of a piece of content.",
     "name" : "contentClaims"
   }, {
+    "description" : "A credit entry linking a contributor to a track or album.",
     "name" : "credits"
   }, {
+    "description" : "Links to equivalent content on other streaming platforms.",
     "name" : "dspSharingLinks"
   }, {
+    "description" : "A module within a dynamic page, containing a list of content items.",
     "name" : "dynamicModules"
   }, {
+    "description" : "A dynamically composed page of modules, such as the home screen.",
     "name" : "dynamicPages"
   }, {
+    "description" : "A music genre classification.",
     "name" : "genres"
   }, {
+    "description" : "A registered device installation for a user.",
     "name" : "installations"
   }, {
+    "description" : "Lyrics for a track, including plain text and time-synced LRC formats.",
     "name" : "lyrics"
   }, {
+    "description" : "A manual artist claim submitted with identity verification details.",
     "name" : "manualArtistClaims"
   }, {
+    "description" : "A task describing an offline sync action for a user's device.",
     "name" : "offlineTasks"
   }, {
+    "description" : "A user's current play queue, including past and upcoming items.",
     "name" : "playQueues"
   }, {
+    "description" : "A curated or user-created playlist of tracks and videos.",
     "name" : "playlists"
   }, {
+    "description" : "Pricing configuration for purchasable content.",
     "name" : "priceConfigurations"
   }, {
+    "description" : "A content provider or label that supplies music to TIDAL.",
     "name" : "providers"
   }, {
+    "description" : "An emoji reaction by a user on a piece of content.",
     "name" : "reactions"
   }, {
+    "description" : "A share saved to a user's collection.",
     "name" : "savedShares"
   }, {
+    "description" : "Search results for a query across tracks, albums, artists, and other content.",
     "name" : "searchResults"
   }, {
+    "description" : "Autocomplete suggestions for a search query.",
     "name" : "searchSuggestions"
   }, {
+    "description" : "A shareable link to one or more TIDAL resources.",
     "name" : "shares"
   }, {
+    "description" : "A Stripe Connect account linked to a user for receiving payments.",
     "name" : "stripeConnections"
   }, {
+    "description" : "An individual audio file for a track in a specific format and quality.",
     "name" : "trackFiles"
   }, {
+    "description" : "A playback manifest for a track, containing streaming URIs and format details.",
     "name" : "trackManifests"
   }, {
     "description" : "A track source file is the media source file of a track, meaning audio content.\nAfter a track source file is uploaded successfully it will be ingested and transcoded into deliverables and\nstored like any other content we receive from labels.\n",
     "name" : "trackSourceFiles"
   }, {
+    "description" : "Playback statistics for a track, including total plays and unique listeners.",
     "name" : "trackStatistics"
   }, {
+    "description" : "A music track.",
     "name" : "tracks"
   }, {
     "description" : "Status of metadata detection job for a track.\nTracks the progress of async jobs that detect and pre-fill metadata fields.\n",
     "name" : "tracksMetadataStatus"
   }, {
+    "description" : "Usage rules defining how content may be consumed in a given country.",
     "name" : "usageRules"
   }, {
     "description" : "A user's collection of favorited albums.",
@@ -110,14 +142,19 @@
     "description" : "Deprecated. Use the dedicated collection resources instead: userCollectionAlbums, userCollectionArtists, userCollectionTracks, userCollectionVideos, or userCollectionPlaylists.",
     "name" : "userCollections"
   }, {
+    "description" : "Entitlements granted to a user based on their subscription.",
     "name" : "userEntitlements"
   }, {
+    "description" : "Personalized content recommendations for a user.",
     "name" : "userRecommendations"
   }, {
+    "description" : "A user-submitted report flagging inappropriate or harmful content.",
     "name" : "userReports"
   }, {
+    "description" : "A TIDAL user account.",
     "name" : "users"
   }, {
+    "description" : "A music video.",
     "name" : "videos"
   } ],
   "paths" : {
@@ -155,42 +192,36 @@
             }
           }
         }, {
-          "description" : "List of barcode IDs (EAN-13 or UPC-A). NOTE: Supplying more than one barcode ID will currently only return one album per barcode ID.",
-          "example" : "196589525444",
+          "description" : "List of barcode IDs (EAN-13 or UPC-A). NOTE: Supplying more than one barcode ID will currently only return one album per barcode ID. (e.g. `196589525444`)",
           "in" : "query",
           "name" : "filter[barcodeId]",
           "required" : false,
           "schema" : {
             "type" : "array",
             "items" : {
-              "type" : "string",
-              "example" : "196589525444"
+              "type" : "string"
             }
           }
         }, {
-          "description" : "Album id",
-          "example" : "251380836",
+          "description" : "Album id (e.g. `251380836`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
           "schema" : {
             "type" : "array",
             "items" : {
-              "type" : "string",
-              "example" : "251380836"
+              "type" : "string"
             }
           }
         }, {
-          "description" : "User id",
-          "example" : "123456",
+          "description" : "User id (e.g. `123456`)",
           "in" : "query",
           "name" : "filter[owners.id]",
           "required" : false,
           "schema" : {
             "type" : "array",
             "items" : {
-              "type" : "string",
-              "example" : "123456"
+              "type" : "string"
             }
           }
         }, {
@@ -1756,16 +1787,14 @@
             }
           }
         }, {
-          "description" : "Artist id",
-          "example" : "1566",
+          "description" : "Artist id (e.g. `1566`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
           "schema" : {
             "type" : "array",
             "items" : {
-              "type" : "string",
-              "example" : "1566"
+              "type" : "string"
             }
           }
         } ],
@@ -2055,16 +2084,14 @@
             }
           }
         }, {
-          "description" : "User id",
-          "example" : "123456",
+          "description" : "User id (e.g. `123456`)",
           "in" : "query",
           "name" : "filter[owners.id]",
           "required" : false,
           "schema" : {
             "type" : "array",
             "items" : {
-              "type" : "string",
-              "example" : "123456"
+              "type" : "string"
             }
           }
         } ],
@@ -2673,16 +2700,14 @@
       "get" : {
         "description" : "Retrieves multiple artistRoles by available filters, or without if applicable.",
         "parameters" : [ {
-          "description" : "Artist role id",
-          "example" : "1",
+          "description" : "Artist role id (e.g. `1`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
           "schema" : {
             "type" : "array",
             "items" : {
-              "type" : "string",
-              "example" : "1"
+              "type" : "string"
             }
           }
         } ],
@@ -2821,42 +2846,36 @@
             }
           }
         }, {
-          "description" : "Artist handle",
-          "example" : "jayz",
+          "description" : "Artist handle (e.g. `jayz`)",
           "in" : "query",
           "name" : "filter[handle]",
           "required" : false,
           "schema" : {
             "type" : "array",
             "items" : {
-              "type" : "string",
-              "example" : "jayz"
+              "type" : "string"
             }
           }
         }, {
-          "description" : "Artist id",
-          "example" : "1566",
+          "description" : "Artist id (e.g. `1566`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
           "schema" : {
             "type" : "array",
             "items" : {
-              "type" : "string",
-              "example" : "1566"
+              "type" : "string"
             }
           }
         }, {
-          "description" : "User id",
-          "example" : "123456",
+          "description" : "User id (e.g. `123456`)",
           "in" : "query",
           "name" : "filter[owners.id]",
           "required" : false,
           "schema" : {
             "type" : "array",
             "items" : {
-              "type" : "string",
-              "example" : "123456"
+              "type" : "string"
             }
           }
         } ],
@@ -4366,16 +4385,14 @@
             }
           }
         }, {
-          "description" : "Artwork id",
-          "example" : "a468bee88def",
+          "description" : "Artwork id (e.g. `a468bee88def`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
           "schema" : {
             "type" : "array",
             "items" : {
-              "type" : "string",
-              "example" : "a468bee88def"
+              "type" : "string"
             }
           }
         } ],
@@ -4666,16 +4683,14 @@
             }
           }
         }, {
-          "description" : "User id",
-          "example" : "123456",
+          "description" : "User id (e.g. `123456`)",
           "in" : "query",
           "name" : "filter[owners.id]",
           "required" : false,
           "schema" : {
             "type" : "array",
             "items" : {
-              "type" : "string",
-              "example" : "123456"
+              "type" : "string"
             }
           }
         } ],
@@ -5095,16 +5110,14 @@
             }
           }
         }, {
-          "description" : "Credit id",
-          "example" : "3fG7kLmN2pQrStUv",
+          "description" : "Credit id (e.g. `3fG7kLmN2pQrStUv`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
           "schema" : {
             "type" : "array",
             "items" : {
-              "type" : "string",
-              "example" : "3fG7kLmN2pQrStUv"
+              "type" : "string"
             }
           }
         } ],
@@ -5402,13 +5415,11 @@
           "schema" : {
             "type" : "array",
             "items" : {
-              "type" : "string",
-              "example" : null
+              "type" : "string"
             }
           }
         }, {
-          "description" : "The type of the subject resource (e.g., albums, tracks, artists)",
-          "example" : "tracks",
+          "description" : "The type of the subject resource (e.g., albums, tracks, artists) (e.g. `tracks`)",
           "in" : "query",
           "name" : "filter[subject.type]",
           "required" : false,
@@ -5416,7 +5427,6 @@
             "type" : "array",
             "items" : {
               "type" : "string",
-              "example" : "tracks",
               "enum" : [ "tracks", "albums", "artists" ]
             }
           }
@@ -5615,16 +5625,14 @@
             }
           }
         }, {
-          "description" : "DynamicModules Id",
-          "example" : "nejMcAhh5N8S3EQ4LaqysVdI0cZZ",
+          "description" : "DynamicModules Id (e.g. `nejMcAhh5N8S3EQ4LaqysVdI0cZZ`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
           "schema" : {
             "type" : "array",
             "items" : {
-              "type" : "string",
-              "example" : "nejMcAhh5N8S3EQ4LaqysVdI0cZZ"
+              "type" : "string"
             }
           }
         } ],
@@ -5887,29 +5895,25 @@
             }
           }
         }, {
-          "description" : "Filter by page type",
-          "example" : "ARTIST",
+          "description" : "Filter by page type (e.g. `ARTIST`)",
           "in" : "query",
           "name" : "filter[pageType]",
           "required" : false,
           "schema" : {
             "type" : "array",
             "items" : {
-              "type" : "string",
-              "example" : "ARTIST"
+              "type" : "string"
             }
           }
         }, {
-          "description" : "Filter by subject id",
-          "example" : "67890",
+          "description" : "Filter by subject id (e.g. `67890`)",
           "in" : "query",
           "name" : "filter[subject.id]",
           "required" : false,
           "schema" : {
             "type" : "array",
             "items" : {
-              "type" : "string",
-              "example" : "67890"
+              "type" : "string"
             }
           }
         } ],
@@ -6195,16 +6199,14 @@
             "default" : "en-US"
           }
         }, {
-          "description" : "Allows filtering by genre id(s). USER_SELECTABLE is special value used to return specific genres which users can select from",
-          "example" : "'1,2,3' or 'USER_SELECTABLE'",
+          "description" : "Allows filtering by genre id(s). USER_SELECTABLE is special value used to return specific genres which users can select from (e.g. `'1,2,3' or 'USER_SELECTABLE'`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
           "schema" : {
             "type" : "array",
             "items" : {
-              "type" : "string",
-              "example" : "'1,2,3' or 'USER_SELECTABLE'"
+              "type" : "string"
             }
           }
         } ],
@@ -6352,42 +6354,36 @@
             }
           }
         }, {
-          "description" : "Client provided installation identifier",
-          "example" : "a468bee88def",
+          "description" : "Client provided installation identifier (e.g. `a468bee88def`)",
           "in" : "query",
           "name" : "filter[clientProvidedInstallationId]",
           "required" : false,
           "schema" : {
             "type" : "array",
             "items" : {
-              "type" : "string",
-              "example" : "a468bee88def"
+              "type" : "string"
             }
           }
         }, {
-          "description" : "Installation id",
-          "example" : "a468bee88def",
+          "description" : "Installation id (e.g. `a468bee88def`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
           "schema" : {
             "type" : "array",
             "items" : {
-              "type" : "string",
-              "example" : "a468bee88def"
+              "type" : "string"
             }
           }
         }, {
-          "description" : "User id",
-          "example" : "123456",
+          "description" : "User id (e.g. `123456`)",
           "in" : "query",
           "name" : "filter[owners.id]",
           "required" : false,
           "schema" : {
             "type" : "array",
             "items" : {
-              "type" : "string",
-              "example" : "123456"
+              "type" : "string"
             }
           }
         } ],
@@ -6656,8 +6652,7 @@
             }
           }
         }, {
-          "description" : "One of: tracks, videos, albums, playlists, userCollections",
-          "example" : "tracks",
+          "description" : "One of: tracks, videos, albums, playlists (e.g. `tracks`)",
           "in" : "query",
           "name" : "filter[type]",
           "required" : false,
@@ -6665,8 +6660,7 @@
             "type" : "array",
             "items" : {
               "type" : "string",
-              "example" : "tracks",
-              "enum" : [ "tracks", "videos", "albums", "playlists", "userCollections" ]
+              "enum" : [ "tracks", "videos", "albums", "playlists" ]
             }
           }
         } ],
@@ -6869,16 +6863,14 @@
             }
           }
         }, {
-          "description" : "Lyrics Id",
-          "example" : "nejMcAhh5N8S3EQ4LaqysVdI0cZZ",
+          "description" : "Lyrics Id (e.g. `nejMcAhh5N8S3EQ4LaqysVdI0cZZ`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
           "schema" : {
             "type" : "array",
             "items" : {
-              "type" : "string",
-              "example" : "nejMcAhh5N8S3EQ4LaqysVdI0cZZ"
+              "type" : "string"
             }
           }
         } ],
@@ -7409,8 +7401,8 @@
             "type" : "string"
           }
         }, {
-          "description" : "Allows the client to customize which related resources should be returned. Available options: item, owners",
-          "example" : "item",
+          "description" : "Allows the client to customize which related resources should be returned. Available options: collection, item, owners",
+          "example" : "collection",
           "in" : "query",
           "name" : "include",
           "required" : false,
@@ -7418,33 +7410,29 @@
             "type" : "array",
             "items" : {
               "type" : "string",
-              "example" : "item"
+              "example" : "collection"
             }
           }
         }, {
-          "description" : "Offline task id",
-          "example" : "a468bee8-8def-4a1b-8c1e-123456789abc",
+          "description" : "Offline task id (e.g. `a468bee8-8def-4a1b-8c1e-123456789abc`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
           "schema" : {
             "type" : "array",
             "items" : {
-              "type" : "string",
-              "example" : "a468bee8-8def-4a1b-8c1e-123456789abc"
+              "type" : "string"
             }
           }
         }, {
-          "description" : "Installation id",
-          "example" : "a468bee88def",
+          "description" : "Installation id (e.g. `a468bee88def`)",
           "in" : "query",
           "name" : "filter[installation.id]",
           "required" : false,
           "schema" : {
             "type" : "array",
             "items" : {
-              "type" : "string",
-              "example" : "a468bee88def"
+              "type" : "string"
             }
           }
         } ],
@@ -7507,8 +7495,8 @@
             "type" : "string"
           }
         }, {
-          "description" : "Allows the client to customize which related resources should be returned. Available options: item, owners",
-          "example" : "item",
+          "description" : "Allows the client to customize which related resources should be returned. Available options: collection, item, owners",
+          "example" : "collection",
           "in" : "query",
           "name" : "include",
           "required" : false,
@@ -7516,7 +7504,7 @@
             "type" : "array",
             "items" : {
               "type" : "string",
-              "example" : "item"
+              "example" : "collection"
             }
           }
         } ],
@@ -7616,6 +7604,78 @@
           "Authorization_Code_PKCE" : [ "w_usr" ]
         } ],
         "summary" : "Update single offlineTask.",
+        "tags" : [ "offlineTasks" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      }
+    },
+    "/offlineTasks/{id}/relationships/collection" : {
+      "get" : {
+        "description" : "Retrieves collection relationship.",
+        "parameters" : [ {
+          "description" : "Offline task id",
+          "example" : "a468bee8-8def-4a1b-8c1e-123456789abc",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: collection",
+          "example" : "collection",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "collection"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/OfflineTasks_Single_Relationship_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Default400Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Default404Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Default405Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Default406Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Default415Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Default429Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Default500Response"
+          },
+          "503" : {
+            "$ref" : "#/components/responses/Default503Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "r_usr" ]
+        } ],
+        "summary" : "Get collection relationship (\"to-one\").",
         "tags" : [ "offlineTasks" ],
         "x-path-item-properties" : {
           "required-access-tier" : "INTERNAL"
@@ -7799,16 +7859,14 @@
             }
           }
         }, {
-          "description" : "User id",
-          "example" : "123456",
+          "description" : "User id (e.g. `123456`)",
           "in" : "query",
           "name" : "filter[owners.id]",
           "required" : false,
           "schema" : {
             "type" : "array",
             "items" : {
-              "type" : "string",
-              "example" : "123456"
+              "type" : "string"
             }
           }
         } ],
@@ -8675,29 +8733,25 @@
             }
           }
         }, {
-          "description" : "Playlist id",
-          "example" : "550e8400-e29b-41d4-a716-446655440000",
+          "description" : "Playlist id (e.g. `550e8400-e29b-41d4-a716-446655440000`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
           "schema" : {
             "type" : "array",
             "items" : {
-              "type" : "string",
-              "example" : "550e8400-e29b-41d4-a716-446655440000"
+              "type" : "string"
             }
           }
         }, {
-          "description" : "User id",
-          "example" : "123456",
+          "description" : "User id (e.g. `123456`)",
           "in" : "query",
           "name" : "filter[owners.id]",
           "required" : false,
           "schema" : {
             "type" : "array",
             "items" : {
-              "type" : "string",
-              "example" : "123456"
+              "type" : "string"
             }
           }
         } ],
@@ -9611,16 +9665,14 @@
       "get" : {
         "description" : "Retrieves multiple priceConfigurations by available filters, or without if applicable.",
         "parameters" : [ {
-          "description" : "Price configuration id",
-          "example" : "cHJpY2UtY29uZmlnLTEyMzpVUw",
+          "description" : "Price configuration id (e.g. `cHJpY2UtY29uZmlnLTEyMzpVUw`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
           "schema" : {
             "type" : "array",
             "items" : {
-              "type" : "string",
-              "example" : "cHJpY2UtY29uZmlnLTEyMzpVUw"
+              "type" : "string"
             }
           }
         } ],
@@ -9794,16 +9846,14 @@
       "get" : {
         "description" : "Retrieves multiple providers by available filters, or without if applicable.",
         "parameters" : [ {
-          "description" : "Provider ID",
-          "example" : "12345",
+          "description" : "Provider ID (e.g. `12345`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
           "schema" : {
             "type" : "array",
             "items" : {
-              "type" : "string",
-              "example" : "12345"
+              "type" : "string"
             }
           }
         } ],
@@ -9963,34 +10013,29 @@
             }
           }
         }, {
-          "description" : "Filter by emoji",
-          "example" : "👍",
+          "description" : "Filter by emoji (e.g. `👍`)",
           "in" : "query",
           "name" : "filter[emoji]",
           "required" : false,
           "schema" : {
             "type" : "array",
             "items" : {
-              "type" : "string",
-              "example" : "👍"
+              "type" : "string"
             }
           }
         }, {
-          "description" : "Filter by subject resource ID",
-          "example" : "12345",
+          "description" : "Filter by subject resource ID (e.g. `12345`)",
           "in" : "query",
           "name" : "filter[subject.id]",
           "required" : false,
           "schema" : {
             "type" : "array",
             "items" : {
-              "type" : "string",
-              "example" : "12345"
+              "type" : "string"
             }
           }
         }, {
-          "description" : "Filter by subject resource type",
-          "example" : "albums",
+          "description" : "Filter by subject resource type (e.g. `albums`)",
           "in" : "query",
           "name" : "filter[subject.type]",
           "required" : false,
@@ -9998,7 +10043,6 @@
             "type" : "array",
             "items" : {
               "type" : "string",
-              "example" : "albums",
               "enum" : [ "albums", "tracks", "artists", "videos", "playlists" ]
             }
           }
@@ -11293,29 +11337,25 @@
             }
           }
         }, {
-          "description" : "Share code",
-          "example" : "xyz",
+          "description" : "Share code (e.g. `xyz`)",
           "in" : "query",
           "name" : "filter[code]",
           "required" : false,
           "schema" : {
             "type" : "array",
             "items" : {
-              "type" : "string",
-              "example" : "xyz"
+              "type" : "string"
             }
           }
         }, {
-          "description" : "User share id",
-          "example" : "a468bee88def",
+          "description" : "User share id (e.g. `a468bee88def`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
           "schema" : {
             "type" : "array",
             "items" : {
-              "type" : "string",
-              "example" : "a468bee88def"
+              "type" : "string"
             }
           }
         } ],
@@ -11679,16 +11719,14 @@
             }
           }
         }, {
-          "description" : "User id",
-          "example" : "123456",
+          "description" : "User id (e.g. `123456`)",
           "in" : "query",
           "name" : "filter[owners.id]",
           "required" : false,
           "schema" : {
             "type" : "array",
             "items" : {
-              "type" : "string",
-              "example" : "123456"
+              "type" : "string"
             }
           }
         } ],
@@ -12090,16 +12128,14 @@
             }
           }
         }, {
-          "description" : "Track source file id",
-          "example" : "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+          "description" : "Track source file id (e.g. `a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
           "schema" : {
             "type" : "array",
             "items" : {
-              "type" : "string",
-              "example" : "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+              "type" : "string"
             }
           }
         } ],
@@ -12375,16 +12411,14 @@
             }
           }
         }, {
-          "description" : "Track id",
-          "example" : "75413016",
+          "description" : "Track id (e.g. `75413016`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
           "schema" : {
             "type" : "array",
             "items" : {
-              "type" : "string",
-              "example" : "75413016"
+              "type" : "string"
             }
           }
         } ],
@@ -12607,7 +12641,7 @@
             "type" : "string"
           }
         }, {
-          "description" : "Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, genres, lyrics, metadataStatus, owners, priceConfig, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics, usageRules",
+          "description" : "Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, genres, lyrics, metadataStatus, owners, priceConfig, providers, radio, replacement, shares, similarTracks, sourceFile, suggestedTracks, trackStatistics, usageRules",
           "example" : "albums",
           "in" : "query",
           "name" : "include",
@@ -12620,42 +12654,36 @@
             }
           }
         }, {
-          "description" : "Track id",
-          "example" : "75413016",
+          "description" : "Track id (e.g. `75413016`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
           "schema" : {
             "type" : "array",
             "items" : {
-              "type" : "string",
-              "example" : "75413016"
+              "type" : "string"
             }
           }
         }, {
-          "description" : "List of ISRCs. NOTE: Supplying more than one ISRC will currently only return one track per ISRC.",
-          "example" : "QMJMT1701237",
+          "description" : "List of ISRCs. When a single ISRC is provided, pagination is supported and multiple tracks may be returned. When multiple ISRCs are provided, one track per ISRC is returned without pagination. (e.g. `QMJMT1701237`)",
           "in" : "query",
           "name" : "filter[isrc]",
           "required" : false,
           "schema" : {
             "type" : "array",
             "items" : {
-              "type" : "string",
-              "example" : "QMJMT1701237"
+              "type" : "string"
             }
           }
         }, {
-          "description" : "User id",
-          "example" : "123456",
+          "description" : "User id (e.g. `123456`)",
           "in" : "query",
           "name" : "filter[owners.id]",
           "required" : false,
           "schema" : {
             "type" : "array",
             "items" : {
-              "type" : "string",
-              "example" : "123456"
+              "type" : "string"
             }
           }
         }, {
@@ -12842,7 +12870,7 @@
             "type" : "string"
           }
         }, {
-          "description" : "Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, genres, lyrics, metadataStatus, owners, priceConfig, providers, radio, replacement, shares, similarTracks, sourceFile, trackStatistics, usageRules",
+          "description" : "Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, genres, lyrics, metadataStatus, owners, priceConfig, providers, radio, replacement, shares, similarTracks, sourceFile, suggestedTracks, trackStatistics, usageRules",
           "example" : "albums",
           "in" : "query",
           "name" : "include",
@@ -14325,6 +14353,104 @@
         }
       }
     },
+    "/tracks/{id}/relationships/suggestedTracks" : {
+      "get" : {
+        "description" : "Retrieves suggestedTracks relationship.",
+        "parameters" : [ {
+          "description" : "Track id",
+          "example" : "75413016",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "ISO 3166-1 alpha-2 country code",
+          "example" : "US",
+          "in" : "query",
+          "name" : "countryCode",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: suggestedTracks",
+          "example" : "suggestedTracks",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "suggestedTracks"
+            }
+          }
+        }, {
+          "description" : "Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted.",
+          "in" : "query",
+          "name" : "shareCode",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "xyz"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Tracks_Multi_Relationship_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Default400Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Default404Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Default405Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Default406Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Default415Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Default429Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Default500Response"
+          },
+          "503" : {
+            "$ref" : "#/components/responses/Default503Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ ]
+        } ],
+        "summary" : "Get suggestedTracks relationship (\"to-many\").",
+        "tags" : [ "tracks" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      }
+    },
     "/tracks/{id}/relationships/trackStatistics" : {
       "get" : {
         "description" : "Retrieves trackStatistics relationship.",
@@ -14502,16 +14628,14 @@
       "get" : {
         "description" : "Retrieves multiple tracksMetadataStatus by available filters, or without if applicable.",
         "parameters" : [ {
-          "description" : "Track id",
-          "example" : "75413016",
+          "description" : "Track id (e.g. `75413016`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
           "schema" : {
             "type" : "array",
             "items" : {
-              "type" : "string",
-              "example" : "75413016"
+              "type" : "string"
             }
           }
         } ],
@@ -14624,16 +14748,14 @@
       "get" : {
         "description" : "Retrieves multiple usageRules by available filters, or without if applicable.",
         "parameters" : [ {
-          "description" : "Usage rules id",
-          "example" : "VFJBQ0tTOjEyMzpOTw",
+          "description" : "Usage rules id (e.g. `VFJBQ0tTOjEyMzpOTw`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
           "schema" : {
             "type" : "array",
             "items" : {
-              "type" : "string",
-              "example" : "VFJBQ0tTOjEyMzpOTw"
+              "type" : "string"
             }
           }
         } ],
@@ -15645,8 +15767,7 @@
           "schema" : {
             "type" : "array",
             "items" : {
-              "type" : "string",
-              "example" : null
+              "type" : "string"
             }
           }
         } ],
@@ -19454,29 +19575,25 @@
             }
           }
         }, {
-          "description" : "Video id",
-          "example" : "75623239",
+          "description" : "Video id (e.g. `75623239`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
           "schema" : {
             "type" : "array",
             "items" : {
-              "type" : "string",
-              "example" : "75623239"
+              "type" : "string"
             }
           }
         }, {
-          "description" : "International Standard Recording Code (ISRC)",
-          "example" : "QMJMT1701237",
+          "description" : "International Standard Recording Code (ISRC) (e.g. `QMJMT1701237`)",
           "in" : "query",
           "name" : "filter[isrc]",
           "required" : false,
           "schema" : {
             "type" : "array",
             "items" : {
-              "type" : "string",
-              "example" : "QMJMT1701237"
+              "type" : "string"
             }
           }
         } ],
@@ -23807,7 +23924,7 @@
           },
           "type" : {
             "type" : "string",
-            "enum" : [ "tracks", "videos", "albums", "playlists", "userCollections" ]
+            "enum" : [ "tracks", "videos", "albums", "playlists" ]
           }
         }
       },
@@ -24355,9 +24472,11 @@
               "type" : "string"
             }
           },
+          "socialLink" : {
+            "$ref" : "#/components/schemas/Link_Object"
+          },
           "websiteOrSocialLink" : {
-            "minLength" : 1,
-            "type" : "string"
+            "$ref" : "#/components/schemas/Link_Object"
           }
         }
       },
@@ -24445,15 +24564,16 @@
               "description" : "Single IDs selected by user"
             }
           },
+          "socialLink" : {
+            "$ref" : "#/components/schemas/Link_Object"
+          },
           "status" : {
             "type" : "string",
             "description" : "Claim status",
             "enum" : [ "PENDING", "APPROVED", "REJECTED" ]
           },
           "websiteOrSocialLink" : {
-            "minLength" : 1,
-            "type" : "string",
-            "description" : "Website or social link"
+            "$ref" : "#/components/schemas/Link_Object"
           }
         }
       },
@@ -24562,7 +24682,7 @@
         }
       },
       "OfflineTasks_Attributes" : {
-        "required" : [ "action", "collection", "member" ],
+        "required" : [ "action", "collectionReference", "memberReference" ],
         "type" : "object",
         "properties" : {
           "action" : {
@@ -24570,17 +24690,19 @@
             "description" : "Action to perform",
             "enum" : [ "STORE_ITEM", "REMOVE_ITEM", "STORE_COLLECTION", "REMOVE_COLLECTION" ]
           },
-          "collection" : {
+          "collectionReference" : {
             "type" : "string",
-            "description" : "Collection reference associated with task"
+            "description" : "Collection reference associated with task",
+            "deprecated" : true
           },
-          "member" : {
+          "memberReference" : {
             "type" : "string",
-            "description" : "Collection-member reference associated with task"
+            "description" : "Collection-member reference associated with task",
+            "deprecated" : true
           },
           "position" : {
             "type" : "integer",
-            "description" : "Collection position related to member",
+            "description" : "Collection position of item",
             "format" : "int32"
           },
           "state" : {
@@ -24590,7 +24712,7 @@
           },
           "volume" : {
             "type" : "integer",
-            "description" : "Collection volume related to member",
+            "description" : "Collection volume of item",
             "format" : "int32"
           }
         }
@@ -24632,8 +24754,11 @@
         }
       },
       "OfflineTasks_Relationships" : {
-        "required" : [ "item", "owners" ],
+        "required" : [ "collection", "item", "owners" ],
         "properties" : {
+          "collection" : {
+            "$ref" : "#/components/schemas/Single_Relationship_Data_Document"
+          },
           "item" : {
             "$ref" : "#/components/schemas/Single_Relationship_Data_Document"
           },
@@ -25274,6 +25399,10 @@
             "example" : "PUBLIC",
             "enum" : [ "PUBLIC", "UNLISTED" ]
           },
+          "createdAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
           "description" : {
             "type" : "string"
           },
@@ -25701,7 +25830,9 @@
             "enum" : [ "USD" ]
           },
           "price" : {
-            "type" : "number"
+            "type" : "string",
+            "description" : "Price amount with max 2 decimal places",
+            "example" : "9.99"
           }
         }
       },
@@ -25710,6 +25841,15 @@
         "type" : "object",
         "properties" : {
           "subjects" : {
+            "$ref" : "#/components/schemas/PriceConfigurationsCreateOperation_Payload_Data_Relationships_Subjects"
+          }
+        }
+      },
+      "PriceConfigurationsCreateOperation_Payload_Data_Relationships_Subjects" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
             "maxItems" : 1,
             "minItems" : 1,
             "type" : "array",
@@ -25742,7 +25882,9 @@
             "enum" : [ "USD" ]
           },
           "price" : {
-            "type" : "number"
+            "type" : "string",
+            "description" : "Price amount with max 2 decimal places",
+            "example" : "9.99"
           }
         }
       },
@@ -27851,7 +27993,7 @@
         }
       },
       "Tracks_Relationships" : {
-        "required" : [ "albums", "artists", "credits", "genres", "lyrics", "metadataStatus", "owners", "priceConfig", "providers", "radio", "replacement", "shares", "similarTracks", "sourceFile", "trackStatistics", "usageRules" ],
+        "required" : [ "albums", "artists", "credits", "genres", "lyrics", "metadataStatus", "owners", "priceConfig", "providers", "radio", "replacement", "shares", "similarTracks", "sourceFile", "suggestedTracks", "trackStatistics", "usageRules" ],
         "properties" : {
           "albums" : {
             "$ref" : "#/components/schemas/Multi_Relationship_Data_Document"
@@ -27894,6 +28036,9 @@
           },
           "sourceFile" : {
             "$ref" : "#/components/schemas/Single_Relationship_Data_Document"
+          },
+          "suggestedTracks" : {
+            "$ref" : "#/components/schemas/Multi_Relationship_Data_Document"
           },
           "trackStatistics" : {
             "$ref" : "#/components/schemas/Single_Relationship_Data_Document"
@@ -28015,6 +28160,15 @@
         "type" : "object",
         "properties" : {
           "subject" : {
+            "$ref" : "#/components/schemas/UsageRulesCreateOperation_Payload_Data_Relationships_Subject"
+          }
+        }
+      },
+      "UsageRulesCreateOperation_Payload_Data_Relationships_Subject" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
             "$ref" : "#/components/schemas/UsageRulesCreateOperation_Payload_Subject"
           }
         }

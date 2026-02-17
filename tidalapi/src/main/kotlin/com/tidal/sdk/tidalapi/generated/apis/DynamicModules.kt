@@ -49,7 +49,7 @@ interface DynamicModules {
      *   unsupported. (optional, default to "en-US")
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: items (optional)
-     * @param filterId DynamicModules Id (optional)
+     * @param filterId DynamicModules Id (e.g. &#x60;nejMcAhh5N8S3EQ4LaqysVdI0cZZ&#x60;) (optional)
      * @return [DynamicModulesMultiResourceDataDocument]
      */
     @GET("dynamicModules")
