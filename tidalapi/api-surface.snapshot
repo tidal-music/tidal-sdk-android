@@ -704,6 +704,10 @@ GET /tracks/{id}/relationships/sourceFile
   params: id: string, include?: array[string], shareCode?: string
   returns: Tracks_Single_Relationship_Data_Document
 
+GET /tracks/{id}/relationships/suggestedTracks
+  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string, shareCode?: string
+  returns: Tracks_Multi_Relationship_Data_Document
+
 GET /tracks/{id}/relationships/trackStatistics
   params: id: string, include?: array[string], shareCode?: string
   returns: Tracks_Single_Relationship_Data_Document
@@ -2014,7 +2018,7 @@ ManualArtistClaimsCreateOperation_Payload_Data_Attributes
   artistId: string (required)
   legalFirstName: string (required)
   legalLastName: string (required)
-  websiteOrSocialLink: string (required)
+  websiteOrSocialLink: Link_Object (required)
   acceptedTerms: boolean (optional)
   distributorName: string (optional)
   errorReason: string (optional)
@@ -2026,12 +2030,13 @@ ManualArtistClaimsCreateOperation_Payload_Data_Attributes
   role: string (optional)
   selectedAlbums: array[string] (optional)
   selectedSingles: array[string] (optional)
+  socialLink: Link_Object (optional)
 
 ManualArtistClaims_Attributes
   artistId: string (required)
   legalFirstName: string (required)
   legalLastName: string (required)
-  websiteOrSocialLink: string (required)
+  websiteOrSocialLink: Link_Object (required)
   acceptedTerms: boolean (optional)
   createdAt: string(date-time) (optional)
   distributorName: string (optional)
@@ -2046,6 +2051,7 @@ ManualArtistClaims_Attributes
   role: string (optional)
   selectedAlbums: array[string] (optional)
   selectedSingles: array[string] (optional)
+  socialLink: Link_Object (optional)
   status: enum[PENDING, APPROVED, REJECTED] (optional)
 
 ManualArtistClaims_Multi_Resource_Data_Document
@@ -2285,6 +2291,7 @@ PlaylistsCreateOperation_Payload_Data
 PlaylistsCreateOperation_Payload_Data_Attributes
   name: string (required)
   accessType: enum[PUBLIC, UNLISTED] (optional)
+  createdAt: string(date-time) (optional)
   description: string (optional)
 
 PlaylistsItemsRelationshipAddOperation_Payload
@@ -2996,6 +3003,7 @@ Tracks_Relationships
   shares: Multi_Relationship_Data_Document (required)
   similarTracks: Multi_Relationship_Data_Document (required)
   sourceFile: Single_Relationship_Data_Document (required)
+  suggestedTracks: Multi_Relationship_Data_Document (required)
   trackStatistics: Single_Relationship_Data_Document (required)
   usageRules: Single_Relationship_Data_Document (required)
 

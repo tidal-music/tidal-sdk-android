@@ -22,7 +22,7 @@ interface Credits {
      *
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: artist, category (optional)
-     * @param filterId Credit id (optional)
+     * @param filterId Credit id (e.g. &#x60;3fG7kLmN2pQrStUv&#x60;) (optional)
      * @return [CreditsMultiResourceDataDocument]
      */
     @GET("credits")

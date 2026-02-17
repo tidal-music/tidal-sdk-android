@@ -12,6 +12,7 @@ import kotlinx.serialization.Serializable
 /**
  * @param name
  * @param accessType Access type
+ * @param createdAt
  * @param description
  */
 @Serializable
@@ -21,6 +22,7 @@ data class PlaylistsCreateOperationPayloadDataAttributes(
 
     @SerialName(value = "accessType")
     val accessType: PlaylistsCreateOperationPayloadDataAttributes.AccessType? = null,
+    @SerialName(value = "createdAt") val createdAt: kotlin.String? = null,
     @SerialName(value = "description") val description: kotlin.String? = null,
 ) {
 

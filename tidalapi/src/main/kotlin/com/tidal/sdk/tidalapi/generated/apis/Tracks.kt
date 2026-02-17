@@ -30,11 +30,12 @@ interface Tracks {
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: albums, artists, credits, genres, lyrics, metadataStatus, owners,
      *   priceConfig, providers, radio, replacement, shares, similarTracks, sourceFile,
-     *   trackStatistics, usageRules (optional)
-     * @param filterId Track id (optional)
-     * @param filterIsrc List of ISRCs. NOTE: Supplying more than one ISRC will currently only
-     *   return one track per ISRC. (optional)
-     * @param filterOwnersId User id (optional)
+     *   suggestedTracks, trackStatistics, usageRules (optional)
+     * @param filterId Track id (e.g. &#x60;75413016&#x60;) (optional)
+     * @param filterIsrc List of ISRCs. When a single ISRC is provided, pagination is supported and
+     *   multiple tracks may be returned. When multiple ISRCs are provided, one track per ISRC is
+     *   returned without pagination. (e.g. &#x60;QMJMT1701237&#x60;) (optional)
+     * @param filterOwnersId User id (e.g. &#x60;123456&#x60;) (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [TracksMultiResourceDataDocument]
@@ -87,7 +88,7 @@ interface Tracks {
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: albums, artists, credits, genres, lyrics, metadataStatus, owners,
      *   priceConfig, providers, radio, replacement, shares, similarTracks, sourceFile,
-     *   trackStatistics, usageRules (optional)
+     *   suggestedTracks, trackStatistics, usageRules (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [TracksSingleResourceDataDocument]
@@ -573,6 +574,39 @@ interface Tracks {
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<TracksSingleRelationshipDataDocument>
+
+    /**
+     * Get suggestedTracks relationship (\&quot;to-many\&quot;). Retrieves suggestedTracks
+     * relationship. Responses:
+     * - 200: Successful response
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
+     *
+     * @param id Track id
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: suggestedTracks (optional)
+     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
+     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @return [TracksMultiRelationshipDataDocument]
+     */
+    @GET("tracks/{id}/relationships/suggestedTracks")
+    suspend fun tracksIdRelationshipsSuggestedTracksGet(
+        @Path("id") id: kotlin.String,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("countryCode") countryCode: kotlin.String? = null,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
+    ): Response<TracksMultiRelationshipDataDocument>
 
     /**
      * Get trackStatistics relationship (\&quot;to-one\&quot;). Retrieves trackStatistics

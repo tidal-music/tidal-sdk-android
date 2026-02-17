@@ -34,9 +34,9 @@ interface Artists {
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: albums, biography, followers, following, owners, profileArt, radio,
      *   roles, similarArtists, trackProviders, tracks, videos (optional)
-     * @param filterHandle Artist handle (optional)
-     * @param filterId Artist id (optional)
-     * @param filterOwnersId User id (optional)
+     * @param filterHandle Artist handle (e.g. &#x60;jayz&#x60;) (optional)
+     * @param filterId Artist id (e.g. &#x60;1566&#x60;) (optional)
+     * @param filterOwnersId User id (e.g. &#x60;123456&#x60;) (optional)
      * @return [ArtistsMultiResourceDataDocument]
      */
     @GET("artists")

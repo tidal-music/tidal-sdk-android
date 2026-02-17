@@ -32,7 +32,7 @@ interface DspSharingLinks {
      *   Available options: subject (optional)
      * @param filterSubjectId The id of the subject resource (optional)
      * @param filterSubjectType The type of the subject resource (e.g., albums, tracks, artists)
-     *   (optional)
+     *   (e.g. &#x60;tracks&#x60;) (optional)
      * @return [DspSharingLinksMultiResourceDataDocument]
      */
     @GET("dspSharingLinks")

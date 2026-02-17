@@ -25,9 +25,10 @@ interface OfflineTasks {
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: item, owners (optional)
-     * @param filterId Offline task id (optional)
-     * @param filterInstallationId Installation id (optional)
+     *   Available options: collection, item, owners (optional)
+     * @param filterId Offline task id (e.g. &#x60;a468bee8-8def-4a1b-8c1e-123456789abc&#x60;)
+     *   (optional)
+     * @param filterInstallationId Installation id (e.g. &#x60;a468bee88def&#x60;) (optional)
      * @return [OfflineTasksMultiResourceDataDocument]
      */
     @GET("offlineTasks")
@@ -55,7 +56,7 @@ interface OfflineTasks {
      *
      * @param id Offline task id
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: item, owners (optional)
+     *   Available options: collection, item, owners (optional)
      * @return [OfflineTasksSingleResourceDataDocument]
      */
     @GET("offlineTasks/{id}")
@@ -85,6 +86,31 @@ interface OfflineTasks {
         @Path("id") id: kotlin.String,
         @Body offlineTasksUpdateOperationPayload: OfflineTasksUpdateOperationPayload? = null,
     ): Response<Unit>
+
+    /**
+     * Get collection relationship (\&quot;to-one\&quot;). Retrieves collection relationship.
+     * Responses:
+     * - 200: Successful response
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
+     *
+     * @param id Offline task id
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: collection (optional)
+     * @return [OfflineTasksSingleRelationshipDataDocument]
+     */
+    @GET("offlineTasks/{id}/relationships/collection")
+    suspend fun offlineTasksIdRelationshipsCollectionGet(
+        @Path("id") id: kotlin.String,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+    ): Response<OfflineTasksSingleRelationshipDataDocument>
 
     /**
      * Get item relationship (\&quot;to-one\&quot;). Retrieves item relationship. Responses:

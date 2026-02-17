@@ -10,11 +10,13 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
+ * @param collection
  * @param item
  * @param owners
  */
 @Serializable
 data class OfflineTasksRelationships(
+    @SerialName(value = "collection") val collection: SingleRelationshipDataDocument,
     @SerialName(value = "item") val item: SingleRelationshipDataDocument,
     @SerialName(value = "owners") val owners: MultiRelationshipDataDocument,
 ) {}

@@ -34,9 +34,10 @@ interface Albums {
      *   Available options: artists, coverArt, genres, items, owners, priceConfig, providers,
      *   replacement, similarAlbums, suggestedCoverArts, usageRules (optional)
      * @param filterBarcodeId List of barcode IDs (EAN-13 or UPC-A). NOTE: Supplying more than one
-     *   barcode ID will currently only return one album per barcode ID. (optional)
-     * @param filterId Album id (optional)
-     * @param filterOwnersId User id (optional)
+     *   barcode ID will currently only return one album per barcode ID. (e.g.
+     *   &#x60;196589525444&#x60;) (optional)
+     * @param filterId Album id (e.g. &#x60;251380836&#x60;) (optional)
+     * @param filterOwnersId User id (e.g. &#x60;123456&#x60;) (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [AlbumsMultiResourceDataDocument]
