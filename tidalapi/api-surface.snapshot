@@ -1,5 +1,5 @@
 # TIDAL API Surface Snapshot
-# Spec version: 1.1.25 | Endpoints: 257 | Models: 614
+# Spec version: 1.1.12 | Endpoints: 255 | Models: 612
 
 ## Endpoints
 
@@ -314,7 +314,7 @@ GET /installations/{id}
   returns: Installations_Single_Resource_Data_Document
 
 GET /installations/{id}/relationships/offlineInventory
-  params: filter[type]?: array[enum[tracks, videos, albums, playlists]], id: string, include?: array[string], page[cursor]?: string
+  params: filter[type]?: array[enum[tracks, videos, albums, playlists, userCollections]], id: string, include?: array[string], page[cursor]?: string
   returns: Installations_OfflineInventory_Multi_Relationship_Data_Document
 
 POST /installations/{id}/relationships/offlineInventory
@@ -370,10 +370,6 @@ GET /offlineTasks/{id}
 PATCH /offlineTasks/{id}
   params: id: string
   returns: void
-
-GET /offlineTasks/{id}/relationships/collection
-  params: id: string, include?: array[string]
-  returns: OfflineTasks_Single_Relationship_Data_Document
 
 GET /offlineTasks/{id}/relationships/item
   params: id: string, include?: array[string]
@@ -1872,7 +1868,7 @@ InstallationsOfflineInventoryRelationshipRemoveOperation_Payload
 
 InstallationsOfflineInventory_ItemIdentifier
   id: string (required)
-  type: enum[tracks, videos, albums, playlists] (required)
+  type: enum[tracks, videos, albums, playlists, userCollections] (required)
 
 Installations_Attributes
   clientProvidedInstallationId: string (required)
@@ -2090,8 +2086,8 @@ OfflineTasksUpdateOperation_Payload_Data_Attributes
 
 OfflineTasks_Attributes
   action: enum[STORE_ITEM, REMOVE_ITEM, STORE_COLLECTION, REMOVE_COLLECTION] (required)
-  collectionReference: string (required)
-  memberReference: string (required)
+  collection: string (required)
+  member: string (required)
   position: integer(int32) (optional)
   state: enum[PENDING, IN_PROGRESS, FAILED, COMPLETED] (optional)
   volume: integer(int32) (optional)
@@ -2107,7 +2103,6 @@ OfflineTasks_Multi_Resource_Data_Document
   included: Included (optional)
 
 OfflineTasks_Relationships
-  collection: Single_Relationship_Data_Document (required)
   item: Single_Relationship_Data_Document (required)
   owners: Multi_Relationship_Data_Document (required)
 
@@ -2417,13 +2412,10 @@ PriceConfigurationsCreateOperation_Payload_Data
 
 PriceConfigurationsCreateOperation_Payload_Data_Attributes
   currency: enum[USD] (required)
-  price: string (required)
+  price: number (required)
 
 PriceConfigurationsCreateOperation_Payload_Data_Relationships
-  subjects: PriceConfigurationsCreateOperation_Payload_Data_Relationships_Subjects (required)
-
-PriceConfigurationsCreateOperation_Payload_Data_Relationships_Subjects
-  data: array[PriceConfigurationsCreateOperation_Payload_Subjects] (required)
+  subjects: array[PriceConfigurationsCreateOperation_Payload_Subjects] (required)
 
 PriceConfigurationsCreateOperation_Payload_Subjects
   id: string (required)
@@ -2431,7 +2423,7 @@ PriceConfigurationsCreateOperation_Payload_Subjects
 
 PriceConfigurations_Attributes
   currency: enum[USD] (required)
-  price: string (required)
+  price: number (required)
 
 PriceConfigurations_Multi_Resource_Data_Document
   data: array[PriceConfigurations_Resource_Object] (required)
@@ -3046,10 +3038,7 @@ UsageRulesCreateOperation_Payload_Data_Attributes
   subscription: array[enum[STREAM, DJ, STEM, DOWNLOAD]] (optional)
 
 UsageRulesCreateOperation_Payload_Data_Relationships
-  subject: UsageRulesCreateOperation_Payload_Data_Relationships_Subject (required)
-
-UsageRulesCreateOperation_Payload_Data_Relationships_Subject
-  data: UsageRulesCreateOperation_Payload_Subject (required)
+  subject: UsageRulesCreateOperation_Payload_Subject (required)
 
 UsageRulesCreateOperation_Payload_Subject
   id: string (required)
