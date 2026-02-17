@@ -49,11 +49,13 @@ import com.tidal.sdk.tidalapi.generated.apis.Users
 import com.tidal.sdk.tidalapi.generated.apis.Videos
 import com.tidal.sdk.tidalapi.networking.RetrofitProvider
 
-class TidalApiClient(credentialsProvider: CredentialsProvider, baseUrl: String = DEFAULT_BASE_URL) {
+class TidalApiClient(
+    credentialsProvider: CredentialsProvider,
+    baseUrl: String = DEFAULT_BASE_URL,
+    retrofitProvider: RetrofitProvider = RetrofitProvider(),
+) {
 
-    private val retrofit by lazy {
-        RetrofitProvider().provideRetrofit(baseUrl, credentialsProvider)
-    }
+    private val retrofit by lazy { retrofitProvider.provideRetrofit(baseUrl, credentialsProvider) }
 
     /** Returns an instance of the [Albums] which can be used to make API calls to the */
     fun createAlbums(): Albums {

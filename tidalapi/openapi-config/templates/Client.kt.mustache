@@ -9,10 +9,14 @@ import com.tidal.sdk.tidalapi.generated.apis.{{classname}}
     {{/apis}}
 {{/apiInfo}}
 
-class TidalApiClient(credentialsProvider: CredentialsProvider, baseUrl: String = DEFAULT_BASE_URL) {
+class TidalApiClient(
+    credentialsProvider: CredentialsProvider,
+    baseUrl: String = DEFAULT_BASE_URL,
+    retrofitProvider: RetrofitProvider = RetrofitProvider(),
+) {
 
     private val retrofit by lazy {
-        RetrofitProvider().provideRetrofit(
+        retrofitProvider.provideRetrofit(
             baseUrl,
             credentialsProvider,
         )

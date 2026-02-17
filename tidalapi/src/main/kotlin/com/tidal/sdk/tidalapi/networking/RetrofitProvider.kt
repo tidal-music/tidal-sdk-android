@@ -3,7 +3,6 @@ package com.tidal.sdk.tidalapi.networking
 import com.tidal.sdk.auth.CredentialsProvider
 import com.tidal.sdk.common.d
 import com.tidal.sdk.common.logger
-import com.tidal.sdk.tidalapi.generated.TidalApiClient.Companion.DEFAULT_CACHE_SIZE
 import com.tidal.sdk.tidalapi.generated.models.getOneOfSerializer
 import java.io.File
 import kotlinx.serialization.json.Json
@@ -17,7 +16,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 
-class RetrofitProvider {
+class RetrofitProvider(
+    private val cacheDir: File? = null,
+    private val cacheSize: Long = DEFAULT_CACHE_SIZE,
+) {
 
     private val converterFactories: List<Converter.Factory> =
         listOf(
@@ -25,11 +27,7 @@ class RetrofitProvider {
             createJsonSerializer().asConverterFactory("application/json".toMediaType()),
         )
 
-    private fun provideOkHttpClientBuilder(
-        credentialsProvider: CredentialsProvider,
-        cacheDir: File?,
-        cacheSize: Long,
-    ): OkHttpClient =
+    private fun provideOkHttpClient(credentialsProvider: CredentialsProvider): OkHttpClient =
         OkHttpClient.Builder()
             .apply { cacheDir?.let { cache(Cache(it, cacheSize)) } }
             .addInterceptor(AuthInterceptor(credentialsProvider))
@@ -37,17 +35,16 @@ class RetrofitProvider {
             .addInterceptor(getLoggingInterceptor())
             .build()
 
-    fun provideRetrofit(
-        baseUrl: String,
-        credentialsProvider: CredentialsProvider,
-        cacheDir: File? = null,
-        cacheSize: Long = DEFAULT_CACHE_SIZE,
-    ): Retrofit =
+    fun provideRetrofit(baseUrl: String, credentialsProvider: CredentialsProvider): Retrofit =
         Retrofit.Builder()
             .baseUrl(baseUrl)
-            .client(provideOkHttpClientBuilder(credentialsProvider, cacheDir, cacheSize))
+            .client(provideOkHttpClient(credentialsProvider))
             .apply { converterFactories.forEach { addConverterFactory(it) } }
             .build()
+
+    companion object {
+        const val DEFAULT_CACHE_SIZE = 10L * 1024 * 1024 // 10 MB
+    }
 
     private fun getLoggingInterceptor(): HttpLoggingInterceptor {
         val logging = HttpLoggingInterceptor.Logger { String.logger.d { it } }
