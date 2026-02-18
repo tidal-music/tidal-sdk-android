@@ -15,6 +15,7 @@ import com.tidal.sdk.player.streamingapi.playbackinfo.model.ManifestMimeType
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackMode
 import com.tidal.sdk.player.streamingapi.playbackinfo.offline.OfflinePlaybackInfoProvider
+import java.io.File
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -33,6 +34,7 @@ class PlayLogTestStreamingApiComponentFactory(private val trackPlaybackInfo: Pla
         apiErrorFactory: ApiError.Factory,
         offlinePlaybackInfoProvider: OfflinePlaybackInfoProvider?,
         credentialsProvider: CredentialsProvider,
+        tidalApiCacheDir: File?,
     ): StreamingApiComponent {
         return object : StreamingApiComponent {
             override val streamingApi: StreamingApi = PlayLogTestStreamingApi(trackPlaybackInfo)

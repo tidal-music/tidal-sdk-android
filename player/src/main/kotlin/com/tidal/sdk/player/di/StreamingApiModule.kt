@@ -9,13 +9,23 @@ import com.tidal.sdk.player.streamingapi.StreamingApiTimeoutConfig
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
+import java.io.File
+import javax.inject.Named
 import javax.inject.Singleton
 import okhttp3.OkHttpClient
+
+private const val TIDAL_API_CACHE_DIR = "playerTidalApi"
 
 @Module
 internal object StreamingApiModule {
 
     @Provides @Reusable fun apiErrorFactory(gson: Gson) = ApiError.Factory(gson)
+
+    @Provides
+    @Reusable
+    @Named("tidalApiCacheDir")
+    fun tidalApiCacheDir(@Named("appSpecificCacheDir") appSpecificCacheDir: File) =
+        File(appSpecificCacheDir, TIDAL_API_CACHE_DIR)
 
     @Provides
     @Singleton
@@ -26,6 +36,7 @@ internal object StreamingApiModule {
         apiErrorFactory: ApiError.Factory,
         offlinePlayProvider: OfflinePlayProvider?,
         credentialsProvider: CredentialsProvider,
+        @Named("tidalApiCacheDir") tidalApiCacheDir: File,
     ) =
         StreamingApiModuleRoot(
                 okHttpClient,
@@ -34,6 +45,7 @@ internal object StreamingApiModule {
                 apiErrorFactory,
                 offlinePlayProvider?.offlinePlaybackInfoProvider,
                 credentialsProvider,
+                tidalApiCacheDir,
             )
             .streamingApi
 }

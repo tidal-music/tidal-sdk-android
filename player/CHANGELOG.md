@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.60] - 2026-02-18
+### Changed
+- Added cache to tidalapi client
+- Fixed DRM version logging
+
 ## [0.0.59] - 2026-02-11
 ### Changed
 - Added preview reason

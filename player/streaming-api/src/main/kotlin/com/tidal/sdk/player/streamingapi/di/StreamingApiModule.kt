@@ -11,9 +11,12 @@ import com.tidal.sdk.player.streamingapi.playbackinfo.model.ManifestMimeType
 import com.tidal.sdk.player.streamingapi.playbackinfo.repository.PlaybackInfoRepository
 import com.tidal.sdk.tidalapi.generated.TidalApiClient
 import com.tidal.sdk.tidalapi.generated.apis.TrackManifests
+import com.tidal.sdk.tidalapi.networking.RetrofitProvider
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
+import java.io.File
+import javax.inject.Named
 import retrofit2.Converter
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -45,8 +48,11 @@ internal object StreamingApiModule {
 
     @Provides
     @Reusable
-    fun provideTidalApiClient(credentialsProvider: CredentialsProvider): TidalApiClient =
-        TidalApiClient(credentialsProvider)
+    fun provideTidalApiClient(
+        credentialsProvider: CredentialsProvider,
+        @Named("tidalApiCacheDir") cacheDir: File?,
+    ): TidalApiClient =
+        TidalApiClient(credentialsProvider, retrofitProvider = RetrofitProvider(cacheDir))
 
     @Provides
     @Reusable
