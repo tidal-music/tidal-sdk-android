@@ -54,10 +54,14 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           git show origin/${{ github.event.pull_request.base.ref }}:tidalapi/bin/tidal-api.json > /tmp/old-spec.json 2>/dev/null || cp tidalapi/bin/tidal-api.json /tmp/old-spec.json
-          python3 tidalapi/bin/analyze-api-changes.py \
+          if ! python3 tidalapi/bin/analyze-api-changes.py \
             --old-spec /tmp/old-spec.json \
             --new-spec tidalapi/bin/tidal-api.json \
-            > /tmp/api-change-report.md || true
+            > /tmp/api-change-report.md 2>/tmp/api-change-error.log; then
+            echo "::warning::API change analysis script failed"
+            echo "**API change analysis failed.** Check the CI logs for details." > /tmp/api-change-report.md
+            cat /tmp/api-change-error.log
+          fi
 
           REPORT=$(cat /tmp/api-change-report.md)
           # Only post a comment if there are actual API changes
