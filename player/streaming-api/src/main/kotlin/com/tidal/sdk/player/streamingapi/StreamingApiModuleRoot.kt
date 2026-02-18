@@ -5,6 +5,7 @@ import com.tidal.sdk.auth.CredentialsProvider
 import com.tidal.sdk.player.common.model.ApiError
 import com.tidal.sdk.player.streamingapi.di.DaggerStreamingApiComponent
 import com.tidal.sdk.player.streamingapi.playbackinfo.offline.OfflinePlaybackInfoProvider
+import java.io.File
 import okhttp3.OkHttpClient
 
 class StreamingApiModuleRoot(
@@ -14,6 +15,7 @@ class StreamingApiModuleRoot(
     apiErrorFactory: ApiError.Factory,
     offlinePlaybackInfoProvider: OfflinePlaybackInfoProvider?,
     credentialsProvider: CredentialsProvider,
+    tidalApiCacheDir: File?,
 ) {
 
     val streamingApi =
@@ -25,6 +27,7 @@ class StreamingApiModuleRoot(
                 apiErrorFactory,
                 offlinePlaybackInfoProvider,
                 credentialsProvider,
+                tidalApiCacheDir,
             )
             .streamingApi
 

@@ -61,6 +61,7 @@ internal class StreamingApiDefaultTest {
                     gson = gson,
                     offlinePlaybackInfoProvider = OfflinePlaybackInfoProviderStub(),
                     credentialsProvider = credentialsProviderMock,
+                    tidalApiCacheDir = null,
                 )
                 .streamingApi
     }
