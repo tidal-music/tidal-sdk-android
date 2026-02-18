@@ -84,7 +84,7 @@ tidal-sdk-common = { module = "com.tidal.sdk:common", version = "0.2.5" }
 tidal-sdk-auth = { module = "com.tidal.sdk:auth", version = "0.10.1" }
 tidal-sdk-eventproducer = { module = "com.tidal.sdk:eventproducer", version = "0.3.2" }
 tidal-sdk-player = { module = "com.tidal.sdk:player", version = "0.0.39" }
-tidal-sdk-tidalapi = { module = "com.tidal.sdk:tidalapi", version = "0.3.27" }
+tidal-sdk-tidalapi = { module = "com.tidal.sdk:tidalapi", version = "0.3.28" }
 
 # Testing
 test-androidx-espresso-core = "androidx.test.espresso:espresso-core:3.5.1"
