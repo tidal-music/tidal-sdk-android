@@ -15,6 +15,6 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class CreditsRelationships(
-    @SerialName(value = "artist") val artist: SingleRelationshipDataDocument,
-    @SerialName(value = "category") val category: SingleRelationshipDataDocument,
+    @SerialName(value = "artist") val artist: SingleRelationshipDataDocument? = null,
+    @SerialName(value = "category") val category: SingleRelationshipDataDocument? = null,
 ) {}

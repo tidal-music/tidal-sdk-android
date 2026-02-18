@@ -8,6 +8,7 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/Artists.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/Artworks.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/ContentClaims.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/Credits.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/Downloads.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/DspSharingLinks.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/DynamicModules.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/DynamicPages.kt
@@ -26,6 +27,7 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/SearchResults.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/SearchSuggestions.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/Shares.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/StripeConnections.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/StripeDashboardLinks.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/TrackFiles.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/TrackManifests.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/TrackSourceFiles.kt
@@ -200,6 +202,14 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/Default500ResponseBody.k
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/Default500ResponseBodyErrorsInner.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/Default503ResponseBody.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/Default503ResponseBodyErrorsInner.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/DownloadLink.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/DownloadLinkMeta.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/DownloadsAttributes.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/DownloadsMultiRelationshipDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/DownloadsMultiResourceDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/DownloadsRelationships.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/DownloadsResourceObject.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/DownloadsSingleResourceDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/DrmData.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/DspSharingLinksAttributes.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/DspSharingLinksMultiResourceDataDocument.kt
@@ -425,6 +435,12 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/StripeConnectionsMultiRe
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/StripeConnectionsRelationships.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/StripeConnectionsResourceObject.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/StripeConnectionsSingleResourceDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/StripeDashboardLinksAttributes.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/StripeDashboardLinksMultiRelationshipDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/StripeDashboardLinksMultiResourceDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/StripeDashboardLinksRelationships.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/StripeDashboardLinksResourceObject.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/StripeDashboardLinksSingleResourceDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ThirdPartyLyricsProvider.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/TidalLyricsProvider.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/TrackFilesAttributes.kt

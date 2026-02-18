@@ -17,8 +17,9 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class PlayQueuesRelationships(
-    @SerialName(value = "current") val current: PlayQueuesCurrentSingleRelationshipDataDocument,
-    @SerialName(value = "future") val future: PlayQueuesFutureMultiRelationshipDataDocument,
-    @SerialName(value = "owners") val owners: MultiRelationshipDataDocument,
-    @SerialName(value = "past") val past: PlayQueuesPastMultiRelationshipDataDocument,
+    @SerialName(value = "current")
+    val current: PlayQueuesCurrentSingleRelationshipDataDocument? = null,
+    @SerialName(value = "future") val future: PlayQueuesFutureMultiRelationshipDataDocument? = null,
+    @SerialName(value = "owners") val owners: MultiRelationshipDataDocument? = null,
+    @SerialName(value = "past") val past: PlayQueuesPastMultiRelationshipDataDocument? = null,
 ) {}

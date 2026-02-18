@@ -23,6 +23,7 @@ import kotlinx.serialization.Serializable
  * @param availability Available usage for this album. Deprecated: use 'usageRules' instead. This
  *   field will be removed in a future version.
  * @param copyright
+ * @param createdAt Datetime of album creation (ISO 8601)
  * @param externalLinks Album links external to TIDAL API
  * @param releaseDate Release date (ISO-8601)
  * @param type Album type. Deprecated: use 'albumType' instead. This field will be removed in a
@@ -66,6 +67,9 @@ data class AlbumsAttributes(
     @Deprecated(message = "This property is deprecated.")
     val availability: kotlin.collections.List<AlbumsAttributes.Availability>? = null,
     @SerialName(value = "copyright") val copyright: Copyright? = null,
+    /* Datetime of album creation (ISO 8601) */
+
+    @SerialName(value = "createdAt") val createdAt: kotlin.String? = null,
     /* Album links external to TIDAL API */
 
     @SerialName(value = "externalLinks")

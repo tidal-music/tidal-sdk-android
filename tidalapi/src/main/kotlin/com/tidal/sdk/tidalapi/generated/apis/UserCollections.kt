@@ -82,14 +82,14 @@ interface UserCollections {
 
     /** enum for parameter sort */
     enum class SortUserCollectionsIdRelationshipsAlbumsGet(val value: kotlin.String) {
-        @SerialName(value = "addedAt") AddedAtAsc("addedAt"),
-        @SerialName(value = "-addedAt") AddedAtDesc("-addedAt"),
-        @SerialName(value = "artists.name") ArtistsNameAsc("artists.name"),
-        @SerialName(value = "-artists.name") ArtistsNameDesc("-artists.name"),
-        @SerialName(value = "releaseDate") ReleaseDateAsc("releaseDate"),
-        @SerialName(value = "-releaseDate") ReleaseDateDesc("-releaseDate"),
-        @SerialName(value = "title") TitleAsc("title"),
-        @SerialName(value = "-title") TitleDesc("-title"),
+        @SerialName(value = "albums.addedAt") AlbumsAddedAtAsc("albums.addedAt"),
+        @SerialName(value = "-albums.addedAt") AlbumsAddedAtDesc("-albums.addedAt"),
+        @SerialName(value = "albums.artists.name") AlbumsArtistsNameAsc("albums.artists.name"),
+        @SerialName(value = "-albums.artists.name") AlbumsArtistsNameDesc("-albums.artists.name"),
+        @SerialName(value = "albums.releaseDate") AlbumsReleaseDateAsc("albums.releaseDate"),
+        @SerialName(value = "-albums.releaseDate") AlbumsReleaseDateDesc("-albums.releaseDate"),
+        @SerialName(value = "albums.title") AlbumsTitleAsc("albums.title"),
+        @SerialName(value = "-albums.title") AlbumsTitleDesc("-albums.title"),
     }
 
     /**
@@ -188,10 +188,10 @@ interface UserCollections {
 
     /** enum for parameter sort */
     enum class SortUserCollectionsIdRelationshipsArtistsGet(val value: kotlin.String) {
-        @SerialName(value = "addedAt") AddedAtAsc("addedAt"),
-        @SerialName(value = "-addedAt") AddedAtDesc("-addedAt"),
-        @SerialName(value = "name") NameAsc("name"),
-        @SerialName(value = "-name") NameDesc("-name"),
+        @SerialName(value = "artists.addedAt") ArtistsAddedAtAsc("artists.addedAt"),
+        @SerialName(value = "-artists.addedAt") ArtistsAddedAtDesc("-artists.addedAt"),
+        @SerialName(value = "artists.name") ArtistsNameAsc("artists.name"),
+        @SerialName(value = "-artists.name") ArtistsNameDesc("-artists.name"),
     }
 
     /**
@@ -322,12 +322,14 @@ interface UserCollections {
 
     /** enum for parameter sort */
     enum class SortUserCollectionsIdRelationshipsPlaylistsGet(val value: kotlin.String) {
-        @SerialName(value = "addedAt") AddedAtAsc("addedAt"),
-        @SerialName(value = "-addedAt") AddedAtDesc("-addedAt"),
-        @SerialName(value = "lastModifiedAt") LastModifiedAtAsc("lastModifiedAt"),
-        @SerialName(value = "-lastModifiedAt") LastModifiedAtDesc("-lastModifiedAt"),
-        @SerialName(value = "name") NameAsc("name"),
-        @SerialName(value = "-name") NameDesc("-name"),
+        @SerialName(value = "playlists.addedAt") PlaylistsAddedAtAsc("playlists.addedAt"),
+        @SerialName(value = "-playlists.addedAt") PlaylistsAddedAtDesc("-playlists.addedAt"),
+        @SerialName(value = "playlists.lastUpdatedAt")
+        PlaylistsLastUpdatedAtAsc("playlists.lastUpdatedAt"),
+        @SerialName(value = "-playlists.lastUpdatedAt")
+        PlaylistsLastUpdatedAtDesc("-playlists.lastUpdatedAt"),
+        @SerialName(value = "playlists.name") PlaylistsNameAsc("playlists.name"),
+        @SerialName(value = "-playlists.name") PlaylistsNameDesc("-playlists.name"),
     }
 
     /**
@@ -422,16 +424,16 @@ interface UserCollections {
 
     /** enum for parameter sort */
     enum class SortUserCollectionsIdRelationshipsTracksGet(val value: kotlin.String) {
-        @SerialName(value = "addedAt") AddedAtAsc("addedAt"),
-        @SerialName(value = "-addedAt") AddedAtDesc("-addedAt"),
-        @SerialName(value = "albums.title") AlbumsTitleAsc("albums.title"),
-        @SerialName(value = "-albums.title") AlbumsTitleDesc("-albums.title"),
-        @SerialName(value = "artists.name") ArtistsNameAsc("artists.name"),
-        @SerialName(value = "-artists.name") ArtistsNameDesc("-artists.name"),
-        @SerialName(value = "duration") DurationAsc("duration"),
-        @SerialName(value = "-duration") DurationDesc("-duration"),
-        @SerialName(value = "title") TitleAsc("title"),
-        @SerialName(value = "-title") TitleDesc("-title"),
+        @SerialName(value = "tracks.addedAt") TracksAddedAtAsc("tracks.addedAt"),
+        @SerialName(value = "-tracks.addedAt") TracksAddedAtDesc("-tracks.addedAt"),
+        @SerialName(value = "tracks.albums.title") TracksAlbumsTitleAsc("tracks.albums.title"),
+        @SerialName(value = "-tracks.albums.title") TracksAlbumsTitleDesc("-tracks.albums.title"),
+        @SerialName(value = "tracks.artists.name") TracksArtistsNameAsc("tracks.artists.name"),
+        @SerialName(value = "-tracks.artists.name") TracksArtistsNameDesc("-tracks.artists.name"),
+        @SerialName(value = "tracks.duration") TracksDurationAsc("tracks.duration"),
+        @SerialName(value = "-tracks.duration") TracksDurationDesc("-tracks.duration"),
+        @SerialName(value = "tracks.title") TracksTitleAsc("tracks.title"),
+        @SerialName(value = "-tracks.title") TracksTitleDesc("-tracks.title"),
     }
 
     /**
@@ -530,14 +532,14 @@ interface UserCollections {
 
     /** enum for parameter sort */
     enum class SortUserCollectionsIdRelationshipsVideosGet(val value: kotlin.String) {
-        @SerialName(value = "addedAt") AddedAtAsc("addedAt"),
-        @SerialName(value = "-addedAt") AddedAtDesc("-addedAt"),
-        @SerialName(value = "artists.name") ArtistsNameAsc("artists.name"),
-        @SerialName(value = "-artists.name") ArtistsNameDesc("-artists.name"),
-        @SerialName(value = "duration") DurationAsc("duration"),
-        @SerialName(value = "-duration") DurationDesc("-duration"),
-        @SerialName(value = "title") TitleAsc("title"),
-        @SerialName(value = "-title") TitleDesc("-title"),
+        @SerialName(value = "videos.addedAt") VideosAddedAtAsc("videos.addedAt"),
+        @SerialName(value = "-videos.addedAt") VideosAddedAtDesc("-videos.addedAt"),
+        @SerialName(value = "videos.artists.name") VideosArtistsNameAsc("videos.artists.name"),
+        @SerialName(value = "-videos.artists.name") VideosArtistsNameDesc("-videos.artists.name"),
+        @SerialName(value = "videos.duration") VideosDurationAsc("videos.duration"),
+        @SerialName(value = "-videos.duration") VideosDurationDesc("-videos.duration"),
+        @SerialName(value = "videos.title") VideosTitleAsc("videos.title"),
+        @SerialName(value = "-videos.title") VideosTitleDesc("-videos.title"),
     }
 
     /**

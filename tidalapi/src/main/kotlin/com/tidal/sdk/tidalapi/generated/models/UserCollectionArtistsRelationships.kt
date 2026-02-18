@@ -15,6 +15,7 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class UserCollectionArtistsRelationships(
-    @SerialName(value = "items") val items: UserCollectionArtistsItemsMultiRelationshipDataDocument,
-    @SerialName(value = "owners") val owners: MultiRelationshipDataDocument,
+    @SerialName(value = "items")
+    val items: UserCollectionArtistsItemsMultiRelationshipDataDocument? = null,
+    @SerialName(value = "owners") val owners: MultiRelationshipDataDocument? = null,
 ) {}

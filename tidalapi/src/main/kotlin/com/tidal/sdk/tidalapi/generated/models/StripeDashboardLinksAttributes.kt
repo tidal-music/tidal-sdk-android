@@ -9,8 +9,8 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param owners */
+/** @param dashboardLink */
 @Serializable
-data class UserEntitlementsRelationships(
-    @SerialName(value = "owners") val owners: MultiRelationshipDataDocument? = null
+data class StripeDashboardLinksAttributes(
+    @SerialName(value = "dashboardLink") val dashboardLink: LinkObject? = null
 ) {}

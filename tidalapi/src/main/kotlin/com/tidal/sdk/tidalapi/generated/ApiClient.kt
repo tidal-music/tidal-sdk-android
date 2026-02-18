@@ -10,6 +10,7 @@ import com.tidal.sdk.tidalapi.generated.apis.Artists
 import com.tidal.sdk.tidalapi.generated.apis.Artworks
 import com.tidal.sdk.tidalapi.generated.apis.ContentClaims
 import com.tidal.sdk.tidalapi.generated.apis.Credits
+import com.tidal.sdk.tidalapi.generated.apis.Downloads
 import com.tidal.sdk.tidalapi.generated.apis.DspSharingLinks
 import com.tidal.sdk.tidalapi.generated.apis.DynamicModules
 import com.tidal.sdk.tidalapi.generated.apis.DynamicPages
@@ -28,6 +29,7 @@ import com.tidal.sdk.tidalapi.generated.apis.SearchResults
 import com.tidal.sdk.tidalapi.generated.apis.SearchSuggestions
 import com.tidal.sdk.tidalapi.generated.apis.Shares
 import com.tidal.sdk.tidalapi.generated.apis.StripeConnections
+import com.tidal.sdk.tidalapi.generated.apis.StripeDashboardLinks
 import com.tidal.sdk.tidalapi.generated.apis.TrackFiles
 import com.tidal.sdk.tidalapi.generated.apis.TrackManifests
 import com.tidal.sdk.tidalapi.generated.apis.TrackSourceFiles
@@ -100,6 +102,11 @@ class TidalApiClient(
     /** Returns an instance of the [Credits] which can be used to make API calls to the */
     fun createCredits(): Credits {
         return retrofit.create(Credits::class.java)
+    }
+
+    /** Returns an instance of the [Downloads] which can be used to make API calls to the */
+    fun createDownloads(): Downloads {
+        return retrofit.create(Downloads::class.java)
     }
 
     /** Returns an instance of the [DspSharingLinks] which can be used to make API calls to the */
@@ -194,6 +201,13 @@ class TidalApiClient(
     /** Returns an instance of the [StripeConnections] which can be used to make API calls to the */
     fun createStripeConnections(): StripeConnections {
         return retrofit.create(StripeConnections::class.java)
+    }
+
+    /**
+     * Returns an instance of the [StripeDashboardLinks] which can be used to make API calls to the
+     */
+    fun createStripeDashboardLinks(): StripeDashboardLinks {
+        return retrofit.create(StripeDashboardLinks::class.java)
     }
 
     /** Returns an instance of the [TrackFiles] which can be used to make API calls to the */

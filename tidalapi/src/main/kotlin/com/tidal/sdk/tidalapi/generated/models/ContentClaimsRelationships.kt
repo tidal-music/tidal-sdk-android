@@ -16,7 +16,9 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class ContentClaimsRelationships(
-    @SerialName(value = "claimedResource") val claimedResource: SingleRelationshipDataDocument,
-    @SerialName(value = "claimingArtist") val claimingArtist: SingleRelationshipDataDocument,
-    @SerialName(value = "owners") val owners: MultiRelationshipDataDocument,
+    @SerialName(value = "claimedResource")
+    val claimedResource: SingleRelationshipDataDocument? = null,
+    @SerialName(value = "claimingArtist")
+    val claimingArtist: SingleRelationshipDataDocument? = null,
+    @SerialName(value = "owners") val owners: MultiRelationshipDataDocument? = null,
 ) {}

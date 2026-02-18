@@ -16,7 +16,8 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class UserRecommendationsRelationships(
-    @SerialName(value = "discoveryMixes") val discoveryMixes: MultiRelationshipDataDocument,
-    @SerialName(value = "myMixes") val myMixes: MultiRelationshipDataDocument,
-    @SerialName(value = "newArrivalMixes") val newArrivalMixes: MultiRelationshipDataDocument,
+    @SerialName(value = "discoveryMixes") val discoveryMixes: MultiRelationshipDataDocument? = null,
+    @SerialName(value = "myMixes") val myMixes: MultiRelationshipDataDocument? = null,
+    @SerialName(value = "newArrivalMixes")
+    val newArrivalMixes: MultiRelationshipDataDocument? = null,
 ) {}

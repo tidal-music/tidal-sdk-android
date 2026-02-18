@@ -7,10 +7,20 @@ import com.tidal.sdk.tidalapi.generated.models.TracksMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.TracksSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.TracksSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.TracksUpdateOperationPayload
+import kotlinx.serialization.SerialName
 import retrofit2.Response
 import retrofit2.http.*
 
 interface Tracks {
+
+    /** enum for parameter sort */
+    enum class SortTracksGet(val value: kotlin.String) {
+        @SerialName(value = "createdAt") CreatedAtAsc("createdAt"),
+        @SerialName(value = "-createdAt") CreatedAtDesc("-createdAt"),
+        @SerialName(value = "title") TitleAsc("title"),
+        @SerialName(value = "-title") TitleDesc("-title"),
+    }
+
     /**
      * Get multiple tracks. Retrieves multiple tracks by available filters, or without if
      * applicable. Responses:
@@ -26,10 +36,12 @@ interface Tracks {
      *
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param sort Values prefixed with \&quot;-\&quot; are sorted descending; values without it are
+     *   sorted ascending. (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: albums, artists, credits, genres, lyrics, metadataStatus, owners,
-     *   priceConfig, providers, radio, replacement, shares, similarTracks, sourceFile,
+     *   Available options: albums, artists, credits, download, genres, lyrics, metadataStatus,
+     *   owners, priceConfig, providers, radio, replacement, shares, similarTracks, sourceFile,
      *   suggestedTracks, trackStatistics, usageRules (optional)
      * @param filterId Track id (e.g. &#x60;75413016&#x60;) (optional)
      * @param filterIsrc List of ISRCs. When a single ISRC is provided, pagination is supported and
@@ -43,6 +55,7 @@ interface Tracks {
     @GET("tracks")
     suspend fun tracksGet(
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("sort") sort: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
@@ -86,8 +99,8 @@ interface Tracks {
      * @param id Track id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: albums, artists, credits, genres, lyrics, metadataStatus, owners,
-     *   priceConfig, providers, radio, replacement, shares, similarTracks, sourceFile,
+     *   Available options: albums, artists, credits, download, genres, lyrics, metadataStatus,
+     *   owners, priceConfig, providers, radio, replacement, shares, similarTracks, sourceFile,
      *   suggestedTracks, trackStatistics, usageRules (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
@@ -240,6 +253,33 @@ interface Tracks {
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<TracksMultiRelationshipDataDocument>
+
+    /**
+     * Get download relationship (\&quot;to-one\&quot;). Retrieves download relationship. Responses:
+     * - 200: Successful response
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
+     *
+     * @param id Track id
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: download (optional)
+     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
+     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @return [TracksSingleRelationshipDataDocument]
+     */
+    @GET("tracks/{id}/relationships/download")
+    suspend fun tracksIdRelationshipsDownloadGet(
+        @Path("id") id: kotlin.String,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
+    ): Response<TracksSingleRelationshipDataDocument>
 
     /**
      * Get genres relationship (\&quot;to-many\&quot;). Retrieves genres relationship. Responses:

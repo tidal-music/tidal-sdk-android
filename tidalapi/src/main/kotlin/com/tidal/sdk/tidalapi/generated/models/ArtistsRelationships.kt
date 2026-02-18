@@ -25,17 +25,19 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class ArtistsRelationships(
-    @SerialName(value = "albums") val albums: MultiRelationshipDataDocument,
-    @SerialName(value = "biography") val biography: SingleRelationshipDataDocument,
-    @SerialName(value = "followers") val followers: ArtistsFollowersMultiRelationshipDataDocument,
-    @SerialName(value = "following") val following: ArtistsFollowingMultiRelationshipDataDocument,
-    @SerialName(value = "owners") val owners: MultiRelationshipDataDocument,
-    @SerialName(value = "profileArt") val profileArt: MultiRelationshipDataDocument,
-    @SerialName(value = "radio") val radio: MultiRelationshipDataDocument,
-    @SerialName(value = "roles") val roles: MultiRelationshipDataDocument,
-    @SerialName(value = "similarArtists") val similarArtists: MultiRelationshipDataDocument,
+    @SerialName(value = "albums") val albums: MultiRelationshipDataDocument? = null,
+    @SerialName(value = "biography") val biography: SingleRelationshipDataDocument? = null,
+    @SerialName(value = "followers")
+    val followers: ArtistsFollowersMultiRelationshipDataDocument? = null,
+    @SerialName(value = "following")
+    val following: ArtistsFollowingMultiRelationshipDataDocument? = null,
+    @SerialName(value = "owners") val owners: MultiRelationshipDataDocument? = null,
+    @SerialName(value = "profileArt") val profileArt: MultiRelationshipDataDocument? = null,
+    @SerialName(value = "radio") val radio: MultiRelationshipDataDocument? = null,
+    @SerialName(value = "roles") val roles: MultiRelationshipDataDocument? = null,
+    @SerialName(value = "similarArtists") val similarArtists: MultiRelationshipDataDocument? = null,
     @SerialName(value = "trackProviders")
-    val trackProviders: ArtistsTrackProvidersMultiRelationshipDataDocument,
-    @SerialName(value = "tracks") val tracks: MultiRelationshipDataDocument,
-    @SerialName(value = "videos") val videos: MultiRelationshipDataDocument,
+    val trackProviders: ArtistsTrackProvidersMultiRelationshipDataDocument? = null,
+    @SerialName(value = "tracks") val tracks: MultiRelationshipDataDocument? = null,
+    @SerialName(value = "videos") val videos: MultiRelationshipDataDocument? = null,
 ) {}
