@@ -18,6 +18,7 @@ fun getOneOfSerializer() = SerializersModule {
         subclass(ArtworksResourceObject::class, ArtworksResourceObject.serializer())
         subclass(ContentClaimsResourceObject::class, ContentClaimsResourceObject.serializer())
         subclass(CreditsResourceObject::class, CreditsResourceObject.serializer())
+        subclass(DownloadsResourceObject::class, DownloadsResourceObject.serializer())
         subclass(DspSharingLinksResourceObject::class, DspSharingLinksResourceObject.serializer())
         subclass(DynamicModulesResourceObject::class, DynamicModulesResourceObject.serializer())
         subclass(DynamicPagesResourceObject::class, DynamicPagesResourceObject.serializer())
@@ -47,6 +48,10 @@ fun getOneOfSerializer() = SerializersModule {
         subclass(
             StripeConnectionsResourceObject::class,
             StripeConnectionsResourceObject.serializer(),
+        )
+        subclass(
+            StripeDashboardLinksResourceObject::class,
+            StripeDashboardLinksResourceObject.serializer(),
         )
         subclass(TrackFilesResourceObject::class, TrackFilesResourceObject.serializer())
         subclass(TrackManifestsResourceObject::class, TrackManifestsResourceObject.serializer())

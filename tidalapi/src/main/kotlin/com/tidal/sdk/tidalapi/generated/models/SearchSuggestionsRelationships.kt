@@ -12,5 +12,5 @@ import kotlinx.serialization.Serializable
 /** @param directHits */
 @Serializable
 data class SearchSuggestionsRelationships(
-    @SerialName(value = "directHits") val directHits: MultiRelationshipDataDocument
+    @SerialName(value = "directHits") val directHits: MultiRelationshipDataDocument? = null
 ) {}

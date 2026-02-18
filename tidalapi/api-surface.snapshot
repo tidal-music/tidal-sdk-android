@@ -1,10 +1,10 @@
 # TIDAL API Surface Snapshot
-# Spec version: 1.1.12 | Endpoints: 255 | Models: 612
+# Spec version: 1.1.32 | Endpoints: 263 | Models: 628
 
 ## Endpoints
 
 GET /albums
-  params: countryCode?: string, filter[barcodeId]?: array[string], filter[id]?: array[string], filter[owners.id]?: array[string], include?: array[string], page[cursor]?: string, shareCode?: string
+  params: countryCode?: string, filter[barcodeId]?: array[string], filter[id]?: array[string], filter[owners.id]?: array[string], include?: array[string], page[cursor]?: string, shareCode?: string, sort?: array[enum[createdAt, -createdAt, title, -title]]
   returns: Albums_Multi_Resource_Data_Document
 
 POST /albums
@@ -266,6 +266,14 @@ GET /credits/{id}/relationships/category
   params: id: string, include?: array[string]
   returns: Credits_Single_Relationship_Data_Document
 
+GET /downloads/{id}
+  params: id: string, include?: array[string]
+  returns: Downloads_Single_Resource_Data_Document
+
+GET /downloads/{id}/relationships/owners
+  params: id: string, include?: array[string], page[cursor]?: string
+  returns: Downloads_Multi_Relationship_Data_Document
+
 GET /dspSharingLinks
   params: filter[subject.id]?: array[string], filter[subject.type]?: array[enum[tracks, albums, artists]], include?: array[string]
   returns: DspSharingLinks_Multi_Resource_Data_Document
@@ -314,7 +322,7 @@ GET /installations/{id}
   returns: Installations_Single_Resource_Data_Document
 
 GET /installations/{id}/relationships/offlineInventory
-  params: filter[type]?: array[enum[tracks, videos, albums, playlists, userCollections]], id: string, include?: array[string], page[cursor]?: string
+  params: filter[type]?: array[enum[tracks, videos, albums, playlists]], id: string, include?: array[string], page[cursor]?: string
   returns: Installations_OfflineInventory_Multi_Relationship_Data_Document
 
 POST /installations/{id}/relationships/offlineInventory
@@ -370,6 +378,10 @@ GET /offlineTasks/{id}
 PATCH /offlineTasks/{id}
   params: id: string
   returns: void
+
+GET /offlineTasks/{id}/relationships/collection
+  params: id: string, include?: array[string]
+  returns: OfflineTasks_Single_Relationship_Data_Document
 
 GET /offlineTasks/{id}/relationships/item
   params: id: string, include?: array[string]
@@ -590,6 +602,14 @@ GET /stripeConnections/{id}/relationships/owners
   params: id: string, include?: array[string], page[cursor]?: string
   returns: StripeConnections_Multi_Relationship_Data_Document
 
+GET /stripeDashboardLinks
+  params: filter[owners.id]?: array[string], include?: array[string]
+  returns: StripeDashboardLinks_Multi_Resource_Data_Document
+
+GET /stripeDashboardLinks/{id}/relationships/owners
+  params: id: string, include?: array[string], page[cursor]?: string
+  returns: StripeDashboardLinks_Multi_Relationship_Data_Document
+
 GET /trackFiles/{id}
   params: formats: array[enum[HEAACV1, AACLC, FLAC, FLAC_HIRES, EAC3_JOC]], id: string, usage: enum[PLAYBACK, DOWNLOAD]
   returns: TrackFiles_Single_Resource_Data_Document
@@ -626,7 +646,7 @@ GET /trackStatistics/{id}/relationships/owners
   returns: TrackStatistics_Multi_Relationship_Data_Document
 
 GET /tracks
-  params: countryCode?: string, filter[id]?: array[string], filter[isrc]?: array[string], filter[owners.id]?: array[string], include?: array[string], page[cursor]?: string, shareCode?: string
+  params: countryCode?: string, filter[id]?: array[string], filter[isrc]?: array[string], filter[owners.id]?: array[string], include?: array[string], page[cursor]?: string, shareCode?: string, sort?: array[enum[createdAt, -createdAt, title, -title]]
   returns: Tracks_Multi_Resource_Data_Document
 
 POST /tracks
@@ -659,6 +679,10 @@ GET /tracks/{id}/relationships/artists
 GET /tracks/{id}/relationships/credits
   params: id: string, include?: array[string], page[cursor]?: string, shareCode?: string
   returns: Tracks_Multi_Relationship_Data_Document
+
+GET /tracks/{id}/relationships/download
+  params: id: string, include?: array[string], shareCode?: string
+  returns: Tracks_Single_Relationship_Data_Document
 
 GET /tracks/{id}/relationships/genres
   params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string, shareCode?: string
@@ -875,7 +899,7 @@ GET /userCollections/{id}
   returns: UserCollections_Single_Resource_Data_Document
 
 GET /userCollections/{id}/relationships/albums
-  params: countryCode?: string, id: string, include?: array[string], locale?: string, page[cursor]?: string, sort?: array[enum[addedAt, -addedAt, artists.name, -artists.name, releaseDate, -releaseDate, title, -title]]
+  params: countryCode?: string, id: string, include?: array[string], locale?: string, page[cursor]?: string, sort?: array[enum[albums.addedAt, -albums.addedAt, albums.artists.name, -albums.artists.name, albums.releaseDate, -albums.releaseDate, albums.title, -albums.title]]
   returns: UserCollections_Albums_Multi_Relationship_Data_Document
 
 POST /userCollections/{id}/relationships/albums
@@ -887,7 +911,7 @@ DELETE /userCollections/{id}/relationships/albums
   returns: void
 
 GET /userCollections/{id}/relationships/artists
-  params: countryCode?: string, id: string, include?: array[string], locale?: string, page[cursor]?: string, sort?: array[enum[addedAt, -addedAt, name, -name]]
+  params: countryCode?: string, id: string, include?: array[string], locale?: string, page[cursor]?: string, sort?: array[enum[artists.addedAt, -artists.addedAt, artists.name, -artists.name]]
   returns: UserCollections_Artists_Multi_Relationship_Data_Document
 
 POST /userCollections/{id}/relationships/artists
@@ -903,7 +927,7 @@ GET /userCollections/{id}/relationships/owners
   returns: UserCollections_Multi_Relationship_Data_Document
 
 GET /userCollections/{id}/relationships/playlists
-  params: collectionView?: enum[FOLDERS], id: string, include?: array[string], page[cursor]?: string, sort?: array[enum[addedAt, -addedAt, lastModifiedAt, -lastModifiedAt, name, -name]]
+  params: collectionView?: enum[FOLDERS], id: string, include?: array[string], page[cursor]?: string, sort?: array[enum[playlists.addedAt, -playlists.addedAt, playlists.lastUpdatedAt, -playlists.lastUpdatedAt, playlists.name, -playlists.name]]
   returns: UserCollections_Playlists_Multi_Relationship_Data_Document
 
 POST /userCollections/{id}/relationships/playlists
@@ -915,7 +939,7 @@ DELETE /userCollections/{id}/relationships/playlists
   returns: void
 
 GET /userCollections/{id}/relationships/tracks
-  params: countryCode?: string, id: string, include?: array[string], locale?: string, page[cursor]?: string, sort?: array[enum[addedAt, -addedAt, albums.title, -albums.title, artists.name, -artists.name, duration, -duration, title, -title]]
+  params: countryCode?: string, id: string, include?: array[string], locale?: string, page[cursor]?: string, sort?: array[enum[tracks.addedAt, -tracks.addedAt, tracks.albums.title, -tracks.albums.title, tracks.artists.name, -tracks.artists.name, tracks.duration, -tracks.duration, tracks.title, -tracks.title]]
   returns: UserCollections_Tracks_Multi_Relationship_Data_Document
 
 POST /userCollections/{id}/relationships/tracks
@@ -927,7 +951,7 @@ DELETE /userCollections/{id}/relationships/tracks
   returns: void
 
 GET /userCollections/{id}/relationships/videos
-  params: countryCode?: string, id: string, include?: array[string], locale?: string, page[cursor]?: string, sort?: array[enum[addedAt, -addedAt, artists.name, -artists.name, duration, -duration, title, -title]]
+  params: countryCode?: string, id: string, include?: array[string], locale?: string, page[cursor]?: string, sort?: array[enum[videos.addedAt, -videos.addedAt, videos.artists.name, -videos.artists.name, videos.duration, -videos.duration, videos.title, -videos.title]]
   returns: UserCollections_Videos_Multi_Relationship_Data_Document
 
 POST /userCollections/{id}/relationships/videos
@@ -997,6 +1021,10 @@ GET /videos/{id}/relationships/replacement
   returns: Videos_Single_Relationship_Data_Document
 
 GET /videos/{id}/relationships/similarVideos
+  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string
+  returns: Videos_Multi_Relationship_Data_Document
+
+GET /videos/{id}/relationships/suggestedVideos
   params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string
   returns: Videos_Multi_Relationship_Data_Document
 
@@ -1107,6 +1135,7 @@ Albums_Attributes
   accessType: enum[PUBLIC, UNLISTED, PRIVATE] (optional)
   availability: array[enum[STREAM, DJ, STEM]] (optional)
   copyright: Copyright (optional)
+  createdAt: string(date-time) (optional)
   externalLinks: array[External_Link] (optional)
   releaseDate: string(date) (optional)
   type: enum[ALBUM, EP, SINGLE] (optional)
@@ -1137,17 +1166,17 @@ Albums_Multi_Resource_Data_Document
   included: Included (optional)
 
 Albums_Relationships
-  artists: Multi_Relationship_Data_Document (required)
-  coverArt: Multi_Relationship_Data_Document (required)
-  genres: Multi_Relationship_Data_Document (required)
-  items: Albums_Items_Multi_Relationship_Data_Document (required)
-  owners: Multi_Relationship_Data_Document (required)
-  priceConfig: Single_Relationship_Data_Document (required)
-  providers: Multi_Relationship_Data_Document (required)
-  replacement: Single_Relationship_Data_Document (required)
-  similarAlbums: Multi_Relationship_Data_Document (required)
-  suggestedCoverArts: Albums_SuggestedCoverArts_Multi_Relationship_Data_Document (required)
-  usageRules: Single_Relationship_Data_Document (required)
+  artists: Multi_Relationship_Data_Document (optional)
+  coverArt: Multi_Relationship_Data_Document (optional)
+  genres: Multi_Relationship_Data_Document (optional)
+  items: Albums_Items_Multi_Relationship_Data_Document (optional)
+  owners: Multi_Relationship_Data_Document (optional)
+  priceConfig: Single_Relationship_Data_Document (optional)
+  providers: Multi_Relationship_Data_Document (optional)
+  replacement: Single_Relationship_Data_Document (optional)
+  similarAlbums: Multi_Relationship_Data_Document (optional)
+  suggestedCoverArts: Albums_SuggestedCoverArts_Multi_Relationship_Data_Document (optional)
+  usageRules: Single_Relationship_Data_Document (optional)
 
 Albums_Resource_Object
   id: string (required)
@@ -1245,7 +1274,7 @@ ArtistBiographies_Multi_Resource_Data_Document
   included: Included (optional)
 
 ArtistBiographies_Relationships
-  owners: Multi_Relationship_Data_Document (required)
+  owners: Multi_Relationship_Data_Document (optional)
 
 ArtistBiographies_Resource_Object
   id: string (required)
@@ -1315,9 +1344,9 @@ ArtistClaims_Multi_Resource_Data_Document
   included: Included (optional)
 
 ArtistClaims_Relationships
-  acceptedArtists: Multi_Relationship_Data_Document (required)
-  owners: Multi_Relationship_Data_Document (required)
-  recommendedArtists: Multi_Relationship_Data_Document (required)
+  acceptedArtists: Multi_Relationship_Data_Document (optional)
+  owners: Multi_Relationship_Data_Document (optional)
+  recommendedArtists: Multi_Relationship_Data_Document (optional)
 
 ArtistClaims_Resource_Object
   id: string (required)
@@ -1454,18 +1483,18 @@ Artists_Multi_Resource_Data_Document
   included: Included (optional)
 
 Artists_Relationships
-  albums: Multi_Relationship_Data_Document (required)
-  biography: Single_Relationship_Data_Document (required)
-  followers: Artists_Followers_Multi_Relationship_Data_Document (required)
-  following: Artists_Following_Multi_Relationship_Data_Document (required)
-  owners: Multi_Relationship_Data_Document (required)
-  profileArt: Multi_Relationship_Data_Document (required)
-  radio: Multi_Relationship_Data_Document (required)
-  roles: Multi_Relationship_Data_Document (required)
-  similarArtists: Multi_Relationship_Data_Document (required)
-  trackProviders: Artists_TrackProviders_Multi_Relationship_Data_Document (required)
-  tracks: Multi_Relationship_Data_Document (required)
-  videos: Multi_Relationship_Data_Document (required)
+  albums: Multi_Relationship_Data_Document (optional)
+  biography: Single_Relationship_Data_Document (optional)
+  followers: Artists_Followers_Multi_Relationship_Data_Document (optional)
+  following: Artists_Following_Multi_Relationship_Data_Document (optional)
+  owners: Multi_Relationship_Data_Document (optional)
+  profileArt: Multi_Relationship_Data_Document (optional)
+  radio: Multi_Relationship_Data_Document (optional)
+  roles: Multi_Relationship_Data_Document (optional)
+  similarArtists: Multi_Relationship_Data_Document (optional)
+  trackProviders: Artists_TrackProviders_Multi_Relationship_Data_Document (optional)
+  tracks: Multi_Relationship_Data_Document (optional)
+  videos: Multi_Relationship_Data_Document (optional)
 
 Artists_Resource_Object
   id: string (required)
@@ -1547,7 +1576,7 @@ Artworks_Multi_Resource_Data_Document
   included: Included (optional)
 
 Artworks_Relationships
-  owners: Multi_Relationship_Data_Document (required)
+  owners: Multi_Relationship_Data_Document (optional)
 
 Artworks_Resource_Object
   id: string (required)
@@ -1613,9 +1642,9 @@ ContentClaims_Multi_Resource_Data_Document
   included: Included (optional)
 
 ContentClaims_Relationships
-  claimedResource: Single_Relationship_Data_Document (required)
-  claimingArtist: Single_Relationship_Data_Document (required)
-  owners: Multi_Relationship_Data_Document (required)
+  claimedResource: Single_Relationship_Data_Document (optional)
+  claimingArtist: Single_Relationship_Data_Document (optional)
+  owners: Multi_Relationship_Data_Document (optional)
 
 ContentClaims_Resource_Object
   id: string (required)
@@ -1646,8 +1675,8 @@ Credits_Multi_Resource_Data_Document
   included: Included (optional)
 
 Credits_Relationships
-  artist: Single_Relationship_Data_Document (required)
-  category: Single_Relationship_Data_Document (required)
+  artist: Single_Relationship_Data_Document (optional)
+  category: Single_Relationship_Data_Document (optional)
 
 Credits_Resource_Object
   id: string (required)
@@ -1689,6 +1718,40 @@ Default500ResponseBody
 Default503ResponseBody
   errors: array[object] (required)
 
+Download_Link
+  href: string (required)
+  meta: Download_Link_Meta (required)
+
+Download_Link_Meta
+  requiredHeaders: array[string] (optional)
+
+Downloads_Attributes
+  downloadLink: Download_Link (optional)
+
+Downloads_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[Resource_Identifier] (optional)
+  included: Included (optional)
+
+Downloads_Multi_Resource_Data_Document
+  data: array[Downloads_Resource_Object] (required)
+  links: Links (required)
+  included: Included (optional)
+
+Downloads_Relationships
+  owners: Multi_Relationship_Data_Document (optional)
+
+Downloads_Resource_Object
+  id: string (required)
+  type: string (required)
+  attributes: Downloads_Attributes (optional)
+  relationships: Downloads_Relationships (optional)
+
+Downloads_Single_Resource_Data_Document
+  data: Downloads_Resource_Object (required)
+  links: Links (required)
+  included: Included (optional)
+
 DrmData
   certificateUrl: string (optional)
   drmSystem: enum[FAIRPLAY, WIDEVINE] (optional)
@@ -1706,7 +1769,7 @@ DspSharingLinks_Multi_Resource_Data_Document
   included: Included (optional)
 
 DspSharingLinks_Relationships
-  subject: Single_Relationship_Data_Document (required)
+  subject: Single_Relationship_Data_Document (optional)
 
 DspSharingLinks_Resource_Object
   id: string (required)
@@ -1727,8 +1790,8 @@ DspSharingLinks_Single_Resource_Data_Document
 DynamicModules_Attributes
   icons: array[enum[SPOTLIGHT_INFO, UNKNOWN]] (required)
   layoutType: enum[COMPACT, GRID, UNKNOWN] (required)
-  moduleType: enum[ARTIST_LIST, COMPACT_GRID_CARD, COMPACT_HORIZONTAL_LIST, COMPACT_HORIZONTAL_LIST_WITH_CONTEXT, FEATURED_CARD, GRID_CARD, GRID_CARD_WITH_CONTEXT, GRID_HIGHLIGHT_CARD, HORIZONTAL_LIST, HORIZONTAL_LIST_WITH_CONTEXT, SHORTCUT_LIST, TRACK_LIST, VERTICAL_LIST_CARD, TEXT_CARD, LINKS_LIST, PUBLIC_PLAYLIST_LIST, UNKNOWN] (required)
-  sourceType: enum[ALBUM_RECOMMENDATIONS, BECAUSE_YOU_LISTENED_TO_ALBUM, BECAUSE_YOU_ADDED_ALBUM, BECAUSE_YOU_ADDED_ARTIST, CONTINUE_LISTEN_TO, DAILY_MIXES, FORGOTTEN_FAVORITES, GENRE_MIXES, HISTORY_MIXES, LOCAL_PLAYLISTS, MY_PLAYLISTS, NEW_ALBUM_SUGGESTIONS, NEW_TRACK_SUGGESTIONS, NEW_ALBUMS, NEW_TRACKS, POPULAR_PLAYLISTS, RECENTLY_UPDATED_FAVORITED_PLAYLIST, RECOMMENDED_EDITORIAL_PLAYLISTS, RECOMMENDED_USERS_PLAYLISTS, SUGGESTED_ESSENTIAL_PLAYLISTS, SUGGESTED_RADIOS_MIXES, WELCOME_MIX, YOUR_FAVORITE_ARTISTS, UPLOADS_FOR_YOU, LATEST_SPOTLIGHTED_TRACKS, SHORTCUTS, ARTIST_TOP_TRACKS, ARTIST_SPOTLIGHTED_TRACKS, ARTIST_ALBUMS, ARTIST_TOP_SINGLES, ARTIST_COMPILATIONS, ARTIST_LIVE_ALBUMS, ARTIST_APPEARS_ON, ARTIST_PLAYLIST, ARTIST_PUBLIC_PLAYLIST, ARTIST_SIMILAR_ARTISTS, ARTIST_TRACK_UPLOADS, ARTIST_ALBUM_UPLOADS, ARTIST_LINKS, ARTIST_VIDEOS, ARTIST_CREDITS, ALBUM_ITEMS, ALBUM_ANNIVERSARY, ARTIST_BIRTHDAY, ARTIST_MEMORIAM, DJ_TOOLS, DJ_ARTIST_CURATED, THE_HITS, FROM_OUR_EDITORS, TOP_PLAYLISTS, FEATURED_TOP_TRACKS, FEATURED_TOP_ALBUMS, TOP_ARTISTS_ESSENTIALS, FEATURED_RECOMMENDED_PLAYLISTS, HOME_3_FEATURED_PLAYLISTS, HOME_3_FEATURED_UPLOAD_TRACKS, HOME_3_FEATURED_ALBUMS, POPULAR_ALBUMS, POPULAR_ARTISTS, POPULAR_MIXES, FEATURED_RECOMMENDED_TRACKS, FEATURED_RECOMMENDED_ALBUMS, FEATURED_RECOMMENDED_CLASSIC_ALBUMS, HOME_3_0_GENERIC_PLAYLISTS_1, HOME_3_0_GENERIC_PLAYLISTS_2, HOME_3_0_GENERIC_ALBUMS_1, HOME_3_0_GENERIC_TRACKS_1, HOME_3_0_GENERIC_ARTISTS_1, HOME_3_0_GENERIC_VIDEOS_1, HOLIDAY_HITS_PLAYLISTS, HOLIDAY_DECADES_PLAYLISTS, HOLIDAY_MOODS_PLAYLISTS, BEST_OF_2025_PLAYLISTS, NEW_YEARS_PARTY, NEW_YEARS_RESOLUTIONS, SONGS_OF_THE_YEAR_2026, BACK_TO_SCHOOL_MUSIC_101, BACK_TO_SCHOOL_GENRES_FOR_BEGINNERS, HEADLINERS_2026, UNKNOWN] (required)
+  moduleType: enum[ARTIST_LIST, COMPACT_GRID_CARD, COMPACT_HORIZONTAL_LIST, COMPACT_HORIZONTAL_LIST_WITH_CONTEXT, FEATURED_CARD, GRID_CARD, GRID_CARD_WITH_CONTEXT, GRID_HIGHLIGHT_CARD, HORIZONTAL_LIST, HORIZONTAL_LIST_WITH_CONTEXT, SHORTCUT_LIST, TRACK_LIST, VERTICAL_LIST_CARD, TEXT_CARD, LINKS_LIST, PUBLIC_PLAYLIST_LIST] (required)
+  sourceType: enum[ALBUM_RECOMMENDATIONS, BECAUSE_YOU_LISTENED_TO_ALBUM, BECAUSE_YOU_ADDED_ALBUM, BECAUSE_YOU_ADDED_ARTIST, CONTINUE_LISTEN_TO, DAILY_MIXES, FORGOTTEN_FAVORITES, GENRE_MIXES, HISTORY_MIXES, LOCAL_PLAYLISTS, MY_PLAYLISTS, NEW_ALBUM_SUGGESTIONS, NEW_TRACK_SUGGESTIONS, NEW_ALBUMS, NEW_TRACKS, POPULAR_PLAYLISTS, RECENTLY_UPDATED_FAVORITED_PLAYLIST, RECOMMENDED_EDITORIAL_PLAYLISTS, RECOMMENDED_USERS_PLAYLISTS, SUGGESTED_ESSENTIAL_PLAYLISTS, SUGGESTED_RADIOS_MIXES, WELCOME_MIX, YOUR_FAVORITE_ARTISTS, UPLOADS_FOR_YOU, LATEST_SPOTLIGHTED_TRACKS, SHORTCUTS, ARTIST_TOP_TRACKS, ARTIST_SPOTLIGHTED_TRACKS, ARTIST_ALBUMS, ARTIST_TOP_SINGLES, ARTIST_COMPILATIONS, ARTIST_LIVE_ALBUMS, ARTIST_APPEARS_ON, ARTIST_PLAYLIST, ARTIST_PUBLIC_PLAYLIST, ARTIST_SIMILAR_ARTISTS, ARTIST_TRACK_UPLOADS, ARTIST_LINKS, ARTIST_VIDEOS, ARTIST_CREDITS, ALBUM_ITEMS, ALBUM_ANNIVERSARY, ARTIST_BIRTHDAY, ARTIST_MEMORIAM, DJ_TOOLS, DJ_ARTIST_CURATED, THE_HITS, FROM_OUR_EDITORS, TOP_PLAYLISTS, FEATURED_TOP_TRACKS, FEATURED_TOP_ALBUMS, TOP_ARTISTS_ESSENTIALS, FEATURED_RECOMMENDED_PLAYLISTS, HOME_3_FEATURED_PLAYLISTS, HOME_3_FEATURED_UPLOAD_TRACKS, HOME_3_FEATURED_ALBUMS, POPULAR_ALBUMS, POPULAR_ARTISTS, POPULAR_MIXES, FEATURED_RECOMMENDED_TRACKS, FEATURED_RECOMMENDED_ALBUMS, FEATURED_RECOMMENDED_CLASSIC_ALBUMS, HOME_3_0_GENERIC_PLAYLISTS_1, HOME_3_0_GENERIC_PLAYLISTS_2, HOME_3_0_GENERIC_ALBUMS_1, HOME_3_0_GENERIC_TRACKS_1, HOME_3_0_GENERIC_ARTISTS_1, HOME_3_0_GENERIC_VIDEOS_1, BASED_ON_YOUR_INTERESTS_1, BASED_ON_YOUR_INTERESTS_2, UNKNOWN] (required)
   subtitle: string (optional)
   title: string (optional)
 
@@ -1743,7 +1806,7 @@ DynamicModules_Multi_Resource_Data_Document
   included: Included (optional)
 
 DynamicModules_Relationships
-  items: Multi_Relationship_Data_Document (required)
+  items: Multi_Relationship_Data_Document (optional)
 
 DynamicModules_Resource_Object
   id: string (required)
@@ -1771,8 +1834,8 @@ DynamicPages_Multi_Resource_Data_Document
   included: Included (optional)
 
 DynamicPages_Relationships
-  dynamicModules: Multi_Relationship_Data_Document (required)
-  subject: Single_Relationship_Data_Document (required)
+  dynamicModules: Multi_Relationship_Data_Document (optional)
+  subject: Single_Relationship_Data_Document (optional)
 
 DynamicPages_Resource_Object
   id: string (required)
@@ -1868,7 +1931,7 @@ InstallationsOfflineInventoryRelationshipRemoveOperation_Payload
 
 InstallationsOfflineInventory_ItemIdentifier
   id: string (required)
-  type: enum[tracks, videos, albums, playlists, userCollections] (required)
+  type: enum[tracks, videos, albums, playlists] (required)
 
 Installations_Attributes
   clientProvidedInstallationId: string (required)
@@ -1898,8 +1961,8 @@ Installations_OfflineInventory_Resource_Identifier_Meta
   clientStorageState: enum[PENDING, STORED] (required)
 
 Installations_Relationships
-  offlineInventory: Installations_OfflineInventory_Multi_Relationship_Data_Document (required)
-  owners: Multi_Relationship_Data_Document (required)
+  offlineInventory: Installations_OfflineInventory_Multi_Relationship_Data_Document (optional)
+  owners: Multi_Relationship_Data_Document (optional)
 
 Installations_Resource_Object
   id: string (required)
@@ -1988,8 +2051,8 @@ Lyrics_Multi_Resource_Data_Document
   included: Included (optional)
 
 Lyrics_Relationships
-  owners: Multi_Relationship_Data_Document (required)
-  track: Single_Relationship_Data_Document (required)
+  owners: Multi_Relationship_Data_Document (optional)
+  track: Single_Relationship_Data_Document (optional)
 
 Lyrics_Resource_Object
   id: string (required)
@@ -2086,8 +2149,8 @@ OfflineTasksUpdateOperation_Payload_Data_Attributes
 
 OfflineTasks_Attributes
   action: enum[STORE_ITEM, REMOVE_ITEM, STORE_COLLECTION, REMOVE_COLLECTION] (required)
-  collection: string (required)
-  member: string (required)
+  collectionReference: string (required)
+  memberReference: string (required)
   position: integer(int32) (optional)
   state: enum[PENDING, IN_PROGRESS, FAILED, COMPLETED] (optional)
   volume: integer(int32) (optional)
@@ -2103,8 +2166,9 @@ OfflineTasks_Multi_Resource_Data_Document
   included: Included (optional)
 
 OfflineTasks_Relationships
-  item: Single_Relationship_Data_Document (required)
-  owners: Multi_Relationship_Data_Document (required)
+  collection: Single_Relationship_Data_Document (optional)
+  item: Single_Relationship_Data_Document (optional)
+  owners: Multi_Relationship_Data_Document (optional)
 
 OfflineTasks_Resource_Object
   id: string (required)
@@ -2253,10 +2317,10 @@ PlayQueues_Past_Resource_Identifier_Meta
   legacySource: LegacySource (optional)
 
 PlayQueues_Relationships
-  current: PlayQueues_Current_Single_Relationship_Data_Document (required)
-  future: PlayQueues_Future_Multi_Relationship_Data_Document (required)
-  owners: Multi_Relationship_Data_Document (required)
-  past: PlayQueues_Past_Multi_Relationship_Data_Document (required)
+  current: PlayQueues_Current_Single_Relationship_Data_Document (optional)
+  future: PlayQueues_Future_Multi_Relationship_Data_Document (optional)
+  owners: Multi_Relationship_Data_Document (optional)
+  past: PlayQueues_Past_Multi_Relationship_Data_Document (optional)
 
 PlayQueues_Resource_Object
   id: string (required)
@@ -2386,10 +2450,10 @@ Playlists_Multi_Resource_Data_Document
   included: Included (optional)
 
 Playlists_Relationships
-  coverArt: Multi_Relationship_Data_Document (required)
-  items: Playlists_Items_Multi_Relationship_Data_Document (required)
-  ownerProfiles: Multi_Relationship_Data_Document (required)
-  owners: Multi_Relationship_Data_Document (required)
+  coverArt: Multi_Relationship_Data_Document (optional)
+  items: Playlists_Items_Multi_Relationship_Data_Document (optional)
+  ownerProfiles: Multi_Relationship_Data_Document (optional)
+  owners: Multi_Relationship_Data_Document (optional)
 
 Playlists_Resource_Object
   id: string (required)
@@ -2412,10 +2476,13 @@ PriceConfigurationsCreateOperation_Payload_Data
 
 PriceConfigurationsCreateOperation_Payload_Data_Attributes
   currency: enum[USD] (required)
-  price: number (required)
+  price: string (required)
 
 PriceConfigurationsCreateOperation_Payload_Data_Relationships
-  subjects: array[PriceConfigurationsCreateOperation_Payload_Subjects] (required)
+  subjects: PriceConfigurationsCreateOperation_Payload_Data_Relationships_Subjects (required)
+
+PriceConfigurationsCreateOperation_Payload_Data_Relationships_Subjects
+  data: array[PriceConfigurationsCreateOperation_Payload_Subjects] (required)
 
 PriceConfigurationsCreateOperation_Payload_Subjects
   id: string (required)
@@ -2423,7 +2490,7 @@ PriceConfigurationsCreateOperation_Payload_Subjects
 
 PriceConfigurations_Attributes
   currency: enum[USD] (required)
-  price: number (required)
+  price: string (required)
 
 PriceConfigurations_Multi_Resource_Data_Document
   data: array[PriceConfigurations_Resource_Object] (required)
@@ -2494,8 +2561,8 @@ Reactions_Multi_Resource_Data_Document
   included: Included (optional)
 
 Reactions_Relationships
-  ownerProfiles: Multi_Relationship_Data_Document (required)
-  owners: Multi_Relationship_Data_Document (required)
+  ownerProfiles: Multi_Relationship_Data_Document (optional)
+  owners: Multi_Relationship_Data_Document (optional)
 
 Reactions_Resource_Object
   id: string (required)
@@ -2568,12 +2635,12 @@ SearchResults_Multi_Resource_Data_Document
   included: Included (optional)
 
 SearchResults_Relationships
-  albums: Multi_Relationship_Data_Document (required)
-  artists: Multi_Relationship_Data_Document (required)
-  playlists: Multi_Relationship_Data_Document (required)
-  topHits: Multi_Relationship_Data_Document (required)
-  tracks: Multi_Relationship_Data_Document (required)
-  videos: Multi_Relationship_Data_Document (required)
+  albums: Multi_Relationship_Data_Document (optional)
+  artists: Multi_Relationship_Data_Document (optional)
+  playlists: Multi_Relationship_Data_Document (optional)
+  topHits: Multi_Relationship_Data_Document (optional)
+  tracks: Multi_Relationship_Data_Document (optional)
+  videos: Multi_Relationship_Data_Document (optional)
 
 SearchResults_Resource_Object
   id: string (required)
@@ -2610,7 +2677,7 @@ SearchSuggestions_Multi_Resource_Data_Document
   included: Included (optional)
 
 SearchSuggestions_Relationships
-  directHits: Multi_Relationship_Data_Document (required)
+  directHits: Multi_Relationship_Data_Document (optional)
 
 SearchSuggestions_Resource_Object
   id: string (required)
@@ -2660,8 +2727,8 @@ Shares_Multi_Resource_Data_Document
   included: Included (optional)
 
 Shares_Relationships
-  owners: Multi_Relationship_Data_Document (required)
-  sharedResources: Multi_Relationship_Data_Document (required)
+  owners: Multi_Relationship_Data_Document (optional)
+  sharedResources: Multi_Relationship_Data_Document (optional)
 
 Shares_Resource_Object
   id: string (required)
@@ -2707,7 +2774,7 @@ StripeConnections_Multi_Resource_Data_Document
   included: Included (optional)
 
 StripeConnections_Relationships
-  owners: Multi_Relationship_Data_Document (required)
+  owners: Multi_Relationship_Data_Document (optional)
 
 StripeConnections_Resource_Object
   id: string (required)
@@ -2717,6 +2784,33 @@ StripeConnections_Resource_Object
 
 StripeConnections_Single_Resource_Data_Document
   data: StripeConnections_Resource_Object (required)
+  links: Links (required)
+  included: Included (optional)
+
+StripeDashboardLinks_Attributes
+  dashboardLink: Link_Object (optional)
+
+StripeDashboardLinks_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[Resource_Identifier] (optional)
+  included: Included (optional)
+
+StripeDashboardLinks_Multi_Resource_Data_Document
+  data: array[StripeDashboardLinks_Resource_Object] (required)
+  links: Links (required)
+  included: Included (optional)
+
+StripeDashboardLinks_Relationships
+  owners: Multi_Relationship_Data_Document (optional)
+
+StripeDashboardLinks_Resource_Object
+  id: string (required)
+  type: string (required)
+  attributes: StripeDashboardLinks_Attributes (optional)
+  relationships: StripeDashboardLinks_Relationships (optional)
+
+StripeDashboardLinks_Single_Resource_Data_Document
+  data: StripeDashboardLinks_Resource_Object (required)
   links: Links (required)
   included: Included (optional)
 
@@ -2826,7 +2920,7 @@ TrackSourceFiles_Multi_Resource_Data_Document
   included: Included (optional)
 
 TrackSourceFiles_Relationships
-  owners: Multi_Relationship_Data_Document (required)
+  owners: Multi_Relationship_Data_Document (optional)
 
 TrackSourceFiles_Resource_Object
   id: string (required)
@@ -2854,7 +2948,7 @@ TrackStatistics_Multi_Resource_Data_Document
   included: Included (optional)
 
 TrackStatistics_Relationships
-  owners: Multi_Relationship_Data_Document (required)
+  owners: Multi_Relationship_Data_Document (optional)
 
 TrackStatistics_Resource_Object
   id: string (required)
@@ -2989,23 +3083,24 @@ Tracks_Multi_Resource_Data_Document
   included: Included (optional)
 
 Tracks_Relationships
-  albums: Multi_Relationship_Data_Document (required)
-  artists: Multi_Relationship_Data_Document (required)
-  credits: Multi_Relationship_Data_Document (required)
-  genres: Multi_Relationship_Data_Document (required)
-  lyrics: Multi_Relationship_Data_Document (required)
-  metadataStatus: Single_Relationship_Data_Document (required)
-  owners: Multi_Relationship_Data_Document (required)
-  priceConfig: Single_Relationship_Data_Document (required)
-  providers: Multi_Relationship_Data_Document (required)
-  radio: Multi_Relationship_Data_Document (required)
-  replacement: Single_Relationship_Data_Document (required)
-  shares: Multi_Relationship_Data_Document (required)
-  similarTracks: Multi_Relationship_Data_Document (required)
-  sourceFile: Single_Relationship_Data_Document (required)
-  suggestedTracks: Multi_Relationship_Data_Document (required)
-  trackStatistics: Single_Relationship_Data_Document (required)
-  usageRules: Single_Relationship_Data_Document (required)
+  albums: Multi_Relationship_Data_Document (optional)
+  artists: Multi_Relationship_Data_Document (optional)
+  credits: Multi_Relationship_Data_Document (optional)
+  download: Single_Relationship_Data_Document (optional)
+  genres: Multi_Relationship_Data_Document (optional)
+  lyrics: Multi_Relationship_Data_Document (optional)
+  metadataStatus: Single_Relationship_Data_Document (optional)
+  owners: Multi_Relationship_Data_Document (optional)
+  priceConfig: Single_Relationship_Data_Document (optional)
+  providers: Multi_Relationship_Data_Document (optional)
+  radio: Multi_Relationship_Data_Document (optional)
+  replacement: Single_Relationship_Data_Document (optional)
+  shares: Multi_Relationship_Data_Document (optional)
+  similarTracks: Multi_Relationship_Data_Document (optional)
+  sourceFile: Single_Relationship_Data_Document (optional)
+  suggestedTracks: Multi_Relationship_Data_Document (optional)
+  trackStatistics: Single_Relationship_Data_Document (optional)
+  usageRules: Single_Relationship_Data_Document (optional)
 
 Tracks_Resource_Object
   id: string (required)
@@ -3038,7 +3133,10 @@ UsageRulesCreateOperation_Payload_Data_Attributes
   subscription: array[enum[STREAM, DJ, STEM, DOWNLOAD]] (optional)
 
 UsageRulesCreateOperation_Payload_Data_Relationships
-  subject: UsageRulesCreateOperation_Payload_Subject (required)
+  subject: UsageRulesCreateOperation_Payload_Data_Relationships_Subject (required)
+
+UsageRulesCreateOperation_Payload_Data_Relationships_Subject
+  data: UsageRulesCreateOperation_Payload_Subject (required)
 
 UsageRulesCreateOperation_Payload_Subject
   id: string (required)
@@ -3112,8 +3210,8 @@ UserCollectionAlbums_Multi_Resource_Data_Document
   included: Included (optional)
 
 UserCollectionAlbums_Relationships
-  items: UserCollectionAlbums_Items_Multi_Relationship_Data_Document (required)
-  owners: Multi_Relationship_Data_Document (required)
+  items: UserCollectionAlbums_Items_Multi_Relationship_Data_Document (optional)
+  owners: Multi_Relationship_Data_Document (optional)
 
 UserCollectionAlbums_Resource_Object
   id: string (required)
@@ -3173,8 +3271,8 @@ UserCollectionArtists_Multi_Resource_Data_Document
   included: Included (optional)
 
 UserCollectionArtists_Relationships
-  items: UserCollectionArtists_Items_Multi_Relationship_Data_Document (required)
-  owners: Multi_Relationship_Data_Document (required)
+  items: UserCollectionArtists_Items_Multi_Relationship_Data_Document (optional)
+  owners: Multi_Relationship_Data_Document (optional)
 
 UserCollectionArtists_Resource_Object
   id: string (required)
@@ -3257,8 +3355,8 @@ UserCollectionFolders_Multi_Resource_Data_Document
   included: Included (optional)
 
 UserCollectionFolders_Relationships
-  items: UserCollectionFolders_Items_Multi_Relationship_Data_Document (required)
-  owners: Multi_Relationship_Data_Document (required)
+  items: UserCollectionFolders_Items_Multi_Relationship_Data_Document (optional)
+  owners: Multi_Relationship_Data_Document (optional)
 
 UserCollectionFolders_Resource_Object
   id: string (required)
@@ -3314,8 +3412,8 @@ UserCollectionPlaylists_Multi_Resource_Data_Document
   included: Included (optional)
 
 UserCollectionPlaylists_Relationships
-  items: UserCollectionPlaylists_Items_Multi_Relationship_Data_Document (required)
-  owners: Multi_Relationship_Data_Document (required)
+  items: UserCollectionPlaylists_Items_Multi_Relationship_Data_Document (optional)
+  owners: Multi_Relationship_Data_Document (optional)
 
 UserCollectionPlaylists_Resource_Object
   id: string (required)
@@ -3375,8 +3473,8 @@ UserCollectionTracks_Multi_Resource_Data_Document
   included: Included (optional)
 
 UserCollectionTracks_Relationships
-  items: UserCollectionTracks_Items_Multi_Relationship_Data_Document (required)
-  owners: Multi_Relationship_Data_Document (required)
+  items: UserCollectionTracks_Items_Multi_Relationship_Data_Document (optional)
+  owners: Multi_Relationship_Data_Document (optional)
 
 UserCollectionTracks_Resource_Object
   id: string (required)
@@ -3432,8 +3530,8 @@ UserCollectionVideos_Multi_Resource_Data_Document
   included: Included (optional)
 
 UserCollectionVideos_Relationships
-  items: UserCollectionVideos_Items_Multi_Relationship_Data_Document (required)
-  owners: Multi_Relationship_Data_Document (required)
+  items: UserCollectionVideos_Items_Multi_Relationship_Data_Document (optional)
+  owners: Multi_Relationship_Data_Document (optional)
 
 UserCollectionVideos_Resource_Object
   id: string (required)
@@ -3583,12 +3681,12 @@ UserCollections_Playlists_Resource_Identifier_Meta
   addedAt: string(date-time) (required)
 
 UserCollections_Relationships
-  albums: UserCollections_Albums_Multi_Relationship_Data_Document (required)
-  artists: UserCollections_Artists_Multi_Relationship_Data_Document (required)
-  owners: Multi_Relationship_Data_Document (required)
-  playlists: UserCollections_Playlists_Multi_Relationship_Data_Document (required)
-  tracks: UserCollections_Tracks_Multi_Relationship_Data_Document (required)
-  videos: UserCollections_Videos_Multi_Relationship_Data_Document (required)
+  albums: UserCollections_Albums_Multi_Relationship_Data_Document (optional)
+  artists: UserCollections_Artists_Multi_Relationship_Data_Document (optional)
+  owners: Multi_Relationship_Data_Document (optional)
+  playlists: UserCollections_Playlists_Multi_Relationship_Data_Document (optional)
+  tracks: UserCollections_Tracks_Multi_Relationship_Data_Document (optional)
+  videos: UserCollections_Videos_Multi_Relationship_Data_Document (optional)
 
 UserCollections_Resource_Object
   id: string (required)
@@ -3641,7 +3739,7 @@ UserEntitlements_Multi_Resource_Data_Document
   included: Included (optional)
 
 UserEntitlements_Relationships
-  owners: Multi_Relationship_Data_Document (required)
+  owners: Multi_Relationship_Data_Document (optional)
 
 UserEntitlements_Resource_Object
   id: string (required)
@@ -3667,9 +3765,9 @@ UserRecommendations_Multi_Resource_Data_Document
   included: Included (optional)
 
 UserRecommendations_Relationships
-  discoveryMixes: Multi_Relationship_Data_Document (required)
-  myMixes: Multi_Relationship_Data_Document (required)
-  newArrivalMixes: Multi_Relationship_Data_Document (required)
+  discoveryMixes: Multi_Relationship_Data_Document (optional)
+  myMixes: Multi_Relationship_Data_Document (optional)
+  newArrivalMixes: Multi_Relationship_Data_Document (optional)
 
 UserRecommendations_Resource_Object
   id: string (required)
@@ -3770,14 +3868,15 @@ Videos_Multi_Resource_Data_Document
   included: Included (optional)
 
 Videos_Relationships
-  albums: Multi_Relationship_Data_Document (required)
-  artists: Multi_Relationship_Data_Document (required)
-  credits: Multi_Relationship_Data_Document (required)
-  providers: Multi_Relationship_Data_Document (required)
-  replacement: Single_Relationship_Data_Document (required)
-  similarVideos: Multi_Relationship_Data_Document (required)
-  thumbnailArt: Multi_Relationship_Data_Document (required)
-  usageRules: Single_Relationship_Data_Document (required)
+  albums: Multi_Relationship_Data_Document (optional)
+  artists: Multi_Relationship_Data_Document (optional)
+  credits: Multi_Relationship_Data_Document (optional)
+  providers: Multi_Relationship_Data_Document (optional)
+  replacement: Single_Relationship_Data_Document (optional)
+  similarVideos: Multi_Relationship_Data_Document (optional)
+  suggestedVideos: Multi_Relationship_Data_Document (optional)
+  thumbnailArt: Multi_Relationship_Data_Document (optional)
+  usageRules: Single_Relationship_Data_Document (optional)
 
 Videos_Resource_Object
   id: string (required)

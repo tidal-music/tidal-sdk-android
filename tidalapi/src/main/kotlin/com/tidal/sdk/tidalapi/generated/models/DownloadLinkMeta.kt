@@ -9,8 +9,16 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param owners */
+/**
+ * Metadata for download link
+ *
+ * @param requiredHeaders HTTP headers required when requesting the download URL
+ */
 @Serializable
-data class UserEntitlementsRelationships(
-    @SerialName(value = "owners") val owners: MultiRelationshipDataDocument? = null
+data class DownloadLinkMeta(
+
+    /* HTTP headers required when requesting the download URL */
+
+    @SerialName(value = "requiredHeaders")
+    val requiredHeaders: kotlin.collections.List<kotlin.String>? = null
 ) {}

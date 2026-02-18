@@ -19,11 +19,15 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class UserCollectionsRelationships(
-    @SerialName(value = "albums") val albums: UserCollectionsAlbumsMultiRelationshipDataDocument,
-    @SerialName(value = "artists") val artists: UserCollectionsArtistsMultiRelationshipDataDocument,
-    @SerialName(value = "owners") val owners: MultiRelationshipDataDocument,
+    @SerialName(value = "albums")
+    val albums: UserCollectionsAlbumsMultiRelationshipDataDocument? = null,
+    @SerialName(value = "artists")
+    val artists: UserCollectionsArtistsMultiRelationshipDataDocument? = null,
+    @SerialName(value = "owners") val owners: MultiRelationshipDataDocument? = null,
     @SerialName(value = "playlists")
-    val playlists: UserCollectionsPlaylistsMultiRelationshipDataDocument,
-    @SerialName(value = "tracks") val tracks: UserCollectionsTracksMultiRelationshipDataDocument,
-    @SerialName(value = "videos") val videos: UserCollectionsVideosMultiRelationshipDataDocument,
+    val playlists: UserCollectionsPlaylistsMultiRelationshipDataDocument? = null,
+    @SerialName(value = "tracks")
+    val tracks: UserCollectionsTracksMultiRelationshipDataDocument? = null,
+    @SerialName(value = "videos")
+    val videos: UserCollectionsVideosMultiRelationshipDataDocument? = null,
 ) {}

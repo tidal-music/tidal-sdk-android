@@ -10,10 +10,20 @@ import com.tidal.sdk.tidalapi.generated.models.AlbumsSingleRelationshipDataDocum
 import com.tidal.sdk.tidalapi.generated.models.AlbumsSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.AlbumsSuggestedCoverArtsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.AlbumsUpdateOperationPayload
+import kotlinx.serialization.SerialName
 import retrofit2.Response
 import retrofit2.http.*
 
 interface Albums {
+
+    /** enum for parameter sort */
+    enum class SortAlbumsGet(val value: kotlin.String) {
+        @SerialName(value = "createdAt") CreatedAtAsc("createdAt"),
+        @SerialName(value = "-createdAt") CreatedAtDesc("-createdAt"),
+        @SerialName(value = "title") TitleAsc("title"),
+        @SerialName(value = "-title") TitleDesc("-title"),
+    }
+
     /**
      * Get multiple albums. Retrieves multiple albums by available filters, or without if
      * applicable. Responses:
@@ -29,6 +39,8 @@ interface Albums {
      *
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param sort Values prefixed with \&quot;-\&quot; are sorted descending; values without it are
+     *   sorted ascending. (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: artists, coverArt, genres, items, owners, priceConfig, providers,
@@ -45,6 +57,7 @@ interface Albums {
     @GET("albums")
     suspend fun albumsGet(
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("sort") sort: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,

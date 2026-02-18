@@ -12,5 +12,5 @@ import kotlinx.serialization.Serializable
 /** @param items */
 @Serializable
 data class DynamicModulesRelationships(
-    @SerialName(value = "items") val items: MultiRelationshipDataDocument
+    @SerialName(value = "items") val items: MultiRelationshipDataDocument? = null
 ) {}

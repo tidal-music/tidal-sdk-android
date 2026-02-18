@@ -24,16 +24,16 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class AlbumsRelationships(
-    @SerialName(value = "artists") val artists: MultiRelationshipDataDocument,
-    @SerialName(value = "coverArt") val coverArt: MultiRelationshipDataDocument,
-    @SerialName(value = "genres") val genres: MultiRelationshipDataDocument,
-    @SerialName(value = "items") val items: AlbumsItemsMultiRelationshipDataDocument,
-    @SerialName(value = "owners") val owners: MultiRelationshipDataDocument,
-    @SerialName(value = "priceConfig") val priceConfig: SingleRelationshipDataDocument,
-    @SerialName(value = "providers") val providers: MultiRelationshipDataDocument,
-    @SerialName(value = "replacement") val replacement: SingleRelationshipDataDocument,
-    @SerialName(value = "similarAlbums") val similarAlbums: MultiRelationshipDataDocument,
+    @SerialName(value = "artists") val artists: MultiRelationshipDataDocument? = null,
+    @SerialName(value = "coverArt") val coverArt: MultiRelationshipDataDocument? = null,
+    @SerialName(value = "genres") val genres: MultiRelationshipDataDocument? = null,
+    @SerialName(value = "items") val items: AlbumsItemsMultiRelationshipDataDocument? = null,
+    @SerialName(value = "owners") val owners: MultiRelationshipDataDocument? = null,
+    @SerialName(value = "priceConfig") val priceConfig: SingleRelationshipDataDocument? = null,
+    @SerialName(value = "providers") val providers: MultiRelationshipDataDocument? = null,
+    @SerialName(value = "replacement") val replacement: SingleRelationshipDataDocument? = null,
+    @SerialName(value = "similarAlbums") val similarAlbums: MultiRelationshipDataDocument? = null,
     @SerialName(value = "suggestedCoverArts")
-    val suggestedCoverArts: AlbumsSuggestedCoverArtsMultiRelationshipDataDocument,
-    @SerialName(value = "usageRules") val usageRules: SingleRelationshipDataDocument,
+    val suggestedCoverArts: AlbumsSuggestedCoverArtsMultiRelationshipDataDocument? = null,
+    @SerialName(value = "usageRules") val usageRules: SingleRelationshipDataDocument? = null,
 ) {}

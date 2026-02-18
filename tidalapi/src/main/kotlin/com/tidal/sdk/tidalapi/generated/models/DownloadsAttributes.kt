@@ -9,8 +9,8 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param owners */
+/** @param downloadLink */
 @Serializable
-data class UserEntitlementsRelationships(
-    @SerialName(value = "owners") val owners: MultiRelationshipDataDocument? = null
+data class DownloadsAttributes(
+    @SerialName(value = "downloadLink") val downloadLink: DownloadLink? = null
 ) {}
