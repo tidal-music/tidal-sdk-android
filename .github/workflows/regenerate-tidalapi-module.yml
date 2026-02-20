@@ -40,6 +40,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Rebase on target branch
+        run: |
+          git fetch origin ${{ inputs.target_branch }}
+          git rebase origin/${{ inputs.target_branch }}
+
       - name: Download API spec artifact
         if: inputs.use_downloaded_spec == 'true'
         uses: actions/download-artifact@v4
@@ -190,12 +195,6 @@ jobs:
           
           echo "api_version=$API_VERSION" >> $GITHUB_OUTPUT
           echo "module_version=$MODULE_VERSION" >> $GITHUB_OUTPUT
-
-      - name: Rebase on target branch
-        if: steps.check_changes.outputs.changes_detected == 'true'
-        run: |
-          git fetch origin ${{ inputs.target_branch }}
-          git rebase origin/${{ inputs.target_branch }}
 
       - name: Commit changes
         id: commit_changes
