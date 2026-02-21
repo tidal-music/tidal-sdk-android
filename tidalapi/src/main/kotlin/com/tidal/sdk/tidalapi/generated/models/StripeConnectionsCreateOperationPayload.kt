@@ -9,8 +9,12 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param `data` */
+/**
+ * @param `data`
+ * @param meta
+ */
 @Serializable
 data class StripeConnectionsCreateOperationPayload(
-    @SerialName(value = "data") val `data`: StripeConnectionsCreateOperationPayloadData
+    @SerialName(value = "data") val `data`: StripeConnectionsCreateOperationPayloadData,
+    @SerialName(value = "meta") val meta: StripeConnectionsCreateOperationPayloadMeta? = null,
 ) {}

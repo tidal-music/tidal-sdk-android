@@ -25,9 +25,8 @@ interface Videos {
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: albums, artists, credits, providers, replacement, similarVideos,
      *   suggestedVideos, thumbnailArt, usageRules (optional)
-     * @param filterId Video id (e.g. &#x60;75623239&#x60;) (optional)
-     * @param filterIsrc International Standard Recording Code (ISRC) (e.g.
-     *   &#x60;QMJMT1701237&#x60;) (optional)
+     * @param filterId List of video IDs (e.g. &#x60;75623239&#x60;) (optional)
+     * @param filterIsrc List of ISRCs (e.g. &#x60;QMJMT1701237&#x60;) (optional)
      * @return [VideosMultiResourceDataDocument]
      */
     @GET("videos")

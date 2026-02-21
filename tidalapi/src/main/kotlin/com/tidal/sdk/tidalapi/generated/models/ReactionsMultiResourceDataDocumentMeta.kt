@@ -9,9 +9,14 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param downloadLinks */
+/**
+ * Reaction response metadata with stats and current user reaction
+ *
+ * @param currentUserReaction
+ * @param stats
+ */
 @Serializable
-data class DownloadsAttributes(
-    @SerialName(value = "downloadLinks")
-    val downloadLinks: kotlin.collections.List<DownloadLink>? = null
+data class ReactionsMultiResourceDataDocumentMeta(
+    @SerialName(value = "currentUserReaction") val currentUserReaction: CurrentUserReaction? = null,
+    @SerialName(value = "stats") val stats: ReactionStats? = null,
 ) {}

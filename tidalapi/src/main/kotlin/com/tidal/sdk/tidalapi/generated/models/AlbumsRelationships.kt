@@ -10,6 +10,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
+ * @param albumStatistics
  * @param artists
  * @param coverArt
  * @param genres
@@ -24,6 +25,8 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class AlbumsRelationships(
+    @SerialName(value = "albumStatistics")
+    val albumStatistics: SingleRelationshipDataDocument? = null,
     @SerialName(value = "artists") val artists: MultiRelationshipDataDocument? = null,
     @SerialName(value = "coverArt") val coverArt: MultiRelationshipDataDocument? = null,
     @SerialName(value = "genres") val genres: MultiRelationshipDataDocument? = null,

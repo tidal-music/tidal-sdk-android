@@ -19,7 +19,7 @@ interface Providers {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param filterId Provider ID (e.g. &#x60;12345&#x60;) (optional)
+     * @param filterId List of provider IDs (e.g. &#x60;12345&#x60;) (optional)
      * @return [ProvidersMultiResourceDataDocument]
      */
     @GET("providers")

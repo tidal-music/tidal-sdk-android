@@ -11,8 +11,6 @@ import kotlinx.serialization.Serializable
 
 /**
  * @param action Action to perform
- * @param collectionReference Collection reference associated with task
- * @param memberReference Collection-member reference associated with task
  * @param position Collection position of item
  * @param state Task state
  * @param volume Collection volume of item
@@ -23,38 +21,26 @@ data class OfflineTasksAttributes(
     /* Action to perform */
 
     @SerialName(value = "action") val action: OfflineTasksAttributes.Action,
-    /* Collection reference associated with task */
-
-    @SerialName(value = "collectionReference")
-    @Deprecated(message = "This property is deprecated.")
-    val collectionReference: kotlin.String,
-    /* Collection-member reference associated with task */
-
-    @SerialName(value = "memberReference")
-    @Deprecated(message = "This property is deprecated.")
-    val memberReference: kotlin.String,
     /* Collection position of item */
 
-    @SerialName(value = "position") val position: kotlin.Int? = null,
+    @SerialName(value = "position") val position: kotlin.Int,
     /* Task state */
 
-    @SerialName(value = "state") val state: OfflineTasksAttributes.State? = null,
+    @SerialName(value = "state") val state: OfflineTasksAttributes.State,
     /* Collection volume of item */
 
-    @SerialName(value = "volume") val volume: kotlin.Int? = null,
+    @SerialName(value = "volume") val volume: kotlin.Int,
 ) {
 
     /**
      * Action to perform
      *
-     * Values: STORE_ITEM,REMOVE_ITEM,STORE_COLLECTION,REMOVE_COLLECTION
+     * Values: STORE,REMOVE
      */
     @Serializable
     enum class Action(val value: kotlin.String) {
-        @SerialName(value = "STORE_ITEM") STORE_ITEM("STORE_ITEM"),
-        @SerialName(value = "REMOVE_ITEM") REMOVE_ITEM("REMOVE_ITEM"),
-        @SerialName(value = "STORE_COLLECTION") STORE_COLLECTION("STORE_COLLECTION"),
-        @SerialName(value = "REMOVE_COLLECTION") REMOVE_COLLECTION("REMOVE_COLLECTION"),
+        @SerialName(value = "STORE") STORE("STORE"),
+        @SerialName(value = "REMOVE") REMOVE("REMOVE"),
     }
 
     /**

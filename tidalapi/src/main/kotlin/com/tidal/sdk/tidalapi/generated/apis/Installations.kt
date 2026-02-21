@@ -29,10 +29,10 @@ interface Installations {
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: offlineInventory, owners (optional)
-     * @param filterClientProvidedInstallationId Client provided installation identifier (e.g.
-     *   &#x60;a468bee88def&#x60;) (optional)
-     * @param filterId Installation id (e.g. &#x60;a468bee88def&#x60;) (optional)
-     * @param filterOwnersId User id (e.g. &#x60;123456&#x60;) (optional)
+     * @param filterClientProvidedInstallationId Client-provided installation identifier to filter
+     *   by (e.g. &#x60;a468bee88def&#x60;) (optional)
+     * @param filterId List of installation IDs (e.g. &#x60;a468bee88def&#x60;) (optional)
+     * @param filterOwnersId User ID to filter by (e.g. &#x60;123456&#x60;) (optional)
      * @return [InstallationsMultiResourceDataDocument]
      */
     @GET("installations")

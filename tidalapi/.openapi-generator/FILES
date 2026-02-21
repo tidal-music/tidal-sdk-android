@@ -1,4 +1,5 @@
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/ApiClient.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/AlbumStatistics.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/Albums.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/Appreciations.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/ArtistBiographies.kt
@@ -47,6 +48,12 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/UserRecommendations.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/UserReports.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/Users.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/Videos.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumStatisticsAttributes.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumStatisticsMultiRelationshipDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumStatisticsMultiResourceDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumStatisticsRelationships.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumStatisticsResourceObject.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumStatisticsSingleResourceDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumsAttributes.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumsCoverArtRelationshipUpdateOperationPayload.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumsCoverArtRelationshipUpdateOperationPayloadData.kt
@@ -71,6 +78,7 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumsResourceObject.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumsSingleRelationshipDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumsSingleResourceDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumsSuggestedCoverArtsMultiRelationshipDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumsSuggestedCoverArtsMultiRelationshipDataDocumentMeta.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumsSuggestedCoverArtsResourceIdentifier.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumsSuggestedCoverArtsResourceIdentifierMeta.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AlbumsUpdateOperationPayload.kt
@@ -186,6 +194,7 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/CreditsRelationships.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/CreditsResourceObject.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/CreditsSingleRelationshipDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/CreditsSingleResourceDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/CurrentUserReaction.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/Default400ResponseBody.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/Default400ResponseBodyErrorsInner.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/Default404ResponseBody.kt
@@ -376,6 +385,7 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ProvidersAttributes.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ProvidersMultiResourceDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ProvidersResourceObject.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ProvidersSingleResourceDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ReactionStats.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ReactionsAttributes.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ReactionsCreateOperationPayload.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ReactionsCreateOperationPayloadData.kt
@@ -385,6 +395,7 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ReactionsCreateOperation
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ReactionsCreateOperationPayloadDataRelationshipsSubjectData.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ReactionsMultiRelationshipDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ReactionsMultiResourceDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ReactionsMultiResourceDataDocumentMeta.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ReactionsRelationships.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ReactionsResourceObject.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ReactionsSingleResourceDataDocument.kt
@@ -430,6 +441,7 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/StripeConnectionsAttribu
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/StripeConnectionsCreateOperationPayload.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/StripeConnectionsCreateOperationPayloadData.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/StripeConnectionsCreateOperationPayloadDataAttributes.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/StripeConnectionsCreateOperationPayloadMeta.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/StripeConnectionsMultiRelationshipDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/StripeConnectionsMultiResourceDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/StripeConnectionsRelationships.kt

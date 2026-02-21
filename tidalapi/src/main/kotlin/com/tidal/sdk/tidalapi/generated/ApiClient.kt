@@ -1,6 +1,7 @@
 package com.tidal.sdk.tidalapi.generated
 
 import com.tidal.sdk.auth.CredentialsProvider
+import com.tidal.sdk.tidalapi.generated.apis.AlbumStatistics
 import com.tidal.sdk.tidalapi.generated.apis.Albums
 import com.tidal.sdk.tidalapi.generated.apis.Appreciations
 import com.tidal.sdk.tidalapi.generated.apis.ArtistBiographies
@@ -58,6 +59,11 @@ class TidalApiClient(
 ) {
 
     private val retrofit by lazy { retrofitProvider.provideRetrofit(baseUrl, credentialsProvider) }
+
+    /** Returns an instance of the [AlbumStatistics] which can be used to make API calls to the */
+    fun createAlbumStatistics(): AlbumStatistics {
+        return retrofit.create(AlbumStatistics::class.java)
+    }
 
     /** Returns an instance of the [Albums] which can be used to make API calls to the */
     fun createAlbums(): Albums {
