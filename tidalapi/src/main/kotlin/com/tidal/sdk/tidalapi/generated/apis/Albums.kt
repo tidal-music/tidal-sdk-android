@@ -43,8 +43,8 @@ interface Albums {
      *   sorted ascending. (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: artists, coverArt, genres, items, owners, priceConfig, providers,
-     *   replacement, similarAlbums, suggestedCoverArts, usageRules (optional)
+     *   Available options: albumStatistics, artists, coverArt, genres, items, owners, priceConfig,
+     *   providers, replacement, similarAlbums, suggestedCoverArts, usageRules (optional)
      * @param filterBarcodeId List of barcode IDs (EAN-13 or UPC-A). NOTE: Supplying more than one
      *   barcode ID will currently only return one album per barcode ID. (e.g.
      *   &#x60;196589525444&#x60;) (optional)
@@ -101,8 +101,8 @@ interface Albums {
      * @param id Album id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: artists, coverArt, genres, items, owners, priceConfig, providers,
-     *   replacement, similarAlbums, suggestedCoverArts, usageRules (optional)
+     *   Available options: albumStatistics, artists, coverArt, genres, items, owners, priceConfig,
+     *   providers, replacement, similarAlbums, suggestedCoverArts, usageRules (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [AlbumsSingleResourceDataDocument]
@@ -136,6 +136,34 @@ interface Albums {
         @Path("id") id: kotlin.String,
         @Body albumsUpdateOperationPayload: AlbumsUpdateOperationPayload? = null,
     ): Response<Unit>
+
+    /**
+     * Get albumStatistics relationship (\&quot;to-one\&quot;). Retrieves albumStatistics
+     * relationship. Responses:
+     * - 200: Successful response
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
+     *
+     * @param id Album id
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: albumStatistics (optional)
+     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
+     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @return [AlbumsSingleRelationshipDataDocument]
+     */
+    @GET("albums/{id}/relationships/albumStatistics")
+    suspend fun albumsIdRelationshipsAlbumStatisticsGet(
+        @Path("id") id: kotlin.String,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
+    ): Response<AlbumsSingleRelationshipDataDocument>
 
     /**
      * Get artists relationship (\&quot;to-many\&quot;). Retrieves artists relationship. Responses:

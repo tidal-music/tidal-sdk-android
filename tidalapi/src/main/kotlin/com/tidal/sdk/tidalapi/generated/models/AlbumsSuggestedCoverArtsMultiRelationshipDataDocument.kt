@@ -13,6 +13,7 @@ import kotlinx.serialization.Serializable
  * @param links
  * @param `data`
  * @param included
+ * @param meta
  */
 @Serializable
 data class AlbumsSuggestedCoverArtsMultiRelationshipDataDocument(
@@ -20,4 +21,6 @@ data class AlbumsSuggestedCoverArtsMultiRelationshipDataDocument(
     @SerialName(value = "data")
     val `data`: kotlin.collections.List<AlbumsSuggestedCoverArtsResourceIdentifier>? = null,
     @SerialName(value = "included") val included: kotlin.collections.List<IncludedInner>? = null,
+    @SerialName(value = "meta")
+    val meta: AlbumsSuggestedCoverArtsMultiRelationshipDataDocumentMeta? = null,
 ) {}

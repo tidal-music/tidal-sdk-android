@@ -10,28 +10,33 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param integrationType Integration type for Stripe onboarding
- * @param refreshUrl REDIRECT only: URL to redirect to if seller drops from onboarding
- * @param returnUrl REDIRECT only: URL to redirect to after completed onboarding
+ * @param integrationType Deprecated: use meta.integrationType instead.
+ * @param refreshUrl Deprecated: use meta.refreshUrl instead.
+ * @param returnUrl Deprecated: use meta.returnUrl instead.
  */
 @Serializable
 data class StripeConnectionsCreateOperationPayloadDataAttributes(
 
-    /* Integration type for Stripe onboarding */
+    /* Deprecated: use meta.integrationType instead. */
 
     @SerialName(value = "integrationType")
-    val integrationType: StripeConnectionsCreateOperationPayloadDataAttributes.IntegrationType =
+    @Deprecated(message = "This property is deprecated.")
+    val integrationType: StripeConnectionsCreateOperationPayloadDataAttributes.IntegrationType? =
         IntegrationType.REDIRECT,
-    /* REDIRECT only: URL to redirect to if seller drops from onboarding */
+    /* Deprecated: use meta.refreshUrl instead. */
 
-    @SerialName(value = "refreshUrl") val refreshUrl: kotlin.String? = null,
-    /* REDIRECT only: URL to redirect to after completed onboarding */
+    @SerialName(value = "refreshUrl")
+    @Deprecated(message = "This property is deprecated.")
+    val refreshUrl: kotlin.String? = null,
+    /* Deprecated: use meta.returnUrl instead. */
 
-    @SerialName(value = "returnUrl") val returnUrl: kotlin.String? = null,
+    @SerialName(value = "returnUrl")
+    @Deprecated(message = "This property is deprecated.")
+    val returnUrl: kotlin.String? = null,
 ) {
 
     /**
-     * Integration type for Stripe onboarding
+     * Deprecated: use meta.integrationType instead.
      *
      * Values: REDIRECT,EMBEDDED
      */

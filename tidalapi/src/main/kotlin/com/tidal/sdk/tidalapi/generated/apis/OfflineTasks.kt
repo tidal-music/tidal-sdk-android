@@ -26,9 +26,10 @@ interface OfflineTasks {
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: collection, item, owners (optional)
-     * @param filterId Offline task id (e.g. &#x60;a468bee8-8def-4a1b-8c1e-123456789abc&#x60;)
+     * @param filterId List of offline task IDs (e.g.
+     *   &#x60;a468bee8-8def-4a1b-8c1e-123456789abc&#x60;) (optional)
+     * @param filterInstallationId List of offline task IDs (e.g. &#x60;a468bee88def&#x60;)
      *   (optional)
-     * @param filterInstallationId Installation id (e.g. &#x60;a468bee88def&#x60;) (optional)
      * @return [OfflineTasksMultiResourceDataDocument]
      */
     @GET("offlineTasks")

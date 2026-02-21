@@ -28,7 +28,8 @@ interface UserCollectionFolders {
      *
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: items, owners (optional)
-     * @param filterId Folder Id (optional)
+     * @param filterId Folder Id (e.g.
+     *   &#x60;CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX&#x60;) (optional)
      * @return [UserCollectionFoldersMultiResourceDataDocument]
      */
     @GET("userCollectionFolders")

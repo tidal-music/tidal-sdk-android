@@ -50,8 +50,8 @@ interface DynamicPages {
      *   unsupported. (optional, default to "en-US")
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: dynamicModules, subject (optional)
-     * @param filterPageType Filter by page type (e.g. &#x60;ARTIST&#x60;) (optional)
-     * @param filterSubjectId Filter by subject id (e.g. &#x60;67890&#x60;) (optional)
+     * @param filterPageType type of the page (e.g. &#x60;ARTIST&#x60;) (optional)
+     * @param filterSubjectId the subject id, eg. artistId (e.g. &#x60;67890&#x60;) (optional)
      * @return [DynamicPagesMultiResourceDataDocument]
      */
     @GET("dynamicPages")

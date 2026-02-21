@@ -8,7 +8,7 @@
     "description" : "The TIDAL API is a [JSON:API](https://jsonapi.org/)–compliant web API that exposes TIDAL’s music, metadata, and user-related functionality through a consistent, resource-oriented design. More information and API management are available at [developer.tidal.com](https://developer.tidal.com)",
     "termsOfService" : "https://developer.tidal.com/documentation/guidelines/guidelines-overview",
     "title" : "TIDAL API",
-    "version" : "1.1.32"
+    "version" : "1.1.42"
   },
   "externalDocs" : {
     "description" : "TIDAL Developer - Documentation",
@@ -19,6 +19,9 @@
     "description" : "Production"
   } ],
   "tags" : [ {
+    "description" : "Playback statistics for an album, including total plays, unique listeners, and sales.",
+    "name" : "albumStatistics"
+  }, {
     "description" : "A music album, consisting of one or more tracks.",
     "name" : "albums"
   }, {
@@ -46,7 +49,7 @@
     "description" : "A credit entry linking a contributor to a track or album.",
     "name" : "credits"
   }, {
-    "description" : "A downloadable content file with its download link.",
+    "description" : "A downloadable content file with its download links.",
     "name" : "downloads"
   }, {
     "description" : "Links to equivalent content on other streaming platforms.",
@@ -164,6 +167,232 @@
     "name" : "videos"
   } ],
   "paths" : {
+    "/albumStatistics" : {
+      "get" : {
+        "description" : "Retrieves multiple albumStatistics by available filters, or without if applicable.",
+        "parameters" : [ {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: owners",
+          "example" : "owners",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "owners"
+            }
+          }
+        }, {
+          "description" : "List of album IDs (e.g. `251380836`)",
+          "in" : "query",
+          "name" : "filter[id]",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AlbumStatistics_Multi_Resource_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Default400Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Default404Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Default405Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Default406Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Default415Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Default429Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Default500Response"
+          },
+          "503" : {
+            "$ref" : "#/components/responses/Default503Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "r_usr" ]
+        } ],
+        "summary" : "Get multiple albumStatistics.",
+        "tags" : [ "albumStatistics" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      }
+    },
+    "/albumStatistics/{id}" : {
+      "get" : {
+        "description" : "Retrieves single albumStatistic by id.",
+        "parameters" : [ {
+          "description" : "Album statistic id",
+          "example" : "123456",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: owners",
+          "example" : "owners",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "owners"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AlbumStatistics_Single_Resource_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Default400Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Default404Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Default405Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Default406Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Default415Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Default429Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Default500Response"
+          },
+          "503" : {
+            "$ref" : "#/components/responses/Default503Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "r_usr" ]
+        } ],
+        "summary" : "Get single albumStatistic.",
+        "tags" : [ "albumStatistics" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      }
+    },
+    "/albumStatistics/{id}/relationships/owners" : {
+      "get" : {
+        "description" : "Retrieves owners relationship.",
+        "parameters" : [ {
+          "description" : "Album statistic id",
+          "example" : "123456",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: owners",
+          "example" : "owners",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "owners"
+            }
+          }
+        }, {
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AlbumStatistics_Multi_Relationship_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Default400Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Default404Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Default405Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Default406Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Default415Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Default429Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Default500Response"
+          },
+          "503" : {
+            "$ref" : "#/components/responses/Default503Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "r_usr" ]
+        } ],
+        "summary" : "Get owners relationship (\"to-many\").",
+        "tags" : [ "albumStatistics" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      }
+    },
     "/albums" : {
       "get" : {
         "description" : "Retrieves multiple albums by available filters, or without if applicable.",
@@ -200,8 +429,8 @@
             "type" : "string"
           }
         }, {
-          "description" : "Allows the client to customize which related resources should be returned. Available options: artists, coverArt, genres, items, owners, priceConfig, providers, replacement, similarAlbums, suggestedCoverArts, usageRules",
-          "example" : "artists",
+          "description" : "Allows the client to customize which related resources should be returned. Available options: albumStatistics, artists, coverArt, genres, items, owners, priceConfig, providers, replacement, similarAlbums, suggestedCoverArts, usageRules",
+          "example" : "albumStatistics",
           "in" : "query",
           "name" : "include",
           "required" : false,
@@ -209,7 +438,7 @@
             "type" : "array",
             "items" : {
               "type" : "string",
-              "example" : "artists"
+              "example" : "albumStatistics"
             }
           }
         }, {
@@ -429,8 +658,8 @@
             "type" : "string"
           }
         }, {
-          "description" : "Allows the client to customize which related resources should be returned. Available options: artists, coverArt, genres, items, owners, priceConfig, providers, replacement, similarAlbums, suggestedCoverArts, usageRules",
-          "example" : "artists",
+          "description" : "Allows the client to customize which related resources should be returned. Available options: albumStatistics, artists, coverArt, genres, items, owners, priceConfig, providers, replacement, similarAlbums, suggestedCoverArts, usageRules",
+          "example" : "albumStatistics",
           "in" : "query",
           "name" : "include",
           "required" : false,
@@ -438,7 +667,7 @@
             "type" : "array",
             "items" : {
               "type" : "string",
-              "example" : "artists"
+              "example" : "albumStatistics"
             }
           }
         }, {
@@ -549,6 +778,87 @@
           "Authorization_Code_PKCE" : [ "w_usr" ]
         } ],
         "summary" : "Update single album.",
+        "tags" : [ "albums" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      }
+    },
+    "/albums/{id}/relationships/albumStatistics" : {
+      "get" : {
+        "description" : "Retrieves albumStatistics relationship.",
+        "parameters" : [ {
+          "description" : "Album id",
+          "example" : "251380836",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: albumStatistics",
+          "example" : "albumStatistics",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "albumStatistics"
+            }
+          }
+        }, {
+          "description" : "Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted.",
+          "in" : "query",
+          "name" : "shareCode",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "xyz"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Albums_Single_Relationship_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Default400Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Default404Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Default405Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Default406Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Default415Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Default429Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Default500Response"
+          },
+          "503" : {
+            "$ref" : "#/components/responses/Default503Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "r_usr" ]
+        } ],
+        "summary" : "Get albumStatistics relationship (\"to-one\").",
         "tags" : [ "albums" ],
         "x-path-item-properties" : {
           "required-access-tier" : "INTERNAL"
@@ -2721,7 +3031,7 @@
       "get" : {
         "description" : "Retrieves multiple artistRoles by available filters, or without if applicable.",
         "parameters" : [ {
-          "description" : "Artist role id (e.g. `1`)",
+          "description" : "List of artist role IDs (e.g. `1`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
@@ -5131,7 +5441,7 @@
             }
           }
         }, {
-          "description" : "Credit id (e.g. `3fG7kLmN2pQrStUv`)",
+          "description" : "List of credit IDs (e.g. `3fG7kLmN2pQrStUv`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
@@ -5407,6 +5717,80 @@
         } ],
         "summary" : "Get category relationship (\"to-one\").",
         "tags" : [ "credits" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      }
+    },
+    "/downloads" : {
+      "get" : {
+        "description" : "Retrieves multiple downloads by available filters, or without if applicable.",
+        "parameters" : [ {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: owners",
+          "example" : "owners",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "owners"
+            }
+          }
+        }, {
+          "description" : "Download id (e.g. `VFJBQ0tTOjEyMzQ1`)",
+          "in" : "query",
+          "name" : "filter[id]",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Downloads_Multi_Resource_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Default400Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Default404Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Default405Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Default406Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Default415Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Default429Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Default500Response"
+          },
+          "503" : {
+            "$ref" : "#/components/responses/Default503Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "r_usr" ]
+        } ],
+        "summary" : "Get multiple downloads.",
+        "tags" : [ "downloads" ],
         "x-path-item-properties" : {
           "required-access-tier" : "INTERNAL"
         }
@@ -6068,7 +6452,7 @@
             }
           }
         }, {
-          "description" : "Filter by page type (e.g. `ARTIST`)",
+          "description" : "type of the page (e.g. `ARTIST`)",
           "in" : "query",
           "name" : "filter[pageType]",
           "required" : false,
@@ -6079,7 +6463,7 @@
             }
           }
         }, {
-          "description" : "Filter by subject id (e.g. `67890`)",
+          "description" : "the subject id, eg. artistId (e.g. `67890`)",
           "in" : "query",
           "name" : "filter[subject.id]",
           "required" : false,
@@ -6527,7 +6911,7 @@
             }
           }
         }, {
-          "description" : "Client provided installation identifier (e.g. `a468bee88def`)",
+          "description" : "Client-provided installation identifier to filter by (e.g. `a468bee88def`)",
           "in" : "query",
           "name" : "filter[clientProvidedInstallationId]",
           "required" : false,
@@ -6538,7 +6922,7 @@
             }
           }
         }, {
-          "description" : "Installation id (e.g. `a468bee88def`)",
+          "description" : "List of installation IDs (e.g. `a468bee88def`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
@@ -6549,7 +6933,7 @@
             }
           }
         }, {
-          "description" : "User id (e.g. `123456`)",
+          "description" : "User ID to filter by (e.g. `123456`)",
           "in" : "query",
           "name" : "filter[owners.id]",
           "required" : false,
@@ -7587,7 +7971,7 @@
             }
           }
         }, {
-          "description" : "Offline task id (e.g. `a468bee8-8def-4a1b-8c1e-123456789abc`)",
+          "description" : "List of offline task IDs (e.g. `a468bee8-8def-4a1b-8c1e-123456789abc`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
@@ -7598,7 +7982,7 @@
             }
           }
         }, {
-          "description" : "Installation id (e.g. `a468bee88def`)",
+          "description" : "List of offline task IDs (e.g. `a468bee88def`)",
           "in" : "query",
           "name" : "filter[installation.id]",
           "required" : false,
@@ -9838,7 +10222,7 @@
       "get" : {
         "description" : "Retrieves multiple priceConfigurations by available filters, or without if applicable.",
         "parameters" : [ {
-          "description" : "Price configuration id (e.g. `cHJpY2UtY29uZmlnLTEyMzpVUw`)",
+          "description" : "List of price configurations IDs (e.g. `cHJpY2UtY29uZmlnLTEyMzpVUw`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
@@ -10019,7 +10403,7 @@
       "get" : {
         "description" : "Retrieves multiple providers by available filters, or without if applicable.",
         "parameters" : [ {
-          "description" : "Provider ID (e.g. `12345`)",
+          "description" : "List of provider IDs (e.g. `12345`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
@@ -11510,7 +11894,7 @@
             }
           }
         }, {
-          "description" : "Share code (e.g. `xyz`)",
+          "description" : "A share code (e.g. `xyz`)",
           "in" : "query",
           "name" : "filter[code]",
           "required" : false,
@@ -11521,7 +11905,7 @@
             }
           }
         }, {
-          "description" : "User share id (e.g. `a468bee88def`)",
+          "description" : "List of shares IDs (e.g. `a468bee88def`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
@@ -12738,7 +13122,7 @@
             }
           }
         }, {
-          "description" : "Track id (e.g. `75413016`)",
+          "description" : "List of track IDs (e.g. `75413016`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
@@ -12996,7 +13380,7 @@
             }
           }
         }, {
-          "description" : "Track id (e.g. `75413016`)",
+          "description" : "List of track IDs (e.g. `75413016`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
@@ -15051,7 +15435,7 @@
       "get" : {
         "description" : "Retrieves multiple tracksMetadataStatus by available filters, or without if applicable.",
         "parameters" : [ {
-          "description" : "Track id (e.g. `75413016`)",
+          "description" : "List of track IDs (e.g. `75413016`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
@@ -15171,7 +15555,7 @@
       "get" : {
         "description" : "Retrieves multiple usageRules by available filters, or without if applicable.",
         "parameters" : [ {
-          "description" : "Usage rules id (e.g. `VFJBQ0tTOjEyMzpOTw`)",
+          "description" : "List of usage rules IDs (e.g. `VFJBQ0tTOjEyMzpOTw`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
@@ -16183,7 +16567,7 @@
             }
           }
         }, {
-          "description" : "Folder Id",
+          "description" : "Folder Id (e.g. `CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
@@ -16302,7 +16686,7 @@
         "description" : "Deletes existing userCollectionFolder.",
         "parameters" : [ {
           "description" : "Folder Id",
-          "example" : "",
+          "example" : "CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -16349,7 +16733,7 @@
         "description" : "Retrieves single userCollectionFolder by id.",
         "parameters" : [ {
           "description" : "Folder Id",
-          "example" : "",
+          "example" : "CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -16419,7 +16803,7 @@
         "description" : "Updates existing userCollectionFolder.",
         "parameters" : [ {
           "description" : "Folder Id",
-          "example" : "",
+          "example" : "CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -16477,7 +16861,7 @@
         "description" : "Deletes item(s) from items relationship.",
         "parameters" : [ {
           "description" : "Folder Id",
-          "example" : "",
+          "example" : "CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -16533,7 +16917,7 @@
         "description" : "Retrieves items relationship.",
         "parameters" : [ {
           "description" : "Folder Id",
-          "example" : "",
+          "example" : "CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -16626,7 +17010,7 @@
         "description" : "Adds item(s) to items relationship.",
         "parameters" : [ {
           "description" : "Folder Id",
-          "example" : "",
+          "example" : "CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -16684,7 +17068,7 @@
         "description" : "Retrieves owners relationship.",
         "parameters" : [ {
           "description" : "Folder Id",
-          "example" : "",
+          "example" : "CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX",
           "in" : "path",
           "name" : "id",
           "required" : true,
@@ -19998,7 +20382,7 @@
             }
           }
         }, {
-          "description" : "Video id (e.g. `75623239`)",
+          "description" : "List of video IDs (e.g. `75623239`)",
           "in" : "query",
           "name" : "filter[id]",
           "required" : false,
@@ -20009,7 +20393,7 @@
             }
           }
         }, {
-          "description" : "International Standard Recording Code (ISRC) (e.g. `QMJMT1701237`)",
+          "description" : "List of ISRCs (e.g. `QMJMT1701237`)",
           "in" : "query",
           "name" : "filter[isrc]",
           "required" : false,
@@ -21138,6 +21522,108 @@
       }
     },
     "schemas" : {
+      "AlbumStatistics_Attributes" : {
+        "required" : [ "totalPlaybacks", "uniqueListeners" ],
+        "type" : "object",
+        "properties" : {
+          "numSales" : {
+            "type" : "integer",
+            "description" : "Number of sales",
+            "format" : "int32"
+          },
+          "totalPlaybacks" : {
+            "type" : "integer",
+            "description" : "Total playbacks",
+            "format" : "int32"
+          },
+          "uniqueListeners" : {
+            "type" : "integer",
+            "description" : "Unique listeners",
+            "format" : "int32"
+          }
+        }
+      },
+      "AlbumStatistics_Multi_Relationship_Data_Document" : {
+        "required" : [ "links" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Resource_Identifier"
+            }
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "AlbumStatistics_Multi_Resource_Data_Document" : {
+        "required" : [ "data", "links" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/AlbumStatistics_Resource_Object"
+            }
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "AlbumStatistics_Relationships" : {
+        "properties" : {
+          "owners" : {
+            "$ref" : "#/components/schemas/Multi_Relationship_Data_Document"
+          }
+        }
+      },
+      "AlbumStatistics_Resource_Object" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "attributes" : {
+            "$ref" : "#/components/schemas/AlbumStatistics_Attributes"
+          },
+          "id" : {
+            "type" : "string",
+            "description" : "Resource id",
+            "example" : "12345"
+          },
+          "relationships" : {
+            "$ref" : "#/components/schemas/AlbumStatistics_Relationships"
+          },
+          "type" : {
+            "minLength" : 1,
+            "type" : "string",
+            "description" : "Resource type",
+            "example" : "tracks"
+          }
+        }
+      },
+      "AlbumStatistics_Single_Resource_Data_Document" : {
+        "required" : [ "data", "links" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/AlbumStatistics_Resource_Object"
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
       "AlbumsCoverArtRelationshipUpdateOperation_Payload" : {
         "required" : [ "data" ],
         "type" : "object",
@@ -21640,6 +22126,9 @@
       },
       "Albums_Relationships" : {
         "properties" : {
+          "albumStatistics" : {
+            "$ref" : "#/components/schemas/Single_Relationship_Data_Document"
+          },
           "artists" : {
             "$ref" : "#/components/schemas/Multi_Relationship_Data_Document"
           },
@@ -21743,6 +22232,18 @@
           },
           "links" : {
             "$ref" : "#/components/schemas/Links"
+          },
+          "meta" : {
+            "$ref" : "#/components/schemas/Albums_SuggestedCoverArts_Multi_Relationship_Data_Document_Meta"
+          }
+        }
+      },
+      "Albums_SuggestedCoverArts_Multi_Relationship_Data_Document_Meta" : {
+        "type" : "object",
+        "properties" : {
+          "status" : {
+            "type" : "string",
+            "enum" : [ "PENDING", "PROCESSING", "ERROR", "OK" ]
           }
         }
       },
@@ -23460,6 +23961,25 @@
           }
         }
       },
+      "CurrentUserReaction" : {
+        "type" : "object",
+        "properties" : {
+          "createdAt" : {
+            "type" : "string",
+            "description" : "When the reaction was created",
+            "format" : "date-time"
+          },
+          "emoji" : {
+            "type" : "string",
+            "description" : "User's emoji reaction"
+          },
+          "id" : {
+            "type" : "string",
+            "description" : "Reaction ID"
+          }
+        },
+        "description" : "Current user's reaction"
+      },
       "Default400ResponseBody" : {
         "type" : "object",
         "properties" : {
@@ -23674,8 +24194,11 @@
       "Downloads_Attributes" : {
         "type" : "object",
         "properties" : {
-          "downloadLink" : {
-            "$ref" : "#/components/schemas/Download_Link"
+          "downloadLinks" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Download_Link"
+            }
           }
         }
       },
@@ -24005,7 +24528,7 @@
             "type" : "string",
             "description" : "Type of the page eg. home, artist",
             "example" : "HOME_STATIC",
-            "enum" : [ "HOME_STATIC", "HOME_FOR_YOU", "HOME_EDITORIAL", "HOME_FREE", "ARTIST" ]
+            "enum" : [ "HOME_STATIC", "HOME_UPLOADS", "HOME_EDITORIAL", "HOME_FREE", "ARTIST" ]
           },
           "reportingId" : {
             "type" : "string",
@@ -24327,6 +24850,7 @@
         "items" : {
           "discriminator" : {
             "mapping" : {
+              "albumStatistics" : "#/components/schemas/AlbumStatistics_Resource_Object",
               "albums" : "#/components/schemas/Albums_Resource_Object",
               "appreciations" : "#/components/schemas/Appreciations_Resource_Object",
               "artistBiographies" : "#/components/schemas/ArtistBiographies_Resource_Object",
@@ -24379,6 +24903,8 @@
             "propertyName" : "type"
           },
           "oneOf" : [ {
+            "$ref" : "#/components/schemas/AlbumStatistics_Resource_Object"
+          }, {
             "$ref" : "#/components/schemas/Albums_Resource_Object"
           }, {
             "$ref" : "#/components/schemas/Appreciations_Resource_Object"
@@ -25309,23 +25835,13 @@
         }
       },
       "OfflineTasks_Attributes" : {
-        "required" : [ "action", "collectionReference", "memberReference" ],
+        "required" : [ "action", "position", "state", "volume" ],
         "type" : "object",
         "properties" : {
           "action" : {
             "type" : "string",
             "description" : "Action to perform",
-            "enum" : [ "STORE_ITEM", "REMOVE_ITEM", "STORE_COLLECTION", "REMOVE_COLLECTION" ]
-          },
-          "collectionReference" : {
-            "type" : "string",
-            "description" : "Collection reference associated with task",
-            "deprecated" : true
-          },
-          "memberReference" : {
-            "type" : "string",
-            "description" : "Collection-member reference associated with task",
-            "deprecated" : true
+            "enum" : [ "STORE", "REMOVE" ]
           },
           "position" : {
             "type" : "integer",
@@ -26629,6 +27145,26 @@
           }
         }
       },
+      "ReactionStats" : {
+        "type" : "object",
+        "properties" : {
+          "countsByType" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "integer",
+              "description" : "Count of reactions by type",
+              "format" : "int32"
+            },
+            "description" : "Count of reactions by type"
+          },
+          "totalCount" : {
+            "type" : "integer",
+            "description" : "Total number of reactions",
+            "format" : "int32"
+          }
+        },
+        "description" : "Reaction statistics"
+      },
       "ReactionsCreateOperation_Payload" : {
         "required" : [ "data" ],
         "type" : "object",
@@ -26743,8 +27279,23 @@
           },
           "links" : {
             "$ref" : "#/components/schemas/Links"
+          },
+          "meta" : {
+            "$ref" : "#/components/schemas/Reactions_Multi_Resource_Data_Document_Meta"
           }
         }
+      },
+      "Reactions_Multi_Resource_Data_Document_Meta" : {
+        "type" : "object",
+        "properties" : {
+          "currentUserReaction" : {
+            "$ref" : "#/components/schemas/CurrentUserReaction"
+          },
+          "stats" : {
+            "$ref" : "#/components/schemas/ReactionStats"
+          }
+        },
+        "description" : "Reaction response metadata with stats and current user reaction"
       },
       "Reactions_Relationships" : {
         "properties" : {
@@ -27398,11 +27949,14 @@
         "properties" : {
           "data" : {
             "$ref" : "#/components/schemas/StripeConnectionsCreateOperation_Payload_Data"
+          },
+          "meta" : {
+            "$ref" : "#/components/schemas/StripeConnectionsCreateOperation_Payload_Meta"
           }
         }
       },
       "StripeConnectionsCreateOperation_Payload_Data" : {
-        "required" : [ "attributes", "type" ],
+        "required" : [ "type" ],
         "type" : "object",
         "properties" : {
           "attributes" : {
@@ -27415,6 +27969,31 @@
         }
       },
       "StripeConnectionsCreateOperation_Payload_Data_Attributes" : {
+        "type" : "object",
+        "properties" : {
+          "integrationType" : {
+            "type" : "string",
+            "description" : "Deprecated: use meta.integrationType instead.",
+            "example" : "REDIRECT",
+            "deprecated" : true,
+            "enum" : [ "REDIRECT", "EMBEDDED" ],
+            "default" : "REDIRECT"
+          },
+          "refreshUrl" : {
+            "type" : "string",
+            "description" : "Deprecated: use meta.refreshUrl instead.",
+            "example" : "https://www.tidal.com/artist/upload/onboarding",
+            "deprecated" : true
+          },
+          "returnUrl" : {
+            "type" : "string",
+            "description" : "Deprecated: use meta.returnUrl instead.",
+            "example" : "https://www.tidal.com/artist/124",
+            "deprecated" : true
+          }
+        }
+      },
+      "StripeConnectionsCreateOperation_Payload_Meta" : {
         "required" : [ "integrationType" ],
         "type" : "object",
         "properties" : {

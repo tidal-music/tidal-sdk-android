@@ -1,7 +1,19 @@
 # TIDAL API Surface Snapshot
-# Spec version: 1.1.32 | Endpoints: 263 | Models: 628
+# Spec version: 1.1.42 | Endpoints: 268 | Models: 639
 
 ## Endpoints
+
+GET /albumStatistics
+  params: filter[id]?: array[string], include?: array[string]
+  returns: AlbumStatistics_Multi_Resource_Data_Document
+
+GET /albumStatistics/{id}
+  params: id: string, include?: array[string]
+  returns: AlbumStatistics_Single_Resource_Data_Document
+
+GET /albumStatistics/{id}/relationships/owners
+  params: id: string, include?: array[string], page[cursor]?: string
+  returns: AlbumStatistics_Multi_Relationship_Data_Document
 
 GET /albums
   params: countryCode?: string, filter[barcodeId]?: array[string], filter[id]?: array[string], filter[owners.id]?: array[string], include?: array[string], page[cursor]?: string, shareCode?: string, sort?: array[enum[createdAt, -createdAt, title, -title]]
@@ -21,6 +33,10 @@ PATCH /albums/{id}
 DELETE /albums/{id}
   params: id: string
   returns: void
+
+GET /albums/{id}/relationships/albumStatistics
+  params: id: string, include?: array[string], shareCode?: string
+  returns: Albums_Single_Relationship_Data_Document
 
 GET /albums/{id}/relationships/artists
   params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string, shareCode?: string
@@ -265,6 +281,10 @@ GET /credits/{id}/relationships/artist
 GET /credits/{id}/relationships/category
   params: id: string, include?: array[string]
   returns: Credits_Single_Relationship_Data_Document
+
+GET /downloads
+  params: filter[id]?: array[string], include?: array[string]
+  returns: Downloads_Multi_Resource_Data_Document
 
 GET /downloads/{id}
   params: id: string, include?: array[string]
@@ -1038,6 +1058,35 @@ GET /videos/{id}/relationships/usageRules
 
 ## Models
 
+AlbumStatistics_Attributes
+  totalPlaybacks: integer(int32) (required)
+  uniqueListeners: integer(int32) (required)
+  numSales: integer(int32) (optional)
+
+AlbumStatistics_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[Resource_Identifier] (optional)
+  included: Included (optional)
+
+AlbumStatistics_Multi_Resource_Data_Document
+  data: array[AlbumStatistics_Resource_Object] (required)
+  links: Links (required)
+  included: Included (optional)
+
+AlbumStatistics_Relationships
+  owners: Multi_Relationship_Data_Document (optional)
+
+AlbumStatistics_Resource_Object
+  id: string (required)
+  type: string (required)
+  attributes: AlbumStatistics_Attributes (optional)
+  relationships: AlbumStatistics_Relationships (optional)
+
+AlbumStatistics_Single_Resource_Data_Document
+  data: AlbumStatistics_Resource_Object (required)
+  links: Links (required)
+  included: Included (optional)
+
 AlbumsCoverArtRelationshipUpdateOperation_Payload
   data: array[AlbumsCoverArtRelationshipUpdateOperation_Payload_Data] (required)
 
@@ -1166,6 +1215,7 @@ Albums_Multi_Resource_Data_Document
   included: Included (optional)
 
 Albums_Relationships
+  albumStatistics: Single_Relationship_Data_Document (optional)
   artists: Multi_Relationship_Data_Document (optional)
   coverArt: Multi_Relationship_Data_Document (optional)
   genres: Multi_Relationship_Data_Document (optional)
@@ -1198,6 +1248,10 @@ Albums_SuggestedCoverArts_Multi_Relationship_Data_Document
   links: Links (required)
   data: array[Albums_SuggestedCoverArts_Resource_Identifier] (optional)
   included: Included (optional)
+  meta: Albums_SuggestedCoverArts_Multi_Relationship_Data_Document_Meta (optional)
+
+Albums_SuggestedCoverArts_Multi_Relationship_Data_Document_Meta
+  status: enum[PENDING, PROCESSING, ERROR, OK] (optional)
 
 Albums_SuggestedCoverArts_Resource_Identifier
   id: string (required)
@@ -1694,6 +1748,11 @@ Credits_Single_Resource_Data_Document
   links: Links (required)
   included: Included (optional)
 
+CurrentUserReaction
+  createdAt: string(date-time) (optional)
+  emoji: string (optional)
+  id: string (optional)
+
 Default400ResponseBody
   errors: array[object] (required)
 
@@ -1726,7 +1785,7 @@ Download_Link_Meta
   requiredHeaders: array[string] (optional)
 
 Downloads_Attributes
-  downloadLink: Download_Link (optional)
+  downloadLinks: array[Download_Link] (optional)
 
 Downloads_Multi_Relationship_Data_Document
   links: Links (required)
@@ -1820,7 +1879,7 @@ DynamicModules_Single_Resource_Data_Document
   included: Included (optional)
 
 DynamicPages_Attributes
-  pageType: enum[HOME_STATIC, HOME_FOR_YOU, HOME_EDITORIAL, HOME_FREE, ARTIST] (required)
+  pageType: enum[HOME_STATIC, HOME_UPLOADS, HOME_EDITORIAL, HOME_FREE, ARTIST] (required)
   reportingId: string(uuid) (required)
 
 DynamicPages_Multi_Relationship_Data_Document
@@ -2148,12 +2207,10 @@ OfflineTasksUpdateOperation_Payload_Data_Attributes
   state: enum[IN_PROGRESS, FAILED, COMPLETED] (required)
 
 OfflineTasks_Attributes
-  action: enum[STORE_ITEM, REMOVE_ITEM, STORE_COLLECTION, REMOVE_COLLECTION] (required)
-  collectionReference: string (required)
-  memberReference: string (required)
-  position: integer(int32) (optional)
-  state: enum[PENDING, IN_PROGRESS, FAILED, COMPLETED] (optional)
-  volume: integer(int32) (optional)
+  action: enum[STORE, REMOVE] (required)
+  position: integer(int32) (required)
+  state: enum[PENDING, IN_PROGRESS, FAILED, COMPLETED] (required)
+  volume: integer(int32) (required)
 
 OfflineTasks_Multi_Relationship_Data_Document
   links: Links (required)
@@ -2525,6 +2582,10 @@ Providers_Single_Resource_Data_Document
   links: Links (required)
   included: Included (optional)
 
+ReactionStats
+  countsByType: object (optional)
+  totalCount: integer(int32) (optional)
+
 ReactionsCreateOperation_Payload
   data: ReactionsCreateOperation_Payload_Data (required)
 
@@ -2559,6 +2620,11 @@ Reactions_Multi_Resource_Data_Document
   data: array[Reactions_Resource_Object] (required)
   links: Links (required)
   included: Included (optional)
+  meta: Reactions_Multi_Resource_Data_Document_Meta (optional)
+
+Reactions_Multi_Resource_Data_Document_Meta
+  currentUserReaction: CurrentUserReaction (optional)
+  stats: ReactionStats (optional)
 
 Reactions_Relationships
   ownerProfiles: Multi_Relationship_Data_Document (optional)
@@ -2747,12 +2813,18 @@ Single_Relationship_Data_Document
 
 StripeConnectionsCreateOperation_Payload
   data: StripeConnectionsCreateOperation_Payload_Data (required)
+  meta: StripeConnectionsCreateOperation_Payload_Meta (optional)
 
 StripeConnectionsCreateOperation_Payload_Data
-  attributes: StripeConnectionsCreateOperation_Payload_Data_Attributes (required)
   type: enum[stripeConnections] (required)
+  attributes: StripeConnectionsCreateOperation_Payload_Data_Attributes (optional)
 
 StripeConnectionsCreateOperation_Payload_Data_Attributes
+  integrationType: enum[REDIRECT, EMBEDDED] (optional)
+  refreshUrl: string (optional)
+  returnUrl: string (optional)
+
+StripeConnectionsCreateOperation_Payload_Meta
   integrationType: enum[REDIRECT, EMBEDDED] (required)
   refreshUrl: string (optional)
   returnUrl: string (optional)

@@ -19,7 +19,7 @@ interface TracksMetadataStatus {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param filterId Track id (e.g. &#x60;75413016&#x60;) (optional)
+     * @param filterId List of track IDs (e.g. &#x60;75413016&#x60;) (optional)
      * @return [TracksMetadataStatusMultiResourceDataDocument]
      */
     @GET("tracksMetadataStatus")

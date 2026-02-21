@@ -6,6 +6,7 @@ import kotlinx.serialization.modules.polymorphic
 
 fun getOneOfSerializer() = SerializersModule {
     polymorphic(IncludedInner::class) {
+        subclass(AlbumStatisticsResourceObject::class, AlbumStatisticsResourceObject.serializer())
         subclass(AlbumsResourceObject::class, AlbumsResourceObject.serializer())
         subclass(AppreciationsResourceObject::class, AppreciationsResourceObject.serializer())
         subclass(

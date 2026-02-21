@@ -43,7 +43,7 @@ interface Tracks {
      *   Available options: albums, artists, credits, download, genres, lyrics, metadataStatus,
      *   owners, priceConfig, providers, radio, replacement, shares, similarTracks, sourceFile,
      *   suggestedTracks, trackStatistics, usageRules (optional)
-     * @param filterId Track id (e.g. &#x60;75413016&#x60;) (optional)
+     * @param filterId List of track IDs (e.g. &#x60;75413016&#x60;) (optional)
      * @param filterIsrc List of ISRCs. When a single ISRC is provided, pagination is supported and
      *   multiple tracks may be returned. When multiple ISRCs are provided, one track per ISRC is
      *   returned without pagination. (e.g. &#x60;QMJMT1701237&#x60;) (optional)
