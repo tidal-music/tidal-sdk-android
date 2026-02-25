@@ -20,7 +20,7 @@ data class ReactionsCreateOperationPayloadDataRelationshipsSubjectData(
     val type: ReactionsCreateOperationPayloadDataRelationshipsSubjectData.Type,
 ) {
 
-    /** Values: albums,tracks,artists,videos,playlists */
+    /** Values: albums,tracks,artists,videos,playlists,comments */
     @Serializable
     enum class Type(val value: kotlin.String) {
         @SerialName(value = "albums") albums("albums"),
@@ -28,5 +28,6 @@ data class ReactionsCreateOperationPayloadDataRelationshipsSubjectData(
         @SerialName(value = "artists") artists("artists"),
         @SerialName(value = "videos") videos("videos"),
         @SerialName(value = "playlists") playlists("playlists"),
+        @SerialName(value = "comments") comments("comments"),
     }
 }

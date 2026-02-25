@@ -28,7 +28,8 @@ interface UserCollectionFolders {
      *
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: items, owners (optional)
-     * @param filterId Folder Id (optional)
+     * @param filterId Folder Id (e.g.
+     *   &#x60;CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX&#x60;) (optional)
      * @return [UserCollectionFoldersMultiResourceDataDocument]
      */
     @GET("userCollectionFolders")
@@ -45,16 +46,24 @@ interface UserCollectionFolders {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Folder Id
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @return [Unit]
      */
     @DELETE("userCollectionFolders/{id}")
-    suspend fun userCollectionFoldersIdDelete(@Path("id") id: kotlin.String): Response<Unit>
+    suspend fun userCollectionFoldersIdDelete(
+        @Path("id") id: kotlin.String,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
+    ): Response<Unit>
 
     /**
      * Get single userCollectionFolder. Retrieves single userCollectionFolder by id. Responses:
@@ -86,18 +95,24 @@ interface UserCollectionFolders {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Folder Id
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @param userCollectionFoldersUpdateOperationPayload (optional)
      * @return [Unit]
      */
     @PATCH("userCollectionFolders/{id}")
     suspend fun userCollectionFoldersIdPatch(
         @Path("id") id: kotlin.String,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body
         userCollectionFoldersUpdateOperationPayload: UserCollectionFoldersUpdateOperationPayload? =
             null,
@@ -110,12 +125,17 @@ interface UserCollectionFolders {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Folder Id
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @param userCollectionFoldersItemsRelationshipRemoveOperationPayload (optional)
      * @return [Unit]
      */
@@ -126,6 +146,7 @@ interface UserCollectionFolders {
     )
     suspend fun userCollectionFoldersIdRelationshipsItemsDelete(
         @Path("id") id: kotlin.String,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body
         userCollectionFoldersItemsRelationshipRemoveOperationPayload:
             UserCollectionFoldersItemsRelationshipRemoveOperationPayload? =
@@ -179,18 +200,24 @@ interface UserCollectionFolders {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Folder Id
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @param userCollectionFoldersItemsRelationshipAddOperationPayload (optional)
      * @return [Unit]
      */
     @POST("userCollectionFolders/{id}/relationships/items")
     suspend fun userCollectionFoldersIdRelationshipsItemsPost(
         @Path("id") id: kotlin.String,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body
         userCollectionFoldersItemsRelationshipAddOperationPayload:
             UserCollectionFoldersItemsRelationshipAddOperationPayload? =
@@ -231,18 +258,24 @@ interface UserCollectionFolders {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @param userCollectionFoldersCreateOperationPayload (optional)
      * @return [UserCollectionFoldersSingleResourceDataDocument]
      */
     @POST("userCollectionFolders")
     suspend fun userCollectionFoldersPost(
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body
         userCollectionFoldersCreateOperationPayload: UserCollectionFoldersCreateOperationPayload? =
-            null
+            null,
     ): Response<UserCollectionFoldersSingleResourceDataDocument>
 }

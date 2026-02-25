@@ -117,7 +117,7 @@ interface DynamicModules {
         @Query("deviceType") deviceType: DeviceTypeDynamicModulesIdRelationshipsItemsGet,
         @Query("systemType") systemType: SystemTypeDynamicModulesIdRelationshipsItemsGet,
         @Query("clientVersion") clientVersion: kotlin.String,
-        @Query("refreshId") refreshId: kotlin.Long? = null,
+        @Query("refreshId") refreshId: kotlin.String? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("locale") locale: kotlin.String? = "en-US",

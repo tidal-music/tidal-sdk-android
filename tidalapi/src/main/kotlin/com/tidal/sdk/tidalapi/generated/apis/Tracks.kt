@@ -43,11 +43,11 @@ interface Tracks {
      *   Available options: albums, artists, credits, download, genres, lyrics, metadataStatus,
      *   owners, priceConfig, providers, radio, replacement, shares, similarTracks, sourceFile,
      *   suggestedTracks, trackStatistics, usageRules (optional)
-     * @param filterId Track id (e.g. &#x60;75413016&#x60;) (optional)
+     * @param filterId List of track IDs (e.g. &#x60;75413016&#x60;) (optional)
      * @param filterIsrc List of ISRCs. When a single ISRC is provided, pagination is supported and
      *   multiple tracks may be returned. When multiple ISRCs are provided, one track per ISRC is
      *   returned without pagination. (e.g. &#x60;QMJMT1701237&#x60;) (optional)
-     * @param filterOwnersId User id (e.g. &#x60;123456&#x60;) (optional)
+     * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [TracksMultiResourceDataDocument]
@@ -74,15 +74,24 @@ interface Tracks {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Track id
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @return [Unit]
      */
-    @DELETE("tracks/{id}") suspend fun tracksIdDelete(@Path("id") id: kotlin.String): Response<Unit>
+    @DELETE("tracks/{id}")
+    suspend fun tracksIdDelete(
+        @Path("id") id: kotlin.String,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
+    ): Response<Unit>
 
     /**
      * Get single track. Retrieves single track by id. Responses:
@@ -121,18 +130,24 @@ interface Tracks {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Track id
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @param tracksUpdateOperationPayload (optional)
      * @return [Unit]
      */
     @PATCH("tracks/{id}")
     suspend fun tracksIdPatch(
         @Path("id") id: kotlin.String,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body tracksUpdateOperationPayload: TracksUpdateOperationPayload? = null,
     ): Response<Unit>
 
@@ -174,18 +189,24 @@ interface Tracks {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Track id
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @param tracksAlbumsRelationshipUpdateOperationPayload (optional)
      * @return [Unit]
      */
     @PATCH("tracks/{id}/relationships/albums")
     suspend fun tracksIdRelationshipsAlbumsPatch(
         @Path("id") id: kotlin.String,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body
         tracksAlbumsRelationshipUpdateOperationPayload:
             TracksAlbumsRelationshipUpdateOperationPayload? =
@@ -713,16 +734,22 @@ interface Tracks {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @param tracksCreateOperationPayload (optional)
      * @return [TracksSingleResourceDataDocument]
      */
     @POST("tracks")
     suspend fun tracksPost(
-        @Body tracksCreateOperationPayload: TracksCreateOperationPayload? = null
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
+        @Body tracksCreateOperationPayload: TracksCreateOperationPayload? = null,
     ): Response<TracksSingleResourceDataDocument>
 }

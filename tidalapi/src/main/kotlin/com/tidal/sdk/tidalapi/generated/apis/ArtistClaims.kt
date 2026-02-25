@@ -25,7 +25,7 @@ interface ArtistClaims {
      *
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: acceptedArtists, owners, recommendedArtists (optional)
-     * @param filterOwnersId User id (e.g. &#x60;123456&#x60;) (optional)
+     * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user (optional)
      * @return [ArtistClaimsMultiResourceDataDocument]
      */
     @GET("artistClaims")
@@ -42,16 +42,24 @@ interface ArtistClaims {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Artist claim id
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @return [Unit]
      */
     @DELETE("artistClaims/{id}")
-    suspend fun artistClaimsIdDelete(@Path("id") id: kotlin.String): Response<Unit>
+    suspend fun artistClaimsIdDelete(
+        @Path("id") id: kotlin.String,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
+    ): Response<Unit>
 
     /**
      * Get single artistClaim. Retrieves single artistClaim by id. Responses:
@@ -83,13 +91,18 @@ interface ArtistClaims {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Artist claim id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @param artistClaimsUpdateOperationPayload (optional)
      * @return [Unit]
      */
@@ -97,6 +110,7 @@ interface ArtistClaims {
     suspend fun artistClaimsIdPatch(
         @Path("id") id: kotlin.String,
         @Query("countryCode") countryCode: kotlin.String? = null,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body artistClaimsUpdateOperationPayload: ArtistClaimsUpdateOperationPayload? = null,
     ): Response<Unit>
 
@@ -135,13 +149,18 @@ interface ArtistClaims {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Artist claim id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @param artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload (optional)
      * @return [Unit]
      */
@@ -149,6 +168,7 @@ interface ArtistClaims {
     suspend fun artistClaimsIdRelationshipsAcceptedArtistsPatch(
         @Path("id") id: kotlin.String,
         @Query("countryCode") countryCode: kotlin.String? = null,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body
         artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload:
             ArtistClaimsAcceptedArtistsRelationshipUpdateOperationPayload? =
@@ -217,18 +237,24 @@ interface ArtistClaims {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @param artistClaimsCreateOperationPayload (optional)
      * @return [ArtistClaimsSingleResourceDataDocument]
      */
     @POST("artistClaims")
     suspend fun artistClaimsPost(
         @Query("countryCode") countryCode: kotlin.String? = null,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body artistClaimsCreateOperationPayload: ArtistClaimsCreateOperationPayload? = null,
     ): Response<ArtistClaimsSingleResourceDataDocument>
 }

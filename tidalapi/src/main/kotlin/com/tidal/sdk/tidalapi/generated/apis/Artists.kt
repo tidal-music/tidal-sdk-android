@@ -36,7 +36,7 @@ interface Artists {
      *   roles, similarArtists, trackProviders, tracks, videos (optional)
      * @param filterHandle Artist handle (e.g. &#x60;jayz&#x60;) (optional)
      * @param filterId Artist id (e.g. &#x60;1566&#x60;) (optional)
-     * @param filterOwnersId User id (e.g. &#x60;123456&#x60;) (optional)
+     * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user (optional)
      * @return [ArtistsMultiResourceDataDocument]
      */
     @GET("artists")
@@ -85,18 +85,24 @@ interface Artists {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Artist id
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @param artistsUpdateOperationPayload (optional)
      * @return [Unit]
      */
     @PATCH("artists/{id}")
     suspend fun artistsIdPatch(
         @Path("id") id: kotlin.String,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body artistsUpdateOperationPayload: ArtistsUpdateOperationPayload? = null,
     ): Response<Unit>
 
@@ -193,18 +199,24 @@ interface Artists {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Artist id
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @param artistsFollowingRelationshipRemoveOperationPayload (optional)
      * @return [Unit]
      */
     @HTTP(method = "DELETE", path = "artists/{id}/relationships/following", hasBody = true)
     suspend fun artistsIdRelationshipsFollowingDelete(
         @Path("id") id: kotlin.String,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body
         artistsFollowingRelationshipRemoveOperationPayload:
             ArtistsFollowingRelationshipRemoveOperationPayload? =
@@ -248,13 +260,18 @@ interface Artists {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Artist id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @param artistsFollowingRelationshipAddOperationPayload (optional)
      * @return [Unit]
      */
@@ -262,6 +279,7 @@ interface Artists {
     suspend fun artistsIdRelationshipsFollowingPost(
         @Path("id") id: kotlin.String,
         @Query("countryCode") countryCode: kotlin.String? = null,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body
         artistsFollowingRelationshipAddOperationPayload:
             ArtistsFollowingRelationshipAddOperationPayload? =
@@ -332,18 +350,24 @@ interface Artists {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Artist id
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @param artistsProfileArtRelationshipUpdateOperationPayload (optional)
      * @return [Unit]
      */
     @PATCH("artists/{id}/relationships/profileArt")
     suspend fun artistsIdRelationshipsProfileArtPatch(
         @Path("id") id: kotlin.String,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body
         artistsProfileArtRelationshipUpdateOperationPayload:
             ArtistsProfileArtRelationshipUpdateOperationPayload? =
@@ -539,16 +563,22 @@ interface Artists {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @param artistsCreateOperationPayload (optional)
      * @return [ArtistsSingleResourceDataDocument]
      */
     @POST("artists")
     suspend fun artistsPost(
-        @Body artistsCreateOperationPayload: ArtistsCreateOperationPayload? = null
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
+        @Body artistsCreateOperationPayload: ArtistsCreateOperationPayload? = null,
     ): Response<ArtistsSingleResourceDataDocument>
 }

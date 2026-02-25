@@ -1,13 +1,26 @@
 # TIDAL API Surface Snapshot
-# Spec version: 1.1.32 | Endpoints: 263 | Models: 628
+# Spec version: 1.1.48 | Endpoints: 275 | Models: 659
 
 ## Endpoints
+
+GET /albumStatistics
+  params: filter[id]?: array[string], include?: array[string]
+  returns: AlbumStatistics_Multi_Resource_Data_Document
+
+GET /albumStatistics/{id}
+  params: id: string, include?: array[string]
+  returns: AlbumStatistics_Single_Resource_Data_Document
+
+GET /albumStatistics/{id}/relationships/owners
+  params: id: string, include?: array[string], page[cursor]?: string
+  returns: AlbumStatistics_Multi_Relationship_Data_Document
 
 GET /albums
   params: countryCode?: string, filter[barcodeId]?: array[string], filter[id]?: array[string], filter[owners.id]?: array[string], include?: array[string], page[cursor]?: string, shareCode?: string, sort?: array[enum[createdAt, -createdAt, title, -title]]
   returns: Albums_Multi_Resource_Data_Document
 
 POST /albums
+  params: ??: any
   returns: Albums_Single_Resource_Data_Document
 
 GET /albums/{id}
@@ -15,12 +28,16 @@ GET /albums/{id}
   returns: Albums_Single_Resource_Data_Document
 
 PATCH /albums/{id}
-  params: id: string
+  params: ??: any, id: string
   returns: void
 
 DELETE /albums/{id}
-  params: id: string
+  params: ??: any, id: string
   returns: void
+
+GET /albums/{id}/relationships/albumStatistics
+  params: id: string, include?: array[string], shareCode?: string
+  returns: Albums_Single_Relationship_Data_Document
 
 GET /albums/{id}/relationships/artists
   params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string, shareCode?: string
@@ -31,7 +48,7 @@ GET /albums/{id}/relationships/coverArt
   returns: Albums_Multi_Relationship_Data_Document
 
 PATCH /albums/{id}/relationships/coverArt
-  params: id: string
+  params: ??: any, id: string
   returns: void
 
 GET /albums/{id}/relationships/genres
@@ -43,7 +60,7 @@ GET /albums/{id}/relationships/items
   returns: Albums_Items_Multi_Relationship_Data_Document
 
 PATCH /albums/{id}/relationships/items
-  params: id: string
+  params: ??: any, id: string
   returns: void
 
 GET /albums/{id}/relationships/owners
@@ -58,10 +75,6 @@ GET /albums/{id}/relationships/providers
   params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string, shareCode?: string
   returns: Albums_Multi_Relationship_Data_Document
 
-GET /albums/{id}/relationships/replacement
-  params: countryCode?: string, id: string, include?: array[string], shareCode?: string
-  returns: Albums_Single_Relationship_Data_Document
-
 GET /albums/{id}/relationships/similarAlbums
   params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string, shareCode?: string
   returns: Albums_Multi_Relationship_Data_Document
@@ -75,6 +88,7 @@ GET /albums/{id}/relationships/usageRules
   returns: Albums_Single_Relationship_Data_Document
 
 POST /appreciations
+  params: ??: any
   returns: Appreciations_Single_Resource_Data_Document
 
 GET /artistBiographies
@@ -86,7 +100,7 @@ GET /artistBiographies/{id}
   returns: ArtistBiographies_Single_Resource_Data_Document
 
 PATCH /artistBiographies/{id}
-  params: id: string
+  params: ??: any, id: string
   returns: void
 
 GET /artistBiographies/{id}/relationships/owners
@@ -98,7 +112,7 @@ GET /artistClaims
   returns: ArtistClaims_Multi_Resource_Data_Document
 
 POST /artistClaims
-  params: countryCode?: string
+  params: ??: any, countryCode?: string
   returns: ArtistClaims_Single_Resource_Data_Document
 
 GET /artistClaims/{id}
@@ -106,11 +120,11 @@ GET /artistClaims/{id}
   returns: ArtistClaims_Single_Resource_Data_Document
 
 PATCH /artistClaims/{id}
-  params: countryCode?: string, id: string
+  params: ??: any, countryCode?: string, id: string
   returns: void
 
 DELETE /artistClaims/{id}
-  params: id: string
+  params: ??: any, id: string
   returns: void
 
 GET /artistClaims/{id}/relationships/acceptedArtists
@@ -118,7 +132,7 @@ GET /artistClaims/{id}/relationships/acceptedArtists
   returns: ArtistClaims_Multi_Relationship_Data_Document
 
 PATCH /artistClaims/{id}/relationships/acceptedArtists
-  params: countryCode?: string, id: string
+  params: ??: any, countryCode?: string, id: string
   returns: void
 
 GET /artistClaims/{id}/relationships/owners
@@ -142,6 +156,7 @@ GET /artists
   returns: Artists_Multi_Resource_Data_Document
 
 POST /artists
+  params: ??: any
   returns: Artists_Single_Resource_Data_Document
 
 GET /artists/{id}
@@ -149,7 +164,7 @@ GET /artists/{id}
   returns: Artists_Single_Resource_Data_Document
 
 PATCH /artists/{id}
-  params: id: string
+  params: ??: any, id: string
   returns: void
 
 GET /artists/{id}/relationships/albums
@@ -169,11 +184,11 @@ GET /artists/{id}/relationships/following
   returns: Artists_Following_Multi_Relationship_Data_Document
 
 POST /artists/{id}/relationships/following
-  params: countryCode?: string, id: string
+  params: ??: any, countryCode?: string, id: string
   returns: void
 
 DELETE /artists/{id}/relationships/following
-  params: id: string
+  params: ??: any, id: string
   returns: void
 
 GET /artists/{id}/relationships/owners
@@ -185,7 +200,7 @@ GET /artists/{id}/relationships/profileArt
   returns: Artists_Multi_Relationship_Data_Document
 
 PATCH /artists/{id}/relationships/profileArt
-  params: id: string
+  params: ??: any, id: string
   returns: void
 
 GET /artists/{id}/relationships/radio
@@ -217,6 +232,7 @@ GET /artworks
   returns: Artworks_Multi_Resource_Data_Document
 
 POST /artworks
+  params: ??: any
   returns: Artworks_Single_Resource_Data_Document
 
 GET /artworks/{id}
@@ -227,11 +243,44 @@ GET /artworks/{id}/relationships/owners
   params: id: string, include?: array[string], page[cursor]?: string
   returns: Artworks_Multi_Relationship_Data_Document
 
+GET /comments
+  params: filter[id]?: array[string], filter[parentComment.id]?: array[string], filter[subject.id]?: array[string], filter[subject.type]?: array[enum[albums, tracks]], include?: array[string], page[cursor]?: string, sort?: array[enum[createdAt, -createdAt, likeCount, -likeCount, replyCount, -replyCount, startTime, -startTime]]
+  returns: Comments_Multi_Resource_Data_Document
+
+POST /comments
+  params: ??: any
+  returns: Comments_Single_Resource_Data_Document
+
+GET /comments/{id}
+  params: id: string, include?: array[string]
+  returns: Comments_Single_Resource_Data_Document
+
+PATCH /comments/{id}
+  params: ??: any, id: string
+  returns: void
+
+DELETE /comments/{id}
+  params: ??: any, id: string
+  returns: void
+
+GET /comments/{id}/relationships/ownerProfiles
+  params: id: string, include?: array[string], page[cursor]?: string
+  returns: Comments_Multi_Relationship_Data_Document
+
+GET /comments/{id}/relationships/owners
+  params: id: string, include?: array[string], page[cursor]?: string
+  returns: Comments_Multi_Relationship_Data_Document
+
+GET /comments/{id}/relationships/parentComment
+  params: id: string, include?: array[string]
+  returns: Comments_Single_Relationship_Data_Document
+
 GET /contentClaims
   params: filter[owners.id]?: array[string], include?: array[string]
   returns: ContentClaims_Multi_Resource_Data_Document
 
 POST /contentClaims
+  params: ??: any
   returns: ContentClaims_Single_Resource_Data_Document
 
 GET /contentClaims/{id}
@@ -266,6 +315,10 @@ GET /credits/{id}/relationships/category
   params: id: string, include?: array[string]
   returns: Credits_Single_Relationship_Data_Document
 
+GET /downloads
+  params: filter[id]?: array[string], include?: array[string]
+  returns: Downloads_Multi_Resource_Data_Document
+
 GET /downloads/{id}
   params: id: string, include?: array[string]
   returns: Downloads_Single_Resource_Data_Document
@@ -287,15 +340,15 @@ GET /dynamicModules
   returns: DynamicModules_Multi_Resource_Data_Document
 
 GET /dynamicModules/{id}/relationships/items
-  params: clientVersion: string, countryCode?: string, deviceType: enum[BROWSER, CAR, DESKTOP, PHONE, TABLET, TV], id: string, include?: array[string], locale?: string, page[cursor]?: string, refreshId?: integer(int64), systemType: enum[ANDROID, DESKTOP, TESLA, IOS, WEB]
+  params: clientVersion: string, countryCode?: string, deviceType: enum[BROWSER, CAR, DESKTOP, PHONE, TABLET, TV], id: string, include?: array[string], locale?: string, page[cursor]?: string, refreshId?: string, systemType: enum[ANDROID, DESKTOP, TESLA, IOS, WEB]
   returns: DynamicModules_Multi_Relationship_Data_Document
 
 GET /dynamicPages
-  params: clientVersion: string, countryCode?: string, deviceType: enum[BROWSER, CAR, DESKTOP, PHONE, TABLET, TV], filter[pageType]?: array[string], filter[subject.id]?: array[string], include?: array[string], locale?: string, refreshId?: integer(int64), systemType: enum[ANDROID, DESKTOP, TESLA, IOS, WEB]
+  params: clientVersion: string, countryCode?: string, deviceType: enum[BROWSER, CAR, DESKTOP, PHONE, TABLET, TV], filter[pageType]?: array[string], filter[subject.id]?: array[string], include?: array[string], locale?: string, refreshId?: string, systemType: enum[ANDROID, DESKTOP, TESLA, IOS, WEB]
   returns: DynamicPages_Multi_Resource_Data_Document
 
 GET /dynamicPages/{id}/relationships/dynamicModules
-  params: clientVersion: string, countryCode?: string, deviceType: enum[BROWSER, CAR, DESKTOP, PHONE, TABLET, TV], id: string, include?: array[string], locale?: string, page[cursor]?: string, refreshId?: integer(int64), systemType: enum[ANDROID, DESKTOP, TESLA, IOS, WEB]
+  params: clientVersion: string, countryCode?: string, deviceType: enum[BROWSER, CAR, DESKTOP, PHONE, TABLET, TV], id: string, include?: array[string], locale?: string, page[cursor]?: string, refreshId?: string, systemType: enum[ANDROID, DESKTOP, TESLA, IOS, WEB]
   returns: DynamicPages_Multi_Relationship_Data_Document
 
 GET /dynamicPages/{id}/relationships/subject
@@ -315,6 +368,7 @@ GET /installations
   returns: Installations_Multi_Resource_Data_Document
 
 POST /installations
+  params: ??: any
   returns: Installations_Single_Resource_Data_Document
 
 GET /installations/{id}
@@ -326,11 +380,11 @@ GET /installations/{id}/relationships/offlineInventory
   returns: Installations_OfflineInventory_Multi_Relationship_Data_Document
 
 POST /installations/{id}/relationships/offlineInventory
-  params: id: string
+  params: ??: any, id: string
   returns: void
 
 DELETE /installations/{id}/relationships/offlineInventory
-  params: id: string
+  params: ??: any, id: string
   returns: void
 
 GET /installations/{id}/relationships/owners
@@ -342,6 +396,7 @@ GET /lyrics
   returns: Lyrics_Multi_Resource_Data_Document
 
 POST /lyrics
+  params: ??: any
   returns: Lyrics_Single_Resource_Data_Document
 
 GET /lyrics/{id}
@@ -349,11 +404,11 @@ GET /lyrics/{id}
   returns: Lyrics_Single_Resource_Data_Document
 
 PATCH /lyrics/{id}
-  params: id: string
+  params: ??: any, id: string
   returns: void
 
 DELETE /lyrics/{id}
-  params: id: string
+  params: ??: any, id: string
   returns: void
 
 GET /lyrics/{id}/relationships/owners
@@ -365,6 +420,7 @@ GET /lyrics/{id}/relationships/track
   returns: Lyrics_Single_Relationship_Data_Document
 
 POST /manualArtistClaims
+  params: ??: any
   returns: ManualArtistClaims_Single_Resource_Data_Document
 
 GET /offlineTasks
@@ -376,7 +432,7 @@ GET /offlineTasks/{id}
   returns: OfflineTasks_Single_Resource_Data_Document
 
 PATCH /offlineTasks/{id}
-  params: id: string
+  params: ??: any, id: string
   returns: void
 
 GET /offlineTasks/{id}/relationships/collection
@@ -396,6 +452,7 @@ GET /playQueues
   returns: PlayQueues_Multi_Resource_Data_Document
 
 POST /playQueues
+  params: ??: any
   returns: PlayQueues_Single_Resource_Data_Document
 
 GET /playQueues/{id}
@@ -403,11 +460,11 @@ GET /playQueues/{id}
   returns: PlayQueues_Single_Resource_Data_Document
 
 PATCH /playQueues/{id}
-  params: id: string
+  params: ??: any, id: string
   returns: void
 
 DELETE /playQueues/{id}
-  params: id: string
+  params: ??: any, id: string
   returns: void
 
 GET /playQueues/{id}/relationships/current
@@ -415,7 +472,7 @@ GET /playQueues/{id}/relationships/current
   returns: PlayQueues_Current_Single_Relationship_Data_Document
 
 PATCH /playQueues/{id}/relationships/current
-  params: id: string
+  params: ??: any, id: string
   returns: void
 
 GET /playQueues/{id}/relationships/future
@@ -423,15 +480,15 @@ GET /playQueues/{id}/relationships/future
   returns: PlayQueues_Future_Multi_Relationship_Data_Document
 
 POST /playQueues/{id}/relationships/future
-  params: id: string
+  params: ??: any, id: string
   returns: void
 
 PATCH /playQueues/{id}/relationships/future
-  params: id: string
+  params: ??: any, id: string
   returns: void
 
 DELETE /playQueues/{id}/relationships/future
-  params: id: string
+  params: ??: any, id: string
   returns: void
 
 GET /playQueues/{id}/relationships/owners
@@ -447,7 +504,7 @@ GET /playlists
   returns: Playlists_Multi_Resource_Data_Document
 
 POST /playlists
-  params: countryCode?: string
+  params: ??: any, countryCode?: string
   returns: Playlists_Single_Resource_Data_Document
 
 GET /playlists/{id}
@@ -455,11 +512,11 @@ GET /playlists/{id}
   returns: Playlists_Single_Resource_Data_Document
 
 PATCH /playlists/{id}
-  params: countryCode?: string, id: string
+  params: ??: any, countryCode?: string, id: string
   returns: void
 
 DELETE /playlists/{id}
-  params: id: string
+  params: ??: any, id: string
   returns: void
 
 GET /playlists/{id}/relationships/coverArt
@@ -467,7 +524,7 @@ GET /playlists/{id}/relationships/coverArt
   returns: Playlists_Multi_Relationship_Data_Document
 
 PATCH /playlists/{id}/relationships/coverArt
-  params: id: string
+  params: ??: any, id: string
   returns: void
 
 GET /playlists/{id}/relationships/items
@@ -475,15 +532,15 @@ GET /playlists/{id}/relationships/items
   returns: Playlists_Items_Multi_Relationship_Data_Document
 
 POST /playlists/{id}/relationships/items
-  params: countryCode?: string, id: string
+  params: ??: any, countryCode?: string, id: string
   returns: void
 
 PATCH /playlists/{id}/relationships/items
-  params: id: string
+  params: ??: any, id: string
   returns: void
 
 DELETE /playlists/{id}/relationships/items
-  params: id: string
+  params: ??: any, id: string
   returns: void
 
 GET /playlists/{id}/relationships/ownerProfiles
@@ -499,6 +556,7 @@ GET /priceConfigurations
   returns: PriceConfigurations_Multi_Resource_Data_Document
 
 POST /priceConfigurations
+  params: ??: any
   returns: PriceConfigurations_Single_Resource_Data_Document
 
 GET /priceConfigurations/{id}
@@ -514,14 +572,15 @@ GET /providers/{id}
   returns: Providers_Single_Resource_Data_Document
 
 GET /reactions
-  params: filter[emoji]?: array[string], filter[subject.id]?: array[string], filter[subject.type]?: array[enum[albums, tracks, artists, videos, playlists]], include?: array[string], page[cursor]?: string, stats?: enum[ALL, COUNTS_BY_TYPE, TOTAL_COUNT], statsOnly?: boolean, viewerContext?: string
+  params: filter[emoji]?: array[string], filter[subject.id]?: array[string], filter[subject.type]?: array[enum[albums, tracks, artists, videos, playlists, comments]], include?: array[string], page[cursor]?: string, stats?: enum[ALL, COUNTS_BY_TYPE, TOTAL_COUNT], statsOnly?: boolean, viewerContext?: string
   returns: Reactions_Multi_Resource_Data_Document
 
 POST /reactions
+  params: ??: any
   returns: Reactions_Single_Resource_Data_Document
 
 DELETE /reactions/{id}
-  params: id: string
+  params: ??: any, id: string
   returns: void
 
 GET /reactions/{id}/relationships/ownerProfiles
@@ -533,6 +592,7 @@ GET /reactions/{id}/relationships/owners
   returns: Reactions_Multi_Relationship_Data_Document
 
 POST /savedShares
+  params: ??: any
   returns: SavedShares_Single_Resource_Data_Document
 
 GET /searchResults/{id}
@@ -576,6 +636,7 @@ GET /shares
   returns: Shares_Multi_Resource_Data_Document
 
 POST /shares
+  params: ??: any
   returns: Shares_Single_Resource_Data_Document
 
 GET /shares/{id}
@@ -595,7 +656,7 @@ GET /stripeConnections
   returns: StripeConnections_Multi_Resource_Data_Document
 
 POST /stripeConnections
-  params: countryCode?: string
+  params: ??: any, countryCode?: string
   returns: StripeConnections_Single_Resource_Data_Document
 
 GET /stripeConnections/{id}/relationships/owners
@@ -623,6 +684,7 @@ GET /trackSourceFiles
   returns: TrackSourceFiles_Multi_Resource_Data_Document
 
 POST /trackSourceFiles
+  params: ??: any
   returns: TrackSourceFiles_Single_Resource_Data_Document
 
 GET /trackSourceFiles/{id}
@@ -650,6 +712,7 @@ GET /tracks
   returns: Tracks_Multi_Resource_Data_Document
 
 POST /tracks
+  params: ??: any
   returns: Tracks_Single_Resource_Data_Document
 
 GET /tracks/{id}
@@ -657,11 +720,11 @@ GET /tracks/{id}
   returns: Tracks_Single_Resource_Data_Document
 
 PATCH /tracks/{id}
-  params: id: string
+  params: ??: any, id: string
   returns: void
 
 DELETE /tracks/{id}
-  params: id: string
+  params: ??: any, id: string
   returns: void
 
 GET /tracks/{id}/relationships/albums
@@ -669,7 +732,7 @@ GET /tracks/{id}/relationships/albums
   returns: Tracks_Multi_Relationship_Data_Document
 
 PATCH /tracks/{id}/relationships/albums
-  params: id: string
+  params: ??: any, id: string
   returns: void
 
 GET /tracks/{id}/relationships/artists
@@ -753,6 +816,7 @@ GET /usageRules
   returns: UsageRules_Multi_Resource_Data_Document
 
 POST /usageRules
+  params: ??: any
   returns: UsageRules_Single_Resource_Data_Document
 
 GET /usageRules/{id}
@@ -768,11 +832,11 @@ GET /userCollectionAlbums/{id}/relationships/items
   returns: UserCollectionAlbums_Items_Multi_Relationship_Data_Document
 
 POST /userCollectionAlbums/{id}/relationships/items
-  params: countryCode?: string, id: string
+  params: ??: any, countryCode?: string, id: string
   returns: void
 
 DELETE /userCollectionAlbums/{id}/relationships/items
-  params: id: string
+  params: ??: any, id: string
   returns: void
 
 GET /userCollectionAlbums/{id}/relationships/owners
@@ -788,11 +852,11 @@ GET /userCollectionArtists/{id}/relationships/items
   returns: UserCollectionArtists_Items_Multi_Relationship_Data_Document
 
 POST /userCollectionArtists/{id}/relationships/items
-  params: countryCode?: string, id: string
+  params: ??: any, countryCode?: string, id: string
   returns: void
 
 DELETE /userCollectionArtists/{id}/relationships/items
-  params: id: string
+  params: ??: any, id: string
   returns: void
 
 GET /userCollectionArtists/{id}/relationships/owners
@@ -804,6 +868,7 @@ GET /userCollectionFolders
   returns: UserCollectionFolders_Multi_Resource_Data_Document
 
 POST /userCollectionFolders
+  params: ??: any
   returns: UserCollectionFolders_Single_Resource_Data_Document
 
 GET /userCollectionFolders/{id}
@@ -811,11 +876,11 @@ GET /userCollectionFolders/{id}
   returns: UserCollectionFolders_Single_Resource_Data_Document
 
 PATCH /userCollectionFolders/{id}
-  params: id: string
+  params: ??: any, id: string
   returns: void
 
 DELETE /userCollectionFolders/{id}
-  params: id: string
+  params: ??: any, id: string
   returns: void
 
 GET /userCollectionFolders/{id}/relationships/items
@@ -823,11 +888,11 @@ GET /userCollectionFolders/{id}/relationships/items
   returns: UserCollectionFolders_Items_Multi_Relationship_Data_Document
 
 POST /userCollectionFolders/{id}/relationships/items
-  params: id: string
+  params: ??: any, id: string
   returns: void
 
 DELETE /userCollectionFolders/{id}/relationships/items
-  params: id: string
+  params: ??: any, id: string
   returns: void
 
 GET /userCollectionFolders/{id}/relationships/owners
@@ -843,11 +908,11 @@ GET /userCollectionPlaylists/{id}/relationships/items
   returns: UserCollectionPlaylists_Items_Multi_Relationship_Data_Document
 
 POST /userCollectionPlaylists/{id}/relationships/items
-  params: id: string
+  params: ??: any, id: string
   returns: void
 
 DELETE /userCollectionPlaylists/{id}/relationships/items
-  params: id: string
+  params: ??: any, id: string
   returns: void
 
 GET /userCollectionPlaylists/{id}/relationships/owners
@@ -863,11 +928,11 @@ GET /userCollectionTracks/{id}/relationships/items
   returns: UserCollectionTracks_Items_Multi_Relationship_Data_Document
 
 POST /userCollectionTracks/{id}/relationships/items
-  params: countryCode?: string, id: string
+  params: ??: any, countryCode?: string, id: string
   returns: void
 
 DELETE /userCollectionTracks/{id}/relationships/items
-  params: id: string
+  params: ??: any, id: string
   returns: void
 
 GET /userCollectionTracks/{id}/relationships/owners
@@ -883,11 +948,11 @@ GET /userCollectionVideos/{id}/relationships/items
   returns: UserCollectionVideos_Items_Multi_Relationship_Data_Document
 
 POST /userCollectionVideos/{id}/relationships/items
-  params: countryCode?: string, id: string
+  params: ??: any, countryCode?: string, id: string
   returns: void
 
 DELETE /userCollectionVideos/{id}/relationships/items
-  params: id: string
+  params: ??: any, id: string
   returns: void
 
 GET /userCollectionVideos/{id}/relationships/owners
@@ -903,11 +968,11 @@ GET /userCollections/{id}/relationships/albums
   returns: UserCollections_Albums_Multi_Relationship_Data_Document
 
 POST /userCollections/{id}/relationships/albums
-  params: countryCode?: string, id: string
+  params: ??: any, countryCode?: string, id: string
   returns: void
 
 DELETE /userCollections/{id}/relationships/albums
-  params: id: string
+  params: ??: any, id: string
   returns: void
 
 GET /userCollections/{id}/relationships/artists
@@ -915,11 +980,11 @@ GET /userCollections/{id}/relationships/artists
   returns: UserCollections_Artists_Multi_Relationship_Data_Document
 
 POST /userCollections/{id}/relationships/artists
-  params: countryCode?: string, id: string
+  params: ??: any, countryCode?: string, id: string
   returns: void
 
 DELETE /userCollections/{id}/relationships/artists
-  params: id: string
+  params: ??: any, id: string
   returns: void
 
 GET /userCollections/{id}/relationships/owners
@@ -931,11 +996,11 @@ GET /userCollections/{id}/relationships/playlists
   returns: UserCollections_Playlists_Multi_Relationship_Data_Document
 
 POST /userCollections/{id}/relationships/playlists
-  params: id: string
+  params: ??: any, id: string
   returns: void
 
 DELETE /userCollections/{id}/relationships/playlists
-  params: id: string
+  params: ??: any, id: string
   returns: void
 
 GET /userCollections/{id}/relationships/tracks
@@ -943,11 +1008,11 @@ GET /userCollections/{id}/relationships/tracks
   returns: UserCollections_Tracks_Multi_Relationship_Data_Document
 
 POST /userCollections/{id}/relationships/tracks
-  params: countryCode?: string, id: string
+  params: ??: any, countryCode?: string, id: string
   returns: void
 
 DELETE /userCollections/{id}/relationships/tracks
-  params: id: string
+  params: ??: any, id: string
   returns: void
 
 GET /userCollections/{id}/relationships/videos
@@ -955,11 +1020,11 @@ GET /userCollections/{id}/relationships/videos
   returns: UserCollections_Videos_Multi_Relationship_Data_Document
 
 POST /userCollections/{id}/relationships/videos
-  params: countryCode?: string, id: string
+  params: ??: any, countryCode?: string, id: string
   returns: void
 
 DELETE /userCollections/{id}/relationships/videos
-  params: id: string
+  params: ??: any, id: string
   returns: void
 
 GET /userEntitlements/{id}
@@ -987,9 +1052,11 @@ GET /userRecommendations/{id}/relationships/newArrivalMixes
   returns: UserRecommendations_Multi_Relationship_Data_Document
 
 POST /userReports
+  params: ??: any
   returns: UserReports_Single_Resource_Data_Document
 
-GET /users/me
+GET /users/{id}
+  params: id: string
   returns: Users_Single_Resource_Data_Document
 
 GET /videos
@@ -1037,6 +1104,35 @@ GET /videos/{id}/relationships/usageRules
   returns: Videos_Single_Relationship_Data_Document
 
 ## Models
+
+AlbumStatistics_Attributes
+  totalPlaybacks: integer(int32) (required)
+  uniqueListeners: integer(int32) (required)
+  numSales: integer(int32) (optional)
+
+AlbumStatistics_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[Resource_Identifier] (optional)
+  included: Included (optional)
+
+AlbumStatistics_Multi_Resource_Data_Document
+  data: array[AlbumStatistics_Resource_Object] (required)
+  links: Links (required)
+  included: Included (optional)
+
+AlbumStatistics_Relationships
+  owners: Multi_Relationship_Data_Document (optional)
+
+AlbumStatistics_Resource_Object
+  id: string (required)
+  type: string (required)
+  attributes: AlbumStatistics_Attributes (optional)
+  relationships: AlbumStatistics_Relationships (optional)
+
+AlbumStatistics_Single_Resource_Data_Document
+  data: AlbumStatistics_Resource_Object (required)
+  links: Links (required)
+  included: Included (optional)
 
 AlbumsCoverArtRelationshipUpdateOperation_Payload
   data: array[AlbumsCoverArtRelationshipUpdateOperation_Payload_Data] (required)
@@ -1166,6 +1262,7 @@ Albums_Multi_Resource_Data_Document
   included: Included (optional)
 
 Albums_Relationships
+  albumStatistics: Single_Relationship_Data_Document (optional)
   artists: Multi_Relationship_Data_Document (optional)
   coverArt: Multi_Relationship_Data_Document (optional)
   genres: Multi_Relationship_Data_Document (optional)
@@ -1173,7 +1270,6 @@ Albums_Relationships
   owners: Multi_Relationship_Data_Document (optional)
   priceConfig: Single_Relationship_Data_Document (optional)
   providers: Multi_Relationship_Data_Document (optional)
-  replacement: Single_Relationship_Data_Document (optional)
   similarAlbums: Multi_Relationship_Data_Document (optional)
   suggestedCoverArts: Albums_SuggestedCoverArts_Multi_Relationship_Data_Document (optional)
   usageRules: Single_Relationship_Data_Document (optional)
@@ -1198,6 +1294,10 @@ Albums_SuggestedCoverArts_Multi_Relationship_Data_Document
   links: Links (required)
   data: array[Albums_SuggestedCoverArts_Resource_Identifier] (optional)
   included: Included (optional)
+  meta: Albums_SuggestedCoverArts_Multi_Relationship_Data_Document_Meta (optional)
+
+Albums_SuggestedCoverArts_Multi_Relationship_Data_Document_Meta
+  status: enum[PENDING, PROCESSING, ERROR, OK] (optional)
 
 Albums_SuggestedCoverArts_Resource_Identifier
   id: string (required)
@@ -1596,6 +1696,91 @@ AudioNormalizationData
 BarcodeId
   value: string (required)
 
+CommentsCreateOperation_Payload
+  data: CommentsCreateOperation_Payload_Data (required)
+
+CommentsCreateOperation_Payload_Data
+  attributes: CommentsCreateOperation_Payload_Data_Attributes (required)
+  relationships: CommentsCreateOperation_Payload_Data_Relationships (required)
+  type: enum[comments] (required)
+
+CommentsCreateOperation_Payload_Data_Attributes
+  message: string (required)
+  endTime: string (optional)
+  startTime: string (optional)
+
+CommentsCreateOperation_Payload_Data_Relationships
+  subject: CommentsCreateOperation_Payload_Data_Relationships_Subject (required)
+  parentComment: CommentsCreateOperation_Payload_Data_Relationships_ParentComment (optional)
+
+CommentsCreateOperation_Payload_Data_Relationships_ParentComment
+  data: CommentsCreateOperation_Payload_Data_Relationships_ParentComment_Data (optional)
+
+CommentsCreateOperation_Payload_Data_Relationships_ParentComment_Data
+  id: string (required)
+  type: enum[comments] (required)
+
+CommentsCreateOperation_Payload_Data_Relationships_Subject
+  data: CommentsCreateOperation_Payload_Data_Relationships_Subject_Data (required)
+
+CommentsCreateOperation_Payload_Data_Relationships_Subject_Data
+  id: string (required)
+  type: enum[albums, tracks] (required)
+
+CommentsUpdateOperation_Payload
+  data: CommentsUpdateOperation_Payload_Data (required)
+
+CommentsUpdateOperation_Payload_Data
+  attributes: CommentsUpdateOperation_Payload_Data_Attributes (required)
+  id: string (required)
+  type: enum[comments] (required)
+
+CommentsUpdateOperation_Payload_Data_Attributes
+  endTime: string (optional)
+  message: string (optional)
+  startTime: string (optional)
+
+Comments_Attributes
+  createdAt: string(date-time) (required)
+  lastModifiedAt: string(date-time) (required)
+  likeCount: integer(int32) (required)
+  message: string (required)
+  moderationStatus: enum[NOT_MODERATED, FLAGGED, TAKEN_DOWN, OK, ERROR] (required)
+  replyCount: integer(int32) (required)
+  endTime: string (optional)
+  startTime: string (optional)
+
+Comments_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[Resource_Identifier] (optional)
+  included: Included (optional)
+
+Comments_Multi_Resource_Data_Document
+  data: array[Comments_Resource_Object] (required)
+  links: Links (required)
+  included: Included (optional)
+
+Comments_Relationships
+  ownerProfiles: Multi_Relationship_Data_Document (optional)
+  owners: Multi_Relationship_Data_Document (optional)
+  parentComment: Single_Relationship_Data_Document (optional)
+
+Comments_Resource_Object
+  id: string (required)
+  type: string (required)
+  attributes: Comments_Attributes (optional)
+  relationships: Comments_Relationships (optional)
+
+Comments_Single_Relationship_Data_Document
+  links: Links (required)
+  data: Resource_Identifier (optional)
+  included: Included (optional)
+
+Comments_Single_Resource_Data_Document
+  data: Comments_Resource_Object (required)
+  links: Links (required)
+  included: Included (optional)
+
 ContentClaimsCreateOperation_Payload
   data: ContentClaimsCreateOperation_Payload_Data (required)
 
@@ -1694,6 +1879,11 @@ Credits_Single_Resource_Data_Document
   links: Links (required)
   included: Included (optional)
 
+CurrentUserReaction
+  createdAt: string(date-time) (optional)
+  emoji: string (optional)
+  id: string (optional)
+
 Default400ResponseBody
   errors: array[object] (required)
 
@@ -1726,7 +1916,7 @@ Download_Link_Meta
   requiredHeaders: array[string] (optional)
 
 Downloads_Attributes
-  downloadLink: Download_Link (optional)
+  downloadLinks: array[Download_Link] (optional)
 
 Downloads_Multi_Relationship_Data_Document
   links: Links (required)
@@ -1791,7 +1981,7 @@ DynamicModules_Attributes
   icons: array[enum[SPOTLIGHT_INFO, UNKNOWN]] (required)
   layoutType: enum[COMPACT, GRID, UNKNOWN] (required)
   moduleType: enum[ARTIST_LIST, COMPACT_GRID_CARD, COMPACT_HORIZONTAL_LIST, COMPACT_HORIZONTAL_LIST_WITH_CONTEXT, FEATURED_CARD, GRID_CARD, GRID_CARD_WITH_CONTEXT, GRID_HIGHLIGHT_CARD, HORIZONTAL_LIST, HORIZONTAL_LIST_WITH_CONTEXT, SHORTCUT_LIST, TRACK_LIST, VERTICAL_LIST_CARD, TEXT_CARD, LINKS_LIST, PUBLIC_PLAYLIST_LIST] (required)
-  sourceType: enum[ALBUM_RECOMMENDATIONS, BECAUSE_YOU_LISTENED_TO_ALBUM, BECAUSE_YOU_ADDED_ALBUM, BECAUSE_YOU_ADDED_ARTIST, CONTINUE_LISTEN_TO, DAILY_MIXES, FORGOTTEN_FAVORITES, GENRE_MIXES, HISTORY_MIXES, LOCAL_PLAYLISTS, MY_PLAYLISTS, NEW_ALBUM_SUGGESTIONS, NEW_TRACK_SUGGESTIONS, NEW_ALBUMS, NEW_TRACKS, POPULAR_PLAYLISTS, RECENTLY_UPDATED_FAVORITED_PLAYLIST, RECOMMENDED_EDITORIAL_PLAYLISTS, RECOMMENDED_USERS_PLAYLISTS, SUGGESTED_ESSENTIAL_PLAYLISTS, SUGGESTED_RADIOS_MIXES, WELCOME_MIX, YOUR_FAVORITE_ARTISTS, UPLOADS_FOR_YOU, LATEST_SPOTLIGHTED_TRACKS, SHORTCUTS, ARTIST_TOP_TRACKS, ARTIST_SPOTLIGHTED_TRACKS, ARTIST_ALBUMS, ARTIST_TOP_SINGLES, ARTIST_COMPILATIONS, ARTIST_LIVE_ALBUMS, ARTIST_APPEARS_ON, ARTIST_PLAYLIST, ARTIST_PUBLIC_PLAYLIST, ARTIST_SIMILAR_ARTISTS, ARTIST_TRACK_UPLOADS, ARTIST_LINKS, ARTIST_VIDEOS, ARTIST_CREDITS, ALBUM_ITEMS, ALBUM_ANNIVERSARY, ARTIST_BIRTHDAY, ARTIST_MEMORIAM, DJ_TOOLS, DJ_ARTIST_CURATED, THE_HITS, FROM_OUR_EDITORS, TOP_PLAYLISTS, FEATURED_TOP_TRACKS, FEATURED_TOP_ALBUMS, TOP_ARTISTS_ESSENTIALS, FEATURED_RECOMMENDED_PLAYLISTS, HOME_3_FEATURED_PLAYLISTS, HOME_3_FEATURED_UPLOAD_TRACKS, HOME_3_FEATURED_ALBUMS, POPULAR_ALBUMS, POPULAR_ARTISTS, POPULAR_MIXES, FEATURED_RECOMMENDED_TRACKS, FEATURED_RECOMMENDED_ALBUMS, FEATURED_RECOMMENDED_CLASSIC_ALBUMS, HOME_3_0_GENERIC_PLAYLISTS_1, HOME_3_0_GENERIC_PLAYLISTS_2, HOME_3_0_GENERIC_ALBUMS_1, HOME_3_0_GENERIC_TRACKS_1, HOME_3_0_GENERIC_ARTISTS_1, HOME_3_0_GENERIC_VIDEOS_1, BASED_ON_YOUR_INTERESTS_1, BASED_ON_YOUR_INTERESTS_2, UNKNOWN] (required)
+  sourceType: enum[ALBUM_RECOMMENDATIONS, BECAUSE_YOU_LISTENED_TO_ALBUM, BECAUSE_YOU_ADDED_ALBUM, BECAUSE_YOU_ADDED_ARTIST, CONTINUE_LISTEN_TO, DAILY_MIXES, FORGOTTEN_FAVORITES, GENRE_MIXES, HISTORY_MIXES, LOCAL_PLAYLISTS, MY_PLAYLISTS, NEW_ALBUM_SUGGESTIONS, NEW_TRACK_SUGGESTIONS, NEW_ALBUMS, NEW_TRACKS, POPULAR_PLAYLISTS, RECENTLY_UPDATED_FAVORITED_PLAYLIST, RECOMMENDED_USERS_PLAYLISTS, SUGGESTED_ESSENTIAL_PLAYLISTS, SUGGESTED_RADIOS_MIXES, WELCOME_MIX, YOUR_FAVORITE_ARTISTS, UPLOADS_FOR_YOU, LATEST_SPOTLIGHTED_TRACKS, SHORTCUTS, ARTIST_TOP_TRACKS, ARTIST_SPOTLIGHTED_TRACKS, ARTIST_ALBUMS, ARTIST_TOP_SINGLES, ARTIST_COMPILATIONS, ARTIST_LIVE_ALBUMS, ARTIST_APPEARS_ON, ARTIST_PLAYLIST, ARTIST_PUBLIC_PLAYLIST, ARTIST_SIMILAR_ARTISTS, ARTIST_TRACK_UPLOADS, ARTIST_LINKS, ARTIST_VIDEOS, ARTIST_CREDITS, ALBUM_ITEMS, ALBUM_ANNIVERSARY, ARTIST_BIRTHDAY, ARTIST_MEMORIAM, DJ_TOOLS, DJ_ARTIST_CURATED, THE_HITS, FROM_OUR_EDITORS, TOP_PLAYLISTS, FEATURED_TOP_TRACKS, FEATURED_TOP_ALBUMS, TOP_ARTISTS_ESSENTIALS, FEATURED_RECOMMENDED_PLAYLISTS, HOME_3_FEATURED_PLAYLISTS, HOME_3_FEATURED_UPLOAD_TRACKS, HOME_3_FEATURED_ALBUMS, POPULAR_ALBUMS, POPULAR_ARTISTS, POPULAR_MIXES, FEATURED_RECOMMENDED_TRACKS, FEATURED_RECOMMENDED_ALBUMS, FEATURED_RECOMMENDED_CLASSIC_ALBUMS, BACK_TO_SCHOOL_MUSIC_101, BACK_TO_SCHOOL_GENRES_FOR_BEGINNERS, HEADLINERS_2026, HOME_3_0_GENERIC_PLAYLISTS_1, HOME_3_0_GENERIC_PLAYLISTS_2, HOME_3_0_GENERIC_ALBUMS_1, HOME_3_0_GENERIC_TRACKS_1, HOME_3_0_GENERIC_ARTISTS_1, HOME_3_0_GENERIC_VIDEOS_1, BASED_ON_YOUR_INTERESTS_1, BASED_ON_YOUR_INTERESTS_2, UPLOAD_PAGE_SPOTLIGHTED_PLAYLISTS, UPLOAD_PAGE_PAYGATED_ALBUMS, UPLOAD_PAGE_ALBUMS, UNKNOWN] (required)
   subtitle: string (optional)
   title: string (optional)
 
@@ -1820,7 +2010,7 @@ DynamicModules_Single_Resource_Data_Document
   included: Included (optional)
 
 DynamicPages_Attributes
-  pageType: enum[HOME_STATIC, HOME_FOR_YOU, HOME_EDITORIAL, HOME_FREE, ARTIST] (required)
+  pageType: enum[HOME_STATIC, HOME_UPLOADS, HOME_EDITORIAL, HOME_FREE, ARTIST] (required)
   reportingId: string(uuid) (required)
 
 DynamicPages_Multi_Relationship_Data_Document
@@ -1909,6 +2099,12 @@ Genres_Single_Resource_Data_Document
   data: Genres_Resource_Object (required)
   links: Links (required)
   included: Included (optional)
+
+Idempotency409ResponseBody
+  errors: array[object] (required)
+
+Idempotency422ResponseBody
+  errors: array[object] (required)
 
 Included
 
@@ -2148,12 +2344,10 @@ OfflineTasksUpdateOperation_Payload_Data_Attributes
   state: enum[IN_PROGRESS, FAILED, COMPLETED] (required)
 
 OfflineTasks_Attributes
-  action: enum[STORE_ITEM, REMOVE_ITEM, STORE_COLLECTION, REMOVE_COLLECTION] (required)
-  collectionReference: string (required)
-  memberReference: string (required)
-  position: integer(int32) (optional)
-  state: enum[PENDING, IN_PROGRESS, FAILED, COMPLETED] (optional)
-  volume: integer(int32) (optional)
+  action: enum[STORE, REMOVE] (required)
+  position: integer(int32) (required)
+  state: enum[PENDING, IN_PROGRESS, FAILED, COMPLETED] (required)
+  volume: integer(int32) (required)
 
 OfflineTasks_Multi_Relationship_Data_Document
   links: Links (required)
@@ -2525,6 +2719,10 @@ Providers_Single_Resource_Data_Document
   links: Links (required)
   included: Included (optional)
 
+ReactionStats
+  countsByType: object (optional)
+  totalCount: integer(int32) (optional)
+
 ReactionsCreateOperation_Payload
   data: ReactionsCreateOperation_Payload_Data (required)
 
@@ -2544,7 +2742,7 @@ ReactionsCreateOperation_Payload_Data_Relationships_Subject
 
 ReactionsCreateOperation_Payload_Data_Relationships_Subject_Data
   id: string (required)
-  type: enum[albums, tracks, artists, videos, playlists] (required)
+  type: enum[albums, tracks, artists, videos, playlists, comments] (required)
 
 Reactions_Attributes
   createdAt: string(date-time) (required)
@@ -2559,6 +2757,11 @@ Reactions_Multi_Resource_Data_Document
   data: array[Reactions_Resource_Object] (required)
   links: Links (required)
   included: Included (optional)
+  meta: Reactions_Multi_Resource_Data_Document_Meta (optional)
+
+Reactions_Multi_Resource_Data_Document_Meta
+  currentUserReaction: CurrentUserReaction (optional)
+  stats: ReactionStats (optional)
 
 Reactions_Relationships
   ownerProfiles: Multi_Relationship_Data_Document (optional)
@@ -2747,12 +2950,18 @@ Single_Relationship_Data_Document
 
 StripeConnectionsCreateOperation_Payload
   data: StripeConnectionsCreateOperation_Payload_Data (required)
+  meta: StripeConnectionsCreateOperation_Payload_Meta (optional)
 
 StripeConnectionsCreateOperation_Payload_Data
-  attributes: StripeConnectionsCreateOperation_Payload_Data_Attributes (required)
   type: enum[stripeConnections] (required)
+  attributes: StripeConnectionsCreateOperation_Payload_Data_Attributes (optional)
 
 StripeConnectionsCreateOperation_Payload_Data_Attributes
+  integrationType: enum[REDIRECT, EMBEDDED] (optional)
+  refreshUrl: string (optional)
+  returnUrl: string (optional)
+
+StripeConnectionsCreateOperation_Payload_Meta
   integrationType: enum[REDIRECT, EMBEDDED] (required)
   refreshUrl: string (optional)
   returnUrl: string (optional)

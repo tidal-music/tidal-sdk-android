@@ -18,7 +18,7 @@ interface UserEntitlements {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id User id
+     * @param id User entitlements id. Use &#x60;me&#x60; for the authenticated user&#39;s resource
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: owners (optional)
      * @return [UserEntitlementsSingleResourceDataDocument]
@@ -42,7 +42,7 @@ interface UserEntitlements {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id User id
+     * @param id User entitlements id. Use &#x60;me&#x60; for the authenticated user&#39;s resource
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,

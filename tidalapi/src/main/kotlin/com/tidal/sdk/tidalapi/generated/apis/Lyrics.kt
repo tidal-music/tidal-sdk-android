@@ -42,15 +42,24 @@ interface Lyrics {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Lyrics Id
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @return [Unit]
      */
-    @DELETE("lyrics/{id}") suspend fun lyricsIdDelete(@Path("id") id: kotlin.String): Response<Unit>
+    @DELETE("lyrics/{id}")
+    suspend fun lyricsIdDelete(
+        @Path("id") id: kotlin.String,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
+    ): Response<Unit>
 
     /**
      * Get single lyric. Retrieves single lyric by id. Responses:
@@ -82,18 +91,24 @@ interface Lyrics {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Lyrics Id
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @param lyricsUpdateOperationPayload (optional)
      * @return [Unit]
      */
     @PATCH("lyrics/{id}")
     suspend fun lyricsIdPatch(
         @Path("id") id: kotlin.String,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body lyricsUpdateOperationPayload: LyricsUpdateOperationPayload? = null,
     ): Response<Unit>
 
@@ -159,16 +174,22 @@ interface Lyrics {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @param lyricsCreateOperationPayload (optional)
      * @return [LyricsSingleResourceDataDocument]
      */
     @POST("lyrics")
     suspend fun lyricsPost(
-        @Body lyricsCreateOperationPayload: LyricsCreateOperationPayload? = null
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
+        @Body lyricsCreateOperationPayload: LyricsCreateOperationPayload? = null,
     ): Response<LyricsSingleResourceDataDocument>
 }

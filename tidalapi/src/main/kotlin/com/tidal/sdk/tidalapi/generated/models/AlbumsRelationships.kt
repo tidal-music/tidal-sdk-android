@@ -10,6 +10,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
+ * @param albumStatistics
  * @param artists
  * @param coverArt
  * @param genres
@@ -17,13 +18,14 @@ import kotlinx.serialization.Serializable
  * @param owners
  * @param priceConfig
  * @param providers
- * @param replacement
  * @param similarAlbums
  * @param suggestedCoverArts
  * @param usageRules
  */
 @Serializable
 data class AlbumsRelationships(
+    @SerialName(value = "albumStatistics")
+    val albumStatistics: SingleRelationshipDataDocument? = null,
     @SerialName(value = "artists") val artists: MultiRelationshipDataDocument? = null,
     @SerialName(value = "coverArt") val coverArt: MultiRelationshipDataDocument? = null,
     @SerialName(value = "genres") val genres: MultiRelationshipDataDocument? = null,
@@ -31,7 +33,6 @@ data class AlbumsRelationships(
     @SerialName(value = "owners") val owners: MultiRelationshipDataDocument? = null,
     @SerialName(value = "priceConfig") val priceConfig: SingleRelationshipDataDocument? = null,
     @SerialName(value = "providers") val providers: MultiRelationshipDataDocument? = null,
-    @SerialName(value = "replacement") val replacement: SingleRelationshipDataDocument? = null,
     @SerialName(value = "similarAlbums") val similarAlbums: MultiRelationshipDataDocument? = null,
     @SerialName(value = "suggestedCoverArts")
     val suggestedCoverArts: AlbumsSuggestedCoverArtsMultiRelationshipDataDocument? = null,
