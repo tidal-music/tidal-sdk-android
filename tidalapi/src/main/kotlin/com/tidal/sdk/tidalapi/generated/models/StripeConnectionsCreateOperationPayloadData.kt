@@ -10,14 +10,14 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param attributes
  * @param type
+ * @param attributes
  */
 @Serializable
 data class StripeConnectionsCreateOperationPayloadData(
-    @SerialName(value = "attributes")
-    val attributes: StripeConnectionsCreateOperationPayloadDataAttributes,
     @SerialName(value = "type") val type: StripeConnectionsCreateOperationPayloadData.Type,
+    @SerialName(value = "attributes")
+    val attributes: StripeConnectionsCreateOperationPayloadDataAttributes? = null,
 ) {
 
     /** Values: stripeConnections */

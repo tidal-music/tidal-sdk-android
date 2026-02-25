@@ -43,13 +43,13 @@ interface Albums {
      *   sorted ascending. (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: artists, coverArt, genres, items, owners, priceConfig, providers,
-     *   replacement, similarAlbums, suggestedCoverArts, usageRules (optional)
+     *   Available options: albumStatistics, artists, coverArt, genres, items, owners, priceConfig,
+     *   providers, similarAlbums, suggestedCoverArts, usageRules (optional)
      * @param filterBarcodeId List of barcode IDs (EAN-13 or UPC-A). NOTE: Supplying more than one
      *   barcode ID will currently only return one album per barcode ID. (e.g.
      *   &#x60;196589525444&#x60;) (optional)
      * @param filterId Album id (e.g. &#x60;251380836&#x60;) (optional)
-     * @param filterOwnersId User id (e.g. &#x60;123456&#x60;) (optional)
+     * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [AlbumsMultiResourceDataDocument]
@@ -76,15 +76,24 @@ interface Albums {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Album id
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @return [Unit]
      */
-    @DELETE("albums/{id}") suspend fun albumsIdDelete(@Path("id") id: kotlin.String): Response<Unit>
+    @DELETE("albums/{id}")
+    suspend fun albumsIdDelete(
+        @Path("id") id: kotlin.String,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
+    ): Response<Unit>
 
     /**
      * Get single album. Retrieves single album by id. Responses:
@@ -101,8 +110,8 @@ interface Albums {
      * @param id Album id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: artists, coverArt, genres, items, owners, priceConfig, providers,
-     *   replacement, similarAlbums, suggestedCoverArts, usageRules (optional)
+     *   Available options: albumStatistics, artists, coverArt, genres, items, owners, priceConfig,
+     *   providers, similarAlbums, suggestedCoverArts, usageRules (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [AlbumsSingleResourceDataDocument]
@@ -122,20 +131,54 @@ interface Albums {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Album id
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @param albumsUpdateOperationPayload (optional)
      * @return [Unit]
      */
     @PATCH("albums/{id}")
     suspend fun albumsIdPatch(
         @Path("id") id: kotlin.String,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body albumsUpdateOperationPayload: AlbumsUpdateOperationPayload? = null,
     ): Response<Unit>
+
+    /**
+     * Get albumStatistics relationship (\&quot;to-one\&quot;). Retrieves albumStatistics
+     * relationship. Responses:
+     * - 200: Successful response
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
+     *
+     * @param id Album id
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: albumStatistics (optional)
+     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
+     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @return [AlbumsSingleRelationshipDataDocument]
+     */
+    @GET("albums/{id}/relationships/albumStatistics")
+    suspend fun albumsIdRelationshipsAlbumStatisticsGet(
+        @Path("id") id: kotlin.String,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
+    ): Response<AlbumsSingleRelationshipDataDocument>
 
     /**
      * Get artists relationship (\&quot;to-many\&quot;). Retrieves artists relationship. Responses:
@@ -209,18 +252,24 @@ interface Albums {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Album id
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @param albumsCoverArtRelationshipUpdateOperationPayload (optional)
      * @return [Unit]
      */
     @PATCH("albums/{id}/relationships/coverArt")
     suspend fun albumsIdRelationshipsCoverArtPatch(
         @Path("id") id: kotlin.String,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body
         albumsCoverArtRelationshipUpdateOperationPayload:
             AlbumsCoverArtRelationshipUpdateOperationPayload? =
@@ -297,18 +346,24 @@ interface Albums {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Album id
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @param albumsItemsRelationshipUpdateOperationPayload (optional)
      * @return [Unit]
      */
     @PATCH("albums/{id}/relationships/items")
     suspend fun albumsIdRelationshipsItemsPatch(
         @Path("id") id: kotlin.String,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body
         albumsItemsRelationshipUpdateOperationPayload:
             AlbumsItemsRelationshipUpdateOperationPayload? =
@@ -407,36 +462,6 @@ interface Albums {
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<AlbumsMultiRelationshipDataDocument>
-
-    /**
-     * Get replacement relationship (\&quot;to-one\&quot;). Retrieves replacement relationship.
-     * Responses:
-     * - 200: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 415: Unsupported request payload media type or content encoding
-     * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
-     *
-     * @param id Album id
-     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: replacement (optional)
-     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
-     *   non-owners to access resources that would otherwise be restricted. (optional)
-     * @return [AlbumsSingleRelationshipDataDocument]
-     */
-    @GET("albums/{id}/relationships/replacement")
-    suspend fun albumsIdRelationshipsReplacementGet(
-        @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String? = null,
-        @Query("include")
-        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("shareCode") shareCode: kotlin.String? = null,
-    ): Response<AlbumsSingleRelationshipDataDocument>
 
     /**
      * Get similarAlbums relationship (\&quot;to-many\&quot;). Retrieves similarAlbums relationship.
@@ -539,16 +564,22 @@ interface Albums {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @param albumsCreateOperationPayload (optional)
      * @return [AlbumsSingleResourceDataDocument]
      */
     @POST("albums")
     suspend fun albumsPost(
-        @Body albumsCreateOperationPayload: AlbumsCreateOperationPayload? = null
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
+        @Body albumsCreateOperationPayload: AlbumsCreateOperationPayload? = null,
     ): Response<AlbumsSingleResourceDataDocument>
 }

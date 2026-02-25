@@ -26,9 +26,10 @@ interface OfflineTasks {
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: collection, item, owners (optional)
-     * @param filterId Offline task id (e.g. &#x60;a468bee8-8def-4a1b-8c1e-123456789abc&#x60;)
+     * @param filterId List of offline task IDs (e.g.
+     *   &#x60;a468bee8-8def-4a1b-8c1e-123456789abc&#x60;) (optional)
+     * @param filterInstallationId List of offline task IDs (e.g. &#x60;a468bee88def&#x60;)
      *   (optional)
-     * @param filterInstallationId Installation id (e.g. &#x60;a468bee88def&#x60;) (optional)
      * @return [OfflineTasksMultiResourceDataDocument]
      */
     @GET("offlineTasks")
@@ -72,18 +73,24 @@ interface OfflineTasks {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Offline task id
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @param offlineTasksUpdateOperationPayload (optional)
      * @return [Unit]
      */
     @PATCH("offlineTasks/{id}")
     suspend fun offlineTasksIdPatch(
         @Path("id") id: kotlin.String,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body offlineTasksUpdateOperationPayload: OfflineTasksUpdateOperationPayload? = null,
     ): Response<Unit>
 

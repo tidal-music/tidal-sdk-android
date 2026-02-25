@@ -1,6 +1,7 @@
 package com.tidal.sdk.tidalapi.generated
 
 import com.tidal.sdk.auth.CredentialsProvider
+import com.tidal.sdk.tidalapi.generated.apis.AlbumStatistics
 import com.tidal.sdk.tidalapi.generated.apis.Albums
 import com.tidal.sdk.tidalapi.generated.apis.Appreciations
 import com.tidal.sdk.tidalapi.generated.apis.ArtistBiographies
@@ -8,6 +9,7 @@ import com.tidal.sdk.tidalapi.generated.apis.ArtistClaims
 import com.tidal.sdk.tidalapi.generated.apis.ArtistRoles
 import com.tidal.sdk.tidalapi.generated.apis.Artists
 import com.tidal.sdk.tidalapi.generated.apis.Artworks
+import com.tidal.sdk.tidalapi.generated.apis.Comments
 import com.tidal.sdk.tidalapi.generated.apis.ContentClaims
 import com.tidal.sdk.tidalapi.generated.apis.Credits
 import com.tidal.sdk.tidalapi.generated.apis.Downloads
@@ -59,6 +61,11 @@ class TidalApiClient(
 
     private val retrofit by lazy { retrofitProvider.provideRetrofit(baseUrl, credentialsProvider) }
 
+    /** Returns an instance of the [AlbumStatistics] which can be used to make API calls to the */
+    fun createAlbumStatistics(): AlbumStatistics {
+        return retrofit.create(AlbumStatistics::class.java)
+    }
+
     /** Returns an instance of the [Albums] which can be used to make API calls to the */
     fun createAlbums(): Albums {
         return retrofit.create(Albums::class.java)
@@ -92,6 +99,11 @@ class TidalApiClient(
     /** Returns an instance of the [Artworks] which can be used to make API calls to the */
     fun createArtworks(): Artworks {
         return retrofit.create(Artworks::class.java)
+    }
+
+    /** Returns an instance of the [Comments] which can be used to make API calls to the */
+    fun createComments(): Comments {
+        return retrofit.create(Comments::class.java)
     }
 
     /** Returns an instance of the [ContentClaims] which can be used to make API calls to the */

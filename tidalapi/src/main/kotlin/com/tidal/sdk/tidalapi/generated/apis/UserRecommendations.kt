@@ -18,7 +18,8 @@ interface UserRecommendations {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id User recommendations id
+     * @param id User recommendations id. Use &#x60;me&#x60; for the authenticated user&#39;s
+     *   resource
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param locale BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or
      *   unsupported. (optional, default to "en-US")
@@ -48,7 +49,8 @@ interface UserRecommendations {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id User recommendations id
+     * @param id User recommendations id. Use &#x60;me&#x60; for the authenticated user&#39;s
+     *   resource
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
@@ -80,7 +82,8 @@ interface UserRecommendations {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id User recommendations id
+     * @param id User recommendations id. Use &#x60;me&#x60; for the authenticated user&#39;s
+     *   resource
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
@@ -113,7 +116,8 @@ interface UserRecommendations {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id User recommendations id
+     * @param id User recommendations id. Use &#x60;me&#x60; for the authenticated user&#39;s
+     *   resource
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)

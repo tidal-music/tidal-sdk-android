@@ -22,11 +22,16 @@ data class UserCollectionAlbumsAddMultiDataRelationship409ResponseBodyErrorsInne
     @SerialName(value = "detail") val detail: kotlin.String? = null,
 ) {
 
-    /** Values: DUPLICATE_ITEMS_IN_COLLECTION,TOO_MANY_ITEMS_IN_COLLECTION */
+    /**
+     * Values:
+     * DUPLICATE_ITEMS_IN_COLLECTION,IDEMPOTENT_REQUEST_IN_PROGRESS,TOO_MANY_ITEMS_IN_COLLECTION
+     */
     @Serializable
     enum class Code(val value: kotlin.String) {
         @SerialName(value = "DUPLICATE_ITEMS_IN_COLLECTION")
         DUPLICATE_ITEMS_IN_COLLECTION("DUPLICATE_ITEMS_IN_COLLECTION"),
+        @SerialName(value = "IDEMPOTENT_REQUEST_IN_PROGRESS")
+        IDEMPOTENT_REQUEST_IN_PROGRESS("IDEMPOTENT_REQUEST_IN_PROGRESS"),
         @SerialName(value = "TOO_MANY_ITEMS_IN_COLLECTION")
         TOO_MANY_ITEMS_IN_COLLECTION("TOO_MANY_ITEMS_IN_COLLECTION"),
     }

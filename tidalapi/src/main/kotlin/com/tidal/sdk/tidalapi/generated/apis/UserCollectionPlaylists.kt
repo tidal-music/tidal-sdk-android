@@ -22,7 +22,8 @@ interface UserCollectionPlaylists {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id User collection playlists id
+     * @param id User collection playlists id. Use &#x60;me&#x60; for the authenticated user&#39;s
+     *   resource
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param locale BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or
      *   unsupported. (optional, default to "en-US")
@@ -46,12 +47,18 @@ interface UserCollectionPlaylists {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id User collection playlists id
+     * @param id User collection playlists id. Use &#x60;me&#x60; for the authenticated user&#39;s
+     *   resource
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @param userCollectionPlaylistsItemsRelationshipRemoveOperationPayload (optional)
      * @return [Unit]
      */
@@ -62,6 +69,7 @@ interface UserCollectionPlaylists {
     )
     suspend fun userCollectionPlaylistsIdRelationshipsItemsDelete(
         @Path("id") id: kotlin.String,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body
         userCollectionPlaylistsItemsRelationshipRemoveOperationPayload:
             UserCollectionPlaylistsItemsRelationshipRemoveOperationPayload? =
@@ -97,7 +105,8 @@ interface UserCollectionPlaylists {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id User collection playlists id
+     * @param id User collection playlists id. Use &#x60;me&#x60; for the authenticated user&#39;s
+     *   resource
      * @param collectionView (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
@@ -127,19 +136,25 @@ interface UserCollectionPlaylists {
      * - 406: A response that satisfies the content negotiation headers cannot be produced
      * - 409: You have reached the maximum number of items allowed for this collection. Please
      *   remove some items before adding more.; One or more items you are trying to add are already
-     *   in your favorites.
+     *   in your favorites.; A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id User collection playlists id
+     * @param id User collection playlists id. Use &#x60;me&#x60; for the authenticated user&#39;s
+     *   resource
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @param userCollectionPlaylistsItemsRelationshipAddOperationPayload (optional)
      * @return [Unit]
      */
     @POST("userCollectionPlaylists/{id}/relationships/items")
     suspend fun userCollectionPlaylistsIdRelationshipsItemsPost(
         @Path("id") id: kotlin.String,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body
         userCollectionPlaylistsItemsRelationshipAddOperationPayload:
             UserCollectionPlaylistsItemsRelationshipAddOperationPayload? =
@@ -158,7 +173,8 @@ interface UserCollectionPlaylists {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param id User collection playlists id
+     * @param id User collection playlists id. Use &#x60;me&#x60; for the authenticated user&#39;s
+     *   resource
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,

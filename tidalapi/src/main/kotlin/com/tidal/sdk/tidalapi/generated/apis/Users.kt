@@ -6,7 +6,7 @@ import retrofit2.http.*
 
 interface Users {
     /**
-     * Get current user&#39;s user. Retrieves current user&#39;s user. Responses:
+     * Get single user. Retrieves single user by id. Responses:
      * - 200: Successful response
      * - 400: The request is malformed or invalid
      * - 404: The requested resource was not found
@@ -17,7 +17,9 @@ interface Users {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
+     * @param id User id. Use &#x60;me&#x60; for the authenticated user&#39;s resource
      * @return [UsersSingleResourceDataDocument]
      */
-    @GET("users/me") suspend fun usersMeGet(): Response<UsersSingleResourceDataDocument>
+    @GET("users/{id}")
+    suspend fun usersIdGet(@Path("id") id: kotlin.String): Response<UsersSingleResourceDataDocument>
 }

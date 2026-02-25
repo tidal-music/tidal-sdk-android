@@ -29,10 +29,11 @@ interface Installations {
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: offlineInventory, owners (optional)
-     * @param filterClientProvidedInstallationId Client provided installation identifier (e.g.
-     *   &#x60;a468bee88def&#x60;) (optional)
-     * @param filterId Installation id (e.g. &#x60;a468bee88def&#x60;) (optional)
-     * @param filterOwnersId User id (e.g. &#x60;123456&#x60;) (optional)
+     * @param filterClientProvidedInstallationId Client-provided installation identifier to filter
+     *   by (e.g. &#x60;a468bee88def&#x60;) (optional)
+     * @param filterId List of installation IDs (e.g. &#x60;a468bee88def&#x60;) (optional)
+     * @param filterOwnersId User ID to filter by. Use &#x60;me&#x60; for the authenticated user
+     *   (optional)
      * @return [InstallationsMultiResourceDataDocument]
      */
     @GET("installations")
@@ -82,12 +83,17 @@ interface Installations {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Installation id
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @param installationsOfflineInventoryRelationshipRemoveOperationPayload (optional)
      * @return [Unit]
      */
@@ -98,6 +104,7 @@ interface Installations {
     )
     suspend fun installationsIdRelationshipsOfflineInventoryDelete(
         @Path("id") id: kotlin.String,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body
         installationsOfflineInventoryRelationshipRemoveOperationPayload:
             InstallationsOfflineInventoryRelationshipRemoveOperationPayload? =
@@ -151,18 +158,24 @@ interface Installations {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Installation id
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @param installationsOfflineInventoryRelationshipAddOperationPayload (optional)
      * @return [Unit]
      */
     @POST("installations/{id}/relationships/offlineInventory")
     suspend fun installationsIdRelationshipsOfflineInventoryPost(
         @Path("id") id: kotlin.String,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body
         installationsOfflineInventoryRelationshipAddOperationPayload:
             InstallationsOfflineInventoryRelationshipAddOperationPayload? =
@@ -203,16 +216,22 @@ interface Installations {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @param installationsCreateOperationPayload (optional)
      * @return [InstallationsSingleResourceDataDocument]
      */
     @POST("installations")
     suspend fun installationsPost(
-        @Body installationsCreateOperationPayload: InstallationsCreateOperationPayload? = null
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
+        @Body installationsCreateOperationPayload: InstallationsCreateOperationPayload? = null,
     ): Response<InstallationsSingleResourceDataDocument>
 }

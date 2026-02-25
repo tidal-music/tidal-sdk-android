@@ -61,12 +61,17 @@ interface UserCollections {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id User collection id
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @param userCollectionsAlbumsRelationshipRemoveOperationPayload (optional)
      * @return [Unit]
      */
@@ -74,6 +79,7 @@ interface UserCollections {
     @HTTP(method = "DELETE", path = "userCollections/{id}/relationships/albums", hasBody = true)
     suspend fun userCollectionsIdRelationshipsAlbumsDelete(
         @Path("id") id: kotlin.String,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body
         userCollectionsAlbumsRelationshipRemoveOperationPayload:
             UserCollectionsAlbumsRelationshipRemoveOperationPayload? =
@@ -138,14 +144,18 @@ interface UserCollections {
      * - 406: A response that satisfies the content negotiation headers cannot be produced
      * - 409: You have reached the maximum number of items allowed for this collection. Please
      *   remove some items before adding more.; One or more items you are trying to add are already
-     *   in your favorites.
+     *   in your favorites.; A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id User collection id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @param userCollectionsAlbumsRelationshipAddOperationPayload (optional)
      * @return [Unit]
      */
@@ -154,6 +164,7 @@ interface UserCollections {
     suspend fun userCollectionsIdRelationshipsAlbumsPost(
         @Path("id") id: kotlin.String,
         @Query("countryCode") countryCode: kotlin.String? = null,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body
         userCollectionsAlbumsRelationshipAddOperationPayload:
             UserCollectionsAlbumsRelationshipAddOperationPayload? =
@@ -167,12 +178,17 @@ interface UserCollections {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id User collection id
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @param userCollectionsArtistsRelationshipRemoveOperationPayload (optional)
      * @return [Unit]
      */
@@ -180,6 +196,7 @@ interface UserCollections {
     @HTTP(method = "DELETE", path = "userCollections/{id}/relationships/artists", hasBody = true)
     suspend fun userCollectionsIdRelationshipsArtistsDelete(
         @Path("id") id: kotlin.String,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body
         userCollectionsArtistsRelationshipRemoveOperationPayload:
             UserCollectionsArtistsRelationshipRemoveOperationPayload? =
@@ -240,14 +257,18 @@ interface UserCollections {
      * - 406: A response that satisfies the content negotiation headers cannot be produced
      * - 409: You have reached the maximum number of items allowed for this collection. Please
      *   remove some items before adding more.; One or more items you are trying to add are already
-     *   in your favorites.
+     *   in your favorites.; A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id User collection id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @param userCollectionsArtistsRelationshipAddOperationPayload (optional)
      * @return [Unit]
      */
@@ -256,6 +277,7 @@ interface UserCollections {
     suspend fun userCollectionsIdRelationshipsArtistsPost(
         @Path("id") id: kotlin.String,
         @Query("countryCode") countryCode: kotlin.String? = null,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body
         userCollectionsArtistsRelationshipAddOperationPayload:
             UserCollectionsArtistsRelationshipAddOperationPayload? =
@@ -296,12 +318,17 @@ interface UserCollections {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id User collection id
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @param userCollectionsPlaylistsRelationshipRemoveOperationPayload (optional)
      * @return [Unit]
      */
@@ -309,6 +336,7 @@ interface UserCollections {
     @HTTP(method = "DELETE", path = "userCollections/{id}/relationships/playlists", hasBody = true)
     suspend fun userCollectionsIdRelationshipsPlaylistsDelete(
         @Path("id") id: kotlin.String,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body
         userCollectionsPlaylistsRelationshipRemoveOperationPayload:
             UserCollectionsPlaylistsRelationshipRemoveOperationPayload? =
@@ -376,13 +404,17 @@ interface UserCollections {
      * - 406: A response that satisfies the content negotiation headers cannot be produced
      * - 409: You have reached the maximum number of items allowed for this collection. Please
      *   remove some items before adding more.; One or more items you are trying to add are already
-     *   in your favorites.
+     *   in your favorites.; A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id User collection id
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @param userCollectionsPlaylistsRelationshipAddOperationPayload (optional)
      * @return [Unit]
      */
@@ -390,6 +422,7 @@ interface UserCollections {
     @POST("userCollections/{id}/relationships/playlists")
     suspend fun userCollectionsIdRelationshipsPlaylistsPost(
         @Path("id") id: kotlin.String,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body
         userCollectionsPlaylistsRelationshipAddOperationPayload:
             UserCollectionsPlaylistsRelationshipAddOperationPayload? =
@@ -403,12 +436,17 @@ interface UserCollections {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id User collection id
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @param userCollectionsTracksRelationshipRemoveOperationPayload (optional)
      * @return [Unit]
      */
@@ -416,6 +454,7 @@ interface UserCollections {
     @HTTP(method = "DELETE", path = "userCollections/{id}/relationships/tracks", hasBody = true)
     suspend fun userCollectionsIdRelationshipsTracksDelete(
         @Path("id") id: kotlin.String,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body
         userCollectionsTracksRelationshipRemoveOperationPayload:
             UserCollectionsTracksRelationshipRemoveOperationPayload? =
@@ -482,14 +521,18 @@ interface UserCollections {
      * - 406: A response that satisfies the content negotiation headers cannot be produced
      * - 409: You have reached the maximum number of items allowed for this collection. Please
      *   remove some items before adding more.; One or more items you are trying to add are already
-     *   in your favorites.
+     *   in your favorites.; A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id User collection id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @param userCollectionsTracksRelationshipAddOperationPayload (optional)
      * @return [Unit]
      */
@@ -498,6 +541,7 @@ interface UserCollections {
     suspend fun userCollectionsIdRelationshipsTracksPost(
         @Path("id") id: kotlin.String,
         @Query("countryCode") countryCode: kotlin.String? = null,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body
         userCollectionsTracksRelationshipAddOperationPayload:
             UserCollectionsTracksRelationshipAddOperationPayload? =
@@ -511,12 +555,17 @@ interface UserCollections {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id User collection id
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @param userCollectionsVideosRelationshipRemoveOperationPayload (optional)
      * @return [Unit]
      */
@@ -524,6 +573,7 @@ interface UserCollections {
     @HTTP(method = "DELETE", path = "userCollections/{id}/relationships/videos", hasBody = true)
     suspend fun userCollectionsIdRelationshipsVideosDelete(
         @Path("id") id: kotlin.String,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body
         userCollectionsVideosRelationshipRemoveOperationPayload:
             UserCollectionsVideosRelationshipRemoveOperationPayload? =
@@ -588,14 +638,18 @@ interface UserCollections {
      * - 406: A response that satisfies the content negotiation headers cannot be produced
      * - 409: You have reached the maximum number of items allowed for this collection. Please
      *   remove some items before adding more.; One or more items you are trying to add are already
-     *   in your favorites.
+     *   in your favorites.; A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id User collection id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @param userCollectionsVideosRelationshipAddOperationPayload (optional)
      * @return [Unit]
      */
@@ -604,6 +658,7 @@ interface UserCollections {
     suspend fun userCollectionsIdRelationshipsVideosPost(
         @Path("id") id: kotlin.String,
         @Query("countryCode") countryCode: kotlin.String? = null,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body
         userCollectionsVideosRelationshipAddOperationPayload:
             UserCollectionsVideosRelationshipAddOperationPayload? =

@@ -48,7 +48,7 @@ interface Playlists {
      *   Available options: coverArt, items, ownerProfiles, owners (optional)
      * @param filterId Playlist id (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;)
      *   (optional)
-     * @param filterOwnersId User id (e.g. &#x60;123456&#x60;) (optional)
+     * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user (optional)
      * @return [PlaylistsMultiResourceDataDocument]
      */
     @GET("playlists")
@@ -70,16 +70,24 @@ interface Playlists {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Playlist id
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @return [Unit]
      */
     @DELETE("playlists/{id}")
-    suspend fun playlistsIdDelete(@Path("id") id: kotlin.String): Response<Unit>
+    suspend fun playlistsIdDelete(
+        @Path("id") id: kotlin.String,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
+    ): Response<Unit>
 
     /**
      * Get single playlist. Retrieves single playlist by id. Responses:
@@ -113,13 +121,18 @@ interface Playlists {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Playlist id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @param playlistsUpdateOperationPayload (optional)
      * @return [Unit]
      */
@@ -127,6 +140,7 @@ interface Playlists {
     suspend fun playlistsIdPatch(
         @Path("id") id: kotlin.String,
         @Query("countryCode") countryCode: kotlin.String? = null,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body playlistsUpdateOperationPayload: PlaylistsUpdateOperationPayload? = null,
     ): Response<Unit>
 
@@ -167,18 +181,24 @@ interface Playlists {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Playlist id
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @param playlistsCoverArtRelationshipUpdateOperationPayload (optional)
      * @return [Unit]
      */
     @PATCH("playlists/{id}/relationships/coverArt")
     suspend fun playlistsIdRelationshipsCoverArtPatch(
         @Path("id") id: kotlin.String,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body
         playlistsCoverArtRelationshipUpdateOperationPayload:
             PlaylistsCoverArtRelationshipUpdateOperationPayload? =
@@ -192,18 +212,24 @@ interface Playlists {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Playlist id
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @param playlistsItemsRelationshipRemoveOperationPayload (optional)
      * @return [Unit]
      */
     @HTTP(method = "DELETE", path = "playlists/{id}/relationships/items", hasBody = true)
     suspend fun playlistsIdRelationshipsItemsDelete(
         @Path("id") id: kotlin.String,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body
         playlistsItemsRelationshipRemoveOperationPayload:
             PlaylistsItemsRelationshipRemoveOperationPayload? =
@@ -245,18 +271,24 @@ interface Playlists {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Playlist id
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @param playlistsItemsRelationshipUpdateOperationPayload (optional)
      * @return [Unit]
      */
     @PATCH("playlists/{id}/relationships/items")
     suspend fun playlistsIdRelationshipsItemsPatch(
         @Path("id") id: kotlin.String,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body
         playlistsItemsRelationshipUpdateOperationPayload:
             PlaylistsItemsRelationshipUpdateOperationPayload? =
@@ -270,13 +302,18 @@ interface Playlists {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Playlist id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @param playlistsItemsRelationshipAddOperationPayload (optional)
      * @return [Unit]
      */
@@ -284,6 +321,7 @@ interface Playlists {
     suspend fun playlistsIdRelationshipsItemsPost(
         @Path("id") id: kotlin.String,
         @Query("countryCode") countryCode: kotlin.String? = null,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body
         playlistsItemsRelationshipAddOperationPayload:
             PlaylistsItemsRelationshipAddOperationPayload? =
@@ -356,18 +394,24 @@ interface Playlists {
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
      * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
      * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
      * - 429: Rate limit exceeded
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
      * @param playlistsCreateOperationPayload (optional)
      * @return [PlaylistsSingleResourceDataDocument]
      */
     @POST("playlists")
     suspend fun playlistsPost(
         @Query("countryCode") countryCode: kotlin.String? = null,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body playlistsCreateOperationPayload: PlaylistsCreateOperationPayload? = null,
     ): Response<PlaylistsSingleResourceDataDocument>
 }
