@@ -92,4 +92,20 @@ internal class LoudnessNormalizerTest {
 
         assertThat(loudnessNormalizer.getReducedGain(-8.01F, 0.39F, 14)).isEqualTo(1.9929664F)
     }
+
+    @Test
+    fun getReducedGainShouldCapAtFullVolumeWhenPeakAmplitudeIsNegative() {
+        assertThat(
+                loudnessNormalizer.getReducedGain(-1f, -1f, LOUDNESS_NORMALIZATION_PRE_AMP_DEFAULT)
+            )
+            .isEqualTo(1.0F)
+    }
+
+    @Test
+    fun getReducedGainShouldCapAtFullVolumeWhenPeakAmplitudeIsZero() {
+        assertThat(
+                loudnessNormalizer.getReducedGain(-1f, 0f, LOUDNESS_NORMALIZATION_PRE_AMP_DEFAULT)
+            )
+            .isEqualTo(1.0F)
+    }
 }
