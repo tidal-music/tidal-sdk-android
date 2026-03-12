@@ -1,5 +1,7 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.models.PlaylistsCollaboratorProfilesRelationshipAddOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.PlaylistsCollaboratorProfilesRelationshipRemoveOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsCoverArtRelationshipUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsItemsMultiRelationshipDataDocument
@@ -45,7 +47,8 @@ interface Playlists {
      *   sorted ascending. (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: coverArt, items, ownerProfiles, owners (optional)
+     *   Available options: collaboratorProfiles, collaborators, coverArt, items, ownerProfiles,
+     *   owners (optional)
      * @param filterId Playlist id (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;)
      *   (optional)
      * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user (optional)
@@ -104,7 +107,8 @@ interface Playlists {
      * @param id Playlist id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: coverArt, items, ownerProfiles, owners (optional)
+     *   Available options: collaboratorProfiles, collaborators, coverArt, items, ownerProfiles,
+     *   owners (optional)
      * @return [PlaylistsSingleResourceDataDocument]
      */
     @GET("playlists/{id}")
@@ -143,6 +147,132 @@ interface Playlists {
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body playlistsUpdateOperationPayload: PlaylistsUpdateOperationPayload? = null,
     ): Response<Unit>
+
+    /**
+     * Delete from collaboratorProfiles relationship (\&quot;to-many\&quot;). Deletes item(s) from
+     * collaboratorProfiles relationship. Responses:
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
+     * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
+     *
+     * @param id Playlist id
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
+     * @param playlistsCollaboratorProfilesRelationshipRemoveOperationPayload (optional)
+     * @return [Unit]
+     */
+    @HTTP(
+        method = "DELETE",
+        path = "playlists/{id}/relationships/collaboratorProfiles",
+        hasBody = true,
+    )
+    suspend fun playlistsIdRelationshipsCollaboratorProfilesDelete(
+        @Path("id") id: kotlin.String,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
+        @Body
+        playlistsCollaboratorProfilesRelationshipRemoveOperationPayload:
+            PlaylistsCollaboratorProfilesRelationshipRemoveOperationPayload? =
+            null,
+    ): Response<Unit>
+
+    /**
+     * Get collaboratorProfiles relationship (\&quot;to-many\&quot;). Retrieves collaboratorProfiles
+     * relationship. Responses:
+     * - 200: Successful response
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
+     *
+     * @param id Playlist id
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: collaboratorProfiles (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
+     * @return [PlaylistsMultiRelationshipDataDocument]
+     */
+    @GET("playlists/{id}/relationships/collaboratorProfiles")
+    suspend fun playlistsIdRelationshipsCollaboratorProfilesGet(
+        @Path("id") id: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String? = null,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
+    ): Response<PlaylistsMultiRelationshipDataDocument>
+
+    /**
+     * Add to collaboratorProfiles relationship (\&quot;to-many\&quot;). Adds item(s) to
+     * collaboratorProfiles relationship. Responses:
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
+     * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
+     *
+     * @param id Playlist id
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
+     * @param playlistsCollaboratorProfilesRelationshipAddOperationPayload (optional)
+     * @return [Unit]
+     */
+    @POST("playlists/{id}/relationships/collaboratorProfiles")
+    suspend fun playlistsIdRelationshipsCollaboratorProfilesPost(
+        @Path("id") id: kotlin.String,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
+        @Body
+        playlistsCollaboratorProfilesRelationshipAddOperationPayload:
+            PlaylistsCollaboratorProfilesRelationshipAddOperationPayload? =
+            null,
+    ): Response<Unit>
+
+    /**
+     * Get collaborators relationship (\&quot;to-many\&quot;). Retrieves collaborators relationship.
+     * Responses:
+     * - 200: Successful response
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
+     *
+     * @param id Playlist id
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: collaborators (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
+     * @return [PlaylistsMultiRelationshipDataDocument]
+     */
+    @GET("playlists/{id}/relationships/collaborators")
+    suspend fun playlistsIdRelationshipsCollaboratorsGet(
+        @Path("id") id: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String? = null,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
+    ): Response<PlaylistsMultiRelationshipDataDocument>
 
     /**
      * Get coverArt relationship (\&quot;to-many\&quot;). Retrieves coverArt relationship.

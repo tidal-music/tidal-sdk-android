@@ -97,10 +97,11 @@ data class ManualArtistClaimsAttributes(
     /**
      * Claim status
      *
-     * Values: PENDING,APPROVED,REJECTED
+     * Values: SUBMITTED,PENDING,APPROVED,REJECTED
      */
     @Serializable
     enum class Status(val value: kotlin.String) {
+        @SerialName(value = "SUBMITTED") SUBMITTED("SUBMITTED"),
         @SerialName(value = "PENDING") PENDING("PENDING"),
         @SerialName(value = "APPROVED") APPROVED("APPROVED"),
         @SerialName(value = "REJECTED") REJECTED("REJECTED"),

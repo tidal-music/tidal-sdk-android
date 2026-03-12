@@ -14,17 +14,15 @@ import kotlinx.serialization.Transient
  * @param id Resource id
  * @param type Resource type
  * @param attributes
- * @param relationships
  */
 @Serializable
-@SerialName(value = "userEntitlements")
-data class UserEntitlementsResourceObject(
+@SerialName(value = "videoManifests")
+data class VideoManifestsResourceObject(
 
     /* Resource id */
 
     @SerialName(value = "id") val id: kotlin.String,
     /* Resource type */
     @Transient @SerialName(value = "type") val type: kotlin.String = "",
-    @SerialName(value = "attributes") val attributes: UserEntitlementsAttributes? = null,
-    @SerialName(value = "relationships") val relationships: UserEntitlementsRelationships? = null,
+    @SerialName(value = "attributes") val attributes: VideoManifestsAttributes? = null,
 ) : IncludedInner {}

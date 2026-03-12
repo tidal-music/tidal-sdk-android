@@ -49,7 +49,6 @@ interface Comments {
      *   sorted ascending. (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: ownerProfiles, owners, parentComment (optional)
-     * @param filterId Comment Id (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) (optional)
      * @param filterParentCommentId Filter by parent comment ID to get replies (e.g.
      *   &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) (optional)
      * @param filterSubjectId Filter by subject resource ID (e.g. &#x60;12345&#x60;) (optional)
@@ -62,8 +61,6 @@ interface Comments {
         @Query("sort") sort: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[id]")
-        filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[parentComment.id]")
         filterParentCommentId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[subject.id]")

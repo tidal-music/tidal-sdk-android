@@ -9,14 +9,10 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/**
- * @param `data`
- * @param links
- * @param included
- */
+/** @param `data` */
 @Serializable
-data class UserEntitlementsSingleResourceDataDocument(
-    @SerialName(value = "data") val `data`: UserEntitlementsResourceObject,
-    @SerialName(value = "links") val links: Links,
-    @SerialName(value = "included") val included: kotlin.collections.List<IncludedInner>? = null,
+data class PlaylistsCollaboratorProfilesRelationshipRemoveOperationPayload(
+    @SerialName(value = "data")
+    val `data`:
+        kotlin.collections.List<PlaylistsCollaboratorProfilesRelationshipRemoveOperationPayloadData>
 ) {}

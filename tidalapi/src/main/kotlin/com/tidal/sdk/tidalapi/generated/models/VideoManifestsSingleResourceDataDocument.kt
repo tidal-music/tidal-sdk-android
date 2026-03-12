@@ -15,8 +15,8 @@ import kotlinx.serialization.Serializable
  * @param included
  */
 @Serializable
-data class UserEntitlementsMultiResourceDataDocument(
-    @SerialName(value = "data") val `data`: kotlin.collections.List<UserEntitlementsResourceObject>,
+data class VideoManifestsSingleResourceDataDocument(
+    @SerialName(value = "data") val `data`: VideoManifestsResourceObject,
     @SerialName(value = "links") val links: Links,
     @SerialName(value = "included") val included: kotlin.collections.List<IncludedInner>? = null,
 ) {}

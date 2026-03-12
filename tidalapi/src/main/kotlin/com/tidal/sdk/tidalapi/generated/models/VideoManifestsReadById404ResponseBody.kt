@@ -9,8 +9,9 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param owners */
+/** @param errors */
 @Serializable
-data class UserEntitlementsRelationships(
-    @SerialName(value = "owners") val owners: MultiRelationshipDataDocument? = null
+data class VideoManifestsReadById404ResponseBody(
+    @SerialName(value = "errors")
+    val errors: kotlin.collections.List<TrackFilesReadById404ResponseBodyErrorsInner>
 ) {}
