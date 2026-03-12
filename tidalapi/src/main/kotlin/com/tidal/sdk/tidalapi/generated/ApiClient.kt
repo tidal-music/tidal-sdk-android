@@ -46,10 +46,10 @@ import com.tidal.sdk.tidalapi.generated.apis.UserCollectionPlaylists
 import com.tidal.sdk.tidalapi.generated.apis.UserCollectionTracks
 import com.tidal.sdk.tidalapi.generated.apis.UserCollectionVideos
 import com.tidal.sdk.tidalapi.generated.apis.UserCollections
-import com.tidal.sdk.tidalapi.generated.apis.UserEntitlements
 import com.tidal.sdk.tidalapi.generated.apis.UserRecommendations
 import com.tidal.sdk.tidalapi.generated.apis.UserReports
 import com.tidal.sdk.tidalapi.generated.apis.Users
+import com.tidal.sdk.tidalapi.generated.apis.VideoManifests
 import com.tidal.sdk.tidalapi.generated.apis.Videos
 import com.tidal.sdk.tidalapi.networking.RetrofitProvider
 
@@ -307,11 +307,6 @@ class TidalApiClient(
         return retrofit.create(UserCollections::class.java)
     }
 
-    /** Returns an instance of the [UserEntitlements] which can be used to make API calls to the */
-    fun createUserEntitlements(): UserEntitlements {
-        return retrofit.create(UserEntitlements::class.java)
-    }
-
     /**
      * Returns an instance of the [UserRecommendations] which can be used to make API calls to the
      */
@@ -327,6 +322,11 @@ class TidalApiClient(
     /** Returns an instance of the [Users] which can be used to make API calls to the */
     fun createUsers(): Users {
         return retrofit.create(Users::class.java)
+    }
+
+    /** Returns an instance of the [VideoManifests] which can be used to make API calls to the */
+    fun createVideoManifests(): VideoManifests {
+        return retrofit.create(VideoManifests::class.java)
     }
 
     /** Returns an instance of the [Videos] which can be used to make API calls to the */

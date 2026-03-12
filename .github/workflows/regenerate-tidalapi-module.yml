@@ -126,9 +126,13 @@ jobs:
             --old-spec /tmp/old-spec.json \
             --new-spec tidal-api.json \
             > /tmp/api-change-report.md 2>/tmp/api-change-error.log; then
-            echo "::warning::API change analysis script failed"
-            echo "**API change analysis failed.** Check the CI logs for details." > /tmp/api-change-report.md
-            cat /tmp/api-change-error.log
+            # Only treat as failure if there's actual error output (a real crash),
+            # not just a non-zero exit code (which was previously used to signal breaking changes)
+            if [ -s /tmp/api-change-error.log ]; then
+              echo "::warning::API change analysis script failed"
+              echo "**API change analysis failed.** Check the CI logs for details." > /tmp/api-change-report.md
+              cat /tmp/api-change-error.log
+            fi
           fi
           deactivate
           # Truncate report if it exceeds 900KB to stay within GitHub's ~1MB output variable limit

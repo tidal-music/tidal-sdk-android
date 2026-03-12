@@ -189,11 +189,29 @@ def main():
     )
     print(report)
 
-    has_breaking = bool(ep_removed or s_removed or any(
-        any(c[0] in ("removed_field", "type_changed", "became_required") for c in changes)
-        for changes in s_modified.values()
-    ))
-    sys.exit(1 if has_breaking else 0)
+    # Log breaking changes to stderr so they're visible in CI logs
+    breaking_items = []
+    for path, method in ep_removed:
+        breaking_items.append(f"  REMOVED endpoint: {method.upper()} {path}")
+    for name in s_removed:
+        breaking_items.append(f"  REMOVED model: {name}")
+    for name, changes in sorted(s_modified.items()):
+        for change in changes:
+            if change[0] == "removed_field":
+                breaking_items.append(f"  {name}: removed field {change[1]}")
+            elif change[0] == "type_changed":
+                breaking_items.append(
+                    f"  {name}.{change[1]}: type changed {change[2]} -> {change[3]}"
+                )
+            elif change[0] == "became_required":
+                breaking_items.append(f"  {name}.{change[1]}: became required")
+
+    if breaking_items:
+        print(
+            f"\n⚠️  {len(breaking_items)} breaking change(s) detected:\n"
+            + "\n".join(breaking_items),
+            file=sys.stderr,
+        )
 
 
 if __name__ == "__main__":

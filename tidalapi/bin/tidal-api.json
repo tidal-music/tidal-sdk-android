@@ -8,7 +8,7 @@
     "description" : "The TIDAL API is a [JSON:API](https://jsonapi.org/)–compliant web API that exposes TIDAL’s music, metadata, and user-related functionality through a consistent, resource-oriented design. More information and API management are available at [developer.tidal.com](https://developer.tidal.com)",
     "termsOfService" : "https://developer.tidal.com/documentation/guidelines/guidelines-overview",
     "title" : "TIDAL API",
-    "version" : "1.1.48"
+    "version" : "1.2.3"
   },
   "externalDocs" : {
     "description" : "TIDAL Developer - Documentation",
@@ -153,9 +153,6 @@
     "description" : "Deprecated. Use the dedicated collection resources instead: userCollectionAlbums, userCollectionArtists, userCollectionTracks, userCollectionVideos, or userCollectionPlaylists.",
     "name" : "userCollections"
   }, {
-    "description" : "Entitlements granted to a user based on their subscription.",
-    "name" : "userEntitlements"
-  }, {
     "description" : "Personalized content recommendations for a user.",
     "name" : "userRecommendations"
   }, {
@@ -164,6 +161,9 @@
   }, {
     "description" : "A TIDAL user account.",
     "name" : "users"
+  }, {
+    "description" : "A playback manifest for a video, containing streaming URIs and format details.",
+    "name" : "videoManifests"
   }, {
     "description" : "A music video.",
     "name" : "videos"
@@ -5083,17 +5083,6 @@
             }
           }
         }, {
-          "description" : "Comment Id (e.g. `550e8400-e29b-41d4-a716-446655440000`)",
-          "in" : "query",
-          "name" : "filter[id]",
-          "required" : false,
-          "schema" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
-          }
-        }, {
           "description" : "Filter by parent comment ID to get replies (e.g. `550e8400-e29b-41d4-a716-446655440000`)",
           "in" : "query",
           "name" : "filter[parentComment.id]",
@@ -7895,7 +7884,7 @@
             }
           }
         }, {
-          "description" : "One of: tracks, videos, albums, playlists (e.g. `tracks`)",
+          "description" : "One of: tracks, videos, albums, playlists, userCollectionTracks (e.g. `tracks`)",
           "in" : "query",
           "name" : "filter[type]",
           "required" : false,
@@ -7903,7 +7892,7 @@
             "type" : "array",
             "items" : {
               "type" : "string",
-              "enum" : [ "tracks", "videos", "albums", "playlists" ]
+              "enum" : [ "tracks", "videos", "albums", "playlists", "userCollectionTracks" ]
             }
           }
         } ],
@@ -10067,8 +10056,8 @@
             "type" : "string"
           }
         }, {
-          "description" : "Allows the client to customize which related resources should be returned. Available options: coverArt, items, ownerProfiles, owners",
-          "example" : "coverArt",
+          "description" : "Allows the client to customize which related resources should be returned. Available options: collaboratorProfiles, collaborators, coverArt, items, ownerProfiles, owners",
+          "example" : "collaboratorProfiles",
           "in" : "query",
           "name" : "include",
           "required" : false,
@@ -10076,7 +10065,7 @@
             "type" : "array",
             "items" : {
               "type" : "string",
-              "example" : "coverArt"
+              "example" : "collaboratorProfiles"
             }
           }
         }, {
@@ -10301,8 +10290,8 @@
             "type" : "string"
           }
         }, {
-          "description" : "Allows the client to customize which related resources should be returned. Available options: coverArt, items, ownerProfiles, owners",
-          "example" : "coverArt",
+          "description" : "Allows the client to customize which related resources should be returned. Available options: collaboratorProfiles, collaborators, coverArt, items, ownerProfiles, owners",
+          "example" : "collaboratorProfiles",
           "in" : "query",
           "name" : "include",
           "required" : false,
@@ -10310,7 +10299,7 @@
             "type" : "array",
             "items" : {
               "type" : "string",
-              "example" : "coverArt"
+              "example" : "collaboratorProfiles"
             }
           }
         } ],
@@ -10432,6 +10421,312 @@
         "tags" : [ "playlists" ],
         "x-path-item-properties" : {
           "required-access-tier" : "THIRD_PARTY"
+        }
+      }
+    },
+    "/playlists/{id}/relationships/collaboratorProfiles" : {
+      "delete" : {
+        "description" : "Deletes item(s) from collaboratorProfiles relationship.",
+        "parameters" : [ {
+          "description" : "Playlist id",
+          "example" : "550e8400-e29b-41d4-a716-446655440000",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "$ref" : "#/components/parameters/IdempotencyKey"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/vnd.api+json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/PlaylistsCollaboratorProfilesRelationshipRemoveOperation_Payload"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "400" : {
+            "$ref" : "#/components/responses/Default400Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Default404Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Default405Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Default406Response"
+          },
+          "409" : {
+            "$ref" : "#/components/responses/Idempotency409Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Default415Response"
+          },
+          "422" : {
+            "$ref" : "#/components/responses/Idempotency422Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Default429Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Default500Response"
+          },
+          "503" : {
+            "$ref" : "#/components/responses/Default503Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "playlists.write", "w_usr" ]
+        } ],
+        "summary" : "Delete from collaboratorProfiles relationship (\"to-many\").",
+        "tags" : [ "playlists" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      },
+      "get" : {
+        "description" : "Retrieves collaboratorProfiles relationship.",
+        "parameters" : [ {
+          "description" : "Playlist id",
+          "example" : "550e8400-e29b-41d4-a716-446655440000",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "ISO 3166-1 alpha-2 country code",
+          "example" : "US",
+          "in" : "query",
+          "name" : "countryCode",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: collaboratorProfiles",
+          "example" : "collaboratorProfiles",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "collaboratorProfiles"
+            }
+          }
+        }, {
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Playlists_Multi_Relationship_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Default400Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Default404Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Default405Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Default406Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Default415Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Default429Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Default500Response"
+          },
+          "503" : {
+            "$ref" : "#/components/responses/Default503Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ ]
+        } ],
+        "summary" : "Get collaboratorProfiles relationship (\"to-many\").",
+        "tags" : [ "playlists" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      },
+      "post" : {
+        "description" : "Adds item(s) to collaboratorProfiles relationship.",
+        "parameters" : [ {
+          "description" : "Playlist id",
+          "example" : "550e8400-e29b-41d4-a716-446655440000",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "$ref" : "#/components/parameters/IdempotencyKey"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/vnd.api+json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/PlaylistsCollaboratorProfilesRelationshipAddOperation_Payload"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "400" : {
+            "$ref" : "#/components/responses/Default400Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Default404Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Default405Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Default406Response"
+          },
+          "409" : {
+            "$ref" : "#/components/responses/Idempotency409Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Default415Response"
+          },
+          "422" : {
+            "$ref" : "#/components/responses/Idempotency422Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Default429Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Default500Response"
+          },
+          "503" : {
+            "$ref" : "#/components/responses/Default503Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "playlists.write", "w_usr" ]
+        } ],
+        "summary" : "Add to collaboratorProfiles relationship (\"to-many\").",
+        "tags" : [ "playlists" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      }
+    },
+    "/playlists/{id}/relationships/collaborators" : {
+      "get" : {
+        "description" : "Retrieves collaborators relationship.",
+        "parameters" : [ {
+          "description" : "Playlist id",
+          "example" : "550e8400-e29b-41d4-a716-446655440000",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "ISO 3166-1 alpha-2 country code",
+          "example" : "US",
+          "in" : "query",
+          "name" : "countryCode",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: collaborators",
+          "example" : "collaborators",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "collaborators"
+            }
+          }
+        }, {
+          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
+          "in" : "query",
+          "name" : "page[cursor]",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Playlists_Multi_Relationship_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Default400Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Default404Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Default405Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Default406Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Default415Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Default429Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Default500Response"
+          },
+          "503" : {
+            "$ref" : "#/components/responses/Default503Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ ]
+        } ],
+        "summary" : "Get collaborators relationship (\"to-many\").",
+        "tags" : [ "playlists" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
         }
       }
     },
@@ -13712,7 +14007,7 @@
         "summary" : "Get single trackManifest.",
         "tags" : [ "trackManifests" ],
         "x-path-item-properties" : {
-          "required-access-tier" : "INTERNAL"
+          "required-access-tier" : "THIRD_PARTY"
         }
       }
     },
@@ -18553,6 +18848,80 @@
         }
       }
     },
+    "/userCollectionTracks" : {
+      "get" : {
+        "description" : "Retrieves multiple userCollectionTracks by available filters, or without if applicable.",
+        "parameters" : [ {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: items, owners",
+          "example" : "items",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "items"
+            }
+          }
+        }, {
+          "description" : "User collection tracks id (e.g. `FMJUCzH4`)",
+          "in" : "query",
+          "name" : "filter[id]",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/UserCollectionTracks_Multi_Resource_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Default400Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Default404Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Default405Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Default406Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Default415Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Default429Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Default500Response"
+          },
+          "503" : {
+            "$ref" : "#/components/responses/Default503Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ "collection.read", "r_usr" ]
+        } ],
+        "summary" : "Get multiple userCollectionTracks.",
+        "tags" : [ "userCollectionTracks" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "THIRD_PARTY"
+        }
+      }
+    },
     "/userCollectionTracks/{id}" : {
       "get" : {
         "description" : "Retrieves single userCollectionTrack by id.",
@@ -20819,158 +21188,6 @@
         }
       }
     },
-    "/userEntitlements/{id}" : {
-      "get" : {
-        "description" : "Retrieves single userEntitlement by id.",
-        "parameters" : [ {
-          "description" : "User entitlements id. Use `me` for the authenticated user's resource",
-          "example" : "me",
-          "in" : "path",
-          "name" : "id",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "description" : "Allows the client to customize which related resources should be returned. Available options: owners",
-          "example" : "owners",
-          "in" : "query",
-          "name" : "include",
-          "required" : false,
-          "schema" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string",
-              "example" : "owners"
-            }
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "content" : {
-              "application/vnd.api+json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/UserEntitlements_Single_Resource_Data_Document"
-                }
-              }
-            },
-            "description" : "Successful response"
-          },
-          "400" : {
-            "$ref" : "#/components/responses/Default400Response"
-          },
-          "404" : {
-            "$ref" : "#/components/responses/Default404Response"
-          },
-          "405" : {
-            "$ref" : "#/components/responses/Default405Response"
-          },
-          "406" : {
-            "$ref" : "#/components/responses/Default406Response"
-          },
-          "415" : {
-            "$ref" : "#/components/responses/Default415Response"
-          },
-          "429" : {
-            "$ref" : "#/components/responses/Default429Response"
-          },
-          "500" : {
-            "$ref" : "#/components/responses/Default500Response"
-          },
-          "503" : {
-            "$ref" : "#/components/responses/Default503Response"
-          }
-        },
-        "security" : [ {
-          "Authorization_Code_PKCE" : [ "entitlements.read", "r_usr" ]
-        } ],
-        "summary" : "Get single userEntitlement.",
-        "tags" : [ "userEntitlements" ],
-        "x-path-item-properties" : {
-          "required-access-tier" : "THIRD_PARTY"
-        }
-      }
-    },
-    "/userEntitlements/{id}/relationships/owners" : {
-      "get" : {
-        "description" : "Retrieves owners relationship.",
-        "parameters" : [ {
-          "description" : "User entitlements id. Use `me` for the authenticated user's resource",
-          "example" : "me",
-          "in" : "path",
-          "name" : "id",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "description" : "Allows the client to customize which related resources should be returned. Available options: owners",
-          "example" : "owners",
-          "in" : "query",
-          "name" : "include",
-          "required" : false,
-          "schema" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string",
-              "example" : "owners"
-            }
-          }
-        }, {
-          "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
-          "in" : "query",
-          "name" : "page[cursor]",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "content" : {
-              "application/vnd.api+json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/UserEntitlements_Multi_Relationship_Data_Document"
-                }
-              }
-            },
-            "description" : "Successful response"
-          },
-          "400" : {
-            "$ref" : "#/components/responses/Default400Response"
-          },
-          "404" : {
-            "$ref" : "#/components/responses/Default404Response"
-          },
-          "405" : {
-            "$ref" : "#/components/responses/Default405Response"
-          },
-          "406" : {
-            "$ref" : "#/components/responses/Default406Response"
-          },
-          "415" : {
-            "$ref" : "#/components/responses/Default415Response"
-          },
-          "429" : {
-            "$ref" : "#/components/responses/Default429Response"
-          },
-          "500" : {
-            "$ref" : "#/components/responses/Default500Response"
-          },
-          "503" : {
-            "$ref" : "#/components/responses/Default503Response"
-          }
-        },
-        "security" : [ {
-          "Authorization_Code_PKCE" : [ "entitlements.read", "r_usr" ]
-        } ],
-        "summary" : "Get owners relationship (\"to-many\").",
-        "tags" : [ "userEntitlements" ],
-        "x-path-item-properties" : {
-          "required-access-tier" : "THIRD_PARTY"
-        }
-      }
-    },
     "/userRecommendations/{id}" : {
       "get" : {
         "description" : "Retrieves single userRecommendation by id.",
@@ -21482,6 +21699,86 @@
         "tags" : [ "users" ],
         "x-path-item-properties" : {
           "required-access-tier" : "THIRD_PARTY"
+        }
+      }
+    },
+    "/videoManifests/{id}" : {
+      "get" : {
+        "description" : "Retrieves single videoManifest by id.",
+        "parameters" : [ {
+          "description" : "Video manifest id",
+          "example" : "75623239",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "uriScheme",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "HTTPS", "DATA" ]
+          }
+        }, {
+          "in" : "query",
+          "name" : "usage",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "PLAYBACK", "DOWNLOAD" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/VideoManifests_Single_Resource_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Default400Response"
+          },
+          "403" : {
+            "$ref" : "#/components/responses/VideoManifestsReadById403Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/VideoManifestsReadById404Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Default405Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Default406Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Default415Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Default429Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Default500Response"
+          },
+          "503" : {
+            "$ref" : "#/components/responses/Default503Response"
+          }
+        },
+        "security" : [ {
+          "Client_Credentials" : [ ]
+        }, {
+          "Authorization_Code_PKCE" : [ "playback", "r_usr" ]
+        } ],
+        "summary" : "Get single videoManifest.",
+        "tags" : [ "videoManifests" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
         }
       }
     },
@@ -22681,6 +22978,26 @@
           }
         },
         "description" : "You have reached the maximum number of items allowed for this collection. Please remove some items before adding more.; One or more items you are trying to add are already in your favorites.; A request with this idempotency key is currently being processed"
+      },
+      "VideoManifestsReadById403Response" : {
+        "content" : {
+          "application/vnd.api+json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/VideoManifestsReadById403ResponseBody"
+            }
+          }
+        },
+        "description" : "Cannot fulfill this request because required prerequisites are missing; The requested content is not available in your location; The requested content must be purchased to be accessed; Client is not allowed to access this content; This account is playing on another app or device"
+      },
+      "VideoManifestsReadById404Response" : {
+        "content" : {
+          "application/vnd.api+json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/VideoManifestsReadById404ResponseBody"
+            }
+          }
+        },
+        "description" : "The requested content does not exist or is no longer available"
       }
     },
     "schemas" : {
@@ -26399,10 +26716,10 @@
               "userCollectionTracks" : "#/components/schemas/UserCollectionTracks_Resource_Object",
               "userCollectionVideos" : "#/components/schemas/UserCollectionVideos_Resource_Object",
               "userCollections" : "#/components/schemas/UserCollections_Resource_Object",
-              "userEntitlements" : "#/components/schemas/UserEntitlements_Resource_Object",
               "userRecommendations" : "#/components/schemas/UserRecommendations_Resource_Object",
               "userReports" : "#/components/schemas/UserReports_Resource_Object",
               "users" : "#/components/schemas/Users_Resource_Object",
+              "videoManifests" : "#/components/schemas/VideoManifests_Resource_Object",
               "videos" : "#/components/schemas/Videos_Resource_Object"
             },
             "propertyName" : "type"
@@ -26498,13 +26815,13 @@
           }, {
             "$ref" : "#/components/schemas/UserCollections_Resource_Object"
           }, {
-            "$ref" : "#/components/schemas/UserEntitlements_Resource_Object"
-          }, {
             "$ref" : "#/components/schemas/UserRecommendations_Resource_Object"
           }, {
             "$ref" : "#/components/schemas/UserReports_Resource_Object"
           }, {
             "$ref" : "#/components/schemas/Users_Resource_Object"
+          }, {
+            "$ref" : "#/components/schemas/VideoManifests_Resource_Object"
           }, {
             "$ref" : "#/components/schemas/Videos_Resource_Object"
           } ]
@@ -26586,7 +26903,7 @@
           },
           "type" : {
             "type" : "string",
-            "enum" : [ "tracks", "videos", "albums", "playlists" ]
+            "enum" : [ "tracks", "videos", "albums", "playlists", "userCollectionTracks" ]
           }
         }
       },
@@ -27230,7 +27547,7 @@
           "status" : {
             "type" : "string",
             "description" : "Claim status",
-            "enum" : [ "PENDING", "APPROVED", "REJECTED" ]
+            "enum" : [ "SUBMITTED", "PENDING", "APPROVED", "REJECTED" ]
           },
           "websiteOrSocialLink" : {
             "$ref" : "#/components/schemas/Link_Object"
@@ -27988,6 +28305,60 @@
           }
         }
       },
+      "PlaylistsCollaboratorProfilesRelationshipAddOperation_Payload" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "maxItems" : 20,
+            "minItems" : 1,
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/PlaylistsCollaboratorProfilesRelationshipAddOperation_Payload_Data"
+            }
+          }
+        }
+      },
+      "PlaylistsCollaboratorProfilesRelationshipAddOperation_Payload_Data" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "artists" ]
+          }
+        }
+      },
+      "PlaylistsCollaboratorProfilesRelationshipRemoveOperation_Payload" : {
+        "required" : [ "data" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "maxItems" : 20,
+            "minItems" : 1,
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/PlaylistsCollaboratorProfilesRelationshipRemoveOperation_Payload_Data"
+            }
+          }
+        }
+      },
+      "PlaylistsCollaboratorProfilesRelationshipRemoveOperation_Payload_Data" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "artists" ]
+          }
+        }
+      },
       "PlaylistsCoverArtRelationshipUpdateOperation_Payload" : {
         "required" : [ "data" ],
         "type" : "object",
@@ -28390,6 +28761,12 @@
       },
       "Playlists_Relationships" : {
         "properties" : {
+          "collaboratorProfiles" : {
+            "$ref" : "#/components/schemas/Multi_Relationship_Data_Document"
+          },
+          "collaborators" : {
+            "$ref" : "#/components/schemas/Multi_Relationship_Data_Document"
+          },
           "coverArt" : {
             "$ref" : "#/components/schemas/Multi_Relationship_Data_Document"
           },
@@ -33158,102 +33535,6 @@
           }
         }
       },
-      "UserEntitlements_Attributes" : {
-        "required" : [ "entitlements" ],
-        "type" : "object",
-        "properties" : {
-          "entitlements" : {
-            "type" : "array",
-            "description" : "Entitlements for user",
-            "items" : {
-              "type" : "string",
-              "description" : "Entitlements for user",
-              "enum" : [ "MUSIC", "DJ" ]
-            }
-          }
-        }
-      },
-      "UserEntitlements_Multi_Relationship_Data_Document" : {
-        "required" : [ "links" ],
-        "type" : "object",
-        "properties" : {
-          "data" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/Resource_Identifier"
-            }
-          },
-          "included" : {
-            "$ref" : "#/components/schemas/Included"
-          },
-          "links" : {
-            "$ref" : "#/components/schemas/Links"
-          }
-        }
-      },
-      "UserEntitlements_Multi_Resource_Data_Document" : {
-        "required" : [ "data", "links" ],
-        "type" : "object",
-        "properties" : {
-          "data" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/UserEntitlements_Resource_Object"
-            }
-          },
-          "included" : {
-            "$ref" : "#/components/schemas/Included"
-          },
-          "links" : {
-            "$ref" : "#/components/schemas/Links"
-          }
-        }
-      },
-      "UserEntitlements_Relationships" : {
-        "properties" : {
-          "owners" : {
-            "$ref" : "#/components/schemas/Multi_Relationship_Data_Document"
-          }
-        }
-      },
-      "UserEntitlements_Resource_Object" : {
-        "required" : [ "id", "type" ],
-        "type" : "object",
-        "properties" : {
-          "attributes" : {
-            "$ref" : "#/components/schemas/UserEntitlements_Attributes"
-          },
-          "id" : {
-            "type" : "string",
-            "description" : "Resource id",
-            "example" : "12345"
-          },
-          "relationships" : {
-            "$ref" : "#/components/schemas/UserEntitlements_Relationships"
-          },
-          "type" : {
-            "minLength" : 1,
-            "type" : "string",
-            "description" : "Resource type",
-            "example" : "tracks"
-          }
-        }
-      },
-      "UserEntitlements_Single_Resource_Data_Document" : {
-        "required" : [ "data", "links" ],
-        "type" : "object",
-        "properties" : {
-          "data" : {
-            "$ref" : "#/components/schemas/UserEntitlements_Resource_Object"
-          },
-          "included" : {
-            "$ref" : "#/components/schemas/Included"
-          },
-          "links" : {
-            "$ref" : "#/components/schemas/Links"
-          }
-        }
-      },
       "UserRecommendations_Attributes" : {
         "type" : "object"
       },
@@ -33571,6 +33852,136 @@
         "properties" : {
           "data" : {
             "$ref" : "#/components/schemas/Users_Resource_Object"
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "VideoManifestsReadById403ResponseBody" : {
+        "type" : "object",
+        "properties" : {
+          "errors" : {
+            "type" : "array",
+            "items" : {
+              "type" : "object",
+              "properties" : {
+                "code" : {
+                  "type" : "string",
+                  "example" : "CLIENT_NOT_ENTITLED",
+                  "enum" : [ "CLIENT_NOT_ENTITLED", "CONCURRENT_PLAYBACK", "GEO_RESTRICTED", "PREREQUISITE_MISSING", "PURCHASE_REQUIRED" ]
+                },
+                "detail" : {
+                  "type" : "string",
+                  "example" : "Cannot fulfill this request because required prerequisites are missing"
+                },
+                "status" : {
+                  "type" : "string",
+                  "example" : "403"
+                }
+              },
+              "required" : [ "code", "status" ]
+            }
+          }
+        },
+        "required" : [ "errors" ]
+      },
+      "VideoManifestsReadById404ResponseBody" : {
+        "type" : "object",
+        "properties" : {
+          "errors" : {
+            "type" : "array",
+            "items" : {
+              "type" : "object",
+              "properties" : {
+                "code" : {
+                  "type" : "string",
+                  "example" : "CONTENT_NOT_FOUND",
+                  "enum" : [ "CONTENT_NOT_FOUND" ]
+                },
+                "detail" : {
+                  "type" : "string",
+                  "example" : "The requested content does not exist or is no longer available"
+                },
+                "status" : {
+                  "type" : "string",
+                  "example" : "404"
+                }
+              },
+              "required" : [ "code", "status" ]
+            }
+          }
+        },
+        "required" : [ "errors" ]
+      },
+      "VideoManifests_Attributes" : {
+        "type" : "object",
+        "properties" : {
+          "drmData" : {
+            "$ref" : "#/components/schemas/DrmData"
+          },
+          "link" : {
+            "$ref" : "#/components/schemas/Link_Object"
+          },
+          "previewReason" : {
+            "type" : "string",
+            "description" : "Why a preview is served instead of the full video",
+            "enum" : [ "FULL_REQUIRES_SUBSCRIPTION", "FULL_REQUIRES_PURCHASE", "FULL_REQUIRES_HIGHER_ACCESS_TIER" ]
+          },
+          "videoPresentation" : {
+            "type" : "string",
+            "description" : "Video presentation",
+            "enum" : [ "FULL", "PREVIEW" ]
+          }
+        }
+      },
+      "VideoManifests_Multi_Resource_Data_Document" : {
+        "required" : [ "data", "links" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/VideoManifests_Resource_Object"
+            }
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "VideoManifests_Resource_Object" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "attributes" : {
+            "$ref" : "#/components/schemas/VideoManifests_Attributes"
+          },
+          "id" : {
+            "type" : "string",
+            "description" : "Resource id",
+            "example" : "12345"
+          },
+          "type" : {
+            "minLength" : 1,
+            "type" : "string",
+            "description" : "Resource type",
+            "example" : "tracks"
+          }
+        }
+      },
+      "VideoManifests_Single_Resource_Data_Document" : {
+        "required" : [ "data", "links" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/VideoManifests_Resource_Object"
           },
           "included" : {
             "$ref" : "#/components/schemas/Included"

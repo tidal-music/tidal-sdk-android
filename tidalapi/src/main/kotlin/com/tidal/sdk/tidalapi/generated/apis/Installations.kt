@@ -117,6 +117,7 @@ interface Installations {
         @SerialName(value = "videos") videos("videos"),
         @SerialName(value = "albums") albums("albums"),
         @SerialName(value = "playlists") playlists("playlists"),
+        @SerialName(value = "userCollectionTracks") userCollectionTracks("userCollectionTracks"),
     }
 
     /**
@@ -137,8 +138,8 @@ interface Installations {
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: offlineInventory (optional)
-     * @param filterType One of: tracks, videos, albums, playlists (e.g. &#x60;tracks&#x60;)
-     *   (optional)
+     * @param filterType One of: tracks, videos, albums, playlists, userCollectionTracks (e.g.
+     *   &#x60;tracks&#x60;) (optional)
      * @return [InstallationsOfflineInventoryMultiRelationshipDataDocument]
      */
     @GET("installations/{id}/relationships/offlineInventory")

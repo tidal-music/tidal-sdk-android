@@ -90,13 +90,13 @@ fun getOneOfSerializer() = SerializersModule {
             UserCollectionVideosResourceObject.serializer(),
         )
         subclass(UserCollectionsResourceObject::class, UserCollectionsResourceObject.serializer())
-        subclass(UserEntitlementsResourceObject::class, UserEntitlementsResourceObject.serializer())
         subclass(
             UserRecommendationsResourceObject::class,
             UserRecommendationsResourceObject.serializer(),
         )
         subclass(UserReportsResourceObject::class, UserReportsResourceObject.serializer())
         subclass(UsersResourceObject::class, UsersResourceObject.serializer())
+        subclass(VideoManifestsResourceObject::class, VideoManifestsResourceObject.serializer())
         subclass(VideosResourceObject::class, VideosResourceObject.serializer())
     }
     contextual(LyricsAttributesProvider::class, LyricsAttributesProviderSerializer)

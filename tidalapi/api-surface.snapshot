@@ -1,5 +1,5 @@
 # TIDAL API Surface Snapshot
-# Spec version: 1.1.48 | Endpoints: 275 | Models: 659
+# Spec version: 1.2.3 | Endpoints: 279 | Models: 663
 
 ## Endpoints
 
@@ -244,7 +244,7 @@ GET /artworks/{id}/relationships/owners
   returns: Artworks_Multi_Relationship_Data_Document
 
 GET /comments
-  params: filter[id]?: array[string], filter[parentComment.id]?: array[string], filter[subject.id]?: array[string], filter[subject.type]?: array[enum[albums, tracks]], include?: array[string], page[cursor]?: string, sort?: array[enum[createdAt, -createdAt, likeCount, -likeCount, replyCount, -replyCount, startTime, -startTime]]
+  params: filter[parentComment.id]?: array[string], filter[subject.id]?: array[string], filter[subject.type]?: array[enum[albums, tracks]], include?: array[string], page[cursor]?: string, sort?: array[enum[createdAt, -createdAt, likeCount, -likeCount, replyCount, -replyCount, startTime, -startTime]]
   returns: Comments_Multi_Resource_Data_Document
 
 POST /comments
@@ -376,7 +376,7 @@ GET /installations/{id}
   returns: Installations_Single_Resource_Data_Document
 
 GET /installations/{id}/relationships/offlineInventory
-  params: filter[type]?: array[enum[tracks, videos, albums, playlists]], id: string, include?: array[string], page[cursor]?: string
+  params: filter[type]?: array[enum[tracks, videos, albums, playlists, userCollectionTracks]], id: string, include?: array[string], page[cursor]?: string
   returns: Installations_OfflineInventory_Multi_Relationship_Data_Document
 
 POST /installations/{id}/relationships/offlineInventory
@@ -518,6 +518,22 @@ PATCH /playlists/{id}
 DELETE /playlists/{id}
   params: ??: any, id: string
   returns: void
+
+GET /playlists/{id}/relationships/collaboratorProfiles
+  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string
+  returns: Playlists_Multi_Relationship_Data_Document
+
+POST /playlists/{id}/relationships/collaboratorProfiles
+  params: ??: any, id: string
+  returns: void
+
+DELETE /playlists/{id}/relationships/collaboratorProfiles
+  params: ??: any, id: string
+  returns: void
+
+GET /playlists/{id}/relationships/collaborators
+  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string
+  returns: Playlists_Multi_Relationship_Data_Document
 
 GET /playlists/{id}/relationships/coverArt
   params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string
@@ -919,6 +935,10 @@ GET /userCollectionPlaylists/{id}/relationships/owners
   params: id: string, include?: array[string], page[cursor]?: string
   returns: UserCollectionPlaylists_Multi_Relationship_Data_Document
 
+GET /userCollectionTracks
+  params: filter[id]?: array[string], include?: array[string]
+  returns: UserCollectionTracks_Multi_Resource_Data_Document
+
 GET /userCollectionTracks/{id}
   params: countryCode?: string, id: string, include?: array[string], locale?: string
   returns: UserCollectionTracks_Single_Resource_Data_Document
@@ -1027,14 +1047,6 @@ DELETE /userCollections/{id}/relationships/videos
   params: ??: any, id: string
   returns: void
 
-GET /userEntitlements/{id}
-  params: id: string, include?: array[string]
-  returns: UserEntitlements_Single_Resource_Data_Document
-
-GET /userEntitlements/{id}/relationships/owners
-  params: id: string, include?: array[string], page[cursor]?: string
-  returns: UserEntitlements_Multi_Relationship_Data_Document
-
 GET /userRecommendations/{id}
   params: countryCode?: string, id: string, include?: array[string], locale?: string
   returns: UserRecommendations_Single_Resource_Data_Document
@@ -1058,6 +1070,10 @@ POST /userReports
 GET /users/{id}
   params: id: string
   returns: Users_Single_Resource_Data_Document
+
+GET /videoManifests/{id}
+  params: id: string, uriScheme: enum[HTTPS, DATA], usage: enum[PLAYBACK, DOWNLOAD]
+  returns: VideoManifests_Single_Resource_Data_Document
 
 GET /videos
   params: countryCode?: string, filter[id]?: array[string], filter[isrc]?: array[string], include?: array[string]
@@ -2127,7 +2143,7 @@ InstallationsOfflineInventoryRelationshipRemoveOperation_Payload
 
 InstallationsOfflineInventory_ItemIdentifier
   id: string (required)
-  type: enum[tracks, videos, albums, playlists] (required)
+  type: enum[tracks, videos, albums, playlists, userCollectionTracks] (required)
 
 Installations_Attributes
   clientProvidedInstallationId: string (required)
@@ -2311,7 +2327,7 @@ ManualArtistClaims_Attributes
   selectedAlbums: array[string] (optional)
   selectedSingles: array[string] (optional)
   socialLink: Link_Object (optional)
-  status: enum[PENDING, APPROVED, REJECTED] (optional)
+  status: enum[SUBMITTED, PENDING, APPROVED, REJECTED] (optional)
 
 ManualArtistClaims_Multi_Resource_Data_Document
   data: array[ManualArtistClaims_Resource_Object] (required)
@@ -2532,6 +2548,20 @@ PlayQueues_Single_Resource_Data_Document
   links: Links (required)
   included: Included (optional)
 
+PlaylistsCollaboratorProfilesRelationshipAddOperation_Payload
+  data: array[PlaylistsCollaboratorProfilesRelationshipAddOperation_Payload_Data] (required)
+
+PlaylistsCollaboratorProfilesRelationshipAddOperation_Payload_Data
+  id: string (required)
+  type: enum[artists] (required)
+
+PlaylistsCollaboratorProfilesRelationshipRemoveOperation_Payload
+  data: array[PlaylistsCollaboratorProfilesRelationshipRemoveOperation_Payload_Data] (required)
+
+PlaylistsCollaboratorProfilesRelationshipRemoveOperation_Payload_Data
+  id: string (required)
+  type: enum[artists] (required)
+
 PlaylistsCoverArtRelationshipUpdateOperation_Payload
   data: array[PlaylistsCoverArtRelationshipUpdateOperation_Payload_Data] (required)
 
@@ -2644,6 +2674,8 @@ Playlists_Multi_Resource_Data_Document
   included: Included (optional)
 
 Playlists_Relationships
+  collaboratorProfiles: Multi_Relationship_Data_Document (optional)
+  collaborators: Multi_Relationship_Data_Document (optional)
   coverArt: Multi_Relationship_Data_Document (optional)
   items: Playlists_Items_Multi_Relationship_Data_Document (optional)
   ownerProfiles: Multi_Relationship_Data_Document (optional)
@@ -3934,33 +3966,6 @@ UserCollections_Videos_Resource_Identifier
 UserCollections_Videos_Resource_Identifier_Meta
   addedAt: string(date-time) (required)
 
-UserEntitlements_Attributes
-  entitlements: array[enum[MUSIC, DJ]] (required)
-
-UserEntitlements_Multi_Relationship_Data_Document
-  links: Links (required)
-  data: array[Resource_Identifier] (optional)
-  included: Included (optional)
-
-UserEntitlements_Multi_Resource_Data_Document
-  data: array[UserEntitlements_Resource_Object] (required)
-  links: Links (required)
-  included: Included (optional)
-
-UserEntitlements_Relationships
-  owners: Multi_Relationship_Data_Document (optional)
-
-UserEntitlements_Resource_Object
-  id: string (required)
-  type: string (required)
-  attributes: UserEntitlements_Attributes (optional)
-  relationships: UserEntitlements_Relationships (optional)
-
-UserEntitlements_Single_Resource_Data_Document
-  data: UserEntitlements_Resource_Object (required)
-  links: Links (required)
-  included: Included (optional)
-
 UserRecommendations_Attributes
 
 UserRecommendations_Multi_Relationship_Data_Document
@@ -4051,6 +4056,33 @@ Users_Resource_Object
 
 Users_Single_Resource_Data_Document
   data: Users_Resource_Object (required)
+  links: Links (required)
+  included: Included (optional)
+
+VideoManifestsReadById403ResponseBody
+  errors: array[object] (required)
+
+VideoManifestsReadById404ResponseBody
+  errors: array[object] (required)
+
+VideoManifests_Attributes
+  drmData: DrmData (optional)
+  link: Link_Object (optional)
+  previewReason: enum[FULL_REQUIRES_SUBSCRIPTION, FULL_REQUIRES_PURCHASE, FULL_REQUIRES_HIGHER_ACCESS_TIER] (optional)
+  videoPresentation: enum[FULL, PREVIEW] (optional)
+
+VideoManifests_Multi_Resource_Data_Document
+  data: array[VideoManifests_Resource_Object] (required)
+  links: Links (required)
+  included: Included (optional)
+
+VideoManifests_Resource_Object
+  id: string (required)
+  type: string (required)
+  attributes: VideoManifests_Attributes (optional)
+
+VideoManifests_Single_Resource_Data_Document
+  data: VideoManifests_Resource_Object (required)
   links: Links (required)
   included: Included (optional)
 

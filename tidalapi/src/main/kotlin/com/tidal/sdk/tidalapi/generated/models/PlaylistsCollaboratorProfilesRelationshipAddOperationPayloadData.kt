@@ -14,18 +14,15 @@ import kotlinx.serialization.Serializable
  * @param type
  */
 @Serializable
-data class InstallationsOfflineInventoryItemIdentifier(
+data class PlaylistsCollaboratorProfilesRelationshipAddOperationPayloadData(
     @SerialName(value = "id") val id: kotlin.String,
-    @SerialName(value = "type") val type: InstallationsOfflineInventoryItemIdentifier.Type,
+    @SerialName(value = "type")
+    val type: PlaylistsCollaboratorProfilesRelationshipAddOperationPayloadData.Type,
 ) {
 
-    /** Values: tracks,videos,albums,playlists,userCollectionTracks */
+    /** Values: artists */
     @Serializable
     enum class Type(val value: kotlin.String) {
-        @SerialName(value = "tracks") tracks("tracks"),
-        @SerialName(value = "videos") videos("videos"),
-        @SerialName(value = "albums") albums("albums"),
-        @SerialName(value = "playlists") playlists("playlists"),
-        @SerialName(value = "userCollectionTracks") userCollectionTracks("userCollectionTracks"),
+        @SerialName(value = "artists") artists("artists")
     }
 }
