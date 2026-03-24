@@ -26,6 +26,7 @@ import kotlinx.serialization.Serializable
  * @param selectedAlbums
  * @param selectedSingles
  * @param socialLink
+ * @param upcs
  */
 @Serializable
 data class ManualArtistClaimsCreateOperationPayloadDataAttributes(
@@ -47,4 +48,5 @@ data class ManualArtistClaimsCreateOperationPayloadDataAttributes(
     @SerialName(value = "selectedSingles")
     val selectedSingles: kotlin.collections.List<kotlin.String>? = null,
     @SerialName(value = "socialLink") val socialLink: LinkObject? = null,
+    @SerialName(value = "upcs") val upcs: kotlin.collections.List<kotlin.String>? = null,
 ) {}

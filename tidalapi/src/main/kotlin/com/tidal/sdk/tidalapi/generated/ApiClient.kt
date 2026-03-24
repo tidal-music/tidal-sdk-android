@@ -1,6 +1,7 @@
 package com.tidal.sdk.tidalapi.generated
 
 import com.tidal.sdk.auth.CredentialsProvider
+import com.tidal.sdk.tidalapi.generated.apis.AcceptedTerms
 import com.tidal.sdk.tidalapi.generated.apis.AlbumStatistics
 import com.tidal.sdk.tidalapi.generated.apis.Albums
 import com.tidal.sdk.tidalapi.generated.apis.Appreciations
@@ -9,6 +10,7 @@ import com.tidal.sdk.tidalapi.generated.apis.ArtistClaims
 import com.tidal.sdk.tidalapi.generated.apis.ArtistRoles
 import com.tidal.sdk.tidalapi.generated.apis.Artists
 import com.tidal.sdk.tidalapi.generated.apis.Artworks
+import com.tidal.sdk.tidalapi.generated.apis.Clients
 import com.tidal.sdk.tidalapi.generated.apis.Comments
 import com.tidal.sdk.tidalapi.generated.apis.ContentClaims
 import com.tidal.sdk.tidalapi.generated.apis.Credits
@@ -32,6 +34,7 @@ import com.tidal.sdk.tidalapi.generated.apis.SearchSuggestions
 import com.tidal.sdk.tidalapi.generated.apis.Shares
 import com.tidal.sdk.tidalapi.generated.apis.StripeConnections
 import com.tidal.sdk.tidalapi.generated.apis.StripeDashboardLinks
+import com.tidal.sdk.tidalapi.generated.apis.Terms
 import com.tidal.sdk.tidalapi.generated.apis.TrackFiles
 import com.tidal.sdk.tidalapi.generated.apis.TrackManifests
 import com.tidal.sdk.tidalapi.generated.apis.TrackSourceFiles
@@ -43,9 +46,11 @@ import com.tidal.sdk.tidalapi.generated.apis.UserCollectionAlbums
 import com.tidal.sdk.tidalapi.generated.apis.UserCollectionArtists
 import com.tidal.sdk.tidalapi.generated.apis.UserCollectionFolders
 import com.tidal.sdk.tidalapi.generated.apis.UserCollectionPlaylists
+import com.tidal.sdk.tidalapi.generated.apis.UserCollectionSaveForLaters
 import com.tidal.sdk.tidalapi.generated.apis.UserCollectionTracks
 import com.tidal.sdk.tidalapi.generated.apis.UserCollectionVideos
 import com.tidal.sdk.tidalapi.generated.apis.UserCollections
+import com.tidal.sdk.tidalapi.generated.apis.UserDataExportRequests
 import com.tidal.sdk.tidalapi.generated.apis.UserRecommendations
 import com.tidal.sdk.tidalapi.generated.apis.UserReports
 import com.tidal.sdk.tidalapi.generated.apis.Users
@@ -60,6 +65,11 @@ class TidalApiClient(
 ) {
 
     private val retrofit by lazy { retrofitProvider.provideRetrofit(baseUrl, credentialsProvider) }
+
+    /** Returns an instance of the [AcceptedTerms] which can be used to make API calls to the */
+    fun createAcceptedTerms(): AcceptedTerms {
+        return retrofit.create(AcceptedTerms::class.java)
+    }
 
     /** Returns an instance of the [AlbumStatistics] which can be used to make API calls to the */
     fun createAlbumStatistics(): AlbumStatistics {
@@ -99,6 +109,11 @@ class TidalApiClient(
     /** Returns an instance of the [Artworks] which can be used to make API calls to the */
     fun createArtworks(): Artworks {
         return retrofit.create(Artworks::class.java)
+    }
+
+    /** Returns an instance of the [Clients] which can be used to make API calls to the */
+    fun createClients(): Clients {
+        return retrofit.create(Clients::class.java)
     }
 
     /** Returns an instance of the [Comments] which can be used to make API calls to the */
@@ -222,6 +237,11 @@ class TidalApiClient(
         return retrofit.create(StripeDashboardLinks::class.java)
     }
 
+    /** Returns an instance of the [Terms] which can be used to make API calls to the */
+    fun createTerms(): Terms {
+        return retrofit.create(Terms::class.java)
+    }
+
     /** Returns an instance of the [TrackFiles] which can be used to make API calls to the */
     fun createTrackFiles(): TrackFiles {
         return retrofit.create(TrackFiles::class.java)
@@ -289,6 +309,14 @@ class TidalApiClient(
     }
 
     /**
+     * Returns an instance of the [UserCollectionSaveForLaters] which can be used to make API calls
+     * to the
+     */
+    fun createUserCollectionSaveForLaters(): UserCollectionSaveForLaters {
+        return retrofit.create(UserCollectionSaveForLaters::class.java)
+    }
+
+    /**
      * Returns an instance of the [UserCollectionTracks] which can be used to make API calls to the
      */
     fun createUserCollectionTracks(): UserCollectionTracks {
@@ -305,6 +333,14 @@ class TidalApiClient(
     /** Returns an instance of the [UserCollections] which can be used to make API calls to the */
     fun createUserCollections(): UserCollections {
         return retrofit.create(UserCollections::class.java)
+    }
+
+    /**
+     * Returns an instance of the [UserDataExportRequests] which can be used to make API calls to
+     * the
+     */
+    fun createUserDataExportRequests(): UserDataExportRequests {
+        return retrofit.create(UserDataExportRequests::class.java)
     }
 
     /**
