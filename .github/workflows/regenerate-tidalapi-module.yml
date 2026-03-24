@@ -265,26 +265,34 @@ jobs:
           MODULE_VERSION: ${{ steps.extract_versions.outputs.module_version }}
           CHANGE_REPORT: ${{ steps.analyze_changes.outputs.change_report }}
         run: |
-          pr_title="Automatic Tidal API module update - ${{env.CHANGED_FILE_COUNT}} files changed"
-          pr_body="Changed files:\n\n${{ env.CHANGED_FILES }}\n\nAPI Version: ${{ env.API_VERSION }}\nNew module Version: ${{ env.MODULE_VERSION }}\n\nAutomatically generated on $(date)\n\nThis PR is automatically updated when API changes are detected.\n\n---\n\n${{ env.CHANGE_REPORT }}"
-          pr_body=$(echo -e "$pr_body")
-          
+          pr_title="Automatic Tidal API module update - ${CHANGED_FILE_COUNT} files changed"
+
+          # Build PR body using printf with shell env vars to avoid
+          # GitHub Actions template expansion injecting multiline content
+          # directly into the script (which causes 'command not found' errors).
+          printf -v pr_body "Changed files:\n\n%s\n\nAPI Version: %s\nNew module Version: %s\n\nAutomatically generated on %s\n\nThis PR is automatically updated when API changes are detected.\n\n---\n\n%s" \
+            "$CHANGED_FILES" \
+            "$API_VERSION" \
+            "$MODULE_VERSION" \
+            "$(date)" \
+            "$CHANGE_REPORT"
+
           if [ "${{ steps.check_pr.outputs.existing_pr }}" == "true" ]; then
             # Update existing PR
             gh api "repos/${{ github.repository }}/pulls/${{ steps.check_pr.outputs.pr_number }}" \
               --method PATCH \
               --field title="$pr_title" \
               --field body="$pr_body"
-            
+
             echo "Updated existing PR #${{ steps.check_pr.outputs.pr_number }}"
           else
             # Create new PR
             gh api "repos/${{ github.repository }}/pulls" \
               --method POST \
               --field title="$pr_title" \
-              --field head="${{env.BRANCH_NAME}}" \
+              --field head="${BRANCH_NAME}" \
               --field base="${{ inputs.target_branch }}" \
               --field body="$pr_body"
-            
+
             echo "Created new PR"
           fi
