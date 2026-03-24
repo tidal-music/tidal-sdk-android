@@ -6,6 +6,7 @@ import kotlinx.serialization.modules.polymorphic
 
 fun getOneOfSerializer() = SerializersModule {
     polymorphic(IncludedInner::class) {
+        subclass(AcceptedTermsResourceObject::class, AcceptedTermsResourceObject.serializer())
         subclass(AlbumStatisticsResourceObject::class, AlbumStatisticsResourceObject.serializer())
         subclass(AlbumsResourceObject::class, AlbumsResourceObject.serializer())
         subclass(AppreciationsResourceObject::class, AppreciationsResourceObject.serializer())
@@ -17,6 +18,7 @@ fun getOneOfSerializer() = SerializersModule {
         subclass(ArtistRolesResourceObject::class, ArtistRolesResourceObject.serializer())
         subclass(ArtistsResourceObject::class, ArtistsResourceObject.serializer())
         subclass(ArtworksResourceObject::class, ArtworksResourceObject.serializer())
+        subclass(ClientsResourceObject::class, ClientsResourceObject.serializer())
         subclass(CommentsResourceObject::class, CommentsResourceObject.serializer())
         subclass(ContentClaimsResourceObject::class, ContentClaimsResourceObject.serializer())
         subclass(CreditsResourceObject::class, CreditsResourceObject.serializer())
@@ -55,6 +57,7 @@ fun getOneOfSerializer() = SerializersModule {
             StripeDashboardLinksResourceObject::class,
             StripeDashboardLinksResourceObject.serializer(),
         )
+        subclass(TermsResourceObject::class, TermsResourceObject.serializer())
         subclass(TrackFilesResourceObject::class, TrackFilesResourceObject.serializer())
         subclass(TrackManifestsResourceObject::class, TrackManifestsResourceObject.serializer())
         subclass(TrackSourceFilesResourceObject::class, TrackSourceFilesResourceObject.serializer())
@@ -82,6 +85,10 @@ fun getOneOfSerializer() = SerializersModule {
             UserCollectionPlaylistsResourceObject.serializer(),
         )
         subclass(
+            UserCollectionSaveForLatersResourceObject::class,
+            UserCollectionSaveForLatersResourceObject.serializer(),
+        )
+        subclass(
             UserCollectionTracksResourceObject::class,
             UserCollectionTracksResourceObject.serializer(),
         )
@@ -90,6 +97,10 @@ fun getOneOfSerializer() = SerializersModule {
             UserCollectionVideosResourceObject.serializer(),
         )
         subclass(UserCollectionsResourceObject::class, UserCollectionsResourceObject.serializer())
+        subclass(
+            UserDataExportRequestsResourceObject::class,
+            UserDataExportRequestsResourceObject.serializer(),
+        )
         subclass(
             UserRecommendationsResourceObject::class,
             UserRecommendationsResourceObject.serializer(),

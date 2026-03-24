@@ -14,12 +14,14 @@ import kotlinx.serialization.Serializable
  *
  * @param certificateUrl
  * @param drmSystem
+ * @param initData
  * @param licenseUrl
  */
 @Serializable
 data class DrmData(
     @SerialName(value = "certificateUrl") val certificateUrl: kotlin.String? = null,
     @SerialName(value = "drmSystem") val drmSystem: DrmData.DrmSystem? = null,
+    @SerialName(value = "initData") val initData: kotlin.collections.List<kotlin.String>? = null,
     @SerialName(value = "licenseUrl") val licenseUrl: kotlin.String? = null,
 ) {
 

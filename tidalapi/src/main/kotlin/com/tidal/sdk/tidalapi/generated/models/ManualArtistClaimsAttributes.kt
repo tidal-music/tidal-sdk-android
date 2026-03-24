@@ -30,6 +30,7 @@ import kotlinx.serialization.Serializable
  * @param selectedSingles Single IDs selected by user
  * @param socialLink
  * @param status Claim status
+ * @param upcs UPCs associated with the claim
  */
 @Serializable
 data class ManualArtistClaimsAttributes(
@@ -92,6 +93,9 @@ data class ManualArtistClaimsAttributes(
     /* Claim status */
 
     @SerialName(value = "status") val status: ManualArtistClaimsAttributes.Status? = null,
+    /* UPCs associated with the claim */
+
+    @SerialName(value = "upcs") val upcs: kotlin.collections.List<kotlin.String>? = null,
 ) {
 
     /**

@@ -1,7 +1,23 @@
 # TIDAL API Surface Snapshot
-# Spec version: 1.2.3 | Endpoints: 279 | Models: 663
+# Spec version: 1.4.8 | Endpoints: 299 | Models: 712
 
 ## Endpoints
+
+GET /acceptedTerms
+  params: filter[owners.id]?: array[string], filter[terms.isLatestVersion]?: array[string], filter[terms.termsType]?: array[enum[DEVELOPER]], include?: array[string]
+  returns: AcceptedTerms_Multi_Resource_Data_Document
+
+POST /acceptedTerms
+  params: ??: any
+  returns: AcceptedTerms_Single_Resource_Data_Document
+
+GET /acceptedTerms/{id}/relationships/owners
+  params: id: string, include?: array[string], page[cursor]?: string
+  returns: AcceptedTerms_Multi_Relationship_Data_Document
+
+GET /acceptedTerms/{id}/relationships/terms
+  params: id: string, include?: array[string]
+  returns: AcceptedTerms_Single_Relationship_Data_Document
 
 GET /albumStatistics
   params: filter[id]?: array[string], include?: array[string]
@@ -73,6 +89,14 @@ GET /albums/{id}/relationships/priceConfig
 
 GET /albums/{id}/relationships/providers
   params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string, shareCode?: string
+  returns: Albums_Multi_Relationship_Data_Document
+
+GET /albums/{id}/relationships/replacement
+  params: countryCode?: string, id: string, include?: array[string], shareCode?: string
+  returns: Albums_Single_Relationship_Data_Document
+
+GET /albums/{id}/relationships/shares
+  params: id: string, include?: array[string], page[cursor]?: string, shareCode?: string
   returns: Albums_Multi_Relationship_Data_Document
 
 GET /albums/{id}/relationships/similarAlbums
@@ -242,6 +266,30 @@ GET /artworks/{id}
 GET /artworks/{id}/relationships/owners
   params: id: string, include?: array[string], page[cursor]?: string
   returns: Artworks_Multi_Relationship_Data_Document
+
+GET /clients
+  params: filter[owners.id]?: array[string], include?: array[string]
+  returns: Clients_Multi_Resource_Data_Document
+
+POST /clients
+  params: ??: any
+  returns: Clients_Single_Resource_Data_Document
+
+GET /clients/{id}
+  params: id: string, include?: array[string]
+  returns: Clients_Single_Resource_Data_Document
+
+PATCH /clients/{id}
+  params: ??: any, id: string
+  returns: void
+
+DELETE /clients/{id}
+  params: ??: any, id: string
+  returns: void
+
+GET /clients/{id}/relationships/owners
+  params: id: string, include?: array[string], page[cursor]?: string
+  returns: Clients_Multi_Relationship_Data_Document
 
 GET /comments
   params: filter[parentComment.id]?: array[string], filter[subject.id]?: array[string], filter[subject.type]?: array[enum[albums, tracks]], include?: array[string], page[cursor]?: string, sort?: array[enum[createdAt, -createdAt, likeCount, -likeCount, replyCount, -replyCount, startTime, -startTime]]
@@ -687,12 +735,20 @@ GET /stripeDashboardLinks/{id}/relationships/owners
   params: id: string, include?: array[string], page[cursor]?: string
   returns: StripeDashboardLinks_Multi_Relationship_Data_Document
 
+GET /terms
+  params: filter[id]?: array[string], filter[isLatestVersion]?: array[string], filter[termsType]?: array[enum[DEVELOPER]]
+  returns: Terms_Multi_Resource_Data_Document
+
+GET /terms/{id}
+  params: id: string
+  returns: Terms_Single_Resource_Data_Document
+
 GET /trackFiles/{id}
   params: formats: array[enum[HEAACV1, AACLC, FLAC, FLAC_HIRES, EAC3_JOC]], id: string, usage: enum[PLAYBACK, DOWNLOAD]
   returns: TrackFiles_Single_Resource_Data_Document
 
 GET /trackManifests/{id}
-  params: adaptive: boolean, formats: array[enum[HEAACV1, AACLC, FLAC, FLAC_HIRES, EAC3_JOC]], id: string, manifestType: enum[HLS, MPEG_DASH], uriScheme: enum[HTTPS, DATA], usage: enum[PLAYBACK, DOWNLOAD]
+  params: adaptive: boolean, formats: array[enum[HEAACV1, AACLC, FLAC, FLAC_HIRES, EAC3_JOC]], id: string, manifestType: enum[HLS, MPEG_DASH], shareCode?: string, uriScheme: enum[HTTPS, DATA], usage: enum[PLAYBACK, DOWNLOAD]
   returns: TrackManifests_Single_Resource_Data_Document
 
 GET /trackSourceFiles
@@ -935,6 +991,26 @@ GET /userCollectionPlaylists/{id}/relationships/owners
   params: id: string, include?: array[string], page[cursor]?: string
   returns: UserCollectionPlaylists_Multi_Relationship_Data_Document
 
+GET /userCollectionSaveForLaters/{id}
+  params: id: string, include?: array[string]
+  returns: UserCollectionSaveForLaters_Single_Resource_Data_Document
+
+GET /userCollectionSaveForLaters/{id}/relationships/items
+  params: id: string, include?: array[string], page[cursor]?: string
+  returns: UserCollectionSaveForLaters_Items_Multi_Relationship_Data_Document
+
+POST /userCollectionSaveForLaters/{id}/relationships/items
+  params: ??: any, id: string
+  returns: void
+
+DELETE /userCollectionSaveForLaters/{id}/relationships/items
+  params: ??: any, id: string
+  returns: void
+
+GET /userCollectionSaveForLaters/{id}/relationships/owners
+  params: id: string, include?: array[string], page[cursor]?: string
+  returns: UserCollectionSaveForLaters_Multi_Relationship_Data_Document
+
 GET /userCollectionTracks
   params: filter[id]?: array[string], include?: array[string]
   returns: UserCollectionTracks_Multi_Resource_Data_Document
@@ -1047,6 +1123,10 @@ DELETE /userCollections/{id}/relationships/videos
   params: ??: any, id: string
   returns: void
 
+POST /userDataExportRequests
+  params: ??: any
+  returns: UserDataExportRequests_Single_Resource_Data_Document
+
 GET /userRecommendations/{id}
   params: countryCode?: string, id: string, include?: array[string], locale?: string
   returns: UserRecommendations_Single_Resource_Data_Document
@@ -1120,6 +1200,56 @@ GET /videos/{id}/relationships/usageRules
   returns: Videos_Single_Relationship_Data_Document
 
 ## Models
+
+AcceptedTermsCreateOperation_Payload
+  data: AcceptedTermsCreateOperation_Payload_Data (required)
+
+AcceptedTermsCreateOperation_Payload_Data
+  relationships: AcceptedTermsCreateOperation_Payload_Data_Relationships (required)
+  type: enum[acceptedTerms] (required)
+
+AcceptedTermsCreateOperation_Payload_Data_Relationships
+  terms: AcceptedTermsCreateOperation_Payload_Data_Relationships_Terms (required)
+
+AcceptedTermsCreateOperation_Payload_Data_Relationships_Terms
+  data: AcceptedTermsCreateOperation_Payload_Data_Relationships_Terms_Data (required)
+
+AcceptedTermsCreateOperation_Payload_Data_Relationships_Terms_Data
+  id: string (required)
+  type: enum[terms] (required)
+
+AcceptedTerms_Attributes
+  createdAt: string(date-time) (required)
+
+AcceptedTerms_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[Resource_Identifier] (optional)
+  included: Included (optional)
+
+AcceptedTerms_Multi_Resource_Data_Document
+  data: array[AcceptedTerms_Resource_Object] (required)
+  links: Links (required)
+  included: Included (optional)
+
+AcceptedTerms_Relationships
+  owners: Multi_Relationship_Data_Document (optional)
+  terms: Single_Relationship_Data_Document (optional)
+
+AcceptedTerms_Resource_Object
+  id: string (required)
+  type: string (required)
+  attributes: AcceptedTerms_Attributes (optional)
+  relationships: AcceptedTerms_Relationships (optional)
+
+AcceptedTerms_Single_Relationship_Data_Document
+  links: Links (required)
+  data: Resource_Identifier (optional)
+  included: Included (optional)
+
+AcceptedTerms_Single_Resource_Data_Document
+  data: AcceptedTerms_Resource_Object (required)
+  links: Links (required)
+  included: Included (optional)
 
 AlbumStatistics_Attributes
   totalPlaybacks: integer(int32) (required)
@@ -1286,6 +1416,8 @@ Albums_Relationships
   owners: Multi_Relationship_Data_Document (optional)
   priceConfig: Single_Relationship_Data_Document (optional)
   providers: Multi_Relationship_Data_Document (optional)
+  replacement: Single_Relationship_Data_Document (optional)
+  shares: Multi_Relationship_Data_Document (optional)
   similarAlbums: Multi_Relationship_Data_Document (optional)
   suggestedCoverArts: Albums_SuggestedCoverArts_Multi_Relationship_Data_Document (optional)
   usageRules: Single_Relationship_Data_Document (optional)
@@ -1712,6 +1844,68 @@ AudioNormalizationData
 BarcodeId
   value: string (required)
 
+ClientsCreateOperation_Payload
+  data: ClientsCreateOperation_Payload_Data (required)
+
+ClientsCreateOperation_Payload_Data
+  attributes: ClientsCreateOperation_Payload_Data_Attributes (required)
+  type: enum[clients] (required)
+
+ClientsCreateOperation_Payload_Data_Attributes
+  name: string (required)
+  description: string (optional)
+
+ClientsUpdateOperation_Payload
+  data: ClientsUpdateOperation_Payload_Data (required)
+
+ClientsUpdateOperation_Payload_Data
+  attributes: ClientsUpdateOperation_Payload_Data_Attributes (required)
+  id: string (required)
+  type: enum[clients] (required)
+
+ClientsUpdateOperation_Payload_Data_Attributes
+  description: string (optional)
+  enabled: boolean (optional)
+  name: string (optional)
+  platformPreset: enum[NONE, WEB, ANDROID, IOS] (optional)
+  redirectUris: array[string] (optional)
+  scopes: array[string] (optional)
+
+Clients_Attributes
+  accessTier: enum[THIRD_PARTY, THIRD_PARTY_PROD, PARTNER, INTERNAL] (required)
+  name: string (required)
+  clientSecret: string (optional)
+  createdAt: string(date-time) (optional)
+  description: string (optional)
+  enabled: boolean (optional)
+  platformPreset: enum[NONE, WEB, ANDROID, IOS] (optional)
+  redirectUris: array[string] (optional)
+  scopes: array[string] (optional)
+
+Clients_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[Resource_Identifier] (optional)
+  included: Included (optional)
+
+Clients_Multi_Resource_Data_Document
+  data: array[Clients_Resource_Object] (required)
+  links: Links (required)
+  included: Included (optional)
+
+Clients_Relationships
+  owners: Multi_Relationship_Data_Document (optional)
+
+Clients_Resource_Object
+  id: string (required)
+  type: string (required)
+  attributes: Clients_Attributes (optional)
+  relationships: Clients_Relationships (optional)
+
+Clients_Single_Resource_Data_Document
+  data: Clients_Resource_Object (required)
+  links: Links (required)
+  included: Included (optional)
+
 CommentsCreateOperation_Payload
   data: CommentsCreateOperation_Payload_Data (required)
 
@@ -1961,6 +2155,7 @@ Downloads_Single_Resource_Data_Document
 DrmData
   certificateUrl: string (optional)
   drmSystem: enum[FAIRPLAY, WIDEVINE] (optional)
+  initData: array[string] (optional)
   licenseUrl: string (optional)
 
 DspSharingLinks_Attributes
@@ -1996,8 +2191,8 @@ DspSharingLinks_Single_Resource_Data_Document
 DynamicModules_Attributes
   icons: array[enum[SPOTLIGHT_INFO, UNKNOWN]] (required)
   layoutType: enum[COMPACT, GRID, UNKNOWN] (required)
-  moduleType: enum[ARTIST_LIST, COMPACT_GRID_CARD, COMPACT_HORIZONTAL_LIST, COMPACT_HORIZONTAL_LIST_WITH_CONTEXT, FEATURED_CARD, GRID_CARD, GRID_CARD_WITH_CONTEXT, GRID_HIGHLIGHT_CARD, HORIZONTAL_LIST, HORIZONTAL_LIST_WITH_CONTEXT, SHORTCUT_LIST, TRACK_LIST, VERTICAL_LIST_CARD, TEXT_CARD, LINKS_LIST, PUBLIC_PLAYLIST_LIST] (required)
-  sourceType: enum[ALBUM_RECOMMENDATIONS, BECAUSE_YOU_LISTENED_TO_ALBUM, BECAUSE_YOU_ADDED_ALBUM, BECAUSE_YOU_ADDED_ARTIST, CONTINUE_LISTEN_TO, DAILY_MIXES, FORGOTTEN_FAVORITES, GENRE_MIXES, HISTORY_MIXES, LOCAL_PLAYLISTS, MY_PLAYLISTS, NEW_ALBUM_SUGGESTIONS, NEW_TRACK_SUGGESTIONS, NEW_ALBUMS, NEW_TRACKS, POPULAR_PLAYLISTS, RECENTLY_UPDATED_FAVORITED_PLAYLIST, RECOMMENDED_USERS_PLAYLISTS, SUGGESTED_ESSENTIAL_PLAYLISTS, SUGGESTED_RADIOS_MIXES, WELCOME_MIX, YOUR_FAVORITE_ARTISTS, UPLOADS_FOR_YOU, LATEST_SPOTLIGHTED_TRACKS, SHORTCUTS, ARTIST_TOP_TRACKS, ARTIST_SPOTLIGHTED_TRACKS, ARTIST_ALBUMS, ARTIST_TOP_SINGLES, ARTIST_COMPILATIONS, ARTIST_LIVE_ALBUMS, ARTIST_APPEARS_ON, ARTIST_PLAYLIST, ARTIST_PUBLIC_PLAYLIST, ARTIST_SIMILAR_ARTISTS, ARTIST_TRACK_UPLOADS, ARTIST_LINKS, ARTIST_VIDEOS, ARTIST_CREDITS, ALBUM_ITEMS, ALBUM_ANNIVERSARY, ARTIST_BIRTHDAY, ARTIST_MEMORIAM, DJ_TOOLS, DJ_ARTIST_CURATED, THE_HITS, FROM_OUR_EDITORS, TOP_PLAYLISTS, FEATURED_TOP_TRACKS, FEATURED_TOP_ALBUMS, TOP_ARTISTS_ESSENTIALS, FEATURED_RECOMMENDED_PLAYLISTS, HOME_3_FEATURED_PLAYLISTS, HOME_3_FEATURED_UPLOAD_TRACKS, HOME_3_FEATURED_ALBUMS, POPULAR_ALBUMS, POPULAR_ARTISTS, POPULAR_MIXES, FEATURED_RECOMMENDED_TRACKS, FEATURED_RECOMMENDED_ALBUMS, FEATURED_RECOMMENDED_CLASSIC_ALBUMS, BACK_TO_SCHOOL_MUSIC_101, BACK_TO_SCHOOL_GENRES_FOR_BEGINNERS, HEADLINERS_2026, HOME_3_0_GENERIC_PLAYLISTS_1, HOME_3_0_GENERIC_PLAYLISTS_2, HOME_3_0_GENERIC_ALBUMS_1, HOME_3_0_GENERIC_TRACKS_1, HOME_3_0_GENERIC_ARTISTS_1, HOME_3_0_GENERIC_VIDEOS_1, BASED_ON_YOUR_INTERESTS_1, BASED_ON_YOUR_INTERESTS_2, UPLOAD_PAGE_SPOTLIGHTED_PLAYLISTS, UPLOAD_PAGE_PAYGATED_ALBUMS, UPLOAD_PAGE_ALBUMS, UNKNOWN] (required)
+  moduleType: enum[ARTIST_LIST, COMPACT_GRID_CARD, COMPACT_HORIZONTAL_LIST, COMPACT_HORIZONTAL_LIST_WITH_CONTEXT, FEATURED_CARD, GRID_CARD, GRID_CARD_WITH_CONTEXT, GRID_HIGHLIGHT_CARD, ANNIVERSARY_CARD, ARTIST_BIRTHDAY_CARD, ARTIST_MEMORIAM_CARD, ARTIST_TRACK_CREDITS_CARD, PILL_LIST, VERTICAL_LIST, HORIZONTAL_LIST, HORIZONTAL_LIST_WITH_CONTEXT, SHORTCUT_LIST, TRACK_LIST, VERTICAL_LIST_CARD, TEXT_CARD, LINKS_LIST, PUBLIC_PLAYLIST_LIST] (required)
+  sourceType: enum[ALBUM_RECOMMENDATIONS, BECAUSE_YOU_LISTENED_TO_ALBUM, BECAUSE_YOU_ADDED_ALBUM, BECAUSE_YOU_ADDED_ARTIST, CONTINUE_LISTEN_TO, DAILY_MIXES, FORGOTTEN_FAVORITES, GENRE_MIXES, HISTORY_MIXES, LOCAL_PLAYLISTS, MY_PLAYLISTS, NEW_ALBUM_SUGGESTIONS, NEW_TRACK_SUGGESTIONS, NEW_ALBUMS, NEW_TRACKS, POPULAR_PLAYLISTS, RECENTLY_UPDATED_FAVORITED_PLAYLIST, RECOMMENDED_USERS_PLAYLISTS, SUGGESTED_ESSENTIAL_PLAYLISTS, SUGGESTED_RADIOS_MIXES, WELCOME_MIX, YOUR_FAVORITE_ARTISTS, UPLOADS_FOR_YOU, LATEST_SPOTLIGHTED_TRACKS, SHORTCUTS, ARTIST_TOP_TRACKS, ARTIST_SPOTLIGHTED_TRACKS, ARTIST_ALBUMS, ARTIST_TOP_SINGLES, ARTIST_COMPILATIONS, ARTIST_LIVE_ALBUMS, ARTIST_APPEARS_ON, ARTIST_PLAYLIST, ARTIST_PUBLIC_PLAYLIST, ARTIST_SIMILAR_ARTISTS, ARTIST_TRACK_UPLOADS, ARTIST_LINKS, ARTIST_VIDEOS, ARTIST_CREDITS, ALBUM_ITEMS, ALBUM_ANNIVERSARY, ARTIST_BIRTHDAY, ARTIST_MEMORIAM, DJ_TOOLS, DJ_ARTIST_CURATED, THE_HITS, FROM_OUR_EDITORS, TOP_PLAYLISTS, FEATURED_TOP_TRACKS, FEATURED_TOP_ALBUMS, TOP_ARTISTS_ESSENTIALS, FEATURED_RECOMMENDED_PLAYLISTS, HOME_3_FEATURED_PLAYLISTS, HOME_3_FEATURED_UPLOAD_TRACKS, HOME_3_FEATURED_ALBUMS, POPULAR_ALBUMS, POPULAR_ARTISTS, POPULAR_MIXES, FEATURED_RECOMMENDED_TRACKS, FEATURED_RECOMMENDED_ALBUMS, FEATURED_RECOMMENDED_CLASSIC_ALBUMS, BACK_TO_SCHOOL_MUSIC_101, BACK_TO_SCHOOL_GENRES_FOR_BEGINNERS, HEADLINERS_2026, HOME_3_0_GENERIC_PLAYLISTS_1, HOME_3_0_GENERIC_PLAYLISTS_2, HOME_3_0_GENERIC_ALBUMS_1, HOME_3_0_GENERIC_TRACKS_1, HOME_3_0_GENERIC_ARTISTS_1, HOME_3_0_GENERIC_VIDEOS_1, STAFF_PICKS_PAGE_ALBUMS_WE_LOVE, STAFF_PICKS_PAGE_EXPLORE, STAFF_PICKS_PAGE_FAVORITE_SONGS, STAFF_PICKS_PAGE_RECENTLY_UPDATED_PLAYLISTS, STAFF_PICKS_PAGE_TIDAL_NEWS_MAGAZINE, STAFF_PICKS_PAGE_WHAT_LISTENING_TO, BASED_ON_YOUR_INTERESTS_1, BASED_ON_YOUR_INTERESTS_2, UPLOAD_PAGE_SPOTLIGHTED_PLAYLISTS, UPLOAD_PAGE_PAYGATED_ALBUMS, UPLOAD_PAGE_ALBUMS, TOP_UPLOADERS, UPLOAD_PAGE_ARTISTS, UPLOAD_PAGE_FEATURED_MAGAZINE, EXPLORE_DECADES, EXPLORE_GENRES, EXPLORE_MOODS, UNKNOWN] (required)
   subtitle: string (optional)
   title: string (optional)
 
@@ -2306,6 +2501,7 @@ ManualArtistClaimsCreateOperation_Payload_Data_Attributes
   selectedAlbums: array[string] (optional)
   selectedSingles: array[string] (optional)
   socialLink: Link_Object (optional)
+  upcs: array[string] (optional)
 
 ManualArtistClaims_Attributes
   artistId: string (required)
@@ -2328,6 +2524,7 @@ ManualArtistClaims_Attributes
   selectedSingles: array[string] (optional)
   socialLink: Link_Object (optional)
   status: enum[SUBMITTED, PENDING, APPROVED, REJECTED] (optional)
+  upcs: array[string] (optional)
 
 ManualArtistClaims_Multi_Resource_Data_Document
   data: array[ManualArtistClaims_Resource_Object] (required)
@@ -3055,6 +3252,26 @@ StripeDashboardLinks_Single_Resource_Data_Document
   links: Links (required)
   included: Included (optional)
 
+Terms_Attributes
+  contentLink: Link_Object (required)
+  effectiveAt: string(date-time) (required)
+  termsType: enum[DEVELOPER] (required)
+
+Terms_Multi_Resource_Data_Document
+  data: array[Terms_Resource_Object] (required)
+  links: Links (required)
+  included: Included (optional)
+
+Terms_Resource_Object
+  id: string (required)
+  type: string (required)
+  attributes: Terms_Attributes (optional)
+
+Terms_Single_Resource_Data_Document
+  data: Terms_Resource_Object (required)
+  links: Links (required)
+  included: Included (optional)
+
 ThirdPartyLyricsProvider
   allOf: LyricsProvider, object
 
@@ -3667,6 +3884,63 @@ UserCollectionPlaylists_Single_Resource_Data_Document
   links: Links (required)
   included: Included (optional)
 
+UserCollectionSaveForLatersAddMultiDataRelationship409ResponseBody
+  errors: array[object] (required)
+
+UserCollectionSaveForLatersItemsRelationshipAddOperation_Payload
+  data: array[UserCollectionSaveForLatersItemsRelationshipAddOperation_Payload_Data] (required)
+
+UserCollectionSaveForLatersItemsRelationshipAddOperation_Payload_Data
+  id: string (required)
+  type: enum[tracks, albums, artists, playlists, videos] (required)
+
+UserCollectionSaveForLatersItemsRelationshipRemoveOperation_Payload
+  data: array[UserCollectionSaveForLatersItemsRelationshipRemoveOperation_Payload_Data] (required)
+
+UserCollectionSaveForLatersItemsRelationshipRemoveOperation_Payload_Data
+  id: string (required)
+  type: enum[tracks, albums, artists, playlists, videos] (required)
+
+UserCollectionSaveForLaters_Attributes
+
+UserCollectionSaveForLaters_Items_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[UserCollectionSaveForLaters_Items_Resource_Identifier] (optional)
+  included: Included (optional)
+
+UserCollectionSaveForLaters_Items_Resource_Identifier
+  id: string (required)
+  type: string (required)
+  meta: UserCollectionSaveForLaters_Items_Resource_Identifier_Meta (optional)
+
+UserCollectionSaveForLaters_Items_Resource_Identifier_Meta
+  addedAt: string(date-time) (required)
+
+UserCollectionSaveForLaters_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[Resource_Identifier] (optional)
+  included: Included (optional)
+
+UserCollectionSaveForLaters_Multi_Resource_Data_Document
+  data: array[UserCollectionSaveForLaters_Resource_Object] (required)
+  links: Links (required)
+  included: Included (optional)
+
+UserCollectionSaveForLaters_Relationships
+  items: UserCollectionSaveForLaters_Items_Multi_Relationship_Data_Document (optional)
+  owners: Multi_Relationship_Data_Document (optional)
+
+UserCollectionSaveForLaters_Resource_Object
+  id: string (required)
+  type: string (required)
+  attributes: UserCollectionSaveForLaters_Attributes (optional)
+  relationships: UserCollectionSaveForLaters_Relationships (optional)
+
+UserCollectionSaveForLaters_Single_Resource_Data_Document
+  data: UserCollectionSaveForLaters_Resource_Object (required)
+  links: Links (required)
+  included: Included (optional)
+
 UserCollectionTracksAddMultiDataRelationship409ResponseBody
   errors: array[object] (required)
 
@@ -3965,6 +4239,34 @@ UserCollections_Videos_Resource_Identifier
 
 UserCollections_Videos_Resource_Identifier_Meta
   addedAt: string(date-time) (required)
+
+UserDataExportRequestsCreateOperation_Payload
+  data: UserDataExportRequestsCreateOperation_Payload_Data (required)
+
+UserDataExportRequestsCreateOperation_Payload_Data
+  attributes: UserDataExportRequestsCreateOperation_Payload_Data_Attributes (required)
+  type: enum[userDataExportRequests] (required)
+
+UserDataExportRequestsCreateOperation_Payload_Data_Attributes
+  flowType: enum[GDPR, CCPA, COPPA, ANZ_PA, US_PRIVACY_REGULATION, APPI, RETENTION_POLICY] (required)
+
+UserDataExportRequests_Attributes
+  flowType: enum[GDPR, CCPA, COPPA, ANZ_PA, US_PRIVACY_REGULATION, APPI, RETENTION_POLICY] (required)
+
+UserDataExportRequests_Multi_Resource_Data_Document
+  data: array[UserDataExportRequests_Resource_Object] (required)
+  links: Links (required)
+  included: Included (optional)
+
+UserDataExportRequests_Resource_Object
+  id: string (required)
+  type: string (required)
+  attributes: UserDataExportRequests_Attributes (optional)
+
+UserDataExportRequests_Single_Resource_Data_Document
+  data: UserDataExportRequests_Resource_Object (required)
+  links: Links (required)
+  included: Included (optional)
 
 UserRecommendations_Attributes
 
