@@ -11,7 +11,7 @@ import kotlinx.serialization.Serializable
 
 /**
  * @param albumType Album type
- * @param barcodeId Barcode id (EAN-13 or UPC-A)
+ * @param barcodeId
  * @param duration Duration (ISO 8601)
  * @param explicit Explicit content
  * @param mediaTags
@@ -36,8 +36,6 @@ data class AlbumsAttributes(
     /* Album type */
 
     @SerialName(value = "albumType") val albumType: AlbumsAttributes.AlbumType,
-    /* Barcode id (EAN-13 or UPC-A) */
-
     @SerialName(value = "barcodeId") val barcodeId: kotlin.String,
     /* Duration (ISO 8601) */
 

@@ -1,5 +1,5 @@
 # TIDAL API Surface Snapshot
-# Spec version: 1.4.8 | Endpoints: 299 | Models: 712
+# Spec version: 1.4.12 | Endpoints: 302 | Models: 718
 
 ## Endpoints
 
@@ -627,6 +627,18 @@ GET /priceConfigurations/{id}
   params: id: string
   returns: PriceConfigurations_Single_Resource_Data_Document
 
+GET /providerProductInfos
+  params: filter[barcodeId]?: array[string], filter[provider.id]?: array[string], include?: array[string]
+  returns: ProviderProductInfos_Multi_Resource_Data_Document
+
+GET /providerProductInfos/{id}/relationships/provider
+  params: id: string, include?: array[string]
+  returns: ProviderProductInfos_Single_Relationship_Data_Document
+
+GET /providerProductInfos/{id}/relationships/subject
+  params: id: string, include?: array[string]
+  returns: ProviderProductInfos_Single_Relationship_Data_Document
+
 GET /providers
   params: filter[id]?: array[string]
   returns: Providers_Multi_Resource_Data_Document
@@ -736,7 +748,7 @@ GET /stripeDashboardLinks/{id}/relationships/owners
   returns: StripeDashboardLinks_Multi_Relationship_Data_Document
 
 GET /terms
-  params: filter[id]?: array[string], filter[isLatestVersion]?: array[string], filter[termsType]?: array[enum[DEVELOPER]]
+  params: filter[countryCode]?: array[string], filter[id]?: array[string], filter[isLatestVersion]?: array[string], filter[termsType]?: array[enum[DEVELOPER]]
   returns: Terms_Multi_Resource_Data_Document
 
 GET /terms/{id}
@@ -1579,7 +1591,7 @@ ArtistClaims_Attributes
   status: enum[AWAITING_OAUTH, FETCHING_CONTENT, VERIFIED, NO_MATCHES, AUTHENTICATION_FAILED, PROCESSING, COMPLETED, FAILED, CANCELLED] (required)
   externalLinks: array[External_Link] (optional)
   recommendation: enum[CLAIM_PROFILE, CLAIM_CONTENT] (optional)
-  retrievedUpcs: array[BarcodeId] (optional)
+  retrievedUpcs: array[LegacyBarcodeId] (optional)
 
 ArtistClaims_Multi_Relationship_Data_Document
   links: Links (required)
@@ -1840,9 +1852,6 @@ Artworks_Single_Resource_Data_Document
 AudioNormalizationData
   peakAmplitude: number(float) (optional)
   replayGain: number(float) (optional)
-
-BarcodeId
-  value: string (required)
 
 ClientsCreateOperation_Payload
   data: ClientsCreateOperation_Payload_Data (required)
@@ -2381,6 +2390,9 @@ Installations_Single_Resource_Data_Document
   data: Installations_Resource_Object (required)
   links: Links (required)
   included: Included (optional)
+
+LegacyBarcodeId
+  value: string (optional)
 
 LegacySource
   id: string (required)
@@ -2930,6 +2942,34 @@ PriceConfigurations_Single_Resource_Data_Document
   links: Links (required)
   included: Included (optional)
 
+ProviderProductInfos_Attributes
+  barcodeId: string (required)
+
+ProviderProductInfos_Multi_Resource_Data_Document
+  data: array[ProviderProductInfos_Resource_Object] (required)
+  links: Links (required)
+  included: Included (optional)
+
+ProviderProductInfos_Relationships
+  provider: Single_Relationship_Data_Document (optional)
+  subject: Single_Relationship_Data_Document (optional)
+
+ProviderProductInfos_Resource_Object
+  id: string (required)
+  type: string (required)
+  attributes: ProviderProductInfos_Attributes (optional)
+  relationships: ProviderProductInfos_Relationships (optional)
+
+ProviderProductInfos_Single_Relationship_Data_Document
+  links: Links (required)
+  data: Resource_Identifier (optional)
+  included: Included (optional)
+
+ProviderProductInfos_Single_Resource_Data_Document
+  data: ProviderProductInfos_Resource_Object (required)
+  links: Links (required)
+  included: Included (optional)
+
 Providers_Attributes
   name: string (required)
 
@@ -3254,6 +3294,7 @@ StripeDashboardLinks_Single_Resource_Data_Document
 
 Terms_Attributes
   contentLink: Link_Object (required)
+  countryCode: string (required)
   effectiveAt: string(date-time) (required)
   termsType: enum[DEVELOPER] (required)
 

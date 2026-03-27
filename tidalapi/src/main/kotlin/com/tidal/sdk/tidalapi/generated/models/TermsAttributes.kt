@@ -11,12 +11,14 @@ import kotlinx.serialization.Serializable
 
 /**
  * @param contentLink
+ * @param countryCode
  * @param effectiveAt
  * @param termsType
  */
 @Serializable
 data class TermsAttributes(
     @SerialName(value = "contentLink") val contentLink: LinkObject,
+    @SerialName(value = "countryCode") val countryCode: kotlin.String,
     @SerialName(value = "effectiveAt") val effectiveAt: kotlin.String,
     @SerialName(value = "termsType") val termsType: TermsAttributes.TermsType,
 ) {

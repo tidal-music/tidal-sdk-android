@@ -40,7 +40,7 @@ data class ArtistClaimsAttributes(
     /* List of UPCs retrieved from the DSP */
 
     @SerialName(value = "retrievedUpcs")
-    val retrievedUpcs: kotlin.collections.List<BarcodeId>? = null,
+    val retrievedUpcs: kotlin.collections.List<LegacyBarcodeId>? = null,
 ) {
 
     /**

@@ -10,8 +10,13 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * Barcode Id
- *
- * @param `value`
+ * @param links
+ * @param `data`
+ * @param included
  */
-@Serializable data class BarcodeId(@SerialName(value = "value") val `value`: kotlin.String) {}
+@Serializable
+data class ProviderProductInfosSingleRelationshipDataDocument(
+    @SerialName(value = "links") val links: Links,
+    @SerialName(value = "data") val `data`: ResourceIdentifier? = null,
+    @SerialName(value = "included") val included: kotlin.collections.List<IncludedInner>? = null,
+) {}

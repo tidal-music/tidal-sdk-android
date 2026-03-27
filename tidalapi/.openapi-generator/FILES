@@ -24,6 +24,7 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/OfflineTasks.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/PlayQueues.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/Playlists.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/PriceConfigurations.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/ProviderProductInfos.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/Providers.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/Reactions.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/SavedShares.kt
@@ -189,7 +190,6 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtworksRelationships.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtworksResourceObject.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtworksSingleResourceDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AudioNormalizationData.kt
-src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/BarcodeId.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ClientsAttributes.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ClientsCreateOperationPayload.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ClientsCreateOperationPayloadData.kt
@@ -320,6 +320,7 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/InstallationsOfflineInve
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/InstallationsRelationships.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/InstallationsResourceObject.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/InstallationsSingleResourceDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/LegacyBarcodeId.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/LegacySource.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/LinkObject.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/Links.kt
@@ -437,6 +438,12 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PriceConfigurationsCreat
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PriceConfigurationsMultiResourceDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PriceConfigurationsResourceObject.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PriceConfigurationsSingleResourceDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ProviderProductInfosAttributes.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ProviderProductInfosMultiResourceDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ProviderProductInfosRelationships.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ProviderProductInfosResourceObject.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ProviderProductInfosSingleRelationshipDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ProviderProductInfosSingleResourceDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ProvidersAttributes.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ProvidersMultiResourceDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ProvidersResourceObject.kt

@@ -40,6 +40,10 @@ fun getOneOfSerializer() = SerializersModule {
             PriceConfigurationsResourceObject::class,
             PriceConfigurationsResourceObject.serializer(),
         )
+        subclass(
+            ProviderProductInfosResourceObject::class,
+            ProviderProductInfosResourceObject.serializer(),
+        )
         subclass(ProvidersResourceObject::class, ProvidersResourceObject.serializer())
         subclass(ReactionsResourceObject::class, ReactionsResourceObject.serializer())
         subclass(SavedSharesResourceObject::class, SavedSharesResourceObject.serializer())

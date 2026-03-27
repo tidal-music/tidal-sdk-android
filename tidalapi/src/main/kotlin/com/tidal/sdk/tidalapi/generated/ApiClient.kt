@@ -26,6 +26,7 @@ import com.tidal.sdk.tidalapi.generated.apis.OfflineTasks
 import com.tidal.sdk.tidalapi.generated.apis.PlayQueues
 import com.tidal.sdk.tidalapi.generated.apis.Playlists
 import com.tidal.sdk.tidalapi.generated.apis.PriceConfigurations
+import com.tidal.sdk.tidalapi.generated.apis.ProviderProductInfos
 import com.tidal.sdk.tidalapi.generated.apis.Providers
 import com.tidal.sdk.tidalapi.generated.apis.Reactions
 import com.tidal.sdk.tidalapi.generated.apis.SavedShares
@@ -193,6 +194,13 @@ class TidalApiClient(
      */
     fun createPriceConfigurations(): PriceConfigurations {
         return retrofit.create(PriceConfigurations::class.java)
+    }
+
+    /**
+     * Returns an instance of the [ProviderProductInfos] which can be used to make API calls to the
+     */
+    fun createProviderProductInfos(): ProviderProductInfos {
+        return retrofit.create(ProviderProductInfos::class.java)
     }
 
     /** Returns an instance of the [Providers] which can be used to make API calls to the */
