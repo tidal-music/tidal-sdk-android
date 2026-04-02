@@ -51,7 +51,7 @@ jobs:
       - uses: actions/setup-java@v4
         if: ${{ steps.detect_modules.outputs.run_tests == 'true' }}
         with:
-          java-version: '17'
+          java-version: '21'
           distribution: 'temurin'
 
       - uses: reactivecircus/android-emulator-runner@v2.33.0

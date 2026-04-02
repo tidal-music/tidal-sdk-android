@@ -74,7 +74,7 @@ room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 
 # Serialization
-kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version = "0.5.0" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version = "0.7.1" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.6.3" }
 kotlinx-serialization-retrofit-converter = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter", version = "1.0.0" }
 kotlinx-serialization-xml = { module = "io.github.pdvrieze.xmlutil:serialization", version = "0.86.2" }
@@ -92,7 +92,7 @@ test-androidx-junit = { module = "androidx.test.ext:junit", version = "1.1.5" }
 test-androidx-runner = { module = "androidx.test:runner", version = "1.5.2" }
 test-androidx-orchestrator = { module = "androidx.test:orchestrator", version = "1.4.2" }
 test-assertk = "com.willowtreeapps.assertk:assertk-jvm:0.28.0"
-test-fluidtime = { module = "io.fluidsonic.time:fluid-time", version = "0.18.0" }
+test-fluidtime = { module = "io.fluidsonic.time:fluid-time", version = "0.19.0" }
 test-junit5Api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit5" }
 test-junit5Engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit5" }
 test-junit5Params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "junit5" }
