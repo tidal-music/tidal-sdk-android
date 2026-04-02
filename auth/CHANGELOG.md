@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.11.2] - 2026-04-02
+### Fixed
+- Fix fatal crash during legacy credential migration caused by removed `InstantIso8601Serializer` in kotlinx-datetime 0.7.x
+### Changed
+- Bump kotlinx-datetime from 0.5.0 to 0.7.1
+- Bump fluid-time test dependency from 0.18.0 to 0.19.0
+
 ## [0.11.1] - 2025-01-15
 ### Changed
 - A version bump with no changes to retrigger building after a dependency issue
