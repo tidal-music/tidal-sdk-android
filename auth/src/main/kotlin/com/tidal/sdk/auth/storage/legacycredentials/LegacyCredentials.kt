@@ -1,8 +1,13 @@
+@file:UseSerializers(CompatInstantSerializer::class)
+@file:OptIn(ExperimentalTime::class)
+
 package com.tidal.sdk.auth.storage.legacycredentials
 
 import com.tidal.sdk.auth.model.Credentials
+import kotlin.time.ExperimentalTime
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.UseSerializers
 
 @Serializable
 sealed class LegacyCredentials {

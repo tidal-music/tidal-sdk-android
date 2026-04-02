@@ -11,11 +11,13 @@ import io.mockk.every
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
 import kotlin.test.Test
+import kotlin.time.ExperimentalTime
 import kotlinx.datetime.Instant
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.BeforeEach
 
+@OptIn(ExperimentalTime::class)
 class DefaultTokensStoreMigrationsTest {
     private val testCredentialsKey = "testKey"
     private lateinit var sharedPreferences: SharedPreferences
