@@ -9,37 +9,26 @@ import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
 
 object VideoPlaybackInfoFactory {
 
+    private const val HLS_DATA_URL =
+        "data:application/vnd.apple.mpegurl;base64,${ApiConstants.MANIFEST}"
+
     val DEFAULT =
         PlaybackInfo.Video(
             ApiConstants.PLAYBACK_INFO_ID_FOR_DEFAULT.toInt(),
             VideoQuality.LOW,
             AssetPresentation.FULL,
             StreamType.ON_DEMAND,
-            ApiConstants.MANIFEST_HASH,
-            ApiConstants.STREAMING_SESSION_ID,
-            ManifestMimeType.DASH,
-            ApiConstants.MANIFEST,
+            "",
+            "streamingSessionId",
+            ManifestMimeType.HLS,
+            HLS_DATA_URL,
             null,
-            0.0F,
-            0.0F,
-            0.0F,
-            0.0F,
-            0,
-            0,
-        )
-
-    val EMPTY_STREAMING_SESSION_ID = DEFAULT.copy(streamingSessionId = "")
-
-    val REPLACEMENT_VIDEO_ID = DEFAULT.copy(ApiConstants.PLAYBACK_INFO_ID_FOR_DEFAULT_2.toInt())
-
-    val REPLACEMENT_VIDEO_QUALITY = DEFAULT.copy(videoQuality = VideoQuality.HIGH)
-
-    val PROTECTED = DEFAULT.copy(licenseUrl = ApiConstants.LICENSE_URL)
-
-    val OFFLINE =
-        DEFAULT.copy(
-            offlineRevalidateAt = ApiConstants.OFFLINE_REVALIDATE_AT_SECONDS,
-            offlineValidUntil = ApiConstants.OFFLINE_VALID_UNTIL_SECONDS,
+            0f,
+            0f,
+            0f,
+            0f,
+            -1,
+            -1,
         )
 
     val OFFLINE_PLAY = PlaybackInfo.Offline.Video(DEFAULT, "", Storage(false, ""), false)

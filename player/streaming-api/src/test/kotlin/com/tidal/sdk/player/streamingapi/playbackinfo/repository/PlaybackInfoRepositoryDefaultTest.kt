@@ -15,6 +15,7 @@ import com.tidal.sdk.player.streamingapi.VideoPlaybackInfoFactory
 import com.tidal.sdk.player.streamingapi.offline.OfflinePlaybackInfoProviderStub
 import com.tidal.sdk.player.streamingapi.playbackinfo.api.PlaybackInfoServiceStub
 import com.tidal.sdk.player.streamingapi.playbackinfo.api.TrackManifestsStub
+import com.tidal.sdk.player.streamingapi.playbackinfo.api.VideoManifestsStub
 import com.tidal.sdk.player.streamingapi.playbackinfo.mapper.ApiErrorMapper
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.ManifestMimeType
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
@@ -30,12 +31,14 @@ internal class PlaybackInfoRepositoryDefaultTest {
     private val playbackInfoService = PlaybackInfoServiceStub()
     private val apiErrorMapperLazy = { mock<ApiErrorMapper>() }
     private val trackManifests = TrackManifestsStub()
+    private val videoManifests = VideoManifestsStub()
     private val playbackInfoRepository =
         PlaybackInfoRepositoryDefault(
             offlinePlaybackInfoProvider,
             playbackInfoService,
             apiErrorMapperLazy,
             trackManifests,
+            videoManifests,
         )
 
     @Test
@@ -80,28 +83,30 @@ internal class PlaybackInfoRepositoryDefaultTest {
     @Test
     fun getVideoPlaybackInfoShouldThrowWhenUncaughtExceptionIsThrown() {
         assertFailure {
-                runBlocking {
-                    getVideoPlaybackInfo(
-                        PlaybackInfoServiceStub.PLAYBACK_INFO_ID_FOR_UNCAUGHT_EXCEPTION
-                    )
-                }
+                runBlocking { getVideoPlaybackInfo(VideoManifestsStub.ID_FOR_UNCAUGHT_EXCEPTION) }
             }
             .hasClass(NullPointerException::class)
     }
 
     @Test
     fun getVideoPlaybackInfoShouldReturnCorrectWhenPlaybackInfoIsReturned() = runBlocking {
-        val playbackInfo = getVideoPlaybackInfo(PlaybackInfoServiceStub.PLAYBACK_INFO_ID_SUCCESS)
+        val videoId = ApiConstants.PLAYBACK_INFO_ID_FOR_DEFAULT
+        val streamingSessionId = "streamingSessionId"
+
+        val playbackInfo = getVideoPlaybackInfo(videoId, streamingSessionId)
 
         assertThat(playbackInfo).isEqualTo(VideoPlaybackInfoFactory.DEFAULT)
     }
 
-    private suspend fun getVideoPlaybackInfo(videoId: String) =
+    private suspend fun getVideoPlaybackInfo(
+        videoId: String,
+        streamingSessionId: String = "streamingSessionId",
+    ) =
         playbackInfoRepository.getVideoPlaybackInfo(
             videoId,
             VideoQuality.LOW,
             PlaybackMode.STREAM,
-            "streamingSessionId",
+            streamingSessionId,
             null,
         )
 

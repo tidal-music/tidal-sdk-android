@@ -4,6 +4,7 @@ import com.tidal.sdk.player.common.model.AssetPresentation
 import com.tidal.sdk.player.common.model.AudioMode
 import com.tidal.sdk.player.common.model.AudioQuality
 import com.tidal.sdk.player.common.model.PreviewReason
+import com.tidal.sdk.player.common.model.StreamType
 import com.tidal.sdk.player.common.model.VideoQuality
 import com.tidal.sdk.player.streamingapi.playbackinfo.api.PlaybackInfoService
 import com.tidal.sdk.player.streamingapi.playbackinfo.mapper.ApiErrorMapper
@@ -14,9 +15,13 @@ import com.tidal.sdk.player.streamingapi.playbackinfo.offline.OfflinePlaybackInf
 import com.tidal.sdk.tidalapi.generated.apis.TrackManifests
 import com.tidal.sdk.tidalapi.generated.apis.TrackManifests.UriSchemeTrackManifestsIdGet
 import com.tidal.sdk.tidalapi.generated.apis.TrackManifests.UsageTrackManifestsIdGet
+import com.tidal.sdk.tidalapi.generated.apis.VideoManifests
+import com.tidal.sdk.tidalapi.generated.apis.VideoManifests.UriSchemeVideoManifestsIdGet
+import com.tidal.sdk.tidalapi.generated.apis.VideoManifests.UsageVideoManifestsIdGet
 import com.tidal.sdk.tidalapi.generated.models.TrackManifestsAttributes
 import com.tidal.sdk.tidalapi.generated.models.TrackManifestsAttributes.Formats
 import com.tidal.sdk.tidalapi.generated.models.TrackManifestsAttributes.TrackPresentation
+import com.tidal.sdk.tidalapi.generated.models.VideoManifestsAttributes
 import dagger.Lazy
 import retrofit2.HttpException
 
@@ -33,6 +38,7 @@ internal class PlaybackInfoRepositoryDefault(
     private val playbackInfoService: PlaybackInfoService,
     private val apiErrorMapperLazy: Lazy<ApiErrorMapper>,
     private val trackManifests: TrackManifests,
+    private val videoManifests: VideoManifests,
 ) : PlaybackInfoRepository {
 
     override suspend fun getTrackPlaybackInfo(
@@ -178,6 +184,16 @@ internal class PlaybackInfoRepositoryDefault(
         }
     }
 
+    private fun convertVideoPresentation(
+        presentation: VideoManifestsAttributes.VideoPresentation?
+    ): AssetPresentation {
+        return when (presentation) {
+            VideoManifestsAttributes.VideoPresentation.FULL -> AssetPresentation.FULL
+            VideoManifestsAttributes.VideoPresentation.PREVIEW -> AssetPresentation.PREVIEW
+            null -> AssetPresentation.FULL
+        }
+    }
+
     override suspend fun getVideoPlaybackInfo(
         videoId: String,
         videoQuality: VideoQuality,
@@ -186,13 +202,34 @@ internal class PlaybackInfoRepositoryDefault(
         playlistUuid: String?,
     ) =
         try {
-            playbackInfoService.getVideoPlaybackInfo(
-                videoId,
-                playbackMode,
-                AssetPresentation.FULL,
-                videoQuality,
-                streamingSessionId,
-                playlistUuid,
+            val data =
+                videoManifests
+                    .videoManifestsIdGet(
+                        id = videoId,
+                        uriScheme = UriSchemeVideoManifestsIdGet.DATA,
+                        usage =
+                            if (playbackMode == PlaybackMode.STREAM)
+                                UsageVideoManifestsIdGet.PLAYBACK
+                            else UsageVideoManifestsIdGet.DOWNLOAD,
+                    )
+                    .body()
+                    ?.data
+            PlaybackInfo.Video(
+                videoId = data?.id?.toInt() ?: -1,
+                videoQuality = videoQuality,
+                assetPresentation = convertVideoPresentation(data?.attributes?.videoPresentation),
+                streamType = StreamType.ON_DEMAND,
+                manifestHash = "",
+                streamingSessionId = streamingSessionId,
+                manifestMimeType = ManifestMimeType.HLS,
+                manifest = data?.attributes?.link?.href.orEmpty(),
+                licenseUrl = data?.attributes?.drmData?.licenseUrl,
+                albumReplayGain = 0f,
+                albumPeakAmplitude = 0f,
+                trackReplayGain = 0f,
+                trackPeakAmplitude = 0f,
+                offlineRevalidateAt = -1,
+                offlineValidUntil = -1,
             )
         } catch (e: HttpException) {
             throw apiErrorMapperLazy.get().map(e)
