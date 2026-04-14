@@ -145,6 +145,40 @@ internal class TidalMediaSourceCreatorTest {
     }
 
     @Test
+    fun invokeWithManifestMimeTypeHls() {
+        val mediaItem = mock<MediaItem>()
+        val playbackInfo =
+            mock<PlaybackInfo.Video> {
+                on { manifest } doReturn "data:application/vnd.apple.mpegurl;base64,hlsManifest"
+                on { manifestMimeType } doReturn ManifestMimeType.HLS
+            }
+        val expectedHlsMediaSource = mock<HlsMediaSource>()
+        val drmSessionManager = mock<DrmSessionManager>()
+        val drmSessionManagerProvider = mock<DrmSessionManagerProvider>()
+        whenever(
+                drmSessionManagerFactory.createDrmSessionManagerForOnlinePlay(
+                    playbackInfo,
+                    emptyMap(),
+                )
+            )
+            .thenReturn(drmSessionManager)
+        whenever(
+                playerAuthHlsMediaSourceFactory.create(
+                    mediaItem,
+                    playbackInfo.manifest,
+                    drmSessionManagerProvider,
+                )
+            )
+            .thenReturn(expectedHlsMediaSource)
+        whenever(drmSessionManagerProviderFactory.create(drmSessionManager))
+            .thenReturn(drmSessionManagerProvider)
+
+        val actual = tidalMediaSourceCreator.invoke(mediaItem, playbackInfo, emptyMap())
+
+        assertThat(actual).isSameInstanceAs(expectedHlsMediaSource)
+    }
+
+    @Test
     fun invokeWithManifestMimeTypeBts() {
         val mediaItem = mock<MediaItem>()
         val playbackInfo =

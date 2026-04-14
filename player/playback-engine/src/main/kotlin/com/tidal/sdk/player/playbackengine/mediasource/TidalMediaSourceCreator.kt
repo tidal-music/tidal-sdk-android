@@ -112,6 +112,18 @@ internal class TidalMediaSourceCreator(
                             ),
                         )
                     }
+
+                ManifestMimeType.HLS ->
+                    playerAuthHlsMediaSourceFactory.create(
+                        mediaItem,
+                        playbackInfo.manifest,
+                        drmSessionManagerProviderFactory.create(
+                            drmSessionManagerFactory.createDrmSessionManagerForOnlinePlay(
+                                playbackInfo,
+                                extras,
+                            )
+                        ),
+                    )
             }
         }
     }
