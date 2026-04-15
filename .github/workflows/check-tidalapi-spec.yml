@@ -84,4 +84,4 @@ jobs:
     with:
       use_downloaded_spec: "true"
     secrets:
-      token: ${{ secrets.ACTIONS_PAT }}
+      token: ${{ github.token }}
