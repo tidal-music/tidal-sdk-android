@@ -2,6 +2,7 @@ package com.tidal.sdk.player.streamingapi.playbackinfo.mapper
 
 import assertk.assertThat
 import assertk.assertions.isSameAs
+import com.google.gson.Gson
 import com.tidal.sdk.player.common.model.ApiError
 import okhttp3.ResponseBody
 import org.junit.jupiter.api.Test
@@ -21,7 +22,7 @@ internal class ApiErrorMapperTest {
 
     private val apiErrorFactory = mock<ApiError.Factory>()
 
-    private val apiErrorMapper = ApiErrorMapper(apiErrorFactory)
+    private val apiErrorMapper = ApiErrorMapper(apiErrorFactory, Gson())
 
     @Test
     fun map() {

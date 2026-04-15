@@ -45,7 +45,8 @@ internal object StreamingApiModule {
 
     @Provides
     @Reusable
-    fun provideApiErrorMapper(apiErrorFactory: ApiError.Factory) = ApiErrorMapper(apiErrorFactory)
+    fun provideApiErrorMapper(apiErrorFactory: ApiError.Factory, gson: Gson) =
+        ApiErrorMapper(apiErrorFactory, gson)
 
     @Provides
     @Reusable

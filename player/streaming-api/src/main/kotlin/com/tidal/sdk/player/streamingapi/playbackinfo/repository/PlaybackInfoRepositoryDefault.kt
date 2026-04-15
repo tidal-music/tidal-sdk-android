@@ -50,21 +50,19 @@ internal class PlaybackInfoRepositoryDefault(
         enableAdaptive: Boolean,
     ) =
         try {
-            val data =
-                trackManifests
-                    .trackManifestsIdGet(
-                        id = trackId,
-                        manifestType = TrackManifests.ManifestTypeTrackManifestsIdGet.MPEG_DASH,
-                        formats = getRequestedFormats(audioQuality, immersiveAudio),
-                        uriScheme = UriSchemeTrackManifestsIdGet.DATA,
-                        usage =
-                            if (playbackMode == PlaybackMode.STREAM)
-                                UsageTrackManifestsIdGet.PLAYBACK
-                            else UsageTrackManifestsIdGet.DOWNLOAD,
-                        adaptive = enableAdaptive,
-                    )
-                    .body()
-                    ?.data
+            val response =
+                trackManifests.trackManifestsIdGet(
+                    id = trackId,
+                    manifestType = TrackManifests.ManifestTypeTrackManifestsIdGet.MPEG_DASH,
+                    formats = getRequestedFormats(audioQuality, immersiveAudio),
+                    uriScheme = UriSchemeTrackManifestsIdGet.DATA,
+                    usage =
+                        if (playbackMode == PlaybackMode.STREAM) UsageTrackManifestsIdGet.PLAYBACK
+                        else UsageTrackManifestsIdGet.DOWNLOAD,
+                    adaptive = enableAdaptive,
+                )
+            if (!response.isSuccessful) throw HttpException(response)
+            val data = response.body()?.data
             PlaybackInfo.Track(
                 trackId = data?.id?.toInt() ?: -1,
                 audioQuality = getAudioQualityFromFormats(data?.attributes?.formats, audioQuality),
@@ -86,7 +84,7 @@ internal class PlaybackInfoRepositoryDefault(
                 offlineValidUntil = -1,
             )
         } catch (e: HttpException) {
-            throw apiErrorMapperLazy.get().map(e)
+            throw apiErrorMapperLazy.get().mapJsonApi(e)
         }
 
     /**
@@ -202,18 +200,16 @@ internal class PlaybackInfoRepositoryDefault(
         playlistUuid: String?,
     ) =
         try {
-            val data =
-                videoManifests
-                    .videoManifestsIdGet(
-                        id = videoId,
-                        uriScheme = UriSchemeVideoManifestsIdGet.DATA,
-                        usage =
-                            if (playbackMode == PlaybackMode.STREAM)
-                                UsageVideoManifestsIdGet.PLAYBACK
-                            else UsageVideoManifestsIdGet.DOWNLOAD,
-                    )
-                    .body()
-                    ?.data
+            val response =
+                videoManifests.videoManifestsIdGet(
+                    id = videoId,
+                    uriScheme = UriSchemeVideoManifestsIdGet.DATA,
+                    usage =
+                        if (playbackMode == PlaybackMode.STREAM) UsageVideoManifestsIdGet.PLAYBACK
+                        else UsageVideoManifestsIdGet.DOWNLOAD,
+                )
+            if (!response.isSuccessful) throw HttpException(response)
+            val data = response.body()?.data
             PlaybackInfo.Video(
                 videoId = data?.id?.toInt() ?: -1,
                 videoQuality = videoQuality,
@@ -232,7 +228,7 @@ internal class PlaybackInfoRepositoryDefault(
                 offlineValidUntil = -1,
             )
         } catch (e: HttpException) {
-            throw apiErrorMapperLazy.get().map(e)
+            throw apiErrorMapperLazy.get().mapJsonApi(e)
         }
 
     override suspend fun getBroadcastPlaybackInfo(
