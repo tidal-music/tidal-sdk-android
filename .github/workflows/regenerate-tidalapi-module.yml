@@ -310,11 +310,15 @@ jobs:
       - name: Trigger CI by closing and reopening PR
         if: steps.check_changes.outputs.changes_detected == 'true' && steps.commit_changes.outputs.commit_made == 'true'
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           pr_number="${{ steps.create_pr.outputs.pr_number }}"
           echo "Closing and reopening PR #$pr_number to trigger CI checks..."
-          echo "NOTE: Using github.token instead of PAT to test if CI triggers"
+          echo "NOTE: Using github.token (not PAT) to test if CI triggers"
           gh pr close "$pr_number" --repo "${{ github.repository }}"
           gh pr reopen "$pr_number" --repo "${{ github.repository }}"
-          echo "PR #$pr_number reopened — CI checks should now be triggered."
+          echo "PR #$pr_number reopened. Checking if CI was triggered..."
+          sleep 10
+          # Check if any new workflow runs started on the PR branch
+          runs=$(gh run list --repo "${{ github.repository }}" --branch tidal-music-tools/auto-update-tidal-api --limit 1 --json createdAt --jq '.[0].createdAt')
+          echo "Most recent run on PR branch created at: $runs"
