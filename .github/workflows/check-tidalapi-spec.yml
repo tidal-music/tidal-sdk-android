@@ -42,16 +42,9 @@ jobs:
       - name: Compare API specs
         id: compare
         run: |
-          if cmp -s "tidalapi/bin/tidal-api.json" "/tmp/api-check/latest-api.json"; then
-            echo "No changes found in the API specification"
-            echo "changes_found=false" >> $GITHUB_OUTPUT
-          else
-            echo "Changes found in the API specification"
-            echo "changes_found=true" >> $GITHUB_OUTPUT
-            echo "::group::API Specification Diff"
-            diff -u "tidalapi/bin/tidal-api.json" "/tmp/api-check/latest-api.json" || true
-            echo "::endgroup::"
-          fi
+          # TEMPORARY: Force changes_found=true to test close/reopen CI trigger
+          echo "FORCED: Reporting changes found for testing purposes"
+          echo "changes_found=true" >> $GITHUB_OUTPUT
           
       - name: Upload API spec as artifact
         if: steps.compare.outputs.changes_found == 'true'
