@@ -259,6 +259,7 @@ jobs:
           fi
 
       - name: Create or Update Pull Request
+        id: create_pr
         if: steps.check_changes.outputs.changes_detected == 'true' && steps.commit_changes.outputs.commit_made == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.token }}
@@ -289,14 +290,28 @@ jobs:
               --field body="$pr_body"
 
             echo "Updated existing PR #${{ steps.check_pr.outputs.pr_number }}"
+            echo "pr_number=${{ steps.check_pr.outputs.pr_number }}" >> $GITHUB_OUTPUT
           else
             # Create new PR
-            gh api "repos/${{ github.repository }}/pulls" \
+            pr_number=$(gh api "repos/${{ github.repository }}/pulls" \
               --method POST \
               --field title="$pr_title" \
               --field head="${BRANCH_NAME}" \
               --field base="${{ inputs.target_branch }}" \
-              --field body="$pr_body"
+              --field body="$pr_body" \
+              --jq '.number')
 
-            echo "Created new PR"
+            echo "Created new PR #$pr_number"
+            echo "pr_number=$pr_number" >> $GITHUB_OUTPUT
           fi
+
+      - name: Trigger CI by closing and reopening PR
+        if: steps.check_changes.outputs.changes_detected == 'true' && steps.commit_changes.outputs.commit_made == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.token }}
+          PR_NUMBER: ${{ steps.create_pr.outputs.pr_number }}
+        run: |
+          echo "Closing and reopening PR #$PR_NUMBER to trigger CI checks..."
+          gh pr close "$PR_NUMBER" --repo "${{ github.repository }}"
+          gh pr reopen "$PR_NUMBER" --repo "${{ github.repository }}"
+          echo "PR #$PR_NUMBER reopened — CI checks should now be triggered."
