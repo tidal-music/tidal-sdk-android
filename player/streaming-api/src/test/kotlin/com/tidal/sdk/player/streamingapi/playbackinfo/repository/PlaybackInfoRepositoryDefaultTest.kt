@@ -4,6 +4,8 @@ import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.hasClass
 import assertk.assertions.isEqualTo
+import com.google.gson.Gson
+import com.tidal.sdk.player.common.model.ApiError
 import com.tidal.sdk.player.common.model.AssetPresentation
 import com.tidal.sdk.player.common.model.AudioMode
 import com.tidal.sdk.player.common.model.AudioQuality
@@ -22,21 +24,21 @@ import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackMode
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
-import org.mockito.kotlin.mock
+import org.junit.jupiter.api.assertThrows
 
 /** Test that the [PlaybackInfoRepository] returns correct [PlaybackInfo] in various situations. */
 internal class PlaybackInfoRepositoryDefaultTest {
 
     private val offlinePlaybackInfoProvider = OfflinePlaybackInfoProviderStub()
     private val playbackInfoService = PlaybackInfoServiceStub()
-    private val apiErrorMapperLazy = { mock<ApiErrorMapper>() }
+    private val apiErrorMapper = ApiErrorMapper(ApiError.Factory(Gson()), Gson())
     private val trackManifests = TrackManifestsStub()
     private val videoManifests = VideoManifestsStub()
     private val playbackInfoRepository =
         PlaybackInfoRepositoryDefault(
             offlinePlaybackInfoProvider,
             playbackInfoService,
-            apiErrorMapperLazy,
+            { apiErrorMapper },
             trackManifests,
             videoManifests,
         )
@@ -96,6 +98,18 @@ internal class PlaybackInfoRepositoryDefaultTest {
         val playbackInfo = getVideoPlaybackInfo(videoId, streamingSessionId)
 
         assertThat(playbackInfo).isEqualTo(VideoPlaybackInfoFactory.DEFAULT)
+    }
+
+    @Test
+    fun getVideoPlaybackInfoShouldThrowApiErrorWhenHttpError() {
+        val apiError =
+            assertThrows<ApiError> {
+                runBlocking { getVideoPlaybackInfo(VideoManifestsStub.ID_FOR_HTTP_ERROR) }
+            }
+
+        assertThat(apiError.status).isEqualTo(403)
+        assertThat(apiError.subStatus).isEqualTo(ApiError.SubStatus.GenericPlaybackError)
+        assertThat(apiError.userMessage).isEqualTo("Not entitled")
     }
 
     private suspend fun getVideoPlaybackInfo(
