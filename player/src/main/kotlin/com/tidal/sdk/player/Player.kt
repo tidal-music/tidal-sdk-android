@@ -83,6 +83,7 @@ class Player(
             )
     val configuration = playerComponent.configuration
     val playbackEngine = playerComponent.playbackEngine
+    val streamingApi = playerComponent.streamingApi
     private val streamingPrivileges = playerComponent.streamingPrivileges
 
     init {

@@ -10,6 +10,7 @@ import com.tidal.sdk.player.playbackengine.model.AssetTimeoutConfig
 import com.tidal.sdk.player.playbackengine.model.BufferConfiguration
 import com.tidal.sdk.player.playbackengine.playbackprivilege.PlaybackPrivilegeProvider
 import com.tidal.sdk.player.playbackengine.player.CacheProvider
+import com.tidal.sdk.player.streamingapi.StreamingApi
 import com.tidal.sdk.player.streamingapi.StreamingApiTimeoutConfig
 import com.tidal.sdk.player.streamingprivileges.StreamingPrivileges
 import dagger.BindsInstance
@@ -34,6 +35,7 @@ internal interface PlayerComponent {
 
     val configuration: Configuration
     val playbackEngine: PlaybackEngine
+    val streamingApi: StreamingApi
     val streamingPrivileges: StreamingPrivileges
 
     @Component.Factory
