@@ -11,19 +11,22 @@ import kotlinx.serialization.Serializable
 
 /**
  * @param contentLink
+ * @param countryCode
  * @param effectiveAt
  * @param termsType
  */
 @Serializable
 data class TermsAttributes(
     @SerialName(value = "contentLink") val contentLink: LinkObject,
+    @SerialName(value = "countryCode") val countryCode: kotlin.String,
     @SerialName(value = "effectiveAt") val effectiveAt: kotlin.String,
     @SerialName(value = "termsType") val termsType: TermsAttributes.TermsType,
 ) {
 
-    /** Values: DEVELOPER */
+    /** Values: DEVELOPER,UPLOAD_MARKETPLACE */
     @Serializable
     enum class TermsType(val value: kotlin.String) {
-        @SerialName(value = "DEVELOPER") DEVELOPER("DEVELOPER")
+        @SerialName(value = "DEVELOPER") DEVELOPER("DEVELOPER"),
+        @SerialName(value = "UPLOAD_MARKETPLACE") UPLOAD_MARKETPLACE("UPLOAD_MARKETPLACE"),
     }
 }

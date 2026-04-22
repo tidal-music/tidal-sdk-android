@@ -26,7 +26,10 @@ import com.tidal.sdk.tidalapi.generated.apis.OfflineTasks
 import com.tidal.sdk.tidalapi.generated.apis.PlayQueues
 import com.tidal.sdk.tidalapi.generated.apis.Playlists
 import com.tidal.sdk.tidalapi.generated.apis.PriceConfigurations
+import com.tidal.sdk.tidalapi.generated.apis.ProviderOwners
+import com.tidal.sdk.tidalapi.generated.apis.ProviderProductInfos
 import com.tidal.sdk.tidalapi.generated.apis.Providers
+import com.tidal.sdk.tidalapi.generated.apis.Purchases
 import com.tidal.sdk.tidalapi.generated.apis.Reactions
 import com.tidal.sdk.tidalapi.generated.apis.SavedShares
 import com.tidal.sdk.tidalapi.generated.apis.SearchResults
@@ -34,6 +37,7 @@ import com.tidal.sdk.tidalapi.generated.apis.SearchSuggestions
 import com.tidal.sdk.tidalapi.generated.apis.Shares
 import com.tidal.sdk.tidalapi.generated.apis.StripeConnections
 import com.tidal.sdk.tidalapi.generated.apis.StripeDashboardLinks
+import com.tidal.sdk.tidalapi.generated.apis.TemporaryUserTokens
 import com.tidal.sdk.tidalapi.generated.apis.Terms
 import com.tidal.sdk.tidalapi.generated.apis.TrackFiles
 import com.tidal.sdk.tidalapi.generated.apis.TrackManifests
@@ -50,7 +54,11 @@ import com.tidal.sdk.tidalapi.generated.apis.UserCollectionSaveForLaters
 import com.tidal.sdk.tidalapi.generated.apis.UserCollectionTracks
 import com.tidal.sdk.tidalapi.generated.apis.UserCollectionVideos
 import com.tidal.sdk.tidalapi.generated.apis.UserCollections
+import com.tidal.sdk.tidalapi.generated.apis.UserDailyMixes
 import com.tidal.sdk.tidalapi.generated.apis.UserDataExportRequests
+import com.tidal.sdk.tidalapi.generated.apis.UserDiscoveryMixes
+import com.tidal.sdk.tidalapi.generated.apis.UserNewReleaseMixes
+import com.tidal.sdk.tidalapi.generated.apis.UserOfflineMixes
 import com.tidal.sdk.tidalapi.generated.apis.UserRecommendations
 import com.tidal.sdk.tidalapi.generated.apis.UserReports
 import com.tidal.sdk.tidalapi.generated.apis.Users
@@ -195,9 +203,26 @@ class TidalApiClient(
         return retrofit.create(PriceConfigurations::class.java)
     }
 
+    /** Returns an instance of the [ProviderOwners] which can be used to make API calls to the */
+    fun createProviderOwners(): ProviderOwners {
+        return retrofit.create(ProviderOwners::class.java)
+    }
+
+    /**
+     * Returns an instance of the [ProviderProductInfos] which can be used to make API calls to the
+     */
+    fun createProviderProductInfos(): ProviderProductInfos {
+        return retrofit.create(ProviderProductInfos::class.java)
+    }
+
     /** Returns an instance of the [Providers] which can be used to make API calls to the */
     fun createProviders(): Providers {
         return retrofit.create(Providers::class.java)
+    }
+
+    /** Returns an instance of the [Purchases] which can be used to make API calls to the */
+    fun createPurchases(): Purchases {
+        return retrofit.create(Purchases::class.java)
     }
 
     /** Returns an instance of the [Reactions] which can be used to make API calls to the */
@@ -235,6 +260,13 @@ class TidalApiClient(
      */
     fun createStripeDashboardLinks(): StripeDashboardLinks {
         return retrofit.create(StripeDashboardLinks::class.java)
+    }
+
+    /**
+     * Returns an instance of the [TemporaryUserTokens] which can be used to make API calls to the
+     */
+    fun createTemporaryUserTokens(): TemporaryUserTokens {
+        return retrofit.create(TemporaryUserTokens::class.java)
     }
 
     /** Returns an instance of the [Terms] which can be used to make API calls to the */
@@ -335,12 +367,36 @@ class TidalApiClient(
         return retrofit.create(UserCollections::class.java)
     }
 
+    /** Returns an instance of the [UserDailyMixes] which can be used to make API calls to the */
+    fun createUserDailyMixes(): UserDailyMixes {
+        return retrofit.create(UserDailyMixes::class.java)
+    }
+
     /**
      * Returns an instance of the [UserDataExportRequests] which can be used to make API calls to
      * the
      */
     fun createUserDataExportRequests(): UserDataExportRequests {
         return retrofit.create(UserDataExportRequests::class.java)
+    }
+
+    /**
+     * Returns an instance of the [UserDiscoveryMixes] which can be used to make API calls to the
+     */
+    fun createUserDiscoveryMixes(): UserDiscoveryMixes {
+        return retrofit.create(UserDiscoveryMixes::class.java)
+    }
+
+    /**
+     * Returns an instance of the [UserNewReleaseMixes] which can be used to make API calls to the
+     */
+    fun createUserNewReleaseMixes(): UserNewReleaseMixes {
+        return retrofit.create(UserNewReleaseMixes::class.java)
+    }
+
+    /** Returns an instance of the [UserOfflineMixes] which can be used to make API calls to the */
+    fun createUserOfflineMixes(): UserOfflineMixes {
+        return retrofit.create(UserOfflineMixes::class.java)
     }
 
     /**

@@ -40,7 +40,13 @@ fun getOneOfSerializer() = SerializersModule {
             PriceConfigurationsResourceObject::class,
             PriceConfigurationsResourceObject.serializer(),
         )
+        subclass(ProviderOwnersResourceObject::class, ProviderOwnersResourceObject.serializer())
+        subclass(
+            ProviderProductInfosResourceObject::class,
+            ProviderProductInfosResourceObject.serializer(),
+        )
         subclass(ProvidersResourceObject::class, ProvidersResourceObject.serializer())
+        subclass(PurchasesResourceObject::class, PurchasesResourceObject.serializer())
         subclass(ReactionsResourceObject::class, ReactionsResourceObject.serializer())
         subclass(SavedSharesResourceObject::class, SavedSharesResourceObject.serializer())
         subclass(SearchResultsResourceObject::class, SearchResultsResourceObject.serializer())
@@ -56,6 +62,10 @@ fun getOneOfSerializer() = SerializersModule {
         subclass(
             StripeDashboardLinksResourceObject::class,
             StripeDashboardLinksResourceObject.serializer(),
+        )
+        subclass(
+            TemporaryUserTokensResourceObject::class,
+            TemporaryUserTokensResourceObject.serializer(),
         )
         subclass(TermsResourceObject::class, TermsResourceObject.serializer())
         subclass(TrackFilesResourceObject::class, TrackFilesResourceObject.serializer())
@@ -97,10 +107,20 @@ fun getOneOfSerializer() = SerializersModule {
             UserCollectionVideosResourceObject.serializer(),
         )
         subclass(UserCollectionsResourceObject::class, UserCollectionsResourceObject.serializer())
+        subclass(UserDailyMixesResourceObject::class, UserDailyMixesResourceObject.serializer())
         subclass(
             UserDataExportRequestsResourceObject::class,
             UserDataExportRequestsResourceObject.serializer(),
         )
+        subclass(
+            UserDiscoveryMixesResourceObject::class,
+            UserDiscoveryMixesResourceObject.serializer(),
+        )
+        subclass(
+            UserNewReleaseMixesResourceObject::class,
+            UserNewReleaseMixesResourceObject.serializer(),
+        )
+        subclass(UserOfflineMixesResourceObject::class, UserOfflineMixesResourceObject.serializer())
         subclass(
             UserRecommendationsResourceObject::class,
             UserRecommendationsResourceObject.serializer(),

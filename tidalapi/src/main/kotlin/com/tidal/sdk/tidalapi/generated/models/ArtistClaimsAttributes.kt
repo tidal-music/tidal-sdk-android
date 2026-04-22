@@ -40,7 +40,7 @@ data class ArtistClaimsAttributes(
     /* List of UPCs retrieved from the DSP */
 
     @SerialName(value = "retrievedUpcs")
-    val retrievedUpcs: kotlin.collections.List<BarcodeId>? = null,
+    val retrievedUpcs: kotlin.collections.List<LegacyBarcodeId>? = null,
 ) {
 
     /**
@@ -59,7 +59,7 @@ data class ArtistClaimsAttributes(
      * Current status of this claim
      *
      * Values:
-     * AWAITING_OAUTH,FETCHING_CONTENT,VERIFIED,NO_MATCHES,AUTHENTICATION_FAILED,PROCESSING,COMPLETED,FAILED,CANCELLED
+     * AWAITING_OAUTH,FETCHING_CONTENT,VERIFIED,NO_MATCHES,AUTHENTICATION_FAILED,PROCESSING,COMPLETED,FAILED,CANCELLED,NAME_MISMATCH,CLAIMED_ARTIST_MISMATCH
      */
     @Serializable
     enum class Status(val value: kotlin.String) {
@@ -72,6 +72,9 @@ data class ArtistClaimsAttributes(
         @SerialName(value = "COMPLETED") COMPLETED("COMPLETED"),
         @SerialName(value = "FAILED") FAILED("FAILED"),
         @SerialName(value = "CANCELLED") CANCELLED("CANCELLED"),
+        @SerialName(value = "NAME_MISMATCH") NAME_MISMATCH("NAME_MISMATCH"),
+        @SerialName(value = "CLAIMED_ARTIST_MISMATCH")
+        CLAIMED_ARTIST_MISMATCH("CLAIMED_ARTIST_MISMATCH"),
     }
 
     /**
