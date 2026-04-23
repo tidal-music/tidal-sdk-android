@@ -1,10 +1,10 @@
 # TIDAL API Surface Snapshot
-# Spec version: 1.4.8 | Endpoints: 299 | Models: 712
+# Spec version: 1.6.1 | Endpoints: 320 | Models: 764
 
 ## Endpoints
 
 GET /acceptedTerms
-  params: filter[owners.id]?: array[string], filter[terms.isLatestVersion]?: array[string], filter[terms.termsType]?: array[enum[DEVELOPER]], include?: array[string]
+  params: filter[owners.id]?: array[string], filter[terms.isLatestVersion]?: array[string], filter[terms.termsType]?: array[enum[DEVELOPER, UPLOAD_MARKETPLACE]], include?: array[string]
   returns: AcceptedTerms_Multi_Resource_Data_Document
 
 POST /acceptedTerms
@@ -597,7 +597,7 @@ GET /playlists/{id}/relationships/items
 
 POST /playlists/{id}/relationships/items
   params: ??: any, countryCode?: string, id: string
-  returns: void
+  returns: Playlists_Items_Multi_Relationship_Data_Document
 
 PATCH /playlists/{id}/relationships/items
   params: ??: any, id: string
@@ -627,6 +627,30 @@ GET /priceConfigurations/{id}
   params: id: string
   returns: PriceConfigurations_Single_Resource_Data_Document
 
+GET /providerOwners
+  params: filter[owners.id]?: array[string], include?: array[string]
+  returns: ProviderOwners_Multi_Resource_Data_Document
+
+GET /providerOwners/{id}/relationships/owners
+  params: id: string, include?: array[string], page[cursor]?: string
+  returns: ProviderOwners_Multi_Relationship_Data_Document
+
+GET /providerOwners/{id}/relationships/provider
+  params: id: string, include?: array[string]
+  returns: ProviderOwners_Single_Relationship_Data_Document
+
+GET /providerProductInfos
+  params: countryCode?: string, filter[barcodeId]?: array[string], filter[provider.id]?: array[string], include?: array[string]
+  returns: ProviderProductInfos_Multi_Resource_Data_Document
+
+GET /providerProductInfos/{id}/relationships/provider
+  params: id: string, include?: array[string]
+  returns: ProviderProductInfos_Single_Relationship_Data_Document
+
+GET /providerProductInfos/{id}/relationships/subject
+  params: countryCode?: string, id: string, include?: array[string]
+  returns: ProviderProductInfos_Single_Relationship_Data_Document
+
 GET /providers
   params: filter[id]?: array[string]
   returns: Providers_Multi_Resource_Data_Document
@@ -634,6 +658,18 @@ GET /providers
 GET /providers/{id}
   params: id: string
   returns: Providers_Single_Resource_Data_Document
+
+GET /purchases
+  params: filter[owners.id]?: array[string], filter[subject.type]?: array[enum[albums, tracks]], include?: array[string], page[cursor]?: string
+  returns: Purchases_Multi_Resource_Data_Document
+
+GET /purchases/{id}/relationships/owners
+  params: id: string, include?: array[string], page[cursor]?: string
+  returns: Purchases_Multi_Relationship_Data_Document
+
+GET /purchases/{id}/relationships/subject
+  params: id: string, include?: array[string]
+  returns: Purchases_Single_Relationship_Data_Document
 
 GET /reactions
   params: filter[emoji]?: array[string], filter[subject.id]?: array[string], filter[subject.type]?: array[enum[albums, tracks, artists, videos, playlists, comments]], include?: array[string], page[cursor]?: string, stats?: enum[ALL, COUNTS_BY_TYPE, TOTAL_COUNT], statsOnly?: boolean, viewerContext?: string
@@ -735,8 +771,20 @@ GET /stripeDashboardLinks/{id}/relationships/owners
   params: id: string, include?: array[string], page[cursor]?: string
   returns: StripeDashboardLinks_Multi_Relationship_Data_Document
 
+POST /temporaryUserTokens
+  params: ??: any
+  returns: TemporaryUserTokens_Single_Resource_Data_Document
+
+GET /temporaryUserTokens/{id}
+  params: id: string, include?: array[string]
+  returns: TemporaryUserTokens_Single_Resource_Data_Document
+
+GET /temporaryUserTokens/{id}/relationships/owners
+  params: id: string, include?: array[string], page[cursor]?: string
+  returns: TemporaryUserTokens_Multi_Relationship_Data_Document
+
 GET /terms
-  params: filter[id]?: array[string], filter[isLatestVersion]?: array[string], filter[termsType]?: array[enum[DEVELOPER]]
+  params: filter[countryCode]?: array[string], filter[id]?: array[string], filter[isLatestVersion]?: array[string], filter[termsType]?: array[enum[DEVELOPER, UPLOAD_MARKETPLACE]]
   returns: Terms_Multi_Resource_Data_Document
 
 GET /terms/{id}
@@ -1123,9 +1171,41 @@ DELETE /userCollections/{id}/relationships/videos
   params: ??: any, id: string
   returns: void
 
+GET /userDailyMixes/{id}
+  params: countryCode?: string, id: string, include?: array[string], locale?: string
+  returns: UserDailyMixes_Single_Resource_Data_Document
+
+GET /userDailyMixes/{id}/relationships/items
+  params: id: string, include?: array[string], locale?: string, page[cursor]?: string
+  returns: UserDailyMixes_Multi_Relationship_Data_Document
+
 POST /userDataExportRequests
   params: ??: any
   returns: UserDataExportRequests_Single_Resource_Data_Document
+
+GET /userDiscoveryMixes/{id}
+  params: countryCode?: string, id: string, include?: array[string], locale?: string
+  returns: UserDiscoveryMixes_Single_Resource_Data_Document
+
+GET /userDiscoveryMixes/{id}/relationships/items
+  params: countryCode?: string, id: string, include?: array[string], locale?: string, page[cursor]?: string
+  returns: UserDiscoveryMixes_Multi_Relationship_Data_Document
+
+GET /userNewReleaseMixes/{id}
+  params: countryCode?: string, id: string, include?: array[string], locale?: string
+  returns: UserNewReleaseMixes_Single_Resource_Data_Document
+
+GET /userNewReleaseMixes/{id}/relationships/items
+  params: countryCode?: string, id: string, include?: array[string], locale?: string, page[cursor]?: string
+  returns: UserNewReleaseMixes_Multi_Relationship_Data_Document
+
+GET /userOfflineMixes/{id}
+  params: countryCode?: string, id: string, include?: array[string], locale?: string
+  returns: UserOfflineMixes_Single_Resource_Data_Document
+
+GET /userOfflineMixes/{id}/relationships/items
+  params: id: string, include?: array[string], locale?: string, page[cursor]?: string
+  returns: UserOfflineMixes_Multi_Relationship_Data_Document
 
 GET /userRecommendations/{id}
   params: countryCode?: string, id: string, include?: array[string], locale?: string
@@ -1141,6 +1221,10 @@ GET /userRecommendations/{id}/relationships/myMixes
 
 GET /userRecommendations/{id}/relationships/newArrivalMixes
   params: countryCode?: string, id: string, include?: array[string], locale?: string, page[cursor]?: string
+  returns: UserRecommendations_Multi_Relationship_Data_Document
+
+GET /userRecommendations/{id}/relationships/offlineMixes
+  params: id: string, include?: array[string], locale?: string, page[cursor]?: string
   returns: UserRecommendations_Multi_Relationship_Data_Document
 
 POST /userReports
@@ -1576,10 +1660,10 @@ ArtistClaimsUpdateOperation_Payload_Meta
 ArtistClaims_Attributes
   artistId: string (required)
   provider: enum[DISTROKID, CDBABY, TUNECORE] (required)
-  status: enum[AWAITING_OAUTH, FETCHING_CONTENT, VERIFIED, NO_MATCHES, AUTHENTICATION_FAILED, PROCESSING, COMPLETED, FAILED, CANCELLED] (required)
+  status: enum[AWAITING_OAUTH, FETCHING_CONTENT, VERIFIED, NO_MATCHES, AUTHENTICATION_FAILED, PROCESSING, COMPLETED, FAILED, CANCELLED, NAME_MISMATCH, CLAIMED_ARTIST_MISMATCH] (required)
   externalLinks: array[External_Link] (optional)
   recommendation: enum[CLAIM_PROFILE, CLAIM_CONTENT] (optional)
-  retrievedUpcs: array[BarcodeId] (optional)
+  retrievedUpcs: array[LegacyBarcodeId] (optional)
 
 ArtistClaims_Multi_Relationship_Data_Document
   links: Links (required)
@@ -1840,9 +1924,6 @@ Artworks_Single_Resource_Data_Document
 AudioNormalizationData
   peakAmplitude: number(float) (optional)
   replayGain: number(float) (optional)
-
-BarcodeId
-  value: string (required)
 
 ClientsCreateOperation_Payload
   data: ClientsCreateOperation_Payload_Data (required)
@@ -2381,6 +2462,9 @@ Installations_Single_Resource_Data_Document
   data: Installations_Resource_Object (required)
   links: Links (required)
   included: Included (optional)
+
+LegacyBarcodeId
+  value: string (optional)
 
 LegacySource
   id: string (required)
@@ -2930,6 +3014,67 @@ PriceConfigurations_Single_Resource_Data_Document
   links: Links (required)
   included: Included (optional)
 
+ProviderOwners_Attributes
+  createdAt: string(date-time) (required)
+
+ProviderOwners_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[Resource_Identifier] (optional)
+  included: Included (optional)
+
+ProviderOwners_Multi_Resource_Data_Document
+  data: array[ProviderOwners_Resource_Object] (required)
+  links: Links (required)
+  included: Included (optional)
+
+ProviderOwners_Relationships
+  owners: Multi_Relationship_Data_Document (optional)
+  provider: Single_Relationship_Data_Document (optional)
+
+ProviderOwners_Resource_Object
+  id: string (required)
+  type: string (required)
+  attributes: ProviderOwners_Attributes (optional)
+  relationships: ProviderOwners_Relationships (optional)
+
+ProviderOwners_Single_Relationship_Data_Document
+  links: Links (required)
+  data: Resource_Identifier (optional)
+  included: Included (optional)
+
+ProviderOwners_Single_Resource_Data_Document
+  data: ProviderOwners_Resource_Object (required)
+  links: Links (required)
+  included: Included (optional)
+
+ProviderProductInfos_Attributes
+  barcodeId: string (required)
+
+ProviderProductInfos_Multi_Resource_Data_Document
+  data: array[ProviderProductInfos_Resource_Object] (required)
+  links: Links (required)
+  included: Included (optional)
+
+ProviderProductInfos_Relationships
+  provider: Single_Relationship_Data_Document (optional)
+  subject: Single_Relationship_Data_Document (optional)
+
+ProviderProductInfos_Resource_Object
+  id: string (required)
+  type: string (required)
+  attributes: ProviderProductInfos_Attributes (optional)
+  relationships: ProviderProductInfos_Relationships (optional)
+
+ProviderProductInfos_Single_Relationship_Data_Document
+  links: Links (required)
+  data: Resource_Identifier (optional)
+  included: Included (optional)
+
+ProviderProductInfos_Single_Resource_Data_Document
+  data: ProviderProductInfos_Resource_Object (required)
+  links: Links (required)
+  included: Included (optional)
+
 Providers_Attributes
   name: string (required)
 
@@ -2945,6 +3090,40 @@ Providers_Resource_Object
 
 Providers_Single_Resource_Data_Document
   data: Providers_Resource_Object (required)
+  links: Links (required)
+  included: Included (optional)
+
+Purchases_Attributes
+  createdAt: string(date-time) (required)
+  status: enum[ACTIVE] (required)
+
+Purchases_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[Resource_Identifier] (optional)
+  included: Included (optional)
+
+Purchases_Multi_Resource_Data_Document
+  data: array[Purchases_Resource_Object] (required)
+  links: Links (required)
+  included: Included (optional)
+
+Purchases_Relationships
+  owners: Multi_Relationship_Data_Document (optional)
+  subject: Single_Relationship_Data_Document (optional)
+
+Purchases_Resource_Object
+  id: string (required)
+  type: string (required)
+  attributes: Purchases_Attributes (optional)
+  relationships: Purchases_Relationships (optional)
+
+Purchases_Single_Relationship_Data_Document
+  links: Links (required)
+  data: Resource_Identifier (optional)
+  included: Included (optional)
+
+Purchases_Single_Resource_Data_Document
+  data: Purchases_Resource_Object (required)
   links: Links (required)
   included: Included (optional)
 
@@ -3252,10 +3431,43 @@ StripeDashboardLinks_Single_Resource_Data_Document
   links: Links (required)
   included: Included (optional)
 
+TemporaryUserTokensCreateOperation_Payload
+  data: TemporaryUserTokensCreateOperation_Payload_Data (required)
+
+TemporaryUserTokensCreateOperation_Payload_Data
+  type: enum[temporaryUserTokens] (required)
+
+TemporaryUserTokens_Attributes
+
+TemporaryUserTokens_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[Resource_Identifier] (optional)
+  included: Included (optional)
+
+TemporaryUserTokens_Multi_Resource_Data_Document
+  data: array[TemporaryUserTokens_Resource_Object] (required)
+  links: Links (required)
+  included: Included (optional)
+
+TemporaryUserTokens_Relationships
+  owners: Multi_Relationship_Data_Document (optional)
+
+TemporaryUserTokens_Resource_Object
+  id: string (required)
+  type: string (required)
+  attributes: TemporaryUserTokens_Attributes (optional)
+  relationships: TemporaryUserTokens_Relationships (optional)
+
+TemporaryUserTokens_Single_Resource_Data_Document
+  data: TemporaryUserTokens_Resource_Object (required)
+  links: Links (required)
+  included: Included (optional)
+
 Terms_Attributes
   contentLink: Link_Object (required)
+  countryCode: string (required)
   effectiveAt: string(date-time) (required)
-  termsType: enum[DEVELOPER] (required)
+  termsType: enum[DEVELOPER, UPLOAD_MARKETPLACE] (required)
 
 Terms_Multi_Resource_Data_Document
   data: array[Terms_Resource_Object] (required)
@@ -3762,14 +3974,14 @@ UserCollectionFoldersItemsRelationshipAddOperation_Payload
 
 UserCollectionFoldersItemsRelationshipAddOperation_Payload_Data
   id: string (required)
-  resourceType: string (optional)
+  type: string (required)
 
 UserCollectionFoldersItemsRelationshipRemoveOperation_Payload
   data: array[UserCollectionFoldersItemsRelationshipRemoveOperation_Payload_Data] (optional)
 
 UserCollectionFoldersItemsRelationshipRemoveOperation_Payload_Data
   id: string (required)
-  resourceType: string (optional)
+  type: string (required)
 
 UserCollectionFoldersUpdateOperation_Payload
   data: UserCollectionFoldersUpdateOperation_Payload_Data (required)
@@ -4240,6 +4452,32 @@ UserCollections_Videos_Resource_Identifier
 UserCollections_Videos_Resource_Identifier_Meta
   addedAt: string(date-time) (required)
 
+UserDailyMixes_Attributes
+
+UserDailyMixes_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[Resource_Identifier] (optional)
+  included: Included (optional)
+
+UserDailyMixes_Multi_Resource_Data_Document
+  data: array[UserDailyMixes_Resource_Object] (required)
+  links: Links (required)
+  included: Included (optional)
+
+UserDailyMixes_Relationships
+  items: Multi_Relationship_Data_Document (optional)
+
+UserDailyMixes_Resource_Object
+  id: string (required)
+  type: string (required)
+  attributes: UserDailyMixes_Attributes (optional)
+  relationships: UserDailyMixes_Relationships (optional)
+
+UserDailyMixes_Single_Resource_Data_Document
+  data: UserDailyMixes_Resource_Object (required)
+  links: Links (required)
+  included: Included (optional)
+
 UserDataExportRequestsCreateOperation_Payload
   data: UserDataExportRequestsCreateOperation_Payload_Data (required)
 
@@ -4268,6 +4506,84 @@ UserDataExportRequests_Single_Resource_Data_Document
   links: Links (required)
   included: Included (optional)
 
+UserDiscoveryMixes_Attributes
+
+UserDiscoveryMixes_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[Resource_Identifier] (optional)
+  included: Included (optional)
+
+UserDiscoveryMixes_Multi_Resource_Data_Document
+  data: array[UserDiscoveryMixes_Resource_Object] (required)
+  links: Links (required)
+  included: Included (optional)
+
+UserDiscoveryMixes_Relationships
+  items: Multi_Relationship_Data_Document (optional)
+
+UserDiscoveryMixes_Resource_Object
+  id: string (required)
+  type: string (required)
+  attributes: UserDiscoveryMixes_Attributes (optional)
+  relationships: UserDiscoveryMixes_Relationships (optional)
+
+UserDiscoveryMixes_Single_Resource_Data_Document
+  data: UserDiscoveryMixes_Resource_Object (required)
+  links: Links (required)
+  included: Included (optional)
+
+UserNewReleaseMixes_Attributes
+
+UserNewReleaseMixes_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[Resource_Identifier] (optional)
+  included: Included (optional)
+
+UserNewReleaseMixes_Multi_Resource_Data_Document
+  data: array[UserNewReleaseMixes_Resource_Object] (required)
+  links: Links (required)
+  included: Included (optional)
+
+UserNewReleaseMixes_Relationships
+  items: Multi_Relationship_Data_Document (optional)
+
+UserNewReleaseMixes_Resource_Object
+  id: string (required)
+  type: string (required)
+  attributes: UserNewReleaseMixes_Attributes (optional)
+  relationships: UserNewReleaseMixes_Relationships (optional)
+
+UserNewReleaseMixes_Single_Resource_Data_Document
+  data: UserNewReleaseMixes_Resource_Object (required)
+  links: Links (required)
+  included: Included (optional)
+
+UserOfflineMixes_Attributes
+
+UserOfflineMixes_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[Resource_Identifier] (optional)
+  included: Included (optional)
+
+UserOfflineMixes_Multi_Resource_Data_Document
+  data: array[UserOfflineMixes_Resource_Object] (required)
+  links: Links (required)
+  included: Included (optional)
+
+UserOfflineMixes_Relationships
+  items: Multi_Relationship_Data_Document (optional)
+
+UserOfflineMixes_Resource_Object
+  id: string (required)
+  type: string (required)
+  attributes: UserOfflineMixes_Attributes (optional)
+  relationships: UserOfflineMixes_Relationships (optional)
+
+UserOfflineMixes_Single_Resource_Data_Document
+  data: UserOfflineMixes_Resource_Object (required)
+  links: Links (required)
+  included: Included (optional)
+
 UserRecommendations_Attributes
 
 UserRecommendations_Multi_Relationship_Data_Document
@@ -4284,6 +4600,7 @@ UserRecommendations_Relationships
   discoveryMixes: Multi_Relationship_Data_Document (optional)
   myMixes: Multi_Relationship_Data_Document (optional)
   newArrivalMixes: Multi_Relationship_Data_Document (optional)
+  offlineMixes: Multi_Relationship_Data_Document (optional)
 
 UserRecommendations_Resource_Object
   id: string (required)

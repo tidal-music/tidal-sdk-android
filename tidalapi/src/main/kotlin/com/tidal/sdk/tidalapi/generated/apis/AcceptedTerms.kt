@@ -13,7 +13,8 @@ interface AcceptedTerms {
 
     /** enum for parameter filterTermsTermsType */
     enum class FilterTermsTermsTypeAcceptedTermsGet(val value: kotlin.String) {
-        @SerialName(value = "DEVELOPER") DEVELOPER("DEVELOPER")
+        @SerialName(value = "DEVELOPER") DEVELOPER("DEVELOPER"),
+        @SerialName(value = "UPLOAD_MARKETPLACE") UPLOAD_MARKETPLACE("UPLOAD_MARKETPLACE"),
     }
 
     /**
@@ -33,7 +34,8 @@ interface AcceptedTerms {
      *   Available options: owners, terms (optional)
      * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user (optional)
      * @param filterTermsIsLatestVersion Filter by terms.isLatestVersion (optional)
-     * @param filterTermsTermsType One of: DEVELOPER (e.g. &#x60;DEVELOPER&#x60;) (optional)
+     * @param filterTermsTermsType One of: DEVELOPER, UPLOAD_MARKETPLACE (e.g.
+     *   &#x60;DEVELOPER&#x60;) (optional)
      * @return [AcceptedTermsMultiResourceDataDocument]
      */
     @GET("acceptedTerms")

@@ -11,12 +11,10 @@ import kotlinx.serialization.Serializable
 
 /**
  * @param id
- * @param resourceType
+ * @param type
  */
 @Serializable
 data class UserCollectionFoldersItemsRelationshipRemoveOperationPayloadData(
     @SerialName(value = "id") val id: kotlin.String,
-    @SerialName(value = "resourceType")
-    @Deprecated(message = "This property is deprecated.")
-    val resourceType: kotlin.String? = null,
+    @SerialName(value = "type") val type: kotlin.String,
 ) {}

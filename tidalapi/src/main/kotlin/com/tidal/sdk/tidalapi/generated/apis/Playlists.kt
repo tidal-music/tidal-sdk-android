@@ -428,6 +428,7 @@ interface Playlists {
     /**
      * Add to items relationship (\&quot;to-many\&quot;). Adds item(s) to items relationship.
      * Responses:
+     * - 200: Successful response
      * - 400: The request is malformed or invalid
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
@@ -445,7 +446,7 @@ interface Playlists {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param playlistsItemsRelationshipAddOperationPayload (optional)
-     * @return [Unit]
+     * @return [PlaylistsItemsMultiRelationshipDataDocument]
      */
     @POST("playlists/{id}/relationships/items")
     suspend fun playlistsIdRelationshipsItemsPost(
@@ -456,7 +457,7 @@ interface Playlists {
         playlistsItemsRelationshipAddOperationPayload:
             PlaylistsItemsRelationshipAddOperationPayload? =
             null,
-    ): Response<Unit>
+    ): Response<PlaylistsItemsMultiRelationshipDataDocument>
 
     /**
      * Get ownerProfiles relationship (\&quot;to-many\&quot;). Retrieves ownerProfiles relationship.

@@ -10,7 +10,8 @@ interface Terms {
 
     /** enum for parameter filterTermsType */
     enum class FilterTermsTypeTermsGet(val value: kotlin.String) {
-        @SerialName(value = "DEVELOPER") DEVELOPER("DEVELOPER")
+        @SerialName(value = "DEVELOPER") DEVELOPER("DEVELOPER"),
+        @SerialName(value = "UPLOAD_MARKETPLACE") UPLOAD_MARKETPLACE("UPLOAD_MARKETPLACE"),
     }
 
     /**
@@ -26,13 +27,17 @@ interface Terms {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
+     * @param filterCountryCode Filter by countryCode (optional)
      * @param filterId Terms id (e.g. &#x60;a468bee88def&#x60;) (optional)
      * @param filterIsLatestVersion Filter by isLatestVersion (optional)
-     * @param filterTermsType One of: DEVELOPER (e.g. &#x60;DEVELOPER&#x60;) (optional)
+     * @param filterTermsType One of: DEVELOPER, UPLOAD_MARKETPLACE (e.g. &#x60;DEVELOPER&#x60;)
+     *   (optional)
      * @return [TermsMultiResourceDataDocument]
      */
     @GET("terms")
     suspend fun termsGet(
+        @Query("filter[countryCode]")
+        filterCountryCode: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[id]")
         filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[isLatestVersion]")
