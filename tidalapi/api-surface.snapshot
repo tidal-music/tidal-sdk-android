@@ -1,5 +1,5 @@
 # TIDAL API Surface Snapshot
-# Spec version: 1.6.1 | Endpoints: 320 | Models: 764
+# Spec version: 1.7.0 | Endpoints: 323 | Models: 770
 
 ## Endpoints
 
@@ -695,6 +695,14 @@ POST /savedShares
   params: ??: any
   returns: SavedShares_Single_Resource_Data_Document
 
+GET /searchHistoryEntries
+  params: countryCode?: string, filter[id]?: array[string]
+  returns: SearchHistoryEntries_Multi_Resource_Data_Document
+
+DELETE /searchHistoryEntries/{id}
+  params: ??: any, id: string
+  returns: void
+
 GET /searchResults/{id}
   params: countryCode?: string, explicitFilter?: enum[INCLUDE, EXCLUDE], id: string, include?: array[string]
   returns: SearchResults_Single_Resource_Data_Document
@@ -728,6 +736,10 @@ GET /searchSuggestions/{id}
   returns: SearchSuggestions_Single_Resource_Data_Document
 
 GET /searchSuggestions/{id}/relationships/directHits
+  params: countryCode?: string, explicitFilter?: enum[INCLUDE, EXCLUDE], id: string, include?: array[string], page[cursor]?: string
+  returns: SearchSuggestions_Multi_Relationship_Data_Document
+
+GET /searchSuggestions/{id}/relationships/history
   params: countryCode?: string, explicitFilter?: enum[INCLUDE, EXCLUDE], id: string, include?: array[string], page[cursor]?: string
   returns: SearchSuggestions_Multi_Relationship_Data_Document
 
@@ -2392,6 +2404,10 @@ Genres_Single_Resource_Data_Document
   links: Links (required)
   included: Included (optional)
 
+Highlight
+  length: integer(int32) (optional)
+  start: integer(int32) (optional)
+
 Idempotency409ResponseBody
   errors: array[object] (required)
 
@@ -3049,6 +3065,9 @@ ProviderOwners_Single_Resource_Data_Document
 
 ProviderProductInfos_Attributes
   barcodeId: string (required)
+  broken: boolean (optional)
+  brokenCode: integer(int32) (optional)
+  tracks: array[TrackInfo] (optional)
 
 ProviderProductInfos_Multi_Resource_Data_Document
   data: array[ProviderProductInfos_Resource_Object] (required)
@@ -3231,6 +3250,25 @@ SavedShares_Single_Resource_Data_Document
   links: Links (required)
   included: Included (optional)
 
+SearchHistoryEntries_Attributes
+  highlights: array[Highlight] (required)
+  query: string (required)
+
+SearchHistoryEntries_Multi_Resource_Data_Document
+  data: array[SearchHistoryEntries_Resource_Object] (required)
+  links: Links (required)
+  included: Included (optional)
+
+SearchHistoryEntries_Resource_Object
+  id: string (required)
+  type: string (required)
+  attributes: SearchHistoryEntries_Attributes (optional)
+
+SearchHistoryEntries_Single_Resource_Data_Document
+  data: SearchHistoryEntries_Resource_Object (required)
+  links: Links (required)
+  included: Included (optional)
+
 SearchResults_Attributes
   trackingId: string (required)
   didYouMean: string (optional)
@@ -3289,6 +3327,7 @@ SearchSuggestions_Multi_Resource_Data_Document
 
 SearchSuggestions_Relationships
   directHits: Multi_Relationship_Data_Document (optional)
+  history: Multi_Relationship_Data_Document (optional)
 
 SearchSuggestions_Resource_Object
   id: string (required)
@@ -3517,6 +3556,11 @@ TrackFiles_Single_Resource_Data_Document
   data: TrackFiles_Resource_Object (required)
   links: Links (required)
   included: Included (optional)
+
+TrackInfo
+  trackId: string (required)
+  broken: boolean (optional)
+  brokenCode: integer(int32) (optional)
 
 TrackManifestsReadById403ResponseBody
   errors: array[object] (required)

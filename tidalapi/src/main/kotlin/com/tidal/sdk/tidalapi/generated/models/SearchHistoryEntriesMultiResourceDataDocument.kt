@@ -10,11 +10,14 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param directHits
- * @param history
+ * @param `data`
+ * @param links
+ * @param included
  */
 @Serializable
-data class SearchSuggestionsRelationships(
-    @SerialName(value = "directHits") val directHits: MultiRelationshipDataDocument? = null,
-    @SerialName(value = "history") val history: MultiRelationshipDataDocument? = null,
+data class SearchHistoryEntriesMultiResourceDataDocument(
+    @SerialName(value = "data")
+    val `data`: kotlin.collections.List<SearchHistoryEntriesResourceObject>,
+    @SerialName(value = "links") val links: Links,
+    @SerialName(value = "included") val included: kotlin.collections.List<IncludedInner>? = null,
 ) {}

@@ -32,6 +32,7 @@ import com.tidal.sdk.tidalapi.generated.apis.Providers
 import com.tidal.sdk.tidalapi.generated.apis.Purchases
 import com.tidal.sdk.tidalapi.generated.apis.Reactions
 import com.tidal.sdk.tidalapi.generated.apis.SavedShares
+import com.tidal.sdk.tidalapi.generated.apis.SearchHistoryEntries
 import com.tidal.sdk.tidalapi.generated.apis.SearchResults
 import com.tidal.sdk.tidalapi.generated.apis.SearchSuggestions
 import com.tidal.sdk.tidalapi.generated.apis.Shares
@@ -233,6 +234,13 @@ class TidalApiClient(
     /** Returns an instance of the [SavedShares] which can be used to make API calls to the */
     fun createSavedShares(): SavedShares {
         return retrofit.create(SavedShares::class.java)
+    }
+
+    /**
+     * Returns an instance of the [SearchHistoryEntries] which can be used to make API calls to the
+     */
+    fun createSearchHistoryEntries(): SearchHistoryEntries {
+        return retrofit.create(SearchHistoryEntries::class.java)
     }
 
     /** Returns an instance of the [SearchResults] which can be used to make API calls to the */
