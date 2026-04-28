@@ -4,15 +4,12 @@ import assertk.assertThat
 import assertk.assertions.isDataClassEqualTo
 import assertk.assertions.isEqualTo
 import com.google.gson.Gson
-import com.google.gson.JsonParseException
 import com.tidal.sdk.auth.CredentialsProvider
 import com.tidal.sdk.player.MockWebServerExtensions.enqueueResponse
 import com.tidal.sdk.player.common.model.ApiError
-import com.tidal.sdk.player.common.model.VideoQuality
 import com.tidal.sdk.player.streamingapi.di.DaggerStreamingApiComponent
 import com.tidal.sdk.player.streamingapi.offline.OfflinePlaybackInfoProviderStub
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
-import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackMode
 import java.net.ConnectException
 import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
@@ -64,106 +61,6 @@ internal class StreamingApiDefaultTest {
                     tidalApiCacheDir = null,
                 )
                 .streamingApi
-    }
-
-    @Test
-    fun getVideoPlaybackInfoShouldReturnCorrectWhenNetworkError() {
-        server.enqueue(MockResponse().setSocketPolicy(SocketPolicy.DISCONNECT_AT_START))
-
-        assertThrows<ConnectException> { getVideoPlaybackInfo() }
-    }
-
-    @Test
-    fun getVideoPlaybackInfoShouldFailWhen4xx() {
-        val expectedResponseCode = 401
-        server.enqueueResponse("errors/401_4005.json", expectedResponseCode)
-
-        val actual = assertThrows<ApiError> { getVideoPlaybackInfo() }
-
-        assertThat(actual.status).isEqualTo(expectedResponseCode)
-    }
-
-    @Test
-    fun getVideoPlaybackInfoShouldFailWhen500() {
-        val expectedResponseCode = 500
-        server.enqueueResponse("errors/500_999.json", expectedResponseCode)
-
-        val actual = assertThrows<ApiError> { getVideoPlaybackInfo() }
-
-        assertThat(actual.status).isEqualTo(expectedResponseCode)
-    }
-
-    @Test
-    fun getVideoPlaybackInfoShouldReturnCorrectPlaybackInfo() {
-        server.enqueueResponse("${ApiConstants.VIDEOS_PATH}.json")
-
-        val playbackInfo = getVideoPlaybackInfo()
-
-        assertThat(playbackInfo).isDataClassEqualTo(VideoPlaybackInfoFactory.DEFAULT)
-    }
-
-    @Test
-    fun getVideoPlaybackInfoShouldReturnCorrectPlaybackInfoWhenStreamingSessionIdIsEmpty() {
-        server.enqueueResponse("${ApiConstants.VIDEOS_PATH}_empty_streaming_session_id.json")
-
-        val playbackInfo = getVideoPlaybackInfo()
-
-        assertThat(playbackInfo)
-            .isDataClassEqualTo(VideoPlaybackInfoFactory.EMPTY_STREAMING_SESSION_ID)
-    }
-
-    @Test
-    fun getVideoPlaybackInfoShouldReturnCorrectPlaybackInfoWhenReplacementVideoId() {
-        server.enqueueResponse("${ApiConstants.VIDEOS_PATH}_replacement_video_id.json")
-
-        val playbackInfo = getVideoPlaybackInfo()
-
-        assertThat(playbackInfo).isDataClassEqualTo(VideoPlaybackInfoFactory.REPLACEMENT_VIDEO_ID)
-    }
-
-    @Test
-    fun getVideoPlaybackInfoShouldReturnCorrectPlaybackInfoWhenReplacementVideoQuality() {
-        server.enqueueResponse("${ApiConstants.VIDEOS_PATH}_replacement_video_quality.json")
-
-        val playbackInfo = getVideoPlaybackInfo()
-
-        assertThat(playbackInfo)
-            .isDataClassEqualTo(VideoPlaybackInfoFactory.REPLACEMENT_VIDEO_QUALITY)
-    }
-
-    @Test
-    fun getVideoPlaybackInfoShouldFailWhenInvalidMimeType() {
-        server.enqueueResponse("${ApiConstants.VIDEOS_PATH}_unknown_mime_type.json")
-
-        assertThrows<JsonParseException> { getVideoPlaybackInfo() }
-    }
-
-    @Test
-    fun getVideoPlaybackInfoShouldReturnCorrectPlaybackInfoWhenProtectedContent() {
-        server.enqueueResponse("${ApiConstants.VIDEOS_PATH}_protected.json")
-
-        val playbackInfo = getVideoPlaybackInfo()
-
-        assertThat(playbackInfo).isDataClassEqualTo(VideoPlaybackInfoFactory.PROTECTED)
-    }
-
-    @Test
-    fun getVideoPlaybackInfoShouldReturnCorrectPlaybackInfoWhenOffline() {
-        server.enqueueResponse("${ApiConstants.VIDEOS_PATH}_offline.json")
-
-        val playbackInfo = getVideoPlaybackInfo()
-
-        assertThat(playbackInfo).isDataClassEqualTo(VideoPlaybackInfoFactory.OFFLINE)
-    }
-
-    private fun getVideoPlaybackInfo() = runBlocking {
-        streamingApi.getVideoPlaybackInfo(
-            ApiConstants.PLAYBACK_INFO_ID_FOR_DEFAULT,
-            VideoQuality.LOW,
-            PlaybackMode.STREAM,
-            "streamingSessionId",
-            null,
-        )
     }
 
     @Test

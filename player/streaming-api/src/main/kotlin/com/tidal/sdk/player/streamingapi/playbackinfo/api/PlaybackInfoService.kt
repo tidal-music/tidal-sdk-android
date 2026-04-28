@@ -1,42 +1,17 @@
 package com.tidal.sdk.player.streamingapi.playbackinfo.api
 
-import com.tidal.sdk.player.common.model.AssetPresentation
 import com.tidal.sdk.player.common.model.AudioQuality
-import com.tidal.sdk.player.common.model.VideoQuality
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
-import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackMode
 import retrofit2.http.GET
-import retrofit2.http.Header
 import retrofit2.http.Path
 import retrofit2.http.Query
 
 /**
  * A service interface for the playback info endpoint.
  *
- * This will get track or video playback info from our backend.
+ * This will get broadcast playback info from our backend.
  */
 internal interface PlaybackInfoService {
-
-    /**
-     * Returns a [PlaybackInfo.Video] which we can use for playback of a video.
-     *
-     * @param[videoId] The requested video id as [String].
-     * @param[playbackMode] The requested playback mode as [PlaybackMode].
-     * @param[assetPresentation] The requested asset presentation as [AssetPresentation].
-     * @param[videoQuality] The requested video quality as [VideoQuality].
-     * @param[streamingSessionId] The streaming session uuid as [String], created by the client, for
-     *   this streaming session.
-     * @param[playlistUuid] The playlistUuid this play originates from as [String]. May be null.
-     */
-    @GET("videos/{id}/playbackinfo")
-    suspend fun getVideoPlaybackInfo(
-        @Path("id") videoId: String,
-        @Query("playbackmode") playbackMode: PlaybackMode,
-        @Query("assetpresentation") assetPresentation: AssetPresentation,
-        @Query("videoquality") videoQuality: VideoQuality,
-        @Header("x-tidal-streamingsessionid") streamingSessionId: String,
-        @Header("x-tidal-playlistuuid") playlistUuid: String?,
-    ): PlaybackInfo.Video
 
     /**
      * Returns a [PlaybackInfo.Broadcast] which we can use for playback of a broadcast.

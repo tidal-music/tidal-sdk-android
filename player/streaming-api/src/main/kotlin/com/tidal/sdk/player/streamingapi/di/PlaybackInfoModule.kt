@@ -6,6 +6,7 @@ import com.tidal.sdk.player.streamingapi.playbackinfo.offline.OfflinePlaybackInf
 import com.tidal.sdk.player.streamingapi.playbackinfo.repository.PlaybackInfoRepository
 import com.tidal.sdk.player.streamingapi.playbackinfo.repository.PlaybackInfoRepositoryDefault
 import com.tidal.sdk.tidalapi.generated.apis.TrackManifests
+import com.tidal.sdk.tidalapi.generated.apis.VideoManifests
 import dagger.Lazy
 import dagger.Module
 import dagger.Provides
@@ -20,6 +21,7 @@ internal object PlaybackInfoModule {
         offlinePlaybackInfoProvider: OfflinePlaybackInfoProvider?,
         playbackInfoService: PlaybackInfoService,
         trackManifests: TrackManifests,
+        videoManifests: VideoManifests,
         apiErrorMapperLazy: Lazy<ApiErrorMapper>,
     ): PlaybackInfoRepository {
         return PlaybackInfoRepositoryDefault(
@@ -27,6 +29,7 @@ internal object PlaybackInfoModule {
             playbackInfoService,
             apiErrorMapperLazy,
             trackManifests,
+            videoManifests,
         )
     }
 }

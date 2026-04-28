@@ -18,7 +18,8 @@ import java.lang.reflect.Type
 enum class ManifestMimeType(val mimeType: String = "") {
     EMU("application/vnd.tidal.emu"),
     BTS("application/vnd.tidal.bts"),
-    DASH("application/dash+xml");
+    DASH("application/dash+xml"),
+    HLS("application/vnd.apple.mpegurl");
 
     object Converter {
         /** A [JsonDeserializer] that helps deserializing [ManifestMimeType] using gson. */

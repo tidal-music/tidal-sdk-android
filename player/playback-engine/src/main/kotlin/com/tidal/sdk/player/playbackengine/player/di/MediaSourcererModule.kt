@@ -1,6 +1,8 @@
 package com.tidal.sdk.player.playbackengine.player.di
 
+import android.content.Context
 import androidx.media3.common.C
+import androidx.media3.datasource.DefaultDataSource
 import androidx.media3.datasource.FileDataSource
 import androidx.media3.datasource.cache.CacheDataSink
 import androidx.media3.datasource.cache.CacheDataSource
@@ -198,10 +200,11 @@ internal object MediaSourcererModule {
     @Reusable
     @ExtendedExoPlayerComponent.LocalWithAuth
     fun authHlsMediaSourceFactory(
+        context: Context,
         @ExtendedExoPlayerComponent.LocalWithAuth okHttpDataSourceFactory: OkHttpDataSource.Factory,
         loadErrorHandlingPolicy: LoadErrorHandlingPolicy,
     ): HlsMediaSource.Factory {
-        return HlsMediaSource.Factory(okHttpDataSourceFactory)
+        return HlsMediaSource.Factory(DefaultDataSource.Factory(context, okHttpDataSourceFactory))
             .setLoadErrorHandlingPolicy(loadErrorHandlingPolicy)
     }
 

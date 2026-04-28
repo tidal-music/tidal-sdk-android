@@ -46,6 +46,13 @@ private constructor(
             } catch (ignored: JsonSyntaxException) {
                 cause
             }
+
+        fun create(
+            cause: RuntimeException,
+            status: Int?,
+            subStatus: SubStatus,
+            userMessage: String?,
+        ) = ApiError(cause, status, subStatus, userMessage)
     }
 
     /**
