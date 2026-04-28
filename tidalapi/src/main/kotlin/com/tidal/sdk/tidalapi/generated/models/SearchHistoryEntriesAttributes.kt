@@ -10,11 +10,11 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param directHits
- * @param history
+ * @param highlights
+ * @param query
  */
 @Serializable
-data class SearchSuggestionsRelationships(
-    @SerialName(value = "directHits") val directHits: MultiRelationshipDataDocument? = null,
-    @SerialName(value = "history") val history: MultiRelationshipDataDocument? = null,
+data class SearchHistoryEntriesAttributes(
+    @SerialName(value = "highlights") val highlights: kotlin.collections.List<Highlight>,
+    @SerialName(value = "query") val query: kotlin.String,
 ) {}

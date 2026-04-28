@@ -11,7 +11,8 @@ import kotlinx.serialization.Serializable
 
 /**
  * @param trackingId Unique tracking id
- * @param history Suggestions from search history
+ * @param history Suggestions from search history. Deprecated — use the history relationship
+ *   instead. Will be deleted shortly.
  * @param suggestions Suggested search queries
  */
 @Serializable
@@ -20,9 +21,10 @@ data class SearchSuggestionsAttributes(
     /* Unique tracking id */
 
     @SerialName(value = "trackingId") val trackingId: kotlin.String,
-    /* Suggestions from search history */
+    /* Suggestions from search history. Deprecated — use the history relationship instead. Will be deleted shortly. */
 
     @SerialName(value = "history")
+    @Deprecated(message = "This property is deprecated.")
     val history: kotlin.collections.List<SearchSuggestionsHistory>? = null,
     /* Suggested search queries */
 

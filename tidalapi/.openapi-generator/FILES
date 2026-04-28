@@ -30,6 +30,7 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/Providers.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/Purchases.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/Reactions.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/SavedShares.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/SearchHistoryEntries.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/SearchResults.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/SearchSuggestions.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/apis/Shares.kt
@@ -307,6 +308,7 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/GenresAttributes.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/GenresMultiResourceDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/GenresResourceObject.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/GenresSingleResourceDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/Highlight.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/Idempotency409ResponseBody.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/Idempotency409ResponseBodyErrorsInner.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/Idempotency422ResponseBody.kt
@@ -494,6 +496,10 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/SavedSharesCreateOperati
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/SavedSharesMultiResourceDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/SavedSharesResourceObject.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/SavedSharesSingleResourceDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/SearchHistoryEntriesAttributes.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/SearchHistoryEntriesMultiResourceDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/SearchHistoryEntriesResourceObject.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/SearchHistoryEntriesSingleResourceDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/SearchResultsAttributes.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/SearchResultsMultiRelationshipDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/SearchResultsMultiResourceDataDocument.kt
@@ -558,6 +564,7 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/TrackFilesReadById404Res
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/TrackFilesReadById404ResponseBodyErrorsInner.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/TrackFilesResourceObject.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/TrackFilesSingleResourceDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/TrackInfo.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/TrackManifestsAttributes.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/TrackManifestsMultiResourceDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/TrackManifestsReadById403ResponseBody.kt
