@@ -9,8 +9,16 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param barcodeId */
+/**
+ * @param barcodeId
+ * @param broken
+ * @param brokenCode
+ * @param tracks
+ */
 @Serializable
 data class ProviderProductInfosAttributes(
-    @SerialName(value = "barcodeId") val barcodeId: kotlin.String
+    @SerialName(value = "barcodeId") val barcodeId: kotlin.String,
+    @SerialName(value = "broken") val broken: kotlin.Boolean? = null,
+    @SerialName(value = "brokenCode") val brokenCode: kotlin.Int? = null,
+    @SerialName(value = "tracks") val tracks: kotlin.collections.List<TrackInfo>? = null,
 ) {}

@@ -15,9 +15,10 @@ import kotlinx.serialization.Serializable
  * @param detail
  */
 @Serializable
-data class UserCollectionAlbumsAddMultiDataRelationship409ResponseBodyErrorsInner(
+data class UserCollectionAlbumsAddMultiDataRelationshipWithResponse409ResponseBodyErrorsInner(
     @SerialName(value = "code")
-    val code: UserCollectionAlbumsAddMultiDataRelationship409ResponseBodyErrorsInner.Code,
+    val code:
+        UserCollectionAlbumsAddMultiDataRelationshipWithResponse409ResponseBodyErrorsInner.Code,
     @SerialName(value = "status") val status: kotlin.String,
     @SerialName(value = "detail") val detail: kotlin.String? = null,
 ) {

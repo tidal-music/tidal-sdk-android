@@ -14,18 +14,15 @@ import kotlinx.serialization.Transient
  * @param id Resource id
  * @param type Resource type
  * @param attributes
- * @param relationships
  */
 @Serializable
-@SerialName(value = "userCollectionAlbums")
-data class UserCollectionAlbumsResourceObject(
+@SerialName(value = "searchHistoryEntries")
+data class SearchHistoryEntriesResourceObject(
 
     /* Resource id */
 
     @SerialName(value = "id") val id: kotlin.String,
     /* Resource type */
     @Transient @SerialName(value = "type") val type: kotlin.String = "",
-    @SerialName(value = "attributes") val attributes: UserCollectionAlbumsAttributes? = null,
-    @SerialName(value = "relationships")
-    val relationships: UserCollectionAlbumsRelationships? = null,
+    @SerialName(value = "attributes") val attributes: SearchHistoryEntriesAttributes? = null,
 ) : IncludedInner {}

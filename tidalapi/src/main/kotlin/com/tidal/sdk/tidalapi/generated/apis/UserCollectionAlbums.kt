@@ -123,6 +123,7 @@ interface UserCollectionAlbums {
     /**
      * Add to items relationship (\&quot;to-many\&quot;). Adds item(s) to items relationship.
      * Responses:
+     * - 200: Successful response
      * - 400: The request is malformed or invalid
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
@@ -143,7 +144,7 @@ interface UserCollectionAlbums {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param userCollectionAlbumsItemsRelationshipAddOperationPayload (optional)
-     * @return [Unit]
+     * @return [UserCollectionAlbumsItemsMultiRelationshipDataDocument]
      */
     @POST("userCollectionAlbums/{id}/relationships/items")
     suspend fun userCollectionAlbumsIdRelationshipsItemsPost(
@@ -154,7 +155,7 @@ interface UserCollectionAlbums {
         userCollectionAlbumsItemsRelationshipAddOperationPayload:
             UserCollectionAlbumsItemsRelationshipAddOperationPayload? =
             null,
-    ): Response<Unit>
+    ): Response<UserCollectionAlbumsItemsMultiRelationshipDataDocument>
 
     /**
      * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:

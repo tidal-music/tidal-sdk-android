@@ -9,12 +9,12 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param errors */
+/**
+ * @param highlights
+ * @param query
+ */
 @Serializable
-data class UserCollectionArtistsAddMultiDataRelationship409ResponseBody(
-    @SerialName(value = "errors")
-    val errors:
-        kotlin.collections.List<
-            UserCollectionAlbumsAddMultiDataRelationship409ResponseBodyErrorsInner
-        >
+data class SearchHistoryEntriesAttributes(
+    @SerialName(value = "highlights") val highlights: kotlin.collections.List<Highlight>,
+    @SerialName(value = "query") val query: kotlin.String,
 ) {}

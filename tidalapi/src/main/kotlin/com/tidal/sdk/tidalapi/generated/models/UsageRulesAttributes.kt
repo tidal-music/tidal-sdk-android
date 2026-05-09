@@ -12,6 +12,10 @@ import kotlinx.serialization.Serializable
 /**
  * @param countryCode Country code (ISO 3166-1 alpha-2)
  * @param free Usage types allowed for free/ad-supported model
+ * @param inherited Whether these usage rules are inherited from a parent (e.g. a track inheriting
+ *   from its album). Tri-state: true means the rules are inherited, false means an explicit
+ *   per-track override, null means the value is unknown or not applicable (albums, videos, and
+ *   legacy data).
  * @param paid Usage types allowed for paid/purchase model
  * @param subscription Usage types allowed for subscription model
  */
@@ -25,6 +29,9 @@ data class UsageRulesAttributes(
 
     @SerialName(value = "free")
     val free: kotlin.collections.List<UsageRulesAttributes.Free>? = null,
+    /* Whether these usage rules are inherited from a parent (e.g. a track inheriting from its album). Tri-state: true means the rules are inherited, false means an explicit per-track override, null means the value is unknown or not applicable (albums, videos, and legacy data). */
+
+    @SerialName(value = "inherited") val inherited: kotlin.Boolean? = null,
     /* Usage types allowed for paid/purchase model */
 
     @SerialName(value = "paid")

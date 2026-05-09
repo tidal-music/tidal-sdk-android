@@ -15,6 +15,6 @@ data class UserCollectionsAddMultiDataRelationship409ResponseBody(
     @SerialName(value = "errors")
     val errors:
         kotlin.collections.List<
-            UserCollectionAlbumsAddMultiDataRelationship409ResponseBodyErrorsInner
+            UserCollectionAlbumsAddMultiDataRelationshipWithResponse409ResponseBodyErrorsInner
         >
 ) {}

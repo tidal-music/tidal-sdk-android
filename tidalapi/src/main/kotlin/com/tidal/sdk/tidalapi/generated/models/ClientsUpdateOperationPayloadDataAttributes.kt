@@ -11,7 +11,6 @@ import kotlinx.serialization.Serializable
 
 /**
  * @param description
- * @param enabled
  * @param name
  * @param platformPreset
  * @param redirectUris
@@ -20,7 +19,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ClientsUpdateOperationPayloadDataAttributes(
     @SerialName(value = "description") val description: kotlin.String? = null,
-    @SerialName(value = "enabled") val enabled: kotlin.Boolean? = null,
     @SerialName(value = "name") val name: kotlin.String? = null,
     @SerialName(value = "platformPreset")
     val platformPreset: ClientsUpdateOperationPayloadDataAttributes.PlatformPreset? = null,

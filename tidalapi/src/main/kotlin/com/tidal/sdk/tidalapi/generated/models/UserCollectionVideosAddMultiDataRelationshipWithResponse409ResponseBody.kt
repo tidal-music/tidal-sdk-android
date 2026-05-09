@@ -11,10 +11,10 @@ import kotlinx.serialization.Serializable
 
 /** @param errors */
 @Serializable
-data class UserCollectionSaveForLatersAddMultiDataRelationship409ResponseBody(
+data class UserCollectionVideosAddMultiDataRelationshipWithResponse409ResponseBody(
     @SerialName(value = "errors")
     val errors:
         kotlin.collections.List<
-            UserCollectionAlbumsAddMultiDataRelationship409ResponseBodyErrorsInner
+            UserCollectionAlbumsAddMultiDataRelationshipWithResponse409ResponseBodyErrorsInner
         >
 ) {}

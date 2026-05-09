@@ -19,6 +19,7 @@ import kotlinx.serialization.Serializable
  * @param popularity Popularity (0.0 - 1.0)
  * @param title Track title
  * @param accessType Access type
+ * @param ai Whether the track is AI-generated
  * @param availability Available usage for this track. Deprecated: use 'usageRules' instead. This
  *   field will be removed in a future version.
  * @param bpm Beats per minute
@@ -57,6 +58,9 @@ data class TracksAttributes(
     /* Access type */
 
     @SerialName(value = "accessType") val accessType: TracksAttributes.AccessType? = null,
+    /* Whether the track is AI-generated */
+
+    @SerialName(value = "ai") val ai: kotlin.Boolean? = null,
     /* Available usage for this track. Deprecated: use 'usageRules' instead. This field will be removed in a future version. */
 
     @SerialName(value = "availability")

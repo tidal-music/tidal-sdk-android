@@ -1,5 +1,5 @@
 # TIDAL API Surface Snapshot
-# Spec version: 1.6.1 | Endpoints: 320 | Models: 764
+# Spec version: 1.9.3 | Endpoints: 325 | Models: 777
 
 ## Endpoints
 
@@ -424,7 +424,7 @@ GET /installations/{id}
   returns: Installations_Single_Resource_Data_Document
 
 GET /installations/{id}/relationships/offlineInventory
-  params: filter[type]?: array[enum[tracks, videos, albums, playlists, userCollectionTracks]], id: string, include?: array[string], page[cursor]?: string
+  params: filter[id]?: array[string], filter[state]?: array[enum[PENDING, STORED]], filter[type]?: array[enum[tracks, videos, albums, playlists, userCollectionTracks]], id: string, include?: array[string], page[cursor]?: string
   returns: Installations_OfflineInventory_Multi_Relationship_Data_Document
 
 POST /installations/{id}/relationships/offlineInventory
@@ -695,6 +695,14 @@ POST /savedShares
   params: ??: any
   returns: SavedShares_Single_Resource_Data_Document
 
+GET /searchHistoryEntries
+  params: countryCode?: string, filter[id]?: array[string]
+  returns: SearchHistoryEntries_Multi_Resource_Data_Document
+
+DELETE /searchHistoryEntries/{id}
+  params: ??: any, id: string
+  returns: void
+
 GET /searchResults/{id}
   params: countryCode?: string, explicitFilter?: enum[INCLUDE, EXCLUDE], id: string, include?: array[string]
   returns: SearchResults_Single_Resource_Data_Document
@@ -731,6 +739,10 @@ GET /searchSuggestions/{id}/relationships/directHits
   params: countryCode?: string, explicitFilter?: enum[INCLUDE, EXCLUDE], id: string, include?: array[string], page[cursor]?: string
   returns: SearchSuggestions_Multi_Relationship_Data_Document
 
+GET /searchSuggestions/{id}/relationships/history
+  params: countryCode?: string, explicitFilter?: enum[INCLUDE, EXCLUDE], id: string, include?: array[string], page[cursor]?: string
+  returns: SearchSuggestions_Multi_Relationship_Data_Document
+
 GET /shares
   params: filter[code]?: array[string], filter[id]?: array[string], include?: array[string]
   returns: Shares_Multi_Resource_Data_Document
@@ -750,6 +762,14 @@ GET /shares/{id}/relationships/owners
 GET /shares/{id}/relationships/sharedResources
   params: id: string, include?: array[string], page[cursor]?: string
   returns: Shares_Multi_Relationship_Data_Document
+
+POST /squareConnections
+  params: ??: any, countryCode?: string
+  returns: SquareConnections_Single_Resource_Data_Document
+
+GET /squareConnections/{id}
+  params: id: string
+  returns: SquareConnections_Single_Resource_Data_Document
 
 GET /stripeConnections
   params: filter[owners.id]?: array[string], include?: array[string]
@@ -953,7 +973,7 @@ GET /userCollectionAlbums/{id}/relationships/items
 
 POST /userCollectionAlbums/{id}/relationships/items
   params: ??: any, countryCode?: string, id: string
-  returns: void
+  returns: UserCollectionAlbums_Items_Multi_Relationship_Data_Document
 
 DELETE /userCollectionAlbums/{id}/relationships/items
   params: ??: any, id: string
@@ -973,7 +993,7 @@ GET /userCollectionArtists/{id}/relationships/items
 
 POST /userCollectionArtists/{id}/relationships/items
   params: ??: any, countryCode?: string, id: string
-  returns: void
+  returns: UserCollectionArtists_Items_Multi_Relationship_Data_Document
 
 DELETE /userCollectionArtists/{id}/relationships/items
   params: ??: any, id: string
@@ -1029,7 +1049,7 @@ GET /userCollectionPlaylists/{id}/relationships/items
 
 POST /userCollectionPlaylists/{id}/relationships/items
   params: ??: any, id: string
-  returns: void
+  returns: UserCollectionPlaylists_Items_Multi_Relationship_Data_Document
 
 DELETE /userCollectionPlaylists/{id}/relationships/items
   params: ??: any, id: string
@@ -1049,7 +1069,7 @@ GET /userCollectionSaveForLaters/{id}/relationships/items
 
 POST /userCollectionSaveForLaters/{id}/relationships/items
   params: ??: any, id: string
-  returns: void
+  returns: UserCollectionSaveForLaters_Items_Multi_Relationship_Data_Document
 
 DELETE /userCollectionSaveForLaters/{id}/relationships/items
   params: ??: any, id: string
@@ -1073,7 +1093,7 @@ GET /userCollectionTracks/{id}/relationships/items
 
 POST /userCollectionTracks/{id}/relationships/items
   params: ??: any, countryCode?: string, id: string
-  returns: void
+  returns: UserCollectionTracks_Items_Multi_Relationship_Data_Document
 
 DELETE /userCollectionTracks/{id}/relationships/items
   params: ??: any, id: string
@@ -1093,7 +1113,7 @@ GET /userCollectionVideos/{id}/relationships/items
 
 POST /userCollectionVideos/{id}/relationships/items
   params: ??: any, countryCode?: string, id: string
-  returns: void
+  returns: UserCollectionVideos_Items_Multi_Relationship_Data_Document
 
 DELETE /userCollectionVideos/{id}/relationships/items
   params: ??: any, id: string
@@ -1946,7 +1966,6 @@ ClientsUpdateOperation_Payload_Data
 
 ClientsUpdateOperation_Payload_Data_Attributes
   description: string (optional)
-  enabled: boolean (optional)
   name: string (optional)
   platformPreset: enum[NONE, WEB, ANDROID, IOS] (optional)
   redirectUris: array[string] (optional)
@@ -1958,7 +1977,6 @@ Clients_Attributes
   clientSecret: string (optional)
   createdAt: string(date-time) (optional)
   description: string (optional)
-  enabled: boolean (optional)
   platformPreset: enum[NONE, WEB, ANDROID, IOS] (optional)
   redirectUris: array[string] (optional)
   scopes: array[string] (optional)
@@ -2356,7 +2374,7 @@ External_Link
   meta: External_Link_Meta (required)
 
 External_Link_Meta
-  type: enum[TIDAL_SHARING, TIDAL_USER_SHARING, TIDAL_AUTOPLAY_ANDROID, TIDAL_AUTOPLAY_IOS, TIDAL_AUTOPLAY_WEB, TWITTER, FACEBOOK, INSTAGRAM, TIKTOK, SNAPCHAT, OFFICIAL_HOMEPAGE, CASHAPP_CONTRIBUTIONS, ARTIST_CLAIM_PROVIDER_REDIRECT, STRIPE_AUTHORIZATION_REDIRECT] (required)
+  type: enum[TIDAL_SHARING, TIDAL_USER_SHARING, TIDAL_AUTOPLAY_ANDROID, TIDAL_AUTOPLAY_IOS, TIDAL_AUTOPLAY_WEB, TWITTER, FACEBOOK, INSTAGRAM, TIKTOK, SNAPCHAT, OFFICIAL_HOMEPAGE, CASHAPP_CONTRIBUTIONS, ARTIST_CLAIM_PROVIDER_REDIRECT, STRIPE_AUTHORIZATION_REDIRECT, SQUARE_AUTHORIZATION_REDIRECT] (required)
 
 External_Link_Payload
   meta: External_Link_Meta (required)
@@ -2391,6 +2409,10 @@ Genres_Single_Resource_Data_Document
   data: Genres_Resource_Object (required)
   links: Links (required)
   included: Included (optional)
+
+Highlight
+  length: integer(int32) (optional)
+  start: integer(int32) (optional)
 
 Idempotency409ResponseBody
   errors: array[object] (required)
@@ -2446,7 +2468,7 @@ Installations_OfflineInventory_Resource_Identifier
   meta: Installations_OfflineInventory_Resource_Identifier_Meta (optional)
 
 Installations_OfflineInventory_Resource_Identifier_Meta
-  clientStorageState: enum[PENDING, STORED] (required)
+  addedAt: string(date-time) (required)
 
 Installations_Relationships
   offlineInventory: Installations_OfflineInventory_Multi_Relationship_Data_Document (optional)
@@ -3049,6 +3071,9 @@ ProviderOwners_Single_Resource_Data_Document
 
 ProviderProductInfos_Attributes
   barcodeId: string (required)
+  broken: boolean (optional)
+  brokenCode: integer(int32) (optional)
+  tracks: array[TrackInfo] (optional)
 
 ProviderProductInfos_Multi_Resource_Data_Document
   data: array[ProviderProductInfos_Resource_Object] (required)
@@ -3231,6 +3256,25 @@ SavedShares_Single_Resource_Data_Document
   links: Links (required)
   included: Included (optional)
 
+SearchHistoryEntries_Attributes
+  highlights: array[Highlight] (required)
+  query: string (required)
+
+SearchHistoryEntries_Multi_Resource_Data_Document
+  data: array[SearchHistoryEntries_Resource_Object] (required)
+  links: Links (required)
+  included: Included (optional)
+
+SearchHistoryEntries_Resource_Object
+  id: string (required)
+  type: string (required)
+  attributes: SearchHistoryEntries_Attributes (optional)
+
+SearchHistoryEntries_Single_Resource_Data_Document
+  data: SearchHistoryEntries_Resource_Object (required)
+  links: Links (required)
+  included: Included (optional)
+
 SearchResults_Attributes
   trackingId: string (required)
   didYouMean: string (optional)
@@ -3289,6 +3333,7 @@ SearchSuggestions_Multi_Resource_Data_Document
 
 SearchSuggestions_Relationships
   directHits: Multi_Relationship_Data_Document (optional)
+  history: Multi_Relationship_Data_Document (optional)
 
 SearchSuggestions_Resource_Object
   id: string (required)
@@ -3355,6 +3400,37 @@ Shares_Single_Resource_Data_Document
 Single_Relationship_Data_Document
   links: Links (required)
   data: Resource_Identifier (optional)
+
+SquareConnectionsCreateOperation_Payload
+  data: SquareConnectionsCreateOperation_Payload_Data (required)
+  meta: SquareConnectionsCreateOperation_Payload_Meta (required)
+
+SquareConnectionsCreateOperation_Payload_Data
+  type: enum[squareConnections] (required)
+
+SquareConnectionsCreateOperation_Payload_Meta
+  platform: enum[WEB, ANDROID, IOS] (required)
+
+SquareConnections_Attributes
+  status: enum[PENDING_REQUIREMENTS, ACCEPTED, REJECTED] (required)
+  createdAt: string(date-time) (optional)
+  externalLinks: array[External_Link] (optional)
+  lastModifiedAt: string(date-time) (optional)
+
+SquareConnections_Multi_Resource_Data_Document
+  data: array[SquareConnections_Resource_Object] (required)
+  links: Links (required)
+  included: Included (optional)
+
+SquareConnections_Resource_Object
+  id: string (required)
+  type: string (required)
+  attributes: SquareConnections_Attributes (optional)
+
+SquareConnections_Single_Resource_Data_Document
+  data: SquareConnections_Resource_Object (required)
+  links: Links (required)
+  included: Included (optional)
 
 StripeConnectionsCreateOperation_Payload
   data: StripeConnectionsCreateOperation_Payload_Data (required)
@@ -3517,6 +3593,11 @@ TrackFiles_Single_Resource_Data_Document
   data: TrackFiles_Resource_Object (required)
   links: Links (required)
   included: Included (optional)
+
+TrackInfo
+  trackId: string (required)
+  broken: boolean (optional)
+  brokenCode: integer(int32) (optional)
 
 TrackManifestsReadById403ResponseBody
   errors: array[object] (required)
@@ -3733,6 +3814,7 @@ Tracks_Attributes
   popularity: number(double) (required)
   title: string (required)
   accessType: enum[PUBLIC, UNLISTED, PRIVATE] (optional)
+  ai: boolean (optional)
   availability: array[enum[STREAM, DJ, STEM]] (optional)
   bpm: number(float) (optional)
   copyright: Copyright (optional)
@@ -3799,6 +3881,7 @@ UsageRulesCreateOperation_Payload_Data
 UsageRulesCreateOperation_Payload_Data_Attributes
   countryCode: string (optional)
   free: array[enum[STREAM, DJ, STEM, DOWNLOAD]] (optional)
+  inherited: boolean (optional)
   paid: array[enum[STREAM, DJ, STEM, DOWNLOAD]] (optional)
   subscription: array[enum[STREAM, DJ, STEM, DOWNLOAD]] (optional)
 
@@ -3815,6 +3898,7 @@ UsageRulesCreateOperation_Payload_Subject
 UsageRules_Attributes
   countryCode: string (required)
   free: array[enum[STREAM, DJ, STEM, DOWNLOAD]] (optional)
+  inherited: boolean (optional)
   paid: array[enum[STREAM, DJ, STEM, DOWNLOAD]] (optional)
   subscription: array[enum[STREAM, DJ, STEM, DOWNLOAD]] (optional)
 
@@ -3833,7 +3917,7 @@ UsageRules_Single_Resource_Data_Document
   links: Links (required)
   included: Included (optional)
 
-UserCollectionAlbumsAddMultiDataRelationship409ResponseBody
+UserCollectionAlbumsAddMultiDataRelationshipWithResponse409ResponseBody
   errors: array[object] (required)
 
 UserCollectionAlbumsItemsRelationshipAddOperation_Payload
@@ -3855,6 +3939,7 @@ UserCollectionAlbumsItemsRelationshipRemoveOperation_Payload_Data
   type: enum[albums] (required)
 
 UserCollectionAlbums_Attributes
+  numberOfItems: integer(int32) (required)
 
 UserCollectionAlbums_Items_Multi_Relationship_Data_Document
   links: Links (required)
@@ -3894,7 +3979,7 @@ UserCollectionAlbums_Single_Resource_Data_Document
   links: Links (required)
   included: Included (optional)
 
-UserCollectionArtistsAddMultiDataRelationship409ResponseBody
+UserCollectionArtistsAddMultiDataRelationshipWithResponse409ResponseBody
   errors: array[object] (required)
 
 UserCollectionArtistsItemsRelationshipAddOperation_Payload
@@ -4039,7 +4124,7 @@ UserCollectionFolders_Single_Resource_Data_Document
   links: Links (required)
   included: Included (optional)
 
-UserCollectionPlaylistsAddMultiDataRelationship409ResponseBody
+UserCollectionPlaylistsAddMultiDataRelationshipWithResponse409ResponseBody
   errors: array[object] (required)
 
 UserCollectionPlaylistsItemsRelationshipAddOperation_Payload
@@ -4096,7 +4181,7 @@ UserCollectionPlaylists_Single_Resource_Data_Document
   links: Links (required)
   included: Included (optional)
 
-UserCollectionSaveForLatersAddMultiDataRelationship409ResponseBody
+UserCollectionSaveForLatersAddMultiDataRelationshipWithResponse409ResponseBody
   errors: array[object] (required)
 
 UserCollectionSaveForLatersItemsRelationshipAddOperation_Payload
@@ -4153,7 +4238,7 @@ UserCollectionSaveForLaters_Single_Resource_Data_Document
   links: Links (required)
   included: Included (optional)
 
-UserCollectionTracksAddMultiDataRelationship409ResponseBody
+UserCollectionTracksAddMultiDataRelationshipWithResponse409ResponseBody
   errors: array[object] (required)
 
 UserCollectionTracksItemsRelationshipAddOperation_Payload
@@ -4214,7 +4299,7 @@ UserCollectionTracks_Single_Resource_Data_Document
   links: Links (required)
   included: Included (optional)
 
-UserCollectionVideosAddMultiDataRelationship409ResponseBody
+UserCollectionVideosAddMultiDataRelationshipWithResponse409ResponseBody
   errors: array[object] (required)
 
 UserCollectionVideosItemsRelationshipAddOperation_Payload
