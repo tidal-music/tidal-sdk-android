@@ -31,7 +31,7 @@ interface SearchSuggestions {
      *   INCLUDE)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: directHits (optional)
+     *   Available options: directHits, history (optional)
      * @return [SearchSuggestionsSingleResourceDataDocument]
      */
     @GET("searchSuggestions/{id}")
@@ -82,6 +82,46 @@ interface SearchSuggestions {
         @Query("explicitFilter")
         explicitFilter: ExplicitFilterSearchSuggestionsIdRelationshipsDirectHitsGet? =
             ExplicitFilterSearchSuggestionsIdRelationshipsDirectHitsGet.INCLUDE,
+        @Query("countryCode") countryCode: kotlin.String? = null,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
+    ): Response<SearchSuggestionsMultiRelationshipDataDocument>
+
+    /** enum for parameter explicitFilter */
+    enum class ExplicitFilterSearchSuggestionsIdRelationshipsHistoryGet(val value: kotlin.String) {
+        @SerialName(value = "INCLUDE") INCLUDE("INCLUDE"),
+        @SerialName(value = "EXCLUDE") EXCLUDE("EXCLUDE"),
+    }
+
+    /**
+     * Get history relationship (\&quot;to-many\&quot;). Retrieves history relationship. Responses:
+     * - 200: Successful response
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
+     *
+     * @param id Search query string used as the resource identifier
+     * @param explicitFilter Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to
+     *   INCLUDE)
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: history (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
+     * @return [SearchSuggestionsMultiRelationshipDataDocument]
+     */
+    @GET("searchSuggestions/{id}/relationships/history")
+    suspend fun searchSuggestionsIdRelationshipsHistoryGet(
+        @Path("id") id: kotlin.String,
+        @Query("explicitFilter")
+        explicitFilter: ExplicitFilterSearchSuggestionsIdRelationshipsHistoryGet? =
+            ExplicitFilterSearchSuggestionsIdRelationshipsHistoryGet.INCLUDE,
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,

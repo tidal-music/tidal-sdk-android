@@ -12,6 +12,9 @@ import kotlinx.serialization.Serializable
 /**
  * @param countryCode
  * @param free
+ * @param inherited Tracks only. Set to true (with empty paid/subscription/free) to clear an
+ *   explicit track-level override and inherit usage rules from the album. Must be omitted or false
+ *   when providing explicit usage values.
  * @param paid
  * @param subscription
  */
@@ -20,6 +23,9 @@ data class UsageRulesCreateOperationPayloadDataAttributes(
     @SerialName(value = "countryCode") val countryCode: kotlin.String? = null,
     @SerialName(value = "free")
     val free: kotlin.collections.List<UsageRulesCreateOperationPayloadDataAttributes.Free>? = null,
+    /* Tracks only. Set to true (with empty paid/subscription/free) to clear an explicit track-level override and inherit usage rules from the album. Must be omitted or false when providing explicit usage values. */
+
+    @SerialName(value = "inherited") val inherited: kotlin.Boolean? = null,
     @SerialName(value = "paid")
     val paid: kotlin.collections.List<UsageRulesCreateOperationPayloadDataAttributes.Paid>? = null,
     @SerialName(value = "subscription")

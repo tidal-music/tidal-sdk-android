@@ -10,7 +10,8 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * Suggestions from search history
+ * Suggestions from search history. Deprecated — use the history relationship instead. Will be
+ * deleted shortly.
  *
  * @param query
  * @param highlights

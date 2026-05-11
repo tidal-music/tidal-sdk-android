@@ -9,12 +9,12 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param errors */
+/**
+ * @param `data`
+ * @param meta
+ */
 @Serializable
-data class UserCollectionTracksAddMultiDataRelationship409ResponseBody(
-    @SerialName(value = "errors")
-    val errors:
-        kotlin.collections.List<
-            UserCollectionAlbumsAddMultiDataRelationship409ResponseBodyErrorsInner
-        >
+data class SquareConnectionsCreateOperationPayload(
+    @SerialName(value = "data") val `data`: SquareConnectionsCreateOperationPayloadData,
+    @SerialName(value = "meta") val meta: SquareConnectionsCreateOperationPayloadMeta,
 ) {}

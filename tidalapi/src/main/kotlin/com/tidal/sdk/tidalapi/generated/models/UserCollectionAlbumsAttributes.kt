@@ -9,12 +9,11 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/**
- * @param directHits
- * @param history
- */
+/** @param numberOfItems Number of items in the collection */
 @Serializable
-data class SearchSuggestionsRelationships(
-    @SerialName(value = "directHits") val directHits: MultiRelationshipDataDocument? = null,
-    @SerialName(value = "history") val history: MultiRelationshipDataDocument? = null,
+data class UserCollectionAlbumsAttributes(
+
+    /* Number of items in the collection */
+
+    @SerialName(value = "numberOfItems") val numberOfItems: kotlin.Int
 ) {}

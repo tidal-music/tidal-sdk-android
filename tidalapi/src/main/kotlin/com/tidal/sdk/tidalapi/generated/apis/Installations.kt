@@ -111,6 +111,14 @@ interface Installations {
             null,
     ): Response<Unit>
 
+    /** enum for parameter filterState */
+    enum class FilterStateInstallationsIdRelationshipsOfflineInventoryGet(
+        val value: kotlin.String
+    ) {
+        @SerialName(value = "PENDING") PENDING("PENDING"),
+        @SerialName(value = "STORED") STORED("STORED"),
+    }
+
     /** enum for parameter filterType */
     enum class FilterTypeInstallationsIdRelationshipsOfflineInventoryGet(val value: kotlin.String) {
         @SerialName(value = "tracks") tracks("tracks"),
@@ -138,6 +146,8 @@ interface Installations {
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: offlineInventory (optional)
+     * @param filterId Offline item id (e.g. &#x60;1234&#x60;) (optional)
+     * @param filterState One of: PENDING, STORED (e.g. &#x60;PENDING&#x60;) (optional)
      * @param filterType One of: tracks, videos, albums, playlists, userCollectionTracks (e.g.
      *   &#x60;tracks&#x60;) (optional)
      * @return [InstallationsOfflineInventoryMultiRelationshipDataDocument]
@@ -148,6 +158,10 @@ interface Installations {
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("filter[id]")
+        filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("filter[state]")
+        filterState: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[type]")
         filterType: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<InstallationsOfflineInventoryMultiRelationshipDataDocument>

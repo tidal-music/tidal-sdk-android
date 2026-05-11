@@ -9,12 +9,12 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/**
- * @param directHits
- * @param history
- */
+/** @param errors */
 @Serializable
-data class SearchSuggestionsRelationships(
-    @SerialName(value = "directHits") val directHits: MultiRelationshipDataDocument? = null,
-    @SerialName(value = "history") val history: MultiRelationshipDataDocument? = null,
+data class UserCollectionSaveForLatersAddMultiDataRelationshipWithResponse409ResponseBody(
+    @SerialName(value = "errors")
+    val errors:
+        kotlin.collections.List<
+            UserCollectionAlbumsAddMultiDataRelationshipWithResponse409ResponseBodyErrorsInner
+        >
 ) {}

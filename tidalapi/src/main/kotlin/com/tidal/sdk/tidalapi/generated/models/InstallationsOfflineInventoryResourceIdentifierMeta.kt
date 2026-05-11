@@ -9,17 +9,8 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param clientStorageState */
+/** @param addedAt */
 @Serializable
 data class InstallationsOfflineInventoryResourceIdentifierMeta(
-    @SerialName(value = "clientStorageState")
-    val clientStorageState: InstallationsOfflineInventoryResourceIdentifierMeta.ClientStorageState
-) {
-
-    /** Values: PENDING,STORED */
-    @Serializable
-    enum class ClientStorageState(val value: kotlin.String) {
-        @SerialName(value = "PENDING") PENDING("PENDING"),
-        @SerialName(value = "STORED") STORED("STORED"),
-    }
-}
+    @SerialName(value = "addedAt") val addedAt: kotlin.String
+) {}

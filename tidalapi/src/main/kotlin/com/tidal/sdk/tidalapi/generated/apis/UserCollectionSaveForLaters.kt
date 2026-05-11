@@ -102,6 +102,7 @@ interface UserCollectionSaveForLaters {
     /**
      * Add to items relationship (\&quot;to-many\&quot;). Adds item(s) to items relationship.
      * Responses:
+     * - 200: Successful response
      * - 400: The request is malformed or invalid
      * - 404: The requested resource was not found
      * - 405: The HTTP method is not allowed for the requested resource
@@ -121,7 +122,7 @@ interface UserCollectionSaveForLaters {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param userCollectionSaveForLatersItemsRelationshipAddOperationPayload (optional)
-     * @return [Unit]
+     * @return [UserCollectionSaveForLatersItemsMultiRelationshipDataDocument]
      */
     @POST("userCollectionSaveForLaters/{id}/relationships/items")
     suspend fun userCollectionSaveForLatersIdRelationshipsItemsPost(
@@ -131,7 +132,7 @@ interface UserCollectionSaveForLaters {
         userCollectionSaveForLatersItemsRelationshipAddOperationPayload:
             UserCollectionSaveForLatersItemsRelationshipAddOperationPayload? =
             null,
-    ): Response<Unit>
+    ): Response<UserCollectionSaveForLatersItemsMultiRelationshipDataDocument>
 
     /**
      * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:

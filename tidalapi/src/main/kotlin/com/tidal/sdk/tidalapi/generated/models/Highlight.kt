@@ -9,12 +9,12 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param errors */
+/**
+ * @param length
+ * @param start
+ */
 @Serializable
-data class UserCollectionPlaylistsAddMultiDataRelationship409ResponseBody(
-    @SerialName(value = "errors")
-    val errors:
-        kotlin.collections.List<
-            UserCollectionAlbumsAddMultiDataRelationship409ResponseBodyErrorsInner
-        >
+data class Highlight(
+    @SerialName(value = "length") val length: kotlin.Int? = null,
+    @SerialName(value = "start") val start: kotlin.Int? = null,
 ) {}

@@ -9,12 +9,15 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param errors */
+/**
+ * @param `data`
+ * @param links
+ * @param included
+ */
 @Serializable
-data class UserCollectionAlbumsAddMultiDataRelationship409ResponseBody(
-    @SerialName(value = "errors")
-    val errors:
-        kotlin.collections.List<
-            UserCollectionAlbumsAddMultiDataRelationship409ResponseBodyErrorsInner
-        >
+data class SearchHistoryEntriesMultiResourceDataDocument(
+    @SerialName(value = "data")
+    val `data`: kotlin.collections.List<SearchHistoryEntriesResourceObject>,
+    @SerialName(value = "links") val links: Links,
+    @SerialName(value = "included") val included: kotlin.collections.List<IncludedInner>? = null,
 ) {}

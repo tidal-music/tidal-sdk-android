@@ -15,7 +15,6 @@ import kotlinx.serialization.Serializable
  * @param clientSecret
  * @param createdAt
  * @param description
- * @param enabled
  * @param platformPreset
  * @param redirectUris
  * @param scopes
@@ -27,7 +26,6 @@ data class ClientsAttributes(
     @SerialName(value = "clientSecret") val clientSecret: kotlin.String? = null,
     @SerialName(value = "createdAt") val createdAt: kotlin.String? = null,
     @SerialName(value = "description") val description: kotlin.String? = null,
-    @SerialName(value = "enabled") val enabled: kotlin.Boolean? = null,
     @SerialName(value = "platformPreset")
     val platformPreset: ClientsAttributes.PlatformPreset? = null,
     @SerialName(value = "redirectUris")

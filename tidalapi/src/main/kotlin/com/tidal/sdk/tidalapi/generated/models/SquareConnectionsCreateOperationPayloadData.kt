@@ -9,12 +9,15 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/**
- * @param directHits
- * @param history
- */
+/** @param type */
 @Serializable
-data class SearchSuggestionsRelationships(
-    @SerialName(value = "directHits") val directHits: MultiRelationshipDataDocument? = null,
-    @SerialName(value = "history") val history: MultiRelationshipDataDocument? = null,
-) {}
+data class SquareConnectionsCreateOperationPayloadData(
+    @SerialName(value = "type") val type: SquareConnectionsCreateOperationPayloadData.Type
+) {
+
+    /** Values: squareConnections */
+    @Serializable
+    enum class Type(val value: kotlin.String) {
+        @SerialName(value = "squareConnections") squareConnections("squareConnections")
+    }
+}

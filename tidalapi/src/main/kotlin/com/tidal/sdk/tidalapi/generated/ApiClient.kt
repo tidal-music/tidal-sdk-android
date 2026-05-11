@@ -32,9 +32,11 @@ import com.tidal.sdk.tidalapi.generated.apis.Providers
 import com.tidal.sdk.tidalapi.generated.apis.Purchases
 import com.tidal.sdk.tidalapi.generated.apis.Reactions
 import com.tidal.sdk.tidalapi.generated.apis.SavedShares
+import com.tidal.sdk.tidalapi.generated.apis.SearchHistoryEntries
 import com.tidal.sdk.tidalapi.generated.apis.SearchResults
 import com.tidal.sdk.tidalapi.generated.apis.SearchSuggestions
 import com.tidal.sdk.tidalapi.generated.apis.Shares
+import com.tidal.sdk.tidalapi.generated.apis.SquareConnections
 import com.tidal.sdk.tidalapi.generated.apis.StripeConnections
 import com.tidal.sdk.tidalapi.generated.apis.StripeDashboardLinks
 import com.tidal.sdk.tidalapi.generated.apis.TemporaryUserTokens
@@ -235,6 +237,13 @@ class TidalApiClient(
         return retrofit.create(SavedShares::class.java)
     }
 
+    /**
+     * Returns an instance of the [SearchHistoryEntries] which can be used to make API calls to the
+     */
+    fun createSearchHistoryEntries(): SearchHistoryEntries {
+        return retrofit.create(SearchHistoryEntries::class.java)
+    }
+
     /** Returns an instance of the [SearchResults] which can be used to make API calls to the */
     fun createSearchResults(): SearchResults {
         return retrofit.create(SearchResults::class.java)
@@ -248,6 +257,11 @@ class TidalApiClient(
     /** Returns an instance of the [Shares] which can be used to make API calls to the */
     fun createShares(): Shares {
         return retrofit.create(Shares::class.java)
+    }
+
+    /** Returns an instance of the [SquareConnections] which can be used to make API calls to the */
+    fun createSquareConnections(): SquareConnections {
+        return retrofit.create(SquareConnections::class.java)
     }
 
     /** Returns an instance of the [StripeConnections] which can be used to make API calls to the */

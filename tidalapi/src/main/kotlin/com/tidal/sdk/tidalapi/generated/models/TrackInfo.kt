@@ -10,11 +10,13 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param directHits
- * @param history
+ * @param trackId
+ * @param broken
+ * @param brokenCode
  */
 @Serializable
-data class SearchSuggestionsRelationships(
-    @SerialName(value = "directHits") val directHits: MultiRelationshipDataDocument? = null,
-    @SerialName(value = "history") val history: MultiRelationshipDataDocument? = null,
+data class TrackInfo(
+    @SerialName(value = "trackId") val trackId: kotlin.String,
+    @SerialName(value = "broken") val broken: kotlin.Boolean? = null,
+    @SerialName(value = "brokenCode") val brokenCode: kotlin.Int? = null,
 ) {}
