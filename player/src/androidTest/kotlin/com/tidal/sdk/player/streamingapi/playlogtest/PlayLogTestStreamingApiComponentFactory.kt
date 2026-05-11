@@ -35,6 +35,7 @@ class PlayLogTestStreamingApiComponentFactory(private val trackPlaybackInfo: Pla
         offlinePlaybackInfoProvider: OfflinePlaybackInfoProvider?,
         credentialsProvider: CredentialsProvider,
         tidalApiCacheDir: File?,
+        apiEndpoint: String,
     ): StreamingApiComponent {
         return object : StreamingApiComponent {
             override val streamingApi: StreamingApi = PlayLogTestStreamingApi(trackPlaybackInfo)

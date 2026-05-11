@@ -59,6 +59,7 @@ internal interface PlayerComponent {
             @BindsInstance @Named("isDebuggable") isDebuggable: Boolean,
             @BindsInstance playbackPrivilegeProvider: PlaybackPrivilegeProvider,
             @BindsInstance offlinePlayProvider: OfflinePlayProvider?,
+            @BindsInstance @Named("apiEndpoint") apiEndpoint: String,
         ): PlayerComponent
     }
 }

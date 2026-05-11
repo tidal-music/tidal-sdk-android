@@ -1,12 +1,12 @@
 package com.tidal.sdk.player.streamingapi.di
 
-import com.tidal.sdk.player.common.Common.TIDAL_API_ENDPOINT_V1
 import com.tidal.sdk.player.streamingapi.StreamingApiTimeoutConfig
 import com.tidal.sdk.player.streamingapi.drm.api.DrmLicenseService
 import com.tidal.sdk.player.streamingapi.playbackinfo.api.PlaybackInfoService
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
+import javax.inject.Named
 import javax.inject.Singleton
 import kotlin.time.toJavaDuration
 import okhttp3.OkHttpClient
@@ -35,9 +35,10 @@ internal object RetrofitModule {
     fun provideRetrofit(
         @StreamingApiComponent.Local okHttpClient: OkHttpClient,
         converterFactory: Converter.Factory,
+        @Named("apiEndpoint") apiEndpoint: String,
     ) =
         Retrofit.Builder()
-            .baseUrl(TIDAL_API_ENDPOINT_V1)
+            .baseUrl(apiEndpoint)
             .client(okHttpClient)
             .addConverterFactory(converterFactory)
             .build()

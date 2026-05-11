@@ -11,11 +11,12 @@ class StreamingPrivilegesModuleRoot(
     okHttpClient: OkHttpClient,
     gson: Gson,
     trueTimeWrapper: TrueTimeWrapper,
+    apiEndpoint: String,
 ) {
 
     val streamingPrivileges =
         componentFactoryF()
-            .create(connectivityManager, okHttpClient, gson, trueTimeWrapper)
+            .create(connectivityManager, okHttpClient, gson, trueTimeWrapper, apiEndpoint)
             .streamingPrivileges
 
     companion object {

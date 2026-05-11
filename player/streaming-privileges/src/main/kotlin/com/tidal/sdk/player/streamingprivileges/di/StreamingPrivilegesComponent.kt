@@ -6,6 +6,7 @@ import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
 import com.tidal.sdk.player.streamingprivileges.StreamingPrivileges
 import dagger.BindsInstance
 import dagger.Component
+import javax.inject.Named
 import javax.inject.Singleton
 import okhttp3.OkHttpClient
 
@@ -23,6 +24,7 @@ interface StreamingPrivilegesComponent {
             @BindsInstance okHttpClient: OkHttpClient,
             @BindsInstance gson: Gson,
             @BindsInstance trueTimeWrapper: TrueTimeWrapper,
+            @BindsInstance @Named("apiEndpoint") apiEndpoint: String,
         ): StreamingPrivilegesComponent
     }
 }

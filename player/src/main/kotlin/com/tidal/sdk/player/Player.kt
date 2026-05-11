@@ -3,6 +3,7 @@ package com.tidal.sdk.player
 import android.app.Application
 import com.tidal.sdk.auth.CredentialsProvider
 import com.tidal.sdk.eventproducer.EventSender
+import com.tidal.sdk.player.common.Common
 import com.tidal.sdk.player.common.Configuration
 import com.tidal.sdk.player.common.ConfigurationListener
 import com.tidal.sdk.player.common.model.MediaProduct
@@ -39,6 +40,9 @@ import okhttp3.OkHttpClient
  * @param[offlinePlayProvider] A means of supporting offline streaming when appropriate. Internal
  *   use only.
  * @param version The version of the app, used for event tracking. Defaults to 1.0.0.
+ * @param apiEndpoint Base URL the player SDK targets for its own API calls (streaming-api and
+ *   streaming-privileges). Defaults to [Common.TIDAL_API_ENDPOINT_V1] (production). Override to
+ *   point the player at a non-production environment, e.g. stage.
  */
 class Player(
     application: Application,
@@ -60,6 +64,7 @@ class Player(
         },
     offlinePlayProvider: OfflinePlayProvider? = null,
     version: String = "1.0.0",
+    apiEndpoint: String = Common.TIDAL_API_ENDPOINT_V1,
 ) : ConfigurationListener {
     private val playerComponent =
         DaggerPlayerComponent.factory()
@@ -80,6 +85,7 @@ class Player(
                 isDebuggable,
                 playbackPrivilegeProvider,
                 offlinePlayProvider,
+                apiEndpoint,
             )
     val configuration = playerComponent.configuration
     val playbackEngine = playerComponent.playbackEngine

@@ -21,8 +21,15 @@ internal class StreamingPrivilegesModuleRootTest {
     private val okHttpClient = mock<OkHttpClient>()
     private val gson = mock<Gson>()
     private val trueTimeWrapper = mock<TrueTimeWrapper>()
+    private val apiEndpoint = "https://api.test.tidal.com/v1/"
     private val streamingPrivilegesModuleRoot by lazy {
-        StreamingPrivilegesModuleRoot(connectivityManager, okHttpClient, gson, trueTimeWrapper)
+        StreamingPrivilegesModuleRoot(
+            connectivityManager,
+            okHttpClient,
+            gson,
+            trueTimeWrapper,
+            apiEndpoint,
+        )
     }
 
     companion object {
@@ -48,14 +55,16 @@ internal class StreamingPrivilegesModuleRootTest {
             mock<StreamingPrivilegesComponent> { on { streamingPrivileges } doReturn expected }
         val componentFactory =
             mock<StreamingPrivilegesComponent.Factory> {
-                on { create(connectivityManager, okHttpClient, gson, trueTimeWrapper) } doReturn
-                    component
+                on {
+                    create(connectivityManager, okHttpClient, gson, trueTimeWrapper, apiEndpoint)
+                } doReturn component
             }
         StreamingPrivilegesModuleRoot.reflectionComponentFactoryF = { componentFactory }
 
         val actual = streamingPrivilegesModuleRoot.streamingPrivileges
 
-        verify(componentFactory).create(connectivityManager, okHttpClient, gson, trueTimeWrapper)
+        verify(componentFactory)
+            .create(connectivityManager, okHttpClient, gson, trueTimeWrapper, apiEndpoint)
         verify(component).streamingPrivileges
         verifyNoMoreInteractions(expected, component, componentFactory)
         assertThat(actual).isSameInstanceAs(expected)
