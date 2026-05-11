@@ -17,6 +17,7 @@ class StreamingApiModuleRoot(
     credentialsProvider: CredentialsProvider,
     tidalApiCacheDir: File?,
     apiEndpoint: String,
+    openApiEndpoint: String,
 ) {
 
     val streamingApi =
@@ -30,6 +31,7 @@ class StreamingApiModuleRoot(
                 credentialsProvider,
                 tidalApiCacheDir,
                 apiEndpoint,
+                openApiEndpoint,
             )
             .streamingApi
 

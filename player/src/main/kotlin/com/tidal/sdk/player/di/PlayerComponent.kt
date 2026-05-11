@@ -60,6 +60,7 @@ internal interface PlayerComponent {
             @BindsInstance playbackPrivilegeProvider: PlaybackPrivilegeProvider,
             @BindsInstance offlinePlayProvider: OfflinePlayProvider?,
             @BindsInstance @Named("apiEndpoint") apiEndpoint: String,
+            @BindsInstance @Named("openApiEndpoint") openApiEndpoint: String,
         ): PlayerComponent
     }
 }

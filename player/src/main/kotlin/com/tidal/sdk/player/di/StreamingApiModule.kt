@@ -38,6 +38,7 @@ internal object StreamingApiModule {
         credentialsProvider: CredentialsProvider,
         @Named("tidalApiCacheDir") tidalApiCacheDir: File,
         @Named("apiEndpoint") apiEndpoint: String,
+        @Named("openApiEndpoint") openApiEndpoint: String,
     ) =
         StreamingApiModuleRoot(
                 okHttpClient,
@@ -48,6 +49,7 @@ internal object StreamingApiModule {
                 credentialsProvider,
                 tidalApiCacheDir,
                 apiEndpoint,
+                openApiEndpoint,
             )
             .streamingApi
 }

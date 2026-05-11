@@ -40,9 +40,12 @@ import okhttp3.OkHttpClient
  * @param[offlinePlayProvider] A means of supporting offline streaming when appropriate. Internal
  *   use only.
  * @param version The version of the app, used for event tracking. Defaults to 1.0.0.
- * @param apiEndpoint Base URL the player SDK targets for its own API calls (streaming-api and
+ * @param apiEndpoint Base URL the player SDK targets for its own API /v1 calls (streaming-api and
  *   streaming-privileges). Defaults to [Common.TIDAL_API_ENDPOINT_V1] (production). Override to
  *   point the player at a non-production environment, e.g. stage.
+ * @param openApiEndpoint Base URL the player SDK targets for OpenAPI /v2 calls. Defaults to
+ *   [Common.TIDAL_OPEN_API_ENDPOINT_V2] (production). Override to point at a non-production
+ *   environment, e.g. stage.
  */
 class Player(
     application: Application,
@@ -65,6 +68,7 @@ class Player(
     offlinePlayProvider: OfflinePlayProvider? = null,
     version: String = "1.0.0",
     apiEndpoint: String = Common.TIDAL_API_ENDPOINT_V1,
+    openApiEndpoint: String = Common.TIDAL_OPEN_API_ENDPOINT_V2,
 ) : ConfigurationListener {
     private val playerComponent =
         DaggerPlayerComponent.factory()
@@ -86,6 +90,7 @@ class Player(
                 playbackPrivilegeProvider,
                 offlinePlayProvider,
                 apiEndpoint,
+                openApiEndpoint,
             )
     val configuration = playerComponent.configuration
     val playbackEngine = playerComponent.playbackEngine
