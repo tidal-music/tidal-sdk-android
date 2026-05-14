@@ -1,5 +1,5 @@
 # TIDAL API Surface Snapshot
-# Spec version: 1.9.3 | Endpoints: 325 | Models: 777
+# Spec version: 1.9.5 | Endpoints: 325 | Models: 777
 
 ## Endpoints
 
@@ -3884,6 +3884,7 @@ UsageRulesCreateOperation_Payload_Data_Attributes
   inherited: boolean (optional)
   paid: array[enum[STREAM, DJ, STEM, DOWNLOAD]] (optional)
   subscription: array[enum[STREAM, DJ, STEM, DOWNLOAD]] (optional)
+  validFrom: string(date-time) (optional)
 
 UsageRulesCreateOperation_Payload_Data_Relationships
   subject: UsageRulesCreateOperation_Payload_Data_Relationships_Subject (required)
@@ -3901,6 +3902,7 @@ UsageRules_Attributes
   inherited: boolean (optional)
   paid: array[enum[STREAM, DJ, STEM, DOWNLOAD]] (optional)
   subscription: array[enum[STREAM, DJ, STEM, DOWNLOAD]] (optional)
+  validFrom: string(date-time) (optional)
 
 UsageRules_Multi_Resource_Data_Document
   data: array[UsageRules_Resource_Object] (required)

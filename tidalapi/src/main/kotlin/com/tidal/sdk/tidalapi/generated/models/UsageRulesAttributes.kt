@@ -18,6 +18,7 @@ import kotlinx.serialization.Serializable
  *   legacy data).
  * @param paid Usage types allowed for paid/purchase model
  * @param subscription Usage types allowed for subscription model
+ * @param validFrom Datetime from which these usage rules are valid (ISO 8601)
  */
 @Serializable
 data class UsageRulesAttributes(
@@ -40,6 +41,9 @@ data class UsageRulesAttributes(
 
     @SerialName(value = "subscription")
     val subscription: kotlin.collections.List<UsageRulesAttributes.Subscription>? = null,
+    /* Datetime from which these usage rules are valid (ISO 8601) */
+
+    @SerialName(value = "validFrom") val validFrom: kotlin.String? = null,
 ) {
 
     /**

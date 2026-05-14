@@ -17,6 +17,7 @@ import kotlinx.serialization.Serializable
  *   when providing explicit usage values.
  * @param paid
  * @param subscription
+ * @param validFrom Datetime from which these usage rules are valid (ISO 8601)
  */
 @Serializable
 data class UsageRulesCreateOperationPayloadDataAttributes(
@@ -32,6 +33,9 @@ data class UsageRulesCreateOperationPayloadDataAttributes(
     val subscription:
         kotlin.collections.List<UsageRulesCreateOperationPayloadDataAttributes.Subscription>? =
         null,
+    /* Datetime from which these usage rules are valid (ISO 8601) */
+
+    @SerialName(value = "validFrom") val validFrom: kotlin.String? = null,
 ) {
 
     /** Values: STREAM,DJ,STEM,DOWNLOAD */
