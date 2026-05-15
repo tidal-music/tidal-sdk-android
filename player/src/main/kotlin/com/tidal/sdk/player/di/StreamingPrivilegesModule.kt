@@ -6,6 +6,7 @@ import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
 import com.tidal.sdk.player.streamingprivileges.StreamingPrivilegesModuleRoot
 import dagger.Module
 import dagger.Provides
+import javax.inject.Named
 import javax.inject.Singleton
 import okhttp3.OkHttpClient
 
@@ -19,7 +20,14 @@ internal object StreamingPrivilegesModule {
         gson: Gson,
         @LocalWithCacheAndAuth okHttpClient: OkHttpClient,
         trueTimeWrapper: TrueTimeWrapper,
+        @Named("apiEndpoint") apiEndpoint: String,
     ) =
-        StreamingPrivilegesModuleRoot(connectivityManager, okHttpClient, gson, trueTimeWrapper)
+        StreamingPrivilegesModuleRoot(
+                connectivityManager,
+                okHttpClient,
+                gson,
+                trueTimeWrapper,
+                apiEndpoint,
+            )
             .streamingPrivileges
 }

@@ -37,6 +37,8 @@ internal object StreamingApiModule {
         offlinePlayProvider: OfflinePlayProvider?,
         credentialsProvider: CredentialsProvider,
         @Named("tidalApiCacheDir") tidalApiCacheDir: File,
+        @Named("apiEndpoint") apiEndpoint: String,
+        @Named("openApiEndpoint") openApiEndpoint: String,
     ) =
         StreamingApiModuleRoot(
                 okHttpClient,
@@ -46,6 +48,8 @@ internal object StreamingApiModule {
                 offlinePlayProvider?.offlinePlaybackInfoProvider,
                 credentialsProvider,
                 tidalApiCacheDir,
+                apiEndpoint,
+                openApiEndpoint,
             )
             .streamingApi
 }

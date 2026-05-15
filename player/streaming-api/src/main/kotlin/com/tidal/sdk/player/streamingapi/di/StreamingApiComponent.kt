@@ -39,6 +39,8 @@ interface StreamingApiComponent {
             @BindsInstance offlinePlaybackInfoProvider: OfflinePlaybackInfoProvider?,
             @BindsInstance credentialsProvider: CredentialsProvider,
             @BindsInstance @Named("tidalApiCacheDir") tidalApiCacheDir: File?,
+            @BindsInstance @Named("apiEndpoint") apiEndpoint: String,
+            @BindsInstance @Named("openApiEndpoint") openApiEndpoint: String,
         ): StreamingApiComponent
     }
 

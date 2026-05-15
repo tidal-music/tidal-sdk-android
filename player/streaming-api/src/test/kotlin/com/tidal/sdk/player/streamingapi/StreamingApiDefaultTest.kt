@@ -6,6 +6,7 @@ import assertk.assertions.isEqualTo
 import com.google.gson.Gson
 import com.tidal.sdk.auth.CredentialsProvider
 import com.tidal.sdk.player.MockWebServerExtensions.enqueueResponse
+import com.tidal.sdk.player.common.Common
 import com.tidal.sdk.player.common.model.ApiError
 import com.tidal.sdk.player.streamingapi.di.DaggerStreamingApiComponent
 import com.tidal.sdk.player.streamingapi.offline.OfflinePlaybackInfoProviderStub
@@ -59,6 +60,8 @@ internal class StreamingApiDefaultTest {
                     offlinePlaybackInfoProvider = OfflinePlaybackInfoProviderStub(),
                     credentialsProvider = credentialsProviderMock,
                     tidalApiCacheDir = null,
+                    apiEndpoint = Common.TIDAL_API_ENDPOINT_V1,
+                    openApiEndpoint = Common.TIDAL_OPEN_API_ENDPOINT_V2,
                 )
                 .streamingApi
     }

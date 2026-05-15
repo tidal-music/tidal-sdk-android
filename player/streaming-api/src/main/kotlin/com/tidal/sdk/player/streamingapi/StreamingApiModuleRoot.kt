@@ -16,6 +16,8 @@ class StreamingApiModuleRoot(
     offlinePlaybackInfoProvider: OfflinePlaybackInfoProvider?,
     credentialsProvider: CredentialsProvider,
     tidalApiCacheDir: File?,
+    apiEndpoint: String,
+    openApiEndpoint: String,
 ) {
 
     val streamingApi =
@@ -28,6 +30,8 @@ class StreamingApiModuleRoot(
                 offlinePlaybackInfoProvider,
                 credentialsProvider,
                 tidalApiCacheDir,
+                apiEndpoint,
+                openApiEndpoint,
             )
             .streamingApi
 

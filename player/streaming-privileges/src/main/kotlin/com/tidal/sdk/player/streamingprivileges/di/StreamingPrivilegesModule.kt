@@ -5,7 +5,6 @@ import android.os.Handler
 import android.os.HandlerThread
 import android.os.Looper
 import com.google.gson.Gson
-import com.tidal.sdk.player.common.Common
 import com.tidal.sdk.player.common.RequestBuilderFactory
 import com.tidal.sdk.player.commonandroid.SystemClockWrapper
 import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
@@ -32,6 +31,7 @@ import com.tidal.sdk.player.streamingprivileges.messages.incoming.IncomingWebSoc
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
+import javax.inject.Named
 import javax.inject.Singleton
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -57,10 +57,14 @@ internal object StreamingPrivilegesModule {
 
     @Provides
     @Reusable
-    fun retrofit(okHttpClient: OkHttpClient, gsonConverterFactory: GsonConverterFactory) =
+    fun retrofit(
+        okHttpClient: OkHttpClient,
+        gsonConverterFactory: GsonConverterFactory,
+        @Named("apiEndpoint") apiEndpoint: String,
+    ) =
         Retrofit.Builder()
             .client(okHttpClient)
-            .baseUrl(Common.TIDAL_API_ENDPOINT_V1)
+            .baseUrl(apiEndpoint)
             .addConverterFactory(gsonConverterFactory)
             .build()!!
 

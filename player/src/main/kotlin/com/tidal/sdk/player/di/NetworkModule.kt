@@ -7,7 +7,6 @@ import com.tidal.sdk.auth.model.Credentials
 import com.tidal.sdk.player.auth.AuthorizationInterceptor
 import com.tidal.sdk.player.auth.DefaultAuthenticator
 import com.tidal.sdk.player.auth.RequestAuthorizationDelegate
-import com.tidal.sdk.player.common.Common
 import com.tidal.sdk.player.interceptor.NonIntrusiveHttpLoggingInterceptor
 import dagger.Lazy
 import dagger.Module
@@ -42,8 +41,8 @@ internal object NetworkModule {
 
     @Provides
     @Reusable
-    fun endpointsRequiringCredentialLevels() =
-        mapOf("${Common.TIDAL_API_ENDPOINT_V1}rt/connect" to setOf(Credentials.Level.USER))
+    fun endpointsRequiringCredentialLevels(@Named("apiEndpoint") apiEndpoint: String) =
+        mapOf("${apiEndpoint}rt/connect" to setOf(Credentials.Level.USER))
 
     @Provides
     @Reusable

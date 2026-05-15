@@ -53,8 +53,13 @@ internal object StreamingApiModule {
     fun provideTidalApiClient(
         credentialsProvider: CredentialsProvider,
         @Named("tidalApiCacheDir") cacheDir: File?,
+        @Named("openApiEndpoint") openApiEndpoint: String,
     ): TidalApiClient =
-        TidalApiClient(credentialsProvider, retrofitProvider = RetrofitProvider(cacheDir))
+        TidalApiClient(
+            credentialsProvider,
+            baseUrl = openApiEndpoint,
+            retrofitProvider = RetrofitProvider(cacheDir),
+        )
 
     @Provides
     @Reusable
