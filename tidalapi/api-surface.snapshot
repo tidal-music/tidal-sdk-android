@@ -1,5 +1,5 @@
 # TIDAL API Surface Snapshot
-# Spec version: 1.9.5 | Endpoints: 325 | Models: 777
+# Spec version: 1.10.3 | Endpoints: 325 | Models: 777
 
 ## Endpoints
 
@@ -3412,7 +3412,7 @@ SquareConnectionsCreateOperation_Payload_Meta
   platform: enum[WEB, ANDROID, IOS] (required)
 
 SquareConnections_Attributes
-  status: enum[PENDING_REQUIREMENTS, ACCEPTED, REJECTED] (required)
+  status: enum[DRAFT, PENDING_REQUIREMENTS, KYC_PENDING, ACCEPTED, REJECTED, SUSPENDED] (required)
   createdAt: string(date-time) (optional)
   externalLinks: array[External_Link] (optional)
   lastModifiedAt: string(date-time) (optional)
@@ -3451,7 +3451,7 @@ StripeConnectionsCreateOperation_Payload_Meta
   returnUrl: string (optional)
 
 StripeConnections_Attributes
-  status: enum[PENDING_REQUIREMENTS, UNDER_REVIEW, ACCEPTED, REJECTED] (required)
+  status: enum[PENDING_REQUIREMENTS, UNDER_REVIEW, ACCEPTED, REJECTED, SUSPENDED] (required)
   createdAt: string(date-time) (optional)
   externalLinks: array[External_Link] (optional)
   lastModifiedAt: string(date-time) (optional)
@@ -4003,6 +4003,7 @@ UserCollectionArtistsItemsRelationshipRemoveOperation_Payload_Data
   type: enum[artists] (required)
 
 UserCollectionArtists_Attributes
+  numberOfItems: integer(int32) (required)
 
 UserCollectionArtists_Items_Multi_Relationship_Data_Document
   links: Links (required)
@@ -4201,6 +4202,7 @@ UserCollectionSaveForLatersItemsRelationshipRemoveOperation_Payload_Data
   type: enum[tracks, albums, artists, playlists, videos] (required)
 
 UserCollectionSaveForLaters_Attributes
+  numberOfItems: integer(int32) (required)
 
 UserCollectionSaveForLaters_Items_Multi_Relationship_Data_Document
   links: Links (required)
@@ -4319,6 +4321,7 @@ UserCollectionVideosItemsRelationshipRemoveOperation_Payload_Data
   type: enum[videos] (required)
 
 UserCollectionVideos_Attributes
+  numberOfItems: integer(int32) (required)
 
 UserCollectionVideos_Items_Multi_Relationship_Data_Document
   links: Links (required)

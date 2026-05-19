@@ -36,12 +36,15 @@ data class SquareConnectionsAttributes(
     /**
      * Current status of this Square connection
      *
-     * Values: PENDING_REQUIREMENTS,ACCEPTED,REJECTED
+     * Values: DRAFT,PENDING_REQUIREMENTS,KYC_PENDING,ACCEPTED,REJECTED,SUSPENDED
      */
     @Serializable
     enum class Status(val value: kotlin.String) {
+        @SerialName(value = "DRAFT") DRAFT("DRAFT"),
         @SerialName(value = "PENDING_REQUIREMENTS") PENDING_REQUIREMENTS("PENDING_REQUIREMENTS"),
+        @SerialName(value = "KYC_PENDING") KYC_PENDING("KYC_PENDING"),
         @SerialName(value = "ACCEPTED") ACCEPTED("ACCEPTED"),
         @SerialName(value = "REJECTED") REJECTED("REJECTED"),
+        @SerialName(value = "SUSPENDED") SUSPENDED("SUSPENDED"),
     }
 }

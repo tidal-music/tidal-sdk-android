@@ -36,7 +36,7 @@ data class StripeConnectionsAttributes(
     /**
      * Current status of this Stripe connection
      *
-     * Values: PENDING_REQUIREMENTS,UNDER_REVIEW,ACCEPTED,REJECTED
+     * Values: PENDING_REQUIREMENTS,UNDER_REVIEW,ACCEPTED,REJECTED,SUSPENDED
      */
     @Serializable
     enum class Status(val value: kotlin.String) {
@@ -44,5 +44,6 @@ data class StripeConnectionsAttributes(
         @SerialName(value = "UNDER_REVIEW") UNDER_REVIEW("UNDER_REVIEW"),
         @SerialName(value = "ACCEPTED") ACCEPTED("ACCEPTED"),
         @SerialName(value = "REJECTED") REJECTED("REJECTED"),
+        @SerialName(value = "SUSPENDED") SUSPENDED("SUSPENDED"),
     }
 }

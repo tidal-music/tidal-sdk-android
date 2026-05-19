@@ -653,6 +653,7 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionAlbumsRela
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionAlbumsResourceObject.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionAlbumsSingleResourceDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionArtistsAddMultiDataRelationshipWithResponse409ResponseBody.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionArtistsAttributes.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionArtistsItemsMultiRelationshipDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionArtistsItemsRelationshipAddOperationPayload.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionArtistsItemsRelationshipAddOperationPayloadData.kt
@@ -701,6 +702,7 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionPlaylistsR
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionPlaylistsResourceObject.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionPlaylistsSingleResourceDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionSaveForLatersAddMultiDataRelationshipWithResponse409ResponseBody.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionSaveForLatersAttributes.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionSaveForLatersItemsMultiRelationshipDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionSaveForLatersItemsRelationshipAddOperationPayload.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionSaveForLatersItemsRelationshipAddOperationPayloadData.kt
@@ -728,6 +730,7 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionTracksRela
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionTracksResourceObject.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionTracksSingleResourceDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionVideosAddMultiDataRelationshipWithResponse409ResponseBody.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionVideosAttributes.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionVideosItemsMultiRelationshipDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionVideosItemsRelationshipAddOperationPayload.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionVideosItemsRelationshipAddOperationPayloadData.kt
