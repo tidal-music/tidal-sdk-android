@@ -716,6 +716,7 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionSaveForLat
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionSaveForLatersResourceObject.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionSaveForLatersSingleResourceDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionTracksAddMultiDataRelationshipWithResponse409ResponseBody.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionTracksAttributes.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionTracksItemsMultiRelationshipDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionTracksItemsRelationshipAddOperationPayload.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionTracksItemsRelationshipAddOperationPayloadData.kt

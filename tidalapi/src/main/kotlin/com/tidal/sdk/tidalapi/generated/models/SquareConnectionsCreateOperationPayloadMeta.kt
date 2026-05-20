@@ -9,14 +9,20 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param platform Client platform initiating Square onboarding. */
+/**
+ * @param platform Client platform initiating Square onboarding.
+ * @param redirectUrl Optional post-finalize redirect URL. Otherwise uses platform default.
+ */
 @Serializable
 data class SquareConnectionsCreateOperationPayloadMeta(
 
     /* Client platform initiating Square onboarding. */
 
     @SerialName(value = "platform")
-    val platform: SquareConnectionsCreateOperationPayloadMeta.Platform
+    val platform: SquareConnectionsCreateOperationPayloadMeta.Platform,
+    /* Optional post-finalize redirect URL. Otherwise uses platform default. */
+
+    @SerialName(value = "redirectUrl") val redirectUrl: kotlin.String? = null,
 ) {
 
     /**
