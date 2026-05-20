@@ -1,5 +1,5 @@
 # TIDAL API Surface Snapshot
-# Spec version: 1.10.3 | Endpoints: 325 | Models: 777
+# Spec version: 1.10.7 | Endpoints: 325 | Models: 777
 
 ## Endpoints
 
@@ -1080,7 +1080,7 @@ GET /userCollectionSaveForLaters/{id}/relationships/owners
   returns: UserCollectionSaveForLaters_Multi_Relationship_Data_Document
 
 GET /userCollectionTracks
-  params: filter[id]?: array[string], include?: array[string]
+  params: countryCode?: string, filter[id]?: array[string], include?: array[string], locale?: string
   returns: UserCollectionTracks_Multi_Resource_Data_Document
 
 GET /userCollectionTracks/{id}
@@ -3410,6 +3410,7 @@ SquareConnectionsCreateOperation_Payload_Data
 
 SquareConnectionsCreateOperation_Payload_Meta
   platform: enum[WEB, ANDROID, IOS] (required)
+  redirectUrl: string (optional)
 
 SquareConnections_Attributes
   status: enum[DRAFT, PENDING_REQUIREMENTS, KYC_PENDING, ACCEPTED, REJECTED, SUSPENDED] (required)
@@ -4264,6 +4265,7 @@ UserCollectionTracksItemsRelationshipRemoveOperation_Payload_Data
   type: enum[tracks] (required)
 
 UserCollectionTracks_Attributes
+  numberOfItems: integer(int32) (required)
 
 UserCollectionTracks_Items_Multi_Relationship_Data_Document
   links: Links (required)

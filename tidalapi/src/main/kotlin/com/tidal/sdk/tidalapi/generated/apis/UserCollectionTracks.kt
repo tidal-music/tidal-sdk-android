@@ -24,6 +24,9 @@ interface UserCollectionTracks {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
+     * @param locale BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or
+     *   unsupported. (optional, default to "en-US")
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: items, owners (optional)
      * @param filterId User collection tracks id (e.g. &#x60;FMJUCzH4&#x60;) (optional)
@@ -31,6 +34,8 @@ interface UserCollectionTracks {
      */
     @GET("userCollectionTracks")
     suspend fun userCollectionTracksGet(
+        @Query("countryCode") countryCode: kotlin.String? = null,
+        @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[id]")
