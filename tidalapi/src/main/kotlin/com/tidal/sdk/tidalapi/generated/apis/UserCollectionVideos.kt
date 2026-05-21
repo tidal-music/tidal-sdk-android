@@ -1,5 +1,6 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionVideosItemsAddMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionVideosItemsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionVideosItemsRelationshipAddOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionVideosItemsRelationshipRemoveOperationPayload
@@ -144,7 +145,7 @@ interface UserCollectionVideos {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param userCollectionVideosItemsRelationshipAddOperationPayload (optional)
-     * @return [UserCollectionVideosItemsMultiRelationshipDataDocument]
+     * @return [UserCollectionVideosItemsAddMultiRelationshipDataDocument]
      */
     @POST("userCollectionVideos/{id}/relationships/items")
     suspend fun userCollectionVideosIdRelationshipsItemsPost(
@@ -155,7 +156,7 @@ interface UserCollectionVideos {
         userCollectionVideosItemsRelationshipAddOperationPayload:
             UserCollectionVideosItemsRelationshipAddOperationPayload? =
             null,
-    ): Response<UserCollectionVideosItemsMultiRelationshipDataDocument>
+    ): Response<UserCollectionVideosItemsAddMultiRelationshipDataDocument>
 
     /**
      * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
