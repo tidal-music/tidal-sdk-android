@@ -1,5 +1,5 @@
 # TIDAL API Surface Snapshot
-# Spec version: 1.10.7 | Endpoints: 325 | Models: 777
+# Spec version: 1.10.9 | Endpoints: 325 | Models: 786
 
 ## Endpoints
 
@@ -973,7 +973,7 @@ GET /userCollectionAlbums/{id}/relationships/items
 
 POST /userCollectionAlbums/{id}/relationships/items
   params: ??: any, countryCode?: string, id: string
-  returns: UserCollectionAlbums_Items_Multi_Relationship_Data_Document
+  returns: UserCollectionAlbums_Items_Add_Multi_Relationship_Data_Document
 
 DELETE /userCollectionAlbums/{id}/relationships/items
   params: ??: any, id: string
@@ -993,7 +993,7 @@ GET /userCollectionArtists/{id}/relationships/items
 
 POST /userCollectionArtists/{id}/relationships/items
   params: ??: any, countryCode?: string, id: string
-  returns: UserCollectionArtists_Items_Multi_Relationship_Data_Document
+  returns: UserCollectionArtists_Items_Add_Multi_Relationship_Data_Document
 
 DELETE /userCollectionArtists/{id}/relationships/items
   params: ??: any, id: string
@@ -1113,7 +1113,7 @@ GET /userCollectionVideos/{id}/relationships/items
 
 POST /userCollectionVideos/{id}/relationships/items
   params: ??: any, countryCode?: string, id: string
-  returns: UserCollectionVideos_Items_Multi_Relationship_Data_Document
+  returns: UserCollectionVideos_Items_Add_Multi_Relationship_Data_Document
 
 DELETE /userCollectionVideos/{id}/relationships/items
   params: ??: any, id: string
@@ -3934,6 +3934,11 @@ UserCollectionAlbumsItemsRelationshipAddOperation_Payload_Data
 UserCollectionAlbumsItemsRelationshipAddOperation_Payload_Data_Meta
   addedAt: string(date-time) (optional)
 
+UserCollectionAlbumsItemsRelationshipAddOperation_Response_Meta_SkippedItem
+  id: string (required)
+  reason: enum[NOT_FOUND, ALREADY_PRESENT] (required)
+  type: enum[albums] (required)
+
 UserCollectionAlbumsItemsRelationshipRemoveOperation_Payload
   data: array[UserCollectionAlbumsItemsRelationshipRemoveOperation_Payload_Data] (required)
 
@@ -3943,6 +3948,16 @@ UserCollectionAlbumsItemsRelationshipRemoveOperation_Payload_Data
 
 UserCollectionAlbums_Attributes
   numberOfItems: integer(int32) (required)
+  lastModifiedAt: string(date-time) (optional)
+
+UserCollectionAlbums_Items_Add_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[UserCollectionAlbums_Items_Resource_Identifier] (optional)
+  included: Included (optional)
+  meta: UserCollectionAlbums_Items_Add_Multi_Relationship_Data_Document_Meta (optional)
+
+UserCollectionAlbums_Items_Add_Multi_Relationship_Data_Document_Meta
+  skipped: array[UserCollectionAlbumsItemsRelationshipAddOperation_Response_Meta_SkippedItem] (required)
 
 UserCollectionAlbums_Items_Multi_Relationship_Data_Document
   links: Links (required)
@@ -3996,6 +4011,11 @@ UserCollectionArtistsItemsRelationshipAddOperation_Payload_Data
 UserCollectionArtistsItemsRelationshipAddOperation_Payload_Data_Meta
   addedAt: string(date-time) (optional)
 
+UserCollectionArtistsItemsRelationshipAddOperation_Response_Meta_SkippedItem
+  id: string (required)
+  reason: enum[NOT_FOUND, ALREADY_PRESENT] (required)
+  type: enum[artists] (required)
+
 UserCollectionArtistsItemsRelationshipRemoveOperation_Payload
   data: array[UserCollectionArtistsItemsRelationshipRemoveOperation_Payload_Data] (required)
 
@@ -4005,6 +4025,16 @@ UserCollectionArtistsItemsRelationshipRemoveOperation_Payload_Data
 
 UserCollectionArtists_Attributes
   numberOfItems: integer(int32) (required)
+  lastModifiedAt: string(date-time) (optional)
+
+UserCollectionArtists_Items_Add_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[UserCollectionArtists_Items_Resource_Identifier] (optional)
+  included: Included (optional)
+  meta: UserCollectionArtists_Items_Add_Multi_Relationship_Data_Document_Meta (optional)
+
+UserCollectionArtists_Items_Add_Multi_Relationship_Data_Document_Meta
+  skipped: array[UserCollectionArtistsItemsRelationshipAddOperation_Response_Meta_SkippedItem] (required)
 
 UserCollectionArtists_Items_Multi_Relationship_Data_Document
   links: Links (required)
@@ -4315,6 +4345,11 @@ UserCollectionVideosItemsRelationshipAddOperation_Payload_Data
   id: string (required)
   type: enum[videos] (required)
 
+UserCollectionVideosItemsRelationshipAddOperation_Response_Meta_SkippedItem
+  id: string (required)
+  reason: enum[NOT_FOUND, ALREADY_PRESENT] (required)
+  type: enum[videos] (required)
+
 UserCollectionVideosItemsRelationshipRemoveOperation_Payload
   data: array[UserCollectionVideosItemsRelationshipRemoveOperation_Payload_Data] (required)
 
@@ -4324,6 +4359,16 @@ UserCollectionVideosItemsRelationshipRemoveOperation_Payload_Data
 
 UserCollectionVideos_Attributes
   numberOfItems: integer(int32) (required)
+  lastModifiedAt: string(date-time) (optional)
+
+UserCollectionVideos_Items_Add_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[UserCollectionVideos_Items_Resource_Identifier] (optional)
+  included: Included (optional)
+  meta: UserCollectionVideos_Items_Add_Multi_Relationship_Data_Document_Meta (optional)
+
+UserCollectionVideos_Items_Add_Multi_Relationship_Data_Document_Meta
+  skipped: array[UserCollectionVideosItemsRelationshipAddOperation_Response_Meta_SkippedItem] (required)
 
 UserCollectionVideos_Items_Multi_Relationship_Data_Document
   links: Links (required)

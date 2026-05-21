@@ -9,11 +9,17 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param numberOfItems Number of items in the collection */
+/**
+ * @param numberOfItems Number of items in the collection
+ * @param lastModifiedAt When the collection was last modified
+ */
 @Serializable
 data class UserCollectionAlbumsAttributes(
 
     /* Number of items in the collection */
 
-    @SerialName(value = "numberOfItems") val numberOfItems: kotlin.Int
+    @SerialName(value = "numberOfItems") val numberOfItems: kotlin.Int,
+    /* When the collection was last modified */
+
+    @SerialName(value = "lastModifiedAt") val lastModifiedAt: kotlin.String? = null,
 ) {}
