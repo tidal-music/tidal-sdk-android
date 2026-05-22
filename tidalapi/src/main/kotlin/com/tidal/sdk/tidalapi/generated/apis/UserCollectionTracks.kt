@@ -1,5 +1,6 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionTracksItemsAddMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionTracksItemsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionTracksItemsRelationshipAddOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionTracksItemsRelationshipRemoveOperationPayload
@@ -178,7 +179,7 @@ interface UserCollectionTracks {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param userCollectionTracksItemsRelationshipAddOperationPayload (optional)
-     * @return [UserCollectionTracksItemsMultiRelationshipDataDocument]
+     * @return [UserCollectionTracksItemsAddMultiRelationshipDataDocument]
      */
     @POST("userCollectionTracks/{id}/relationships/items")
     suspend fun userCollectionTracksIdRelationshipsItemsPost(
@@ -189,7 +190,7 @@ interface UserCollectionTracks {
         userCollectionTracksItemsRelationshipAddOperationPayload:
             UserCollectionTracksItemsRelationshipAddOperationPayload? =
             null,
-    ): Response<UserCollectionTracksItemsMultiRelationshipDataDocument>
+    ): Response<UserCollectionTracksItemsAddMultiRelationshipDataDocument>
 
     /**
      * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:

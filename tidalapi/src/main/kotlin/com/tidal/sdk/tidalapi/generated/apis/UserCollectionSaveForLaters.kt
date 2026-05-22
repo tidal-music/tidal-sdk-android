@@ -1,5 +1,6 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionSaveForLatersItemsAddMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionSaveForLatersItemsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionSaveForLatersItemsRelationshipAddOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionSaveForLatersItemsRelationshipRemoveOperationPayload
@@ -87,6 +88,7 @@ interface UserCollectionSaveForLaters {
      *   user&#39;s resource
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: items (optional)
      * @return [UserCollectionSaveForLatersItemsMultiRelationshipDataDocument]
@@ -95,6 +97,7 @@ interface UserCollectionSaveForLaters {
     suspend fun userCollectionSaveForLatersIdRelationshipsItemsGet(
         @Path("id") id: kotlin.String,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<UserCollectionSaveForLatersItemsMultiRelationshipDataDocument>
@@ -118,21 +121,23 @@ interface UserCollectionSaveForLaters {
      *
      * @param id User collection save for later id. Use &#x60;me&#x60; for the authenticated
      *   user&#39;s resource
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param userCollectionSaveForLatersItemsRelationshipAddOperationPayload (optional)
-     * @return [UserCollectionSaveForLatersItemsMultiRelationshipDataDocument]
+     * @return [UserCollectionSaveForLatersItemsAddMultiRelationshipDataDocument]
      */
     @POST("userCollectionSaveForLaters/{id}/relationships/items")
     suspend fun userCollectionSaveForLatersIdRelationshipsItemsPost(
         @Path("id") id: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body
         userCollectionSaveForLatersItemsRelationshipAddOperationPayload:
             UserCollectionSaveForLatersItemsRelationshipAddOperationPayload? =
             null,
-    ): Response<UserCollectionSaveForLatersItemsMultiRelationshipDataDocument>
+    ): Response<UserCollectionSaveForLatersItemsAddMultiRelationshipDataDocument>
 
     /**
      * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:

@@ -709,9 +709,12 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionPlaylistsR
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionPlaylistsSingleResourceDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionSaveForLatersAddMultiDataRelationshipWithResponse409ResponseBody.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionSaveForLatersAttributes.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionSaveForLatersItemsAddMultiRelationshipDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionSaveForLatersItemsAddMultiRelationshipDataDocumentMeta.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionSaveForLatersItemsMultiRelationshipDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionSaveForLatersItemsRelationshipAddOperationPayload.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionSaveForLatersItemsRelationshipAddOperationPayloadData.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionSaveForLatersItemsRelationshipAddOperationResponseMetaSkippedItem.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionSaveForLatersItemsRelationshipRemoveOperationPayload.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionSaveForLatersItemsRelationshipRemoveOperationPayloadData.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionSaveForLatersItemsResourceIdentifier.kt
@@ -723,10 +726,13 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionSaveForLat
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionSaveForLatersSingleResourceDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionTracksAddMultiDataRelationshipWithResponse409ResponseBody.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionTracksAttributes.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionTracksItemsAddMultiRelationshipDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionTracksItemsAddMultiRelationshipDataDocumentMeta.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionTracksItemsMultiRelationshipDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionTracksItemsRelationshipAddOperationPayload.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionTracksItemsRelationshipAddOperationPayloadData.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionTracksItemsRelationshipAddOperationPayloadDataMeta.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionTracksItemsRelationshipAddOperationResponseMetaSkippedItem.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionTracksItemsRelationshipRemoveOperationPayload.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionTracksItemsRelationshipRemoveOperationPayloadData.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserCollectionTracksItemsResourceIdentifier.kt
