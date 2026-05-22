@@ -1,5 +1,5 @@
 # TIDAL API Surface Snapshot
-# Spec version: 1.10.9 | Endpoints: 325 | Models: 786
+# Spec version: 1.10.14 | Endpoints: 325 | Models: 792
 
 ## Endpoints
 
@@ -1064,12 +1064,12 @@ GET /userCollectionSaveForLaters/{id}
   returns: UserCollectionSaveForLaters_Single_Resource_Data_Document
 
 GET /userCollectionSaveForLaters/{id}/relationships/items
-  params: id: string, include?: array[string], page[cursor]?: string
+  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string
   returns: UserCollectionSaveForLaters_Items_Multi_Relationship_Data_Document
 
 POST /userCollectionSaveForLaters/{id}/relationships/items
-  params: ??: any, id: string
-  returns: UserCollectionSaveForLaters_Items_Multi_Relationship_Data_Document
+  params: ??: any, countryCode?: string, id: string
+  returns: UserCollectionSaveForLaters_Items_Add_Multi_Relationship_Data_Document
 
 DELETE /userCollectionSaveForLaters/{id}/relationships/items
   params: ??: any, id: string
@@ -1093,7 +1093,7 @@ GET /userCollectionTracks/{id}/relationships/items
 
 POST /userCollectionTracks/{id}/relationships/items
   params: ??: any, countryCode?: string, id: string
-  returns: UserCollectionTracks_Items_Multi_Relationship_Data_Document
+  returns: UserCollectionTracks_Items_Add_Multi_Relationship_Data_Document
 
 DELETE /userCollectionTracks/{id}/relationships/items
   params: ??: any, id: string
@@ -4225,6 +4225,11 @@ UserCollectionSaveForLatersItemsRelationshipAddOperation_Payload_Data
   id: string (required)
   type: enum[tracks, albums, artists, playlists, videos] (required)
 
+UserCollectionSaveForLatersItemsRelationshipAddOperation_Response_Meta_SkippedItem
+  id: string (required)
+  reason: enum[NOT_FOUND, ALREADY_PRESENT] (required)
+  type: enum[tracks, albums, artists, playlists, videos] (required)
+
 UserCollectionSaveForLatersItemsRelationshipRemoveOperation_Payload
   data: array[UserCollectionSaveForLatersItemsRelationshipRemoveOperation_Payload_Data] (required)
 
@@ -4234,6 +4239,16 @@ UserCollectionSaveForLatersItemsRelationshipRemoveOperation_Payload_Data
 
 UserCollectionSaveForLaters_Attributes
   numberOfItems: integer(int32) (required)
+  lastModifiedAt: string(date-time) (optional)
+
+UserCollectionSaveForLaters_Items_Add_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[UserCollectionSaveForLaters_Items_Resource_Identifier] (optional)
+  included: Included (optional)
+  meta: UserCollectionSaveForLaters_Items_Add_Multi_Relationship_Data_Document_Meta (optional)
+
+UserCollectionSaveForLaters_Items_Add_Multi_Relationship_Data_Document_Meta
+  skipped: array[UserCollectionSaveForLatersItemsRelationshipAddOperation_Response_Meta_SkippedItem] (required)
 
 UserCollectionSaveForLaters_Items_Multi_Relationship_Data_Document
   links: Links (required)
@@ -4287,6 +4302,11 @@ UserCollectionTracksItemsRelationshipAddOperation_Payload_Data
 UserCollectionTracksItemsRelationshipAddOperation_Payload_Data_Meta
   addedAt: string(date-time) (optional)
 
+UserCollectionTracksItemsRelationshipAddOperation_Response_Meta_SkippedItem
+  id: string (required)
+  reason: enum[NOT_FOUND, ALREADY_PRESENT] (required)
+  type: enum[tracks] (required)
+
 UserCollectionTracksItemsRelationshipRemoveOperation_Payload
   data: array[UserCollectionTracksItemsRelationshipRemoveOperation_Payload_Data] (required)
 
@@ -4296,6 +4316,16 @@ UserCollectionTracksItemsRelationshipRemoveOperation_Payload_Data
 
 UserCollectionTracks_Attributes
   numberOfItems: integer(int32) (required)
+  lastModifiedAt: string(date-time) (optional)
+
+UserCollectionTracks_Items_Add_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[UserCollectionTracks_Items_Resource_Identifier] (optional)
+  included: Included (optional)
+  meta: UserCollectionTracks_Items_Add_Multi_Relationship_Data_Document_Meta (optional)
+
+UserCollectionTracks_Items_Add_Multi_Relationship_Data_Document_Meta
+  skipped: array[UserCollectionTracksItemsRelationshipAddOperation_Response_Meta_SkippedItem] (required)
 
 UserCollectionTracks_Items_Multi_Relationship_Data_Document
   links: Links (required)
