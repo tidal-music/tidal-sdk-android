@@ -1,5 +1,5 @@
 # TIDAL API Surface Snapshot
-# Spec version: 1.10.14 | Endpoints: 325 | Models: 792
+# Spec version: 1.10.16 | Endpoints: 324 | Models: 792
 
 ## Endpoints
 
@@ -1078,10 +1078,6 @@ DELETE /userCollectionSaveForLaters/{id}/relationships/items
 GET /userCollectionSaveForLaters/{id}/relationships/owners
   params: id: string, include?: array[string], page[cursor]?: string
   returns: UserCollectionSaveForLaters_Multi_Relationship_Data_Document
-
-GET /userCollectionTracks
-  params: countryCode?: string, filter[id]?: array[string], include?: array[string], locale?: string
-  returns: UserCollectionTracks_Multi_Resource_Data_Document
 
 GET /userCollectionTracks/{id}
   params: countryCode?: string, id: string, include?: array[string], locale?: string
