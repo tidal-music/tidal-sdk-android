@@ -28,7 +28,7 @@ interface Terms {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param filterCountryCode Filter by countryCode (optional)
-     * @param filterId Terms id (e.g. &#x60;a468bee88def&#x60;) (optional)
+     * @param filterId List of terms IDs (e.g. &#x60;a468bee88def&#x60;) (optional)
      * @param filterIsLatestVersion Filter by isLatestVersion (optional)
      * @param filterTermsType One of: DEVELOPER, UPLOAD_MARKETPLACE (e.g. &#x60;DEVELOPER&#x60;)
      *   (optional)

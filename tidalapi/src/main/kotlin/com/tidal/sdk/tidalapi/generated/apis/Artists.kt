@@ -35,7 +35,7 @@ interface Artists {
      *   Available options: albums, biography, followers, following, owners, profileArt, radio,
      *   roles, similarArtists, trackProviders, tracks, videos (optional)
      * @param filterHandle Artist handle (e.g. &#x60;jayz&#x60;) (optional)
-     * @param filterId Artist id (e.g. &#x60;1566&#x60;) (optional)
+     * @param filterId List of artist IDs (e.g. &#x60;1566&#x60;) (optional)
      * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user (optional)
      * @return [ArtistsMultiResourceDataDocument]
      */
