@@ -48,7 +48,7 @@ interface Albums {
      * @param filterBarcodeId List of barcode IDs (EAN-13 or UPC-A). NOTE: Supplying more than one
      *   barcode ID will currently only return one album per barcode ID. (e.g.
      *   &#x60;196589525444&#x60;) (optional)
-     * @param filterId Album id (e.g. &#x60;251380836&#x60;) (optional)
+     * @param filterId List of album IDs (e.g. &#x60;251380836&#x60;) (optional)
      * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
