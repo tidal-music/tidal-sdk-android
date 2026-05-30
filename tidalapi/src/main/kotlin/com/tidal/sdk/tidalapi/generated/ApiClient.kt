@@ -11,6 +11,8 @@ import com.tidal.sdk.tidalapi.generated.apis.ArtistRoles
 import com.tidal.sdk.tidalapi.generated.apis.Artists
 import com.tidal.sdk.tidalapi.generated.apis.Artworks
 import com.tidal.sdk.tidalapi.generated.apis.Clients
+import com.tidal.sdk.tidalapi.generated.apis.CollaborationInviteRedemptions
+import com.tidal.sdk.tidalapi.generated.apis.CollaborationInvites
 import com.tidal.sdk.tidalapi.generated.apis.Comments
 import com.tidal.sdk.tidalapi.generated.apis.ContentClaims
 import com.tidal.sdk.tidalapi.generated.apis.Credits
@@ -124,6 +126,21 @@ class TidalApiClient(
     /** Returns an instance of the [Clients] which can be used to make API calls to the */
     fun createClients(): Clients {
         return retrofit.create(Clients::class.java)
+    }
+
+    /**
+     * Returns an instance of the [CollaborationInviteRedemptions] which can be used to make API
+     * calls to the
+     */
+    fun createCollaborationInviteRedemptions(): CollaborationInviteRedemptions {
+        return retrofit.create(CollaborationInviteRedemptions::class.java)
+    }
+
+    /**
+     * Returns an instance of the [CollaborationInvites] which can be used to make API calls to the
+     */
+    fun createCollaborationInvites(): CollaborationInvites {
+        return retrofit.create(CollaborationInvites::class.java)
     }
 
     /** Returns an instance of the [Comments] which can be used to make API calls to the */
