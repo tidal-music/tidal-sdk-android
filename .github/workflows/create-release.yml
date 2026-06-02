@@ -29,11 +29,27 @@ jobs:
           distribution: temurin
       - name: Expose tag and version
         id: expose-tag
+        shell: bash
         run: |
-          version="$(./gradlew ${{ inputs.module }}:properties | grep "^version: " | awk '{print $2}')"
+          set -euo pipefail
+
+          # Run gradle on its own line so a resolution/build failure surfaces
+          # as a non-zero exit instead of being masked by the grep/awk pipe.
+          properties="$(./gradlew ${{ inputs.module }}:properties)"
+          version="$(printf '%s\n' "$properties" | awk '/^version: / {print $2}')"
+
+          # Refuse to emit an empty or unspecified version. Without this guard a
+          # failed gradle run produced an empty tag ("${{ inputs.module }}-"),
+          # which silently passed here and only failed three jobs later with a
+          # confusing GitHub "422 tag_name is not well-formed" error.
+          if [[ -z "$version" || "$version" == "unspecified" ]]; then
+            echo "::error::Could not resolve a version for '${{ inputs.module }}' (got '$version'). Failing instead of emitting an invalid tag." >&2
+            exit 1
+          fi
+
           tag="${{ inputs.module }}-$version"
-          echo "version=$version" >> $GITHUB_OUTPUT
-          echo "tag=$tag" >> $GITHUB_OUTPUT
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
 
   publish-to-gh-packages:
     name: Publish packages to Github Packages
