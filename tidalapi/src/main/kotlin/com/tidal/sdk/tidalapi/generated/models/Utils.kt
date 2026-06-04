@@ -19,6 +19,14 @@ fun getOneOfSerializer() = SerializersModule {
         subclass(ArtistsResourceObject::class, ArtistsResourceObject.serializer())
         subclass(ArtworksResourceObject::class, ArtworksResourceObject.serializer())
         subclass(ClientsResourceObject::class, ClientsResourceObject.serializer())
+        subclass(
+            CollaborationInviteRedemptionsResourceObject::class,
+            CollaborationInviteRedemptionsResourceObject.serializer(),
+        )
+        subclass(
+            CollaborationInvitesResourceObject::class,
+            CollaborationInvitesResourceObject.serializer(),
+        )
         subclass(CommentsResourceObject::class, CommentsResourceObject.serializer())
         subclass(ContentClaimsResourceObject::class, ContentClaimsResourceObject.serializer())
         subclass(CreditsResourceObject::class, CreditsResourceObject.serializer())
@@ -49,6 +57,7 @@ fun getOneOfSerializer() = SerializersModule {
         subclass(PurchasesResourceObject::class, PurchasesResourceObject.serializer())
         subclass(ReactionsResourceObject::class, ReactionsResourceObject.serializer())
         subclass(SavedSharesResourceObject::class, SavedSharesResourceObject.serializer())
+        subclass(ScopesResourceObject::class, ScopesResourceObject.serializer())
         subclass(
             SearchHistoryEntriesResourceObject::class,
             SearchHistoryEntriesResourceObject.serializer(),

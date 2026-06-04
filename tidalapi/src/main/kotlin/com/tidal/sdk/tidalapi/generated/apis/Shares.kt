@@ -24,7 +24,6 @@ interface Shares {
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: owners, sharedResources (optional)
      * @param filterCode A share code (e.g. &#x60;xyz&#x60;) (optional)
-     * @param filterId List of shares IDs (e.g. &#x60;a468bee88def&#x60;) (optional)
      * @return [SharesMultiResourceDataDocument]
      */
     @GET("shares")
@@ -33,8 +32,6 @@ interface Shares {
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[code]")
         filterCode: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[id]")
-        filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<SharesMultiResourceDataDocument>
 
     /**
