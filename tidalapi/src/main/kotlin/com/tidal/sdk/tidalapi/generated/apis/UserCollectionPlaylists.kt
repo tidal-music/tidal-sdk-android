@@ -1,5 +1,6 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionPlaylistsItemsAddMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionPlaylistsItemsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionPlaylistsItemsRelationshipAddOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionPlaylistsItemsRelationshipRemoveOperationPayload
@@ -80,7 +81,8 @@ interface UserCollectionPlaylists {
     enum class CollectionViewUserCollectionPlaylistsIdRelationshipsItemsGet(
         val value: kotlin.String
     ) {
-        @SerialName(value = "FOLDERS") FOLDERS("FOLDERS")
+        @SerialName(value = "FLAT") FLAT("FLAT"),
+        @SerialName(value = "FOLDERS") FOLDERS("FOLDERS"),
     }
 
     /** enum for parameter sort */
@@ -150,7 +152,7 @@ interface UserCollectionPlaylists {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param userCollectionPlaylistsItemsRelationshipAddOperationPayload (optional)
-     * @return [UserCollectionPlaylistsItemsMultiRelationshipDataDocument]
+     * @return [UserCollectionPlaylistsItemsAddMultiRelationshipDataDocument]
      */
     @POST("userCollectionPlaylists/{id}/relationships/items")
     suspend fun userCollectionPlaylistsIdRelationshipsItemsPost(
@@ -160,7 +162,7 @@ interface UserCollectionPlaylists {
         userCollectionPlaylistsItemsRelationshipAddOperationPayload:
             UserCollectionPlaylistsItemsRelationshipAddOperationPayload? =
             null,
-    ): Response<UserCollectionPlaylistsItemsMultiRelationshipDataDocument>
+    ): Response<UserCollectionPlaylistsItemsAddMultiRelationshipDataDocument>
 
     /**
      * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:

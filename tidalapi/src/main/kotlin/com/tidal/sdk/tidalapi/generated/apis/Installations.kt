@@ -31,7 +31,6 @@ interface Installations {
      *   Available options: offlineInventory, owners (optional)
      * @param filterClientProvidedInstallationId Client-provided installation identifier to filter
      *   by (e.g. &#x60;a468bee88def&#x60;) (optional)
-     * @param filterId List of installation IDs (e.g. &#x60;a468bee88def&#x60;) (optional)
      * @param filterOwnersId User ID to filter by. Use &#x60;me&#x60; for the authenticated user
      *   (optional)
      * @return [InstallationsMultiResourceDataDocument]
@@ -46,8 +45,6 @@ interface Installations {
             @JvmSuppressWildcards
             kotlin.collections.List<kotlin.String>? =
             null,
-        @Query("filter[id]")
-        filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[owners.id]")
         filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<InstallationsMultiResourceDataDocument>

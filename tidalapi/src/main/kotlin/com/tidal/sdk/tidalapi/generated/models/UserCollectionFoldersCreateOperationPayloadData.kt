@@ -11,12 +11,15 @@ import kotlinx.serialization.Serializable
 
 /**
  * @param attributes
+ * @param relationships
  * @param type
  */
 @Serializable
 data class UserCollectionFoldersCreateOperationPayloadData(
     @SerialName(value = "attributes")
     val attributes: UserCollectionFoldersCreateOperationPayloadDataAttributes,
+    @SerialName(value = "relationships")
+    val relationships: UserCollectionFoldersCreateOperationPayloadDataRelationships,
     @SerialName(value = "type") val type: UserCollectionFoldersCreateOperationPayloadData.Type,
 ) {
 

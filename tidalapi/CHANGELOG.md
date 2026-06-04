@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.42] - 2026-06-04
+### Changed
+- Updated generated code using api spec version 1.10.25
+
 ## [0.3.41] - 2026-06-02
 ### Changed
 - Added consumer-rules.pro

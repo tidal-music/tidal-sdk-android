@@ -10,17 +10,29 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param collectionType
  * @param name
+ * @param collectionType The type of user collection this folder belongs to. Deprecated: send the
+ *   'userCollection' relationship instead. Accepted for backward compatibility during migration and
+ *   will be removed in a future version.
  */
 @Serializable
 data class UserCollectionFoldersCreateOperationPayloadDataAttributes(
-    @SerialName(value = "collectionType")
-    val collectionType: UserCollectionFoldersCreateOperationPayloadDataAttributes.CollectionType,
     @SerialName(value = "name") val name: kotlin.String,
+    /* The type of user collection this folder belongs to. Deprecated: send the 'userCollection' relationship instead. Accepted for backward compatibility during migration and will be removed in a future version. */
+
+    @SerialName(value = "collectionType")
+    @Deprecated(message = "This property is deprecated.")
+    val collectionType: UserCollectionFoldersCreateOperationPayloadDataAttributes.CollectionType? =
+        null,
 ) {
 
-    /** Values: PLAYLISTS */
+    /**
+     * The type of user collection this folder belongs to. Deprecated: send the 'userCollection'
+     * relationship instead. Accepted for backward compatibility during migration and will be
+     * removed in a future version.
+     *
+     * Values: PLAYLISTS
+     */
     @Serializable
     enum class CollectionType(val value: kotlin.String) {
         @SerialName(value = "PLAYLISTS") PLAYLISTS("PLAYLISTS")
