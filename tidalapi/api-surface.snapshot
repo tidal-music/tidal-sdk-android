@@ -1,10 +1,10 @@
 # TIDAL API Surface Snapshot
-# Spec version: 1.10.25 | Endpoints: 321 | Models: 826
+# Spec version: 1.10.26 | Endpoints: 321 | Models: 826
 
 ## Endpoints
 
 GET /acceptedTerms
-  params: filter[owners.id]?: array[string], filter[terms.isLatestVersion]?: array[string], filter[terms.termsType]?: array[enum[DEVELOPER, UPLOAD_MARKETPLACE]], include?: array[string]
+  params: filter[owners.id]: array[string], filter[terms.isLatestVersion]?: array[string], filter[terms.termsType]: array[enum[DEVELOPER, UPLOAD_MARKETPLACE]], include?: array[string]
   returns: AcceptedTerms_Multi_Resource_Data_Document
 
 POST /acceptedTerms
@@ -124,7 +124,7 @@ GET /artistBiographies/{id}/relationships/owners
   returns: ArtistBiographies_Multi_Relationship_Data_Document
 
 GET /artistClaims
-  params: filter[owners.id]?: array[string], include?: array[string]
+  params: filter[owners.id]: array[string], include?: array[string]
   returns: ArtistClaims_Multi_Resource_Data_Document
 
 POST /artistClaims
@@ -240,7 +240,7 @@ GET /artists/{id}/relationships/videos
   returns: Artists_Multi_Relationship_Data_Document
 
 GET /artworks
-  params: countryCode?: string, filter[id]?: array[string], include?: array[string]
+  params: countryCode?: string, filter[id]: array[string], include?: array[string]
   returns: Artworks_Multi_Resource_Data_Document
 
 POST /artworks
@@ -256,7 +256,7 @@ GET /artworks/{id}/relationships/owners
   returns: Artworks_Multi_Relationship_Data_Document
 
 GET /clients
-  params: filter[owners.id]?: array[string], include?: array[string]
+  params: filter[owners.id]: array[string], include?: array[string]
   returns: Clients_Multi_Resource_Data_Document
 
 POST /clients
@@ -284,7 +284,7 @@ POST /collaborationInviteRedemptions
   returns: CollaborationInviteRedemptions_Single_Resource_Data_Document
 
 GET /collaborationInvites
-  params: filter[code]?: array[string], include?: array[string]
+  params: filter[code]: array[string], include?: array[string]
   returns: CollaborationInvites_Multi_Resource_Data_Document
 
 POST /collaborationInvites
@@ -308,7 +308,7 @@ GET /collaborationInvites/{id}/relationships/subject
   returns: CollaborationInvites_Single_Relationship_Data_Document
 
 GET /comments
-  params: filter[parentComment.id]?: array[string], filter[subject.id]?: array[string], filter[subject.type]?: array[enum[albums, tracks]], include?: array[string], page[cursor]?: string, sort?: array[enum[createdAt, -createdAt, likeCount, -likeCount, replyCount, -replyCount, startTime, -startTime]]
+  params: filter[parentComment.id]?: array[string], filter[subject.id]: array[string], filter[subject.type]: array[enum[albums, tracks]], include?: array[string], page[cursor]?: string, sort?: array[enum[createdAt, -createdAt, likeCount, -likeCount, replyCount, -replyCount, startTime, -startTime]]
   returns: Comments_Multi_Resource_Data_Document
 
 POST /comments
@@ -340,7 +340,7 @@ GET /comments/{id}/relationships/parentComment
   returns: Comments_Single_Relationship_Data_Document
 
 GET /contentClaims
-  params: filter[owners.id]?: array[string], include?: array[string]
+  params: filter[owners.id]: array[string], include?: array[string]
   returns: ContentClaims_Multi_Resource_Data_Document
 
 POST /contentClaims
@@ -376,7 +376,7 @@ GET /credits/{id}/relationships/category
   returns: Credits_Single_Relationship_Data_Document
 
 GET /downloads
-  params: filter[id]?: array[string], include?: array[string]
+  params: filter[id]: array[string], include?: array[string]
   returns: Downloads_Multi_Resource_Data_Document
 
 GET /downloads/{id}
@@ -388,7 +388,7 @@ GET /downloads/{id}/relationships/owners
   returns: Downloads_Multi_Relationship_Data_Document
 
 GET /dspSharingLinks
-  params: filter[subject.id]?: array[string], filter[subject.type]?: array[enum[tracks, albums, artists]], include?: array[string]
+  params: filter[subject.id]: array[string], filter[subject.type]: array[enum[tracks, albums, artists]], include?: array[string]
   returns: DspSharingLinks_Multi_Resource_Data_Document
 
 GET /dspSharingLinks/{id}/relationships/subject
@@ -400,7 +400,7 @@ GET /dynamicModules/{id}/relationships/items
   returns: DynamicModules_Multi_Relationship_Data_Document
 
 GET /dynamicPages
-  params: clientVersion: string, countryCode?: string, deviceType: enum[BROWSER, CAR, DESKTOP, PHONE, TABLET, TV], filter[pageType]?: array[string], filter[subject.id]?: array[string], include?: array[string], locale?: string, refreshId?: string, systemType: enum[ANDROID, DESKTOP, TESLA, IOS, WEB]
+  params: clientVersion: string, countryCode?: string, deviceType: enum[BROWSER, CAR, DESKTOP, PHONE, TABLET, TV], filter[pageType]: array[string], filter[subject.id]: array[string], include?: array[string], locale?: string, refreshId?: string, systemType: enum[ANDROID, DESKTOP, TESLA, IOS, WEB]
   returns: DynamicPages_Multi_Resource_Data_Document
 
 GET /dynamicPages/{id}/relationships/dynamicModules
@@ -412,7 +412,7 @@ GET /dynamicPages/{id}/relationships/subject
   returns: DynamicPages_Single_Relationship_Data_Document
 
 GET /genres
-  params: filter[id]?: array[string], locale?: string, page[cursor]?: string
+  params: filter[id]: array[string], locale?: string, page[cursor]?: string
   returns: Genres_Multi_Resource_Data_Document
 
 GET /genres/{id}
@@ -432,7 +432,7 @@ GET /installations/{id}
   returns: Installations_Single_Resource_Data_Document
 
 GET /installations/{id}/relationships/offlineInventory
-  params: filter[id]?: array[string], filter[state]?: array[enum[PENDING, STORED]], filter[type]?: array[enum[tracks, videos, albums, playlists, userCollectionTracks]], id: string, include?: array[string], page[cursor]?: string
+  params: filter[id]?: array[string], filter[state]?: array[enum[PENDING, STORED]], filter[type]: array[enum[tracks, videos, albums, playlists, userCollectionTracks]], id: string, include?: array[string], page[cursor]?: string
   returns: Installations_OfflineInventory_Multi_Relationship_Data_Document
 
 POST /installations/{id}/relationships/offlineInventory
@@ -476,7 +476,7 @@ POST /manualArtistClaims
   returns: ManualArtistClaims_Single_Resource_Data_Document
 
 GET /offlineTasks
-  params: filter[installation.id]?: array[string], include?: array[string], page[cursor]?: string
+  params: filter[installation.id]: array[string], include?: array[string], page[cursor]?: string
   returns: OfflineTasks_Multi_Resource_Data_Document
 
 GET /offlineTasks/{id}
@@ -500,7 +500,7 @@ GET /offlineTasks/{id}/relationships/owners
   returns: OfflineTasks_Multi_Relationship_Data_Document
 
 GET /playQueues
-  params: filter[owners.id]?: array[string], include?: array[string], page[cursor]?: string
+  params: filter[owners.id]: array[string], include?: array[string], page[cursor]?: string
   returns: PlayQueues_Multi_Resource_Data_Document
 
 POST /playQueues
@@ -620,7 +620,7 @@ GET /playlists/{id}/relationships/owners
   returns: Playlists_Multi_Relationship_Data_Document
 
 GET /priceConfigurations
-  params: filter[id]?: array[string]
+  params: filter[id]: array[string]
   returns: PriceConfigurations_Multi_Resource_Data_Document
 
 POST /priceConfigurations
@@ -632,7 +632,7 @@ GET /priceConfigurations/{id}
   returns: PriceConfigurations_Single_Resource_Data_Document
 
 GET /providerOwners
-  params: filter[owners.id]?: array[string], include?: array[string]
+  params: filter[owners.id]: array[string], include?: array[string]
   returns: ProviderOwners_Multi_Resource_Data_Document
 
 GET /providerOwners/{id}/relationships/owners
@@ -644,7 +644,7 @@ GET /providerOwners/{id}/relationships/provider
   returns: ProviderOwners_Single_Relationship_Data_Document
 
 GET /providerProductInfos
-  params: countryCode?: string, filter[barcodeId]?: array[string], filter[provider.id]?: array[string], include?: array[string]
+  params: countryCode?: string, filter[barcodeId]: array[string], filter[provider.id]: array[string], include?: array[string]
   returns: ProviderProductInfos_Multi_Resource_Data_Document
 
 GET /providerProductInfos/{id}/relationships/provider
@@ -660,7 +660,7 @@ GET /providers/{id}
   returns: Providers_Single_Resource_Data_Document
 
 GET /purchases
-  params: filter[owners.id]?: array[string], filter[subject.type]?: array[enum[albums, tracks]], include?: array[string], page[cursor]?: string
+  params: filter[owners.id]: array[string], filter[subject.type]: array[enum[albums, tracks]], include?: array[string], page[cursor]?: string
   returns: Purchases_Multi_Resource_Data_Document
 
 GET /purchases/{id}/relationships/owners
@@ -672,7 +672,7 @@ GET /purchases/{id}/relationships/subject
   returns: Purchases_Single_Relationship_Data_Document
 
 GET /reactions
-  params: filter[emoji]?: array[string], filter[subject.id]?: array[string], filter[subject.type]?: array[enum[albums, tracks, artists, videos, playlists, comments]], include?: array[string], page[cursor]?: string, stats?: enum[ALL, COUNTS_BY_TYPE, TOTAL_COUNT], statsOnly?: boolean, viewerContext?: string
+  params: filter[emoji]?: array[string], filter[subject.id]: array[string], filter[subject.type]: array[enum[albums, tracks, artists, videos, playlists, comments]], include?: array[string], page[cursor]?: string, stats?: enum[ALL, COUNTS_BY_TYPE, TOTAL_COUNT], statsOnly?: boolean, viewerContext?: string
   returns: Reactions_Multi_Resource_Data_Document
 
 POST /reactions
@@ -696,7 +696,7 @@ POST /savedShares
   returns: SavedShares_Single_Resource_Data_Document
 
 GET /scopes
-  params: filter[requiredAccessTier]?: array[enum[THIRD_PARTY, THIRD_PARTY_PROD, PARTNER, INTERNAL]]
+  params: filter[requiredAccessTier]: array[enum[THIRD_PARTY, THIRD_PARTY_PROD, PARTNER, INTERNAL]]
   returns: Scopes_Multi_Resource_Data_Document
 
 DELETE /searchHistoryEntries/{id}
@@ -744,7 +744,7 @@ GET /searchSuggestions/{id}/relationships/history
   returns: SearchSuggestions_Multi_Relationship_Data_Document
 
 GET /shares
-  params: filter[code]?: array[string], include?: array[string]
+  params: filter[code]: array[string], include?: array[string]
   returns: Shares_Multi_Resource_Data_Document
 
 POST /shares
@@ -772,7 +772,7 @@ GET /squareConnections/{id}
   returns: SquareConnections_Single_Resource_Data_Document
 
 GET /stripeConnections
-  params: filter[owners.id]?: array[string], include?: array[string]
+  params: filter[owners.id]: array[string], include?: array[string]
   returns: StripeConnections_Multi_Resource_Data_Document
 
 POST /stripeConnections
@@ -784,7 +784,7 @@ GET /stripeConnections/{id}/relationships/owners
   returns: StripeConnections_Multi_Relationship_Data_Document
 
 GET /stripeDashboardLinks
-  params: filter[owners.id]?: array[string], include?: array[string]
+  params: filter[owners.id]: array[string], include?: array[string]
   returns: StripeDashboardLinks_Multi_Resource_Data_Document
 
 GET /stripeDashboardLinks/{id}/relationships/owners
@@ -804,7 +804,7 @@ GET /temporaryUserTokens/{id}/relationships/owners
   returns: TemporaryUserTokens_Multi_Relationship_Data_Document
 
 GET /terms
-  params: filter[countryCode]?: array[string], filter[isLatestVersion]?: array[string], filter[termsType]?: array[enum[DEVELOPER, UPLOAD_MARKETPLACE]]
+  params: filter[countryCode]?: array[string], filter[isLatestVersion]?: array[string], filter[termsType]: array[enum[DEVELOPER, UPLOAD_MARKETPLACE]]
   returns: Terms_Multi_Resource_Data_Document
 
 GET /terms/{id}
@@ -988,7 +988,7 @@ GET /userCollectionArtists/{id}/relationships/owners
   returns: UserCollectionArtists_Multi_Relationship_Data_Document
 
 GET /userCollectionFolders
-  params: filter[id]?: array[string], include?: array[string]
+  params: filter[id]: array[string], include?: array[string]
   returns: UserCollectionFolders_Multi_Resource_Data_Document
 
 POST /userCollectionFolders

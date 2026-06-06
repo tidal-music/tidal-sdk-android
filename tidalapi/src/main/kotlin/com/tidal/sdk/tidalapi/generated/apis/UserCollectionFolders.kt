@@ -27,18 +27,17 @@ interface UserCollectionFolders {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
+     * @param filterId Folder Id (e.g.
+     *   &#x60;CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX&#x60;)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: items, owners, userCollection (optional)
-     * @param filterId Folder Id (e.g.
-     *   &#x60;CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX&#x60;) (optional)
      * @return [UserCollectionFoldersMultiResourceDataDocument]
      */
     @GET("userCollectionFolders")
     suspend fun userCollectionFoldersGet(
+        @Query("filter[id]") filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[id]")
-        filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<UserCollectionFoldersMultiResourceDataDocument>
 
     /**

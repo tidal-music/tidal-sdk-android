@@ -22,17 +22,17 @@ interface CollaborationInvites {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
+     * @param filterCode Invite code
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: owners, subject (optional)
-     * @param filterCode Invite code (optional)
      * @return [CollaborationInvitesMultiResourceDataDocument]
      */
     @GET("collaborationInvites")
     suspend fun collaborationInvitesGet(
+        @Query("filter[code]")
+        filterCode: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[code]")
-        filterCode: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<CollaborationInvitesMultiResourceDataDocument>
 
     /**

@@ -28,21 +28,21 @@ interface DspSharingLinks {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
+     * @param filterSubjectId The id of the subject resource
+     * @param filterSubjectType The type of the subject resource (e.g., albums, tracks, artists)
+     *   (e.g. &#x60;tracks&#x60;)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: subject (optional)
-     * @param filterSubjectId The id of the subject resource (optional)
-     * @param filterSubjectType The type of the subject resource (e.g., albums, tracks, artists)
-     *   (e.g. &#x60;tracks&#x60;) (optional)
      * @return [DspSharingLinksMultiResourceDataDocument]
      */
     @GET("dspSharingLinks")
     suspend fun dspSharingLinksGet(
+        @Query("filter[subject.id]")
+        filterSubjectId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
+        @Query("filter[subject.type]")
+        filterSubjectType: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[subject.id]")
-        filterSubjectId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[subject.type]")
-        filterSubjectType: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<DspSharingLinksMultiResourceDataDocument>
 
     /**
