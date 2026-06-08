@@ -8,6 +8,17 @@ concurrency:
 
 jobs:
 
+  fossa-baseline:
+    name: FOSSA baseline scan (main)
+    # Analyze-only scan of `main` so PRs have a labelled baseline to diff against.
+    uses: ./.github/workflows/fossa-scan.yml
+    with:
+      branch: main
+      run-fossa-tests: false
+    secrets:
+      pat: ${{ secrets.PACKAGES_PAT }}
+      fossaApiKey: ${{ secrets.FOSSA_API_KEY_FULL }}
+
   build-module-list:
     runs-on: ubuntu-latest
     name: Generate candidate SDK module list
