@@ -19,23 +19,23 @@ interface ProviderProductInfos {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
+     * @param filterBarcodeId List of barcode IDs (EAN-13 or UPC-A) (e.g.
+     *   &#x60;00602527336510&#x60;)
+     * @param filterProviderId Content provider ID (e.g. &#x60;50&#x60;)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: provider, subject (optional)
-     * @param filterBarcodeId List of barcode IDs (EAN-13 or UPC-A) (e.g.
-     *   &#x60;00602527336510&#x60;) (optional)
-     * @param filterProviderId Content provider ID (e.g. &#x60;50&#x60;) (optional)
      * @return [ProviderProductInfosMultiResourceDataDocument]
      */
     @GET("providerProductInfos")
     suspend fun providerProductInfosGet(
+        @Query("filter[barcodeId]")
+        filterBarcodeId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
+        @Query("filter[provider.id]")
+        filterProviderId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[barcodeId]")
-        filterBarcodeId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[provider.id]")
-        filterProviderId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<ProviderProductInfosMultiResourceDataDocument>
 
     /**

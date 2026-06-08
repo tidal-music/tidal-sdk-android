@@ -20,17 +20,16 @@ interface Downloads {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
+     * @param filterId Download id (e.g. &#x60;VFJBQ0tTOjEyMzQ1&#x60;)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: owners (optional)
-     * @param filterId Download id (e.g. &#x60;VFJBQ0tTOjEyMzQ1&#x60;) (optional)
      * @return [DownloadsMultiResourceDataDocument]
      */
     @GET("downloads")
     suspend fun downloadsGet(
+        @Query("filter[id]") filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[id]")
-        filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<DownloadsMultiResourceDataDocument>
 
     /**

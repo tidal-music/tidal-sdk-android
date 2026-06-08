@@ -21,13 +21,12 @@ interface PriceConfigurations {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param filterId List of price configurations IDs (e.g.
-     *   &#x60;cHJpY2UtY29uZmlnLTEyMzpVUw&#x60;) (optional)
+     *   &#x60;cHJpY2UtY29uZmlnLTEyMzpVUw&#x60;)
      * @return [PriceConfigurationsMultiResourceDataDocument]
      */
     @GET("priceConfigurations")
     suspend fun priceConfigurationsGet(
-        @Query("filter[id]")
-        filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null
+        @Query("filter[id]") filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>
     ): Response<PriceConfigurationsMultiResourceDataDocument>
 
     /**

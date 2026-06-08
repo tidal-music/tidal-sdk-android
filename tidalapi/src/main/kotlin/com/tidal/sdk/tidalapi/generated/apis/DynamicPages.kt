@@ -44,14 +44,14 @@ interface DynamicPages {
      * @param deviceType The type of device making the request
      * @param systemType The system type of the device making the request
      * @param clientVersion Client version number
+     * @param filterPageType type of the page (e.g. &#x60;ARTIST&#x60;)
+     * @param filterSubjectId the subject id, eg. artistId (e.g. &#x60;67890&#x60;)
      * @param refreshId (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param locale BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or
      *   unsupported. (optional, default to "en-US")
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: dynamicModules, subject (optional)
-     * @param filterPageType type of the page (e.g. &#x60;ARTIST&#x60;) (optional)
-     * @param filterSubjectId the subject id, eg. artistId (e.g. &#x60;67890&#x60;) (optional)
      * @return [DynamicPagesMultiResourceDataDocument]
      */
     @GET("dynamicPages")
@@ -59,15 +59,15 @@ interface DynamicPages {
         @Query("deviceType") deviceType: DeviceTypeDynamicPagesGet,
         @Query("systemType") systemType: SystemTypeDynamicPagesGet,
         @Query("clientVersion") clientVersion: kotlin.String,
+        @Query("filter[pageType]")
+        filterPageType: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
+        @Query("filter[subject.id]")
+        filterSubjectId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
         @Query("refreshId") refreshId: kotlin.String? = null,
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[pageType]")
-        filterPageType: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[subject.id]")
-        filterSubjectId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<DynamicPagesMultiResourceDataDocument>
 
     /** enum for parameter deviceType */

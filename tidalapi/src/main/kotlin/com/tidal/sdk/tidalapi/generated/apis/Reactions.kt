@@ -10,13 +10,6 @@ import retrofit2.http.*
 
 interface Reactions {
 
-    /** enum for parameter stats */
-    enum class StatsReactionsGet(val value: kotlin.String) {
-        @SerialName(value = "ALL") ALL("ALL"),
-        @SerialName(value = "COUNTS_BY_TYPE") COUNTS_BY_TYPE("COUNTS_BY_TYPE"),
-        @SerialName(value = "TOTAL_COUNT") TOTAL_COUNT("TOTAL_COUNT"),
-    }
-
     /** enum for parameter filterSubjectType */
     enum class FilterSubjectTypeReactionsGet(val value: kotlin.String) {
         @SerialName(value = "albums") albums("albums"),
@@ -25,6 +18,13 @@ interface Reactions {
         @SerialName(value = "videos") videos("videos"),
         @SerialName(value = "playlists") playlists("playlists"),
         @SerialName(value = "comments") comments("comments"),
+    }
+
+    /** enum for parameter stats */
+    enum class StatsReactionsGet(val value: kotlin.String) {
+        @SerialName(value = "ALL") ALL("ALL"),
+        @SerialName(value = "COUNTS_BY_TYPE") COUNTS_BY_TYPE("COUNTS_BY_TYPE"),
+        @SerialName(value = "TOTAL_COUNT") TOTAL_COUNT("TOTAL_COUNT"),
     }
 
     /**
@@ -40,6 +40,8 @@ interface Reactions {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
+     * @param filterSubjectId Filter by subject resource ID (e.g. &#x60;12345&#x60;)
+     * @param filterSubjectType Filter by subject resource type (e.g. &#x60;albums&#x60;)
      * @param stats (optional)
      * @param statsOnly (optional)
      * @param viewerContext (optional)
@@ -48,12 +50,14 @@ interface Reactions {
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: ownerProfiles, owners (optional)
      * @param filterEmoji Filter by emoji (e.g. &#x60;👍&#x60;) (optional)
-     * @param filterSubjectId Filter by subject resource ID (e.g. &#x60;12345&#x60;) (optional)
-     * @param filterSubjectType Filter by subject resource type (e.g. &#x60;albums&#x60;) (optional)
      * @return [ReactionsMultiResourceDataDocument]
      */
     @GET("reactions")
     suspend fun reactionsGet(
+        @Query("filter[subject.id]")
+        filterSubjectId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
+        @Query("filter[subject.type]")
+        filterSubjectType: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
         @Query("stats") stats: StatsReactionsGet? = null,
         @Query("statsOnly") statsOnly: kotlin.Boolean? = null,
         @Query("viewerContext") viewerContext: kotlin.String? = null,
@@ -62,10 +66,6 @@ interface Reactions {
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[emoji]")
         filterEmoji: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[subject.id]")
-        filterSubjectId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[subject.type]")
-        filterSubjectType: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<ReactionsMultiResourceDataDocument>
 
     /**

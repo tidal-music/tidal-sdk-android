@@ -29,13 +29,12 @@ interface Scopes {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param filterRequiredAccessTier Filters scopes by their &#x60;requiredAccessTier&#x60;. (e.g.
-     *   &#x60;THIRD_PARTY&#x60;) (optional)
+     *   &#x60;THIRD_PARTY&#x60;)
      * @return [ScopesMultiResourceDataDocument]
      */
     @GET("scopes")
     suspend fun scopesGet(
         @Query("filter[requiredAccessTier]")
-        filterRequiredAccessTier: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? =
-            null
+        filterRequiredAccessTier: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>
     ): Response<ScopesMultiResourceDataDocument>
 }

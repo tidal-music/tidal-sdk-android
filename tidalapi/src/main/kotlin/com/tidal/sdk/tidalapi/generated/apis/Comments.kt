@@ -12,6 +12,12 @@ import retrofit2.http.*
 
 interface Comments {
 
+    /** enum for parameter filterSubjectType */
+    enum class FilterSubjectTypeCommentsGet(val value: kotlin.String) {
+        @SerialName(value = "albums") albums("albums"),
+        @SerialName(value = "tracks") tracks("tracks"),
+    }
+
     /** enum for parameter sort */
     enum class SortCommentsGet(val value: kotlin.String) {
         @SerialName(value = "createdAt") CreatedAtAsc("createdAt"),
@@ -22,12 +28,6 @@ interface Comments {
         @SerialName(value = "-replyCount") ReplyCountDesc("-replyCount"),
         @SerialName(value = "startTime") StartTimeAsc("startTime"),
         @SerialName(value = "-startTime") StartTimeDesc("-startTime"),
-    }
-
-    /** enum for parameter filterSubjectType */
-    enum class FilterSubjectTypeCommentsGet(val value: kotlin.String) {
-        @SerialName(value = "albums") albums("albums"),
-        @SerialName(value = "tracks") tracks("tracks"),
     }
 
     /**
@@ -43,6 +43,8 @@ interface Comments {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
+     * @param filterSubjectId Filter by subject resource ID (e.g. &#x60;12345&#x60;)
+     * @param filterSubjectType Filter by subject resource type (e.g. &#x60;albums&#x60;)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param sort Values prefixed with \&quot;-\&quot; are sorted descending; values without it are
@@ -51,22 +53,20 @@ interface Comments {
      *   Available options: ownerProfiles, owners, parentComment (optional)
      * @param filterParentCommentId Filter by parent comment ID to get replies (e.g.
      *   &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) (optional)
-     * @param filterSubjectId Filter by subject resource ID (e.g. &#x60;12345&#x60;) (optional)
-     * @param filterSubjectType Filter by subject resource type (e.g. &#x60;albums&#x60;) (optional)
      * @return [CommentsMultiResourceDataDocument]
      */
     @GET("comments")
     suspend fun commentsGet(
+        @Query("filter[subject.id]")
+        filterSubjectId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
+        @Query("filter[subject.type]")
+        filterSubjectType: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("sort") sort: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[parentComment.id]")
         filterParentCommentId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[subject.id]")
-        filterSubjectId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[subject.type]")
-        filterSubjectType: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<CommentsMultiResourceDataDocument>
 
     /**

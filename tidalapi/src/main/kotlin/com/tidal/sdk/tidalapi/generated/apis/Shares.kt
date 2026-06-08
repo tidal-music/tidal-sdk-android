@@ -21,17 +21,17 @@ interface Shares {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
+     * @param filterCode A share code (e.g. &#x60;xyz&#x60;)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: owners, sharedResources (optional)
-     * @param filterCode A share code (e.g. &#x60;xyz&#x60;) (optional)
      * @return [SharesMultiResourceDataDocument]
      */
     @GET("shares")
     suspend fun sharesGet(
+        @Query("filter[code]")
+        filterCode: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[code]")
-        filterCode: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<SharesMultiResourceDataDocument>
 
     /**

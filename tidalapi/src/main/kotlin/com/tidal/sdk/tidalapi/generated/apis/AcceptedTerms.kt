@@ -30,25 +30,25 @@ interface AcceptedTerms {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
+     * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user
+     * @param filterTermsTermsType One of: DEVELOPER, UPLOAD_MARKETPLACE (e.g.
+     *   &#x60;DEVELOPER&#x60;)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: owners, terms (optional)
-     * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user (optional)
      * @param filterTermsIsLatestVersion Filter by terms.isLatestVersion (optional)
-     * @param filterTermsTermsType One of: DEVELOPER, UPLOAD_MARKETPLACE (e.g.
-     *   &#x60;DEVELOPER&#x60;) (optional)
      * @return [AcceptedTermsMultiResourceDataDocument]
      */
     @GET("acceptedTerms")
     suspend fun acceptedTermsGet(
+        @Query("filter[owners.id]")
+        filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
+        @Query("filter[terms.termsType]")
+        filterTermsTermsType: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[owners.id]")
-        filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[terms.isLatestVersion]")
         filterTermsIsLatestVersion: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? =
             null,
-        @Query("filter[terms.termsType]")
-        filterTermsTermsType: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<AcceptedTermsMultiResourceDataDocument>
 
     /**
