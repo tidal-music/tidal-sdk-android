@@ -1126,7 +1126,7 @@ internal class ExoPlayerPlaybackEngine(
                             actualQuality,
                             sourceType,
                             sourceId,
-                            actions,
+                            actions.toList(),
                             endTimestamp,
                             endPositionSeconds,
                         )
@@ -1142,7 +1142,7 @@ internal class ExoPlayerPlaybackEngine(
                             actualQuality,
                             sourceType,
                             sourceId,
-                            actions,
+                            actions.toList(),
                             endTimestamp,
                             endPositionSeconds,
                         )
@@ -1157,7 +1157,7 @@ internal class ExoPlayerPlaybackEngine(
                             actualQuality,
                             sourceType,
                             sourceId,
-                            actions,
+                            actions.toList(),
                             endTimestamp,
                             endPositionSeconds,
                         )
@@ -1172,7 +1172,7 @@ internal class ExoPlayerPlaybackEngine(
                             actualQuality,
                             sourceType,
                             sourceId,
-                            actions,
+                            actions.toList(),
                             endTimestamp,
                             endPositionSeconds,
                         )
