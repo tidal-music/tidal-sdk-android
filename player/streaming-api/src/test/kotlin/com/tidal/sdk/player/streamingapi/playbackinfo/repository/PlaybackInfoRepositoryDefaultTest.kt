@@ -22,6 +22,7 @@ import com.tidal.sdk.player.streamingapi.playbackinfo.mapper.ApiErrorMapper
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.ManifestMimeType
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackMode
+import com.tidal.sdk.tidalapi.generated.apis.TrackManifests.UriSchemeTrackManifestsIdGet
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -80,6 +81,7 @@ internal class PlaybackInfoRepositoryDefaultTest {
             true,
             streamingSessionId,
             false,
+            UriSchemeTrackManifestsIdGet.DATA,
         )
 
     @Test

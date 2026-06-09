@@ -1,6 +1,7 @@
 package com.tidal.sdk.player.streamingapi
 
 import com.tidal.sdk.player.common.model.AudioQuality
+import com.tidal.sdk.player.common.model.UriSchemeType
 import com.tidal.sdk.player.common.model.VideoQuality
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackMode
@@ -23,6 +24,7 @@ interface StreamingApi {
      * @param[streamingSessionId] The streaming session uuid as [String], created by the client, for
      *   this streaming session.
      * @param[enableAdaptive] Whether to enable adaptive streaming.
+     * @param[uriSchemeType] The manifest URI scheme to request. [UriSchemeType]
      */
     @Suppress("LongParameterList")
     suspend fun getTrackPlaybackInfo(
@@ -32,6 +34,7 @@ interface StreamingApi {
         immersiveAudio: Boolean,
         streamingSessionId: String,
         enableAdaptive: Boolean,
+        uriSchemeType: UriSchemeType,
     ): PlaybackInfo
 
     /**
@@ -43,12 +46,14 @@ interface StreamingApi {
      * @param[streamingSessionId] The streaming session uuid as [String], created by the client, for
      *   this streaming session.
      * @param[playlistUuid] The playlistUuid this play originates from as [String]. May be null.
+     * @param[uriSchemeType] The manifest URI scheme to request. [UriSchemeType]
      */
     suspend fun getVideoPlaybackInfo(
         videoId: String,
         videoQuality: VideoQuality,
         playbackMode: PlaybackMode,
         streamingSessionId: String,
+        uriSchemeType: UriSchemeType,
         playlistUuid: String? = null,
     ): PlaybackInfo
 

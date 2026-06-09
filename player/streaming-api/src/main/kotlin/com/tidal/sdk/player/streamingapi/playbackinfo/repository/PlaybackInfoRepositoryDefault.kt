@@ -5,6 +5,7 @@ import com.tidal.sdk.player.common.model.AudioMode
 import com.tidal.sdk.player.common.model.AudioQuality
 import com.tidal.sdk.player.common.model.PreviewReason
 import com.tidal.sdk.player.common.model.StreamType
+import com.tidal.sdk.player.common.model.UriSchemeType
 import com.tidal.sdk.player.common.model.VideoQuality
 import com.tidal.sdk.player.streamingapi.playbackinfo.api.PlaybackInfoService
 import com.tidal.sdk.player.streamingapi.playbackinfo.mapper.ApiErrorMapper
@@ -48,6 +49,7 @@ internal class PlaybackInfoRepositoryDefault(
         immersiveAudio: Boolean,
         streamingSessionId: String,
         enableAdaptive: Boolean,
+        uriSchemeType: UriSchemeType,
     ) =
         try {
             val response =
@@ -55,7 +57,9 @@ internal class PlaybackInfoRepositoryDefault(
                     id = trackId,
                     manifestType = TrackManifests.ManifestTypeTrackManifestsIdGet.MPEG_DASH,
                     formats = getRequestedFormats(audioQuality, immersiveAudio),
-                    uriScheme = UriSchemeTrackManifestsIdGet.DATA,
+                    uriScheme =
+                        if (uriSchemeType == UriSchemeType.HTTPS) UriSchemeTrackManifestsIdGet.HTTPS
+                        else UriSchemeTrackManifestsIdGet.DATA,
                     usage =
                         if (playbackMode == PlaybackMode.STREAM) UsageTrackManifestsIdGet.PLAYBACK
                         else UsageTrackManifestsIdGet.DOWNLOAD,
@@ -63,6 +67,10 @@ internal class PlaybackInfoRepositoryDefault(
                 )
             if (!response.isSuccessful) throw HttpException(response)
             val data = response.body()?.data
+            val manifestUri = data?.attributes?.uri.orEmpty()
+            val manifest =
+                if (uriSchemeType == UriSchemeType.DATA) extractManifest(manifestUri)
+                else manifestUri
             PlaybackInfo.Track(
                 trackId = data?.id?.toInt() ?: -1,
                 audioQuality = getAudioQualityFromFormats(data?.attributes?.formats, audioQuality),
@@ -72,7 +80,7 @@ internal class PlaybackInfoRepositoryDefault(
                 manifestHash = data?.attributes?.hash.orEmpty(),
                 streamingSessionId = streamingSessionId,
                 manifestMimeType = ManifestMimeType.DASH,
-                manifest = extractManifest(data?.attributes?.uri.orEmpty()),
+                manifest = manifest,
                 licenseUrl = data?.attributes?.drmData?.licenseUrl,
                 albumReplayGain = data?.attributes?.albumAudioNormalizationData?.replayGain ?: -1f,
                 albumPeakAmplitude =
@@ -198,12 +206,15 @@ internal class PlaybackInfoRepositoryDefault(
         playbackMode: PlaybackMode,
         streamingSessionId: String,
         playlistUuid: String?,
+        uriSchemeType: UriSchemeType,
     ) =
         try {
             val response =
                 videoManifests.videoManifestsIdGet(
                     id = videoId,
-                    uriScheme = UriSchemeVideoManifestsIdGet.DATA,
+                    uriScheme =
+                        if (uriSchemeType == UriSchemeType.HTTPS) UriSchemeVideoManifestsIdGet.HTTPS
+                        else UriSchemeVideoManifestsIdGet.DATA,
                     usage =
                         if (playbackMode == PlaybackMode.STREAM) UsageVideoManifestsIdGet.PLAYBACK
                         else UsageVideoManifestsIdGet.DOWNLOAD,
