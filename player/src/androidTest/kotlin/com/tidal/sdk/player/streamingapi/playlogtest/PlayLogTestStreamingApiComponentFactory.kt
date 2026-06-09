@@ -7,6 +7,7 @@ import com.tidal.sdk.player.common.model.ApiError
 import com.tidal.sdk.player.common.model.AssetPresentation
 import com.tidal.sdk.player.common.model.AudioMode
 import com.tidal.sdk.player.common.model.AudioQuality
+import com.tidal.sdk.player.common.model.UriSchemeType
 import com.tidal.sdk.player.common.model.VideoQuality
 import com.tidal.sdk.player.streamingapi.StreamingApi
 import com.tidal.sdk.player.streamingapi.StreamingApiTimeoutConfig
@@ -93,6 +94,7 @@ private class PlayLogTestStreamingApi(private val trackPlaybackInfo: PlaybackInf
         immersiveAudio: Boolean,
         streamingSessionId: String,
         enableAdaptive: Boolean,
+        uriSchemeType: UriSchemeType,
     ): PlaybackInfo {
         return trackPlaybackInfo.copy(streamingSessionId = streamingSessionId)
     }
@@ -102,6 +104,7 @@ private class PlayLogTestStreamingApi(private val trackPlaybackInfo: PlaybackInf
         videoQuality: VideoQuality,
         playbackMode: PlaybackMode,
         streamingSessionId: String,
+        uriSchemeType: UriSchemeType,
         playlistUuid: String?,
     ): PlaybackInfo {
         throw UnsupportedOperationException("Not implemented for playlog test")

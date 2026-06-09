@@ -1,6 +1,7 @@
 package com.tidal.sdk.player.streamingapi
 
 import com.tidal.sdk.player.common.model.AudioQuality
+import com.tidal.sdk.player.common.model.UriSchemeType
 import com.tidal.sdk.player.common.model.VideoQuality
 import com.tidal.sdk.player.streamingapi.drm.repository.DrmLicenseRepository
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackMode
@@ -25,6 +26,7 @@ internal class StreamingApiDefault(
         immersiveAudio: Boolean,
         streamingSessionId: String,
         enableAdaptive: Boolean,
+        uriSchemeType: UriSchemeType,
     ) =
         playbackInfoRepository.getTrackPlaybackInfo(
             trackId,
@@ -33,6 +35,7 @@ internal class StreamingApiDefault(
             immersiveAudio,
             streamingSessionId,
             enableAdaptive,
+            uriSchemeType,
         )
 
     override suspend fun getVideoPlaybackInfo(
@@ -40,6 +43,7 @@ internal class StreamingApiDefault(
         videoQuality: VideoQuality,
         playbackMode: PlaybackMode,
         streamingSessionId: String,
+        uriSchemeType: UriSchemeType,
         playlistUuid: String?,
     ) =
         playbackInfoRepository.getVideoPlaybackInfo(
@@ -48,6 +52,7 @@ internal class StreamingApiDefault(
             playbackMode,
             streamingSessionId,
             playlistUuid,
+            uriSchemeType,
         )
 
     override suspend fun getBroadcastPlaybackInfo(
