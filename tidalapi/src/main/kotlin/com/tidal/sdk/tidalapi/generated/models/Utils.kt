@@ -139,6 +139,10 @@ fun getOneOfSerializer() = SerializersModule {
         )
         subclass(UserOfflineMixesResourceObject::class, UserOfflineMixesResourceObject.serializer())
         subclass(
+            UserRecommendationBlocksResourceObject::class,
+            UserRecommendationBlocksResourceObject.serializer(),
+        )
+        subclass(
             UserRecommendationsResourceObject::class,
             UserRecommendationsResourceObject.serializer(),
         )

@@ -64,6 +64,7 @@ import com.tidal.sdk.tidalapi.generated.apis.UserDataExportRequests
 import com.tidal.sdk.tidalapi.generated.apis.UserDiscoveryMixes
 import com.tidal.sdk.tidalapi.generated.apis.UserNewReleaseMixes
 import com.tidal.sdk.tidalapi.generated.apis.UserOfflineMixes
+import com.tidal.sdk.tidalapi.generated.apis.UserRecommendationBlocks
 import com.tidal.sdk.tidalapi.generated.apis.UserRecommendations
 import com.tidal.sdk.tidalapi.generated.apis.UserReports
 import com.tidal.sdk.tidalapi.generated.apis.Users
@@ -434,6 +435,14 @@ class TidalApiClient(
     /** Returns an instance of the [UserOfflineMixes] which can be used to make API calls to the */
     fun createUserOfflineMixes(): UserOfflineMixes {
         return retrofit.create(UserOfflineMixes::class.java)
+    }
+
+    /**
+     * Returns an instance of the [UserRecommendationBlocks] which can be used to make API calls to
+     * the
+     */
+    fun createUserRecommendationBlocks(): UserRecommendationBlocks {
+        return retrofit.create(UserRecommendationBlocks::class.java)
     }
 
     /**
