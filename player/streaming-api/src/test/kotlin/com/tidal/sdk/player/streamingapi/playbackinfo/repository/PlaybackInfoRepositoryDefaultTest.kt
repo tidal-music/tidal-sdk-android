@@ -9,6 +9,7 @@ import com.tidal.sdk.player.common.model.ApiError
 import com.tidal.sdk.player.common.model.AssetPresentation
 import com.tidal.sdk.player.common.model.AudioMode
 import com.tidal.sdk.player.common.model.AudioQuality
+import com.tidal.sdk.player.common.model.UriSchemeType
 import com.tidal.sdk.player.common.model.VideoQuality
 import com.tidal.sdk.player.streamingapi.ApiConstants
 import com.tidal.sdk.player.streamingapi.TrackPlaybackInfoFactory
@@ -22,7 +23,6 @@ import com.tidal.sdk.player.streamingapi.playbackinfo.mapper.ApiErrorMapper
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.ManifestMimeType
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackMode
-import com.tidal.sdk.tidalapi.generated.apis.TrackManifests.UriSchemeTrackManifestsIdGet
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -81,7 +81,7 @@ internal class PlaybackInfoRepositoryDefaultTest {
             true,
             streamingSessionId,
             false,
-            UriSchemeTrackManifestsIdGet.DATA,
+            UriSchemeType.DATA,
         )
 
     @Test
@@ -124,6 +124,7 @@ internal class PlaybackInfoRepositoryDefaultTest {
             PlaybackMode.STREAM,
             streamingSessionId,
             null,
+            UriSchemeType.DATA,
         )
 
     @Test
