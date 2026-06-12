@@ -1,0 +1,65 @@
+package com.tidal.sdk.tidalapi.networking
+
+import java.io.IOException
+import okhttp3.Interceptor
+import okhttp3.Response
+
+/** Retries eligible requests per the [RetryPolicy], backing off per [ErrorCategory]. */
+internal class RetryInterceptor(
+    private val policy: RetryPolicy,
+    private val random: () -> Double = Math::random,
+    private val sleep: (Long) -> Unit = Thread::sleep,
+) : Interceptor {
+
+    @Suppress("ReturnCount")
+    override fun intercept(chain: Interceptor.Chain): Response {
+        val request = chain.request()
+        if (!policy.isRetryableRequest(request.method)) {
+            return chain.proceed(request)
+        }
+
+        val attempts = IntArray(ErrorCategory.entries.size)
+        while (true) {
+            var response: Response? = null
+            val category =
+                try {
+                    val proceeded = chain.proceed(request)
+                    response = proceeded
+                    proceeded.toRetryCategory()
+                } catch (e: IOException) {
+                    val errorCategory = e.toRetryCategory() ?: throw e
+                    if (hasBudget(attempts, errorCategory)) {
+                        backOff(chain, attempts, errorCategory)
+                        continue
+                    }
+                    throw e
+                }
+            val nonNullResponse = requireNotNull(response)
+            if (category == null || !hasBudget(attempts, category)) {
+                return nonNullResponse
+            }
+            nonNullResponse.close() // Free the body before retrying so it is not leaked.
+            backOff(chain, attempts, category)
+        }
+    }
+
+    private fun hasBudget(attempts: IntArray, category: ErrorCategory): Boolean =
+        attempts[category.ordinal] < policy.getConfigurationFor(category).maxRetries
+
+    /** Sleeps [category]'s backoff and records the attempt; throws [IOException] if cancelled. */
+    private fun backOff(chain: Interceptor.Chain, attempts: IntArray, category: ErrorCategory) {
+        if (chain.call().isCanceled()) throw IOException("Canceled")
+        try {
+            sleep(
+                policy
+                    .getConfigurationFor(category)
+                    .computeDelayMillis(attempts[category.ordinal], random)
+            )
+        } catch (e: InterruptedException) {
+            Thread.currentThread().interrupt()
+            throw IOException("Retry backoff interrupted", e)
+        }
+        if (chain.call().isCanceled()) throw IOException("Canceled")
+        attempts[category.ordinal]++
+    }
+}
