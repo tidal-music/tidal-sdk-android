@@ -5,6 +5,7 @@ import com.tidal.sdk.common.d
 import com.tidal.sdk.common.logger
 import com.tidal.sdk.tidalapi.generated.models.getOneOfSerializer
 import java.io.File
+import java.util.concurrent.TimeUnit
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import okhttp3.Cache
@@ -16,10 +17,28 @@ import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 
-class RetrofitProvider(
+/**
+ * @param[retryPolicy] The [RetryPolicy] driving automatic retry of failed requests. Defaults to
+ *   [DefaultRetryPolicy] (the three-category model, retrying GET/HEAD/OPTIONS only). Pass `null` to
+ *   disable retry entirely.
+ * @param[readTimeoutMillis] The OkHttp read timeout, in milliseconds. Must be positive. Defaults to
+ *   [DEFAULT_READ_TIMEOUT_MILLIS] (5s). A read that exceeds it surfaces a `SocketTimeoutException`,
+ *   which the retry interceptor classifies as a timeout.
+ */
+class RetrofitProvider
+@JvmOverloads
+constructor(
     private val cacheDir: File? = null,
     private val cacheSize: Long = DEFAULT_CACHE_SIZE,
+    private val retryPolicy: RetryPolicy? = DefaultRetryPolicy(),
+    private val readTimeoutMillis: Long = DEFAULT_READ_TIMEOUT_MILLIS,
 ) {
+
+    init {
+        require(readTimeoutMillis > 0) {
+            "readTimeoutMillis must be positive, was $readTimeoutMillis"
+        }
+    }
 
     private val converterFactories: List<Converter.Factory> =
         listOf(
@@ -29,7 +48,9 @@ class RetrofitProvider(
 
     private fun provideOkHttpClient(credentialsProvider: CredentialsProvider): OkHttpClient =
         OkHttpClient.Builder()
+            .readTimeout(readTimeoutMillis, TimeUnit.MILLISECONDS)
             .apply { cacheDir?.let { cache(Cache(it, cacheSize)) } }
+            .apply { retryPolicy?.let { addInterceptor(RetryInterceptor(it)) } }
             .addInterceptor(AuthInterceptor(credentialsProvider))
             .authenticator(DefaultAuthenticator(credentialsProvider))
             .addInterceptor(getLoggingInterceptor())
@@ -44,6 +65,7 @@ class RetrofitProvider(
 
     companion object {
         const val DEFAULT_CACHE_SIZE = 10L * 1024 * 1024 // 10 MB
+        const val DEFAULT_READ_TIMEOUT_MILLIS = 5_000L
     }
 
     private fun getLoggingInterceptor(): HttpLoggingInterceptor {
