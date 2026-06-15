@@ -46,7 +46,6 @@ internal interface PlayerComponent {
             @BindsInstance context: Context,
             @BindsInstance credentialsProvider: CredentialsProvider,
             @BindsInstance eventSender: EventSender,
-            @BindsInstance @Named("useLibflacAudioRenderer") useLibflacAudioRenderer: Boolean,
             @BindsInstance @Named("enableDecoderFallback") enableDecoderFallback: Boolean,
             @BindsInstance userClientIdSupplier: (() -> Int)?,
             @BindsInstance version: String,
