@@ -43,6 +43,7 @@ internal class PlaybackInfoMediaSource(
     private val loaderCallback by lazy {
         loaderCallbackFactory.create(
             mediaItem,
+            loadErrorHandlingPolicy,
             dataType,
             eventDispatcher,
             loadEventInfoF,
