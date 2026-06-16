@@ -26,6 +26,7 @@ import com.tidal.sdk.player.commonandroid.Base64Codec
 import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
 import com.tidal.sdk.player.events.EventReporter
 import com.tidal.sdk.player.playbackengine.Encryption
+import com.tidal.sdk.player.playbackengine.NoRetryLoadErrorHandlingPolicy
 import com.tidal.sdk.player.playbackengine.PlayerLoadErrorHandlingPolicy
 import com.tidal.sdk.player.playbackengine.StreamingApiRepository
 import com.tidal.sdk.player.playbackengine.TidalExtractorsFactory
@@ -174,6 +175,13 @@ internal object MediaSourcererModule {
     internal fun providePlayerLoadErrorHandlingPolicy(
         @Named("defaultLoadErrorHandlingPolicy") loadErrorHandlingPolicy: LoadErrorHandlingPolicy
     ): LoadErrorHandlingPolicy = PlayerLoadErrorHandlingPolicy(loadErrorHandlingPolicy)
+
+    @Provides
+    @Reusable
+    @Named("noRetryLoadErrorHandlingPolicy")
+    fun provideNoRetryLoadErrorHandlingPolicy(
+        @Named("defaultLoadErrorHandlingPolicy") loadErrorHandlingPolicy: LoadErrorHandlingPolicy
+    ): LoadErrorHandlingPolicy = NoRetryLoadErrorHandlingPolicy(loadErrorHandlingPolicy)
 
     @Provides
     @Reusable
@@ -469,19 +477,21 @@ internal object MediaSourcererModule {
     @Provides
     @Reusable
     fun playbackInfoLoadableLoaderCallbackFactory(
-        tidalMediaSourceCreator: TidalMediaSourceCreator,
-        loadErrorHandlingPolicy: LoadErrorHandlingPolicy,
-    ) = PlaybackInfoLoadableLoaderCallbackFactory(tidalMediaSourceCreator, loadErrorHandlingPolicy)
+        tidalMediaSourceCreator: TidalMediaSourceCreator
+    ) = PlaybackInfoLoadableLoaderCallbackFactory(tidalMediaSourceCreator)
 
     @Provides
     @Reusable
     fun playbackInfoMediaSourceFactory(
         loadErrorHandlingPolicy: LoadErrorHandlingPolicy,
+        @Named("noRetryLoadErrorHandlingPolicy")
+        noRetryLoadErrorHandlingPolicy: LoadErrorHandlingPolicy,
         playbackInfoLoadableFactory: PlaybackInfoLoadableFactory,
         playbackInfoLoadableLoaderCallbackFactory: PlaybackInfoLoadableLoaderCallbackFactory,
     ) =
         PlaybackInfoMediaSourceFactory(
             loadErrorHandlingPolicy,
+            noRetryLoadErrorHandlingPolicy,
             playbackInfoLoadableFactory,
             playbackInfoLoadableLoaderCallbackFactory,
         )

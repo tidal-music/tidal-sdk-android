@@ -10,6 +10,7 @@ import androidx.media3.exoplayer.upstream.LoadErrorHandlingPolicy
 import androidx.media3.exoplayer.upstream.Loader
 import com.tidal.sdk.player.common.ForwardingMediaProduct
 import com.tidal.sdk.player.common.model.MediaProduct
+import com.tidal.sdk.player.common.model.ProductType
 import com.tidal.sdk.player.playbackengine.mediasource.loadable.PlaybackInfoLoadableFactory
 import com.tidal.sdk.player.playbackengine.mediasource.loadable.PlaybackInfoLoadableLoaderCallbackFactory
 import com.tidal.sdk.player.playbackengine.mediasource.streamingsession.StreamingSession
@@ -18,7 +19,8 @@ private const val DATA_TYPE = C.DATA_TYPE_MANIFEST
 private const val LOADER_THREAD_NAME_SUFFIX = "PlaybackInfoMediaSource"
 
 internal class PlaybackInfoMediaSourceFactory(
-    private val loadErrorHandlingPolicy: LoadErrorHandlingPolicy,
+    private val playerLoadErrorHandlingPolicy: LoadErrorHandlingPolicy,
+    private val noRetryLoadErrorHandlingPolicy: LoadErrorHandlingPolicy,
     private val playbackInfoLoadableFactory: PlaybackInfoLoadableFactory,
     private val playbackInfoLoadableLoaderCallbackFactory:
         PlaybackInfoLoadableLoaderCallbackFactory, // ktlint-disable max-line-length
@@ -28,8 +30,15 @@ internal class PlaybackInfoMediaSourceFactory(
     fun create(
         streamingSession: StreamingSession,
         forwardingMediaProduct: ForwardingMediaProduct<MediaProduct>,
-    ) =
-        PlaybackInfoMediaSource(
+    ): PlaybackInfoMediaSource {
+        val loadErrorHandlingPolicy =
+            when (forwardingMediaProduct.productType) {
+                ProductType.TRACK,
+                ProductType.VIDEO -> noRetryLoadErrorHandlingPolicy
+                ProductType.BROADCAST,
+                ProductType.UC -> playerLoadErrorHandlingPolicy
+            }
+        return PlaybackInfoMediaSource(
             forwardingMediaProduct,
             loadErrorHandlingPolicy,
             playbackInfoLoadableFactory.create(streamingSession, forwardingMediaProduct),
@@ -61,4 +70,5 @@ internal class PlaybackInfoMediaSourceFactory(
             playbackInfoLoadableLoaderCallbackFactory,
             forwardingMediaProduct.extras,
         )
+    }
 }

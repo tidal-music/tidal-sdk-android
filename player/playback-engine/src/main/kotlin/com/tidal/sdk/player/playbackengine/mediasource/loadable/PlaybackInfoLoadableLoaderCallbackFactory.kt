@@ -10,13 +10,13 @@ import com.tidal.sdk.player.playbackengine.mediasource.TidalMediaSourceCreator
 import java.io.IOException
 
 internal class PlaybackInfoLoadableLoaderCallbackFactory(
-    private val tidalMediaSourceCreator: TidalMediaSourceCreator,
-    private val loadErrorHandlingPolicy: LoadErrorHandlingPolicy,
+    private val tidalMediaSourceCreator: TidalMediaSourceCreator
 ) {
 
     @Suppress("LongParameterList")
     fun create(
         mediaItem: MediaItem,
+        loadErrorHandlingPolicy: LoadErrorHandlingPolicy,
         dataType: Int,
         eventDispatcher: MediaSourceEventListener.EventDispatcher,
         loadEventInfoF: (Long, Long) -> LoadEventInfo,

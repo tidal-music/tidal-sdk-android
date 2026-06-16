@@ -2,8 +2,12 @@ package com.tidal.sdk.player.playbackengine.mediasource
 
 import androidx.media3.exoplayer.source.MediaSource
 import androidx.media3.exoplayer.source.MediaSourceEventListener.EventDispatcher
+import androidx.media3.exoplayer.upstream.LoadErrorHandlingPolicy
 import com.tidal.sdk.player.reflectionGetInstanceMemberProperty
 import com.tidal.sdk.player.reflectionSetInstanceMemberProperty
+
+internal val PlaybackInfoMediaSource.reflectionLoadErrorHandlingPolicy: LoadErrorHandlingPolicy
+    get() = reflectionGetInstanceMemberProperty("loadErrorHandlingPolicy")!!
 
 internal val PlaybackInfoMediaSource.reflectionEventDispatcher: EventDispatcher
     get() = reflectionGetInstanceMemberProperty("eventDispatcher")!!

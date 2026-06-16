@@ -83,6 +83,7 @@ internal class PlaybackInfoMediaSourceTest {
         whenever(
                 callbackFactory.create(
                     expectedMediaItem,
+                    loadErrorHandlingPolicy,
                     C.DATA_TYPE_MANIFEST,
                     eventDispatcher,
                     loadEventInfoF,
@@ -129,6 +130,7 @@ internal class PlaybackInfoMediaSourceTest {
         whenever(
                 callbackFactory.create(
                     expectedMediaItem,
+                    loadErrorHandlingPolicy,
                     C.DATA_TYPE_MANIFEST,
                     playbackInfoMediaSource.reflectionEventDispatcher,
                     loadEventInfoF,
@@ -156,6 +158,7 @@ internal class PlaybackInfoMediaSourceTest {
         whenever(
                 callbackFactory.create(
                     expectedMediaItem,
+                    loadErrorHandlingPolicy,
                     C.DATA_TYPE_MANIFEST,
                     playbackInfoMediaSource.reflectionEventDispatcher,
                     loadEventInfoF,
