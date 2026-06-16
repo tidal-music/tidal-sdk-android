@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.45] - 2026-06-16
+### Added
+- Automatic retry for read-only (GET/HEAD) network calls using a three-category retry policy (transient, rate-limit, and non-retryable errors).
+
 ## [0.3.44] - 2026-06-09
 ### Changed
 - Updated generated code using api spec version 1.10.28
