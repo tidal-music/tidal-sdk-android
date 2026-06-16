@@ -36,9 +36,11 @@ import com.tidal.sdk.player.playbackengine.dash.DashManifestFactory
 import com.tidal.sdk.player.playbackengine.datasource.CacheKeyAesCipherDataSourceFactoryFactory
 import com.tidal.sdk.player.playbackengine.datasource.DecryptedHeaderFileDataSourceFactoryFactory
 import com.tidal.sdk.player.playbackengine.di.ExoPlayerPlaybackEngineComponent
+import com.tidal.sdk.player.playbackengine.drm.DrmKeySetStore
 import com.tidal.sdk.player.playbackengine.drm.DrmSessionManagerFactory
 import com.tidal.sdk.player.playbackengine.drm.DrmSessionManagerProviderFactory
 import com.tidal.sdk.player.playbackengine.drm.MediaDrmCallbackExceptionFactory
+import com.tidal.sdk.player.playbackengine.drm.OfflineLicenseManager
 import com.tidal.sdk.player.playbackengine.drm.TidalMediaDrmCallbackFactory
 import com.tidal.sdk.player.playbackengine.emu.EmuManifestFactory
 import com.tidal.sdk.player.playbackengine.error.ErrorHandler
@@ -76,9 +78,11 @@ import dagger.Reusable
 import javax.inject.Named
 import kotlin.time.toJavaDuration
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
 import okhttp3.OkHttpClient
 
 private const val MINIMUM_LOADABLE_RETRY_COUNT = 10
+private const val DRM_KEY_SET_PREFS = "tidal_player_drm_key_sets"
 
 @Module
 internal object MediaSourcererModule {
@@ -419,10 +423,43 @@ internal object MediaSourcererModule {
 
     @Provides
     @Reusable
+    fun drmKeySetStore(context: Context, base64Codec: Base64Codec) =
+        DrmKeySetStore(
+            context.getSharedPreferences(DRM_KEY_SET_PREFS, Context.MODE_PRIVATE),
+            base64Codec,
+        )
+
+    @Provides
+    @Reusable
+    fun offlineLicenseManager(
+        defaultDrmSessionManagerBuilder: DefaultDrmSessionManager.Builder,
+        tidalMediaDrmCallbackFactory: TidalMediaDrmCallbackFactory,
+        dashManifestFactory: DashManifestFactory,
+        drmKeySetStore: DrmKeySetStore,
+        trueTimeWrapper: TrueTimeWrapper,
+        coroutineDispatcher: CoroutineDispatcher,
+    ) =
+        OfflineLicenseManager(
+            defaultDrmSessionManagerBuilder,
+            tidalMediaDrmCallbackFactory,
+            dashManifestFactory,
+            drmKeySetStore,
+            trueTimeWrapper,
+            CoroutineScope(coroutineDispatcher),
+        )
+
+    @Provides
+    @Reusable
     fun drmSessionManagerFactory(
         defaultDrmSessionManagerBuilder: DefaultDrmSessionManager.Builder,
         tidalMediaDrmCallbackFactory: TidalMediaDrmCallbackFactory,
-    ) = DrmSessionManagerFactory(defaultDrmSessionManagerBuilder, tidalMediaDrmCallbackFactory)
+        offlineLicenseManager: OfflineLicenseManager,
+    ) =
+        DrmSessionManagerFactory(
+            defaultDrmSessionManagerBuilder,
+            tidalMediaDrmCallbackFactory,
+            offlineLicenseManager,
+        )
 
     @Provides @Reusable fun drmSessionManagerProviderFactory() = DrmSessionManagerProviderFactory()
 
