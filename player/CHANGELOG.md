@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `UriSchemeType` argument for the StreamingApi track and video manifest endpoints.
 
 ### Changed
+- Updated tidalapi dependency to 0.3.45.
 - Skip player-level retry for TRACK/VIDEO PlaybackInfo fetches to avoid duplicate retries.
 
 ### Fixed
