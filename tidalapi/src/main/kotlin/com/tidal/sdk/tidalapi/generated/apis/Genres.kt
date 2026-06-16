@@ -19,21 +19,20 @@ interface Genres {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
+     * @param filterId Allows filtering by genre id(s). USER_SELECTABLE is special value used to
+     *   return specific genres which users can select from (e.g. &#x60;&#39;1,2,3&#39; or
+     *   &#39;USER_SELECTABLE&#39;&#x60;)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param locale BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or
      *   unsupported. (optional, default to "en-US")
-     * @param filterId Allows filtering by genre id(s). USER_SELECTABLE is special value used to
-     *   return specific genres which users can select from (e.g. &#x60;&#39;1,2,3&#39; or
-     *   &#39;USER_SELECTABLE&#39;&#x60;) (optional)
      * @return [GenresMultiResourceDataDocument]
      */
     @GET("genres")
     suspend fun genresGet(
+        @Query("filter[id]") filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("locale") locale: kotlin.String? = "en-US",
-        @Query("filter[id]")
-        filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<GenresMultiResourceDataDocument>
 
     /**

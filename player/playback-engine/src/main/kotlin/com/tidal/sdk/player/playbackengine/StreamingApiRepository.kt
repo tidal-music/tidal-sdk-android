@@ -5,6 +5,7 @@ import com.tidal.sdk.player.common.ForwardingMediaProduct
 import com.tidal.sdk.player.common.model.AudioQuality
 import com.tidal.sdk.player.common.model.Extras
 import com.tidal.sdk.player.common.model.ProductType
+import com.tidal.sdk.player.common.model.UriSchemeType
 import com.tidal.sdk.player.common.model.VideoQuality
 import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
 import com.tidal.sdk.player.events.EventReporter
@@ -117,6 +118,7 @@ internal class StreamingApiRepository(
                             audioModeRepository.immersiveAudio,
                             streamingSessionId,
                             audioQualityRepository.enableAdaptive,
+                            UriSchemeType.DATA,
                         )
 
                     ProductType.VIDEO ->
@@ -125,6 +127,7 @@ internal class StreamingApiRepository(
                             videoQualityRepository.streamingQuality,
                             PlaybackMode.STREAM,
                             streamingSessionId,
+                            UriSchemeType.DATA,
                         )
 
                     ProductType.BROADCAST ->

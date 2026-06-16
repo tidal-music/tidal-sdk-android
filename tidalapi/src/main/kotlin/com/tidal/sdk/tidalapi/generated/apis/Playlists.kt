@@ -49,7 +49,7 @@ interface Playlists {
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: collaboratorProfiles, collaborators, coverArt, items, ownerProfiles,
      *   owners (optional)
-     * @param filterId Playlist id (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;)
+     * @param filterId List of playlist IDs (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;)
      *   (optional)
      * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user (optional)
      * @return [PlaylistsMultiResourceDataDocument]

@@ -10,6 +10,7 @@ import com.tidal.sdk.player.common.ForwardingMediaProduct
 import com.tidal.sdk.player.common.model.AudioQuality
 import com.tidal.sdk.player.common.model.ProductQuality
 import com.tidal.sdk.player.common.model.ProductType
+import com.tidal.sdk.player.common.model.UriSchemeType
 import com.tidal.sdk.player.common.model.VideoQuality
 import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
 import com.tidal.sdk.player.events.EventReporter
@@ -172,6 +173,7 @@ internal class StreamingApiRepositoryTest {
                                 false,
                                 "streamingSessionId",
                                 enableAdaptive = false,
+                                uriSchemeType = UriSchemeType.DATA,
                             )
                         )
                         .thenReturn(expected)
@@ -186,6 +188,7 @@ internal class StreamingApiRepositoryTest {
                                 productQuality,
                                 playbackMode,
                                 "streamingSessionId",
+                                UriSchemeType.DATA,
                             )
                         )
                         .thenReturn(expected)
@@ -286,6 +289,7 @@ internal class StreamingApiRepositoryTest {
                                 false,
                                 "streamingSessionId",
                                 enableAdaptive = false,
+                                uriSchemeType = UriSchemeType.DATA,
                             )
                         )
                         .thenThrow(runtimeException)
@@ -300,6 +304,7 @@ internal class StreamingApiRepositoryTest {
                                 productQuality,
                                 playbackMode,
                                 "streamingSessionId",
+                                UriSchemeType.DATA,
                             )
                         )
                         .thenThrow(runtimeException)

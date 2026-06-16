@@ -7,7 +7,8 @@ globalProperties:
 additionalProperties:
   artifactId: tidalapi.generated
   packageName: com.tidal.sdk.tidalapi.generated
-  apiSuffix: ''
+  apiNameSuffix: ''
+  removeEnumValuePrefix: true
   groupId: com.tidal.sdk
   library: jvm-retrofit2
   serializationLibrary: kotlinx_serialization

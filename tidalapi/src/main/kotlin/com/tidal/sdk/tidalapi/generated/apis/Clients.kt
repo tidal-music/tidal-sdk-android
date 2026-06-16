@@ -22,17 +22,17 @@ interface Clients {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
+     * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: owners (optional)
-     * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user (optional)
      * @return [ClientsMultiResourceDataDocument]
      */
     @GET("clients")
     suspend fun clientsGet(
+        @Query("filter[owners.id]")
+        filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[owners.id]")
-        filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<ClientsMultiResourceDataDocument>
 
     /**

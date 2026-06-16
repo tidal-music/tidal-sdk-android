@@ -10,23 +10,34 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param collectionType
  * @param createdAt
  * @param lastModifiedAt
  * @param name
+ * @param collectionType The type of user collection this folder belongs to. Deprecated: use the
+ *   'userCollection' relationship instead. This field will be removed in a future version, so
+ *   clients should not depend on its presence.
  * @param numberOfItems
  */
 @Serializable
 data class UserCollectionFoldersAttributes(
-    @SerialName(value = "collectionType")
-    val collectionType: UserCollectionFoldersAttributes.CollectionType,
     @SerialName(value = "createdAt") val createdAt: kotlin.String,
     @SerialName(value = "lastModifiedAt") val lastModifiedAt: kotlin.String,
     @SerialName(value = "name") val name: kotlin.String,
+    /* The type of user collection this folder belongs to. Deprecated: use the 'userCollection' relationship instead. This field will be removed in a future version, so clients should not depend on its presence. */
+
+    @SerialName(value = "collectionType")
+    @Deprecated(message = "This property is deprecated.")
+    val collectionType: UserCollectionFoldersAttributes.CollectionType? = null,
     @SerialName(value = "numberOfItems") val numberOfItems: kotlin.Int? = null,
 ) {
 
-    /** Values: PLAYLISTS */
+    /**
+     * The type of user collection this folder belongs to. Deprecated: use the 'userCollection'
+     * relationship instead. This field will be removed in a future version, so clients should not
+     * depend on its presence.
+     *
+     * Values: PLAYLISTS
+     */
     @Serializable
     enum class CollectionType(val value: kotlin.String) {
         @SerialName(value = "PLAYLISTS") PLAYLISTS("PLAYLISTS")

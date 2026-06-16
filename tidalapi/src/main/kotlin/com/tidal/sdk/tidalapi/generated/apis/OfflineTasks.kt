@@ -22,25 +22,20 @@ interface OfflineTasks {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
+     * @param filterInstallationId List of offline task IDs (e.g. &#x60;a468bee88def&#x60;)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: collection, item, owners (optional)
-     * @param filterId List of offline task IDs (e.g.
-     *   &#x60;a468bee8-8def-4a1b-8c1e-123456789abc&#x60;) (optional)
-     * @param filterInstallationId List of offline task IDs (e.g. &#x60;a468bee88def&#x60;)
-     *   (optional)
      * @return [OfflineTasksMultiResourceDataDocument]
      */
     @GET("offlineTasks")
     suspend fun offlineTasksGet(
+        @Query("filter[installation.id]")
+        filterInstallationId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[id]")
-        filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[installation.id]")
-        filterInstallationId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<OfflineTasksMultiResourceDataDocument>
 
     /**

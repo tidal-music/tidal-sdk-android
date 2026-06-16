@@ -29,20 +29,20 @@ interface PlayQueues {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
+     * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: current, future, owners, past (optional)
-     * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user (optional)
      * @return [PlayQueuesMultiResourceDataDocument]
      */
     @GET("playQueues")
     suspend fun playQueuesGet(
+        @Query("filter[owners.id]")
+        filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[owners.id]")
-        filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<PlayQueuesMultiResourceDataDocument>
 
     /**

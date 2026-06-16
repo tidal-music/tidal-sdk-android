@@ -31,7 +31,6 @@ interface Installations {
      *   Available options: offlineInventory, owners (optional)
      * @param filterClientProvidedInstallationId Client-provided installation identifier to filter
      *   by (e.g. &#x60;a468bee88def&#x60;) (optional)
-     * @param filterId List of installation IDs (e.g. &#x60;a468bee88def&#x60;) (optional)
      * @param filterOwnersId User ID to filter by. Use &#x60;me&#x60; for the authenticated user
      *   (optional)
      * @return [InstallationsMultiResourceDataDocument]
@@ -46,8 +45,6 @@ interface Installations {
             @JvmSuppressWildcards
             kotlin.collections.List<kotlin.String>? =
             null,
-        @Query("filter[id]")
-        filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[owners.id]")
         filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<InstallationsMultiResourceDataDocument>
@@ -111,14 +108,6 @@ interface Installations {
             null,
     ): Response<Unit>
 
-    /** enum for parameter filterState */
-    enum class FilterStateInstallationsIdRelationshipsOfflineInventoryGet(
-        val value: kotlin.String
-    ) {
-        @SerialName(value = "PENDING") PENDING("PENDING"),
-        @SerialName(value = "STORED") STORED("STORED"),
-    }
-
     /** enum for parameter filterType */
     enum class FilterTypeInstallationsIdRelationshipsOfflineInventoryGet(val value: kotlin.String) {
         @SerialName(value = "tracks") tracks("tracks"),
@@ -126,6 +115,14 @@ interface Installations {
         @SerialName(value = "albums") albums("albums"),
         @SerialName(value = "playlists") playlists("playlists"),
         @SerialName(value = "userCollectionTracks") userCollectionTracks("userCollectionTracks"),
+    }
+
+    /** enum for parameter filterState */
+    enum class FilterStateInstallationsIdRelationshipsOfflineInventoryGet(
+        val value: kotlin.String
+    ) {
+        @SerialName(value = "PENDING") PENDING("PENDING"),
+        @SerialName(value = "STORED") STORED("STORED"),
     }
 
     /**
@@ -142,19 +139,21 @@ interface Installations {
      * - 503: Temporarily unavailable; please try again later
      *
      * @param id Installation id
+     * @param filterType One of: tracks, videos, albums, playlists, userCollectionTracks (e.g.
+     *   &#x60;tracks&#x60;)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: offlineInventory (optional)
      * @param filterId Offline item id (e.g. &#x60;1234&#x60;) (optional)
      * @param filterState One of: PENDING, STORED (e.g. &#x60;PENDING&#x60;) (optional)
-     * @param filterType One of: tracks, videos, albums, playlists, userCollectionTracks (e.g.
-     *   &#x60;tracks&#x60;) (optional)
      * @return [InstallationsOfflineInventoryMultiRelationshipDataDocument]
      */
     @GET("installations/{id}/relationships/offlineInventory")
     suspend fun installationsIdRelationshipsOfflineInventoryGet(
         @Path("id") id: kotlin.String,
+        @Query("filter[type]")
+        filterType: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
@@ -162,8 +161,6 @@ interface Installations {
         filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[state]")
         filterState: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[type]")
-        filterType: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<InstallationsOfflineInventoryMultiRelationshipDataDocument>
 
     /**

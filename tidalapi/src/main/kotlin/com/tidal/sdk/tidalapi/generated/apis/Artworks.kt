@@ -21,19 +21,18 @@ interface Artworks {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
+     * @param filterId Artwork id (e.g. &#x60;a468bee88def&#x60;)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: owners (optional)
-     * @param filterId Artwork id (e.g. &#x60;a468bee88def&#x60;) (optional)
      * @return [ArtworksMultiResourceDataDocument]
      */
     @GET("artworks")
     suspend fun artworksGet(
+        @Query("filter[id]") filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[id]")
-        filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<ArtworksMultiResourceDataDocument>
 
     /**

@@ -34,6 +34,36 @@ def get_endpoints(spec):
     return endpoints
 
 
+def resolve_ref(spec, node):
+    """Resolve a local "$ref" against the spec, returning the referenced object.
+
+    Returns the node unchanged if it isn't a ref or can't be resolved.
+    """
+    if not isinstance(node, dict) or "$ref" not in node:
+        return node
+    ref = node["$ref"]
+    if not ref.startswith("#/"):
+        return node
+    target = spec
+    for part in ref[2:].split("/"):
+        if not isinstance(target, dict) or part not in target:
+            return node
+        target = target[part]
+    return target
+
+
+def get_params(operation, spec):
+    """Return dict of (name, location) -> resolved parameter for an operation."""
+    params = {}
+    for param in operation.get("parameters", []):
+        resolved = resolve_ref(spec, param)
+        name = resolved.get("name")
+        location = resolved.get("in")
+        if name is not None and location is not None:
+            params[(name, location)] = resolved
+    return params
+
+
 def get_schemas(spec):
     """Extract dict of schema_name -> schema from spec."""
     return spec.get("components", {}).get("schemas", {})
@@ -46,6 +76,53 @@ def diff_endpoints(old_eps, new_eps):
     added = sorted(new_keys - old_keys)
     removed = sorted(old_keys - new_keys)
     return added, removed
+
+
+def diff_operations(old_eps, new_eps, old_spec, new_spec):
+    """Return per-endpoint parameter changes for endpoints present in both specs.
+
+    Keyed by (path, method), each value is a list of change tuples describing
+    parameter additions, removals, required-flips and type changes.
+    """
+    modified = {}
+    for key in sorted(old_eps.keys() & new_eps.keys()):
+        old_params = get_params(old_eps[key], old_spec)
+        new_params = get_params(new_eps[key], new_spec)
+
+        changes = []
+        old_pkeys = set(old_params.keys())
+        new_pkeys = set(new_params.keys())
+
+        for name, loc in sorted(new_pkeys - old_pkeys):
+            param = new_params[(name, loc)]
+            req = "required" if param.get("required", False) else "optional"
+            changes.append(
+                ("param_added", name, loc, schema_type_str(param.get("schema")), req)
+            )
+
+        for name, loc in sorted(old_pkeys - new_pkeys):
+            changes.append(("param_removed", name, loc))
+
+        for name, loc in sorted(old_pkeys & new_pkeys):
+            old_param = old_params[(name, loc)]
+            new_param = new_params[(name, loc)]
+
+            old_type = schema_type_str(old_param.get("schema"))
+            new_type = schema_type_str(new_param.get("schema"))
+            if old_type != new_type:
+                changes.append(("param_type_changed", name, loc, old_type, new_type))
+
+            was_required = old_param.get("required", False)
+            now_required = new_param.get("required", False)
+            if was_required and not now_required:
+                changes.append(("param_became_optional", name, loc))
+            elif not was_required and now_required:
+                changes.append(("param_became_required", name, loc))
+
+        if changes:
+            modified[key] = changes
+
+    return modified
 
 
 def diff_schemas(old_schemas, new_schemas):
@@ -99,7 +176,35 @@ def diff_single_schema(old_schema, new_schema):
     return changes
 
 
-def format_report(old_spec, new_spec, ep_added, ep_removed, s_added, s_removed, s_modified):
+def format_param_change(path, method, change):
+    """Format a single parameter change tuple. Returns (severity, message)."""
+    ep = f"{method.upper()} {path}"
+    kind = change[0]
+    if kind == "param_removed":
+        name, loc = change[1], change[2]
+        return "breaking", f"`{ep}`: removed {loc} parameter `{name}`"
+    if kind == "param_type_changed":
+        name, loc, old_type, new_type = change[1], change[2], change[3], change[4]
+        return (
+            "breaking",
+            f"`{ep}`: {loc} parameter `{name}` type changed `{old_type}` -> `{new_type}`",
+        )
+    if kind == "param_became_required":
+        name, loc = change[1], change[2]
+        return "breaking", f"`{ep}`: {loc} parameter `{name}` became required"
+    if kind == "param_added":
+        name, loc, ptype, req = change[1], change[2], change[3], change[4]
+        severity = "breaking" if req == "required" else "additive"
+        return severity, f"`{ep}`: added {req} {loc} parameter `{name}` ({ptype})"
+    if kind == "param_became_optional":
+        name, loc = change[1], change[2]
+        return "additive", f"`{ep}`: {loc} parameter `{name}` became optional"
+    return "additive", f"`{ep}`: {kind} `{change[1]}`"
+
+
+def format_report(
+    old_spec, new_spec, ep_added, ep_removed, op_modified, s_added, s_removed, s_modified
+):
     """Format the change report as Markdown."""
     old_version = old_spec.get("info", {}).get("version", "unknown")
     new_version = new_spec.get("info", {}).get("version", "unknown")
@@ -112,6 +217,12 @@ def format_report(old_spec, new_spec, ep_added, ep_removed, s_added, s_removed, 
         breaking.append(f"REMOVED endpoint: `{method.upper()} {path}`")
     for path, method in ep_added:
         additive.append(f"New endpoint: `{method.upper()} {path}`")
+
+    # Classify parameter changes on endpoints present in both specs
+    for (path, method), changes in sorted(op_modified.items()):
+        for change in changes:
+            severity, message = format_param_change(path, method, change)
+            (breaking if severity == "breaking" else additive).append(message)
 
     # Classify schema changes
     for name in s_removed:
@@ -179,13 +290,14 @@ def main():
     old_eps = get_endpoints(old_spec)
     new_eps = get_endpoints(new_spec)
     ep_added, ep_removed = diff_endpoints(old_eps, new_eps)
+    op_modified = diff_operations(old_eps, new_eps, old_spec, new_spec)
 
     old_schemas = get_schemas(old_spec)
     new_schemas = get_schemas(new_spec)
     s_added, s_removed, s_modified = diff_schemas(old_schemas, new_schemas)
 
     report = format_report(
-        old_spec, new_spec, ep_added, ep_removed, s_added, s_removed, s_modified
+        old_spec, new_spec, ep_added, ep_removed, op_modified, s_added, s_removed, s_modified
     )
     print(report)
 
@@ -193,6 +305,11 @@ def main():
     breaking_items = []
     for path, method in ep_removed:
         breaking_items.append(f"  REMOVED endpoint: {method.upper()} {path}")
+    for (path, method), changes in sorted(op_modified.items()):
+        for change in changes:
+            severity, message = format_param_change(path, method, change)
+            if severity == "breaking":
+                breaking_items.append("  " + message.replace("`", ""))
     for name in s_removed:
         breaking_items.append(f"  REMOVED model: {name}")
     for name, changes in sorted(s_modified.items()):

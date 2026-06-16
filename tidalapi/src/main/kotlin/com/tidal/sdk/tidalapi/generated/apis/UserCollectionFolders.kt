@@ -6,6 +6,7 @@ import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersItemsRelatio
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersItemsRelationshipRemoveOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersMultiResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersUpdateOperationPayload
 import kotlinx.serialization.SerialName
@@ -26,18 +27,17 @@ interface UserCollectionFolders {
      * - 500: An unexpected error was encountered
      * - 503: Temporarily unavailable; please try again later
      *
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: items, owners (optional)
      * @param filterId Folder Id (e.g.
-     *   &#x60;CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX&#x60;) (optional)
+     *   &#x60;CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX&#x60;)
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: items, owners, userCollection (optional)
      * @return [UserCollectionFoldersMultiResourceDataDocument]
      */
     @GET("userCollectionFolders")
     suspend fun userCollectionFoldersGet(
+        @Query("filter[id]") filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[id]")
-        filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<UserCollectionFoldersMultiResourceDataDocument>
 
     /**
@@ -79,7 +79,7 @@ interface UserCollectionFolders {
      *
      * @param id Folder Id
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: items, owners (optional)
+     *   Available options: items, owners, userCollection (optional)
      * @return [UserCollectionFoldersSingleResourceDataDocument]
      */
     @GET("userCollectionFolders/{id}")
@@ -250,6 +250,31 @@ interface UserCollectionFolders {
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
     ): Response<UserCollectionFoldersMultiRelationshipDataDocument>
+
+    /**
+     * Get userCollection relationship (\&quot;to-one\&quot;). Retrieves userCollection
+     * relationship. Responses:
+     * - 200: Successful response
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
+     *
+     * @param id Folder Id
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: userCollection (optional)
+     * @return [UserCollectionFoldersSingleRelationshipDataDocument]
+     */
+    @GET("userCollectionFolders/{id}/relationships/userCollection")
+    suspend fun userCollectionFoldersIdRelationshipsUserCollectionGet(
+        @Path("id") id: kotlin.String,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+    ): Response<UserCollectionFoldersSingleRelationshipDataDocument>
 
     /**
      * Create single userCollectionFolder. Creates a new userCollectionFolder. Responses:

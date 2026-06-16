@@ -9,6 +9,7 @@ import com.tidal.sdk.player.common.model.ApiError
 import com.tidal.sdk.player.common.model.AssetPresentation
 import com.tidal.sdk.player.common.model.AudioMode
 import com.tidal.sdk.player.common.model.AudioQuality
+import com.tidal.sdk.player.common.model.UriSchemeType
 import com.tidal.sdk.player.common.model.VideoQuality
 import com.tidal.sdk.player.streamingapi.ApiConstants
 import com.tidal.sdk.player.streamingapi.TrackPlaybackInfoFactory
@@ -80,6 +81,7 @@ internal class PlaybackInfoRepositoryDefaultTest {
             true,
             streamingSessionId,
             false,
+            UriSchemeType.DATA,
         )
 
     @Test
@@ -122,6 +124,7 @@ internal class PlaybackInfoRepositoryDefaultTest {
             PlaybackMode.STREAM,
             streamingSessionId,
             null,
+            UriSchemeType.DATA,
         )
 
     @Test
