@@ -19,8 +19,8 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 
 /**
  * @param[retryPolicy] The [RetryPolicy] driving automatic retry of failed requests. Defaults to
- *   [DefaultRetryPolicy] (the three-category model, retrying GET/HEAD/OPTIONS only). Pass `null` to
- *   disable retry entirely.
+ *   [DefaultRetryPolicy] (the three-category model, retrying reads and mutations that carry an
+ *   `Idempotency-Key` header). Pass `null` to disable retry entirely.
  * @param[readTimeoutMillis] The OkHttp read timeout, in milliseconds. Must be positive. Defaults to
  *   [DEFAULT_READ_TIMEOUT_MILLIS] (5s). A read that exceeds it surfaces a `SocketTimeoutException`,
  *   which the retry interceptor classifies as a timeout.

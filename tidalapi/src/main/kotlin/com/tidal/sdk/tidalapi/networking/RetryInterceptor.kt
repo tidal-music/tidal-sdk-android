@@ -14,7 +14,7 @@ internal class RetryInterceptor(
     @Suppress("ReturnCount")
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
-        if (!policy.isRetryableRequest(request.method)) {
+        if (!policy.isRetryableRequest(request.method, request.header("Idempotency-Key"))) {
             return chain.proceed(request)
         }
 
