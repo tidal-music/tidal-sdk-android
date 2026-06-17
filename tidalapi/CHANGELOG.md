@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.45] - 2026-06-16
+### Added
+- Automatic retry for network calls using a three-category retry policy (transient, rate-limit, and non-retryable errors). Retries apply to read-only requests (GET/HEAD) and to idempotency-keyed mutations (POST/PATCH/PUT/DELETE carrying an `Idempotency-Key` header); un-keyed mutations are never retried.
+
 ## [0.3.44] - 2026-06-09
 ### Changed
 - Updated generated code using api spec version 1.10.28
