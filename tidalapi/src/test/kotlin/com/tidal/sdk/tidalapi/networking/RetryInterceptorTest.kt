@@ -55,6 +55,23 @@ class RetryInterceptorTest {
 
     private fun delete() = Request.Builder().url(server.url("/")).delete().build()
 
+    private fun keyedPost() =
+        Request.Builder()
+            .url(server.url("/"))
+            .header("Idempotency-Key", "k")
+            .post("body".toRequestBody())
+            .build()
+
+    private fun keyedPatch() =
+        Request.Builder()
+            .url(server.url("/"))
+            .header("Idempotency-Key", "k")
+            .patch("body".toRequestBody())
+            .build()
+
+    private fun keyedDelete() =
+        Request.Builder().url(server.url("/")).header("Idempotency-Key", "k").delete().build()
+
     @Test
     fun `http-status category retries up to 3 then surfaces the last 5xx`() {
         repeat(4) { server.enqueue(MockResponse().setResponseCode(500)) }
@@ -211,6 +228,48 @@ class RetryInterceptorTest {
 
         assertEquals(500, response.code)
         assertEquals(1, server.requestCount)
+    }
+
+    @Test
+    fun `keyed POST is retried on 5xx`() {
+        server.enqueue(MockResponse().setResponseCode(500))
+        server.enqueue(MockResponse().setResponseCode(200))
+
+        val response = client().newCall(keyedPost()).execute()
+
+        assertEquals(200, response.code)
+        assertEquals(2, server.requestCount)
+    }
+
+    @Test
+    fun `keyed DELETE is retried on 5xx`() {
+        server.enqueue(MockResponse().setResponseCode(500))
+        server.enqueue(MockResponse().setResponseCode(200))
+
+        val response = client().newCall(keyedDelete()).execute()
+
+        assertEquals(200, response.code)
+        assertEquals(2, server.requestCount)
+    }
+
+    @Test
+    fun `keyed PATCH retries up to 3 on a SocketTimeoutException`() {
+        repeat(4) { server.enqueue(MockResponse().setSocketPolicy(SocketPolicy.NO_RESPONSE)) }
+
+        assertThrows(IOException::class.java) { client().newCall(keyedPatch()).execute() }
+        assertEquals(4, server.requestCount)
+        // base 8s, cap 32s: 8000, 16000, 32000 (× jitter 1.0).
+        assertEquals(listOf(8_000L, 16_000L, 32_000L), recordedDelays)
+    }
+
+    @Test
+    fun `keyed PATCH retries up to 10 on a network IOException`() {
+        repeat(11) {
+            server.enqueue(MockResponse().setSocketPolicy(SocketPolicy.DISCONNECT_AT_START))
+        }
+
+        assertThrows(IOException::class.java) { client().newCall(keyedPatch()).execute() }
+        assertEquals(11, server.requestCount)
     }
 
     @Test
