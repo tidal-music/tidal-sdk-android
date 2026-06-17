@@ -32,6 +32,17 @@ interface RetryPolicy {
      * only; mutations are never retried.
      */
     fun isRetryableRequest(method: String): Boolean = method in setOf("GET", "HEAD", "OPTIONS")
+
+    /**
+     * Whether a request is retry-eligible. Retries the safe read methods GET, HEAD and OPTIONS (per
+     * [isRetryableRequest]), and any mutation carrying an `Idempotency-Key` header (the backend
+     * replays a duplicate keyed mutation, making it safe to retry). Un-keyed mutations are never
+     * retried.
+     *
+     * @param[idempotencyKey] the request's `Idempotency-Key` header value, or `null` when absent.
+     */
+    fun isRetryableRequest(method: String, idempotencyKey: String?): Boolean =
+        isRetryableRequest(method) || idempotencyKey != null
 }
 
 /**
