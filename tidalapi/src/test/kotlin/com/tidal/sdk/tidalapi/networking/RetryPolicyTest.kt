@@ -53,4 +53,24 @@ class RetryPolicyTest {
         assertFalse(policy.isRetryableRequest("PATCH"))
         assertFalse(policy.isRetryableRequest("DELETE"))
     }
+
+    @Test
+    fun `isRetryableRequest allows any method with an idempotency key`() {
+        assertTrue(policy.isRetryableRequest("POST", "k"))
+        assertTrue(policy.isRetryableRequest("PATCH", "k"))
+        assertTrue(policy.isRetryableRequest("PUT", "k"))
+        assertTrue(policy.isRetryableRequest("DELETE", "k"))
+    }
+
+    @Test
+    fun `isRetryableRequest rejects un-keyed mutations`() {
+        assertFalse(policy.isRetryableRequest("POST", null))
+        assertFalse(policy.isRetryableRequest("DELETE", null))
+    }
+
+    @Test
+    fun `isRetryableRequest still allows reads regardless of key`() {
+        assertTrue(policy.isRetryableRequest("GET", null))
+        assertTrue(policy.isRetryableRequest("GET", "k"))
+    }
 }
