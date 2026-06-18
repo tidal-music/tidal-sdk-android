@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.3.46] - 2026-06-18
 ### Added
 - Exposed the retry interceptor publicly as `TidalApiRetryInterceptor`, so consumers can reuse the same retry logic (driven by a `RetryPolicy`) in their own Retrofit/OkHttp instances.
 
