@@ -19,7 +19,7 @@ plugin-android = "9.0.0"
 retrofit = "2.11.0"
 room = "2.6.1"
 slf4j-api = "2.0.12"
-tidal-androidx-media = "1.5.0.1"
+androidx-media3 = "1.5.0"
 
 [libraries]
 converter-kotlinx-serialization = { module = "com.squareup.retrofit2:converter-kotlinx-serialization", version.ref = "converter-kotlinx-serialization" }
@@ -103,11 +103,10 @@ test-mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.re
 test-turbine = { module = "app.cash.turbine:turbine", version = "1.0.0" }
 
 
-tidal-exoPlayer-core = { module = "com.tidal.androidx.media3:media3-exoplayer", version.ref = "tidal-androidx-media" }
-tidal-exoPlayer-dash = { module = "com.tidal.androidx.media3:media3-exoplayer-dash", version.ref = "tidal-androidx-media" }
-tidal-exoPlayer-hls = { module = "com.tidal.androidx.media3:media3-exoplayer-hls", version.ref = "tidal-androidx-media" }
-tidal-exoPlayer-extension-flac = { module = "com.tidal.androidx.media3:media3-flac", version.ref = "tidal-androidx-media" }
-tidal-exoPlayer-extension-okhttp = { module = "com.tidal.androidx.media3:media3-datasource-okhttp", version.ref = "tidal-androidx-media" }
+tidal-exoPlayer-core = { module = "androidx.media3:media3-exoplayer", version.ref = "androidx-media3" }
+tidal-exoPlayer-dash = { module = "androidx.media3:media3-exoplayer-dash", version.ref = "androidx-media3" }
+tidal-exoPlayer-hls = { module = "androidx.media3:media3-exoplayer-hls", version.ref = "androidx-media3" }
+tidal-exoPlayer-extension-okhttp = { module = "androidx.media3:media3-datasource-okhttp", version.ref = "androidx-media3" }
 
 # Security
 androidx-security-crypto = { module = "androidx.security:security-crypto", version = "1.0.0" }

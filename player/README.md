@@ -1,7 +1,7 @@
 # Module player
 The TIDAL Player client for Android.
 
-The Player module encapsulates the playback functionality of TIDAL media products. The implementation depends on a fork of AndroidX Media repository and uses `ExoPlayer` as the media player.
+The Player module encapsulates the playback functionality of TIDAL media products. The implementation depends on [AndroidX Media](https://github.com/androidx/media) (`androidx.media3`) and uses `ExoPlayer` as the media player.
 
 ## Features
 * Streaming and playing TIDAL catalog content.
