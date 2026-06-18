@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.67] - 2026-06-18
+
+### Changed
+- Dropped media3 fork dependency
+- Removed useLibflacAudioRenderer flag
+
 ## [0.0.66] - 2026-06-16
 ### Added
 - `UriSchemeType` argument for the StreamingApi track and video manifest endpoints.
