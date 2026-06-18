@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-class RetryInterceptorTest {
+class TidalApiRetryInterceptorTest {
 
     private lateinit var server: MockWebServer
     private val recordedDelays = mutableListOf<Long>()
@@ -41,7 +41,7 @@ class RetryInterceptorTest {
     ): OkHttpClient =
         OkHttpClient.Builder()
             .readTimeout(200, TimeUnit.MILLISECONDS)
-            .addInterceptor(RetryInterceptor(retryPolicy, random, sleep))
+            .addInterceptor(TidalApiRetryInterceptor(retryPolicy, random, sleep))
             .build()
 
     private fun get() = Request.Builder().url(server.url("/")).build()

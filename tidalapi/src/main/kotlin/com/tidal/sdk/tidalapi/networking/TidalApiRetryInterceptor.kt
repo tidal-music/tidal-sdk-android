@@ -4,8 +4,14 @@ import java.io.IOException
 import okhttp3.Interceptor
 import okhttp3.Response
 
-/** Retries eligible requests per the [RetryPolicy], backing off per [ErrorCategory]. */
-internal class RetryInterceptor(
+/**
+ * Retries eligible requests per the [RetryPolicy], backing off per [ErrorCategory].
+ *
+ * Public so consumers of the TIDAL API can reuse the same retry logic in their own Retrofit/OkHttp
+ * instances, e.g.
+ * `OkHttpClient.Builder().addInterceptor(TidalApiRetryInterceptor(DefaultRetryPolicy()))`.
+ */
+class TidalApiRetryInterceptor(
     private val policy: RetryPolicy,
     private val random: () -> Double = Math::random,
     private val sleep: (Long) -> Unit = Thread::sleep,
