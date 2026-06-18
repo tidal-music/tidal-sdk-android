@@ -16,20 +16,18 @@ internal abstract class OfflineDataSourceFactoryHelper<T : DataSource.Factory>(
     private val offlineCacheProvider: OfflineCacheProvider?
 ) {
 
-    private var externalDataSourceFactory: T? = null
-    private var internalDataSourceFactory: T? = null
+    private val externalDataSourceFactories = mutableMapOf<String, T>()
+    private val internalDataSourceFactories = mutableMapOf<String, T>()
 
-    fun getExternal(path: String) =
-        externalDataSourceFactory
-            ?: create(offlineCacheProvider!!.getExternal(path)).also {
-                externalDataSourceFactory = it
-            }
+    fun getExternal(path: String): T =
+        externalDataSourceFactories.getOrPut(path) {
+            create(checkNotNull(offlineCacheProvider).getExternal(path))
+        }
 
-    fun getInternal(path: String) =
-        internalDataSourceFactory
-            ?: create(offlineCacheProvider!!.getInternal(path)).also {
-                internalDataSourceFactory = it
-            }
+    fun getInternal(path: String): T =
+        internalDataSourceFactories.getOrPut(path) {
+            create(checkNotNull(offlineCacheProvider).getInternal(path))
+        }
 
     abstract fun create(cache: Cache): T
 }
