@@ -1,6 +1,32 @@
 version: 3
 
+# FOSSA should only see the dependencies the SDK actually ships. By default the
+# Gradle analyzer unions every resolvable configuration across every target,
+# which pulls in build-time tooling (Android Unified Test Platform, dokka, KSP,
+# annotation processors, vanniktech PGP signing). Those carry a large backlog of
+# vulnerabilities that never reach SDK consumers, so they must not gate PRs.
 targets:
   only:
     - type: gradle
       path: .
+  exclude:
+    # Stray Python target picked up under tidalapi/bin.
+    - type: setuptools
+    # Demo apps are not published.
+    - { type: gradle, path: ., target: ':auth:apps:demo' }
+    - { type: gradle, path: ., target: ':eventproducer:apps:demo' }
+    - { type: gradle, path: ., target: ':player:apps:demo' }
+    - { type: gradle, path: ., target: ':tidalapi:apps:demo' }
+    # Test helper module, not part of the shipped runtime surface.
+    - { type: gradle, path: ., target: ':player:testutil' }
+
+# Restrict resolution to the published runtime classpaths only. This drops the
+# build-tooling configurations (kapt/ksp/dokka/UTP) that fossa-cli does not
+# exclude on its own. `releaseRuntimeClasspath` covers the Android library
+# modules; `runtimeClasspath` covers the JVM modules (bom, jvm libraries).
+# Note: `configurations-only` is an experimental fossa-cli feature.
+experimental:
+  gradle:
+    configurations-only:
+      - releaseRuntimeClasspath
+      - runtimeClasspath

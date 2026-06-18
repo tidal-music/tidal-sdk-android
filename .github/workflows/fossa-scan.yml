@@ -3,11 +3,6 @@ name: FOSSA Scans
 on:
   workflow_call:
     inputs:
-      base-sha:
-        description: "Base revision for `fossa test --diff`. When empty, the diff test is skipped."
-        required: false
-        type: string
-        default: ""
       branch:
         description: "FOSSA branch label for the analyze step. When empty, fossa-cli detects it."
         required: false
@@ -45,12 +40,13 @@ jobs:
           branch: ${{ inputs.branch }}
 
       - name: "Run FOSSA Tests"
-        # Skipped on analyze-only baseline runs (no base revision supplied).
-        if: ${{ inputs.run-fossa-tests && inputs.base-sha != '' }}
+        # Skipped on analyze-only baseline runs (push:main).
+        if: ${{ inputs.run-fossa-tests }}
         uses: fossas/fossa-action@3ebcea1862c6ffbd5cf1b4d0bd6b3fe7bd6f2cac # v1.7
         with:
           api-key: ${{secrets.fossaApiKey}}
+          # Full test against the shipped-dependency surface (see .fossa.yml,
+          # which filters out build-time tooling). No diff mode: the scan is
+          # scoped tightly enough that the whole result can gate PRs, which also
+          # makes it robust to stacked PRs and newly-published tooling CVEs.
           run-tests: true
-          # Diff mode: fail only on issues introduced vs the base revision, so
-          # the pre-existing backlog stops blocking unrelated PRs.
-          test-diff-revision: ${{ inputs.base-sha }}

@@ -31,9 +31,6 @@ jobs:
   trigger-fossa-scan:
     name: Trigger FOSSA Scan
     uses: ./.github/workflows/fossa-scan.yml
-    with:
-      # Base revision for `fossa test --diff` (key differs per event).
-      base-sha: ${{ github.event_name == 'merge_group' && github.event.merge_group.base_sha || github.event.pull_request.base.sha }}
     secrets:
       pat: ${{ secrets.PACKAGES_PAT }}
       fossaApiKey: ${{ secrets.FOSSA_API_KEY_FULL }}
