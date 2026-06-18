@@ -50,7 +50,7 @@ constructor(
         OkHttpClient.Builder()
             .readTimeout(readTimeoutMillis, TimeUnit.MILLISECONDS)
             .apply { cacheDir?.let { cache(Cache(it, cacheSize)) } }
-            .apply { retryPolicy?.let { addInterceptor(RetryInterceptor(it)) } }
+            .apply { retryPolicy?.let { addInterceptor(TidalApiRetryInterceptor(it)) } }
             .addInterceptor(AuthInterceptor(credentialsProvider))
             .authenticator(DefaultAuthenticator(credentialsProvider))
             .addInterceptor(getLoggingInterceptor())
