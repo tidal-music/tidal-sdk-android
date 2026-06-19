@@ -1,5 +1,6 @@
 package com.tidal.sdk.tidalapi.networking
 
+import com.tidal.sdk.eventproducer.EventSender
 import java.net.SocketTimeoutException
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
@@ -36,10 +37,39 @@ class RetrofitProviderRetryTest {
     private fun api(
         retryPolicy: RetryPolicy? = DefaultRetryPolicy(),
         readTimeoutMillis: Long = RetrofitProvider.DEFAULT_READ_TIMEOUT_MILLIS,
+        eventSender: EventSender? = null,
     ): TestApi =
-        RetrofitProvider(retryPolicy = retryPolicy, readTimeoutMillis = readTimeoutMillis)
+        RetrofitProvider(
+                retryPolicy = retryPolicy,
+                readTimeoutMillis = readTimeoutMillis,
+                eventSender = eventSender,
+            )
             .provideRetrofit(server.url("/").toString(), FakeCredentialsProvider())
             .create(TestApi::class.java)
+
+    @Test
+    fun `emits retry telemetry when an event sender is supplied`() = runTest {
+        // A single 500 then 200 (one retry, ~0.5s wall clock) proves the EventSender-backed
+        // listener is wired through; payload assertions live in EventProducerRetryListenerTest.
+        server.enqueue(MockResponse().setResponseCode(500))
+        server.enqueue(MockResponse().setResponseCode(200).setBody("pong"))
+        val eventSender = FakeEventSender()
+
+        api(eventSender = eventSender).ping()
+
+        assertEquals(listOf("tidalapi_retry"), eventSender.sentEvents.map { it.eventName })
+    }
+
+    @Test
+    fun `emits no telemetry when no event sender is supplied`() = runTest {
+        server.enqueue(MockResponse().setResponseCode(500))
+        server.enqueue(MockResponse().setResponseCode(200).setBody("pong"))
+
+        api().ping()
+
+        // No EventSender, so nothing observes the retry — just the normal recovery.
+        assertEquals(2, server.requestCount)
+    }
 
     @Test
     fun `retries a GET by default until success`() = runTest {
@@ -81,5 +111,22 @@ class RetrofitProviderRetryTest {
         assertThrows(IllegalArgumentException::class.java) {
             RetrofitProvider(readTimeoutMillis = 0)
         }
+    }
+
+    @Test
+    fun `the backwards-compatible constructor without an event sender still retries`() = runTest {
+        // Exercises the pre-telemetry constructor (no EventSender) to guard the binary-compatible
+        // entry point used by consumers built against earlier versions.
+        server.enqueue(MockResponse().setResponseCode(500))
+        server.enqueue(MockResponse().setResponseCode(200).setBody("pong"))
+
+        val response =
+            RetrofitProvider()
+                .provideRetrofit(server.url("/").toString(), FakeCredentialsProvider())
+                .create(TestApi::class.java)
+                .ping()
+
+        assertEquals(200, response.code())
+        assertEquals(2, server.requestCount)
     }
 }

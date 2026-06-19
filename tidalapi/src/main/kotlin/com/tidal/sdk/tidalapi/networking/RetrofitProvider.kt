@@ -3,6 +3,7 @@ package com.tidal.sdk.tidalapi.networking
 import com.tidal.sdk.auth.CredentialsProvider
 import com.tidal.sdk.common.d
 import com.tidal.sdk.common.logger
+import com.tidal.sdk.eventproducer.EventSender
 import com.tidal.sdk.tidalapi.generated.models.getOneOfSerializer
 import java.io.File
 import java.util.concurrent.TimeUnit
@@ -24,21 +25,40 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
  * @param[readTimeoutMillis] The OkHttp read timeout, in milliseconds. Must be positive. Defaults to
  *   [DEFAULT_READ_TIMEOUT_MILLIS] (5s). A read that exceeds it surfaces a `SocketTimeoutException`,
  *   which the retry interceptor classifies as a timeout.
+ * @param[eventSender] When non-null, retry decisions are reported as TIDAL events through this
+ *   [EventSender]. Pass null — or use the constructor without this parameter — to disable retry
+ *   telemetry. Does not affect retry behaviour.
  */
 class RetrofitProvider
-@JvmOverloads
 constructor(
     private val cacheDir: File? = null,
     private val cacheSize: Long = DEFAULT_CACHE_SIZE,
     private val retryPolicy: RetryPolicy? = DefaultRetryPolicy(),
     private val readTimeoutMillis: Long = DEFAULT_READ_TIMEOUT_MILLIS,
+    eventSender: EventSender?,
 ) {
+
+    /**
+     * Backwards-compatible constructor matching the signature from before retry telemetry was added
+     * (no [EventSender]); telemetry is disabled. Preserves source and binary compatibility for
+     * consumers compiled against earlier tidalapi versions.
+     */
+    @JvmOverloads
+    constructor(
+        cacheDir: File? = null,
+        cacheSize: Long = DEFAULT_CACHE_SIZE,
+        retryPolicy: RetryPolicy? = DefaultRetryPolicy(),
+        readTimeoutMillis: Long = DEFAULT_READ_TIMEOUT_MILLIS,
+    ) : this(cacheDir, cacheSize, retryPolicy, readTimeoutMillis, eventSender = null)
 
     init {
         require(readTimeoutMillis > 0) {
             "readTimeoutMillis must be positive, was $readTimeoutMillis"
         }
     }
+
+    private val retryListener: TidalApiRetryListener =
+        eventSender?.let { EventProducerRetryListener(it) } ?: NoOpTidalApiRetryListener
 
     private val converterFactories: List<Converter.Factory> =
         listOf(
@@ -50,7 +70,11 @@ constructor(
         OkHttpClient.Builder()
             .readTimeout(readTimeoutMillis, TimeUnit.MILLISECONDS)
             .apply { cacheDir?.let { cache(Cache(it, cacheSize)) } }
-            .apply { retryPolicy?.let { addInterceptor(TidalApiRetryInterceptor(it)) } }
+            .apply {
+                retryPolicy?.let {
+                    addInterceptor(TidalApiRetryInterceptor(it, retryListener = retryListener))
+                }
+            }
             .addInterceptor(AuthInterceptor(credentialsProvider))
             .authenticator(DefaultAuthenticator(credentialsProvider))
             .addInterceptor(getLoggingInterceptor())
