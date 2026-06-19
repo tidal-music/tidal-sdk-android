@@ -62,6 +62,7 @@ internal class StreamingApiDefaultTest {
                     tidalApiCacheDir = null,
                     apiEndpoint = Common.TIDAL_API_ENDPOINT_V1,
                     openApiEndpoint = Common.TIDAL_OPEN_API_ENDPOINT_V2,
+                    eventSender = null,
                 )
                 .streamingApi
     }

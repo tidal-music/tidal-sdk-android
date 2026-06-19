@@ -2,6 +2,7 @@ package com.tidal.sdk.player.streamingapi
 
 import com.google.gson.Gson
 import com.tidal.sdk.auth.CredentialsProvider
+import com.tidal.sdk.eventproducer.EventSender
 import com.tidal.sdk.player.common.model.ApiError
 import com.tidal.sdk.player.streamingapi.di.DaggerStreamingApiComponent
 import com.tidal.sdk.player.streamingapi.playbackinfo.offline.OfflinePlaybackInfoProvider
@@ -18,6 +19,7 @@ class StreamingApiModuleRoot(
     tidalApiCacheDir: File?,
     apiEndpoint: String,
     openApiEndpoint: String,
+    eventSender: EventSender?,
 ) {
 
     val streamingApi =
@@ -32,6 +34,7 @@ class StreamingApiModuleRoot(
                 tidalApiCacheDir,
                 apiEndpoint,
                 openApiEndpoint,
+                eventSender,
             )
             .streamingApi
 

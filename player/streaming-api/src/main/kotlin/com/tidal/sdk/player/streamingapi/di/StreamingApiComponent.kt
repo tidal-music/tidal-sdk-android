@@ -2,6 +2,7 @@ package com.tidal.sdk.player.streamingapi.di
 
 import com.google.gson.Gson
 import com.tidal.sdk.auth.CredentialsProvider
+import com.tidal.sdk.eventproducer.EventSender
 import com.tidal.sdk.player.common.model.ApiError
 import com.tidal.sdk.player.streamingapi.StreamingApi
 import com.tidal.sdk.player.streamingapi.StreamingApiTimeoutConfig
@@ -41,6 +42,7 @@ interface StreamingApiComponent {
             @BindsInstance @Named("tidalApiCacheDir") tidalApiCacheDir: File?,
             @BindsInstance @Named("apiEndpoint") apiEndpoint: String,
             @BindsInstance @Named("openApiEndpoint") openApiEndpoint: String,
+            @BindsInstance eventSender: EventSender?,
         ): StreamingApiComponent
     }
 

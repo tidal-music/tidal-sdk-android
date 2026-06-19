@@ -2,6 +2,7 @@ package com.tidal.sdk.player.di
 
 import com.google.gson.Gson
 import com.tidal.sdk.auth.CredentialsProvider
+import com.tidal.sdk.eventproducer.EventSender
 import com.tidal.sdk.player.common.model.ApiError
 import com.tidal.sdk.player.offlineplay.OfflinePlayProvider
 import com.tidal.sdk.player.streamingapi.StreamingApiModuleRoot
@@ -39,6 +40,7 @@ internal object StreamingApiModule {
         @Named("tidalApiCacheDir") tidalApiCacheDir: File,
         @Named("apiEndpoint") apiEndpoint: String,
         @Named("openApiEndpoint") openApiEndpoint: String,
+        eventSender: EventSender,
     ) =
         StreamingApiModuleRoot(
                 okHttpClient,
@@ -50,6 +52,7 @@ internal object StreamingApiModule {
                 tidalApiCacheDir,
                 apiEndpoint,
                 openApiEndpoint,
+                eventSender,
             )
             .streamingApi
 }
