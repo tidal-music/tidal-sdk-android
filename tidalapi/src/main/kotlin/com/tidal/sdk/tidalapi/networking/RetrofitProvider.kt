@@ -26,18 +26,30 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
  *   [DEFAULT_READ_TIMEOUT_MILLIS] (5s). A read that exceeds it surfaces a `SocketTimeoutException`,
  *   which the retry interceptor classifies as a timeout.
  * @param[eventSender] When non-null, retry decisions are reported as TIDAL events through this
- *   [EventSender]. When null (the default), no retry telemetry is emitted. Does not affect retry
- *   behaviour.
+ *   [EventSender]. Pass null — or use the constructor without this parameter — to disable retry
+ *   telemetry. Does not affect retry behaviour.
  */
 class RetrofitProvider
-@JvmOverloads
 constructor(
     private val cacheDir: File? = null,
     private val cacheSize: Long = DEFAULT_CACHE_SIZE,
     private val retryPolicy: RetryPolicy? = DefaultRetryPolicy(),
     private val readTimeoutMillis: Long = DEFAULT_READ_TIMEOUT_MILLIS,
-    eventSender: EventSender? = null,
+    eventSender: EventSender?,
 ) {
+
+    /**
+     * Backwards-compatible constructor matching the signature from before retry telemetry was added
+     * (no [EventSender]); telemetry is disabled. Preserves source and binary compatibility for
+     * consumers compiled against earlier tidalapi versions.
+     */
+    @JvmOverloads
+    constructor(
+        cacheDir: File? = null,
+        cacheSize: Long = DEFAULT_CACHE_SIZE,
+        retryPolicy: RetryPolicy? = DefaultRetryPolicy(),
+        readTimeoutMillis: Long = DEFAULT_READ_TIMEOUT_MILLIS,
+    ) : this(cacheDir, cacheSize, retryPolicy, readTimeoutMillis, eventSender = null)
 
     init {
         require(readTimeoutMillis > 0) {
