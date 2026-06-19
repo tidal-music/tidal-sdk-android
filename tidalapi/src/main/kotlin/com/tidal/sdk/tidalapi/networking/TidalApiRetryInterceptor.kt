@@ -15,6 +15,7 @@ class TidalApiRetryInterceptor(
     private val policy: RetryPolicy,
     private val random: () -> Double = Math::random,
     private val sleep: (Long) -> Unit = Thread::sleep,
+    private val retryListener: TidalApiRetryListener = NoOpTidalApiRetryListener,
 ) : Interceptor {
 
     @Suppress("ReturnCount")
@@ -38,10 +39,15 @@ class TidalApiRetryInterceptor(
                         backOff(chain, attempts, errorCategory)
                         continue
                     }
+                    retryListener.onRetriesExhausted(errorCategory, attempts[errorCategory.ordinal])
                     throw e
                 }
             val nonNullResponse = requireNotNull(response)
-            if (category == null || !hasBudget(attempts, category)) {
+            if (category == null) {
+                return nonNullResponse
+            }
+            if (!hasBudget(attempts, category)) {
+                retryListener.onRetriesExhausted(category, attempts[category.ordinal])
                 return nonNullResponse
             }
             nonNullResponse.close() // Free the body before retrying so it is not leaked.
@@ -55,12 +61,11 @@ class TidalApiRetryInterceptor(
     /** Sleeps [category]'s backoff and records the attempt; throws [IOException] if cancelled. */
     private fun backOff(chain: Interceptor.Chain, attempts: IntArray, category: ErrorCategory) {
         if (chain.call().isCanceled()) throw IOException("Canceled")
+        val attempt = attempts[category.ordinal]
+        val delayMillis = policy.getConfigurationFor(category).computeDelayMillis(attempt, random)
+        retryListener.onRetry(category, attempt, delayMillis)
         try {
-            sleep(
-                policy
-                    .getConfigurationFor(category)
-                    .computeDelayMillis(attempts[category.ordinal], random)
-            )
+            sleep(delayMillis)
         } catch (e: InterruptedException) {
             Thread.currentThread().interrupt()
             throw IOException("Retry backoff interrupted", e)
