@@ -112,4 +112,21 @@ class RetrofitProviderRetryTest {
             RetrofitProvider(readTimeoutMillis = 0)
         }
     }
+
+    @Test
+    fun `the backwards-compatible constructor without an event sender still retries`() = runTest {
+        // Exercises the pre-telemetry constructor (no EventSender) to guard the binary-compatible
+        // entry point used by consumers built against earlier versions.
+        server.enqueue(MockResponse().setResponseCode(500))
+        server.enqueue(MockResponse().setResponseCode(200).setBody("pong"))
+
+        val response =
+            RetrofitProvider()
+                .provideRetrofit(server.url("/").toString(), FakeCredentialsProvider())
+                .create(TestApi::class.java)
+                .ping()
+
+        assertEquals(200, response.code())
+        assertEquals(2, server.requestCount)
+    }
 }
