@@ -3,6 +3,7 @@ package com.tidal.sdk.player.streamingapi.playlogtest
 import android.util.Base64
 import com.google.gson.Gson
 import com.tidal.sdk.auth.CredentialsProvider
+import com.tidal.sdk.eventproducer.EventSender
 import com.tidal.sdk.player.common.model.ApiError
 import com.tidal.sdk.player.common.model.AssetPresentation
 import com.tidal.sdk.player.common.model.AudioMode
@@ -38,6 +39,7 @@ class PlayLogTestStreamingApiComponentFactory(private val trackPlaybackInfo: Pla
         tidalApiCacheDir: File?,
         apiEndpoint: String,
         openApiEndpoint: String,
+        eventSender: EventSender?,
     ): StreamingApiComponent {
         return object : StreamingApiComponent {
             override val streamingApi: StreamingApi = PlayLogTestStreamingApi(trackPlaybackInfo)

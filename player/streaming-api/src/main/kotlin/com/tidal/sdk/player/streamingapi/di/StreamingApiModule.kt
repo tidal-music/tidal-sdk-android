@@ -2,6 +2,7 @@ package com.tidal.sdk.player.streamingapi.di
 
 import com.google.gson.Gson
 import com.tidal.sdk.auth.CredentialsProvider
+import com.tidal.sdk.eventproducer.EventSender
 import com.tidal.sdk.player.common.model.ApiError
 import com.tidal.sdk.player.streamingapi.StreamingApi
 import com.tidal.sdk.player.streamingapi.StreamingApiDefault
@@ -54,11 +55,12 @@ internal object StreamingApiModule {
         credentialsProvider: CredentialsProvider,
         @Named("tidalApiCacheDir") cacheDir: File?,
         @Named("openApiEndpoint") openApiEndpoint: String,
+        eventSender: EventSender?,
     ): TidalApiClient =
         TidalApiClient(
             credentialsProvider,
             baseUrl = openApiEndpoint,
-            retrofitProvider = RetrofitProvider(cacheDir),
+            retrofitProvider = RetrofitProvider(cacheDir, eventSender = eventSender),
         )
 
     @Provides
