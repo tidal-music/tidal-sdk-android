@@ -13,6 +13,7 @@ dependencies {
 
     api(libs.kotlinx.serialization.json)
     api(libs.retrofit)
+    api(libs.tidal.sdk.eventproducer)
 
     implementation(libs.kotlinxCoroutinesCore)
     implementation(libs.okhttp.loggingInterceptor)
