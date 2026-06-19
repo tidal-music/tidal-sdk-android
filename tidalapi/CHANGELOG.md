@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.47] - 2026-06-19
+### Added
+- Retry telemetry: `RetrofitProvider` accepts an optional `EventSender` that, when provided, reports each retry and budget-exhaustion as a TIDAL event. Observation is added through a `TidalApiRetryListener` seam (default no-op), so default retry behaviour and overhead are unchanged.
+
 ## [0.3.46] - 2026-06-18
 ### Added
 - Exposed the retry interceptor publicly as `TidalApiRetryInterceptor`, so consumers can reuse the same retry logic (driven by a `RetryPolicy`) in their own Retrofit/OkHttp instances.
