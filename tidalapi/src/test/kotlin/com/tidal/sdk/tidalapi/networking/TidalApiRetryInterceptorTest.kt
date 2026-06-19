@@ -21,12 +21,14 @@ class TidalApiRetryInterceptorTest {
     private lateinit var server: MockWebServer
     private val recordedDelays = mutableListOf<Long>()
     private val policy = DefaultRetryPolicy()
+    private var listener = FakeRetryListener()
 
     @BeforeEach
     fun setUp() {
         server = MockWebServer()
         server.start()
         recordedDelays.clear()
+        listener = FakeRetryListener()
     }
 
     @AfterEach
@@ -38,10 +40,11 @@ class TidalApiRetryInterceptorTest {
         retryPolicy: RetryPolicy = policy,
         random: () -> Double = { 1.0 },
         sleep: (Long) -> Unit = recordedDelays::add,
+        retryListener: TidalApiRetryListener = listener,
     ): OkHttpClient =
         OkHttpClient.Builder()
             .readTimeout(200, TimeUnit.MILLISECONDS)
-            .addInterceptor(TidalApiRetryInterceptor(retryPolicy, random, sleep))
+            .addInterceptor(TidalApiRetryInterceptor(retryPolicy, random, sleep, retryListener))
             .build()
 
     private fun get() = Request.Builder().url(server.url("/")).build()
@@ -323,5 +326,113 @@ class TidalApiRetryInterceptorTest {
 
         assertThrows(IOException::class.java) { call.execute() }
         assertEquals(1, server.requestCount)
+    }
+
+    @Test
+    fun `onRetry fires once per retry with ascending attempt and the applied delay`() {
+        repeat(4) { server.enqueue(MockResponse().setResponseCode(500)) }
+
+        client().newCall(get()).execute()
+
+        // base 500ms, cap 16s: 500, 1000, 2000 (× jitter 1.0) — the same values sleep recorded.
+        assertEquals(recordedDelays, listener.retries.map { it.delayMillis })
+        assertEquals(
+            listOf(
+                FakeRetryListener.Retry(ErrorCategory.HTTP_STATUS, 0, 500L),
+                FakeRetryListener.Retry(ErrorCategory.HTTP_STATUS, 1, 1000L),
+                FakeRetryListener.Retry(ErrorCategory.HTTP_STATUS, 2, 2000L),
+            ),
+            listener.retries,
+        )
+    }
+
+    @Test
+    fun `onRetriesExhausted fires once on the response path when the http-status budget is spent`() {
+        repeat(4) { server.enqueue(MockResponse().setResponseCode(500)) }
+
+        client().newCall(get()).execute()
+
+        assertEquals(
+            listOf(FakeRetryListener.Exhausted(ErrorCategory.HTTP_STATUS, 3)),
+            listener.exhaustions,
+        )
+    }
+
+    @Test
+    fun `onRetriesExhausted fires once on the exception path when the network budget is spent`() {
+        repeat(11) {
+            server.enqueue(MockResponse().setSocketPolicy(SocketPolicy.DISCONNECT_AT_START))
+        }
+
+        assertThrows(IOException::class.java) { client().newCall(get()).execute() }
+
+        assertEquals(
+            listOf(FakeRetryListener.Exhausted(ErrorCategory.NETWORK, 10)),
+            listener.exhaustions,
+        )
+    }
+
+    @Test
+    fun `onRetriesExhausted fires once on the exception path when the timeout budget is spent`() {
+        repeat(4) { server.enqueue(MockResponse().setSocketPolicy(SocketPolicy.NO_RESPONSE)) }
+
+        assertThrows(IOException::class.java) { client().newCall(get()).execute() }
+
+        assertEquals(
+            listOf(FakeRetryListener.Exhausted(ErrorCategory.TIMEOUT, 3)),
+            listener.exhaustions,
+        )
+    }
+
+    @Test
+    fun `a successful response reports nothing`() {
+        server.enqueue(MockResponse().setResponseCode(200))
+
+        client().newCall(get()).execute()
+
+        assertTrue(listener.retries.isEmpty())
+        assertTrue(listener.exhaustions.isEmpty())
+    }
+
+    @Test
+    fun `a non-429 4xx reports nothing`() {
+        server.enqueue(MockResponse().setResponseCode(404))
+
+        client().newCall(get()).execute()
+
+        assertTrue(listener.retries.isEmpty())
+        assertTrue(listener.exhaustions.isEmpty())
+    }
+
+    @Test
+    fun `a non-retried mutation reports nothing`() {
+        server.enqueue(MockResponse().setResponseCode(500))
+
+        client().newCall(post()).execute()
+
+        assertTrue(listener.retries.isEmpty())
+        assertTrue(listener.exhaustions.isEmpty())
+    }
+
+    @Test
+    fun `an interrupted backoff reports nothing`() {
+        server.enqueue(MockResponse().setResponseCode(500))
+        val interrupting = client(sleep = { throw InterruptedException("interrupted") })
+
+        assertThrows(IOException::class.java) { interrupting.newCall(get()).execute() }
+        assertTrue(listener.exhaustions.isEmpty())
+        Thread.interrupted()
+    }
+
+    @Test
+    fun `a call cancelled before backoff reports nothing`() {
+        server.enqueue(MockResponse().setResponseCode(500))
+        server.enqueue(MockResponse().setResponseCode(200))
+        lateinit var call: Call
+        val cancelling = client(sleep = { call.cancel() })
+        call = cancelling.newCall(get())
+
+        assertThrows(IOException::class.java) { call.execute() }
+        assertTrue(listener.exhaustions.isEmpty())
     }
 }
