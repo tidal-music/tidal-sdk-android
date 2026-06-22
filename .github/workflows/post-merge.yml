@@ -10,7 +10,9 @@ jobs:
 
   fossa-baseline:
     name: FOSSA baseline scan (main)
-    # Analyze-only scan of `main` so PRs have a labelled baseline to diff against.
+    # Analyze-only scan that keeps the `main` branch populated in the FOSSA
+    # dashboard. PRs run their own full `fossa test`, so this is not used for
+    # gating.
     uses: ./.github/workflows/fossa-scan.yml
     with:
       branch: main
