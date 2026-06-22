@@ -1,0 +1,53 @@
+name: Codex Draft PR Review
+# Requests a Codex review on newly opened draft PRs by posting an @codex
+# comment. This fills the gap left by Codex's "On every push" setting, which
+# does not trigger on the initial draft PR creation (opened event).
+# Non-draft PRs are handled automatically by Codex's "On every push" setting.
+
+on:
+  pull_request:
+    types: [opened]
+  # TEST-ONLY: temporary push trigger scoped to the feature branch so the
+  # workflow can be exercised without opening a fresh draft PR each time.
+  # Remove this block before merging.
+  push:
+    branches: [michael/codex-review-action]
+
+jobs:
+  request-codex-review:
+    name: Request Codex review
+    # Real path: only newly opened draft PRs. Test path: any push to the branch.
+    if: github.event_name == 'push' || github.event.pull_request.draft == true
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Post @codex comment
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
+        with:
+          script: |
+            let prNumber = context.payload.pull_request?.number;
+
+            // On push events there is no PR in the payload; look one up for the branch.
+            if (!prNumber) {
+              const branch = context.ref.replace('refs/heads/', '');
+              const { data: prs } = await github.rest.pulls.list({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: 'open',
+                head: `${context.repo.owner}:${branch}`,
+              });
+              if (prs.length === 0) {
+                core.info(`No open PR found for branch ${branch}; nothing to do.`);
+                return;
+              }
+              prNumber = prs[0].number;
+            }
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body: '@codex review',
+            });
+            core.info(`Posted @codex review comment on PR #${prNumber}`);
