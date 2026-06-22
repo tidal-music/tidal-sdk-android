@@ -8,6 +8,7 @@ import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
 internal class DrmSessionManagerFactory(
     private val defaultDrmSessionManagerBuilder: DefaultDrmSessionManager.Builder,
     private val tidalMediaDrmCallbackFactory: TidalMediaDrmCallbackFactory,
+    private val offlineLicenseManager: OfflineLicenseManager,
 ) {
 
     fun createDrmSessionManagerForOnlinePlay(
@@ -18,11 +19,19 @@ internal class DrmSessionManagerFactory(
         if (licenseUrl.isNullOrEmpty()) {
             return DrmSessionManager.DRM_UNSUPPORTED
         }
-        return createDefaultDrmSessionManager(
-            playbackInfo,
-            licenseUrl = licenseUrl,
-            extras = extras,
-        )
+        val drmSessionManager =
+            createDefaultDrmSessionManager(playbackInfo, licenseUrl = licenseUrl, extras = extras)
+
+        val cachedKeySetId = offlineLicenseManager.getValidKeySetId(playbackInfo)
+        if (cachedKeySetId != null) {
+            // Reuse the persisted offline license; the CDM decrypts from it with no network
+            // request.
+            drmSessionManager.setMode(DefaultDrmSessionManager.MODE_PLAYBACK, cachedKeySetId)
+        } else {
+            // Stream as usual now, but lazily persist an offline license for the next play.
+            offlineLicenseManager.acquireAndStoreAsync(playbackInfo, extras)
+        }
+        return drmSessionManager
     }
 
     fun createDrmSessionManagerForOfflinePlay(
