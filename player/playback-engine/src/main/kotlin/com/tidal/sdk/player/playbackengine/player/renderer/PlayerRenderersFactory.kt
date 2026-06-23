@@ -7,10 +7,12 @@ import androidx.media3.exoplayer.metadata.MetadataOutput
 import androidx.media3.exoplayer.text.TextOutput
 import androidx.media3.exoplayer.video.VideoRendererEventListener
 import com.tidal.sdk.player.playbackengine.player.renderer.audio.fallback.FallbackAudioRendererFactory
+import com.tidal.sdk.player.playbackengine.player.renderer.audio.flac.LibflacAudioRendererFactory
 import com.tidal.sdk.player.playbackengine.player.renderer.video.MediaCodecVideoRendererFactory
 
 internal class PlayerRenderersFactory(
     private val mediaCodecVideoRendererFactory: MediaCodecVideoRendererFactory,
+    private val libflacAudioRendererFactory: LibflacAudioRendererFactory?,
     private val fallbackAudioRendererFactory: FallbackAudioRendererFactory,
 ) : RenderersFactory {
 
@@ -22,7 +24,10 @@ internal class PlayerRenderersFactory(
         metadataRendererOutput: MetadataOutput,
     ) =
         arrayOf(
-            mediaCodecVideoRendererFactory.create(eventHandler, videoRendererEventListener),
-            fallbackAudioRendererFactory.create(eventHandler, audioRendererEventListener),
-        )
+                mediaCodecVideoRendererFactory.create(eventHandler, videoRendererEventListener),
+                libflacAudioRendererFactory?.create(eventHandler, audioRendererEventListener),
+                fallbackAudioRendererFactory.create(eventHandler, audioRendererEventListener),
+            )
+            .filterNotNull()
+            .toTypedArray()
 }

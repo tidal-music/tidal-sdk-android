@@ -41,6 +41,7 @@ internal object PlaybackEngineModule {
     fun playbackEngine(
         context: Context,
         connectivityManager: ConnectivityManager,
+        @Named("useLibflacAudioRenderer") useLibflacAudioRenderer: Boolean,
         @Named("enableDecoderFallback") enableDecoderFallback: Boolean,
         events: MutableSharedFlow<Event>,
         bufferConfiguration: BufferConfiguration,
@@ -65,6 +66,7 @@ internal object PlaybackEngineModule {
         PlaybackEngineModuleRoot(
                 context,
                 connectivityManager,
+                useLibflacAudioRenderer,
                 enableDecoderFallback,
                 events,
                 bufferConfiguration,

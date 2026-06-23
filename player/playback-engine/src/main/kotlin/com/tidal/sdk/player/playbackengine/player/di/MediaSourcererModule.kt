@@ -385,11 +385,8 @@ internal object MediaSourcererModule {
             .setUseDrmSessionsForClearContent(C.TRACK_TYPE_AUDIO, C.TRACK_TYPE_VIDEO)
             .setPlayClearSamplesWithoutKeys(true)
             .setMultiSession(true)
-            .setUuidAndExoMediaDrmProvider(C.WIDEVINE_UUID) { uuid ->
-                FrameworkMediaDrm.DEFAULT_PROVIDER.acquireExoMediaDrm(uuid).apply {
-                    setPropertyString("securityLevel", "L3")
-                }
-            }
+            .setForceWidevineL3(true)
+            .setUuidAndExoMediaDrmProvider(C.WIDEVINE_UUID, FrameworkMediaDrm.DEFAULT_PROVIDER)
 
     @Provides @Reusable fun videoQualityRepository() = VideoQualityRepository()
 
