@@ -25,6 +25,9 @@ import java.io.IOException
 import okhttp3.ResponseBody
 import retrofit2.Response
 
+private const val MAX_PLAYBACK_INFO_FETCH_ERROR_MESSAGE_LENGTH = 4_000
+private const val PLAYBACK_INFO_FETCH_STACK_TRACE_TRUNCATED = "\n… stack trace truncated …\n"
+
 /**
  * Communicates with the streaming api, but with additional operations that do not belong in the
  * streaming api itself, such as event tracking and convenience methods only used in the playback
@@ -147,7 +150,7 @@ internal class StreamingApiRepository(
             return ret
         } catch (throwable: Throwable) {
             endReason = EndReason.ERROR
-            errorMessage = throwable.message
+            errorMessage = throwable.stackTraceForPlaybackInfoFetchEvent()
             errorCode =
                 errorHandler.getErrorCode(throwable, ErrorCodeFactory.Extra.PlaybackInfoFetch)
             throw IOException(throwable)
@@ -193,4 +196,20 @@ internal class StreamingApiRepository(
                     "ProductType ${forwardingMediaProduct.productType} can't be offlined."
                 )
         }
+
+    private fun Throwable.stackTraceForPlaybackInfoFetchEvent(): String {
+        val stackTrace = stackTraceToString()
+        return if (stackTrace.length <= MAX_PLAYBACK_INFO_FETCH_ERROR_MESSAGE_LENGTH) {
+            stackTrace
+        } else {
+            val availableLength =
+                MAX_PLAYBACK_INFO_FETCH_ERROR_MESSAGE_LENGTH -
+                    PLAYBACK_INFO_FETCH_STACK_TRACE_TRUNCATED.length
+            val startLength = availableLength * 3 / 4
+            val endLength = availableLength - startLength
+            stackTrace.take(startLength) +
+                PLAYBACK_INFO_FETCH_STACK_TRACE_TRUNCATED +
+                stackTrace.takeLast(endLength)
+        }
+    }
 }
