@@ -255,7 +255,7 @@ internal class StreamingApiRepositoryTest {
         runBlocking {
             val startTimestamp = -9L
             val endTimestamp = -4L
-            val errorMessage = "errorMessage"
+            val throwableMessage = "errorMessage"
             val errorCode = "errorCode"
             whenever(trueTimeWrapper.currentTimeMillis).thenReturn(startTimestamp, endTimestamp)
             val streamingSessionId = "streamingSessionId"
@@ -267,8 +267,8 @@ internal class StreamingApiRepositoryTest {
                 }
             val productQuality: ProductQuality
             val playbackMode = PlaybackMode.STREAM
-            val runtimeException =
-                mock<RuntimeException> { on { it.message } doReturn errorMessage }
+            val runtimeException = RuntimeException(throwableMessage)
+            val errorMessage = runtimeException.stackTraceToString()
             whenever(
                     errorHandler.getErrorCode(
                         runtimeException,
