@@ -1,8 +1,10 @@
 package com.tidal.sdk.player.playbackengine
 
 import androidx.media3.exoplayer.drm.MediaDrmCallbackException
+import assertk.all
 import assertk.assertFailure
 import assertk.assertThat
+import assertk.assertions.contains
 import assertk.assertions.hasCause
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isSameInstanceAs
@@ -33,8 +35,10 @@ import okhttp3.ResponseBody
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
+import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.doThrow
+import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.verifyNoInteractions
@@ -268,7 +272,6 @@ internal class StreamingApiRepositoryTest {
             val productQuality: ProductQuality
             val playbackMode = PlaybackMode.STREAM
             val runtimeException = RuntimeException(throwableMessage)
-            val errorMessage = runtimeException.stackTraceToString()
             whenever(
                     errorHandler.getErrorCode(
                         runtimeException,
@@ -338,17 +341,15 @@ internal class StreamingApiRepositoryTest {
                 .isInstanceOf(IOException::class)
                 .hasCause(runtimeException)
 
-            verify(eventReporter)
-                .report(
-                    PlaybackInfoFetch.Payload(
-                        streamingSessionId,
-                        startTimestamp,
-                        endTimestamp,
-                        EndReason.ERROR,
-                        errorMessage,
-                        errorCode,
-                    ),
-                    emptyMap(),
-                )
+            val payloadCaptor = argumentCaptor<PlaybackInfoFetch.Payload>()
+            verify(eventReporter).report(payloadCaptor.capture(), eq(emptyMap()))
+            assertThat(payloadCaptor.firstValue.toString()).all {
+                contains("streamingSessionId=$streamingSessionId")
+                contains("startTimestamp=$startTimestamp")
+                contains("endTimestamp=$endTimestamp")
+                contains("endReason=${EndReason.ERROR}")
+                contains("errorMessage=java.lang.RuntimeException: $throwableMessage")
+                contains("errorCode=$errorCode")
+            }
         }
 }

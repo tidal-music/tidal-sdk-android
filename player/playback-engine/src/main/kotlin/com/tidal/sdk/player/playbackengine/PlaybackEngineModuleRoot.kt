@@ -27,6 +27,7 @@ import okhttp3.OkHttpClient
 class PlaybackEngineModuleRoot(
     context: Context,
     connectivityManager: ConnectivityManager,
+    useLibflacAudioRenderer: Boolean,
     enableDecoderFallback: Boolean,
     events: MutableSharedFlow<Event>,
     bufferConfiguration: BufferConfiguration,
@@ -60,6 +61,7 @@ class PlaybackEngineModuleRoot(
                 assetTimeoutConfig,
                 cacheProvider,
                 configuration,
+                useLibflacAudioRenderer,
                 enableDecoderFallback,
                 appSpecificCacheDir,
                 streamingApi,
