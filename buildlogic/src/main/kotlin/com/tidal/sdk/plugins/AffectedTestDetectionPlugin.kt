@@ -129,11 +129,16 @@ private class AffectedModuleDetector(private val project: Project) {
     }
 
     private fun findProjectForFile(file: String): Project? {
-        return allProjects.firstOrNull { project ->
-            if (project == rootProject) return@firstOrNull false
-            val projectPath = project.projectDir.relativeTo(rootDir).path
-            file.startsWith("$projectPath/")
-        }
+        // Pick the most specific (longest path) matching project. A simple "first match" would
+        // attribute a file under a nested module (e.g. player/playback-engine/...) to its parent
+        // project (:player), because the parent's path is also a prefix of the file path.
+        return allProjects
+            .filter { it != rootProject }
+            .filter { project ->
+                val projectPath = project.projectDir.relativeTo(rootDir).path
+                file.startsWith("$projectPath/")
+            }
+            .maxByOrNull { it.projectDir.relativeTo(rootDir).path.length }
     }
 
     private fun findAllAffectedProjects(directlyAffectedProjects: Set<Project>): Set<Project> {
