@@ -29,6 +29,7 @@ import com.tidal.sdk.player.streamingapi.StreamingApi
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackMode
 import java.io.IOException
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.runBlocking
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.ResponseBody
@@ -146,6 +147,52 @@ internal class StreamingApiRepositoryTest {
                 ),
                 emptyMap(),
             )
+    }
+
+    @Test
+    fun getDrmLicenseOnCancellationRethrowsAndDoesNotReport() = runBlocking {
+        val streamingSessionId = "streamingSessionId"
+        val licenseUrl = "licenseUrl"
+        val payload = "fake_request_data".toByteArray()
+        val cancellationException = CancellationException("cancelled")
+        whenever(trueTimeWrapper.currentTimeMillis).thenReturn(1L)
+        whenever(streamingApi.getDrmLicense(licenseUrl, payload)) doThrow cancellationException
+
+        assertFailure {
+                streamingApiRepository.getDrmLicense(
+                    licenseUrl,
+                    payload,
+                    streamingSessionId,
+                    emptyMap(),
+                )
+            }
+            .isSameInstanceAs(cancellationException)
+
+        verifyNoInteractions(eventReporter)
+        verifyNoInteractions(mediaDrmCallbackExceptionFactory)
+    }
+
+    @Test
+    fun getPlaybackInfoForStreamingOnCancellationRethrowsAndDoesNotReport() = runBlocking {
+        val streamingSessionId = "streamingSessionId"
+        val productId = "33"
+        val mediaProduct =
+            mock<ForwardingMediaProduct<*>> {
+                on { it.productId } doReturn productId
+                on { it.productType } doReturn ProductType.UC
+            }
+        val cancellationException = CancellationException("cancelled")
+        whenever(trueTimeWrapper.currentTimeMillis).thenReturn(1L)
+        whenever(streamingApi.getUCPlaybackInfo(productId, streamingSessionId))
+            .thenThrow(cancellationException)
+
+        assertFailure {
+                streamingApiRepository.getPlaybackInfoForStreaming(streamingSessionId, mediaProduct)
+            }
+            .isSameInstanceAs(cancellationException)
+
+        verifyNoInteractions(eventReporter)
+        verifyNoInteractions(errorHandler)
     }
 
     @ParameterizedTest

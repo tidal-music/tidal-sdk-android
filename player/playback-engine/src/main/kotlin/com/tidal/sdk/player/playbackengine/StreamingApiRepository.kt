@@ -22,6 +22,7 @@ import com.tidal.sdk.player.streamingapi.StreamingApi
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackMode
 import java.io.IOException
+import kotlinx.coroutines.CancellationException
 import okhttp3.ResponseBody
 import retrofit2.Response
 
@@ -73,28 +74,34 @@ internal class StreamingApiRepository(
         val startTimestamp = trueTimeWrapper.currentTimeMillis
         var errorMessage: String? = null
         var errorCode: String? = null
-        lateinit var endReason: EndReason
+        var endReason: EndReason? = null
         try {
             val ret = streamingApi.getDrmLicense(licenseUrl, payload)
             endReason = EndReason.COMPLETE
             return ret
+        } catch (e: CancellationException) {
+            throw e
         } catch (throwable: Throwable) {
             endReason = EndReason.ERROR
             errorMessage = throwable.message
             errorCode = errorHandler.getErrorCode(throwable, ErrorCodeFactory.Extra.DrmLicenseFetch)
             throw mediaDrmCallbackExceptionFactory.create(throwable)
         } finally {
-            eventReporter.report(
-                DrmLicenseFetch.Payload(
-                    streamingSessionId,
-                    startTimestamp,
-                    trueTimeWrapper.currentTimeMillis,
-                    endReason,
-                    errorMessage,
-                    errorCode,
-                ),
-                extras,
-            )
+            // endReason is only set when the request completed or failed; on cancellation it stays
+            // null and we skip reporting entirely.
+            endReason?.let {
+                eventReporter.report(
+                    DrmLicenseFetch.Payload(
+                        streamingSessionId,
+                        startTimestamp,
+                        trueTimeWrapper.currentTimeMillis,
+                        it,
+                        errorMessage,
+                        errorCode,
+                    ),
+                    extras,
+                )
+            }
         }
     }
 
@@ -109,7 +116,7 @@ internal class StreamingApiRepository(
         val startTimestamp = trueTimeWrapper.currentTimeMillis
         var errorMessage: String? = null
         var errorCode: String? = null
-        lateinit var endReason: EndReason
+        var endReason: EndReason? = null
         try {
             val ret =
                 when (forwardingMediaProduct.productType) {
@@ -148,6 +155,8 @@ internal class StreamingApiRepository(
                 }
             endReason = EndReason.COMPLETE
             return ret
+        } catch (e: CancellationException) {
+            throw e
         } catch (throwable: Throwable) {
             endReason = EndReason.ERROR
             errorMessage = throwable.stackTraceForPlaybackInfoFetchEvent()
@@ -155,17 +164,21 @@ internal class StreamingApiRepository(
                 errorHandler.getErrorCode(throwable, ErrorCodeFactory.Extra.PlaybackInfoFetch)
             throw IOException(throwable)
         } finally {
-            eventReporter.report(
-                PlaybackInfoFetch.Payload(
-                    streamingSessionId,
-                    startTimestamp,
-                    trueTimeWrapper.currentTimeMillis,
-                    endReason,
-                    errorMessage,
-                    errorCode,
-                ),
-                forwardingMediaProduct.extras,
-            )
+            // endReason is only set when the request completed or failed; on cancellation it stays
+            // null and we skip reporting entirely.
+            endReason?.let {
+                eventReporter.report(
+                    PlaybackInfoFetch.Payload(
+                        streamingSessionId,
+                        startTimestamp,
+                        trueTimeWrapper.currentTimeMillis,
+                        it,
+                        errorMessage,
+                        errorCode,
+                    ),
+                    forwardingMediaProduct.extras,
+                )
+            }
         }
     }
 
