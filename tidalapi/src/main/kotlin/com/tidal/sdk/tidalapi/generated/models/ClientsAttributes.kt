@@ -15,7 +15,6 @@ import kotlinx.serialization.Serializable
  * @param clientSecret
  * @param createdAt
  * @param description
- * @param platformPreset
  * @param redirectUris
  * @param scopes
  */
@@ -26,8 +25,6 @@ data class ClientsAttributes(
     @SerialName(value = "clientSecret") val clientSecret: kotlin.String? = null,
     @SerialName(value = "createdAt") val createdAt: kotlin.String? = null,
     @SerialName(value = "description") val description: kotlin.String? = null,
-    @SerialName(value = "platformPreset")
-    val platformPreset: ClientsAttributes.PlatformPreset? = null,
     @SerialName(value = "redirectUris")
     val redirectUris: kotlin.collections.List<kotlin.String>? = null,
     @SerialName(value = "scopes") val scopes: kotlin.collections.Set<kotlin.String>? = null,
@@ -40,14 +37,5 @@ data class ClientsAttributes(
         @SerialName(value = "THIRD_PARTY_PROD") THIRD_PARTY_PROD("THIRD_PARTY_PROD"),
         @SerialName(value = "PARTNER") PARTNER("PARTNER"),
         @SerialName(value = "INTERNAL") INTERNAL("INTERNAL"),
-    }
-
-    /** Values: NONE,WEB,ANDROID,IOS */
-    @Serializable
-    enum class PlatformPreset(val value: kotlin.String) {
-        @SerialName(value = "NONE") NONE("NONE"),
-        @SerialName(value = "WEB") WEB("WEB"),
-        @SerialName(value = "ANDROID") ANDROID("ANDROID"),
-        @SerialName(value = "IOS") IOS("IOS"),
     }
 }

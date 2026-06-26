@@ -28,7 +28,7 @@ data class DynamicPagesAttributes(
     /**
      * Type of the page eg. home, artist
      *
-     * Values: HOME_STATIC,HOME_UPLOADS,HOME_EDITORIAL,HOME_FREE,ARTIST,ALBUM
+     * Values: HOME_STATIC,HOME_UPLOADS,HOME_EDITORIAL,HOME_FREE,ARTIST,ALBUM,PLAYLIST,TRACK,VIDEO
      */
     @Serializable
     enum class PageType(val value: kotlin.String) {
@@ -38,5 +38,8 @@ data class DynamicPagesAttributes(
         @SerialName(value = "HOME_FREE") HOME_FREE("HOME_FREE"),
         @SerialName(value = "ARTIST") ARTIST("ARTIST"),
         @SerialName(value = "ALBUM") ALBUM("ALBUM"),
+        @SerialName(value = "PLAYLIST") PLAYLIST("PLAYLIST"),
+        @SerialName(value = "TRACK") TRACK("TRACK"),
+        @SerialName(value = "VIDEO") VIDEO("VIDEO"),
     }
 }

@@ -1,0 +1,306 @@
+package com.tidal.sdk.tidalapi.generated.apis
+
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersCreateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersItemsMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersItemsRelationshipAddOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersItemsRelationshipRemoveOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersMultiResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersSingleRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersSingleResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersUpdateOperationPayload
+import kotlinx.serialization.SerialName
+import retrofit2.Response
+import retrofit2.http.*
+
+interface UserCollectionFoldersApi {
+    /**
+     * Get multiple userCollectionFolders. Retrieves multiple userCollectionFolders by available
+     * filters, or without if applicable. Responses:
+     * - 200: Successful response
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
+     *
+     * @param filterId Folder Id (e.g.
+     *   &#x60;CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX&#x60;)
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: items, owners, userCollection (optional)
+     * @return [UserCollectionFoldersMultiResourceDataDocument]
+     */
+    @GET("userCollectionFolders")
+    suspend fun userCollectionFoldersGet(
+        @Query("filter[id]") filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+    ): Response<UserCollectionFoldersMultiResourceDataDocument>
+
+    /**
+     * Delete single userCollectionFolder. Deletes existing userCollectionFolder. Responses:
+     * - 400: Cannot delete folder: only empty folders owned by you can be deleted.
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
+     * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
+     *
+     * @param id Folder Id
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
+     * @return [Unit]
+     */
+    @DELETE("userCollectionFolders/{id}")
+    suspend fun userCollectionFoldersIdDelete(
+        @Path("id") id: kotlin.String,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
+    ): Response<Unit>
+
+    /**
+     * Get single userCollectionFolder. Retrieves single userCollectionFolder by id. Responses:
+     * - 200: Successful response
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
+     *
+     * @param id Folder Id
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: items, owners, userCollection (optional)
+     * @return [UserCollectionFoldersSingleResourceDataDocument]
+     */
+    @GET("userCollectionFolders/{id}")
+    suspend fun userCollectionFoldersIdGet(
+        @Path("id") id: kotlin.String,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+    ): Response<UserCollectionFoldersSingleResourceDataDocument>
+
+    /**
+     * Update single userCollectionFolder. Updates existing userCollectionFolder. Responses:
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
+     * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
+     *
+     * @param id Folder Id
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
+     * @param userCollectionFoldersUpdateOperationPayload (optional)
+     * @return [Unit]
+     */
+    @PATCH("userCollectionFolders/{id}")
+    suspend fun userCollectionFoldersIdPatch(
+        @Path("id") id: kotlin.String,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
+        @Body
+        userCollectionFoldersUpdateOperationPayload: UserCollectionFoldersUpdateOperationPayload? =
+            null,
+    ): Response<Unit>
+
+    /**
+     * Delete from items relationship (\&quot;to-many\&quot;). Deletes item(s) from items
+     * relationship. Responses:
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
+     * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
+     *
+     * @param id Folder Id
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
+     * @param userCollectionFoldersItemsRelationshipRemoveOperationPayload (optional)
+     * @return [Unit]
+     */
+    @HTTP(
+        method = "DELETE",
+        path = "userCollectionFolders/{id}/relationships/items",
+        hasBody = true,
+    )
+    suspend fun userCollectionFoldersIdRelationshipsItemsDelete(
+        @Path("id") id: kotlin.String,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
+        @Body
+        userCollectionFoldersItemsRelationshipRemoveOperationPayload:
+            UserCollectionFoldersItemsRelationshipRemoveOperationPayload? =
+            null,
+    ): Response<Unit>
+
+    /** enum for parameter sort */
+    enum class SortUserCollectionFoldersIdRelationshipsItemsGet(val value: kotlin.String) {
+        @SerialName(value = "addedAt") AddedAtAsc("addedAt"),
+        @SerialName(value = "-addedAt") AddedAtDesc("-addedAt"),
+        @SerialName(value = "lastModifiedAt") LastModifiedAtAsc("lastModifiedAt"),
+        @SerialName(value = "-lastModifiedAt") LastModifiedAtDesc("-lastModifiedAt"),
+        @SerialName(value = "name") NameAsc("name"),
+        @SerialName(value = "-name") NameDesc("-name"),
+    }
+
+    /**
+     * Get items relationship (\&quot;to-many\&quot;). Retrieves items relationship. Responses:
+     * - 200: Successful response
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
+     *
+     * @param id Folder Id
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
+     * @param sort Values prefixed with \&quot;-\&quot; are sorted descending; values without it are
+     *   sorted ascending. (optional)
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: items (optional)
+     * @return [UserCollectionFoldersItemsMultiRelationshipDataDocument]
+     */
+    @GET("userCollectionFolders/{id}/relationships/items")
+    suspend fun userCollectionFoldersIdRelationshipsItemsGet(
+        @Path("id") id: kotlin.String,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("sort") sort: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+    ): Response<UserCollectionFoldersItemsMultiRelationshipDataDocument>
+
+    /**
+     * Add to items relationship (\&quot;to-many\&quot;). Adds item(s) to items relationship.
+     * Responses:
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
+     * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
+     *
+     * @param id Folder Id
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
+     * @param userCollectionFoldersItemsRelationshipAddOperationPayload (optional)
+     * @return [Unit]
+     */
+    @POST("userCollectionFolders/{id}/relationships/items")
+    suspend fun userCollectionFoldersIdRelationshipsItemsPost(
+        @Path("id") id: kotlin.String,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
+        @Body
+        userCollectionFoldersItemsRelationshipAddOperationPayload:
+            UserCollectionFoldersItemsRelationshipAddOperationPayload? =
+            null,
+    ): Response<Unit>
+
+    /**
+     * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
+     * - 200: Successful response
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
+     *
+     * @param id Folder Id
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: owners (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
+     * @return [UserCollectionFoldersMultiRelationshipDataDocument]
+     */
+    @GET("userCollectionFolders/{id}/relationships/owners")
+    suspend fun userCollectionFoldersIdRelationshipsOwnersGet(
+        @Path("id") id: kotlin.String,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
+    ): Response<UserCollectionFoldersMultiRelationshipDataDocument>
+
+    /**
+     * Get userCollection relationship (\&quot;to-one\&quot;). Retrieves userCollection
+     * relationship. Responses:
+     * - 200: Successful response
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
+     *
+     * @param id Folder Id
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: userCollection (optional)
+     * @return [UserCollectionFoldersSingleRelationshipDataDocument]
+     */
+    @GET("userCollectionFolders/{id}/relationships/userCollection")
+    suspend fun userCollectionFoldersIdRelationshipsUserCollectionGet(
+        @Path("id") id: kotlin.String,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+    ): Response<UserCollectionFoldersSingleRelationshipDataDocument>
+
+    /**
+     * Create single userCollectionFolder. Creates a new userCollectionFolder. Responses:
+     * - 201: Successful response
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 409: A request with this idempotency key is currently being processed
+     * - 415: Unsupported request payload media type or content encoding
+     * - 422: Idempotency key was already used with a different request payload
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
+     *
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
+     * @param userCollectionFoldersCreateOperationPayload (optional)
+     * @return [UserCollectionFoldersSingleResourceDataDocument]
+     */
+    @POST("userCollectionFolders")
+    suspend fun userCollectionFoldersPost(
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
+        @Body
+        userCollectionFoldersCreateOperationPayload: UserCollectionFoldersCreateOperationPayload? =
+            null,
+    ): Response<UserCollectionFoldersSingleResourceDataDocument>
+}

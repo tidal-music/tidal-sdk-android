@@ -8,7 +8,7 @@
     "description" : "The TIDAL API is a [JSON:API](https://jsonapi.org/)–compliant web API that exposes TIDAL’s music, metadata, and user-related functionality through a consistent, resource-oriented design. More information and API management are available at [developer.tidal.com](https://developer.tidal.com)",
     "termsOfService" : "https://developer.tidal.com/documentation/guidelines/guidelines-overview",
     "title" : "TIDAL API",
-    "version" : "1.10.28"
+    "version" : "1.10.44"
   },
   "externalDocs" : {
     "description" : "TIDAL Developer - Documentation",
@@ -33,6 +33,9 @@
   }, {
     "description" : "A biography text for an artist.",
     "name" : "artistBiographies"
+  }, {
+    "description" : "Claim status for an artist profile.",
+    "name" : "artistClaimStatuses"
   }, {
     "description" : "A claim by an artist to own an artist profile via DSP authentication.",
     "name" : "artistClaims"
@@ -2757,6 +2760,67 @@
         }
       }
     },
+    "/artistClaimStatuses" : {
+      "get" : {
+        "description" : "Retrieves multiple artistClaimStatuses by available filters, or without if applicable.",
+        "parameters" : [ {
+          "description" : "List of artist claim status IDs (e.g. `QVJUSVNUUzoxNTY2`)",
+          "in" : "query",
+          "name" : "filter[id]",
+          "required" : true,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ArtistClaimStatuses_Multi_Resource_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Default400Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Default404Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Default405Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Default406Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Default415Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Default429Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Default500Response"
+          },
+          "503" : {
+            "$ref" : "#/components/responses/Default503Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ ]
+        } ],
+        "summary" : "Get multiple artistClaimStatuses.",
+        "tags" : [ "artistClaimStatuses" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      }
+    },
     "/artistClaims" : {
       "get" : {
         "description" : "Retrieves multiple artistClaims by available filters, or without if applicable.",
@@ -3492,7 +3556,7 @@
             "type" : "string"
           }
         }, {
-          "description" : "Allows the client to customize which related resources should be returned. Available options: albums, biography, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos",
+          "description" : "Allows the client to customize which related resources should be returned. Available options: albums, biography, claimStatus, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos",
           "example" : "albums",
           "in" : "query",
           "name" : "include",
@@ -3673,7 +3737,7 @@
             "type" : "string"
           }
         }, {
-          "description" : "Allows the client to customize which related resources should be returned. Available options: albums, biography, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos",
+          "description" : "Allows the client to customize which related resources should be returned. Available options: albums, biography, claimStatus, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos",
           "example" : "albums",
           "in" : "query",
           "name" : "include",
@@ -3969,6 +4033,78 @@
         "tags" : [ "artists" ],
         "x-path-item-properties" : {
           "required-access-tier" : "THIRD_PARTY"
+        }
+      }
+    },
+    "/artists/{id}/relationships/claimStatus" : {
+      "get" : {
+        "description" : "Retrieves claimStatus relationship.",
+        "parameters" : [ {
+          "description" : "Artist id",
+          "example" : "1566",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: claimStatus",
+          "example" : "claimStatus",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "claimStatus"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Artists_Single_Relationship_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Default400Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Default404Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Default405Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Default406Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Default415Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Default429Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Default500Response"
+          },
+          "503" : {
+            "$ref" : "#/components/responses/Default503Response"
+          }
+        },
+        "security" : [ {
+          "Authorization_Code_PKCE" : [ ]
+        } ],
+        "summary" : "Get claimStatus relationship (\"to-one\").",
+        "tags" : [ "artists" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
         }
       }
     },
@@ -5662,6 +5798,16 @@
           }
         },
         "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Clients_Single_Resource_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
           "400" : {
             "$ref" : "#/components/responses/Default400Response"
           },
@@ -7921,6 +8067,268 @@
         }
       }
     },
+    "/dynamicModules" : {
+      "get" : {
+        "description" : "Retrieves multiple dynamicModules by available filters, or without if applicable.",
+        "parameters" : [ {
+          "description" : "Stable seed used to keep dynamic page and module results consistent across a client session.",
+          "in" : "query",
+          "name" : "refreshSeed",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "ISO 3166-1 alpha-2 country code",
+          "example" : "US",
+          "in" : "query",
+          "name" : "countryCode",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.",
+          "example" : "en-US",
+          "in" : "query",
+          "name" : "locale",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "default" : "en-US"
+          }
+        }, {
+          "description" : "The type of device making the request",
+          "example" : "PHONE",
+          "in" : "query",
+          "name" : "deviceType",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "BROWSER", "CAR", "DESKTOP", "PHONE", "TABLET", "TV" ]
+          }
+        }, {
+          "description" : "The system type of the device making the request",
+          "example" : "IOS",
+          "in" : "query",
+          "name" : "systemType",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "ANDROID", "DESKTOP", "TESLA", "IOS", "WEB" ]
+          }
+        }, {
+          "description" : "Client version number",
+          "example" : "2026.0.1",
+          "in" : "query",
+          "name" : "clientVersion",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: items",
+          "example" : "items",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "items"
+            }
+          }
+        }, {
+          "description" : "DynamicModules Id (e.g. `nejMcAhh5N8S3EQ4LaqysVdI0cZZ`)",
+          "in" : "query",
+          "name" : "filter[id]",
+          "required" : true,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DynamicModules_Multi_Resource_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Default400Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Default404Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Default405Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Default406Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Default415Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Default429Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Default500Response"
+          },
+          "503" : {
+            "$ref" : "#/components/responses/Default503Response"
+          }
+        },
+        "security" : [ {
+          "Client_Credentials" : [ ]
+        }, {
+          "Authorization_Code_PKCE" : [ ]
+        } ],
+        "summary" : "Get multiple dynamicModules.",
+        "tags" : [ "dynamicModules" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      }
+    },
+    "/dynamicModules/{id}" : {
+      "get" : {
+        "description" : "Retrieves single dynamicModule by id.",
+        "parameters" : [ {
+          "description" : "DynamicModules Id",
+          "example" : "nejMcAhh5N8S3EQ4LaqysVdI0cZZ",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Stable seed used to keep dynamic page and module results consistent across a client session.",
+          "in" : "query",
+          "name" : "refreshSeed",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "ISO 3166-1 alpha-2 country code",
+          "example" : "US",
+          "in" : "query",
+          "name" : "countryCode",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.",
+          "example" : "en-US",
+          "in" : "query",
+          "name" : "locale",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "default" : "en-US"
+          }
+        }, {
+          "description" : "The type of device making the request",
+          "example" : "PHONE",
+          "in" : "query",
+          "name" : "deviceType",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "BROWSER", "CAR", "DESKTOP", "PHONE", "TABLET", "TV" ]
+          }
+        }, {
+          "description" : "The system type of the device making the request",
+          "example" : "IOS",
+          "in" : "query",
+          "name" : "systemType",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "ANDROID", "DESKTOP", "TESLA", "IOS", "WEB" ]
+          }
+        }, {
+          "description" : "Client version number",
+          "example" : "2026.0.1",
+          "in" : "query",
+          "name" : "clientVersion",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Allows the client to customize which related resources should be returned. Available options: items",
+          "example" : "items",
+          "in" : "query",
+          "name" : "include",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "items"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DynamicModules_Single_Resource_Data_Document"
+                }
+              }
+            },
+            "description" : "Successful response"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/Default400Response"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/Default404Response"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/Default405Response"
+          },
+          "406" : {
+            "$ref" : "#/components/responses/Default406Response"
+          },
+          "415" : {
+            "$ref" : "#/components/responses/Default415Response"
+          },
+          "429" : {
+            "$ref" : "#/components/responses/Default429Response"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/Default500Response"
+          },
+          "503" : {
+            "$ref" : "#/components/responses/Default503Response"
+          }
+        },
+        "security" : [ {
+          "Client_Credentials" : [ ]
+        }, {
+          "Authorization_Code_PKCE" : [ "r_usr" ]
+        } ],
+        "summary" : "Get single dynamicModule.",
+        "tags" : [ "dynamicModules" ],
+        "x-path-item-properties" : {
+          "required-access-tier" : "INTERNAL"
+        }
+      }
+    },
     "/dynamicModules/{id}/relationships/items" : {
       "get" : {
         "description" : "Retrieves items relationship.",
@@ -7934,8 +8342,9 @@
             "type" : "string"
           }
         }, {
+          "description" : "Stable seed used to keep dynamic page and module results consistent across a client session.",
           "in" : "query",
-          "name" : "refreshId",
+          "name" : "refreshSeed",
           "required" : false,
           "schema" : {
             "type" : "string"
@@ -8062,8 +8471,9 @@
       "get" : {
         "description" : "Retrieves multiple dynamicPages by available filters, or without if applicable.",
         "parameters" : [ {
+          "description" : "Stable seed used to keep dynamic page and module results consistent across a client session.",
           "in" : "query",
-          "name" : "refreshId",
+          "name" : "refreshSeed",
           "required" : false,
           "schema" : {
             "type" : "string"
@@ -8117,8 +8527,8 @@
             "type" : "string"
           }
         }, {
-          "description" : "Allows the client to customize which related resources should be returned. Available options: dynamicModules, subject",
-          "example" : "dynamicModules",
+          "description" : "Allows the client to customize which related resources should be returned. Available options: modules, subject",
+          "example" : "modules",
           "in" : "query",
           "name" : "include",
           "required" : false,
@@ -8126,7 +8536,7 @@
             "type" : "array",
             "items" : {
               "type" : "string",
-              "example" : "dynamicModules"
+              "example" : "modules"
             }
           }
         }, {
@@ -8200,9 +8610,9 @@
         }
       }
     },
-    "/dynamicPages/{id}/relationships/dynamicModules" : {
+    "/dynamicPages/{id}/relationships/modules" : {
       "get" : {
-        "description" : "Retrieves dynamicModules relationship.",
+        "description" : "Retrieves modules relationship.",
         "parameters" : [ {
           "description" : "DynamicPages Id",
           "example" : "nejMcAhh5N8S3EQ4LaqysVdI0cZZ",
@@ -8213,8 +8623,9 @@
             "type" : "string"
           }
         }, {
+          "description" : "Stable seed used to keep dynamic page and module results consistent across a client session.",
           "in" : "query",
-          "name" : "refreshId",
+          "name" : "refreshSeed",
           "required" : false,
           "schema" : {
             "type" : "string"
@@ -8276,8 +8687,8 @@
             "type" : "string"
           }
         }, {
-          "description" : "Allows the client to customize which related resources should be returned. Available options: dynamicModules",
-          "example" : "dynamicModules",
+          "description" : "Allows the client to customize which related resources should be returned. Available options: modules",
+          "example" : "modules",
           "in" : "query",
           "name" : "include",
           "required" : false,
@@ -8285,7 +8696,7 @@
             "type" : "array",
             "items" : {
               "type" : "string",
-              "example" : "dynamicModules"
+              "example" : "modules"
             }
           }
         } ],
@@ -8330,7 +8741,7 @@
         }, {
           "Authorization_Code_PKCE" : [ "r_usr" ]
         } ],
-        "summary" : "Get dynamicModules relationship (\"to-many\").",
+        "summary" : "Get modules relationship (\"to-many\").",
         "tags" : [ "dynamicPages" ],
         "x-path-item-properties" : {
           "required-access-tier" : "INTERNAL"
@@ -11915,6 +12326,21 @@
             "type" : "string"
           }
         }, {
+          "description" : "Values prefixed with \"-\" are sorted descending; values without it are sorted ascending.",
+          "in" : "query",
+          "name" : "sort",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "addedAt",
+              "enum" : [ "addedAt", "-addedAt", "albums.title", "-albums.title", "artists.name", "-artists.name", "duration", "-duration", "itemIndex", "-itemIndex", "title", "-title" ],
+              "default" : "itemIndex",
+              "x-enum-varnames" : [ "AddedAtAsc", "AddedAtDesc", "AlbumsTitleAsc", "AlbumsTitleDesc", "ArtistsNameAsc", "ArtistsNameDesc", "DurationAsc", "DurationDesc", "ItemIndexAsc", "ItemIndexDesc", "TitleAsc", "TitleDesc" ]
+            }
+          }
+        }, {
           "description" : "ISO 3166-1 alpha-2 country code",
           "example" : "US",
           "in" : "query",
@@ -12756,7 +13182,18 @@
           "description" : "List of barcode IDs (EAN-13 or UPC-A) (e.g. `00602527336510`)",
           "in" : "query",
           "name" : "filter[barcodeId]",
-          "required" : true,
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }, {
+          "description" : "List of GRIDs (Global Release Identifier, ISO 7064) (e.g. `A10302B0013941653J`)",
+          "in" : "query",
+          "name" : "filter[grid]",
+          "required" : false,
           "schema" : {
             "type" : "array",
             "items" : {
@@ -19042,15 +19479,6 @@
             "type" : "string"
           }
         }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
           "description" : "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.",
           "example" : "en-US",
           "in" : "query",
@@ -19220,15 +19648,6 @@
             }
           }
         }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
           "description" : "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.",
           "example" : "en-US",
           "in" : "query",
@@ -19305,15 +19724,6 @@
           "in" : "path",
           "name" : "id",
           "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
           "schema" : {
             "type" : "string"
           }
@@ -19470,15 +19880,6 @@
           "in" : "path",
           "name" : "id",
           "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
           "schema" : {
             "type" : "string"
           }
@@ -19652,15 +20053,6 @@
             }
           }
         }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
           "description" : "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.",
           "example" : "en-US",
           "in" : "query",
@@ -19737,15 +20129,6 @@
           "in" : "path",
           "name" : "id",
           "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
           "schema" : {
             "type" : "string"
           }
@@ -20611,15 +20994,6 @@
             "type" : "string"
           }
         }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
           "description" : "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.",
           "example" : "en-US",
           "in" : "query",
@@ -21167,15 +21541,6 @@
             "type" : "string"
           }
         }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: items",
           "example" : "items",
           "in" : "query",
@@ -21242,15 +21607,6 @@
           "in" : "path",
           "name" : "id",
           "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
           "schema" : {
             "type" : "string"
           }
@@ -21407,15 +21763,6 @@
           "in" : "path",
           "name" : "id",
           "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
           "schema" : {
             "type" : "string"
           }
@@ -21589,15 +21936,6 @@
             }
           }
         }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
           "description" : "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.",
           "example" : "en-US",
           "in" : "query",
@@ -21674,15 +22012,6 @@
           "in" : "path",
           "name" : "id",
           "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
           "schema" : {
             "type" : "string"
           }
@@ -21839,15 +22168,6 @@
           "in" : "path",
           "name" : "id",
           "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
           "schema" : {
             "type" : "string"
           }
@@ -22021,15 +22341,6 @@
             }
           }
         }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
           "description" : "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.",
           "example" : "en-US",
           "in" : "query",
@@ -22106,15 +22417,6 @@
           "in" : "path",
           "name" : "id",
           "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
           "schema" : {
             "type" : "string"
           }
@@ -22272,15 +22574,6 @@
           "in" : "path",
           "name" : "id",
           "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
           "schema" : {
             "type" : "string"
           }
@@ -22456,15 +22749,6 @@
             }
           }
         }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
           "description" : "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.",
           "example" : "en-US",
           "in" : "query",
@@ -22542,15 +22826,6 @@
           "in" : "path",
           "name" : "id",
           "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
           "schema" : {
             "type" : "string"
           }
@@ -22710,15 +22985,6 @@
             }
           }
         }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
           "description" : "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.",
           "example" : "en-US",
           "in" : "query",
@@ -22796,15 +23062,6 @@
           "in" : "path",
           "name" : "id",
           "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
           "schema" : {
             "type" : "string"
           }
@@ -23278,15 +23535,6 @@
             }
           }
         }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
           "description" : "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.",
           "example" : "en-US",
           "in" : "query",
@@ -23364,15 +23612,6 @@
           "in" : "path",
           "name" : "id",
           "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
           "schema" : {
             "type" : "string"
           }
@@ -23532,15 +23771,6 @@
             }
           }
         }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
           "description" : "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.",
           "example" : "en-US",
           "in" : "query",
@@ -23622,15 +23852,6 @@
             "type" : "string"
           }
         }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
           "$ref" : "#/components/parameters/IdempotencyKey"
         } ],
         "requestBody" : {
@@ -23693,15 +23914,6 @@
           "in" : "path",
           "name" : "id",
           "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
           "schema" : {
             "type" : "string"
           }
@@ -23945,15 +24157,6 @@
             "type" : "string"
           }
         }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
           "description" : "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.",
           "example" : "en-US",
           "in" : "query",
@@ -24044,15 +24247,6 @@
             "type" : "string"
           }
         }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
           "description" : "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.",
           "example" : "en-US",
           "in" : "query",
@@ -24131,15 +24325,6 @@
           "in" : "path",
           "name" : "id",
           "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
           "schema" : {
             "type" : "string"
           }
@@ -24234,15 +24419,6 @@
             "type" : "string"
           }
         }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
           "description" : "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.",
           "example" : "en-US",
           "in" : "query",
@@ -24321,15 +24497,6 @@
           "in" : "path",
           "name" : "id",
           "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
           "schema" : {
             "type" : "string"
           }
@@ -24506,15 +24673,6 @@
             "type" : "string"
           }
         }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
           "description" : "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.",
           "example" : "en-US",
           "in" : "query",
@@ -24597,15 +24755,6 @@
             "type" : "string"
           }
         }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
           "$ref" : "#/components/parameters/IdempotencyKey"
         } ],
         "requestBody" : {
@@ -24678,15 +24827,6 @@
             "type" : "string"
           }
         }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: artists",
           "example" : "artists",
           "in" : "query",
@@ -24753,15 +24893,6 @@
           "in" : "path",
           "name" : "id",
           "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
           "schema" : {
             "type" : "string"
           }
@@ -24922,15 +25053,6 @@
             "type" : "string"
           }
         }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
           "$ref" : "#/components/parameters/IdempotencyKey"
         } ],
         "requestBody" : {
@@ -25003,15 +25125,6 @@
             "type" : "string"
           }
         }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: tracks",
           "example" : "tracks",
           "in" : "query",
@@ -25078,15 +25191,6 @@
           "in" : "path",
           "name" : "id",
           "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
           "schema" : {
             "type" : "string"
           }
@@ -25167,15 +25271,6 @@
             "type" : "string"
           }
         }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
           "$ref" : "#/components/parameters/IdempotencyKey"
         } ],
         "requestBody" : {
@@ -25248,15 +25343,6 @@
             "type" : "string"
           }
         }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
           "description" : "Allows the client to customize which related resources should be returned. Available options: videos",
           "example" : "videos",
           "in" : "query",
@@ -25323,15 +25409,6 @@
           "in" : "path",
           "name" : "id",
           "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
           "schema" : {
             "type" : "string"
           }
@@ -25409,15 +25486,6 @@
           "in" : "path",
           "name" : "id",
           "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
           "schema" : {
             "type" : "string"
           }
@@ -25508,15 +25576,6 @@
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
           "in" : "query",
           "name" : "page[cursor]",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
           "required" : false,
           "schema" : {
             "type" : "string"
@@ -25613,15 +25672,6 @@
             "type" : "string"
           }
         }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
           "description" : "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.",
           "example" : "en-US",
           "in" : "query",
@@ -25708,15 +25758,6 @@
           "description" : "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified",
           "in" : "query",
           "name" : "page[cursor]",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "description" : "ISO 3166-1 alpha-2 country code",
-          "example" : "US",
-          "in" : "query",
-          "name" : "countryCode",
           "required" : false,
           "schema" : {
             "type" : "string"
@@ -27907,6 +27948,11 @@
             "example" : "PRIVATE",
             "enum" : [ "PUBLIC", "UNLISTED", "PRIVATE" ]
           },
+          "ai" : {
+            "type" : "boolean",
+            "description" : "Whether the album is AI-generated",
+            "example" : false
+          },
           "albumType" : {
             "type" : "string",
             "description" : "Album type",
@@ -28511,6 +28557,78 @@
         "properties" : {
           "data" : {
             "$ref" : "#/components/schemas/ArtistBiographies_Resource_Object"
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "ArtistClaimStatuses_Attributes" : {
+        "required" : [ "claimSources", "status" ],
+        "type" : "object",
+        "properties" : {
+          "claimSources" : {
+            "type" : "array",
+            "description" : "Claim sources contributing to the current status. Empty when there is no active claim.",
+            "items" : {
+              "type" : "string",
+              "enum" : [ "ARTIST_CLAIMS", "MANUAL_ARTIST_CLAIMS" ]
+            }
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "Whether the artist profile currently has an active claim",
+            "enum" : [ "CLAIM_IN_PROGRESS", "NO_ACTIVE_CLAIM" ]
+          }
+        }
+      },
+      "ArtistClaimStatuses_Multi_Resource_Data_Document" : {
+        "required" : [ "data", "links" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/ArtistClaimStatuses_Resource_Object"
+            }
+          },
+          "included" : {
+            "$ref" : "#/components/schemas/Included"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "ArtistClaimStatuses_Resource_Object" : {
+        "required" : [ "id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "attributes" : {
+            "$ref" : "#/components/schemas/ArtistClaimStatuses_Attributes"
+          },
+          "id" : {
+            "type" : "string",
+            "description" : "Resource id",
+            "example" : "12345"
+          },
+          "type" : {
+            "minLength" : 1,
+            "type" : "string",
+            "description" : "Resource type",
+            "example" : "tracks"
+          }
+        }
+      },
+      "ArtistClaimStatuses_Single_Resource_Data_Document" : {
+        "required" : [ "data", "links" ],
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/ArtistClaimStatuses_Resource_Object"
           },
           "included" : {
             "$ref" : "#/components/schemas/Included"
@@ -29217,6 +29335,9 @@
           "biography" : {
             "$ref" : "#/components/schemas/Single_Relationship_Data_Document"
           },
+          "claimStatus" : {
+            "$ref" : "#/components/schemas/Single_Relationship_Data_Document"
+          },
           "followers" : {
             "$ref" : "#/components/schemas/Artists_Followers_Multi_Relationship_Data_Document"
           },
@@ -29661,10 +29782,6 @@
           "name" : {
             "type" : "string"
           },
-          "platformPreset" : {
-            "type" : "string",
-            "enum" : [ "NONE", "WEB", "ANDROID", "IOS" ]
-          },
           "redirectUris" : {
             "type" : "array",
             "items" : {
@@ -29700,10 +29817,6 @@
           },
           "name" : {
             "type" : "string"
-          },
-          "platformPreset" : {
-            "type" : "string",
-            "enum" : [ "NONE", "WEB", "ANDROID", "IOS" ]
           },
           "redirectUris" : {
             "type" : "array",
@@ -31151,37 +31264,25 @@
         }
       },
       "DynamicModules_Attributes" : {
-        "required" : [ "icons", "layoutType", "moduleType", "sourceType" ],
+        "required" : [ "icons", "previewLayout", "viewAllLayout" ],
         "type" : "object",
         "properties" : {
           "icons" : {
             "type" : "array",
             "description" : "Type of icons the module should show",
-            "example" : "SPOTLIGHT_ICON",
+            "example" : "SPOTLIGHT_INFO",
             "items" : {
               "type" : "string",
               "description" : "Type of icons the module should show",
-              "example" : "SPOTLIGHT_ICON",
+              "example" : "SPOTLIGHT_INFO",
               "enum" : [ "SPOTLIGHT_INFO", "UNKNOWN" ]
             }
           },
-          "layoutType" : {
+          "previewLayout" : {
             "type" : "string",
-            "description" : "Type of representation of the items in the module view all screen",
-            "example" : "COMPACT",
-            "enum" : [ "COMPACT", "GRID", "UNKNOWN" ]
-          },
-          "moduleType" : {
-            "type" : "string",
-            "description" : "Type of representation of the module",
+            "description" : "Layout of the module preview on the dynamic page",
             "example" : "HORIZONTAL_LIST",
-            "enum" : [ "ARTIST_LIST", "COMPACT_GRID_CARD", "COMPACT_HORIZONTAL_LIST", "COMPACT_HORIZONTAL_LIST_WITH_CONTEXT", "FEATURED_CARD", "GRID_CARD", "GRID_CARD_WITH_CONTEXT", "GRID_HIGHLIGHT_CARD", "ANNIVERSARY_CARD", "ARTIST_BIRTHDAY_CARD", "ARTIST_MEMORIAM_CARD", "ARTIST_TRACK_CREDITS_CARD", "PILL_LIST", "VERTICAL_LIST", "HORIZONTAL_LIST", "HORIZONTAL_LIST_WITH_CONTEXT", "SHORTCUT_LIST", "TRACK_LIST", "VERTICAL_LIST_CARD", "TEXT_CARD", "LINKS_LIST", "PUBLIC_PLAYLIST_LIST" ]
-          },
-          "sourceType" : {
-            "type" : "string",
-            "description" : "Type of source represented by the module",
-            "example" : "SHORTCUTS",
-            "enum" : [ "ALBUM_RECOMMENDATIONS", "BECAUSE_YOU_LISTENED_TO_ALBUM", "BECAUSE_YOU_ADDED_ALBUM", "BECAUSE_YOU_ADDED_ARTIST", "CONTINUE_LISTEN_TO", "DAILY_MIXES", "FORGOTTEN_FAVORITES", "GENRE_MIXES", "HISTORY_MIXES", "LOCAL_PLAYLISTS", "MY_PLAYLISTS", "NEW_ALBUM_SUGGESTIONS", "NEW_TRACK_SUGGESTIONS", "NEW_ALBUMS", "NEW_TRACKS", "POPULAR_PLAYLISTS", "RECENTLY_UPDATED_FAVORITED_PLAYLIST", "RECOMMENDED_USERS_PLAYLISTS", "SUGGESTED_ESSENTIAL_PLAYLISTS", "SUGGESTED_RADIOS_MIXES", "WELCOME_MIX", "YOUR_FAVORITE_ARTISTS", "UPLOADS_FOR_YOU", "LATEST_SPOTLIGHTED_TRACKS", "SHORTCUTS", "ARTIST_TOP_TRACKS", "ARTIST_SPOTLIGHTED_TRACKS", "ARTIST_ALBUMS", "ARTIST_TOP_SINGLES", "ARTIST_COMPILATIONS", "ARTIST_LIVE_ALBUMS", "ARTIST_APPEARS_ON", "ARTIST_PLAYLIST", "ARTIST_PUBLIC_PLAYLIST", "ARTIST_SIMILAR_ARTISTS", "ARTIST_TRACK_UPLOADS", "ARTIST_LINKS", "ARTIST_VIDEOS", "ARTIST_CREDITS", "ALBUM_ITEMS", "ALBUM_MORE_BY_ARTIST", "ALBUM_OTHER_VERSIONS", "ALBUM_RELATED_ALBUMS", "ALBUM_RELATED_ARTISTS", "ALBUM_ANNIVERSARY", "ARTIST_BIRTHDAY", "ARTIST_MEMORIAM", "DJ_TOOLS", "DJ_ARTIST_CURATED", "THE_HITS", "FROM_OUR_EDITORS", "TOP_PLAYLISTS", "FEATURED_TOP_TRACKS", "FEATURED_TOP_ALBUMS", "TOP_ARTISTS_ESSENTIALS", "FEATURED_RECOMMENDED_PLAYLISTS", "HOME_3_FEATURED_PLAYLISTS", "HOME_3_FEATURED_UPLOAD_TRACKS", "HOME_3_FEATURED_ALBUMS", "POPULAR_ALBUMS", "POPULAR_ARTISTS", "POPULAR_MIXES", "FEATURED_RECOMMENDED_TRACKS", "FEATURED_RECOMMENDED_ALBUMS", "FEATURED_RECOMMENDED_CLASSIC_ALBUMS", "BACK_TO_SCHOOL_MUSIC_101", "BACK_TO_SCHOOL_GENRES_FOR_BEGINNERS", "HEADLINERS_2026", "HOME_3_0_GENERIC_PLAYLISTS_1", "HOME_3_0_GENERIC_PLAYLISTS_2", "HOME_3_0_GENERIC_ALBUMS_1", "HOME_3_0_GENERIC_TRACKS_1", "HOME_3_0_GENERIC_ARTISTS_1", "HOME_3_0_GENERIC_VIDEOS_1", "STAFF_PICKS_PAGE_ALBUMS_WE_LOVE", "STAFF_PICKS_PAGE_EXPLORE", "STAFF_PICKS_PAGE_FAVORITE_SONGS", "STAFF_PICKS_PAGE_RECENTLY_UPDATED_PLAYLISTS", "STAFF_PICKS_PAGE_TIDAL_NEWS_MAGAZINE", "STAFF_PICKS_PAGE_WHAT_LISTENING_TO", "BASED_ON_YOUR_INTERESTS_1", "BASED_ON_YOUR_INTERESTS_2", "UPLOAD_PAGE_SPOTLIGHTED_PLAYLISTS", "UPLOAD_PAGE_PAYGATED_ALBUMS", "UPLOAD_PAGE_ALBUMS", "TOP_UPLOADERS", "UPLOAD_PAGE_ARTISTS", "UPLOAD_PAGE_FEATURED_MAGAZINE", "EXPLORE_DECADES", "EXPLORE_GENRES", "EXPLORE_MOODS", "UNKNOWN" ]
+            "enum" : [ "ARTIST_LIST", "COMPACT_GRID_CARD", "COMPACT_HORIZONTAL_LIST", "COMPACT_HORIZONTAL_LIST_WITH_CONTEXT", "FEATURED_CARD", "GRID_CARD", "GRID_CARD_WITH_CONTEXT", "GRID_HIGHLIGHT_CARD", "ANNIVERSARY_CARD", "ARTIST_BIRTHDAY_CARD", "ARTIST_MEMORIAM_CARD", "ARTIST_TRACK_CREDITS_CARD", "PILL_LIST", "VERTICAL_LIST", "DISCOGRAPHY_TABS", "MAGAZINE_LIST", "HORIZONTAL_LIST", "HORIZONTAL_LIST_WITH_CONTEXT", "SHORTCUT_LIST", "TRACK_LIST", "VERTICAL_LIST_CARD", "TEXT_CARD", "LINKS_LIST", "PUBLIC_PLAYLIST_LIST" ]
           },
           "subtitle" : {
             "type" : "string",
@@ -31192,6 +31293,12 @@
             "type" : "string",
             "description" : "Title of the module",
             "example" : "Shortcuts"
+          },
+          "viewAllLayout" : {
+            "type" : "string",
+            "description" : "Layout of the module's items in the view all screen",
+            "example" : "COMPACT",
+            "enum" : [ "COMPACT", "GRID", "UNKNOWN" ]
           }
         }
       },
@@ -31284,7 +31391,7 @@
             "type" : "string",
             "description" : "Type of the page eg. home, artist",
             "example" : "HOME_STATIC",
-            "enum" : [ "HOME_STATIC", "HOME_UPLOADS", "HOME_EDITORIAL", "HOME_FREE", "ARTIST", "ALBUM" ]
+            "enum" : [ "HOME_STATIC", "HOME_UPLOADS", "HOME_EDITORIAL", "HOME_FREE", "ARTIST", "ALBUM", "PLAYLIST", "TRACK", "VIDEO" ]
           },
           "reportingId" : {
             "type" : "string",
@@ -31332,7 +31439,7 @@
       },
       "DynamicPages_Relationships" : {
         "properties" : {
-          "dynamicModules" : {
+          "modules" : {
             "$ref" : "#/components/schemas/Multi_Relationship_Data_Document"
           },
           "subject" : {
@@ -31352,6 +31459,9 @@
             "description" : "Resource id",
             "example" : "12345"
           },
+          "meta" : {
+            "$ref" : "#/components/schemas/DynamicPages_Resource_Object_Meta"
+          },
           "relationships" : {
             "$ref" : "#/components/schemas/DynamicPages_Relationships"
           },
@@ -31360,6 +31470,16 @@
             "type" : "string",
             "description" : "Resource type",
             "example" : "tracks"
+          }
+        }
+      },
+      "DynamicPages_Resource_Object_Meta" : {
+        "type" : "object",
+        "properties" : {
+          "redactionReason" : {
+            "type" : "string",
+            "description" : "Reason why data has been redacted on this page",
+            "enum" : [ "NO_BIRTHDAY", "MINOR" ]
           }
         }
       },
@@ -31680,6 +31800,7 @@
               "albums" : "#/components/schemas/Albums_Resource_Object",
               "appreciations" : "#/components/schemas/Appreciations_Resource_Object",
               "artistBiographies" : "#/components/schemas/ArtistBiographies_Resource_Object",
+              "artistClaimStatuses" : "#/components/schemas/ArtistClaimStatuses_Resource_Object",
               "artistClaims" : "#/components/schemas/ArtistClaims_Resource_Object",
               "artistRoles" : "#/components/schemas/ArtistRoles_Resource_Object",
               "artists" : "#/components/schemas/Artists_Resource_Object",
@@ -31757,6 +31878,8 @@
             "$ref" : "#/components/schemas/Appreciations_Resource_Object"
           }, {
             "$ref" : "#/components/schemas/ArtistBiographies_Resource_Object"
+          }, {
+            "$ref" : "#/components/schemas/ArtistClaimStatuses_Resource_Object"
           }, {
             "$ref" : "#/components/schemas/ArtistClaims_Resource_Object"
           }, {
@@ -32948,9 +33071,20 @@
           "id" : {
             "type" : "string"
           },
+          "meta" : {
+            "$ref" : "#/components/schemas/PlayQueuesFutureRelationshipAddOperation_Payload_Data_Meta"
+          },
           "type" : {
             "type" : "string",
             "enum" : [ "tracks", "videos", "albums", "playlists" ]
+          }
+        }
+      },
+      "PlayQueuesFutureRelationshipAddOperation_Payload_Data_Meta" : {
+        "type" : "object",
+        "properties" : {
+          "itemCursor" : {
+            "type" : "string"
           }
         }
       },
@@ -33803,6 +33937,9 @@
             "type" : "string",
             "format" : "date-time"
           },
+          "itemCursor" : {
+            "type" : "string"
+          },
           "itemId" : {
             "type" : "string"
           }
@@ -34160,7 +34297,6 @@
         }
       },
       "ProviderProductInfos_Attributes" : {
-        "required" : [ "barcodeId" ],
         "type" : "object",
         "properties" : {
           "barcodeId" : {
@@ -34172,6 +34308,9 @@
           "brokenCode" : {
             "type" : "integer",
             "format" : "int32"
+          },
+          "grid" : {
+            "type" : "string"
           },
           "tracks" : {
             "type" : "array",
@@ -35937,11 +36076,23 @@
             "description" : "Resource id",
             "example" : "12345"
           },
+          "meta" : {
+            "$ref" : "#/components/schemas/Terms_Resource_Object_Meta"
+          },
           "type" : {
             "minLength" : 1,
             "type" : "string",
             "description" : "Resource type",
             "example" : "tracks"
+          }
+        }
+      },
+      "Terms_Resource_Object_Meta" : {
+        "required" : [ "isLatestVersion" ],
+        "type" : "object",
+        "properties" : {
+          "isLatestVersion" : {
+            "type" : "boolean"
           }
         }
       },
@@ -41202,13 +41353,19 @@
         }
       },
       "Users_Attributes" : {
-        "required" : [ "country", "username" ],
+        "required" : [ "country", "developerAccessTier", "username" ],
         "type" : "object",
         "properties" : {
           "country" : {
             "type" : "string",
             "description" : "ISO 3166-1 alpha-2 country code",
             "example" : "US"
+          },
+          "developerAccessTier" : {
+            "type" : "string",
+            "description" : "Developer access tier for this user.",
+            "example" : "THIRD_PARTY",
+            "enum" : [ "THIRD_PARTY", "THIRD_PARTY_PROD", "PARTNER", "INTERNAL" ]
           },
           "email" : {
             "type" : "string",

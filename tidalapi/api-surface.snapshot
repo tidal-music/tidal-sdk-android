@@ -1,5 +1,5 @@
 # TIDAL API Surface Snapshot
-# Spec version: 1.10.28 | Endpoints: 332 | Models: 854
+# Spec version: 1.10.44 | Endpoints: 336 | Models: 861
 
 ## Endpoints
 
@@ -123,6 +123,10 @@ GET /artistBiographies/{id}/relationships/owners
   params: id: string, include?: array[string], page[cursor]?: string
   returns: ArtistBiographies_Multi_Relationship_Data_Document
 
+GET /artistClaimStatuses
+  params: filter[id]: array[string]
+  returns: ArtistClaimStatuses_Multi_Resource_Data_Document
+
 GET /artistClaims
   params: filter[owners.id]: array[string], include?: array[string]
   returns: ArtistClaims_Multi_Resource_Data_Document
@@ -185,6 +189,10 @@ GET /artists/{id}/relationships/albums
 
 GET /artists/{id}/relationships/biography
   params: countryCode?: string, id: string, include?: array[string]
+  returns: Artists_Single_Relationship_Data_Document
+
+GET /artists/{id}/relationships/claimStatus
+  params: id: string, include?: array[string]
   returns: Artists_Single_Relationship_Data_Document
 
 GET /artists/{id}/relationships/followers
@@ -269,7 +277,7 @@ GET /clients/{id}
 
 PATCH /clients/{id}
   params: ??: any, id: string
-  returns: void
+  returns: Clients_Single_Resource_Data_Document
 
 DELETE /clients/{id}
   params: ??: any, id: string
@@ -395,16 +403,24 @@ GET /dspSharingLinks/{id}/relationships/subject
   params: id: string, include?: array[string]
   returns: DspSharingLinks_Single_Relationship_Data_Document
 
+GET /dynamicModules
+  params: clientVersion: string, countryCode?: string, deviceType: enum[BROWSER, CAR, DESKTOP, PHONE, TABLET, TV], filter[id]: array[string], include?: array[string], locale?: string, refreshSeed?: string, systemType: enum[ANDROID, DESKTOP, TESLA, IOS, WEB]
+  returns: DynamicModules_Multi_Resource_Data_Document
+
+GET /dynamicModules/{id}
+  params: clientVersion: string, countryCode?: string, deviceType: enum[BROWSER, CAR, DESKTOP, PHONE, TABLET, TV], id: string, include?: array[string], locale?: string, refreshSeed?: string, systemType: enum[ANDROID, DESKTOP, TESLA, IOS, WEB]
+  returns: DynamicModules_Single_Resource_Data_Document
+
 GET /dynamicModules/{id}/relationships/items
-  params: clientVersion: string, countryCode?: string, deviceType: enum[BROWSER, CAR, DESKTOP, PHONE, TABLET, TV], id: string, include?: array[string], locale?: string, page[cursor]?: string, refreshId?: string, systemType: enum[ANDROID, DESKTOP, TESLA, IOS, WEB]
+  params: clientVersion: string, countryCode?: string, deviceType: enum[BROWSER, CAR, DESKTOP, PHONE, TABLET, TV], id: string, include?: array[string], locale?: string, page[cursor]?: string, refreshSeed?: string, systemType: enum[ANDROID, DESKTOP, TESLA, IOS, WEB]
   returns: DynamicModules_Multi_Relationship_Data_Document
 
 GET /dynamicPages
-  params: clientVersion: string, countryCode?: string, deviceType: enum[BROWSER, CAR, DESKTOP, PHONE, TABLET, TV], filter[pageType]: array[string], filter[subject.id]: array[string], include?: array[string], locale?: string, refreshId?: string, systemType: enum[ANDROID, DESKTOP, TESLA, IOS, WEB]
+  params: clientVersion: string, countryCode?: string, deviceType: enum[BROWSER, CAR, DESKTOP, PHONE, TABLET, TV], filter[pageType]: array[string], filter[subject.id]: array[string], include?: array[string], locale?: string, refreshSeed?: string, systemType: enum[ANDROID, DESKTOP, TESLA, IOS, WEB]
   returns: DynamicPages_Multi_Resource_Data_Document
 
-GET /dynamicPages/{id}/relationships/dynamicModules
-  params: clientVersion: string, countryCode?: string, deviceType: enum[BROWSER, CAR, DESKTOP, PHONE, TABLET, TV], id: string, include?: array[string], locale?: string, page[cursor]?: string, refreshId?: string, systemType: enum[ANDROID, DESKTOP, TESLA, IOS, WEB]
+GET /dynamicPages/{id}/relationships/modules
+  params: clientVersion: string, countryCode?: string, deviceType: enum[BROWSER, CAR, DESKTOP, PHONE, TABLET, TV], id: string, include?: array[string], locale?: string, page[cursor]?: string, refreshSeed?: string, systemType: enum[ANDROID, DESKTOP, TESLA, IOS, WEB]
   returns: DynamicPages_Multi_Relationship_Data_Document
 
 GET /dynamicPages/{id}/relationships/subject
@@ -596,7 +612,7 @@ PATCH /playlists/{id}/relationships/coverArt
   returns: void
 
 GET /playlists/{id}/relationships/items
-  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string
+  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string, sort?: array[enum[addedAt, -addedAt, albums.title, -albums.title, artists.name, -artists.name, duration, -duration, itemIndex, -itemIndex, title, -title]]
   returns: Playlists_Items_Multi_Relationship_Data_Document
 
 POST /playlists/{id}/relationships/items
@@ -644,7 +660,7 @@ GET /providerOwners/{id}/relationships/provider
   returns: ProviderOwners_Single_Relationship_Data_Document
 
 GET /providerProductInfos
-  params: countryCode?: string, filter[barcodeId]: array[string], filter[provider.id]: array[string], include?: array[string]
+  params: countryCode?: string, filter[barcodeId]?: array[string], filter[grid]?: array[string], filter[provider.id]: array[string], include?: array[string]
   returns: ProviderProductInfos_Multi_Resource_Data_Document
 
 GET /providerProductInfos/{id}/relationships/provider
@@ -948,15 +964,15 @@ GET /usageRules/{id}
   returns: UsageRules_Single_Resource_Data_Document
 
 GET /userCollectionAlbums/{id}
-  params: countryCode?: string, id: string, include?: array[string], locale?: string
+  params: id: string, include?: array[string], locale?: string
   returns: UserCollectionAlbums_Single_Resource_Data_Document
 
 GET /userCollectionAlbums/{id}/relationships/items
-  params: countryCode?: string, id: string, include?: array[string], locale?: string, page[cursor]?: string, sort?: array[enum[addedAt, -addedAt, artists.name, -artists.name, releaseDate, -releaseDate, title, -title]]
+  params: id: string, include?: array[string], locale?: string, page[cursor]?: string, sort?: array[enum[addedAt, -addedAt, artists.name, -artists.name, releaseDate, -releaseDate, title, -title]]
   returns: UserCollectionAlbums_Items_Multi_Relationship_Data_Document
 
 POST /userCollectionAlbums/{id}/relationships/items
-  params: ??: any, countryCode?: string, id: string
+  params: ??: any, id: string
   returns: UserCollectionAlbums_Items_Add_Multi_Relationship_Data_Document
 
 DELETE /userCollectionAlbums/{id}/relationships/items
@@ -968,15 +984,15 @@ GET /userCollectionAlbums/{id}/relationships/owners
   returns: UserCollectionAlbums_Multi_Relationship_Data_Document
 
 GET /userCollectionArtists/{id}
-  params: countryCode?: string, id: string, include?: array[string], locale?: string
+  params: id: string, include?: array[string], locale?: string
   returns: UserCollectionArtists_Single_Resource_Data_Document
 
 GET /userCollectionArtists/{id}/relationships/items
-  params: countryCode?: string, id: string, include?: array[string], locale?: string, page[cursor]?: string, sort?: array[enum[addedAt, -addedAt, name, -name]]
+  params: id: string, include?: array[string], locale?: string, page[cursor]?: string, sort?: array[enum[addedAt, -addedAt, name, -name]]
   returns: UserCollectionArtists_Items_Multi_Relationship_Data_Document
 
 POST /userCollectionArtists/{id}/relationships/items
-  params: ??: any, countryCode?: string, id: string
+  params: ??: any, id: string
   returns: UserCollectionArtists_Items_Add_Multi_Relationship_Data_Document
 
 DELETE /userCollectionArtists/{id}/relationships/items
@@ -1028,7 +1044,7 @@ GET /userCollectionFolders/{id}/relationships/userCollection
   returns: UserCollectionFolders_Single_Relationship_Data_Document
 
 GET /userCollectionPlaylists/{id}
-  params: countryCode?: string, id: string, include?: array[string], locale?: string
+  params: id: string, include?: array[string], locale?: string
   returns: UserCollectionPlaylists_Single_Resource_Data_Document
 
 GET /userCollectionPlaylists/{id}/relationships/items
@@ -1052,11 +1068,11 @@ GET /userCollectionSaveForLaters/{id}
   returns: UserCollectionSaveForLaters_Single_Resource_Data_Document
 
 GET /userCollectionSaveForLaters/{id}/relationships/items
-  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string
+  params: id: string, include?: array[string], page[cursor]?: string
   returns: UserCollectionSaveForLaters_Items_Multi_Relationship_Data_Document
 
 POST /userCollectionSaveForLaters/{id}/relationships/items
-  params: ??: any, countryCode?: string, id: string
+  params: ??: any, id: string
   returns: UserCollectionSaveForLaters_Items_Add_Multi_Relationship_Data_Document
 
 DELETE /userCollectionSaveForLaters/{id}/relationships/items
@@ -1068,15 +1084,15 @@ GET /userCollectionSaveForLaters/{id}/relationships/owners
   returns: UserCollectionSaveForLaters_Multi_Relationship_Data_Document
 
 GET /userCollectionTracks/{id}
-  params: countryCode?: string, id: string, include?: array[string], locale?: string
+  params: id: string, include?: array[string], locale?: string
   returns: UserCollectionTracks_Single_Resource_Data_Document
 
 GET /userCollectionTracks/{id}/relationships/items
-  params: countryCode?: string, id: string, include?: array[string], locale?: string, page[cursor]?: string, sort?: array[enum[addedAt, -addedAt, albums.title, -albums.title, artists.name, -artists.name, duration, -duration, title, -title]]
+  params: id: string, include?: array[string], locale?: string, page[cursor]?: string, sort?: array[enum[addedAt, -addedAt, albums.title, -albums.title, artists.name, -artists.name, duration, -duration, title, -title]]
   returns: UserCollectionTracks_Items_Multi_Relationship_Data_Document
 
 POST /userCollectionTracks/{id}/relationships/items
-  params: ??: any, countryCode?: string, id: string
+  params: ??: any, id: string
   returns: UserCollectionTracks_Items_Add_Multi_Relationship_Data_Document
 
 DELETE /userCollectionTracks/{id}/relationships/items
@@ -1088,15 +1104,15 @@ GET /userCollectionTracks/{id}/relationships/owners
   returns: UserCollectionTracks_Multi_Relationship_Data_Document
 
 GET /userCollectionVideos/{id}
-  params: countryCode?: string, id: string, include?: array[string], locale?: string
+  params: id: string, include?: array[string], locale?: string
   returns: UserCollectionVideos_Single_Resource_Data_Document
 
 GET /userCollectionVideos/{id}/relationships/items
-  params: countryCode?: string, id: string, include?: array[string], locale?: string, page[cursor]?: string, sort?: array[enum[addedAt, -addedAt, artists.name, -artists.name, duration, -duration, title, -title]]
+  params: id: string, include?: array[string], locale?: string, page[cursor]?: string, sort?: array[enum[addedAt, -addedAt, artists.name, -artists.name, duration, -duration, title, -title]]
   returns: UserCollectionVideos_Items_Multi_Relationship_Data_Document
 
 POST /userCollectionVideos/{id}/relationships/items
-  params: ??: any, countryCode?: string, id: string
+  params: ??: any, id: string
   returns: UserCollectionVideos_Items_Add_Multi_Relationship_Data_Document
 
 DELETE /userCollectionVideos/{id}/relationships/items
@@ -1108,15 +1124,15 @@ GET /userCollectionVideos/{id}/relationships/owners
   returns: UserCollectionVideos_Multi_Relationship_Data_Document
 
 GET /userCollections/{id}
-  params: countryCode?: string, id: string, include?: array[string], locale?: string
+  params: id: string, include?: array[string], locale?: string
   returns: UserCollections_Single_Resource_Data_Document
 
 GET /userCollections/{id}/relationships/albums
-  params: countryCode?: string, id: string, include?: array[string], locale?: string, page[cursor]?: string, sort?: array[enum[albums.addedAt, -albums.addedAt, albums.artists.name, -albums.artists.name, albums.releaseDate, -albums.releaseDate, albums.title, -albums.title]]
+  params: id: string, include?: array[string], locale?: string, page[cursor]?: string, sort?: array[enum[albums.addedAt, -albums.addedAt, albums.artists.name, -albums.artists.name, albums.releaseDate, -albums.releaseDate, albums.title, -albums.title]]
   returns: UserCollections_Albums_Multi_Relationship_Data_Document
 
 POST /userCollections/{id}/relationships/albums
-  params: ??: any, countryCode?: string, id: string
+  params: ??: any, id: string
   returns: void
 
 DELETE /userCollections/{id}/relationships/albums
@@ -1124,11 +1140,11 @@ DELETE /userCollections/{id}/relationships/albums
   returns: void
 
 GET /userCollections/{id}/relationships/artists
-  params: countryCode?: string, id: string, include?: array[string], locale?: string, page[cursor]?: string, sort?: array[enum[artists.addedAt, -artists.addedAt, artists.name, -artists.name]]
+  params: id: string, include?: array[string], locale?: string, page[cursor]?: string, sort?: array[enum[artists.addedAt, -artists.addedAt, artists.name, -artists.name]]
   returns: UserCollections_Artists_Multi_Relationship_Data_Document
 
 POST /userCollections/{id}/relationships/artists
-  params: ??: any, countryCode?: string, id: string
+  params: ??: any, id: string
   returns: void
 
 DELETE /userCollections/{id}/relationships/artists
@@ -1152,11 +1168,11 @@ DELETE /userCollections/{id}/relationships/playlists
   returns: void
 
 GET /userCollections/{id}/relationships/tracks
-  params: countryCode?: string, id: string, include?: array[string], locale?: string, page[cursor]?: string, sort?: array[enum[tracks.addedAt, -tracks.addedAt, tracks.albums.title, -tracks.albums.title, tracks.artists.name, -tracks.artists.name, tracks.duration, -tracks.duration, tracks.title, -tracks.title]]
+  params: id: string, include?: array[string], locale?: string, page[cursor]?: string, sort?: array[enum[tracks.addedAt, -tracks.addedAt, tracks.albums.title, -tracks.albums.title, tracks.artists.name, -tracks.artists.name, tracks.duration, -tracks.duration, tracks.title, -tracks.title]]
   returns: UserCollections_Tracks_Multi_Relationship_Data_Document
 
 POST /userCollections/{id}/relationships/tracks
-  params: ??: any, countryCode?: string, id: string
+  params: ??: any, id: string
   returns: void
 
 DELETE /userCollections/{id}/relationships/tracks
@@ -1164,11 +1180,11 @@ DELETE /userCollections/{id}/relationships/tracks
   returns: void
 
 GET /userCollections/{id}/relationships/videos
-  params: countryCode?: string, id: string, include?: array[string], locale?: string, page[cursor]?: string, sort?: array[enum[videos.addedAt, -videos.addedAt, videos.artists.name, -videos.artists.name, videos.duration, -videos.duration, videos.title, -videos.title]]
+  params: id: string, include?: array[string], locale?: string, page[cursor]?: string, sort?: array[enum[videos.addedAt, -videos.addedAt, videos.artists.name, -videos.artists.name, videos.duration, -videos.duration, videos.title, -videos.title]]
   returns: UserCollections_Videos_Multi_Relationship_Data_Document
 
 POST /userCollections/{id}/relationships/videos
-  params: ??: any, countryCode?: string, id: string
+  params: ??: any, id: string
   returns: void
 
 DELETE /userCollections/{id}/relationships/videos
@@ -1176,7 +1192,7 @@ DELETE /userCollections/{id}/relationships/videos
   returns: void
 
 GET /userDailyMixes/{id}
-  params: countryCode?: string, id: string, include?: array[string], locale?: string
+  params: id: string, include?: array[string], locale?: string
   returns: UserDailyMixes_Single_Resource_Data_Document
 
 GET /userDailyMixes/{id}/relationships/items
@@ -1188,23 +1204,23 @@ POST /userDataExportRequests
   returns: UserDataExportRequests_Single_Resource_Data_Document
 
 GET /userDiscoveryMixes/{id}
-  params: countryCode?: string, id: string, include?: array[string], locale?: string
+  params: id: string, include?: array[string], locale?: string
   returns: UserDiscoveryMixes_Single_Resource_Data_Document
 
 GET /userDiscoveryMixes/{id}/relationships/items
-  params: countryCode?: string, id: string, include?: array[string], locale?: string, page[cursor]?: string
+  params: id: string, include?: array[string], locale?: string, page[cursor]?: string
   returns: UserDiscoveryMixes_Multi_Relationship_Data_Document
 
 GET /userNewReleaseMixes/{id}
-  params: countryCode?: string, id: string, include?: array[string], locale?: string
+  params: id: string, include?: array[string], locale?: string
   returns: UserNewReleaseMixes_Single_Resource_Data_Document
 
 GET /userNewReleaseMixes/{id}/relationships/items
-  params: countryCode?: string, id: string, include?: array[string], locale?: string, page[cursor]?: string
+  params: id: string, include?: array[string], locale?: string, page[cursor]?: string
   returns: UserNewReleaseMixes_Multi_Relationship_Data_Document
 
 GET /userOfflineMixes/{id}
-  params: countryCode?: string, id: string, include?: array[string], locale?: string
+  params: id: string, include?: array[string], locale?: string
   returns: UserOfflineMixes_Single_Resource_Data_Document
 
 GET /userOfflineMixes/{id}/relationships/items
@@ -1212,19 +1228,19 @@ GET /userOfflineMixes/{id}/relationships/items
   returns: UserOfflineMixes_Multi_Relationship_Data_Document
 
 GET /userRecommendationBlocks/{id}
-  params: countryCode?: string, id: string, include?: array[string], locale?: string
+  params: id: string, include?: array[string], locale?: string
   returns: UserRecommendationBlocks_Single_Resource_Data_Document
 
 GET /userRecommendationBlocks/{id}/relationships/artists
-  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string
+  params: id: string, include?: array[string], page[cursor]?: string
   returns: UserRecommendationBlocks_Artists_Multi_Relationship_Data_Document
 
 POST /userRecommendationBlocks/{id}/relationships/artists
-  params: ??: any, countryCode?: string, id: string
+  params: ??: any, id: string
   returns: UserRecommendationBlocks_Artists_Multi_Relationship_Data_Document
 
 DELETE /userRecommendationBlocks/{id}/relationships/artists
-  params: ??: any, countryCode?: string, id: string
+  params: ??: any, id: string
   returns: void
 
 GET /userRecommendationBlocks/{id}/relationships/owners
@@ -1232,43 +1248,43 @@ GET /userRecommendationBlocks/{id}/relationships/owners
   returns: UserRecommendationBlocks_Multi_Relationship_Data_Document
 
 GET /userRecommendationBlocks/{id}/relationships/tracks
-  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string
+  params: id: string, include?: array[string], page[cursor]?: string
   returns: UserRecommendationBlocks_Tracks_Multi_Relationship_Data_Document
 
 POST /userRecommendationBlocks/{id}/relationships/tracks
-  params: ??: any, countryCode?: string, id: string
+  params: ??: any, id: string
   returns: UserRecommendationBlocks_Tracks_Multi_Relationship_Data_Document
 
 DELETE /userRecommendationBlocks/{id}/relationships/tracks
-  params: ??: any, countryCode?: string, id: string
+  params: ??: any, id: string
   returns: void
 
 GET /userRecommendationBlocks/{id}/relationships/videos
-  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string
+  params: id: string, include?: array[string], page[cursor]?: string
   returns: UserRecommendationBlocks_Videos_Multi_Relationship_Data_Document
 
 POST /userRecommendationBlocks/{id}/relationships/videos
-  params: ??: any, countryCode?: string, id: string
+  params: ??: any, id: string
   returns: UserRecommendationBlocks_Videos_Multi_Relationship_Data_Document
 
 DELETE /userRecommendationBlocks/{id}/relationships/videos
-  params: ??: any, countryCode?: string, id: string
+  params: ??: any, id: string
   returns: void
 
 GET /userRecommendations/{id}
-  params: countryCode?: string, id: string, include?: array[string], locale?: string
+  params: id: string, include?: array[string], locale?: string
   returns: UserRecommendations_Single_Resource_Data_Document
 
 GET /userRecommendations/{id}/relationships/discoveryMixes
-  params: countryCode?: string, id: string, include?: array[string], locale?: string, page[cursor]?: string
+  params: id: string, include?: array[string], locale?: string, page[cursor]?: string
   returns: UserRecommendations_Multi_Relationship_Data_Document
 
 GET /userRecommendations/{id}/relationships/myMixes
-  params: countryCode?: string, id: string, include?: array[string], locale?: string, page[cursor]?: string
+  params: id: string, include?: array[string], locale?: string, page[cursor]?: string
   returns: UserRecommendations_Multi_Relationship_Data_Document
 
 GET /userRecommendations/{id}/relationships/newArrivalMixes
-  params: countryCode?: string, id: string, include?: array[string], locale?: string, page[cursor]?: string
+  params: id: string, include?: array[string], locale?: string, page[cursor]?: string
   returns: UserRecommendations_Multi_Relationship_Data_Document
 
 GET /userRecommendations/{id}/relationships/offlineMixes
@@ -1507,6 +1523,7 @@ Albums_Attributes
   popularity: number(double) (required)
   title: string (required)
   accessType: enum[PUBLIC, UNLISTED, PRIVATE] (optional)
+  ai: boolean (optional)
   availability: array[enum[STREAM, DJ, STEM]] (optional)
   copyright: Copyright (optional)
   createdAt: string(date-time) (optional)
@@ -1664,6 +1681,25 @@ ArtistBiographies_Resource_Object
 
 ArtistBiographies_Single_Resource_Data_Document
   data: ArtistBiographies_Resource_Object (required)
+  links: Links (required)
+  included: Included (optional)
+
+ArtistClaimStatuses_Attributes
+  claimSources: array[enum[ARTIST_CLAIMS, MANUAL_ARTIST_CLAIMS]] (required)
+  status: enum[CLAIM_IN_PROGRESS, NO_ACTIVE_CLAIM] (required)
+
+ArtistClaimStatuses_Multi_Resource_Data_Document
+  data: array[ArtistClaimStatuses_Resource_Object] (required)
+  links: Links (required)
+  included: Included (optional)
+
+ArtistClaimStatuses_Resource_Object
+  id: string (required)
+  type: string (required)
+  attributes: ArtistClaimStatuses_Attributes (optional)
+
+ArtistClaimStatuses_Single_Resource_Data_Document
+  data: ArtistClaimStatuses_Resource_Object (required)
   links: Links (required)
   included: Included (optional)
 
@@ -1865,6 +1901,7 @@ Artists_Multi_Resource_Data_Document
 Artists_Relationships
   albums: Multi_Relationship_Data_Document (optional)
   biography: Single_Relationship_Data_Document (optional)
+  claimStatus: Single_Relationship_Data_Document (optional)
   followers: Artists_Followers_Multi_Relationship_Data_Document (optional)
   following: Artists_Following_Multi_Relationship_Data_Document (optional)
   owners: Multi_Relationship_Data_Document (optional)
@@ -1995,7 +2032,6 @@ ClientsUpdateOperation_Payload_Data
 ClientsUpdateOperation_Payload_Data_Attributes
   description: string (optional)
   name: string (optional)
-  platformPreset: enum[NONE, WEB, ANDROID, IOS] (optional)
   redirectUris: array[string] (optional)
   scopes: array[string] (optional)
 
@@ -2005,7 +2041,6 @@ Clients_Attributes
   clientSecret: string (optional)
   createdAt: string(date-time) (optional)
   description: string (optional)
-  platformPreset: enum[NONE, WEB, ANDROID, IOS] (optional)
   redirectUris: array[string] (optional)
   scopes: array[string] (optional)
 
@@ -2405,9 +2440,8 @@ DspSharingLinks_Single_Resource_Data_Document
 
 DynamicModules_Attributes
   icons: array[enum[SPOTLIGHT_INFO, UNKNOWN]] (required)
-  layoutType: enum[COMPACT, GRID, UNKNOWN] (required)
-  moduleType: enum[ARTIST_LIST, COMPACT_GRID_CARD, COMPACT_HORIZONTAL_LIST, COMPACT_HORIZONTAL_LIST_WITH_CONTEXT, FEATURED_CARD, GRID_CARD, GRID_CARD_WITH_CONTEXT, GRID_HIGHLIGHT_CARD, ANNIVERSARY_CARD, ARTIST_BIRTHDAY_CARD, ARTIST_MEMORIAM_CARD, ARTIST_TRACK_CREDITS_CARD, PILL_LIST, VERTICAL_LIST, HORIZONTAL_LIST, HORIZONTAL_LIST_WITH_CONTEXT, SHORTCUT_LIST, TRACK_LIST, VERTICAL_LIST_CARD, TEXT_CARD, LINKS_LIST, PUBLIC_PLAYLIST_LIST] (required)
-  sourceType: enum[ALBUM_RECOMMENDATIONS, BECAUSE_YOU_LISTENED_TO_ALBUM, BECAUSE_YOU_ADDED_ALBUM, BECAUSE_YOU_ADDED_ARTIST, CONTINUE_LISTEN_TO, DAILY_MIXES, FORGOTTEN_FAVORITES, GENRE_MIXES, HISTORY_MIXES, LOCAL_PLAYLISTS, MY_PLAYLISTS, NEW_ALBUM_SUGGESTIONS, NEW_TRACK_SUGGESTIONS, NEW_ALBUMS, NEW_TRACKS, POPULAR_PLAYLISTS, RECENTLY_UPDATED_FAVORITED_PLAYLIST, RECOMMENDED_USERS_PLAYLISTS, SUGGESTED_ESSENTIAL_PLAYLISTS, SUGGESTED_RADIOS_MIXES, WELCOME_MIX, YOUR_FAVORITE_ARTISTS, UPLOADS_FOR_YOU, LATEST_SPOTLIGHTED_TRACKS, SHORTCUTS, ARTIST_TOP_TRACKS, ARTIST_SPOTLIGHTED_TRACKS, ARTIST_ALBUMS, ARTIST_TOP_SINGLES, ARTIST_COMPILATIONS, ARTIST_LIVE_ALBUMS, ARTIST_APPEARS_ON, ARTIST_PLAYLIST, ARTIST_PUBLIC_PLAYLIST, ARTIST_SIMILAR_ARTISTS, ARTIST_TRACK_UPLOADS, ARTIST_LINKS, ARTIST_VIDEOS, ARTIST_CREDITS, ALBUM_ITEMS, ALBUM_MORE_BY_ARTIST, ALBUM_OTHER_VERSIONS, ALBUM_RELATED_ALBUMS, ALBUM_RELATED_ARTISTS, ALBUM_ANNIVERSARY, ARTIST_BIRTHDAY, ARTIST_MEMORIAM, DJ_TOOLS, DJ_ARTIST_CURATED, THE_HITS, FROM_OUR_EDITORS, TOP_PLAYLISTS, FEATURED_TOP_TRACKS, FEATURED_TOP_ALBUMS, TOP_ARTISTS_ESSENTIALS, FEATURED_RECOMMENDED_PLAYLISTS, HOME_3_FEATURED_PLAYLISTS, HOME_3_FEATURED_UPLOAD_TRACKS, HOME_3_FEATURED_ALBUMS, POPULAR_ALBUMS, POPULAR_ARTISTS, POPULAR_MIXES, FEATURED_RECOMMENDED_TRACKS, FEATURED_RECOMMENDED_ALBUMS, FEATURED_RECOMMENDED_CLASSIC_ALBUMS, BACK_TO_SCHOOL_MUSIC_101, BACK_TO_SCHOOL_GENRES_FOR_BEGINNERS, HEADLINERS_2026, HOME_3_0_GENERIC_PLAYLISTS_1, HOME_3_0_GENERIC_PLAYLISTS_2, HOME_3_0_GENERIC_ALBUMS_1, HOME_3_0_GENERIC_TRACKS_1, HOME_3_0_GENERIC_ARTISTS_1, HOME_3_0_GENERIC_VIDEOS_1, STAFF_PICKS_PAGE_ALBUMS_WE_LOVE, STAFF_PICKS_PAGE_EXPLORE, STAFF_PICKS_PAGE_FAVORITE_SONGS, STAFF_PICKS_PAGE_RECENTLY_UPDATED_PLAYLISTS, STAFF_PICKS_PAGE_TIDAL_NEWS_MAGAZINE, STAFF_PICKS_PAGE_WHAT_LISTENING_TO, BASED_ON_YOUR_INTERESTS_1, BASED_ON_YOUR_INTERESTS_2, UPLOAD_PAGE_SPOTLIGHTED_PLAYLISTS, UPLOAD_PAGE_PAYGATED_ALBUMS, UPLOAD_PAGE_ALBUMS, TOP_UPLOADERS, UPLOAD_PAGE_ARTISTS, UPLOAD_PAGE_FEATURED_MAGAZINE, EXPLORE_DECADES, EXPLORE_GENRES, EXPLORE_MOODS, UNKNOWN] (required)
+  previewLayout: enum[ARTIST_LIST, COMPACT_GRID_CARD, COMPACT_HORIZONTAL_LIST, COMPACT_HORIZONTAL_LIST_WITH_CONTEXT, FEATURED_CARD, GRID_CARD, GRID_CARD_WITH_CONTEXT, GRID_HIGHLIGHT_CARD, ANNIVERSARY_CARD, ARTIST_BIRTHDAY_CARD, ARTIST_MEMORIAM_CARD, ARTIST_TRACK_CREDITS_CARD, PILL_LIST, VERTICAL_LIST, DISCOGRAPHY_TABS, MAGAZINE_LIST, HORIZONTAL_LIST, HORIZONTAL_LIST_WITH_CONTEXT, SHORTCUT_LIST, TRACK_LIST, VERTICAL_LIST_CARD, TEXT_CARD, LINKS_LIST, PUBLIC_PLAYLIST_LIST] (required)
+  viewAllLayout: enum[COMPACT, GRID, UNKNOWN] (required)
   subtitle: string (optional)
   title: string (optional)
 
@@ -2436,7 +2470,7 @@ DynamicModules_Single_Resource_Data_Document
   included: Included (optional)
 
 DynamicPages_Attributes
-  pageType: enum[HOME_STATIC, HOME_UPLOADS, HOME_EDITORIAL, HOME_FREE, ARTIST, ALBUM] (required)
+  pageType: enum[HOME_STATIC, HOME_UPLOADS, HOME_EDITORIAL, HOME_FREE, ARTIST, ALBUM, PLAYLIST, TRACK, VIDEO] (required)
   reportingId: string(uuid) (required)
 
 DynamicPages_Multi_Relationship_Data_Document
@@ -2450,14 +2484,18 @@ DynamicPages_Multi_Resource_Data_Document
   included: Included (optional)
 
 DynamicPages_Relationships
-  dynamicModules: Multi_Relationship_Data_Document (optional)
+  modules: Multi_Relationship_Data_Document (optional)
   subject: Single_Relationship_Data_Document (optional)
 
 DynamicPages_Resource_Object
   id: string (required)
   type: string (required)
   attributes: DynamicPages_Attributes (optional)
+  meta: DynamicPages_Resource_Object_Meta (optional)
   relationships: DynamicPages_Relationships (optional)
+
+DynamicPages_Resource_Object_Meta
+  redactionReason: enum[NO_BIRTHDAY, MINOR] (optional)
 
 DynamicPages_Single_Relationship_Data_Document
   links: Links (required)
@@ -2839,6 +2877,10 @@ PlayQueuesFutureRelationshipAddOperation_Payload
 PlayQueuesFutureRelationshipAddOperation_Payload_Data
   id: string (required)
   type: enum[tracks, videos, albums, playlists] (required)
+  meta: PlayQueuesFutureRelationshipAddOperation_Payload_Data_Meta (optional)
+
+PlayQueuesFutureRelationshipAddOperation_Payload_Data_Meta
+  itemCursor: string (optional)
 
 PlayQueuesFutureRelationshipAddOperation_Payload_Meta
   mode: enum[ADD_TO_FRONT, ADD_TO_BACK, ADD_BEFORE, REPLACE_ALL] (required)
@@ -3080,6 +3122,7 @@ Playlists_Items_Resource_Identifier
 
 Playlists_Items_Resource_Identifier_Meta
   addedAt: string(date-time) (optional)
+  itemCursor: string (optional)
   itemId: string (optional)
 
 Playlists_Multi_Relationship_Data_Document
@@ -3186,9 +3229,10 @@ ProviderOwners_Single_Resource_Data_Document
   included: Included (optional)
 
 ProviderProductInfos_Attributes
-  barcodeId: string (required)
+  barcodeId: string (optional)
   broken: boolean (optional)
   brokenCode: integer(int32) (optional)
+  grid: string (optional)
   tracks: array[TrackInfo] (optional)
 
 ProviderProductInfos_Multi_Resource_Data_Document
@@ -3692,6 +3736,10 @@ Terms_Resource_Object
   id: string (required)
   type: string (required)
   attributes: Terms_Attributes (optional)
+  meta: Terms_Resource_Object_Meta (optional)
+
+Terms_Resource_Object_Meta
+  isLatestVersion: boolean (required)
 
 Terms_Single_Resource_Data_Document
   data: Terms_Resource_Object (required)
@@ -5114,6 +5162,7 @@ UserReports_Single_Resource_Data_Document
 
 Users_Attributes
   country: string (required)
+  developerAccessTier: enum[THIRD_PARTY, THIRD_PARTY_PROD, PARTNER, INTERNAL] (required)
   username: string (required)
   email: string (optional)
   emailVerified: boolean (optional)

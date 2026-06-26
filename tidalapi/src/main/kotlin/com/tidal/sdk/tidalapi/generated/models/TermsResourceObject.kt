@@ -14,6 +14,7 @@ import kotlinx.serialization.Transient
  * @param id Resource id
  * @param type Resource type
  * @param attributes
+ * @param meta
  */
 @Serializable
 @SerialName(value = "terms")
@@ -25,4 +26,5 @@ data class TermsResourceObject(
     /* Resource type */
     @Transient @SerialName(value = "type") val type: kotlin.String = "",
     @SerialName(value = "attributes") val attributes: TermsAttributes? = null,
+    @SerialName(value = "meta") val meta: TermsResourceObjectMeta? = null,
 ) : IncludedInner {}
