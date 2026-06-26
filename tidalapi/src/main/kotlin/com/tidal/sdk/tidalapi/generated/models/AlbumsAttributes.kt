@@ -20,6 +20,7 @@ import kotlinx.serialization.Serializable
  * @param popularity Popularity (0.0 - 1.0)
  * @param title Album title
  * @param accessType Access type
+ * @param ai Whether the album is AI-generated
  * @param availability Available usage for this album. Deprecated: use 'usageRules' instead. This
  *   field will be removed in a future version.
  * @param copyright
@@ -59,6 +60,9 @@ data class AlbumsAttributes(
     /* Access type */
 
     @SerialName(value = "accessType") val accessType: AlbumsAttributes.AccessType? = null,
+    /* Whether the album is AI-generated */
+
+    @SerialName(value = "ai") val ai: kotlin.Boolean? = null,
     /* Available usage for this album. Deprecated: use 'usageRules' instead. This field will be removed in a future version. */
 
     @SerialName(value = "availability")

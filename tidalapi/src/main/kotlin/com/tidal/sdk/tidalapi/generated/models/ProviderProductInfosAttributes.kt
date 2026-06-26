@@ -13,12 +13,14 @@ import kotlinx.serialization.Serializable
  * @param barcodeId
  * @param broken
  * @param brokenCode
+ * @param grid
  * @param tracks
  */
 @Serializable
 data class ProviderProductInfosAttributes(
-    @SerialName(value = "barcodeId") val barcodeId: kotlin.String,
+    @SerialName(value = "barcodeId") val barcodeId: kotlin.String? = null,
     @SerialName(value = "broken") val broken: kotlin.Boolean? = null,
     @SerialName(value = "brokenCode") val brokenCode: kotlin.Int? = null,
+    @SerialName(value = "grid") val grid: kotlin.String? = null,
     @SerialName(value = "tracks") val tracks: kotlin.collections.List<TrackInfo>? = null,
 ) {}

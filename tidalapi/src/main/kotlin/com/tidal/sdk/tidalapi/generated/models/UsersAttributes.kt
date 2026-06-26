@@ -11,6 +11,7 @@ import kotlinx.serialization.Serializable
 
 /**
  * @param country ISO 3166-1 alpha-2 country code
+ * @param developerAccessTier Developer access tier for this user.
  * @param username user name
  * @param email email address
  * @param emailVerified Is the email verified
@@ -24,6 +25,10 @@ data class UsersAttributes(
     /* ISO 3166-1 alpha-2 country code */
 
     @SerialName(value = "country") val country: kotlin.String,
+    /* Developer access tier for this user. */
+
+    @SerialName(value = "developerAccessTier")
+    val developerAccessTier: UsersAttributes.DeveloperAccessTier,
     /* user name */
 
     @SerialName(value = "username") val username: kotlin.String,
@@ -42,4 +47,18 @@ data class UsersAttributes(
     /* Users nostr public key */
 
     @SerialName(value = "nostrPublicKey") val nostrPublicKey: kotlin.String? = null,
-) {}
+) {
+
+    /**
+     * Developer access tier for this user.
+     *
+     * Values: THIRD_PARTY,THIRD_PARTY_PROD,PARTNER,INTERNAL
+     */
+    @Serializable
+    enum class DeveloperAccessTier(val value: kotlin.String) {
+        @SerialName(value = "THIRD_PARTY") THIRD_PARTY("THIRD_PARTY"),
+        @SerialName(value = "THIRD_PARTY_PROD") THIRD_PARTY_PROD("THIRD_PARTY_PROD"),
+        @SerialName(value = "PARTNER") PARTNER("PARTNER"),
+        @SerialName(value = "INTERNAL") INTERNAL("INTERNAL"),
+    }
+}

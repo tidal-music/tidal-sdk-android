@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.47] - 2026-06-26
+### Changed
+- Updated generated code using api spec version 1.10.44
+
 ## [0.3.46] - 2026-06-18
 ### Added
 - Exposed the retry interceptor publicly as `TidalApiRetryInterceptor`, so consumers can reuse the same retry logic (driven by a `RetryPolicy`) in their own Retrofit/OkHttp instances.

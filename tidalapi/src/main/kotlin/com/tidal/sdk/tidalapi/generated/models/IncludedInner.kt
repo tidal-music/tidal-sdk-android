@@ -14,5 +14,6 @@ import kotlinx.serialization.Serializable
  * @param type Resource type
  * @param attributes
  * @param relationships
+ * @param meta
  */
 @Serializable @Polymorphic sealed interface IncludedInner

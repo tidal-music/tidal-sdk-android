@@ -14,6 +14,10 @@ fun getOneOfSerializer() = SerializersModule {
             ArtistBiographiesResourceObject::class,
             ArtistBiographiesResourceObject.serializer(),
         )
+        subclass(
+            ArtistClaimStatusesResourceObject::class,
+            ArtistClaimStatusesResourceObject.serializer(),
+        )
         subclass(ArtistClaimsResourceObject::class, ArtistClaimsResourceObject.serializer())
         subclass(ArtistRolesResourceObject::class, ArtistRolesResourceObject.serializer())
         subclass(ArtistsResourceObject::class, ArtistsResourceObject.serializer())

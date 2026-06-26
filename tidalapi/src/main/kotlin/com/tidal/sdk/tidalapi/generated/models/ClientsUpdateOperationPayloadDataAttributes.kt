@@ -12,7 +12,6 @@ import kotlinx.serialization.Serializable
 /**
  * @param description
  * @param name
- * @param platformPreset
  * @param redirectUris
  * @param scopes
  */
@@ -20,19 +19,7 @@ import kotlinx.serialization.Serializable
 data class ClientsUpdateOperationPayloadDataAttributes(
     @SerialName(value = "description") val description: kotlin.String? = null,
     @SerialName(value = "name") val name: kotlin.String? = null,
-    @SerialName(value = "platformPreset")
-    val platformPreset: ClientsUpdateOperationPayloadDataAttributes.PlatformPreset? = null,
     @SerialName(value = "redirectUris")
     val redirectUris: kotlin.collections.List<kotlin.String>? = null,
     @SerialName(value = "scopes") val scopes: kotlin.collections.Set<kotlin.String>? = null,
-) {
-
-    /** Values: NONE,WEB,ANDROID,IOS */
-    @Serializable
-    enum class PlatformPreset(val value: kotlin.String) {
-        @SerialName(value = "NONE") NONE("NONE"),
-        @SerialName(value = "WEB") WEB("WEB"),
-        @SerialName(value = "ANDROID") ANDROID("ANDROID"),
-        @SerialName(value = "IOS") IOS("IOS"),
-    }
-}
+) {}
