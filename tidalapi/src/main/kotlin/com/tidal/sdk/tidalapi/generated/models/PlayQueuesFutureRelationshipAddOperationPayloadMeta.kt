@@ -24,12 +24,19 @@ data class PlayQueuesFutureRelationshipAddOperationPayloadMeta(
     @SerialName(value = "positionBefore") val positionBefore: kotlin.String? = null,
 ) {
 
-    /** Values: ADD_TO_FRONT,ADD_TO_BACK,ADD_BEFORE,REPLACE_ALL */
+    /**
+     * Values:
+     * ADD_TO_FRONT,ADD_TO_BACK,ADD_BEFORE,REPLACE_ALL,REPLACE_ALL_AND_CURRENT,ADD_TO_FRONT_REPLACE_CURRENT
+     */
     @Serializable
     enum class Mode(val value: kotlin.String) {
         @SerialName(value = "ADD_TO_FRONT") ADD_TO_FRONT("ADD_TO_FRONT"),
         @SerialName(value = "ADD_TO_BACK") ADD_TO_BACK("ADD_TO_BACK"),
         @SerialName(value = "ADD_BEFORE") ADD_BEFORE("ADD_BEFORE"),
         @SerialName(value = "REPLACE_ALL") REPLACE_ALL("REPLACE_ALL"),
+        @SerialName(value = "REPLACE_ALL_AND_CURRENT")
+        REPLACE_ALL_AND_CURRENT("REPLACE_ALL_AND_CURRENT"),
+        @SerialName(value = "ADD_TO_FRONT_REPLACE_CURRENT")
+        ADD_TO_FRONT_REPLACE_CURRENT("ADD_TO_FRONT_REPLACE_CURRENT"),
     }
 }
