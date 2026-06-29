@@ -64,13 +64,14 @@ import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.DurationUnit
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withTimeout
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertSame
 import org.junit.jupiter.api.Assumptions.assumeFalse
 import org.junit.jupiter.api.Assumptions.assumeTrue
@@ -102,7 +103,8 @@ import org.mockito.kotlin.whenever
 @Suppress("LargeClass")
 internal class ExoPlayerPlaybackEngineTest {
 
-    private val coroutineScope = spy(CoroutineScope(Dispatchers.Default))
+    private val testDispatcher = StandardTestDispatcher()
+    private val coroutineScope = spy(CoroutineScope(testDispatcher))
     private val initialExtendedExoPlayer = mock<ExtendedExoPlayer>()
     private val extendedExoPlayerFactory = mock<ExtendedExoPlayerFactory>()
     private val internalHandler = mock<Handler>()
@@ -302,20 +304,21 @@ internal class ExoPlayerPlaybackEngineTest {
     @ParameterizedTest
     @NullSource
     @MethodSource("nextMediaProducts")
-    fun nextShouldSucceedIfPlaybackStateIsNotIdle(nextMediaProduct: MediaProduct?) = runBlocking {
-        playbackEngine.load(forwardingMediaProduct.delegate)
+    fun nextShouldSucceedIfPlaybackStateIsNotIdle(nextMediaProduct: MediaProduct?) =
+        runTest(testDispatcher) {
+            playbackEngine.load(forwardingMediaProduct.delegate)
 
-        playbackEngine.setNext(nextMediaProduct)
+            playbackEngine.setNext(nextMediaProduct)
 
-        verify(initialExtendedExoPlayer)
-            .setNext(
-                if (nextMediaProduct == null) {
-                    null
-                } else {
-                    argThat { delegate === nextMediaProduct }
-                }
-            )
-    }
+            verify(initialExtendedExoPlayer)
+                .setNext(
+                    if (nextMediaProduct == null) {
+                        null
+                    } else {
+                        argThat { delegate === nextMediaProduct }
+                    }
+                )
+        }
 
     @Test
     fun playShouldDoNothingIfPlaybackStateIsIdle() {
@@ -426,15 +429,11 @@ internal class ExoPlayerPlaybackEngineTest {
             videoSurfaceView to synchronousSurfaceHolder
         val keepScreenOnCaptor = argumentCaptor<Runnable>()
 
-        runBlocking {
-            launch {
-                playbackEngine.reflectionSetPlaybackState(newState)
-                verify(videoSurfaceView).post(keepScreenOnCaptor.capture())
-            }
-            withTimeout(3000) {
-                assertThat(playbackEngine.events.first())
-                    .isEqualTo(Event.PlaybackStateChange(newState))
-            }
+        runTest(testDispatcher) {
+            val event = async(start = CoroutineStart.UNDISPATCHED) { playbackEngine.events.first() }
+            playbackEngine.reflectionSetPlaybackState(newState)
+            verify(videoSurfaceView).post(keepScreenOnCaptor.capture())
+            assertThat(event.await()).isEqualTo(Event.PlaybackStateChange(newState))
         }
         verifyNoMoreInteractions(videoSurfaceView, synchronousSurfaceHolder)
 
@@ -454,17 +453,13 @@ internal class ExoPlayerPlaybackEngineTest {
             videoSurfaceView to synchronousSurfaceHolder
         val keepScreenOnCaptor = argumentCaptor<Runnable>()
 
-        runBlocking {
-            launch {
-                playbackEngine.reflectionSetPlaybackState(playbackEngine.playbackState)
-                verifyNoInteractions(videoSurfaceView)
-                playbackEngine.reflectionSetPlaybackState(newState)
-                verify(videoSurfaceView).post(keepScreenOnCaptor.capture())
-            }
-            withTimeout(3000) {
-                assertThat(playbackEngine.events.first())
-                    .isEqualTo(Event.PlaybackStateChange(newState))
-            }
+        runTest(testDispatcher) {
+            val event = async(start = CoroutineStart.UNDISPATCHED) { playbackEngine.events.first() }
+            playbackEngine.reflectionSetPlaybackState(playbackEngine.playbackState)
+            verifyNoInteractions(videoSurfaceView)
+            playbackEngine.reflectionSetPlaybackState(newState)
+            verify(videoSurfaceView).post(keepScreenOnCaptor.capture())
+            assertThat(event.await()).isEqualTo(Event.PlaybackStateChange(newState))
         }
         verifyNoMoreInteractions(videoSurfaceView, synchronousSurfaceHolder)
 
@@ -638,8 +633,9 @@ internal class ExoPlayerPlaybackEngineTest {
             playbackEngine.reflectionSetPlaybackState(playbackState)
         }
 
-        runBlocking {
+        runTest(testDispatcher) {
             playbackEngine.onStreamingPrivilegesRevoked(privilegedClientDisplayName)
+            advanceUntilIdle()
 
             verify(events, never())
                 .emit(Event.StreamingPrivilegesRevoked(privilegedClientDisplayName))
@@ -657,21 +653,16 @@ internal class ExoPlayerPlaybackEngineTest {
         val privilegedClientDisplayName = "a privileged client"
         playbackEngine.reflectionSetPlaybackState(PlaybackState.PLAYING)
 
-        runBlocking {
-            launch { playbackEngine.onStreamingPrivilegesRevoked(privilegedClientDisplayName) }
-            withTimeout(3000) {
-                /*
-                 * Can't use the exact pattern as is in other tests because it causes it to be flaky
-                 * as the reflectionSetPlaybackState call above will cause a playback state change
-                 * event that will race the event that we are trying to assert on
-                 */
-                assertThat(
-                        playbackEngine.events
-                            .filter { it is Event.StreamingPrivilegesRevoked }
-                            .first()
-                    )
-                    .isEqualTo(Event.StreamingPrivilegesRevoked(privilegedClientDisplayName))
-            }
+        runTest(testDispatcher) {
+            // The reflectionSetPlaybackState call above also emits a playback state change event,
+            // so filter for the event under test.
+            val event =
+                async(start = CoroutineStart.UNDISPATCHED) {
+                    playbackEngine.events.filter { it is Event.StreamingPrivilegesRevoked }.first()
+                }
+            playbackEngine.onStreamingPrivilegesRevoked(privilegedClientDisplayName)
+            assertThat(event.await())
+                .isEqualTo(Event.StreamingPrivilegesRevoked(privilegedClientDisplayName))
         }
 
         verify(initialExtendedExoPlayer).pause()
@@ -824,12 +815,10 @@ internal class ExoPlayerPlaybackEngineTest {
         val productId = "123-abc"
         val status = DjSessionStatus.PAUSED
 
-        runBlocking {
-            launch { playbackEngine.onDjSessionUpdated(productId, status) }
-            withTimeout(3000) {
-                assertThat(playbackEngine.events.first())
-                    .isEqualTo(Event.DjSessionUpdate(productId, status))
-            }
+        runTest(testDispatcher) {
+            val event = async(start = CoroutineStart.UNDISPATCHED) { playbackEngine.events.first() }
+            playbackEngine.onDjSessionUpdated(productId, status)
+            assertThat(event.await()).isEqualTo(Event.DjSessionUpdate(productId, status))
         }
 
         verifyNoMoreInteractions(initialExtendedExoPlayer)
@@ -1217,14 +1206,13 @@ internal class ExoPlayerPlaybackEngineTest {
                 )
             )
 
-        runBlocking {
-            launch { playbackEngine.onPlaybackStateChanged(eventTime, Player.STATE_ENDED) }
-            withTimeout(3000) {
-                assertThat(playbackEngine.events.first())
-                    .isEqualTo(
-                        Event.MediaProductEnded(forwardingMediaProduct.delegate, playbackContext)
-                    )
-            }
+        runTest(testDispatcher) {
+            val event = async(start = CoroutineStart.UNDISPATCHED) { playbackEngine.events.first() }
+            playbackEngine.onPlaybackStateChanged(eventTime, Player.STATE_ENDED)
+            assertThat(event.await())
+                .isEqualTo(
+                    Event.MediaProductEnded(forwardingMediaProduct.delegate, playbackContext)
+                )
         }
 
         verify(currentPlaybackSession).playbackSessionId
@@ -1314,7 +1302,7 @@ internal class ExoPlayerPlaybackEngineTest {
     @EnumSource(ProductType::class)
     fun onPositionDiscontinuityWhenAutoTransitionShouldEmitMediaProductTransitionAndUpdateEventInfoForRepeatModeOff(
         productType: ProductType
-    ) = runBlocking {
+    ) {
         val duration = 24.seconds
         val nextMediaProduct = mock<MediaProduct>()
         val nextForwardingMediaProduct =
@@ -1424,19 +1412,16 @@ internal class ExoPlayerPlaybackEngineTest {
         whenever(initialExtendedExoPlayer.repeatMode).thenReturn(Player.REPEAT_MODE_OFF)
         whenever(volumeHelper.getVolume(playbackInfo)).thenReturn(1.0F)
 
-        runBlocking {
-            launch {
-                playbackEngine.onPositionDiscontinuity(
-                    eventTime,
-                    oldPositionInfo,
-                    newPositionInfo,
-                    Player.DISCONTINUITY_REASON_AUTO_TRANSITION,
-                )
-            }
-            withTimeout(3000) {
-                assertThat(playbackEngine.events.first())
-                    .isEqualTo(Event.MediaProductTransition(nextMediaProduct, nextPlaybackContext))
-            }
+        runTest(testDispatcher) {
+            val event = async(start = CoroutineStart.UNDISPATCHED) { playbackEngine.events.first() }
+            playbackEngine.onPositionDiscontinuity(
+                eventTime,
+                oldPositionInfo,
+                newPositionInfo,
+                Player.DISCONTINUITY_REASON_AUTO_TRANSITION,
+            )
+            assertThat(event.await())
+                .isEqualTo(Event.MediaProductTransition(nextMediaProduct, nextPlaybackContext))
         }
 
         assertThat(playbackEngine.mediaProduct).isSameInstanceAs(nextMediaProduct)
@@ -1575,21 +1560,18 @@ internal class ExoPlayerPlaybackEngineTest {
         val newCurrentPlaybackContext =
             currentPlaybackContext.copy(playbackSessionId = newStreamingSessionId.toString())
 
-        runBlocking {
-            launch {
-                playbackEngine.onPositionDiscontinuity(
-                    eventTime,
-                    oldPositionInfo,
-                    newPositionInfo,
-                    Player.DISCONTINUITY_REASON_AUTO_TRANSITION,
+        runTest(testDispatcher) {
+            val event = async(start = CoroutineStart.UNDISPATCHED) { playbackEngine.events.first() }
+            playbackEngine.onPositionDiscontinuity(
+                eventTime,
+                oldPositionInfo,
+                newPositionInfo,
+                Player.DISCONTINUITY_REASON_AUTO_TRANSITION,
+            )
+            assertThat(event.await())
+                .isEqualTo(
+                    Event.MediaProductTransition(currentMediaProduct, newCurrentPlaybackContext)
                 )
-            }
-            withTimeout(3000) {
-                assertThat(playbackEngine.events.first())
-                    .isEqualTo(
-                        Event.MediaProductTransition(currentMediaProduct, newCurrentPlaybackContext)
-                    )
-            }
         }
 
         assertThat(playbackEngine.mediaProduct).isSameInstanceAs(currentMediaProduct)
@@ -1623,17 +1605,13 @@ internal class ExoPlayerPlaybackEngineTest {
     fun onPositionDiscontinuityWhenAutoTransitionShouldThrowExceptionForRepeatModeAll() {
         whenever(initialExtendedExoPlayer.repeatMode).thenReturn(Player.REPEAT_MODE_ALL)
 
-        runBlocking {
-            launch {
-                assertThrows<UnsupportedOperationException> {
-                    playbackEngine.onPositionDiscontinuity(
-                        mock(),
-                        mock(),
-                        mock(),
-                        Player.DISCONTINUITY_REASON_AUTO_TRANSITION,
-                    )
-                }
-            }
+        assertThrows<UnsupportedOperationException> {
+            playbackEngine.onPositionDiscontinuity(
+                mock(),
+                mock(),
+                mock(),
+                Player.DISCONTINUITY_REASON_AUTO_TRANSITION,
+            )
         }
 
         verify(initialExtendedExoPlayer).updatePosition(any())
