@@ -38,6 +38,7 @@ dependencies {
     testImplementation(libs.test.assertk)
     testImplementation(libs.test.mockito.kotlin)
     testImplementation(libs.test.junit5Params)
+    testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(project(":player:testutil"))
 
     androidTestRuntimeOnly(libs.test.mockito.android)
