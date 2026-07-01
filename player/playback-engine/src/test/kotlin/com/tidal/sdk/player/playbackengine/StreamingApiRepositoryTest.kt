@@ -150,13 +150,23 @@ internal class StreamingApiRepositoryTest {
     }
 
     @Test
-    fun getDrmLicenseOnCancellationRethrowsAndDoesNotReport() = runBlocking {
+    fun getDrmLicenseOnCancellationRethrowsAndReportsAsOther() = runBlocking {
+        val startTimestamp = 1L
+        val endTimestamp = -2L
         val streamingSessionId = "streamingSessionId"
         val licenseUrl = "licenseUrl"
         val payload = "fake_request_data".toByteArray()
+        val errorCode = "errorCode"
         val cancellationException = CancellationException("cancelled")
-        whenever(trueTimeWrapper.currentTimeMillis).thenReturn(1L)
+        whenever(trueTimeWrapper.currentTimeMillis).thenReturn(startTimestamp, endTimestamp)
         whenever(streamingApi.getDrmLicense(licenseUrl, payload)) doThrow cancellationException
+        whenever(
+                errorHandler.getErrorCode(
+                    cancellationException,
+                    ErrorCodeFactory.Extra.DrmLicenseFetch,
+                )
+            )
+            .thenReturn(errorCode)
 
         assertFailure {
                 streamingApiRepository.getDrmLicense(
@@ -168,31 +178,62 @@ internal class StreamingApiRepositoryTest {
             }
             .isSameInstanceAs(cancellationException)
 
-        verifyNoInteractions(eventReporter)
+        verify(eventReporter)
+            .report(
+                DrmLicenseFetch.Payload(
+                    streamingSessionId,
+                    startTimestamp,
+                    endTimestamp,
+                    EndReason.OTHER,
+                    "cancelled",
+                    errorCode,
+                ),
+                emptyMap(),
+            )
         verifyNoInteractions(mediaDrmCallbackExceptionFactory)
     }
 
     @Test
-    fun getPlaybackInfoForStreamingOnCancellationRethrowsAndDoesNotReport() = runBlocking {
+    fun getPlaybackInfoForStreamingOnCancellationRethrowsAndReportsAsOther() = runBlocking {
+        val startTimestamp = 1L
+        val endTimestamp = -2L
         val streamingSessionId = "streamingSessionId"
         val productId = "33"
+        val errorCode = "errorCode"
         val mediaProduct =
             mock<ForwardingMediaProduct<*>> {
                 on { it.productId } doReturn productId
                 on { it.productType } doReturn ProductType.UC
             }
         val cancellationException = CancellationException("cancelled")
-        whenever(trueTimeWrapper.currentTimeMillis).thenReturn(1L)
+        whenever(trueTimeWrapper.currentTimeMillis).thenReturn(startTimestamp, endTimestamp)
         whenever(streamingApi.getUCPlaybackInfo(productId, streamingSessionId))
             .thenThrow(cancellationException)
+        whenever(
+                errorHandler.getErrorCode(
+                    cancellationException,
+                    ErrorCodeFactory.Extra.PlaybackInfoFetch,
+                )
+            )
+            .thenReturn(errorCode)
 
         assertFailure {
                 streamingApiRepository.getPlaybackInfoForStreaming(streamingSessionId, mediaProduct)
             }
             .isSameInstanceAs(cancellationException)
 
-        verifyNoInteractions(eventReporter)
-        verifyNoInteractions(errorHandler)
+        verify(eventReporter)
+            .report(
+                PlaybackInfoFetch.Payload(
+                    streamingSessionId,
+                    startTimestamp,
+                    endTimestamp,
+                    EndReason.OTHER,
+                    "cancelled",
+                    errorCode,
+                ),
+                emptyMap(),
+            )
     }
 
     @ParameterizedTest

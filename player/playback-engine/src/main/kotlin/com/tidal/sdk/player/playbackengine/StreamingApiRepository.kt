@@ -74,34 +74,38 @@ internal class StreamingApiRepository(
         val startTimestamp = trueTimeWrapper.currentTimeMillis
         var errorMessage: String? = null
         var errorCode: String? = null
-        var endReason: EndReason? = null
+        lateinit var endReason: EndReason
         try {
             val ret = streamingApi.getDrmLicense(licenseUrl, payload)
             endReason = EndReason.COMPLETE
             return ret
-        } catch (e: CancellationException) {
-            throw e
+        } catch (cancellation: CancellationException) {
+            // Cancellation (e.g. user skip, or a request abandoned under slow network) is not a
+            // failure. We still report it with EndReason.OTHER to keep visibility into how long the
+            // request ran before being cancelled, then rethrow as-is to preserve coroutine
+            // cancellation semantics.
+            endReason = EndReason.OTHER
+            errorMessage = cancellation.cancellationEventMessage()
+            errorCode =
+                errorHandler.getErrorCode(cancellation, ErrorCodeFactory.Extra.DrmLicenseFetch)
+            throw cancellation
         } catch (throwable: Throwable) {
             endReason = EndReason.ERROR
             errorMessage = throwable.message
             errorCode = errorHandler.getErrorCode(throwable, ErrorCodeFactory.Extra.DrmLicenseFetch)
             throw mediaDrmCallbackExceptionFactory.create(throwable)
         } finally {
-            // endReason is only set when the request completed or failed; on cancellation it stays
-            // null and we skip reporting entirely.
-            endReason?.let {
-                eventReporter.report(
-                    DrmLicenseFetch.Payload(
-                        streamingSessionId,
-                        startTimestamp,
-                        trueTimeWrapper.currentTimeMillis,
-                        it,
-                        errorMessage,
-                        errorCode,
-                    ),
-                    extras,
-                )
-            }
+            eventReporter.report(
+                DrmLicenseFetch.Payload(
+                    streamingSessionId,
+                    startTimestamp,
+                    trueTimeWrapper.currentTimeMillis,
+                    endReason,
+                    errorMessage,
+                    errorCode,
+                ),
+                extras,
+            )
         }
     }
 
@@ -116,7 +120,7 @@ internal class StreamingApiRepository(
         val startTimestamp = trueTimeWrapper.currentTimeMillis
         var errorMessage: String? = null
         var errorCode: String? = null
-        var endReason: EndReason? = null
+        lateinit var endReason: EndReason
         try {
             val ret =
                 when (forwardingMediaProduct.productType) {
@@ -155,8 +159,16 @@ internal class StreamingApiRepository(
                 }
             endReason = EndReason.COMPLETE
             return ret
-        } catch (e: CancellationException) {
-            throw e
+        } catch (cancellation: CancellationException) {
+            // Cancellation (e.g. user skip, or a request abandoned under slow network) is not a
+            // failure. We still report it with EndReason.OTHER to keep visibility into how long the
+            // request ran before being cancelled, then rethrow as-is to preserve coroutine
+            // cancellation semantics.
+            endReason = EndReason.OTHER
+            errorMessage = cancellation.cancellationEventMessage()
+            errorCode =
+                errorHandler.getErrorCode(cancellation, ErrorCodeFactory.Extra.PlaybackInfoFetch)
+            throw cancellation
         } catch (throwable: Throwable) {
             endReason = EndReason.ERROR
             errorMessage = throwable.stackTraceForPlaybackInfoFetchEvent()
@@ -164,21 +176,17 @@ internal class StreamingApiRepository(
                 errorHandler.getErrorCode(throwable, ErrorCodeFactory.Extra.PlaybackInfoFetch)
             throw IOException(throwable)
         } finally {
-            // endReason is only set when the request completed or failed; on cancellation it stays
-            // null and we skip reporting entirely.
-            endReason?.let {
-                eventReporter.report(
-                    PlaybackInfoFetch.Payload(
-                        streamingSessionId,
-                        startTimestamp,
-                        trueTimeWrapper.currentTimeMillis,
-                        it,
-                        errorMessage,
-                        errorCode,
-                    ),
-                    forwardingMediaProduct.extras,
-                )
-            }
+            eventReporter.report(
+                PlaybackInfoFetch.Payload(
+                    streamingSessionId,
+                    startTimestamp,
+                    trueTimeWrapper.currentTimeMillis,
+                    endReason,
+                    errorMessage,
+                    errorCode,
+                ),
+                forwardingMediaProduct.extras,
+            )
         }
     }
 
@@ -209,6 +217,14 @@ internal class StreamingApiRepository(
                     "ProductType ${forwardingMediaProduct.productType} can't be offlined."
                 )
         }
+
+    /**
+     * A concise message for a cancelled request. We deliberately avoid the full stack trace here:
+     * cancellations are frequent (every skip/seek) and we only want a clear marker that the request
+     * was cancelled, not a large payload.
+     */
+    private fun Throwable.cancellationEventMessage() =
+        (cause ?: this).message ?: "Request cancelled"
 
     private fun Throwable.stackTraceForPlaybackInfoFetchEvent(): String {
         val stackTrace = stackTraceToString()
