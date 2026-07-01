@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.69] - 2026-07-01
+
+### Fixed
+- Report cancelled `PlaybackInfo` and DRM license fetches with `EndReason.OTHER` instead of `EndReason.ERROR`, and rethrow `CancellationException` so normal cancellations (e.g. track skips) are no longer reported as fetch errors.
+
 ## [0.0.68] - 2026-06-24
 
 ### Changed
