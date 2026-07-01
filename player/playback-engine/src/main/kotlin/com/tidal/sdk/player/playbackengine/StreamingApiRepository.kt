@@ -22,6 +22,7 @@ import com.tidal.sdk.player.streamingapi.StreamingApi
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackMode
 import java.io.IOException
+import kotlinx.coroutines.CancellationException
 import okhttp3.ResponseBody
 import retrofit2.Response
 
@@ -78,6 +79,16 @@ internal class StreamingApiRepository(
             val ret = streamingApi.getDrmLicense(licenseUrl, payload)
             endReason = EndReason.COMPLETE
             return ret
+        } catch (cancellation: CancellationException) {
+            // Cancellation (e.g. user skip, or a request abandoned under slow network) is not a
+            // failure. We still report it with EndReason.OTHER to keep visibility into how long the
+            // request ran before being cancelled, then rethrow as-is to preserve coroutine
+            // cancellation semantics.
+            endReason = EndReason.OTHER
+            errorMessage = cancellation.cancellationEventMessage()
+            errorCode =
+                errorHandler.getErrorCode(cancellation, ErrorCodeFactory.Extra.DrmLicenseFetch)
+            throw cancellation
         } catch (throwable: Throwable) {
             endReason = EndReason.ERROR
             errorMessage = throwable.message
@@ -148,6 +159,16 @@ internal class StreamingApiRepository(
                 }
             endReason = EndReason.COMPLETE
             return ret
+        } catch (cancellation: CancellationException) {
+            // Cancellation (e.g. user skip, or a request abandoned under slow network) is not a
+            // failure. We still report it with EndReason.OTHER to keep visibility into how long the
+            // request ran before being cancelled, then rethrow as-is to preserve coroutine
+            // cancellation semantics.
+            endReason = EndReason.OTHER
+            errorMessage = cancellation.cancellationEventMessage()
+            errorCode =
+                errorHandler.getErrorCode(cancellation, ErrorCodeFactory.Extra.PlaybackInfoFetch)
+            throw cancellation
         } catch (throwable: Throwable) {
             endReason = EndReason.ERROR
             errorMessage = throwable.stackTraceForPlaybackInfoFetchEvent()
@@ -196,6 +217,14 @@ internal class StreamingApiRepository(
                     "ProductType ${forwardingMediaProduct.productType} can't be offlined."
                 )
         }
+
+    /**
+     * A concise message for a cancelled request. We deliberately avoid the full stack trace here:
+     * cancellations are frequent (every skip/seek) and we only want a clear marker that the request
+     * was cancelled, not a large payload.
+     */
+    private fun Throwable.cancellationEventMessage() =
+        (cause ?: this).message ?: "Request cancelled"
 
     private fun Throwable.stackTraceForPlaybackInfoFetchEvent(): String {
         val stackTrace = stackTraceToString()

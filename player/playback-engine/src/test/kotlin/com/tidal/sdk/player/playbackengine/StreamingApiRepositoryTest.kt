@@ -29,6 +29,7 @@ import com.tidal.sdk.player.streamingapi.StreamingApi
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackMode
 import java.io.IOException
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.runBlocking
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.ResponseBody
@@ -142,6 +143,93 @@ internal class StreamingApiRepositoryTest {
                     endTimestamp,
                     EndReason.ERROR,
                     errorMessage,
+                    errorCode,
+                ),
+                emptyMap(),
+            )
+    }
+
+    @Test
+    fun getDrmLicenseOnCancellationRethrowsAndReportsAsOther() = runBlocking {
+        val startTimestamp = 1L
+        val endTimestamp = -2L
+        val streamingSessionId = "streamingSessionId"
+        val licenseUrl = "licenseUrl"
+        val payload = "fake_request_data".toByteArray()
+        val errorCode = "errorCode"
+        val cancellationException = CancellationException("cancelled")
+        whenever(trueTimeWrapper.currentTimeMillis).thenReturn(startTimestamp, endTimestamp)
+        whenever(streamingApi.getDrmLicense(licenseUrl, payload)) doThrow cancellationException
+        whenever(
+                errorHandler.getErrorCode(
+                    cancellationException,
+                    ErrorCodeFactory.Extra.DrmLicenseFetch,
+                )
+            )
+            .thenReturn(errorCode)
+
+        assertFailure {
+                streamingApiRepository.getDrmLicense(
+                    licenseUrl,
+                    payload,
+                    streamingSessionId,
+                    emptyMap(),
+                )
+            }
+            .isSameInstanceAs(cancellationException)
+
+        verify(eventReporter)
+            .report(
+                DrmLicenseFetch.Payload(
+                    streamingSessionId,
+                    startTimestamp,
+                    endTimestamp,
+                    EndReason.OTHER,
+                    "cancelled",
+                    errorCode,
+                ),
+                emptyMap(),
+            )
+        verifyNoInteractions(mediaDrmCallbackExceptionFactory)
+    }
+
+    @Test
+    fun getPlaybackInfoForStreamingOnCancellationRethrowsAndReportsAsOther() = runBlocking {
+        val startTimestamp = 1L
+        val endTimestamp = -2L
+        val streamingSessionId = "streamingSessionId"
+        val productId = "33"
+        val errorCode = "errorCode"
+        val mediaProduct =
+            mock<ForwardingMediaProduct<*>> {
+                on { it.productId } doReturn productId
+                on { it.productType } doReturn ProductType.UC
+            }
+        val cancellationException = CancellationException("cancelled")
+        whenever(trueTimeWrapper.currentTimeMillis).thenReturn(startTimestamp, endTimestamp)
+        whenever(streamingApi.getUCPlaybackInfo(productId, streamingSessionId))
+            .thenThrow(cancellationException)
+        whenever(
+                errorHandler.getErrorCode(
+                    cancellationException,
+                    ErrorCodeFactory.Extra.PlaybackInfoFetch,
+                )
+            )
+            .thenReturn(errorCode)
+
+        assertFailure {
+                streamingApiRepository.getPlaybackInfoForStreaming(streamingSessionId, mediaProduct)
+            }
+            .isSameInstanceAs(cancellationException)
+
+        verify(eventReporter)
+            .report(
+                PlaybackInfoFetch.Payload(
+                    streamingSessionId,
+                    startTimestamp,
+                    endTimestamp,
+                    EndReason.OTHER,
+                    "cancelled",
                     errorCode,
                 ),
                 emptyMap(),
