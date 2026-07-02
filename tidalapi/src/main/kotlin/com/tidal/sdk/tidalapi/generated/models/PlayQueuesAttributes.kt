@@ -13,6 +13,7 @@ import kotlinx.serialization.Serializable
  * @param createdAt ISO 8601 creation timestamp
  * @param lastModifiedAt ISO 8601 last modified timestamp
  * @param repeat Queue's repeat mode
+ * @param shuffle Queue's shuffle mode
  * @param shuffled Queue is shuffled or not
  */
 @Serializable
@@ -27,6 +28,9 @@ data class PlayQueuesAttributes(
     /* Queue's repeat mode */
 
     @SerialName(value = "repeat") val repeat: PlayQueuesAttributes.Repeat,
+    /* Queue's shuffle mode */
+
+    @SerialName(value = "shuffle") val shuffle: PlayQueuesAttributes.Shuffle,
     /* Queue is shuffled or not */
 
     @SerialName(value = "shuffled") val shuffled: kotlin.Boolean,
@@ -42,5 +46,17 @@ data class PlayQueuesAttributes(
         @SerialName(value = "NONE") NONE("NONE"),
         @SerialName(value = "ONE") ONE("ONE"),
         @SerialName(value = "BATCH") BATCH("BATCH"),
+    }
+
+    /**
+     * Queue's shuffle mode
+     *
+     * Values: OFF,BATCH,ALL
+     */
+    @Serializable
+    enum class Shuffle(val value: kotlin.String) {
+        @SerialName(value = "OFF") OFF("OFF"),
+        @SerialName(value = "BATCH") BATCH("BATCH"),
+        @SerialName(value = "ALL") ALL("ALL"),
     }
 }

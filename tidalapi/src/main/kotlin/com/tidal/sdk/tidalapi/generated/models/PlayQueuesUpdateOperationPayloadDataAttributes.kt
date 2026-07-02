@@ -11,12 +11,15 @@ import kotlinx.serialization.Serializable
 
 /**
  * @param repeat
+ * @param shuffle
  * @param shuffled
  */
 @Serializable
 data class PlayQueuesUpdateOperationPayloadDataAttributes(
     @SerialName(value = "repeat")
     val repeat: PlayQueuesUpdateOperationPayloadDataAttributes.Repeat? = null,
+    @SerialName(value = "shuffle")
+    val shuffle: PlayQueuesUpdateOperationPayloadDataAttributes.Shuffle? = null,
     @SerialName(value = "shuffled") val shuffled: kotlin.Boolean? = null,
 ) {
 
@@ -26,5 +29,13 @@ data class PlayQueuesUpdateOperationPayloadDataAttributes(
         @SerialName(value = "NONE") NONE("NONE"),
         @SerialName(value = "ONE") ONE("ONE"),
         @SerialName(value = "BATCH") BATCH("BATCH"),
+    }
+
+    /** Values: OFF,BATCH,ALL */
+    @Serializable
+    enum class Shuffle(val value: kotlin.String) {
+        @SerialName(value = "OFF") OFF("OFF"),
+        @SerialName(value = "BATCH") BATCH("BATCH"),
+        @SerialName(value = "ALL") ALL("ALL"),
     }
 }
