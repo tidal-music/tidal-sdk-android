@@ -1,5 +1,5 @@
 # TIDAL API Surface Snapshot
-# Spec version: 1.10.49 | Endpoints: 336 | Models: 861
+# Spec version: 1.10.53 | Endpoints: 337 | Models: 864
 
 ## Endpoints
 
@@ -634,6 +634,10 @@ GET /playlists/{id}/relationships/ownerProfiles
 GET /playlists/{id}/relationships/owners
   params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string
   returns: Playlists_Multi_Relationship_Data_Document
+
+GET /playlists/{id}/relationships/suggestedCoverArts
+  params: id: string, include?: array[string], page[cursor]?: string
+  returns: Playlists_SuggestedCoverArts_Multi_Relationship_Data_Document
 
 GET /priceConfigurations
   params: filter[id]: array[string]
@@ -2926,12 +2930,14 @@ PlayQueuesUpdateOperation_Payload_Data
 
 PlayQueuesUpdateOperation_Payload_Data_Attributes
   repeat: enum[NONE, ONE, BATCH] (optional)
+  shuffle: enum[OFF, BATCH, ALL] (optional)
   shuffled: boolean (optional)
 
 PlayQueues_Attributes
   createdAt: string(date-time) (required)
   lastModifiedAt: string(date-time) (required)
   repeat: enum[NONE, ONE, BATCH] (required)
+  shuffle: enum[OFF, BATCH, ALL] (required)
   shuffled: boolean (required)
 
 PlayQueues_Current_Resource_Identifier
@@ -3144,6 +3150,7 @@ Playlists_Relationships
   items: Playlists_Items_Multi_Relationship_Data_Document (optional)
   ownerProfiles: Multi_Relationship_Data_Document (optional)
   owners: Multi_Relationship_Data_Document (optional)
+  suggestedCoverArts: Playlists_SuggestedCoverArts_Multi_Relationship_Data_Document (optional)
 
 Playlists_Resource_Object
   id: string (required)
@@ -3155,6 +3162,20 @@ Playlists_Single_Resource_Data_Document
   data: Playlists_Resource_Object (required)
   links: Links (required)
   included: Included (optional)
+
+Playlists_SuggestedCoverArts_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[Playlists_SuggestedCoverArts_Resource_Identifier] (optional)
+  included: Included (optional)
+
+Playlists_SuggestedCoverArts_Resource_Identifier
+  id: string (required)
+  type: string (required)
+  meta: Playlists_SuggestedCoverArts_Resource_Identifier_Meta (optional)
+
+Playlists_SuggestedCoverArts_Resource_Identifier_Meta
+  backgroundColor: string (required)
+  foregroundColor: string (required)
 
 PriceConfigurationsCreateOperation_Payload
   data: PriceConfigurationsCreateOperation_Payload_Data (required)
@@ -4291,14 +4312,14 @@ UserCollectionFoldersItemsRelationshipAddOperation_Payload
 
 UserCollectionFoldersItemsRelationshipAddOperation_Payload_Data
   id: string (required)
-  type: string (required)
+  type: enum[playlists] (required)
 
 UserCollectionFoldersItemsRelationshipRemoveOperation_Payload
   data: array[UserCollectionFoldersItemsRelationshipRemoveOperation_Payload_Data] (optional)
 
 UserCollectionFoldersItemsRelationshipRemoveOperation_Payload_Data
   id: string (required)
-  type: string (required)
+  type: enum[playlists] (required)
 
 UserCollectionFoldersUpdateOperation_Payload
   data: UserCollectionFoldersUpdateOperation_Payload_Data (required)

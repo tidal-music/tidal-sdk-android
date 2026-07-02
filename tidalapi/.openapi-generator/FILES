@@ -467,6 +467,9 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlaylistsMultiResourceDa
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlaylistsRelationships.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlaylistsResourceObject.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlaylistsSingleResourceDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlaylistsSuggestedCoverArtsMultiRelationshipDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlaylistsSuggestedCoverArtsResourceIdentifier.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlaylistsSuggestedCoverArtsResourceIdentifierMeta.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlaylistsUpdateOperationPayload.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlaylistsUpdateOperationPayloadData.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlaylistsUpdateOperationPayloadDataAttributes.kt

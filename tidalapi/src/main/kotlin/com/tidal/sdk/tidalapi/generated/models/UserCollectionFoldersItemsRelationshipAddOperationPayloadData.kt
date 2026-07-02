@@ -16,5 +16,13 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class UserCollectionFoldersItemsRelationshipAddOperationPayloadData(
     @SerialName(value = "id") val id: kotlin.String,
-    @SerialName(value = "type") val type: kotlin.String,
-) {}
+    @SerialName(value = "type")
+    val type: UserCollectionFoldersItemsRelationshipAddOperationPayloadData.Type,
+) {
+
+    /** Values: playlists */
+    @Serializable
+    enum class Type(val value: kotlin.String) {
+        @SerialName(value = "playlists") playlists("playlists")
+    }
+}
