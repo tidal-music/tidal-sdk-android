@@ -11,6 +11,7 @@ import com.tidal.sdk.tidalapi.generated.models.PlaylistsItemsRelationshipUpdateO
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsSingleResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.PlaylistsSuggestedCoverArtsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsUpdateOperationPayload
 import kotlinx.serialization.SerialName
 import retrofit2.Response
@@ -48,7 +49,7 @@ interface PlaylistsApi {
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: collaboratorProfiles, collaborators, coverArt, items, ownerProfiles,
-     *   owners (optional)
+     *   owners, suggestedCoverArts (optional)
      * @param filterId List of playlist IDs (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;)
      *   (optional)
      * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user (optional)
@@ -108,7 +109,7 @@ interface PlaylistsApi {
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: collaboratorProfiles, collaborators, coverArt, items, ownerProfiles,
-     *   owners (optional)
+     *   owners, suggestedCoverArts (optional)
      * @return [PlaylistsSingleResourceDataDocument]
      */
     @GET("playlists/{id}")
@@ -536,6 +537,34 @@ interface PlaylistsApi {
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
     ): Response<PlaylistsMultiRelationshipDataDocument>
+
+    /**
+     * Get suggestedCoverArts relationship (\&quot;to-many\&quot;). Retrieves suggestedCoverArts
+     * relationship. Responses:
+     * - 200: Successful response
+     * - 400: The request is malformed or invalid
+     * - 404: The requested resource was not found
+     * - 405: The HTTP method is not allowed for the requested resource
+     * - 406: A response that satisfies the content negotiation headers cannot be produced
+     * - 415: Unsupported request payload media type or content encoding
+     * - 429: Rate limit exceeded
+     * - 500: An unexpected error was encountered
+     * - 503: Temporarily unavailable; please try again later
+     *
+     * @param id Playlist id
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: suggestedCoverArts (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
+     * @return [PlaylistsSuggestedCoverArtsMultiRelationshipDataDocument]
+     */
+    @GET("playlists/{id}/relationships/suggestedCoverArts")
+    suspend fun playlistsIdRelationshipsSuggestedCoverArtsGet(
+        @Path("id") id: kotlin.String,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
+    ): Response<PlaylistsSuggestedCoverArtsMultiRelationshipDataDocument>
 
     /**
      * Create single playlist. Creates a new playlist. Responses:
