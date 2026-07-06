@@ -8,6 +8,7 @@ additionalProperties:
   artifactId: tidalapi.generated
   packageName: com.tidal.sdk.tidalapi.generated
   apiNameSuffix: ''
+  apiSuffix: ''
   removeEnumValuePrefix: true
   groupId: com.tidal.sdk
   library: jvm-retrofit2
