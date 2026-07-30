@@ -12,14 +12,14 @@ interface Videos {
      * Get multiple videos. Retrieves multiple videos by available filters, or without if
      * applicable. Responses:
      * - 200: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 415: Unsupported request payload media type or content encoding
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
@@ -43,14 +43,14 @@ interface Videos {
     /**
      * Get single video. Retrieves single video by id. Responses:
      * - 200: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 415: Unsupported request payload media type or content encoding
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id Video id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
@@ -70,14 +70,14 @@ interface Videos {
     /**
      * Get albums relationship (\&quot;to-many\&quot;). Retrieves albums relationship. Responses:
      * - 200: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 415: Unsupported request payload media type or content encoding
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id Video id
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -99,14 +99,14 @@ interface Videos {
     /**
      * Get artists relationship (\&quot;to-many\&quot;). Retrieves artists relationship. Responses:
      * - 200: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 415: Unsupported request payload media type or content encoding
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id Video id
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -128,14 +128,14 @@ interface Videos {
     /**
      * Get credits relationship (\&quot;to-many\&quot;). Retrieves credits relationship. Responses:
      * - 200: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 415: Unsupported request payload media type or content encoding
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id Video id
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -156,14 +156,14 @@ interface Videos {
      * Get providers relationship (\&quot;to-many\&quot;). Retrieves providers relationship.
      * Responses:
      * - 200: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 415: Unsupported request payload media type or content encoding
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id Video id
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -186,14 +186,14 @@ interface Videos {
      * Get replacement relationship (\&quot;to-one\&quot;). Retrieves replacement relationship.
      * Responses:
      * - 200: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 415: Unsupported request payload media type or content encoding
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id Video id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
@@ -213,14 +213,14 @@ interface Videos {
      * Get similarVideos relationship (\&quot;to-many\&quot;). Retrieves similarVideos relationship.
      * Responses:
      * - 200: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 415: Unsupported request payload media type or content encoding
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id Video id
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -243,14 +243,14 @@ interface Videos {
      * Get suggestedVideos relationship (\&quot;to-many\&quot;). Retrieves suggestedVideos
      * relationship. Responses:
      * - 200: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 415: Unsupported request payload media type or content encoding
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id Video id
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -273,14 +273,14 @@ interface Videos {
      * Get thumbnailArt relationship (\&quot;to-many\&quot;). Retrieves thumbnailArt relationship.
      * Responses:
      * - 200: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 415: Unsupported request payload media type or content encoding
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id Video id
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -303,14 +303,14 @@ interface Videos {
      * Get usageRules relationship (\&quot;to-one\&quot;). Retrieves usageRules relationship.
      * Responses:
      * - 200: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 415: Unsupported request payload media type or content encoding
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id Video id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)

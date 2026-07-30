@@ -10,14 +10,14 @@ interface Genres {
      * Get multiple genres. Retrieves multiple genres by available filters, or without if
      * applicable. Responses:
      * - 200: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 415: Unsupported request payload media type or content encoding
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param filterId Allows filtering by genre id(s). USER_SELECTABLE is special value used to
      *   return specific genres which users can select from (e.g. &#x60;&#39;1,2,3&#39; or
@@ -38,14 +38,14 @@ interface Genres {
     /**
      * Get single genre. Retrieves single genre by id. Responses:
      * - 200: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 415: Unsupported request payload media type or content encoding
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id Genre id
      * @param locale BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or

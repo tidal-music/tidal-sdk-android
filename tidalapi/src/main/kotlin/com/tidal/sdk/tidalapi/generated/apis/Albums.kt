@@ -28,14 +28,14 @@ interface Albums {
      * Get multiple albums. Retrieves multiple albums by available filters, or without if
      * applicable. Responses:
      * - 200: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 415: Unsupported request payload media type or content encoding
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
@@ -72,16 +72,16 @@ interface Albums {
 
     /**
      * Delete single album. Deletes existing album. Responses:
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 409: A request with this idempotency key is currently being processed
-     * - 415: Unsupported request payload media type or content encoding
-     * - 422: Idempotency key was already used with a different request payload
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 409: Request already in progress for this idempotency key
+     * - 415: Unsupported request media type or encoding
+     * - 422: Idempotency key reused with a different payload
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id Album id
      * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
@@ -98,14 +98,14 @@ interface Albums {
     /**
      * Get single album. Retrieves single album by id. Responses:
      * - 200: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 415: Unsupported request payload media type or content encoding
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id Album id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
@@ -127,16 +127,16 @@ interface Albums {
 
     /**
      * Update single album. Updates existing album. Responses:
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 409: A request with this idempotency key is currently being processed
-     * - 415: Unsupported request payload media type or content encoding
-     * - 422: Idempotency key was already used with a different request payload
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 409: Request already in progress for this idempotency key
+     * - 415: Unsupported request media type or encoding
+     * - 422: Idempotency key reused with a different payload
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id Album id
      * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
@@ -156,14 +156,14 @@ interface Albums {
      * Get albumStatistics relationship (\&quot;to-one\&quot;). Retrieves albumStatistics
      * relationship. Responses:
      * - 200: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 415: Unsupported request payload media type or content encoding
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id Album id
      * @param include Allows the client to customize which related resources should be returned.
@@ -183,14 +183,14 @@ interface Albums {
     /**
      * Get artists relationship (\&quot;to-many\&quot;). Retrieves artists relationship. Responses:
      * - 200: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 415: Unsupported request payload media type or content encoding
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id Album id
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -216,14 +216,14 @@ interface Albums {
      * Get coverArt relationship (\&quot;to-many\&quot;). Retrieves coverArt relationship.
      * Responses:
      * - 200: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 415: Unsupported request payload media type or content encoding
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id Album id
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -248,16 +248,16 @@ interface Albums {
     /**
      * Update coverArt relationship (\&quot;to-many\&quot;). Updates coverArt relationship.
      * Responses:
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 409: A request with this idempotency key is currently being processed
-     * - 415: Unsupported request payload media type or content encoding
-     * - 422: Idempotency key was already used with a different request payload
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 409: Request already in progress for this idempotency key
+     * - 415: Unsupported request media type or encoding
+     * - 422: Idempotency key reused with a different payload
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id Album id
      * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
@@ -279,14 +279,14 @@ interface Albums {
     /**
      * Get genres relationship (\&quot;to-many\&quot;). Retrieves genres relationship. Responses:
      * - 200: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 415: Unsupported request payload media type or content encoding
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id Album id
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -311,14 +311,14 @@ interface Albums {
     /**
      * Get items relationship (\&quot;to-many\&quot;). Retrieves items relationship. Responses:
      * - 200: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 415: Unsupported request payload media type or content encoding
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id Album id
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -342,16 +342,16 @@ interface Albums {
 
     /**
      * Update items relationship (\&quot;to-many\&quot;). Updates items relationship. Responses:
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 409: A request with this idempotency key is currently being processed
-     * - 415: Unsupported request payload media type or content encoding
-     * - 422: Idempotency key was already used with a different request payload
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 409: Request already in progress for this idempotency key
+     * - 415: Unsupported request media type or encoding
+     * - 422: Idempotency key reused with a different payload
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id Album id
      * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
@@ -373,16 +373,17 @@ interface Albums {
     /**
      * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
      * - 200: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 415: Unsupported request payload media type or content encoding
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id Album id
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -394,6 +395,7 @@ interface Albums {
     @GET("albums/{id}/relationships/owners")
     suspend fun albumsIdRelationshipsOwnersGet(
         @Path("id") id: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
@@ -404,14 +406,14 @@ interface Albums {
      * Get priceConfig relationship (\&quot;to-one\&quot;). Retrieves priceConfig relationship.
      * Responses:
      * - 200: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 415: Unsupported request payload media type or content encoding
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id Album id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
@@ -434,14 +436,14 @@ interface Albums {
      * Get providers relationship (\&quot;to-many\&quot;). Retrieves providers relationship.
      * Responses:
      * - 200: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 415: Unsupported request payload media type or content encoding
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id Album id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
@@ -467,14 +469,14 @@ interface Albums {
      * Get replacement relationship (\&quot;to-one\&quot;). Retrieves replacement relationship.
      * Responses:
      * - 200: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 415: Unsupported request payload media type or content encoding
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id Album id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
@@ -496,14 +498,14 @@ interface Albums {
     /**
      * Get shares relationship (\&quot;to-many\&quot;). Retrieves shares relationship. Responses:
      * - 200: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 415: Unsupported request payload media type or content encoding
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id Album id
      * @param include Allows the client to customize which related resources should be returned.
@@ -527,14 +529,14 @@ interface Albums {
      * Get similarAlbums relationship (\&quot;to-many\&quot;). Retrieves similarAlbums relationship.
      * Responses:
      * - 200: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 415: Unsupported request payload media type or content encoding
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id Album id
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -560,14 +562,14 @@ interface Albums {
      * Get suggestedCoverArts relationship (\&quot;to-many\&quot;). Retrieves suggestedCoverArts
      * relationship. Responses:
      * - 200: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 415: Unsupported request payload media type or content encoding
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id Album id
      * @param include Allows the client to customize which related resources should be returned.
@@ -591,14 +593,14 @@ interface Albums {
      * Get usageRules relationship (\&quot;to-one\&quot;). Retrieves usageRules relationship.
      * Responses:
      * - 200: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 415: Unsupported request payload media type or content encoding
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id Album id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
@@ -620,16 +622,16 @@ interface Albums {
     /**
      * Create single album. Creates a new album. Responses:
      * - 201: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 409: A request with this idempotency key is currently being processed
-     * - 415: Unsupported request payload media type or content encoding
-     * - 422: Idempotency key was already used with a different request payload
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 409: Request already in progress for this idempotency key
+     * - 415: Unsupported request media type or encoding
+     * - 422: Idempotency key reused with a different payload
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
      *   duplicate key is sent with the same payload, the original response is replayed. If the

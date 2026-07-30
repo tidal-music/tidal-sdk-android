@@ -22,18 +22,17 @@ interface VideoManifests {
     /**
      * Get single videoManifest. Retrieves single videoManifest by id. Responses:
      * - 200: Successful response
-     * - 400: The request is malformed or invalid
-     * - 403: Cannot fulfill this request because required prerequisites are missing; The requested
-     *   content is not available in your location; The requested content must be purchased to be
-     *   accessed; Client is not allowed to access this content; This account is playing on another
-     *   app or device
-     * - 404: The requested content does not exist or is no longer available
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 415: Unsupported request payload media type or content encoding
+     * - 400: Invalid request
+     * - 403: Required playback prerequisites are missing; Content is unavailable in your location;
+     *   Content must be purchased before playback; Client cannot access this content; Account is
+     *   playing on another app or device
+     * - 404: Content does not exist or is no longer available
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id Video manifest id
      * @param uriScheme

@@ -76,6 +76,7 @@ fun getOneOfSerializer() = SerializersModule {
             SquareConnectionsResourceObject::class,
             SquareConnectionsResourceObject.serializer(),
         )
+        subclass(SquareSitesResourceObject::class, SquareSitesResourceObject.serializer())
         subclass(
             StripeConnectionsResourceObject::class,
             StripeConnectionsResourceObject.serializer(),
@@ -83,6 +84,10 @@ fun getOneOfSerializer() = SerializersModule {
         subclass(
             StripeDashboardLinksResourceObject::class,
             StripeDashboardLinksResourceObject.serializer(),
+        )
+        subclass(
+            SubscriptionPriceChangeDecisionsResourceObject::class,
+            SubscriptionPriceChangeDecisionsResourceObject.serializer(),
         )
         subclass(
             TemporaryUserTokensResourceObject::class,
@@ -151,6 +156,10 @@ fun getOneOfSerializer() = SerializersModule {
             UserRecommendationsResourceObject.serializer(),
         )
         subclass(UserReportsResourceObject::class, UserReportsResourceObject.serializer())
+        subclass(
+            UserSubscriptionPriceChangesResourceObject::class,
+            UserSubscriptionPriceChangesResourceObject.serializer(),
+        )
         subclass(UsersResourceObject::class, UsersResourceObject.serializer())
         subclass(VideoManifestsResourceObject::class, VideoManifestsResourceObject.serializer())
         subclass(VideosResourceObject::class, VideosResourceObject.serializer())

@@ -11,16 +11,16 @@ import retrofit2.http.*
 interface Lyrics {
     /**
      * Delete single lyric. Deletes existing lyric. Responses:
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 409: A request with this idempotency key is currently being processed
-     * - 415: Unsupported request payload media type or content encoding
-     * - 422: Idempotency key was already used with a different request payload
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 409: Request already in progress for this idempotency key
+     * - 415: Unsupported request media type or encoding
+     * - 422: Idempotency key reused with a different payload
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id Lyrics Id
      * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
@@ -37,14 +37,14 @@ interface Lyrics {
     /**
      * Get single lyric. Retrieves single lyric by id. Responses:
      * - 200: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 415: Unsupported request payload media type or content encoding
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id Lyrics Id
      * @param include Allows the client to customize which related resources should be returned.
@@ -60,16 +60,16 @@ interface Lyrics {
 
     /**
      * Update single lyric. Updates existing lyric. Responses:
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 409: A request with this idempotency key is currently being processed
-     * - 415: Unsupported request payload media type or content encoding
-     * - 422: Idempotency key was already used with a different request payload
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 409: Request already in progress for this idempotency key
+     * - 415: Unsupported request media type or encoding
+     * - 422: Idempotency key reused with a different payload
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id Lyrics Id
      * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
@@ -88,14 +88,14 @@ interface Lyrics {
     /**
      * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
      * - 200: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 415: Unsupported request payload media type or content encoding
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id Lyrics Id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
@@ -117,14 +117,14 @@ interface Lyrics {
     /**
      * Get track relationship (\&quot;to-one\&quot;). Retrieves track relationship. Responses:
      * - 200: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 415: Unsupported request payload media type or content encoding
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id Lyrics Id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
@@ -143,16 +143,16 @@ interface Lyrics {
     /**
      * Create single lyric. Creates a new lyric. Responses:
      * - 201: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 409: A request with this idempotency key is currently being processed
-     * - 415: Unsupported request payload media type or content encoding
-     * - 422: Idempotency key was already used with a different request payload
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 409: Request already in progress for this idempotency key
+     * - 415: Unsupported request media type or encoding
+     * - 422: Idempotency key reused with a different payload
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
      *   duplicate key is sent with the same payload, the original response is replayed. If the

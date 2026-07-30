@@ -13,5 +13,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class CommentsCreateOperationPayloadDataRelationshipsParentComment(
     @SerialName(value = "data")
-    val `data`: CommentsCreateOperationPayloadDataRelationshipsParentCommentData? = null
+    val `data`: CommentsCreateOperationPayloadDataRelationshipsParentCommentData?
 ) {}

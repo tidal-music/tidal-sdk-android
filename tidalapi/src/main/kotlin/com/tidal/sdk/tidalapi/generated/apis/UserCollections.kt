@@ -27,14 +27,14 @@ interface UserCollections {
      * userCollectionAlbums, userCollectionArtists, userCollectionTracks, userCollectionVideos, or
      * userCollectionPlaylists. Responses:
      * - 200: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 415: Unsupported request payload media type or content encoding
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id User collection id
      * @param locale BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or
@@ -55,16 +55,16 @@ interface UserCollections {
     /**
      * Delete from albums relationship (\&quot;to-many\&quot;). Deprecated. Use the
      * userCollectionAlbums resource and its items relationship instead. Responses:
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 409: A request with this idempotency key is currently being processed
-     * - 415: Unsupported request payload media type or content encoding
-     * - 422: Idempotency key was already used with a different request payload
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 409: Request already in progress for this idempotency key
+     * - 415: Unsupported request media type or encoding
+     * - 422: Idempotency key reused with a different payload
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id User collection id
      * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
@@ -100,14 +100,14 @@ interface UserCollections {
      * Get albums relationship (\&quot;to-many\&quot;). Deprecated. Use the userCollectionAlbums
      * resource and its items relationship instead. Responses:
      * - 200: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 415: Unsupported request payload media type or content encoding
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id User collection id
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -134,18 +134,17 @@ interface UserCollections {
     /**
      * Add to albums relationship (\&quot;to-many\&quot;). Deprecated. Use the userCollectionAlbums
      * resource and its items relationship instead. Responses:
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 409: You have reached the maximum number of items allowed for this collection. Please
-     *   remove some items before adding more.; One or more items you are trying to add are already
-     *   in your favorites.; A request with this idempotency key is currently being processed
-     * - 415: Unsupported request payload media type or content encoding
-     * - 422: Idempotency key was already used with a different request payload
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 409: Collection item limit reached; Collection already contains one or more items; Request
+     *   already in progress for this idempotency key
+     * - 415: Unsupported request media type or encoding
+     * - 422: Idempotency key reused with a different payload
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id User collection id
      * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
@@ -168,16 +167,16 @@ interface UserCollections {
     /**
      * Delete from artists relationship (\&quot;to-many\&quot;). Deprecated. Use the
      * userCollectionArtists resource and its items relationship instead. Responses:
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 409: A request with this idempotency key is currently being processed
-     * - 415: Unsupported request payload media type or content encoding
-     * - 422: Idempotency key was already used with a different request payload
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 409: Request already in progress for this idempotency key
+     * - 415: Unsupported request media type or encoding
+     * - 422: Idempotency key reused with a different payload
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id User collection id
      * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
@@ -209,14 +208,14 @@ interface UserCollections {
      * Get artists relationship (\&quot;to-many\&quot;). Deprecated. Use the userCollectionArtists
      * resource and its items relationship instead. Responses:
      * - 200: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 415: Unsupported request payload media type or content encoding
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id User collection id
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -243,18 +242,17 @@ interface UserCollections {
     /**
      * Add to artists relationship (\&quot;to-many\&quot;). Deprecated. Use the
      * userCollectionArtists resource and its items relationship instead. Responses:
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 409: You have reached the maximum number of items allowed for this collection. Please
-     *   remove some items before adding more.; One or more items you are trying to add are already
-     *   in your favorites.; A request with this idempotency key is currently being processed
-     * - 415: Unsupported request payload media type or content encoding
-     * - 422: Idempotency key was already used with a different request payload
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 409: Collection item limit reached; Collection already contains one or more items; Request
+     *   already in progress for this idempotency key
+     * - 415: Unsupported request media type or encoding
+     * - 422: Idempotency key reused with a different payload
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id User collection id
      * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
@@ -277,14 +275,14 @@ interface UserCollections {
     /**
      * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
      * - 200: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 415: Unsupported request payload media type or content encoding
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id User collection id
      * @param include Allows the client to customize which related resources should be returned.
@@ -304,16 +302,16 @@ interface UserCollections {
     /**
      * Delete from playlists relationship (\&quot;to-many\&quot;). Deprecated. Use the
      * userCollectionPlaylists resource and its items relationship instead. Responses:
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 409: A request with this idempotency key is currently being processed
-     * - 415: Unsupported request payload media type or content encoding
-     * - 422: Idempotency key was already used with a different request payload
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 409: Request already in progress for this idempotency key
+     * - 415: Unsupported request media type or encoding
+     * - 422: Idempotency key reused with a different payload
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id User collection id
      * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
@@ -354,14 +352,14 @@ interface UserCollections {
      * Get playlists relationship (\&quot;to-many\&quot;). Deprecated. Use the
      * userCollectionPlaylists resource and its items relationship instead. Responses:
      * - 200: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 415: Unsupported request payload media type or content encoding
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id User collection id
      * @param collectionView (optional)
@@ -388,18 +386,17 @@ interface UserCollections {
     /**
      * Add to playlists relationship (\&quot;to-many\&quot;). Deprecated. Use the
      * userCollectionPlaylists resource and its items relationship instead. Responses:
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 409: You have reached the maximum number of items allowed for this collection. Please
-     *   remove some items before adding more.; One or more items you are trying to add are already
-     *   in your favorites.; A request with this idempotency key is currently being processed
-     * - 415: Unsupported request payload media type or content encoding
-     * - 422: Idempotency key was already used with a different request payload
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 409: Collection item limit reached; Collection already contains one or more items; Request
+     *   already in progress for this idempotency key
+     * - 415: Unsupported request media type or encoding
+     * - 422: Idempotency key reused with a different payload
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id User collection id
      * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
@@ -422,16 +419,16 @@ interface UserCollections {
     /**
      * Delete from tracks relationship (\&quot;to-many\&quot;). Deprecated. Use the
      * userCollectionTracks resource and its items relationship instead. Responses:
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 409: A request with this idempotency key is currently being processed
-     * - 415: Unsupported request payload media type or content encoding
-     * - 422: Idempotency key was already used with a different request payload
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 409: Request already in progress for this idempotency key
+     * - 415: Unsupported request media type or encoding
+     * - 422: Idempotency key reused with a different payload
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id User collection id
      * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
@@ -469,14 +466,14 @@ interface UserCollections {
      * Get tracks relationship (\&quot;to-many\&quot;). Deprecated. Use the userCollectionTracks
      * resource and its items relationship instead. Responses:
      * - 200: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 415: Unsupported request payload media type or content encoding
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id User collection id
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -503,18 +500,17 @@ interface UserCollections {
     /**
      * Add to tracks relationship (\&quot;to-many\&quot;). Deprecated. Use the userCollectionTracks
      * resource and its items relationship instead. Responses:
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 409: You have reached the maximum number of items allowed for this collection. Please
-     *   remove some items before adding more.; One or more items you are trying to add are already
-     *   in your favorites.; A request with this idempotency key is currently being processed
-     * - 415: Unsupported request payload media type or content encoding
-     * - 422: Idempotency key was already used with a different request payload
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 409: Collection item limit reached; Collection already contains one or more items; Request
+     *   already in progress for this idempotency key
+     * - 415: Unsupported request media type or encoding
+     * - 422: Idempotency key reused with a different payload
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id User collection id
      * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
@@ -537,16 +533,16 @@ interface UserCollections {
     /**
      * Delete from videos relationship (\&quot;to-many\&quot;). Deprecated. Use the
      * userCollectionVideos resource and its items relationship instead. Responses:
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 409: A request with this idempotency key is currently being processed
-     * - 415: Unsupported request payload media type or content encoding
-     * - 422: Idempotency key was already used with a different request payload
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 409: Request already in progress for this idempotency key
+     * - 415: Unsupported request media type or encoding
+     * - 422: Idempotency key reused with a different payload
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id User collection id
      * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
@@ -582,14 +578,14 @@ interface UserCollections {
      * Get videos relationship (\&quot;to-many\&quot;). Deprecated. Use the userCollectionVideos
      * resource and its items relationship instead. Responses:
      * - 200: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 415: Unsupported request payload media type or content encoding
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id User collection id
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -616,18 +612,17 @@ interface UserCollections {
     /**
      * Add to videos relationship (\&quot;to-many\&quot;). Deprecated. Use the userCollectionVideos
      * resource and its items relationship instead. Responses:
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 409: You have reached the maximum number of items allowed for this collection. Please
-     *   remove some items before adding more.; One or more items you are trying to add are already
-     *   in your favorites.; A request with this idempotency key is currently being processed
-     * - 415: Unsupported request payload media type or content encoding
-     * - 422: Idempotency key was already used with a different request payload
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 409: Collection item limit reached; Collection already contains one or more items; Request
+     *   already in progress for this idempotency key
+     * - 415: Unsupported request media type or encoding
+     * - 422: Idempotency key reused with a different payload
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id User collection id
      * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a

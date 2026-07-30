@@ -9,8 +9,12 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param items */
+/**
+ * @param items
+ * @param seedItem
+ */
 @Serializable
 data class DynamicModulesRelationships(
-    @SerialName(value = "items") val items: MultiRelationshipDataDocument? = null
+    @SerialName(value = "items") val items: MultiRelationshipDataDocument? = null,
+    @SerialName(value = "seedItem") val seedItem: SingleRelationshipDataDocument? = null,
 ) {}
