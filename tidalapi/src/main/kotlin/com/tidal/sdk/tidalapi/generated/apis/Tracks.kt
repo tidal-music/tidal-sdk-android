@@ -48,6 +48,9 @@ interface Tracks {
      *   multiple tracks may be returned. When multiple ISRCs are provided, one track per ISRC is
      *   returned without pagination. (e.g. &#x60;QMJMT1701237&#x60;) (optional)
      * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: albums (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [TracksMultiResourceDataDocument]
@@ -65,6 +68,7 @@ interface Tracks {
         filterIsrc: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[owners.id]")
         filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<TracksMultiResourceDataDocument>
 
@@ -111,6 +115,9 @@ interface Tracks {
      *   Available options: albums, artists, credits, download, genres, lyrics, metadataStatus,
      *   owners, priceConfig, providers, radio, replacement, shares, similarTracks, sourceFile,
      *   suggestedTracks, trackStatistics, usageRules (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: albums (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [TracksSingleResourceDataDocument]
@@ -121,6 +128,7 @@ interface Tracks {
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<TracksSingleResourceDataDocument>
 
@@ -169,6 +177,9 @@ interface Tracks {
      *   Available options: albums (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: albums (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [TracksMultiRelationshipDataDocument]
@@ -180,6 +191,7 @@ interface Tracks {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<TracksMultiRelationshipDataDocument>
 
@@ -231,6 +243,9 @@ interface Tracks {
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: artists (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: artists.albums (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [TracksMultiRelationshipDataDocument]
@@ -242,6 +257,7 @@ interface Tracks {
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<TracksMultiRelationshipDataDocument>
 
@@ -262,6 +278,9 @@ interface Tracks {
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: credits (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: credits.artist.albums (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [TracksMultiRelationshipDataDocument]
@@ -272,6 +291,7 @@ interface Tracks {
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<TracksMultiRelationshipDataDocument>
 
@@ -351,6 +371,9 @@ interface Tracks {
      *   Available options: lyrics (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: lyrics.track (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [TracksMultiRelationshipDataDocument]
@@ -361,6 +384,7 @@ interface Tracks {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<TracksMultiRelationshipDataDocument>
 
@@ -504,6 +528,9 @@ interface Tracks {
      *   Available options: radio (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: radio.items (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [TracksMultiRelationshipDataDocument]
@@ -514,6 +541,7 @@ interface Tracks {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<TracksMultiRelationshipDataDocument>
 
@@ -534,6 +562,9 @@ interface Tracks {
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: replacement (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: replacement (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [TracksSingleRelationshipDataDocument]
@@ -544,6 +575,7 @@ interface Tracks {
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<TracksSingleRelationshipDataDocument>
 
@@ -564,6 +596,9 @@ interface Tracks {
      *   Available options: shares (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: shares.sharedResources (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [TracksMultiRelationshipDataDocument]
@@ -574,6 +609,7 @@ interface Tracks {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<TracksMultiRelationshipDataDocument>
 
@@ -596,6 +632,9 @@ interface Tracks {
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: similarTracks (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: similarTracks (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [TracksMultiRelationshipDataDocument]
@@ -607,6 +646,7 @@ interface Tracks {
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<TracksMultiRelationshipDataDocument>
 
@@ -657,6 +697,9 @@ interface Tracks {
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: suggestedTracks (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: suggestedTracks (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [TracksMultiRelationshipDataDocument]
@@ -668,6 +711,7 @@ interface Tracks {
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<TracksMultiRelationshipDataDocument>
 

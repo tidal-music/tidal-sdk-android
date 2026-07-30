@@ -35,9 +35,11 @@ data class AlbumsRelationships(
     @SerialName(value = "owners") val owners: MultiRelationshipDataDocument? = null,
     @SerialName(value = "priceConfig") val priceConfig: SingleRelationshipDataDocument? = null,
     @SerialName(value = "providers") val providers: MultiRelationshipDataDocument? = null,
-    @SerialName(value = "replacement") val replacement: SingleRelationshipDataDocument? = null,
+    @SerialName(value = "replacement")
+    val replacement: AlbumsReplacementSingleRelationshipDataDocument? = null,
     @SerialName(value = "shares") val shares: MultiRelationshipDataDocument? = null,
-    @SerialName(value = "similarAlbums") val similarAlbums: MultiRelationshipDataDocument? = null,
+    @SerialName(value = "similarAlbums")
+    val similarAlbums: AlbumsSimilarAlbumsMultiRelationshipDataDocument? = null,
     @SerialName(value = "suggestedCoverArts")
     val suggestedCoverArts: AlbumsSuggestedCoverArtsMultiRelationshipDataDocument? = null,
     @SerialName(value = "usageRules") val usageRules: SingleRelationshipDataDocument? = null,

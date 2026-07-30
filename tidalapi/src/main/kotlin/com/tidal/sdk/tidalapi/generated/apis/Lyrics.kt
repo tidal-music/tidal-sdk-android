@@ -49,6 +49,9 @@ interface Lyrics {
      * @param id Lyrics Id
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: owners, track (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: track (optional)
      * @return [LyricsSingleResourceDataDocument]
      */
     @GET("lyrics/{id}")
@@ -56,6 +59,7 @@ interface Lyrics {
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<LyricsSingleResourceDataDocument>
 
     /**
@@ -130,6 +134,9 @@ interface Lyrics {
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: track (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: track (optional)
      * @return [LyricsSingleRelationshipDataDocument]
      */
     @GET("lyrics/{id}/relationships/track")
@@ -138,6 +145,7 @@ interface Lyrics {
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<LyricsSingleRelationshipDataDocument>
 
     /**

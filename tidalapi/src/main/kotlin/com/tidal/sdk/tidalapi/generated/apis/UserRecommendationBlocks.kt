@@ -34,6 +34,9 @@ interface UserRecommendationBlocks {
      *   unsupported. (optional, default to "en-US")
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: artists, owners, tracks, videos (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: artists.albums (optional)
      * @return [UserRecommendationBlocksSingleResourceDataDocument]
      */
     @GET("userRecommendationBlocks/{id}")
@@ -42,6 +45,7 @@ interface UserRecommendationBlocks {
         @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<UserRecommendationBlocksSingleResourceDataDocument>
 
     /**
@@ -98,6 +102,9 @@ interface UserRecommendationBlocks {
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: artists (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: artists.albums (optional)
      * @return [UserRecommendationBlocksArtistsMultiRelationshipDataDocument]
      */
     @GET("userRecommendationBlocks/{id}/relationships/artists")
@@ -106,6 +113,7 @@ interface UserRecommendationBlocks {
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<UserRecommendationBlocksArtistsMultiRelationshipDataDocument>
 
     /**
@@ -224,6 +232,9 @@ interface UserRecommendationBlocks {
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: tracks (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: tracks (optional)
      * @return [UserRecommendationBlocksTracksMultiRelationshipDataDocument]
      */
     @GET("userRecommendationBlocks/{id}/relationships/tracks")
@@ -232,6 +243,7 @@ interface UserRecommendationBlocks {
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<UserRecommendationBlocksTracksMultiRelationshipDataDocument>
 
     /**
@@ -322,6 +334,9 @@ interface UserRecommendationBlocks {
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: videos (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: videos (optional)
      * @return [UserRecommendationBlocksVideosMultiRelationshipDataDocument]
      */
     @GET("userRecommendationBlocks/{id}/relationships/videos")
@@ -330,6 +345,7 @@ interface UserRecommendationBlocks {
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<UserRecommendationBlocksVideosMultiRelationshipDataDocument>
 
     /**

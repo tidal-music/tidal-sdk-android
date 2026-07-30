@@ -13,10 +13,12 @@ import kotlinx.serialization.Serializable
  * @param addedAt
  * @param itemCursor
  * @param itemId
+ * @param replacement
  */
 @Serializable
 data class PlaylistsItemsResourceIdentifierMeta(
     @SerialName(value = "addedAt") val addedAt: kotlin.String? = null,
     @SerialName(value = "itemCursor") val itemCursor: kotlin.String? = null,
     @SerialName(value = "itemId") val itemId: kotlin.String? = null,
+    @SerialName(value = "replacement") val replacement: ReplacementProvenance? = null,
 ) {}

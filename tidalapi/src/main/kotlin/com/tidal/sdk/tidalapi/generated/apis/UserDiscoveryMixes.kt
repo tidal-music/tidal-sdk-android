@@ -24,6 +24,9 @@ interface UserDiscoveryMixes {
      *   unsupported. (optional, default to "en-US")
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: items (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: items.items (optional)
      * @return [UserDiscoveryMixesSingleResourceDataDocument]
      */
     @GET("userDiscoveryMixes/{id}")
@@ -32,6 +35,7 @@ interface UserDiscoveryMixes {
         @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<UserDiscoveryMixesSingleResourceDataDocument>
 
     /**
@@ -54,6 +58,9 @@ interface UserDiscoveryMixes {
      *   unsupported. (optional, default to "en-US")
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: items (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: items.items (optional)
      * @return [UserDiscoveryMixesMultiRelationshipDataDocument]
      */
     @GET("userDiscoveryMixes/{id}/relationships/items")
@@ -63,5 +70,6 @@ interface UserDiscoveryMixes {
         @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<UserDiscoveryMixesMultiRelationshipDataDocument>
 }

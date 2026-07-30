@@ -27,6 +27,9 @@ interface UserCollectionSaveForLaters {
      *   user&#39;s resource
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: items, owners (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: items (optional)
      * @return [UserCollectionSaveForLatersSingleResourceDataDocument]
      */
     @GET("userCollectionSaveForLaters/{id}")
@@ -34,6 +37,7 @@ interface UserCollectionSaveForLaters {
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<UserCollectionSaveForLatersSingleResourceDataDocument>
 
     /**
@@ -90,6 +94,9 @@ interface UserCollectionSaveForLaters {
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: items (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: items (optional)
      * @return [UserCollectionSaveForLatersItemsMultiRelationshipDataDocument]
      */
     @GET("userCollectionSaveForLaters/{id}/relationships/items")
@@ -98,6 +105,7 @@ interface UserCollectionSaveForLaters {
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<UserCollectionSaveForLatersItemsMultiRelationshipDataDocument>
 
     /**

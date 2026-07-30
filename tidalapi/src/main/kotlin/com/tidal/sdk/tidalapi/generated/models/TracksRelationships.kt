@@ -31,7 +31,7 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class TracksRelationships(
-    @SerialName(value = "albums") val albums: MultiRelationshipDataDocument? = null,
+    @SerialName(value = "albums") val albums: TracksAlbumsMultiRelationshipDataDocument? = null,
     @SerialName(value = "artists") val artists: MultiRelationshipDataDocument? = null,
     @SerialName(value = "credits") val credits: MultiRelationshipDataDocument? = null,
     @SerialName(value = "download") val download: SingleRelationshipDataDocument? = null,
@@ -43,12 +43,14 @@ data class TracksRelationships(
     @SerialName(value = "priceConfig") val priceConfig: SingleRelationshipDataDocument? = null,
     @SerialName(value = "providers") val providers: MultiRelationshipDataDocument? = null,
     @SerialName(value = "radio") val radio: MultiRelationshipDataDocument? = null,
-    @SerialName(value = "replacement") val replacement: SingleRelationshipDataDocument? = null,
+    @SerialName(value = "replacement")
+    val replacement: TracksReplacementSingleRelationshipDataDocument? = null,
     @SerialName(value = "shares") val shares: MultiRelationshipDataDocument? = null,
-    @SerialName(value = "similarTracks") val similarTracks: MultiRelationshipDataDocument? = null,
+    @SerialName(value = "similarTracks")
+    val similarTracks: TracksSimilarTracksMultiRelationshipDataDocument? = null,
     @SerialName(value = "sourceFile") val sourceFile: SingleRelationshipDataDocument? = null,
     @SerialName(value = "suggestedTracks")
-    val suggestedTracks: MultiRelationshipDataDocument? = null,
+    val suggestedTracks: TracksSuggestedTracksMultiRelationshipDataDocument? = null,
     @SerialName(value = "trackStatistics")
     val trackStatistics: SingleRelationshipDataDocument? = null,
     @SerialName(value = "usageRules") val usageRules: SingleRelationshipDataDocument? = null,

@@ -25,6 +25,9 @@ interface CollaborationInvites {
      * @param filterCode Invite code
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: owners, subject (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: subject.items (optional)
      * @return [CollaborationInvitesMultiResourceDataDocument]
      */
     @GET("collaborationInvites")
@@ -33,6 +36,7 @@ interface CollaborationInvites {
         filterCode: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<CollaborationInvitesMultiResourceDataDocument>
 
     /**
@@ -75,6 +79,9 @@ interface CollaborationInvites {
      * @param id Collaboration invite id
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: owners, subject (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: subject.items (optional)
      * @return [CollaborationInvitesSingleResourceDataDocument]
      */
     @GET("collaborationInvites/{id}")
@@ -82,6 +89,7 @@ interface CollaborationInvites {
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<CollaborationInvitesSingleResourceDataDocument>
 
     /**
@@ -126,6 +134,9 @@ interface CollaborationInvites {
      * @param id Collaboration invite id
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: subject (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: subject.items (optional)
      * @return [CollaborationInvitesSingleRelationshipDataDocument]
      */
     @GET("collaborationInvites/{id}/relationships/subject")
@@ -133,6 +144,7 @@ interface CollaborationInvites {
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<CollaborationInvitesSingleRelationshipDataDocument>
 
     /**

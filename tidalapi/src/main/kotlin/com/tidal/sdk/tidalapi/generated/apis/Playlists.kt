@@ -53,6 +53,9 @@ interface Playlists {
      * @param filterId List of playlist IDs (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;)
      *   (optional)
      * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: items (optional)
      * @return [PlaylistsMultiResourceDataDocument]
      */
     @GET("playlists")
@@ -66,6 +69,7 @@ interface Playlists {
         filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[owners.id]")
         filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<PlaylistsMultiResourceDataDocument>
 
     /**
@@ -110,6 +114,9 @@ interface Playlists {
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: collaboratorProfiles, collaborators, coverArt, items, ownerProfiles,
      *   owners, suggestedCoverArts (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: items (optional)
      * @return [PlaylistsSingleResourceDataDocument]
      */
     @GET("playlists/{id}")
@@ -118,6 +125,7 @@ interface Playlists {
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<PlaylistsSingleResourceDataDocument>
 
     /**
@@ -403,6 +411,9 @@ interface Playlists {
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: items (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: items (optional)
      * @return [PlaylistsItemsMultiRelationshipDataDocument]
      */
     @GET("playlists/{id}/relationships/items")
@@ -413,6 +424,7 @@ interface Playlists {
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<PlaylistsItemsMultiRelationshipDataDocument>
 
     /**

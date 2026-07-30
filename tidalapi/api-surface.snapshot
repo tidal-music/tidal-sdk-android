@@ -1,5 +1,5 @@
 # TIDAL API Surface Snapshot
-# Spec version: 1.10.77 | Endpoints: 347 | Models: 897
+# Spec version: 1.10.79 | Endpoints: 347 | Models: 992
 
 ## Endpoints
 
@@ -28,7 +28,7 @@ GET /albumStatistics/{id}/relationships/owners
   returns: AlbumStatistics_Multi_Relationship_Data_Document
 
 GET /albums
-  params: countryCode?: string, filter[barcodeId]?: array[string], filter[id]?: array[string], filter[owners.id]?: array[string], include?: array[string], page[cursor]?: string, shareCode?: string, sort?: array[enum[createdAt, -createdAt, title, -title]]
+  params: countryCode?: string, filter[barcodeId]?: array[string], filter[id]?: array[string], filter[owners.id]?: array[string], include?: array[string], page[cursor]?: string, replaceMedia?: string, shareCode?: string, sort?: array[enum[createdAt, -createdAt, title, -title]]
   returns: Albums_Multi_Resource_Data_Document
 
 POST /albums
@@ -36,7 +36,7 @@ POST /albums
   returns: Albums_Single_Resource_Data_Document
 
 GET /albums/{id}
-  params: countryCode?: string, id: string, include?: array[string], shareCode?: string
+  params: countryCode?: string, id: string, include?: array[string], replaceMedia?: string, shareCode?: string
   returns: Albums_Single_Resource_Data_Document
 
 PATCH /albums/{id}
@@ -52,7 +52,7 @@ GET /albums/{id}/relationships/albumStatistics
   returns: Albums_Single_Relationship_Data_Document
 
 GET /albums/{id}/relationships/artists
-  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string, shareCode?: string
+  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string, shareCode?: string
   returns: Albums_Multi_Relationship_Data_Document
 
 GET /albums/{id}/relationships/coverArt
@@ -68,7 +68,7 @@ GET /albums/{id}/relationships/genres
   returns: Albums_Multi_Relationship_Data_Document
 
 GET /albums/{id}/relationships/items
-  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string, shareCode?: string
+  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string, shareCode?: string
   returns: Albums_Items_Multi_Relationship_Data_Document
 
 PATCH /albums/{id}/relationships/items
@@ -88,15 +88,15 @@ GET /albums/{id}/relationships/providers
   returns: Albums_Multi_Relationship_Data_Document
 
 GET /albums/{id}/relationships/replacement
-  params: countryCode?: string, id: string, include?: array[string], shareCode?: string
+  params: countryCode?: string, id: string, include?: array[string], replaceMedia?: string, shareCode?: string
   returns: Albums_Single_Relationship_Data_Document
 
 GET /albums/{id}/relationships/shares
-  params: id: string, include?: array[string], page[cursor]?: string, shareCode?: string
+  params: id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string, shareCode?: string
   returns: Albums_Multi_Relationship_Data_Document
 
 GET /albums/{id}/relationships/similarAlbums
-  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string, shareCode?: string
+  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string, shareCode?: string
   returns: Albums_Multi_Relationship_Data_Document
 
 GET /albums/{id}/relationships/suggestedCoverArts
@@ -128,7 +128,7 @@ GET /artistClaimStatuses
   returns: ArtistClaimStatuses_Multi_Resource_Data_Document
 
 GET /artistClaims
-  params: filter[owners.id]: array[string], include?: array[string]
+  params: filter[owners.id]: array[string], include?: array[string], replaceMedia?: string
   returns: ArtistClaims_Multi_Resource_Data_Document
 
 POST /artistClaims
@@ -136,7 +136,7 @@ POST /artistClaims
   returns: ArtistClaims_Single_Resource_Data_Document
 
 GET /artistClaims/{id}
-  params: id: string, include?: array[string]
+  params: id: string, include?: array[string], replaceMedia?: string
   returns: ArtistClaims_Single_Resource_Data_Document
 
 PATCH /artistClaims/{id}
@@ -148,7 +148,7 @@ DELETE /artistClaims/{id}
   returns: void
 
 GET /artistClaims/{id}/relationships/acceptedArtists
-  params: id: string, include?: array[string], page[cursor]?: string
+  params: id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string
   returns: ArtistClaims_Multi_Relationship_Data_Document
 
 PATCH /artistClaims/{id}/relationships/acceptedArtists
@@ -160,7 +160,7 @@ GET /artistClaims/{id}/relationships/owners
   returns: ArtistClaims_Multi_Relationship_Data_Document
 
 GET /artistClaims/{id}/relationships/recommendedArtists
-  params: id: string, include?: array[string], page[cursor]?: string
+  params: id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string
   returns: ArtistClaims_Multi_Relationship_Data_Document
 
 GET /artistRoles/{id}
@@ -168,7 +168,7 @@ GET /artistRoles/{id}
   returns: ArtistRoles_Single_Resource_Data_Document
 
 GET /artists
-  params: countryCode?: string, filter[handle]?: array[string], filter[id]?: array[string], filter[owners.id]?: array[string], include?: array[string]
+  params: countryCode?: string, filter[handle]?: array[string], filter[id]?: array[string], filter[owners.id]?: array[string], include?: array[string], replaceMedia?: string
   returns: Artists_Multi_Resource_Data_Document
 
 POST /artists
@@ -176,7 +176,7 @@ POST /artists
   returns: Artists_Single_Resource_Data_Document
 
 GET /artists/{id}
-  params: countryCode?: string, id: string, include?: array[string]
+  params: countryCode?: string, id: string, include?: array[string], replaceMedia?: string
   returns: Artists_Single_Resource_Data_Document
 
 PATCH /artists/{id}
@@ -184,7 +184,7 @@ PATCH /artists/{id}
   returns: void
 
 GET /artists/{id}/relationships/albums
-  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string
+  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string
   returns: Artists_Multi_Relationship_Data_Document
 
 GET /artists/{id}/relationships/biography
@@ -196,11 +196,11 @@ GET /artists/{id}/relationships/claimStatus
   returns: Artists_Single_Relationship_Data_Document
 
 GET /artists/{id}/relationships/followers
-  params: id: string, include?: array[string], page[cursor]?: string, viewerContext?: string
+  params: id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string, viewerContext?: string
   returns: Artists_Followers_Multi_Relationship_Data_Document
 
 GET /artists/{id}/relationships/following
-  params: id: string, include?: array[string], page[cursor]?: string, viewerContext?: string
+  params: id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string, viewerContext?: string
   returns: Artists_Following_Multi_Relationship_Data_Document
 
 POST /artists/{id}/relationships/following
@@ -224,7 +224,7 @@ PATCH /artists/{id}/relationships/profileArt
   returns: void
 
 GET /artists/{id}/relationships/radio
-  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string
+  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string
   returns: Artists_Multi_Relationship_Data_Document
 
 GET /artists/{id}/relationships/roles
@@ -232,7 +232,7 @@ GET /artists/{id}/relationships/roles
   returns: Artists_Multi_Relationship_Data_Document
 
 GET /artists/{id}/relationships/similarArtists
-  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string
+  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string
   returns: Artists_Multi_Relationship_Data_Document
 
 GET /artists/{id}/relationships/trackProviders
@@ -240,11 +240,11 @@ GET /artists/{id}/relationships/trackProviders
   returns: Artists_TrackProviders_Multi_Relationship_Data_Document
 
 GET /artists/{id}/relationships/tracks
-  params: collapseBy: enum[FINGERPRINT, NONE], countryCode?: string, id: string, include?: array[string], page[cursor]?: string
+  params: collapseBy: enum[FINGERPRINT, NONE], countryCode?: string, id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string
   returns: Artists_Multi_Relationship_Data_Document
 
 GET /artists/{id}/relationships/videos
-  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string
+  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string
   returns: Artists_Multi_Relationship_Data_Document
 
 GET /artworks
@@ -292,7 +292,7 @@ POST /collaborationInviteRedemptions
   returns: CollaborationInviteRedemptions_Single_Resource_Data_Document
 
 GET /collaborationInvites
-  params: filter[code]: array[string], include?: array[string]
+  params: filter[code]: array[string], include?: array[string], replaceMedia?: string
   returns: CollaborationInvites_Multi_Resource_Data_Document
 
 POST /collaborationInvites
@@ -300,7 +300,7 @@ POST /collaborationInvites
   returns: CollaborationInvites_Single_Resource_Data_Document
 
 GET /collaborationInvites/{id}
-  params: id: string, include?: array[string]
+  params: id: string, include?: array[string], replaceMedia?: string
   returns: CollaborationInvites_Single_Resource_Data_Document
 
 DELETE /collaborationInvites/{id}
@@ -312,7 +312,7 @@ GET /collaborationInvites/{id}/relationships/owners
   returns: CollaborationInvites_Multi_Relationship_Data_Document
 
 GET /collaborationInvites/{id}/relationships/subject
-  params: id: string, include?: array[string]
+  params: id: string, include?: array[string], replaceMedia?: string
   returns: CollaborationInvites_Single_Relationship_Data_Document
 
 GET /comments
@@ -348,7 +348,7 @@ GET /comments/{id}/relationships/parentComment
   returns: Comments_Single_Relationship_Data_Document
 
 GET /contentClaims
-  params: filter[owners.id]: array[string], include?: array[string]
+  params: filter[owners.id]: array[string], include?: array[string], replaceMedia?: string
   returns: ContentClaims_Multi_Resource_Data_Document
 
 POST /contentClaims
@@ -356,15 +356,15 @@ POST /contentClaims
   returns: ContentClaims_Single_Resource_Data_Document
 
 GET /contentClaims/{id}
-  params: id: string, include?: array[string]
+  params: id: string, include?: array[string], replaceMedia?: string
   returns: ContentClaims_Single_Resource_Data_Document
 
 GET /contentClaims/{id}/relationships/claimedResource
-  params: id: string, include?: array[string]
+  params: id: string, include?: array[string], replaceMedia?: string
   returns: ContentClaims_Single_Relationship_Data_Document
 
 GET /contentClaims/{id}/relationships/claimingArtist
-  params: id: string, include?: array[string]
+  params: id: string, include?: array[string], replaceMedia?: string
   returns: ContentClaims_Single_Relationship_Data_Document
 
 GET /contentClaims/{id}/relationships/owners
@@ -372,11 +372,11 @@ GET /contentClaims/{id}/relationships/owners
   returns: ContentClaims_Multi_Relationship_Data_Document
 
 GET /credits/{id}
-  params: id: string, include?: array[string]
+  params: id: string, include?: array[string], replaceMedia?: string
   returns: Credits_Single_Resource_Data_Document
 
 GET /credits/{id}/relationships/artist
-  params: id: string, include?: array[string]
+  params: id: string, include?: array[string], replaceMedia?: string
   returns: Credits_Single_Relationship_Data_Document
 
 GET /credits/{id}/relationships/category
@@ -396,39 +396,39 @@ GET /downloads/{id}/relationships/owners
   returns: Downloads_Multi_Relationship_Data_Document
 
 GET /dspSharingLinks
-  params: filter[subject.id]: array[string], filter[subject.type]: array[enum[tracks, albums, artists]], include?: array[string]
+  params: filter[subject.id]: array[string], filter[subject.type]: array[enum[tracks, albums, artists]], include?: array[string], replaceMedia?: string
   returns: DspSharingLinks_Multi_Resource_Data_Document
 
 GET /dspSharingLinks/{id}/relationships/subject
-  params: id: string, include?: array[string]
+  params: id: string, include?: array[string], replaceMedia?: string
   returns: DspSharingLinks_Single_Relationship_Data_Document
 
 GET /dynamicModules
-  params: clientVersion: string, countryCode?: string, deviceType: enum[BROWSER, CAR, DESKTOP, PHONE, TABLET, TV], filter[id]: array[string], include?: array[string], locale?: string, refreshSeed?: string, systemType: enum[ANDROID, DESKTOP, TESLA, IOS, WEB]
+  params: clientVersion: string, countryCode?: string, deviceType: enum[BROWSER, CAR, DESKTOP, PHONE, TABLET, TV], filter[id]: array[string], include?: array[string], locale?: string, refreshSeed?: string, replaceMedia?: string, systemType: enum[ANDROID, DESKTOP, TESLA, IOS, WEB]
   returns: DynamicModules_Multi_Resource_Data_Document
 
 GET /dynamicModules/{id}
-  params: clientVersion: string, countryCode?: string, deviceType: enum[BROWSER, CAR, DESKTOP, PHONE, TABLET, TV], id: string, include?: array[string], locale?: string, refreshSeed?: string, systemType: enum[ANDROID, DESKTOP, TESLA, IOS, WEB]
+  params: clientVersion: string, countryCode?: string, deviceType: enum[BROWSER, CAR, DESKTOP, PHONE, TABLET, TV], id: string, include?: array[string], locale?: string, refreshSeed?: string, replaceMedia?: string, systemType: enum[ANDROID, DESKTOP, TESLA, IOS, WEB]
   returns: DynamicModules_Single_Resource_Data_Document
 
 GET /dynamicModules/{id}/relationships/items
-  params: clientVersion: string, countryCode?: string, deviceType: enum[BROWSER, CAR, DESKTOP, PHONE, TABLET, TV], id: string, include?: array[string], locale?: string, page[cursor]?: string, refreshSeed?: string, systemType: enum[ANDROID, DESKTOP, TESLA, IOS, WEB]
+  params: clientVersion: string, countryCode?: string, deviceType: enum[BROWSER, CAR, DESKTOP, PHONE, TABLET, TV], id: string, include?: array[string], locale?: string, page[cursor]?: string, refreshSeed?: string, replaceMedia?: string, systemType: enum[ANDROID, DESKTOP, TESLA, IOS, WEB]
   returns: DynamicModules_Multi_Relationship_Data_Document
 
 GET /dynamicModules/{id}/relationships/seedItem
-  params: clientVersion: string, countryCode?: string, deviceType: enum[BROWSER, CAR, DESKTOP, PHONE, TABLET, TV], id: string, include?: array[string], locale?: string, refreshSeed?: string, systemType: enum[ANDROID, DESKTOP, TESLA, IOS, WEB]
+  params: clientVersion: string, countryCode?: string, deviceType: enum[BROWSER, CAR, DESKTOP, PHONE, TABLET, TV], id: string, include?: array[string], locale?: string, refreshSeed?: string, replaceMedia?: string, systemType: enum[ANDROID, DESKTOP, TESLA, IOS, WEB]
   returns: DynamicModules_Single_Relationship_Data_Document
 
 GET /dynamicPages
-  params: clientVersion: string, countryCode?: string, deviceType: enum[BROWSER, CAR, DESKTOP, PHONE, TABLET, TV], filter[pageType]: array[string], filter[subject.id]?: array[string], include?: array[string], locale?: string, refreshSeed?: string, systemType: enum[ANDROID, DESKTOP, TESLA, IOS, WEB]
+  params: clientVersion: string, countryCode?: string, deviceType: enum[BROWSER, CAR, DESKTOP, PHONE, TABLET, TV], filter[pageType]: array[string], filter[subject.id]?: array[string], include?: array[string], locale?: string, refreshSeed?: string, replaceMedia?: string, systemType: enum[ANDROID, DESKTOP, TESLA, IOS, WEB]
   returns: DynamicPages_Multi_Resource_Data_Document
 
 GET /dynamicPages/{id}/relationships/modules
-  params: clientVersion: string, countryCode?: string, deviceType: enum[BROWSER, CAR, DESKTOP, PHONE, TABLET, TV], id: string, include?: array[string], locale?: string, page[cursor]?: string, refreshSeed?: string, systemType: enum[ANDROID, DESKTOP, TESLA, IOS, WEB]
+  params: clientVersion: string, countryCode?: string, deviceType: enum[BROWSER, CAR, DESKTOP, PHONE, TABLET, TV], id: string, include?: array[string], locale?: string, page[cursor]?: string, refreshSeed?: string, replaceMedia?: string, systemType: enum[ANDROID, DESKTOP, TESLA, IOS, WEB]
   returns: DynamicPages_Multi_Relationship_Data_Document
 
 GET /dynamicPages/{id}/relationships/subject
-  params: id: string, include?: array[string]
+  params: id: string, include?: array[string], replaceMedia?: string
   returns: DynamicPages_Single_Relationship_Data_Document
 
 GET /genres
@@ -440,7 +440,7 @@ GET /genres/{id}
   returns: Genres_Single_Resource_Data_Document
 
 GET /installations
-  params: filter[clientProvidedInstallationId]?: array[string], filter[owners.id]?: array[string], include?: array[string], page[cursor]?: string
+  params: filter[clientProvidedInstallationId]?: array[string], filter[owners.id]?: array[string], include?: array[string], page[cursor]?: string, replaceMedia?: string
   returns: Installations_Multi_Resource_Data_Document
 
 POST /installations
@@ -448,11 +448,11 @@ POST /installations
   returns: Installations_Single_Resource_Data_Document
 
 GET /installations/{id}
-  params: id: string, include?: array[string]
+  params: id: string, include?: array[string], replaceMedia?: string
   returns: Installations_Single_Resource_Data_Document
 
 GET /installations/{id}/relationships/offlineInventory
-  params: filter[id]?: array[string], filter[state]?: array[enum[PENDING, STORED]], filter[type]: array[enum[tracks, videos, albums, playlists, userCollectionTracks]], id: string, include?: array[string], page[cursor]?: string
+  params: filter[id]?: array[string], filter[state]?: array[enum[PENDING, STORED]], filter[type]: array[enum[tracks, videos, albums, playlists, userCollectionTracks]], id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string
   returns: Installations_OfflineInventory_Multi_Relationship_Data_Document
 
 POST /installations/{id}/relationships/offlineInventory
@@ -472,7 +472,7 @@ POST /lyrics
   returns: Lyrics_Single_Resource_Data_Document
 
 GET /lyrics/{id}
-  params: id: string, include?: array[string]
+  params: id: string, include?: array[string], replaceMedia?: string
   returns: Lyrics_Single_Resource_Data_Document
 
 PATCH /lyrics/{id}
@@ -488,7 +488,7 @@ GET /lyrics/{id}/relationships/owners
   returns: Lyrics_Multi_Relationship_Data_Document
 
 GET /lyrics/{id}/relationships/track
-  params: countryCode?: string, id: string, include?: array[string]
+  params: countryCode?: string, id: string, include?: array[string], replaceMedia?: string
   returns: Lyrics_Single_Relationship_Data_Document
 
 POST /manualArtistClaims
@@ -496,11 +496,11 @@ POST /manualArtistClaims
   returns: ManualArtistClaims_Single_Resource_Data_Document
 
 GET /offlineTasks
-  params: filter[installation.id]: array[string], include?: array[string], page[cursor]?: string
+  params: filter[installation.id]: array[string], include?: array[string], page[cursor]?: string, replaceMedia?: string
   returns: OfflineTasks_Multi_Resource_Data_Document
 
 GET /offlineTasks/{id}
-  params: id: string, include?: array[string]
+  params: id: string, include?: array[string], replaceMedia?: string
   returns: OfflineTasks_Single_Resource_Data_Document
 
 PATCH /offlineTasks/{id}
@@ -508,11 +508,11 @@ PATCH /offlineTasks/{id}
   returns: void
 
 GET /offlineTasks/{id}/relationships/collection
-  params: id: string, include?: array[string]
+  params: id: string, include?: array[string], replaceMedia?: string
   returns: OfflineTasks_Single_Relationship_Data_Document
 
 GET /offlineTasks/{id}/relationships/item
-  params: id: string, include?: array[string]
+  params: id: string, include?: array[string], replaceMedia?: string
   returns: OfflineTasks_Single_Relationship_Data_Document
 
 GET /offlineTasks/{id}/relationships/owners
@@ -520,7 +520,7 @@ GET /offlineTasks/{id}/relationships/owners
   returns: OfflineTasks_Multi_Relationship_Data_Document
 
 GET /playQueues
-  params: filter[owners.id]: array[string], include?: array[string], page[cursor]?: string
+  params: filter[owners.id]: array[string], include?: array[string], page[cursor]?: string, replaceMedia?: string
   returns: PlayQueues_Multi_Resource_Data_Document
 
 POST /playQueues
@@ -528,7 +528,7 @@ POST /playQueues
   returns: PlayQueues_Single_Resource_Data_Document
 
 GET /playQueues/{id}
-  params: id: string, include?: array[string]
+  params: id: string, include?: array[string], replaceMedia?: string
   returns: PlayQueues_Single_Resource_Data_Document
 
 PATCH /playQueues/{id}
@@ -540,7 +540,7 @@ DELETE /playQueues/{id}
   returns: void
 
 GET /playQueues/{id}/relationships/current
-  params: id: string, include?: array[string]
+  params: id: string, include?: array[string], replaceMedia?: string
   returns: PlayQueues_Current_Single_Relationship_Data_Document
 
 PATCH /playQueues/{id}/relationships/current
@@ -548,7 +548,7 @@ PATCH /playQueues/{id}/relationships/current
   returns: void
 
 GET /playQueues/{id}/relationships/future
-  params: id: string, include?: array[string], page[cursor]?: string
+  params: id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string
   returns: PlayQueues_Future_Multi_Relationship_Data_Document
 
 POST /playQueues/{id}/relationships/future
@@ -568,11 +568,11 @@ GET /playQueues/{id}/relationships/owners
   returns: PlayQueues_Multi_Relationship_Data_Document
 
 GET /playQueues/{id}/relationships/past
-  params: id: string, include?: array[string], page[cursor]?: string
+  params: id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string
   returns: PlayQueues_Past_Multi_Relationship_Data_Document
 
 GET /playlists
-  params: countryCode?: string, filter[id]?: array[string], filter[owners.id]?: array[string], include?: array[string], page[cursor]?: string, sort?: array[enum[createdAt, -createdAt, lastModifiedAt, -lastModifiedAt, name, -name]]
+  params: countryCode?: string, filter[id]?: array[string], filter[owners.id]?: array[string], include?: array[string], page[cursor]?: string, replaceMedia?: string, sort?: array[enum[createdAt, -createdAt, lastModifiedAt, -lastModifiedAt, name, -name]]
   returns: Playlists_Multi_Resource_Data_Document
 
 POST /playlists
@@ -580,7 +580,7 @@ POST /playlists
   returns: Playlists_Single_Resource_Data_Document
 
 GET /playlists/{id}
-  params: countryCode?: string, id: string, include?: array[string]
+  params: countryCode?: string, id: string, include?: array[string], replaceMedia?: string
   returns: Playlists_Single_Resource_Data_Document
 
 PATCH /playlists/{id}
@@ -616,7 +616,7 @@ PATCH /playlists/{id}/relationships/coverArt
   returns: void
 
 GET /playlists/{id}/relationships/items
-  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string, sort?: array[enum[addedAt, -addedAt, albums.title, -albums.title, artists.name, -artists.name, duration, -duration, itemIndex, -itemIndex, title, -title]]
+  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string, sort?: array[enum[addedAt, -addedAt, albums.title, -albums.title, artists.name, -artists.name, duration, -duration, itemIndex, -itemIndex, title, -title]]
   returns: Playlists_Items_Multi_Relationship_Data_Document
 
 POST /playlists/{id}/relationships/items
@@ -668,7 +668,7 @@ GET /providerOwners/{id}/relationships/provider
   returns: ProviderOwners_Single_Relationship_Data_Document
 
 GET /providerProductInfos
-  params: countryCode?: string, filter[barcodeId]?: array[string], filter[grid]?: array[string], filter[provider.id]: array[string], include?: array[string]
+  params: countryCode?: string, filter[barcodeId]?: array[string], filter[grid]?: array[string], filter[provider.id]: array[string], include?: array[string], replaceMedia?: string
   returns: ProviderProductInfos_Multi_Resource_Data_Document
 
 GET /providerProductInfos/{id}/relationships/provider
@@ -676,7 +676,7 @@ GET /providerProductInfos/{id}/relationships/provider
   returns: ProviderProductInfos_Single_Relationship_Data_Document
 
 GET /providerProductInfos/{id}/relationships/subject
-  params: countryCode?: string, id: string, include?: array[string]
+  params: countryCode?: string, id: string, include?: array[string], replaceMedia?: string
   returns: ProviderProductInfos_Single_Relationship_Data_Document
 
 GET /providers/{id}
@@ -684,7 +684,7 @@ GET /providers/{id}
   returns: Providers_Single_Resource_Data_Document
 
 GET /purchases
-  params: filter[owners.id]: array[string], filter[subject.type]: array[enum[albums, tracks]], include?: array[string], page[cursor]?: string
+  params: filter[owners.id]: array[string], filter[subject.type]: array[enum[albums, tracks]], include?: array[string], page[cursor]?: string, replaceMedia?: string
   returns: Purchases_Multi_Resource_Data_Document
 
 GET /purchases/{id}/relationships/owners
@@ -692,7 +692,7 @@ GET /purchases/{id}/relationships/owners
   returns: Purchases_Multi_Relationship_Data_Document
 
 GET /purchases/{id}/relationships/subject
-  params: id: string, include?: array[string]
+  params: id: string, include?: array[string], replaceMedia?: string
   returns: Purchases_Single_Relationship_Data_Document
 
 GET /reactions
@@ -728,39 +728,39 @@ DELETE /searchHistoryEntries/{id}
   returns: void
 
 GET /searchResults/{id}
-  params: clientVersion?: string, countryCode?: string, deviceType?: enum[BROWSER, CAR, DESKTOP, PHONE, TABLET, TV], explicitFilter?: enum[INCLUDE, EXCLUDE], id: string, include?: array[string], systemType?: enum[ANDROID, DESKTOP, TESLA, IOS, WEB]
+  params: clientVersion?: string, countryCode?: string, deviceType?: enum[BROWSER, CAR, DESKTOP, PHONE, TABLET, TV], explicitFilter?: enum[INCLUDE, EXCLUDE], id: string, include?: array[string], replaceMedia?: string, systemType?: enum[ANDROID, DESKTOP, TESLA, IOS, WEB]
   returns: SearchResults_Single_Resource_Data_Document
 
 GET /searchResults/{id}/relationships/albums
-  params: clientVersion?: string, countryCode?: string, deviceType?: enum[BROWSER, CAR, DESKTOP, PHONE, TABLET, TV], explicitFilter?: enum[INCLUDE, EXCLUDE], id: string, include?: array[string], page[cursor]?: string, systemType?: enum[ANDROID, DESKTOP, TESLA, IOS, WEB]
+  params: clientVersion?: string, countryCode?: string, deviceType?: enum[BROWSER, CAR, DESKTOP, PHONE, TABLET, TV], explicitFilter?: enum[INCLUDE, EXCLUDE], id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string, systemType?: enum[ANDROID, DESKTOP, TESLA, IOS, WEB]
   returns: SearchResults_Multi_Relationship_Data_Document
 
 GET /searchResults/{id}/relationships/artists
-  params: clientVersion?: string, countryCode?: string, deviceType?: enum[BROWSER, CAR, DESKTOP, PHONE, TABLET, TV], explicitFilter?: enum[INCLUDE, EXCLUDE], id: string, include?: array[string], page[cursor]?: string, systemType?: enum[ANDROID, DESKTOP, TESLA, IOS, WEB]
+  params: clientVersion?: string, countryCode?: string, deviceType?: enum[BROWSER, CAR, DESKTOP, PHONE, TABLET, TV], explicitFilter?: enum[INCLUDE, EXCLUDE], id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string, systemType?: enum[ANDROID, DESKTOP, TESLA, IOS, WEB]
   returns: SearchResults_Multi_Relationship_Data_Document
 
 GET /searchResults/{id}/relationships/playlists
-  params: clientVersion?: string, countryCode?: string, deviceType?: enum[BROWSER, CAR, DESKTOP, PHONE, TABLET, TV], explicitFilter?: enum[INCLUDE, EXCLUDE], id: string, include?: array[string], page[cursor]?: string, systemType?: enum[ANDROID, DESKTOP, TESLA, IOS, WEB]
+  params: clientVersion?: string, countryCode?: string, deviceType?: enum[BROWSER, CAR, DESKTOP, PHONE, TABLET, TV], explicitFilter?: enum[INCLUDE, EXCLUDE], id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string, systemType?: enum[ANDROID, DESKTOP, TESLA, IOS, WEB]
   returns: SearchResults_Multi_Relationship_Data_Document
 
 GET /searchResults/{id}/relationships/topHits
-  params: clientVersion?: string, countryCode?: string, deviceType?: enum[BROWSER, CAR, DESKTOP, PHONE, TABLET, TV], explicitFilter?: enum[INCLUDE, EXCLUDE], id: string, include?: array[string], page[cursor]?: string, systemType?: enum[ANDROID, DESKTOP, TESLA, IOS, WEB]
+  params: clientVersion?: string, countryCode?: string, deviceType?: enum[BROWSER, CAR, DESKTOP, PHONE, TABLET, TV], explicitFilter?: enum[INCLUDE, EXCLUDE], id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string, systemType?: enum[ANDROID, DESKTOP, TESLA, IOS, WEB]
   returns: SearchResults_Multi_Relationship_Data_Document
 
 GET /searchResults/{id}/relationships/tracks
-  params: clientVersion?: string, countryCode?: string, deviceType?: enum[BROWSER, CAR, DESKTOP, PHONE, TABLET, TV], explicitFilter?: enum[INCLUDE, EXCLUDE], id: string, include?: array[string], page[cursor]?: string, systemType?: enum[ANDROID, DESKTOP, TESLA, IOS, WEB]
+  params: clientVersion?: string, countryCode?: string, deviceType?: enum[BROWSER, CAR, DESKTOP, PHONE, TABLET, TV], explicitFilter?: enum[INCLUDE, EXCLUDE], id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string, systemType?: enum[ANDROID, DESKTOP, TESLA, IOS, WEB]
   returns: SearchResults_Multi_Relationship_Data_Document
 
 GET /searchResults/{id}/relationships/videos
-  params: clientVersion?: string, countryCode?: string, deviceType?: enum[BROWSER, CAR, DESKTOP, PHONE, TABLET, TV], explicitFilter?: enum[INCLUDE, EXCLUDE], id: string, include?: array[string], page[cursor]?: string, systemType?: enum[ANDROID, DESKTOP, TESLA, IOS, WEB]
+  params: clientVersion?: string, countryCode?: string, deviceType?: enum[BROWSER, CAR, DESKTOP, PHONE, TABLET, TV], explicitFilter?: enum[INCLUDE, EXCLUDE], id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string, systemType?: enum[ANDROID, DESKTOP, TESLA, IOS, WEB]
   returns: SearchResults_Multi_Relationship_Data_Document
 
 GET /searchSuggestions/{id}
-  params: countryCode?: string, explicitFilter?: enum[INCLUDE, EXCLUDE], id: string, include?: array[string]
+  params: countryCode?: string, explicitFilter?: enum[INCLUDE, EXCLUDE], id: string, include?: array[string], replaceMedia?: string
   returns: SearchSuggestions_Single_Resource_Data_Document
 
 GET /searchSuggestions/{id}/relationships/directHits
-  params: countryCode?: string, explicitFilter?: enum[INCLUDE, EXCLUDE], id: string, include?: array[string], page[cursor]?: string
+  params: countryCode?: string, explicitFilter?: enum[INCLUDE, EXCLUDE], id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string
   returns: SearchSuggestions_Multi_Relationship_Data_Document
 
 GET /searchSuggestions/{id}/relationships/history
@@ -768,7 +768,7 @@ GET /searchSuggestions/{id}/relationships/history
   returns: SearchSuggestions_Multi_Relationship_Data_Document
 
 GET /shares
-  params: filter[code]: array[string], include?: array[string]
+  params: filter[code]: array[string], include?: array[string], replaceMedia?: string
   returns: Shares_Multi_Resource_Data_Document
 
 POST /shares
@@ -776,7 +776,7 @@ POST /shares
   returns: Shares_Single_Resource_Data_Document
 
 GET /shares/{id}
-  params: id: string, include?: array[string]
+  params: id: string, include?: array[string], replaceMedia?: string
   returns: Shares_Single_Resource_Data_Document
 
 GET /shares/{id}/relationships/owners
@@ -784,7 +784,7 @@ GET /shares/{id}/relationships/owners
   returns: Shares_Multi_Relationship_Data_Document
 
 GET /shares/{id}/relationships/sharedResources
-  params: id: string, include?: array[string], page[cursor]?: string
+  params: id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string
   returns: Shares_Multi_Relationship_Data_Document
 
 POST /squareConnections
@@ -892,7 +892,7 @@ GET /trackStatistics/{id}/relationships/owners
   returns: TrackStatistics_Multi_Relationship_Data_Document
 
 GET /tracks
-  params: countryCode?: string, filter[id]?: array[string], filter[isrc]?: array[string], filter[owners.id]?: array[string], include?: array[string], page[cursor]?: string, shareCode?: string, sort?: array[enum[createdAt, -createdAt, title, -title]]
+  params: countryCode?: string, filter[id]?: array[string], filter[isrc]?: array[string], filter[owners.id]?: array[string], include?: array[string], page[cursor]?: string, replaceMedia?: string, shareCode?: string, sort?: array[enum[createdAt, -createdAt, title, -title]]
   returns: Tracks_Multi_Resource_Data_Document
 
 POST /tracks
@@ -900,7 +900,7 @@ POST /tracks
   returns: Tracks_Single_Resource_Data_Document
 
 GET /tracks/{id}
-  params: countryCode?: string, id: string, include?: array[string], shareCode?: string
+  params: countryCode?: string, id: string, include?: array[string], replaceMedia?: string, shareCode?: string
   returns: Tracks_Single_Resource_Data_Document
 
 PATCH /tracks/{id}
@@ -912,7 +912,7 @@ DELETE /tracks/{id}
   returns: void
 
 GET /tracks/{id}/relationships/albums
-  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string, shareCode?: string
+  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string, shareCode?: string
   returns: Tracks_Multi_Relationship_Data_Document
 
 PATCH /tracks/{id}/relationships/albums
@@ -920,11 +920,11 @@ PATCH /tracks/{id}/relationships/albums
   returns: void
 
 GET /tracks/{id}/relationships/artists
-  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string, shareCode?: string
+  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string, shareCode?: string
   returns: Tracks_Multi_Relationship_Data_Document
 
 GET /tracks/{id}/relationships/credits
-  params: id: string, include?: array[string], page[cursor]?: string, shareCode?: string
+  params: id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string, shareCode?: string
   returns: Tracks_Multi_Relationship_Data_Document
 
 GET /tracks/{id}/relationships/download
@@ -936,7 +936,7 @@ GET /tracks/{id}/relationships/genres
   returns: Tracks_Multi_Relationship_Data_Document
 
 GET /tracks/{id}/relationships/lyrics
-  params: id: string, include?: array[string], page[cursor]?: string, shareCode?: string
+  params: id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string, shareCode?: string
   returns: Tracks_Multi_Relationship_Data_Document
 
 GET /tracks/{id}/relationships/metadataStatus
@@ -956,19 +956,19 @@ GET /tracks/{id}/relationships/providers
   returns: Tracks_Multi_Relationship_Data_Document
 
 GET /tracks/{id}/relationships/radio
-  params: id: string, include?: array[string], page[cursor]?: string, shareCode?: string
+  params: id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string, shareCode?: string
   returns: Tracks_Multi_Relationship_Data_Document
 
 GET /tracks/{id}/relationships/replacement
-  params: countryCode?: string, id: string, include?: array[string], shareCode?: string
+  params: countryCode?: string, id: string, include?: array[string], replaceMedia?: string, shareCode?: string
   returns: Tracks_Single_Relationship_Data_Document
 
 GET /tracks/{id}/relationships/shares
-  params: id: string, include?: array[string], page[cursor]?: string, shareCode?: string
+  params: id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string, shareCode?: string
   returns: Tracks_Multi_Relationship_Data_Document
 
 GET /tracks/{id}/relationships/similarTracks
-  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string, shareCode?: string
+  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string, shareCode?: string
   returns: Tracks_Multi_Relationship_Data_Document
 
 GET /tracks/{id}/relationships/sourceFile
@@ -976,7 +976,7 @@ GET /tracks/{id}/relationships/sourceFile
   returns: Tracks_Single_Relationship_Data_Document
 
 GET /tracks/{id}/relationships/suggestedTracks
-  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string, shareCode?: string
+  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string, shareCode?: string
   returns: Tracks_Multi_Relationship_Data_Document
 
 GET /tracks/{id}/relationships/trackStatistics
@@ -1000,11 +1000,11 @@ GET /usageRules/{id}
   returns: UsageRules_Single_Resource_Data_Document
 
 GET /userCollectionAlbums/{id}
-  params: id: string, include?: array[string], locale?: string
+  params: id: string, include?: array[string], locale?: string, replaceMedia?: string
   returns: UserCollectionAlbums_Single_Resource_Data_Document
 
 GET /userCollectionAlbums/{id}/relationships/items
-  params: id: string, include?: array[string], locale?: string, page[cursor]?: string, sort?: array[enum[addedAt, -addedAt, artists.name, -artists.name, releaseDate, -releaseDate, title, -title]]
+  params: id: string, include?: array[string], locale?: string, page[cursor]?: string, replaceMedia?: string, sort?: array[enum[addedAt, -addedAt, artists.name, -artists.name, releaseDate, -releaseDate, title, -title]]
   returns: UserCollectionAlbums_Items_Multi_Relationship_Data_Document
 
 POST /userCollectionAlbums/{id}/relationships/items
@@ -1020,11 +1020,11 @@ GET /userCollectionAlbums/{id}/relationships/owners
   returns: UserCollectionAlbums_Multi_Relationship_Data_Document
 
 GET /userCollectionArtists/{id}
-  params: id: string, include?: array[string], locale?: string
+  params: id: string, include?: array[string], locale?: string, replaceMedia?: string
   returns: UserCollectionArtists_Single_Resource_Data_Document
 
 GET /userCollectionArtists/{id}/relationships/items
-  params: id: string, include?: array[string], locale?: string, page[cursor]?: string, sort?: array[enum[addedAt, -addedAt, name, -name]]
+  params: id: string, include?: array[string], locale?: string, page[cursor]?: string, replaceMedia?: string, sort?: array[enum[addedAt, -addedAt, name, -name]]
   returns: UserCollectionArtists_Items_Multi_Relationship_Data_Document
 
 POST /userCollectionArtists/{id}/relationships/items
@@ -1040,7 +1040,7 @@ GET /userCollectionArtists/{id}/relationships/owners
   returns: UserCollectionArtists_Multi_Relationship_Data_Document
 
 GET /userCollectionFolders
-  params: filter[id]: array[string], include?: array[string]
+  params: filter[id]: array[string], include?: array[string], replaceMedia?: string
   returns: UserCollectionFolders_Multi_Resource_Data_Document
 
 POST /userCollectionFolders
@@ -1048,7 +1048,7 @@ POST /userCollectionFolders
   returns: UserCollectionFolders_Single_Resource_Data_Document
 
 GET /userCollectionFolders/{id}
-  params: id: string, include?: array[string]
+  params: id: string, include?: array[string], replaceMedia?: string
   returns: UserCollectionFolders_Single_Resource_Data_Document
 
 PATCH /userCollectionFolders/{id}
@@ -1060,7 +1060,7 @@ DELETE /userCollectionFolders/{id}
   returns: void
 
 GET /userCollectionFolders/{id}/relationships/items
-  params: id: string, include?: array[string], page[cursor]?: string, sort?: array[enum[addedAt, -addedAt, lastModifiedAt, -lastModifiedAt, name, -name]]
+  params: id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string, sort?: array[enum[addedAt, -addedAt, lastModifiedAt, -lastModifiedAt, name, -name]]
   returns: UserCollectionFolders_Items_Multi_Relationship_Data_Document
 
 POST /userCollectionFolders/{id}/relationships/items
@@ -1076,15 +1076,15 @@ GET /userCollectionFolders/{id}/relationships/owners
   returns: UserCollectionFolders_Multi_Relationship_Data_Document
 
 GET /userCollectionFolders/{id}/relationships/userCollection
-  params: id: string, include?: array[string]
+  params: id: string, include?: array[string], replaceMedia?: string
   returns: UserCollectionFolders_Single_Relationship_Data_Document
 
 GET /userCollectionPlaylists/{id}
-  params: id: string, include?: array[string], locale?: string
+  params: id: string, include?: array[string], locale?: string, replaceMedia?: string
   returns: UserCollectionPlaylists_Single_Resource_Data_Document
 
 GET /userCollectionPlaylists/{id}/relationships/items
-  params: collectionView?: enum[FLAT, FOLDERS], id: string, include?: array[string], page[cursor]?: string, sort?: array[enum[addedAt, -addedAt, lastModifiedAt, -lastModifiedAt, name, -name]]
+  params: collectionView?: enum[FLAT, FOLDERS], id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string, sort?: array[enum[addedAt, -addedAt, lastModifiedAt, -lastModifiedAt, name, -name]]
   returns: UserCollectionPlaylists_Items_Multi_Relationship_Data_Document
 
 POST /userCollectionPlaylists/{id}/relationships/items
@@ -1100,11 +1100,11 @@ GET /userCollectionPlaylists/{id}/relationships/owners
   returns: UserCollectionPlaylists_Multi_Relationship_Data_Document
 
 GET /userCollectionSaveForLaters/{id}
-  params: id: string, include?: array[string]
+  params: id: string, include?: array[string], replaceMedia?: string
   returns: UserCollectionSaveForLaters_Single_Resource_Data_Document
 
 GET /userCollectionSaveForLaters/{id}/relationships/items
-  params: id: string, include?: array[string], page[cursor]?: string
+  params: id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string
   returns: UserCollectionSaveForLaters_Items_Multi_Relationship_Data_Document
 
 POST /userCollectionSaveForLaters/{id}/relationships/items
@@ -1120,11 +1120,11 @@ GET /userCollectionSaveForLaters/{id}/relationships/owners
   returns: UserCollectionSaveForLaters_Multi_Relationship_Data_Document
 
 GET /userCollectionTracks/{id}
-  params: id: string, include?: array[string], locale?: string
+  params: id: string, include?: array[string], locale?: string, replaceMedia?: string
   returns: UserCollectionTracks_Single_Resource_Data_Document
 
 GET /userCollectionTracks/{id}/relationships/items
-  params: id: string, include?: array[string], locale?: string, page[cursor]?: string, sort?: array[enum[addedAt, -addedAt, albums.title, -albums.title, artists.name, -artists.name, duration, -duration, title, -title]]
+  params: id: string, include?: array[string], locale?: string, page[cursor]?: string, replaceMedia?: string, sort?: array[enum[addedAt, -addedAt, albums.title, -albums.title, artists.name, -artists.name, duration, -duration, title, -title]]
   returns: UserCollectionTracks_Items_Multi_Relationship_Data_Document
 
 POST /userCollectionTracks/{id}/relationships/items
@@ -1140,11 +1140,11 @@ GET /userCollectionTracks/{id}/relationships/owners
   returns: UserCollectionTracks_Multi_Relationship_Data_Document
 
 GET /userCollectionVideos/{id}
-  params: id: string, include?: array[string], locale?: string
+  params: id: string, include?: array[string], locale?: string, replaceMedia?: string
   returns: UserCollectionVideos_Single_Resource_Data_Document
 
 GET /userCollectionVideos/{id}/relationships/items
-  params: id: string, include?: array[string], locale?: string, page[cursor]?: string, sort?: array[enum[addedAt, -addedAt, artists.name, -artists.name, duration, -duration, title, -title]]
+  params: id: string, include?: array[string], locale?: string, page[cursor]?: string, replaceMedia?: string, sort?: array[enum[addedAt, -addedAt, artists.name, -artists.name, duration, -duration, title, -title]]
   returns: UserCollectionVideos_Items_Multi_Relationship_Data_Document
 
 POST /userCollectionVideos/{id}/relationships/items
@@ -1160,11 +1160,11 @@ GET /userCollectionVideos/{id}/relationships/owners
   returns: UserCollectionVideos_Multi_Relationship_Data_Document
 
 GET /userCollections/{id}
-  params: id: string, include?: array[string], locale?: string
+  params: id: string, include?: array[string], locale?: string, replaceMedia?: string
   returns: UserCollections_Single_Resource_Data_Document
 
 GET /userCollections/{id}/relationships/albums
-  params: id: string, include?: array[string], locale?: string, page[cursor]?: string, sort?: array[enum[albums.addedAt, -albums.addedAt, albums.artists.name, -albums.artists.name, albums.releaseDate, -albums.releaseDate, albums.title, -albums.title]]
+  params: id: string, include?: array[string], locale?: string, page[cursor]?: string, replaceMedia?: string, sort?: array[enum[albums.addedAt, -albums.addedAt, albums.artists.name, -albums.artists.name, albums.releaseDate, -albums.releaseDate, albums.title, -albums.title]]
   returns: UserCollections_Albums_Multi_Relationship_Data_Document
 
 POST /userCollections/{id}/relationships/albums
@@ -1176,7 +1176,7 @@ DELETE /userCollections/{id}/relationships/albums
   returns: void
 
 GET /userCollections/{id}/relationships/artists
-  params: id: string, include?: array[string], locale?: string, page[cursor]?: string, sort?: array[enum[artists.addedAt, -artists.addedAt, artists.name, -artists.name]]
+  params: id: string, include?: array[string], locale?: string, page[cursor]?: string, replaceMedia?: string, sort?: array[enum[artists.addedAt, -artists.addedAt, artists.name, -artists.name]]
   returns: UserCollections_Artists_Multi_Relationship_Data_Document
 
 POST /userCollections/{id}/relationships/artists
@@ -1192,7 +1192,7 @@ GET /userCollections/{id}/relationships/owners
   returns: UserCollections_Multi_Relationship_Data_Document
 
 GET /userCollections/{id}/relationships/playlists
-  params: collectionView?: enum[FOLDERS], id: string, include?: array[string], page[cursor]?: string, sort?: array[enum[playlists.addedAt, -playlists.addedAt, playlists.lastUpdatedAt, -playlists.lastUpdatedAt, playlists.name, -playlists.name]]
+  params: collectionView?: enum[FOLDERS], id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string, sort?: array[enum[playlists.addedAt, -playlists.addedAt, playlists.lastUpdatedAt, -playlists.lastUpdatedAt, playlists.name, -playlists.name]]
   returns: UserCollections_Playlists_Multi_Relationship_Data_Document
 
 POST /userCollections/{id}/relationships/playlists
@@ -1204,7 +1204,7 @@ DELETE /userCollections/{id}/relationships/playlists
   returns: void
 
 GET /userCollections/{id}/relationships/tracks
-  params: id: string, include?: array[string], locale?: string, page[cursor]?: string, sort?: array[enum[tracks.addedAt, -tracks.addedAt, tracks.albums.title, -tracks.albums.title, tracks.artists.name, -tracks.artists.name, tracks.duration, -tracks.duration, tracks.title, -tracks.title]]
+  params: id: string, include?: array[string], locale?: string, page[cursor]?: string, replaceMedia?: string, sort?: array[enum[tracks.addedAt, -tracks.addedAt, tracks.albums.title, -tracks.albums.title, tracks.artists.name, -tracks.artists.name, tracks.duration, -tracks.duration, tracks.title, -tracks.title]]
   returns: UserCollections_Tracks_Multi_Relationship_Data_Document
 
 POST /userCollections/{id}/relationships/tracks
@@ -1216,7 +1216,7 @@ DELETE /userCollections/{id}/relationships/tracks
   returns: void
 
 GET /userCollections/{id}/relationships/videos
-  params: id: string, include?: array[string], locale?: string, page[cursor]?: string, sort?: array[enum[videos.addedAt, -videos.addedAt, videos.artists.name, -videos.artists.name, videos.duration, -videos.duration, videos.title, -videos.title]]
+  params: id: string, include?: array[string], locale?: string, page[cursor]?: string, replaceMedia?: string, sort?: array[enum[videos.addedAt, -videos.addedAt, videos.artists.name, -videos.artists.name, videos.duration, -videos.duration, videos.title, -videos.title]]
   returns: UserCollections_Videos_Multi_Relationship_Data_Document
 
 POST /userCollections/{id}/relationships/videos
@@ -1228,11 +1228,11 @@ DELETE /userCollections/{id}/relationships/videos
   returns: void
 
 GET /userDailyMixes/{id}
-  params: id: string, include?: array[string], locale?: string
+  params: id: string, include?: array[string], locale?: string, replaceMedia?: string
   returns: UserDailyMixes_Single_Resource_Data_Document
 
 GET /userDailyMixes/{id}/relationships/items
-  params: id: string, include?: array[string], locale?: string, page[cursor]?: string
+  params: id: string, include?: array[string], locale?: string, page[cursor]?: string, replaceMedia?: string
   returns: UserDailyMixes_Multi_Relationship_Data_Document
 
 POST /userDataExportRequests
@@ -1240,35 +1240,35 @@ POST /userDataExportRequests
   returns: UserDataExportRequests_Single_Resource_Data_Document
 
 GET /userDiscoveryMixes/{id}
-  params: id: string, include?: array[string], locale?: string
+  params: id: string, include?: array[string], locale?: string, replaceMedia?: string
   returns: UserDiscoveryMixes_Single_Resource_Data_Document
 
 GET /userDiscoveryMixes/{id}/relationships/items
-  params: id: string, include?: array[string], locale?: string, page[cursor]?: string
+  params: id: string, include?: array[string], locale?: string, page[cursor]?: string, replaceMedia?: string
   returns: UserDiscoveryMixes_Multi_Relationship_Data_Document
 
 GET /userNewReleaseMixes/{id}
-  params: id: string, include?: array[string], locale?: string
+  params: id: string, include?: array[string], locale?: string, replaceMedia?: string
   returns: UserNewReleaseMixes_Single_Resource_Data_Document
 
 GET /userNewReleaseMixes/{id}/relationships/items
-  params: id: string, include?: array[string], locale?: string, page[cursor]?: string
+  params: id: string, include?: array[string], locale?: string, page[cursor]?: string, replaceMedia?: string
   returns: UserNewReleaseMixes_Multi_Relationship_Data_Document
 
 GET /userOfflineMixes/{id}
-  params: id: string, include?: array[string], locale?: string
+  params: id: string, include?: array[string], locale?: string, replaceMedia?: string
   returns: UserOfflineMixes_Single_Resource_Data_Document
 
 GET /userOfflineMixes/{id}/relationships/items
-  params: id: string, include?: array[string], locale?: string, page[cursor]?: string
+  params: id: string, include?: array[string], locale?: string, page[cursor]?: string, replaceMedia?: string
   returns: UserOfflineMixes_Multi_Relationship_Data_Document
 
 GET /userRecommendationBlocks/{id}
-  params: id: string, include?: array[string], locale?: string
+  params: id: string, include?: array[string], locale?: string, replaceMedia?: string
   returns: UserRecommendationBlocks_Single_Resource_Data_Document
 
 GET /userRecommendationBlocks/{id}/relationships/artists
-  params: id: string, include?: array[string], page[cursor]?: string
+  params: id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string
   returns: UserRecommendationBlocks_Artists_Multi_Relationship_Data_Document
 
 POST /userRecommendationBlocks/{id}/relationships/artists
@@ -1284,7 +1284,7 @@ GET /userRecommendationBlocks/{id}/relationships/owners
   returns: UserRecommendationBlocks_Multi_Relationship_Data_Document
 
 GET /userRecommendationBlocks/{id}/relationships/tracks
-  params: id: string, include?: array[string], page[cursor]?: string
+  params: id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string
   returns: UserRecommendationBlocks_Tracks_Multi_Relationship_Data_Document
 
 POST /userRecommendationBlocks/{id}/relationships/tracks
@@ -1296,7 +1296,7 @@ DELETE /userRecommendationBlocks/{id}/relationships/tracks
   returns: void
 
 GET /userRecommendationBlocks/{id}/relationships/videos
-  params: id: string, include?: array[string], page[cursor]?: string
+  params: id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string
   returns: UserRecommendationBlocks_Videos_Multi_Relationship_Data_Document
 
 POST /userRecommendationBlocks/{id}/relationships/videos
@@ -1308,23 +1308,23 @@ DELETE /userRecommendationBlocks/{id}/relationships/videos
   returns: void
 
 GET /userRecommendations/{id}
-  params: id: string, include?: array[string], locale?: string
+  params: id: string, include?: array[string], locale?: string, replaceMedia?: string
   returns: UserRecommendations_Single_Resource_Data_Document
 
 GET /userRecommendations/{id}/relationships/discoveryMixes
-  params: id: string, include?: array[string], locale?: string, page[cursor]?: string
+  params: id: string, include?: array[string], locale?: string, page[cursor]?: string, replaceMedia?: string
   returns: UserRecommendations_Multi_Relationship_Data_Document
 
 GET /userRecommendations/{id}/relationships/myMixes
-  params: id: string, include?: array[string], locale?: string, page[cursor]?: string
+  params: id: string, include?: array[string], locale?: string, page[cursor]?: string, replaceMedia?: string
   returns: UserRecommendations_Multi_Relationship_Data_Document
 
 GET /userRecommendations/{id}/relationships/newArrivalMixes
-  params: id: string, include?: array[string], locale?: string, page[cursor]?: string
+  params: id: string, include?: array[string], locale?: string, page[cursor]?: string, replaceMedia?: string
   returns: UserRecommendations_Multi_Relationship_Data_Document
 
 GET /userRecommendations/{id}/relationships/offlineMixes
-  params: id: string, include?: array[string], locale?: string, page[cursor]?: string
+  params: id: string, include?: array[string], locale?: string, page[cursor]?: string, replaceMedia?: string
   returns: UserRecommendations_Multi_Relationship_Data_Document
 
 POST /userReports
@@ -1348,23 +1348,23 @@ GET /videoManifests/{id}
   returns: VideoManifests_Single_Resource_Data_Document
 
 GET /videos
-  params: countryCode?: string, filter[id]?: array[string], filter[isrc]?: array[string], include?: array[string]
+  params: countryCode?: string, filter[id]?: array[string], filter[isrc]?: array[string], include?: array[string], replaceMedia?: string
   returns: Videos_Multi_Resource_Data_Document
 
 GET /videos/{id}
-  params: countryCode?: string, id: string, include?: array[string]
+  params: countryCode?: string, id: string, include?: array[string], replaceMedia?: string
   returns: Videos_Single_Resource_Data_Document
 
 GET /videos/{id}/relationships/albums
-  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string
+  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string
   returns: Videos_Multi_Relationship_Data_Document
 
 GET /videos/{id}/relationships/artists
-  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string
+  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string
   returns: Videos_Multi_Relationship_Data_Document
 
 GET /videos/{id}/relationships/credits
-  params: id: string, include?: array[string], page[cursor]?: string
+  params: id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string
   returns: Videos_Multi_Relationship_Data_Document
 
 GET /videos/{id}/relationships/providers
@@ -1372,15 +1372,15 @@ GET /videos/{id}/relationships/providers
   returns: Videos_Multi_Relationship_Data_Document
 
 GET /videos/{id}/relationships/replacement
-  params: countryCode?: string, id: string, include?: array[string]
+  params: countryCode?: string, id: string, include?: array[string], replaceMedia?: string
   returns: Videos_Single_Relationship_Data_Document
 
 GET /videos/{id}/relationships/similarVideos
-  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string
+  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string
   returns: Videos_Multi_Relationship_Data_Document
 
 GET /videos/{id}/relationships/suggestedVideos
-  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string
+  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string
   returns: Videos_Multi_Relationship_Data_Document
 
 GET /videos/{id}/relationships/thumbnailArt
@@ -1590,6 +1590,7 @@ Albums_Items_Resource_Identifier_Meta
   trackNumber: integer(int32) (required)
   volumeNumber: integer(int32) (required)
   itemCursor: string (optional)
+  replacement: Replacement_Provenance (optional)
 
 Albums_Multi_Relationship_Data_Document
   links: Links (required)
@@ -1610,17 +1611,43 @@ Albums_Relationships
   owners: Multi_Relationship_Data_Document (optional)
   priceConfig: Single_Relationship_Data_Document (optional)
   providers: Multi_Relationship_Data_Document (optional)
-  replacement: Single_Relationship_Data_Document (optional)
+  replacement: Albums_Replacement_Single_Relationship_Data_Document (optional)
   shares: Multi_Relationship_Data_Document (optional)
-  similarAlbums: Multi_Relationship_Data_Document (optional)
+  similarAlbums: Albums_SimilarAlbums_Multi_Relationship_Data_Document (optional)
   suggestedCoverArts: Albums_SuggestedCoverArts_Multi_Relationship_Data_Document (optional)
   usageRules: Single_Relationship_Data_Document (optional)
+
+Albums_Replacement_Resource_Identifier
+  id: string (required)
+  type: string (required)
+  meta: Albums_Replacement_Resource_Identifier_Meta (optional)
+
+Albums_Replacement_Resource_Identifier_Meta
+  replacement: Replacement_Provenance (optional)
+
+Albums_Replacement_Single_Relationship_Data_Document
+  links: Links (required)
+  data: Albums_Replacement_Resource_Identifier | enum[None] (optional)
+  included: Included (optional)
 
 Albums_Resource_Object
   id: string (required)
   type: string (required)
   attributes: Albums_Attributes (optional)
   relationships: Albums_Relationships (optional)
+
+Albums_SimilarAlbums_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[Albums_SimilarAlbums_Resource_Identifier] (optional)
+  included: Included (optional)
+
+Albums_SimilarAlbums_Resource_Identifier
+  id: string (required)
+  type: string (required)
+  meta: Albums_SimilarAlbums_Resource_Identifier_Meta (optional)
+
+Albums_SimilarAlbums_Resource_Identifier_Meta
+  replacement: Replacement_Provenance (optional)
 
 Albums_Single_Relationship_Data_Document
   links: Links (required)
@@ -1893,6 +1920,19 @@ ArtistsUpdateOperation_Payload_Data_Attributes
 ArtistsUpdateOperation_Payload_Meta
   dryRun: boolean (optional)
 
+Artists_Albums_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[Artists_Albums_Resource_Identifier] (optional)
+  included: Included (optional)
+
+Artists_Albums_Resource_Identifier
+  id: string (required)
+  type: string (required)
+  meta: Artists_Albums_Resource_Identifier_Meta (optional)
+
+Artists_Albums_Resource_Identifier_Meta
+  replacement: Replacement_Provenance (optional)
+
 Artists_Attributes
   name: string (required)
   popularity: number(double) (required)
@@ -1944,7 +1984,7 @@ Artists_Multi_Resource_Data_Document
   included: Included (optional)
 
 Artists_Relationships
-  albums: Multi_Relationship_Data_Document (optional)
+  albums: Artists_Albums_Multi_Relationship_Data_Document (optional)
   biography: Single_Relationship_Data_Document (optional)
   claimStatus: Single_Relationship_Data_Document (optional)
   followers: Artists_Followers_Multi_Relationship_Data_Document (optional)
@@ -1955,8 +1995,8 @@ Artists_Relationships
   roles: Multi_Relationship_Data_Document (optional)
   similarArtists: Multi_Relationship_Data_Document (optional)
   trackProviders: Artists_TrackProviders_Multi_Relationship_Data_Document (optional)
-  tracks: Multi_Relationship_Data_Document (optional)
-  videos: Multi_Relationship_Data_Document (optional)
+  tracks: Artists_Tracks_Multi_Relationship_Data_Document (optional)
+  videos: Artists_Videos_Multi_Relationship_Data_Document (optional)
 
 Artists_Resource_Object
   id: string (required)
@@ -1986,6 +2026,32 @@ Artists_TrackProviders_Resource_Identifier
 
 Artists_TrackProviders_Resource_Identifier_Meta
   numberOfTracks: integer(int64) (required)
+
+Artists_Tracks_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[Artists_Tracks_Resource_Identifier] (optional)
+  included: Included (optional)
+
+Artists_Tracks_Resource_Identifier
+  id: string (required)
+  type: string (required)
+  meta: Artists_Tracks_Resource_Identifier_Meta (optional)
+
+Artists_Tracks_Resource_Identifier_Meta
+  replacement: Replacement_Provenance (optional)
+
+Artists_Videos_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[Artists_Videos_Resource_Identifier] (optional)
+  included: Included (optional)
+
+Artists_Videos_Resource_Identifier
+  id: string (required)
+  type: string (required)
+  meta: Artists_Videos_Resource_Identifier_Meta (optional)
+
+Artists_Videos_Resource_Identifier_Meta
+  replacement: Replacement_Provenance (optional)
 
 Artwork_File
   href: string (required)
@@ -2321,6 +2387,19 @@ ContentClaims_Attributes
   lastModifiedAt: string(date-time) (required)
   status: enum[OPEN, IN_PROGRESS, RESOLVED, REJECTED] (required)
 
+ContentClaims_ClaimedResource_Resource_Identifier
+  id: string (required)
+  type: string (required)
+  meta: ContentClaims_ClaimedResource_Resource_Identifier_Meta (optional)
+
+ContentClaims_ClaimedResource_Resource_Identifier_Meta
+  replacement: Replacement_Provenance (optional)
+
+ContentClaims_ClaimedResource_Single_Relationship_Data_Document
+  links: Links (required)
+  data: ContentClaims_ClaimedResource_Resource_Identifier | enum[None] (optional)
+  included: Included (optional)
+
 ContentClaims_Multi_Relationship_Data_Document
   links: Links (required)
   data: array[Resource_Identifier] (optional)
@@ -2332,7 +2411,7 @@ ContentClaims_Multi_Resource_Data_Document
   included: Included (optional)
 
 ContentClaims_Relationships
-  claimedResource: Single_Relationship_Data_Document (optional)
+  claimedResource: ContentClaims_ClaimedResource_Single_Relationship_Data_Document (optional)
   claimingArtist: Single_Relationship_Data_Document (optional)
   owners: Multi_Relationship_Data_Document (optional)
 
@@ -2465,7 +2544,7 @@ DspSharingLinks_Multi_Resource_Data_Document
   included: Included (optional)
 
 DspSharingLinks_Relationships
-  subject: Single_Relationship_Data_Document (optional)
+  subject: DspSharingLinks_Subject_Single_Relationship_Data_Document (optional)
 
 DspSharingLinks_Resource_Object
   id: string (required)
@@ -2483,12 +2562,38 @@ DspSharingLinks_Single_Resource_Data_Document
   links: Links (required)
   included: Included (optional)
 
+DspSharingLinks_Subject_Resource_Identifier
+  id: string (required)
+  type: string (required)
+  meta: DspSharingLinks_Subject_Resource_Identifier_Meta (optional)
+
+DspSharingLinks_Subject_Resource_Identifier_Meta
+  replacement: Replacement_Provenance (optional)
+
+DspSharingLinks_Subject_Single_Relationship_Data_Document
+  links: Links (required)
+  data: DspSharingLinks_Subject_Resource_Identifier | enum[None] (optional)
+  included: Included (optional)
+
 DynamicModules_Attributes
   icons: array[enum[SPOTLIGHT_INFO, UNKNOWN]] (required)
   previewLayout: enum[GRID, LIST, COMPACT, UNKNOWN] (required)
   subtitle: string (optional)
   title: string (optional)
   viewAllLayout: enum[GRID, LIST, COMPACT, UNKNOWN] (optional)
+
+DynamicModules_Items_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[DynamicModules_Items_Resource_Identifier] (optional)
+  included: Included (optional)
+
+DynamicModules_Items_Resource_Identifier
+  id: string (required)
+  type: string (required)
+  meta: DynamicModules_Items_Resource_Identifier_Meta (optional)
+
+DynamicModules_Items_Resource_Identifier_Meta
+  replacement: Replacement_Provenance (optional)
 
 DynamicModules_Multi_Relationship_Data_Document
   links: Links (required)
@@ -2501,14 +2606,27 @@ DynamicModules_Multi_Resource_Data_Document
   included: Included (optional)
 
 DynamicModules_Relationships
-  items: Multi_Relationship_Data_Document (optional)
-  seedItem: Single_Relationship_Data_Document (optional)
+  items: DynamicModules_Items_Multi_Relationship_Data_Document (optional)
+  seedItem: DynamicModules_SeedItem_Single_Relationship_Data_Document (optional)
 
 DynamicModules_Resource_Object
   id: string (required)
   type: string (required)
   attributes: DynamicModules_Attributes (optional)
   relationships: DynamicModules_Relationships (optional)
+
+DynamicModules_SeedItem_Resource_Identifier
+  id: string (required)
+  type: string (required)
+  meta: DynamicModules_SeedItem_Resource_Identifier_Meta (optional)
+
+DynamicModules_SeedItem_Resource_Identifier_Meta
+  replacement: Replacement_Provenance (optional)
+
+DynamicModules_SeedItem_Single_Relationship_Data_Document
+  links: Links (required)
+  data: DynamicModules_SeedItem_Resource_Identifier | enum[None] (optional)
+  included: Included (optional)
 
 DynamicModules_Single_Relationship_Data_Document
   links: Links (required)
@@ -2536,7 +2654,7 @@ DynamicPages_Multi_Resource_Data_Document
 
 DynamicPages_Relationships
   modules: Multi_Relationship_Data_Document (optional)
-  subject: Single_Relationship_Data_Document (optional)
+  subject: DynamicPages_Subject_Single_Relationship_Data_Document (optional)
 
 DynamicPages_Resource_Object
   id: string (required)
@@ -2556,6 +2674,19 @@ DynamicPages_Single_Relationship_Data_Document
 DynamicPages_Single_Resource_Data_Document
   data: DynamicPages_Resource_Object (required)
   links: Links (required)
+  included: Included (optional)
+
+DynamicPages_Subject_Resource_Identifier
+  id: string (required)
+  type: string (required)
+  meta: DynamicPages_Subject_Resource_Identifier_Meta (optional)
+
+DynamicPages_Subject_Resource_Identifier_Meta
+  replacement: Replacement_Provenance (optional)
+
+DynamicPages_Subject_Single_Relationship_Data_Document
+  links: Links (required)
+  data: DynamicPages_Subject_Resource_Identifier | enum[None] (optional)
   included: Included (optional)
 
 Error_Object
@@ -2675,6 +2806,7 @@ Installations_OfflineInventory_Resource_Identifier
 
 Installations_OfflineInventory_Resource_Identifier_Meta
   addedAt: string(date-time) (required)
+  replacement: Replacement_Provenance (optional)
 
 Installations_Relationships
   offlineInventory: Installations_OfflineInventory_Multi_Relationship_Data_Document (optional)
@@ -2771,7 +2903,7 @@ Lyrics_Multi_Resource_Data_Document
 
 Lyrics_Relationships
   owners: Multi_Relationship_Data_Document (optional)
-  track: Single_Relationship_Data_Document (optional)
+  track: Lyrics_Track_Single_Relationship_Data_Document (optional)
 
 Lyrics_Resource_Object
   id: string (required)
@@ -2787,6 +2919,19 @@ Lyrics_Single_Relationship_Data_Document
 Lyrics_Single_Resource_Data_Document
   data: Lyrics_Resource_Object (required)
   links: Links (required)
+  included: Included (optional)
+
+Lyrics_Track_Resource_Identifier
+  id: string (required)
+  type: string (required)
+  meta: Lyrics_Track_Resource_Identifier_Meta (optional)
+
+Lyrics_Track_Resource_Identifier_Meta
+  replacement: Replacement_Provenance (optional)
+
+Lyrics_Track_Single_Relationship_Data_Document
+  links: Links (required)
+  data: Lyrics_Track_Resource_Identifier | enum[None] (optional)
   included: Included (optional)
 
 ManualArtistClaimsCreateOperation_Payload
@@ -2874,6 +3019,32 @@ OfflineTasks_Attributes
   state: enum[PENDING, IN_PROGRESS, FAILED, COMPLETED] (required)
   volume: integer(int32) (required)
 
+OfflineTasks_Collection_Resource_Identifier
+  id: string (required)
+  type: string (required)
+  meta: OfflineTasks_Collection_Resource_Identifier_Meta (optional)
+
+OfflineTasks_Collection_Resource_Identifier_Meta
+  replacement: Replacement_Provenance (optional)
+
+OfflineTasks_Collection_Single_Relationship_Data_Document
+  links: Links (required)
+  data: OfflineTasks_Collection_Resource_Identifier | enum[None] (optional)
+  included: Included (optional)
+
+OfflineTasks_Item_Resource_Identifier
+  id: string (required)
+  type: string (required)
+  meta: OfflineTasks_Item_Resource_Identifier_Meta (optional)
+
+OfflineTasks_Item_Resource_Identifier_Meta
+  replacement: Replacement_Provenance (optional)
+
+OfflineTasks_Item_Single_Relationship_Data_Document
+  links: Links (required)
+  data: OfflineTasks_Item_Resource_Identifier | enum[None] (optional)
+  included: Included (optional)
+
 OfflineTasks_Multi_Relationship_Data_Document
   links: Links (required)
   data: array[Resource_Identifier] (optional)
@@ -2885,8 +3056,8 @@ OfflineTasks_Multi_Resource_Data_Document
   included: Included (optional)
 
 OfflineTasks_Relationships
-  collection: Single_Relationship_Data_Document (optional)
-  item: Single_Relationship_Data_Document (optional)
+  collection: OfflineTasks_Collection_Single_Relationship_Data_Document (optional)
+  item: OfflineTasks_Item_Single_Relationship_Data_Document (optional)
   owners: Multi_Relationship_Data_Document (optional)
 
 OfflineTasks_Resource_Object
@@ -2995,6 +3166,7 @@ PlayQueues_Current_Resource_Identifier_Meta
   batchId: string(uuid) (required)
   itemId: string (required)
   legacySource: LegacySource (optional)
+  replacement: Replacement_Provenance (optional)
 
 PlayQueues_Current_Single_Relationship_Data_Document
   links: Links (required)
@@ -3015,6 +3187,7 @@ PlayQueues_Future_Resource_Identifier_Meta
   batchId: string(uuid) (required)
   itemId: string (required)
   legacySource: LegacySource (optional)
+  replacement: Replacement_Provenance (optional)
 
 PlayQueues_Multi_Relationship_Data_Document
   links: Links (required)
@@ -3040,6 +3213,7 @@ PlayQueues_Past_Resource_Identifier_Meta
   batchId: string(uuid) (required)
   itemId: string (required)
   legacySource: LegacySource (optional)
+  replacement: Replacement_Provenance (optional)
 
 PlayQueues_Relationships
   current: PlayQueues_Current_Single_Relationship_Data_Document (optional)
@@ -3178,6 +3352,7 @@ Playlists_Items_Resource_Identifier_Meta
   addedAt: string(date-time) (optional)
   itemCursor: string (optional)
   itemId: string (optional)
+  replacement: Replacement_Provenance (optional)
 
 Playlists_Multi_Relationship_Data_Document
   links: Links (required)
@@ -3311,7 +3486,7 @@ ProviderProductInfos_Multi_Resource_Data_Document
 
 ProviderProductInfos_Relationships
   provider: Single_Relationship_Data_Document (optional)
-  subject: Single_Relationship_Data_Document (optional)
+  subject: ProviderProductInfos_Subject_Single_Relationship_Data_Document (optional)
 
 ProviderProductInfos_Resource_Object
   id: string (required)
@@ -3327,6 +3502,19 @@ ProviderProductInfos_Single_Relationship_Data_Document
 ProviderProductInfos_Single_Resource_Data_Document
   data: ProviderProductInfos_Resource_Object (required)
   links: Links (required)
+  included: Included (optional)
+
+ProviderProductInfos_Subject_Resource_Identifier
+  id: string (required)
+  type: string (required)
+  meta: ProviderProductInfos_Subject_Resource_Identifier_Meta (optional)
+
+ProviderProductInfos_Subject_Resource_Identifier_Meta
+  replacement: Replacement_Provenance (optional)
+
+ProviderProductInfos_Subject_Single_Relationship_Data_Document
+  links: Links (required)
+  data: ProviderProductInfos_Subject_Resource_Identifier | enum[None] (optional)
   included: Included (optional)
 
 Providers_Attributes
@@ -3363,7 +3551,7 @@ Purchases_Multi_Resource_Data_Document
 
 Purchases_Relationships
   owners: Multi_Relationship_Data_Document (optional)
-  subject: Single_Relationship_Data_Document (optional)
+  subject: Purchases_Subject_Single_Relationship_Data_Document (optional)
 
 Purchases_Resource_Object
   id: string (required)
@@ -3379,6 +3567,19 @@ Purchases_Single_Relationship_Data_Document
 Purchases_Single_Resource_Data_Document
   data: Purchases_Resource_Object (required)
   links: Links (required)
+  included: Included (optional)
+
+Purchases_Subject_Resource_Identifier
+  id: string (required)
+  type: string (required)
+  meta: Purchases_Subject_Resource_Identifier_Meta (optional)
+
+Purchases_Subject_Resource_Identifier_Meta
+  replacement: Replacement_Provenance (optional)
+
+Purchases_Subject_Single_Relationship_Data_Document
+  links: Links (required)
+  data: Purchases_Subject_Resource_Identifier | enum[None] (optional)
   included: Included (optional)
 
 ReactionStats
@@ -3439,6 +3640,14 @@ Reactions_Single_Resource_Data_Document
   data: Reactions_Resource_Object (required)
   links: Links (required)
   included: Included (optional)
+
+Replacement_Original_Identifier
+  id: string (required)
+  type: string (required)
+
+Replacement_Provenance
+  status: enum[ORIGINAL, REPLACED, NOT_REPLACED] (required)
+  original: Replacement_Original_Identifier (optional)
 
 Resource_Identifier
   id: string (required)
@@ -3525,6 +3734,32 @@ SearchHistoryEntries_Single_Resource_Data_Document
   links: Links (required)
   included: Included (optional)
 
+SearchResults_Albums_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[SearchResults_Albums_Resource_Identifier] (optional)
+  included: Included (optional)
+
+SearchResults_Albums_Resource_Identifier
+  id: string (required)
+  type: string (required)
+  meta: SearchResults_Albums_Resource_Identifier_Meta (optional)
+
+SearchResults_Albums_Resource_Identifier_Meta
+  replacement: Replacement_Provenance (optional)
+
+SearchResults_Artists_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[SearchResults_Artists_Resource_Identifier] (optional)
+  included: Included (optional)
+
+SearchResults_Artists_Resource_Identifier
+  id: string (required)
+  type: string (required)
+  meta: SearchResults_Artists_Resource_Identifier_Meta (optional)
+
+SearchResults_Artists_Resource_Identifier_Meta
+  replacement: Replacement_Provenance (optional)
+
 SearchResults_Attributes
   trackingId: string (required)
   didYouMean: string (optional)
@@ -3539,13 +3774,26 @@ SearchResults_Multi_Resource_Data_Document
   links: Links (required)
   included: Included (optional)
 
+SearchResults_Playlists_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[SearchResults_Playlists_Resource_Identifier] (optional)
+  included: Included (optional)
+
+SearchResults_Playlists_Resource_Identifier
+  id: string (required)
+  type: string (required)
+  meta: SearchResults_Playlists_Resource_Identifier_Meta (optional)
+
+SearchResults_Playlists_Resource_Identifier_Meta
+  replacement: Replacement_Provenance (optional)
+
 SearchResults_Relationships
-  albums: Multi_Relationship_Data_Document (optional)
-  artists: Multi_Relationship_Data_Document (optional)
-  playlists: Multi_Relationship_Data_Document (optional)
-  topHits: Multi_Relationship_Data_Document (optional)
-  tracks: Multi_Relationship_Data_Document (optional)
-  videos: Multi_Relationship_Data_Document (optional)
+  albums: SearchResults_Albums_Multi_Relationship_Data_Document (optional)
+  artists: SearchResults_Artists_Multi_Relationship_Data_Document (optional)
+  playlists: SearchResults_Playlists_Multi_Relationship_Data_Document (optional)
+  topHits: SearchResults_TopHits_Multi_Relationship_Data_Document (optional)
+  tracks: SearchResults_Tracks_Multi_Relationship_Data_Document (optional)
+  videos: SearchResults_Videos_Multi_Relationship_Data_Document (optional)
 
 SearchResults_Resource_Object
   id: string (required)
@@ -3558,10 +3806,62 @@ SearchResults_Single_Resource_Data_Document
   links: Links (required)
   included: Included (optional)
 
+SearchResults_TopHits_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[SearchResults_TopHits_Resource_Identifier] (optional)
+  included: Included (optional)
+
+SearchResults_TopHits_Resource_Identifier
+  id: string (required)
+  type: string (required)
+  meta: SearchResults_TopHits_Resource_Identifier_Meta (optional)
+
+SearchResults_TopHits_Resource_Identifier_Meta
+  replacement: Replacement_Provenance (optional)
+
+SearchResults_Tracks_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[SearchResults_Tracks_Resource_Identifier] (optional)
+  included: Included (optional)
+
+SearchResults_Tracks_Resource_Identifier
+  id: string (required)
+  type: string (required)
+  meta: SearchResults_Tracks_Resource_Identifier_Meta (optional)
+
+SearchResults_Tracks_Resource_Identifier_Meta
+  replacement: Replacement_Provenance (optional)
+
+SearchResults_Videos_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[SearchResults_Videos_Resource_Identifier] (optional)
+  included: Included (optional)
+
+SearchResults_Videos_Resource_Identifier
+  id: string (required)
+  type: string (required)
+  meta: SearchResults_Videos_Resource_Identifier_Meta (optional)
+
+SearchResults_Videos_Resource_Identifier_Meta
+  replacement: Replacement_Provenance (optional)
+
 SearchSuggestions_Attributes
   trackingId: string (required)
   history: array[SearchSuggestions_History] (optional)
   suggestions: array[SearchSuggestions_Suggestions] (optional)
+
+SearchSuggestions_DirectHits_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[SearchSuggestions_DirectHits_Resource_Identifier] (optional)
+  included: Included (optional)
+
+SearchSuggestions_DirectHits_Resource_Identifier
+  id: string (required)
+  type: string (required)
+  meta: SearchSuggestions_DirectHits_Resource_Identifier_Meta (optional)
+
+SearchSuggestions_DirectHits_Resource_Identifier_Meta
+  replacement: Replacement_Provenance (optional)
 
 SearchSuggestions_Highlights
   length: integer(int32) (required)
@@ -3582,7 +3882,7 @@ SearchSuggestions_Multi_Resource_Data_Document
   included: Included (optional)
 
 SearchSuggestions_Relationships
-  directHits: Multi_Relationship_Data_Document (optional)
+  directHits: SearchSuggestions_DirectHits_Multi_Relationship_Data_Document (optional)
   history: Multi_Relationship_Data_Document (optional)
 
 SearchSuggestions_Resource_Object
@@ -3634,13 +3934,26 @@ Shares_Multi_Resource_Data_Document
 
 Shares_Relationships
   owners: Multi_Relationship_Data_Document (optional)
-  sharedResources: Multi_Relationship_Data_Document (optional)
+  sharedResources: Shares_SharedResources_Multi_Relationship_Data_Document (optional)
 
 Shares_Resource_Object
   id: string (required)
   type: string (required)
   attributes: Shares_Attributes (optional)
   relationships: Shares_Relationships (optional)
+
+Shares_SharedResources_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[Shares_SharedResources_Resource_Identifier] (optional)
+  included: Included (optional)
+
+Shares_SharedResources_Resource_Identifier
+  id: string (required)
+  type: string (required)
+  meta: Shares_SharedResources_Resource_Identifier_Meta (optional)
+
+Shares_SharedResources_Resource_Identifier_Meta
+  replacement: Replacement_Provenance (optional)
 
 Shares_Single_Resource_Data_Document
   data: Shares_Resource_Object (required)
@@ -4169,6 +4482,19 @@ TracksUpdateOperation_Payload_Data_Relationships_Genres_Data
   id: string (required)
   type: enum[genres] (required)
 
+Tracks_Albums_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[Tracks_Albums_Resource_Identifier] (optional)
+  included: Included (optional)
+
+Tracks_Albums_Resource_Identifier
+  id: string (required)
+  type: string (required)
+  meta: Tracks_Albums_Resource_Identifier_Meta (optional)
+
+Tracks_Albums_Resource_Identifier_Meta
+  replacement: Replacement_Provenance (optional)
+
 Tracks_Attributes
   duration: string (required)
   explicit: boolean (required)
@@ -4200,7 +4526,7 @@ Tracks_Multi_Resource_Data_Document
   included: Included (optional)
 
 Tracks_Relationships
-  albums: Multi_Relationship_Data_Document (optional)
+  albums: Tracks_Albums_Multi_Relationship_Data_Document (optional)
   artists: Multi_Relationship_Data_Document (optional)
   credits: Multi_Relationship_Data_Document (optional)
   download: Single_Relationship_Data_Document (optional)
@@ -4211,19 +4537,45 @@ Tracks_Relationships
   priceConfig: Single_Relationship_Data_Document (optional)
   providers: Multi_Relationship_Data_Document (optional)
   radio: Multi_Relationship_Data_Document (optional)
-  replacement: Single_Relationship_Data_Document (optional)
+  replacement: Tracks_Replacement_Single_Relationship_Data_Document (optional)
   shares: Multi_Relationship_Data_Document (optional)
-  similarTracks: Multi_Relationship_Data_Document (optional)
+  similarTracks: Tracks_SimilarTracks_Multi_Relationship_Data_Document (optional)
   sourceFile: Single_Relationship_Data_Document (optional)
-  suggestedTracks: Multi_Relationship_Data_Document (optional)
+  suggestedTracks: Tracks_SuggestedTracks_Multi_Relationship_Data_Document (optional)
   trackStatistics: Single_Relationship_Data_Document (optional)
   usageRules: Single_Relationship_Data_Document (optional)
+
+Tracks_Replacement_Resource_Identifier
+  id: string (required)
+  type: string (required)
+  meta: Tracks_Replacement_Resource_Identifier_Meta (optional)
+
+Tracks_Replacement_Resource_Identifier_Meta
+  replacement: Replacement_Provenance (optional)
+
+Tracks_Replacement_Single_Relationship_Data_Document
+  links: Links (required)
+  data: Tracks_Replacement_Resource_Identifier | enum[None] (optional)
+  included: Included (optional)
 
 Tracks_Resource_Object
   id: string (required)
   type: string (required)
   attributes: Tracks_Attributes (optional)
   relationships: Tracks_Relationships (optional)
+
+Tracks_SimilarTracks_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[Tracks_SimilarTracks_Resource_Identifier] (optional)
+  included: Included (optional)
+
+Tracks_SimilarTracks_Resource_Identifier
+  id: string (required)
+  type: string (required)
+  meta: Tracks_SimilarTracks_Resource_Identifier_Meta (optional)
+
+Tracks_SimilarTracks_Resource_Identifier_Meta
+  replacement: Replacement_Provenance (optional)
 
 Tracks_Single_Relationship_Data_Document
   links: Links (required)
@@ -4234,6 +4586,19 @@ Tracks_Single_Resource_Data_Document
   data: Tracks_Resource_Object (required)
   links: Links (required)
   included: Included (optional)
+
+Tracks_SuggestedTracks_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[Tracks_SuggestedTracks_Resource_Identifier] (optional)
+  included: Included (optional)
+
+Tracks_SuggestedTracks_Resource_Identifier
+  id: string (required)
+  type: string (required)
+  meta: Tracks_SuggestedTracks_Resource_Identifier_Meta (optional)
+
+Tracks_SuggestedTracks_Resource_Identifier_Meta
+  replacement: Replacement_Provenance (optional)
 
 UsageRulesCreateOperation_Payload
   data: UsageRulesCreateOperation_Payload_Data (required)
@@ -4339,6 +4704,7 @@ UserCollectionAlbums_Items_Resource_Identifier
 
 UserCollectionAlbums_Items_Resource_Identifier_Meta
   addedAt: string(date-time) (required)
+  replacement: Replacement_Provenance (optional)
 
 UserCollectionAlbums_Multi_Relationship_Data_Document
   links: Links (required)
@@ -4661,6 +5027,7 @@ UserCollectionSaveForLaters_Items_Resource_Identifier
 
 UserCollectionSaveForLaters_Items_Resource_Identifier_Meta
   addedAt: string(date-time) (required)
+  replacement: Replacement_Provenance (optional)
 
 UserCollectionSaveForLaters_Multi_Relationship_Data_Document
   links: Links (required)
@@ -4738,6 +5105,7 @@ UserCollectionTracks_Items_Resource_Identifier
 
 UserCollectionTracks_Items_Resource_Identifier_Meta
   addedAt: string(date-time) (required)
+  replacement: Replacement_Provenance (optional)
 
 UserCollectionTracks_Multi_Relationship_Data_Document
   links: Links (required)
@@ -4815,6 +5183,7 @@ UserCollectionVideos_Items_Resource_Identifier
 
 UserCollectionVideos_Items_Resource_Identifier_Meta
   addedAt: string(date-time) (required)
+  replacement: Replacement_Provenance (optional)
 
 UserCollectionVideos_Multi_Relationship_Data_Document
   links: Links (required)
@@ -4938,6 +5307,7 @@ UserCollections_Albums_Resource_Identifier
 
 UserCollections_Albums_Resource_Identifier_Meta
   addedAt: string(date-time) (required)
+  replacement: Replacement_Provenance (optional)
 
 UserCollections_Artists_Multi_Relationship_Data_Document
   links: Links (required)
@@ -5008,6 +5378,7 @@ UserCollections_Tracks_Resource_Identifier
 
 UserCollections_Tracks_Resource_Identifier_Meta
   addedAt: string(date-time) (required)
+  replacement: Replacement_Provenance (optional)
 
 UserCollections_Videos_Multi_Relationship_Data_Document
   links: Links (required)
@@ -5021,6 +5392,7 @@ UserCollections_Videos_Resource_Identifier
 
 UserCollections_Videos_Resource_Identifier_Meta
   addedAt: string(date-time) (required)
+  replacement: Replacement_Provenance (optional)
 
 UserDailyMixes_Attributes
 
@@ -5253,6 +5625,7 @@ UserRecommendationBlocks_Tracks_Resource_Identifier
 
 UserRecommendationBlocks_Tracks_Resource_Identifier_Meta
   createdAt: string(date-time) (required)
+  replacement: Replacement_Provenance (optional)
 
 UserRecommendationBlocks_Videos_Multi_Relationship_Data_Document
   links: Links (required)
@@ -5266,6 +5639,7 @@ UserRecommendationBlocks_Videos_Resource_Identifier
 
 UserRecommendationBlocks_Videos_Resource_Identifier_Meta
   createdAt: string(date-time) (required)
+  replacement: Replacement_Provenance (optional)
 
 UserRecommendations_Attributes
 
@@ -5419,6 +5793,19 @@ VideoManifests_Single_Resource_Data_Document
   links: Links (required)
   included: Included (optional)
 
+Videos_Albums_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[Videos_Albums_Resource_Identifier] (optional)
+  included: Included (optional)
+
+Videos_Albums_Resource_Identifier
+  id: string (required)
+  type: string (required)
+  meta: Videos_Albums_Resource_Identifier_Meta (optional)
+
+Videos_Albums_Resource_Identifier_Meta
+  replacement: Replacement_Provenance (optional)
+
 Videos_Attributes
   duration: string (required)
   explicit: boolean (required)
@@ -5442,21 +5829,47 @@ Videos_Multi_Resource_Data_Document
   included: Included (optional)
 
 Videos_Relationships
-  albums: Multi_Relationship_Data_Document (optional)
+  albums: Videos_Albums_Multi_Relationship_Data_Document (optional)
   artists: Multi_Relationship_Data_Document (optional)
   credits: Multi_Relationship_Data_Document (optional)
   providers: Multi_Relationship_Data_Document (optional)
-  replacement: Single_Relationship_Data_Document (optional)
-  similarVideos: Multi_Relationship_Data_Document (optional)
-  suggestedVideos: Multi_Relationship_Data_Document (optional)
+  replacement: Videos_Replacement_Single_Relationship_Data_Document (optional)
+  similarVideos: Videos_SimilarVideos_Multi_Relationship_Data_Document (optional)
+  suggestedVideos: Videos_SuggestedVideos_Multi_Relationship_Data_Document (optional)
   thumbnailArt: Multi_Relationship_Data_Document (optional)
   usageRules: Single_Relationship_Data_Document (optional)
+
+Videos_Replacement_Resource_Identifier
+  id: string (required)
+  type: string (required)
+  meta: Videos_Replacement_Resource_Identifier_Meta (optional)
+
+Videos_Replacement_Resource_Identifier_Meta
+  replacement: Replacement_Provenance (optional)
+
+Videos_Replacement_Single_Relationship_Data_Document
+  links: Links (required)
+  data: Videos_Replacement_Resource_Identifier | enum[None] (optional)
+  included: Included (optional)
 
 Videos_Resource_Object
   id: string (required)
   type: string (required)
   attributes: Videos_Attributes (optional)
   relationships: Videos_Relationships (optional)
+
+Videos_SimilarVideos_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[Videos_SimilarVideos_Resource_Identifier] (optional)
+  included: Included (optional)
+
+Videos_SimilarVideos_Resource_Identifier
+  id: string (required)
+  type: string (required)
+  meta: Videos_SimilarVideos_Resource_Identifier_Meta (optional)
+
+Videos_SimilarVideos_Resource_Identifier_Meta
+  replacement: Replacement_Provenance (optional)
 
 Videos_Single_Relationship_Data_Document
   links: Links (required)
@@ -5467,3 +5880,16 @@ Videos_Single_Resource_Data_Document
   data: Videos_Resource_Object (required)
   links: Links (required)
   included: Included (optional)
+
+Videos_SuggestedVideos_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[Videos_SuggestedVideos_Resource_Identifier] (optional)
+  included: Included (optional)
+
+Videos_SuggestedVideos_Resource_Identifier
+  id: string (required)
+  type: string (required)
+  meta: Videos_SuggestedVideos_Resource_Identifier_Meta (optional)
+
+Videos_SuggestedVideos_Resource_Identifier_Meta
+  replacement: Replacement_Provenance (optional)

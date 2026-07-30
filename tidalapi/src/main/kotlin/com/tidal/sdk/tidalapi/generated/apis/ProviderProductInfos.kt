@@ -27,6 +27,9 @@ interface ProviderProductInfos {
      *   &#x60;00602527336510&#x60;) (optional)
      * @param filterGrid List of GRIDs (Global Release Identifier, ISO 7064) (e.g.
      *   &#x60;A10302B0013941653J&#x60;) (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: subject (optional)
      * @return [ProviderProductInfosMultiResourceDataDocument]
      */
     @GET("providerProductInfos")
@@ -40,6 +43,7 @@ interface ProviderProductInfos {
         filterBarcodeId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[grid]")
         filterGrid: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<ProviderProductInfosMultiResourceDataDocument>
 
     /**
@@ -82,6 +86,9 @@ interface ProviderProductInfos {
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: subject (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: subject (optional)
      * @return [ProviderProductInfosSingleRelationshipDataDocument]
      */
     @GET("providerProductInfos/{id}/relationships/subject")
@@ -90,5 +97,6 @@ interface ProviderProductInfos {
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<ProviderProductInfosSingleRelationshipDataDocument>
 }

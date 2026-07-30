@@ -29,6 +29,9 @@ interface UserCollectionPlaylists {
      *   unsupported. (optional, default to "en-US")
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: items, owners (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: items.items (optional)
      * @return [UserCollectionPlaylistsSingleResourceDataDocument]
      */
     @GET("userCollectionPlaylists/{id}")
@@ -37,6 +40,7 @@ interface UserCollectionPlaylists {
         @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<UserCollectionPlaylistsSingleResourceDataDocument>
 
     /**
@@ -114,6 +118,9 @@ interface UserCollectionPlaylists {
      *   sorted ascending. (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: items (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: items.items (optional)
      * @return [UserCollectionPlaylistsItemsMultiRelationshipDataDocument]
      */
     @GET("userCollectionPlaylists/{id}/relationships/items")
@@ -125,6 +132,7 @@ interface UserCollectionPlaylists {
         @Query("sort") sort: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<UserCollectionPlaylistsItemsMultiRelationshipDataDocument>
 
     /**

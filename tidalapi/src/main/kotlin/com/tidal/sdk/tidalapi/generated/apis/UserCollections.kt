@@ -41,6 +41,9 @@ interface UserCollections {
      *   unsupported. (optional, default to "en-US")
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: albums, artists, owners, playlists, tracks, videos (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: albums (optional)
      * @return [UserCollectionsSingleResourceDataDocument]
      */
     @Deprecated("This api was deprecated")
@@ -50,6 +53,7 @@ interface UserCollections {
         @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<UserCollectionsSingleResourceDataDocument>
 
     /**
@@ -118,6 +122,9 @@ interface UserCollections {
      *   unsupported. (optional, default to "en-US")
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: albums (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: albums (optional)
      * @return [UserCollectionsAlbumsMultiRelationshipDataDocument]
      */
     @Deprecated("This api was deprecated")
@@ -129,6 +136,7 @@ interface UserCollections {
         @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<UserCollectionsAlbumsMultiRelationshipDataDocument>
 
     /**
@@ -226,6 +234,9 @@ interface UserCollections {
      *   unsupported. (optional, default to "en-US")
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: artists (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: artists.albums (optional)
      * @return [UserCollectionsArtistsMultiRelationshipDataDocument]
      */
     @Deprecated("This api was deprecated")
@@ -237,6 +248,7 @@ interface UserCollections {
         @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<UserCollectionsArtistsMultiRelationshipDataDocument>
 
     /**
@@ -369,6 +381,9 @@ interface UserCollections {
      *   sorted ascending. (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: playlists (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: playlists.items (optional)
      * @return [UserCollectionsPlaylistsMultiRelationshipDataDocument]
      */
     @Deprecated("This api was deprecated")
@@ -381,6 +396,7 @@ interface UserCollections {
         @Query("sort") sort: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<UserCollectionsPlaylistsMultiRelationshipDataDocument>
 
     /**
@@ -484,6 +500,9 @@ interface UserCollections {
      *   unsupported. (optional, default to "en-US")
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: tracks (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: tracks (optional)
      * @return [UserCollectionsTracksMultiRelationshipDataDocument]
      */
     @Deprecated("This api was deprecated")
@@ -495,6 +514,7 @@ interface UserCollections {
         @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<UserCollectionsTracksMultiRelationshipDataDocument>
 
     /**
@@ -596,6 +616,9 @@ interface UserCollections {
      *   unsupported. (optional, default to "en-US")
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: videos (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: videos (optional)
      * @return [UserCollectionsVideosMultiRelationshipDataDocument]
      */
     @Deprecated("This api was deprecated")
@@ -607,6 +630,7 @@ interface UserCollections {
         @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<UserCollectionsVideosMultiRelationshipDataDocument>
 
     /**
