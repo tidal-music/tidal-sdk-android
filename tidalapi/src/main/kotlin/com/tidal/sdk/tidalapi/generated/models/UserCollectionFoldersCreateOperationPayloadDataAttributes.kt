@@ -9,32 +9,8 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/**
- * @param name
- * @param collectionType The type of user collection this folder belongs to. Deprecated: send the
- *   'userCollection' relationship instead. Accepted for backward compatibility during migration and
- *   will be removed in a future version.
- */
+/** @param name */
 @Serializable
 data class UserCollectionFoldersCreateOperationPayloadDataAttributes(
-    @SerialName(value = "name") val name: kotlin.String,
-    /* The type of user collection this folder belongs to. Deprecated: send the 'userCollection' relationship instead. Accepted for backward compatibility during migration and will be removed in a future version. */
-
-    @SerialName(value = "collectionType")
-    @Deprecated(message = "This property is deprecated.")
-    val collectionType: UserCollectionFoldersCreateOperationPayloadDataAttributes.CollectionType? =
-        null,
-) {
-
-    /**
-     * The type of user collection this folder belongs to. Deprecated: send the 'userCollection'
-     * relationship instead. Accepted for backward compatibility during migration and will be
-     * removed in a future version.
-     *
-     * Values: PLAYLISTS
-     */
-    @Serializable
-    enum class CollectionType(val value: kotlin.String) {
-        @SerialName(value = "PLAYLISTS") PLAYLISTS("PLAYLISTS")
-    }
-}
+    @SerialName(value = "name") val name: kotlin.String
+) {}

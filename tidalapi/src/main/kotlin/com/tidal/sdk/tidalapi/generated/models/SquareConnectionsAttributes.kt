@@ -11,6 +11,15 @@ import kotlinx.serialization.Serializable
 
 /**
  * @param status Current status of this Square connection
+ * @param capabilities Per-feature capability statuses for this Square connection. Every capability
+ *   the connection offers is listed with a status carrying more than mere presence: SITES is
+ *   GRANTED when the Square Online sites scopes are granted, or REQUIRES_REAUTH when the connection
+ *   exists but its credential lacks them (the seller must reconnect Square via POST
+ *   /squareConnections). Because a connection always offers the sites feature, SITES is always
+ *   present here. Extensible — only SITES is defined today. Absent only when the connection has no
+ *   sites state (e.g. no approved Square credential). Client rule: if SITES != GRANTED prompt
+ *   reconnect; else if selectedSite.data is null show the site picker; else the selected site is
+ *   shown to buyers.
  * @param createdAt Timestamp when the connection was created
  * @param externalLinks External links for Square connection
  * @param lastModifiedAt Timestamp when the connection was last modified
@@ -21,6 +30,10 @@ data class SquareConnectionsAttributes(
     /* Current status of this Square connection */
 
     @SerialName(value = "status") val status: SquareConnectionsAttributes.Status,
+    /* Per-feature capability statuses for this Square connection. Every capability the connection offers is listed with a status carrying more than mere presence: SITES is GRANTED when the Square Online sites scopes are granted, or REQUIRES_REAUTH when the connection exists but its credential lacks them (the seller must reconnect Square via POST /squareConnections). Because a connection always offers the sites feature, SITES is always present here. Extensible — only SITES is defined today. Absent only when the connection has no sites state (e.g. no approved Square credential). Client rule: if SITES != GRANTED prompt reconnect; else if selectedSite.data is null show the site picker; else the selected site is shown to buyers. */
+
+    @SerialName(value = "capabilities")
+    val capabilities: kotlin.collections.List<SquareConnectionsCapability>? = null,
     /* Timestamp when the connection was created */
 
     @SerialName(value = "createdAt") val createdAt: kotlin.String? = null,

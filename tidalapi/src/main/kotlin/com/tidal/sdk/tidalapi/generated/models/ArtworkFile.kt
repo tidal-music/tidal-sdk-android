@@ -21,5 +21,5 @@ data class ArtworkFile(
     /* Artwork file href */
 
     @SerialName(value = "href") val href: kotlin.String,
-    @SerialName(value = "meta") val meta: ArtworkFileMeta? = null,
+    @SerialName(value = "meta") val meta: ArtworkFileMeta,
 ) {}

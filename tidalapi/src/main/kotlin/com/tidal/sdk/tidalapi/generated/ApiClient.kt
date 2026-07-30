@@ -43,6 +43,7 @@ import com.tidal.sdk.tidalapi.generated.apis.Shares
 import com.tidal.sdk.tidalapi.generated.apis.SquareConnections
 import com.tidal.sdk.tidalapi.generated.apis.StripeConnections
 import com.tidal.sdk.tidalapi.generated.apis.StripeDashboardLinks
+import com.tidal.sdk.tidalapi.generated.apis.SubscriptionPriceChangeDecisions
 import com.tidal.sdk.tidalapi.generated.apis.TemporaryUserTokens
 import com.tidal.sdk.tidalapi.generated.apis.Terms
 import com.tidal.sdk.tidalapi.generated.apis.TrackFiles
@@ -68,6 +69,7 @@ import com.tidal.sdk.tidalapi.generated.apis.UserOfflineMixes
 import com.tidal.sdk.tidalapi.generated.apis.UserRecommendationBlocks
 import com.tidal.sdk.tidalapi.generated.apis.UserRecommendations
 import com.tidal.sdk.tidalapi.generated.apis.UserReports
+import com.tidal.sdk.tidalapi.generated.apis.UserSubscriptionPriceChanges
 import com.tidal.sdk.tidalapi.generated.apis.Users
 import com.tidal.sdk.tidalapi.generated.apis.VideoManifests
 import com.tidal.sdk.tidalapi.generated.apis.Videos
@@ -309,6 +311,14 @@ class TidalApiClient(
     }
 
     /**
+     * Returns an instance of the [SubscriptionPriceChangeDecisions] which can be used to make API
+     * calls to the
+     */
+    fun createSubscriptionPriceChangeDecisions(): SubscriptionPriceChangeDecisions {
+        return retrofit.create(SubscriptionPriceChangeDecisions::class.java)
+    }
+
+    /**
      * Returns an instance of the [TemporaryUserTokens] which can be used to make API calls to the
      */
     fun createTemporaryUserTokens(): TemporaryUserTokens {
@@ -463,6 +473,14 @@ class TidalApiClient(
     /** Returns an instance of the [UserReports] which can be used to make API calls to the */
     fun createUserReports(): UserReports {
         return retrofit.create(UserReports::class.java)
+    }
+
+    /**
+     * Returns an instance of the [UserSubscriptionPriceChanges] which can be used to make API calls
+     * to the
+     */
+    fun createUserSubscriptionPriceChanges(): UserSubscriptionPriceChanges {
+        return retrofit.create(UserSubscriptionPriceChanges::class.java)
     }
 
     /** Returns an instance of the [Users] which can be used to make API calls to the */

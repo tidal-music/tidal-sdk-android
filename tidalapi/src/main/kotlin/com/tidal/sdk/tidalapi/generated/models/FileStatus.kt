@@ -14,8 +14,9 @@ import kotlinx.serialization.Serializable
  *
  * @param moderationFileStatus Moderation status for file
  * @param technicalFileStatus Technical status for file
- * @param aiScanningFileStatus Status of scanning the file for being AI-generated. Present only for
- *   file types that support AI scanning (e.g. track source files); absent otherwise.
+ * @param aiScanningFileStatus Status of scanning the file for being AI-generated. Only present for
+ *   file types that support AI scanning (e.g. track source files) and when a scanning status is
+ *   available for the file; absent otherwise.
  */
 @Serializable
 data class FileStatus(
@@ -28,7 +29,7 @@ data class FileStatus(
 
     @SerialName(value = "technicalFileStatus")
     val technicalFileStatus: FileStatus.TechnicalFileStatus,
-    /* Status of scanning the file for being AI-generated. Present only for file types that support AI scanning (e.g. track source files); absent otherwise. */
+    /* Status of scanning the file for being AI-generated. Only present for file types that support AI scanning (e.g. track source files) and when a scanning status is available for the file; absent otherwise. */
 
     @SerialName(value = "aiScanningFileStatus")
     val aiScanningFileStatus: FileStatus.AiScanningFileStatus? = null,
@@ -64,8 +65,9 @@ data class FileStatus(
     }
 
     /**
-     * Status of scanning the file for being AI-generated. Present only for file types that support
-     * AI scanning (e.g. track source files); absent otherwise.
+     * Status of scanning the file for being AI-generated. Only present for file types that support
+     * AI scanning (e.g. track source files) and when a scanning status is available for the file;
+     * absent otherwise.
      *
      * Values: NOT_SCANNED,SCANNING,IS_AI,NOT_AI,ERROR
      */

@@ -32,20 +32,19 @@ interface DynamicPages {
      * Get multiple dynamicPages. Retrieves multiple dynamicPages by available filters, or without
      * if applicable. Responses:
      * - 200: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 415: Unsupported request payload media type or content encoding
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param deviceType The type of device making the request
      * @param systemType The system type of the device making the request
      * @param clientVersion Client version number
      * @param filterPageType type of the page (e.g. &#x60;ARTIST&#x60;)
-     * @param filterSubjectId the subject id, eg. artistId (e.g. &#x60;67890&#x60;)
      * @param refreshSeed Stable seed used to keep dynamic page and module results consistent across
      *   a client session. (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
@@ -53,6 +52,8 @@ interface DynamicPages {
      *   unsupported. (optional, default to "en-US")
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: modules, subject (optional)
+     * @param filterSubjectId The subject resource ID. Required except for HOME_FREE, where it must
+     *   be omitted. (e.g. &#x60;67890&#x60;) (optional)
      * @return [DynamicPagesMultiResourceDataDocument]
      */
     @GET("dynamicPages")
@@ -62,13 +63,13 @@ interface DynamicPages {
         @Query("clientVersion") clientVersion: kotlin.String,
         @Query("filter[pageType]")
         filterPageType: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
-        @Query("filter[subject.id]")
-        filterSubjectId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
         @Query("refreshSeed") refreshSeed: kotlin.String? = null,
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("filter[subject.id]")
+        filterSubjectId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<DynamicPagesMultiResourceDataDocument>
 
     /** enum for parameter deviceType */
@@ -93,14 +94,14 @@ interface DynamicPages {
     /**
      * Get modules relationship (\&quot;to-many\&quot;). Retrieves modules relationship. Responses:
      * - 200: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 415: Unsupported request payload media type or content encoding
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id DynamicPages Id
      * @param deviceType The type of device making the request
@@ -134,14 +135,14 @@ interface DynamicPages {
     /**
      * Get subject relationship (\&quot;to-one\&quot;). Retrieves subject relationship. Responses:
      * - 200: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 415: Unsupported request payload media type or content encoding
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id DynamicPages Id
      * @param include Allows the client to customize which related resources should be returned.

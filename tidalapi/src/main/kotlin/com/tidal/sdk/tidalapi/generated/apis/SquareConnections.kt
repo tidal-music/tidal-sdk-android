@@ -1,6 +1,9 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.SquareConnectionsCreateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.SquareConnectionsMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.SquareConnectionsSelectedSiteRelationshipUpdateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.SquareConnectionsSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.SquareConnectionsSingleResourceDataDocument
 import retrofit2.Response
 import retrofit2.http.*
@@ -9,36 +12,125 @@ interface SquareConnections {
     /**
      * Get single squareConnection. Retrieves single squareConnection by id. Responses:
      * - 200: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 415: Unsupported request payload media type or content encoding
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param id Square connection id. Use &#x60;me&#x60; for the authenticated user&#39;s resource
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: selectedSite, sites (optional)
      * @return [SquareConnectionsSingleResourceDataDocument]
      */
     @GET("squareConnections/{id}")
     suspend fun squareConnectionsIdGet(
-        @Path("id") id: kotlin.String
+        @Path("id") id: kotlin.String,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<SquareConnectionsSingleResourceDataDocument>
+
+    /**
+     * Get selectedSite relationship (\&quot;to-one\&quot;). Retrieves selectedSite relationship.
+     * Responses:
+     * - 200: Successful response
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
+     * - 429: Rate limit exceeded
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
+     *
+     * @param id Square connection id. Use &#x60;me&#x60; for the authenticated user&#39;s resource
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: selectedSite (optional)
+     * @return [SquareConnectionsSingleRelationshipDataDocument]
+     */
+    @GET("squareConnections/{id}/relationships/selectedSite")
+    suspend fun squareConnectionsIdRelationshipsSelectedSiteGet(
+        @Path("id") id: kotlin.String,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+    ): Response<SquareConnectionsSingleRelationshipDataDocument>
+
+    /**
+     * Update selectedSite relationship (\&quot;to-one\&quot;). Updates selectedSite relationship.
+     * Responses:
+     * - 200: Successful response
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 409: Square credential lacks required site scopes; run Square onboarding again; Request
+     *   already in progress for this idempotency key
+     * - 415: Unsupported request media type or encoding
+     * - 422: Idempotency key reused with a different payload
+     * - 429: Rate limit exceeded
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
+     *
+     * @param id Square connection id. Use &#x60;me&#x60; for the authenticated user&#39;s resource
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
+     * @param squareConnectionsSelectedSiteRelationshipUpdateOperationPayload (optional)
+     * @return [SquareConnectionsSingleRelationshipDataDocument]
+     */
+    @PATCH("squareConnections/{id}/relationships/selectedSite")
+    suspend fun squareConnectionsIdRelationshipsSelectedSitePatch(
+        @Path("id") id: kotlin.String,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
+        @Body
+        squareConnectionsSelectedSiteRelationshipUpdateOperationPayload:
+            SquareConnectionsSelectedSiteRelationshipUpdateOperationPayload? =
+            null,
+    ): Response<SquareConnectionsSingleRelationshipDataDocument>
+
+    /**
+     * Get sites relationship (\&quot;to-many\&quot;). Retrieves sites relationship. Responses:
+     * - 200: Successful response
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
+     * - 429: Rate limit exceeded
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
+     *
+     * @param id Square connection id. Use &#x60;me&#x60; for the authenticated user&#39;s resource
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: sites (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
+     * @return [SquareConnectionsMultiRelationshipDataDocument]
+     */
+    @GET("squareConnections/{id}/relationships/sites")
+    suspend fun squareConnectionsIdRelationshipsSitesGet(
+        @Path("id") id: kotlin.String,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
+    ): Response<SquareConnectionsMultiRelationshipDataDocument>
 
     /**
      * Create single squareConnection. Creates a new squareConnection. Responses:
      * - 201: Successful response
-     * - 400: The request is malformed or invalid
-     * - 404: The requested resource was not found
-     * - 405: The HTTP method is not allowed for the requested resource
-     * - 406: A response that satisfies the content negotiation headers cannot be produced
-     * - 409: A request with this idempotency key is currently being processed
-     * - 415: Unsupported request payload media type or content encoding
-     * - 422: Idempotency key was already used with a different request payload
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 409: Request already in progress for this idempotency key
+     * - 415: Unsupported request media type or encoding
+     * - 422: Idempotency key reused with a different payload
      * - 429: Rate limit exceeded
-     * - 500: An unexpected error was encountered
-     * - 503: Temporarily unavailable; please try again later
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
      *
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
