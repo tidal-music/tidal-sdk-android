@@ -27,6 +27,9 @@ interface OfflineTasks {
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: collection, item, owners (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: collection (optional)
      * @return [OfflineTasksMultiResourceDataDocument]
      */
     @GET("offlineTasks")
@@ -36,6 +39,7 @@ interface OfflineTasks {
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<OfflineTasksMultiResourceDataDocument>
 
     /**
@@ -53,6 +57,9 @@ interface OfflineTasks {
      * @param id Offline task id
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: collection, item, owners (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: collection (optional)
      * @return [OfflineTasksSingleResourceDataDocument]
      */
     @GET("offlineTasks/{id}")
@@ -60,6 +67,7 @@ interface OfflineTasks {
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<OfflineTasksSingleResourceDataDocument>
 
     /**
@@ -105,6 +113,9 @@ interface OfflineTasks {
      * @param id Offline task id
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: collection (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: collection (optional)
      * @return [OfflineTasksSingleRelationshipDataDocument]
      */
     @GET("offlineTasks/{id}/relationships/collection")
@@ -112,6 +123,7 @@ interface OfflineTasks {
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<OfflineTasksSingleRelationshipDataDocument>
 
     /**
@@ -129,6 +141,9 @@ interface OfflineTasks {
      * @param id Offline task id
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: item (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: item (optional)
      * @return [OfflineTasksSingleRelationshipDataDocument]
      */
     @GET("offlineTasks/{id}/relationships/item")
@@ -136,6 +151,7 @@ interface OfflineTasks {
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<OfflineTasksSingleRelationshipDataDocument>
 
     /**

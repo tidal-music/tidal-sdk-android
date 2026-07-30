@@ -54,6 +54,9 @@ interface DynamicPages {
      *   Available options: modules, subject (optional)
      * @param filterSubjectId The subject resource ID. Required except for HOME_FREE, where it must
      *   be omitted. (e.g. &#x60;67890&#x60;) (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: modules.items (optional)
      * @return [DynamicPagesMultiResourceDataDocument]
      */
     @GET("dynamicPages")
@@ -70,6 +73,7 @@ interface DynamicPages {
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[subject.id]")
         filterSubjectId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<DynamicPagesMultiResourceDataDocument>
 
     /** enum for parameter deviceType */
@@ -116,6 +120,9 @@ interface DynamicPages {
      *   unsupported. (optional, default to "en-US")
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: modules (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: modules.items (optional)
      * @return [DynamicPagesMultiRelationshipDataDocument]
      */
     @GET("dynamicPages/{id}/relationships/modules")
@@ -130,6 +137,7 @@ interface DynamicPages {
         @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<DynamicPagesMultiRelationshipDataDocument>
 
     /**
@@ -147,6 +155,9 @@ interface DynamicPages {
      * @param id DynamicPages Id
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: subject (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: subject (optional)
      * @return [DynamicPagesSingleRelationshipDataDocument]
      */
     @GET("dynamicPages/{id}/relationships/subject")
@@ -154,5 +165,6 @@ interface DynamicPages {
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<DynamicPagesSingleRelationshipDataDocument>
 }

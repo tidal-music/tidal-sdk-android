@@ -26,6 +26,9 @@ interface ArtistClaims {
      * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: acceptedArtists, owners, recommendedArtists (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: acceptedArtists.albums (optional)
      * @return [ArtistClaimsMultiResourceDataDocument]
      */
     @GET("artistClaims")
@@ -34,6 +37,7 @@ interface ArtistClaims {
         filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<ArtistClaimsMultiResourceDataDocument>
 
     /**
@@ -76,6 +80,9 @@ interface ArtistClaims {
      * @param id Artist claim id
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: acceptedArtists, owners, recommendedArtists (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: acceptedArtists.albums (optional)
      * @return [ArtistClaimsSingleResourceDataDocument]
      */
     @GET("artistClaims/{id}")
@@ -83,6 +90,7 @@ interface ArtistClaims {
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<ArtistClaimsSingleResourceDataDocument>
 
     /**
@@ -132,6 +140,9 @@ interface ArtistClaims {
      *   Available options: acceptedArtists (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: acceptedArtists.albums (optional)
      * @return [ArtistClaimsMultiRelationshipDataDocument]
      */
     @GET("artistClaims/{id}/relationships/acceptedArtists")
@@ -140,6 +151,7 @@ interface ArtistClaims {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<ArtistClaimsMultiRelationshipDataDocument>
 
     /**
@@ -220,6 +232,9 @@ interface ArtistClaims {
      *   Available options: recommendedArtists (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: recommendedArtists.albums (optional)
      * @return [ArtistClaimsMultiRelationshipDataDocument]
      */
     @GET("artistClaims/{id}/relationships/recommendedArtists")
@@ -228,6 +243,7 @@ interface ArtistClaims {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<ArtistClaimsMultiRelationshipDataDocument>
 
     /**

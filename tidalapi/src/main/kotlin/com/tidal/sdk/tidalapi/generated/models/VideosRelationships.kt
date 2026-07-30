@@ -22,14 +22,16 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class VideosRelationships(
-    @SerialName(value = "albums") val albums: MultiRelationshipDataDocument? = null,
+    @SerialName(value = "albums") val albums: VideosAlbumsMultiRelationshipDataDocument? = null,
     @SerialName(value = "artists") val artists: MultiRelationshipDataDocument? = null,
     @SerialName(value = "credits") val credits: MultiRelationshipDataDocument? = null,
     @SerialName(value = "providers") val providers: MultiRelationshipDataDocument? = null,
-    @SerialName(value = "replacement") val replacement: SingleRelationshipDataDocument? = null,
-    @SerialName(value = "similarVideos") val similarVideos: MultiRelationshipDataDocument? = null,
+    @SerialName(value = "replacement")
+    val replacement: VideosReplacementSingleRelationshipDataDocument? = null,
+    @SerialName(value = "similarVideos")
+    val similarVideos: VideosSimilarVideosMultiRelationshipDataDocument? = null,
     @SerialName(value = "suggestedVideos")
-    val suggestedVideos: MultiRelationshipDataDocument? = null,
+    val suggestedVideos: VideosSuggestedVideosMultiRelationshipDataDocument? = null,
     @SerialName(value = "thumbnailArt") val thumbnailArt: MultiRelationshipDataDocument? = null,
     @SerialName(value = "usageRules") val usageRules: SingleRelationshipDataDocument? = null,
 ) {}

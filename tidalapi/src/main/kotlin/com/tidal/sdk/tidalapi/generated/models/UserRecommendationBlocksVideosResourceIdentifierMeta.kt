@@ -9,11 +9,15 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param createdAt When the item was blocked */
+/**
+ * @param createdAt When the item was blocked
+ * @param replacement
+ */
 @Serializable
 data class UserRecommendationBlocksVideosResourceIdentifierMeta(
 
     /* When the item was blocked */
 
-    @SerialName(value = "createdAt") val createdAt: kotlin.String
+    @SerialName(value = "createdAt") val createdAt: kotlin.String,
+    @SerialName(value = "replacement") val replacement: ReplacementProvenance? = null,
 ) {}

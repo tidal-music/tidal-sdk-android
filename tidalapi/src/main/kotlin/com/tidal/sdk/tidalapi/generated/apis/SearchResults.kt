@@ -54,6 +54,9 @@ interface SearchResults {
      * @param clientVersion Client version number (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: albums, artists, playlists, topHits, tracks, videos (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: albums (optional)
      * @return [SearchResultsSingleResourceDataDocument]
      */
     @GET("searchResults/{id}")
@@ -68,6 +71,7 @@ interface SearchResults {
         @Query("clientVersion") clientVersion: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<SearchResultsSingleResourceDataDocument>
 
     /** enum for parameter explicitFilter */
@@ -118,6 +122,9 @@ interface SearchResults {
      * @param clientVersion Client version number (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: albums (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: albums (optional)
      * @return [SearchResultsMultiRelationshipDataDocument]
      */
     @GET("searchResults/{id}/relationships/albums")
@@ -133,6 +140,7 @@ interface SearchResults {
         @Query("clientVersion") clientVersion: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<SearchResultsMultiRelationshipDataDocument>
 
     /** enum for parameter explicitFilter */
@@ -183,6 +191,9 @@ interface SearchResults {
      * @param clientVersion Client version number (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: artists (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: artists (optional)
      * @return [SearchResultsMultiRelationshipDataDocument]
      */
     @GET("searchResults/{id}/relationships/artists")
@@ -198,6 +209,7 @@ interface SearchResults {
         @Query("clientVersion") clientVersion: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<SearchResultsMultiRelationshipDataDocument>
 
     /** enum for parameter explicitFilter */
@@ -249,6 +261,9 @@ interface SearchResults {
      * @param clientVersion Client version number (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: playlists (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: playlists (optional)
      * @return [SearchResultsMultiRelationshipDataDocument]
      */
     @GET("searchResults/{id}/relationships/playlists")
@@ -264,6 +279,7 @@ interface SearchResults {
         @Query("clientVersion") clientVersion: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<SearchResultsMultiRelationshipDataDocument>
 
     /** enum for parameter explicitFilter */
@@ -314,6 +330,9 @@ interface SearchResults {
      * @param clientVersion Client version number (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: topHits (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: topHits (optional)
      * @return [SearchResultsMultiRelationshipDataDocument]
      */
     @GET("searchResults/{id}/relationships/topHits")
@@ -329,6 +348,7 @@ interface SearchResults {
         @Query("clientVersion") clientVersion: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<SearchResultsMultiRelationshipDataDocument>
 
     /** enum for parameter explicitFilter */
@@ -379,6 +399,9 @@ interface SearchResults {
      * @param clientVersion Client version number (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: tracks (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: tracks (optional)
      * @return [SearchResultsMultiRelationshipDataDocument]
      */
     @GET("searchResults/{id}/relationships/tracks")
@@ -394,6 +417,7 @@ interface SearchResults {
         @Query("clientVersion") clientVersion: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<SearchResultsMultiRelationshipDataDocument>
 
     /** enum for parameter explicitFilter */
@@ -444,6 +468,9 @@ interface SearchResults {
      * @param clientVersion Client version number (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: videos (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: videos (optional)
      * @return [SearchResultsMultiRelationshipDataDocument]
      */
     @GET("searchResults/{id}/relationships/videos")
@@ -459,5 +486,6 @@ interface SearchResults {
         @Query("clientVersion") clientVersion: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<SearchResultsMultiRelationshipDataDocument>
 }

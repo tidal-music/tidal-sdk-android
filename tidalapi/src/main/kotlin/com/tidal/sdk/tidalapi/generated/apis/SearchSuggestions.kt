@@ -32,6 +32,9 @@ interface SearchSuggestions {
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: directHits, history (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: directHits (optional)
      * @return [SearchSuggestionsSingleResourceDataDocument]
      */
     @GET("searchSuggestions/{id}")
@@ -43,6 +46,7 @@ interface SearchSuggestions {
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<SearchSuggestionsSingleResourceDataDocument>
 
     /** enum for parameter explicitFilter */
@@ -74,6 +78,9 @@ interface SearchSuggestions {
      *   Available options: directHits (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: directHits (optional)
      * @return [SearchSuggestionsMultiRelationshipDataDocument]
      */
     @GET("searchSuggestions/{id}/relationships/directHits")
@@ -86,6 +93,7 @@ interface SearchSuggestions {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<SearchSuggestionsMultiRelationshipDataDocument>
 
     /** enum for parameter explicitFilter */

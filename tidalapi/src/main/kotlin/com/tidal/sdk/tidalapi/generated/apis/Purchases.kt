@@ -34,6 +34,9 @@ interface Purchases {
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: owners, subject (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: subject (optional)
      * @return [PurchasesMultiResourceDataDocument]
      */
     @GET("purchases")
@@ -45,6 +48,7 @@ interface Purchases {
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<PurchasesMultiResourceDataDocument>
 
     /**
@@ -89,6 +93,9 @@ interface Purchases {
      * @param id Purchase id
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: subject (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: subject (optional)
      * @return [PurchasesSingleRelationshipDataDocument]
      */
     @GET("purchases/{id}/relationships/subject")
@@ -96,5 +103,6 @@ interface Purchases {
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<PurchasesSingleRelationshipDataDocument>
 }

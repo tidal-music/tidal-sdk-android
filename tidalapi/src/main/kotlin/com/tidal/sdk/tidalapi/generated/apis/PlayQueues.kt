@@ -34,6 +34,9 @@ interface PlayQueues {
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: current, future, owners, past (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: current (optional)
      * @return [PlayQueuesMultiResourceDataDocument]
      */
     @GET("playQueues")
@@ -43,6 +46,7 @@ interface PlayQueues {
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<PlayQueuesMultiResourceDataDocument>
 
     /**
@@ -85,6 +89,9 @@ interface PlayQueues {
      * @param id Play queue id
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: current, future, owners, past (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: current (optional)
      * @return [PlayQueuesSingleResourceDataDocument]
      */
     @GET("playQueues/{id}")
@@ -92,6 +99,7 @@ interface PlayQueues {
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<PlayQueuesSingleResourceDataDocument>
 
     /**
@@ -136,6 +144,9 @@ interface PlayQueues {
      * @param id Play queue id
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: current (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: current (optional)
      * @return [PlayQueuesCurrentSingleRelationshipDataDocument]
      */
     @GET("playQueues/{id}/relationships/current")
@@ -143,6 +154,7 @@ interface PlayQueues {
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<PlayQueuesCurrentSingleRelationshipDataDocument>
 
     /**
@@ -223,6 +235,9 @@ interface PlayQueues {
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: future (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: future (optional)
      * @return [PlayQueuesFutureMultiRelationshipDataDocument]
      */
     @GET("playQueues/{id}/relationships/future")
@@ -231,6 +246,7 @@ interface PlayQueues {
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<PlayQueuesFutureMultiRelationshipDataDocument>
 
     /**
@@ -338,6 +354,9 @@ interface PlayQueues {
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: past (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: past (optional)
      * @return [PlayQueuesPastMultiRelationshipDataDocument]
      */
     @GET("playQueues/{id}/relationships/past")
@@ -346,6 +365,7 @@ interface PlayQueues {
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<PlayQueuesPastMultiRelationshipDataDocument>
 
     /**

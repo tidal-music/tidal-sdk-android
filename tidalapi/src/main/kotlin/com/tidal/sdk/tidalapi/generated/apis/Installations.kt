@@ -33,6 +33,9 @@ interface Installations {
      *   by (e.g. &#x60;a468bee88def&#x60;) (optional)
      * @param filterOwnersId User ID to filter by. Use &#x60;me&#x60; for the authenticated user
      *   (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: offlineInventory (optional)
      * @return [InstallationsMultiResourceDataDocument]
      */
     @GET("installations")
@@ -47,6 +50,7 @@ interface Installations {
             null,
         @Query("filter[owners.id]")
         filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<InstallationsMultiResourceDataDocument>
 
     /**
@@ -64,6 +68,9 @@ interface Installations {
      * @param id Installation id
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: offlineInventory, owners (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: offlineInventory (optional)
      * @return [InstallationsSingleResourceDataDocument]
      */
     @GET("installations/{id}")
@@ -71,6 +78,7 @@ interface Installations {
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<InstallationsSingleResourceDataDocument>
 
     /**
@@ -147,6 +155,9 @@ interface Installations {
      *   Available options: offlineInventory (optional)
      * @param filterId Offline item id (e.g. &#x60;1234&#x60;) (optional)
      * @param filterState One of: PENDING, STORED (e.g. &#x60;PENDING&#x60;) (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: offlineInventory (optional)
      * @return [InstallationsOfflineInventoryMultiRelationshipDataDocument]
      */
     @GET("installations/{id}/relationships/offlineInventory")
@@ -161,6 +172,7 @@ interface Installations {
         filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[state]")
         filterState: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<InstallationsOfflineInventoryMultiRelationshipDataDocument>
 
     /**

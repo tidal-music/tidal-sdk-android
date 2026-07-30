@@ -24,6 +24,9 @@ interface Shares {
      * @param filterCode A share code (e.g. &#x60;xyz&#x60;)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: owners, sharedResources (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: sharedResources (optional)
      * @return [SharesMultiResourceDataDocument]
      */
     @GET("shares")
@@ -32,6 +35,7 @@ interface Shares {
         filterCode: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<SharesMultiResourceDataDocument>
 
     /**
@@ -49,6 +53,9 @@ interface Shares {
      * @param id User share id
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: owners, sharedResources (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: sharedResources (optional)
      * @return [SharesSingleResourceDataDocument]
      */
     @GET("shares/{id}")
@@ -56,6 +63,7 @@ interface Shares {
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<SharesSingleResourceDataDocument>
 
     /**
@@ -103,6 +111,9 @@ interface Shares {
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: sharedResources (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: sharedResources (optional)
      * @return [SharesMultiRelationshipDataDocument]
      */
     @GET("shares/{id}/relationships/sharedResources")
@@ -111,6 +122,7 @@ interface Shares {
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<SharesMultiRelationshipDataDocument>
 
     /**

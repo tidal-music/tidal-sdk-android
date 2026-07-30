@@ -17,5 +17,5 @@ import kotlinx.serialization.Serializable
 data class SharesRelationships(
     @SerialName(value = "owners") val owners: MultiRelationshipDataDocument? = null,
     @SerialName(value = "sharedResources")
-    val sharedResources: MultiRelationshipDataDocument? = null,
+    val sharedResources: SharesSharedResourcesMultiRelationshipDataDocument? = null,
 ) {}

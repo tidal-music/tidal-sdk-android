@@ -19,10 +19,16 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class SearchResultsRelationships(
-    @SerialName(value = "albums") val albums: MultiRelationshipDataDocument? = null,
-    @SerialName(value = "artists") val artists: MultiRelationshipDataDocument? = null,
-    @SerialName(value = "playlists") val playlists: MultiRelationshipDataDocument? = null,
-    @SerialName(value = "topHits") val topHits: MultiRelationshipDataDocument? = null,
-    @SerialName(value = "tracks") val tracks: MultiRelationshipDataDocument? = null,
-    @SerialName(value = "videos") val videos: MultiRelationshipDataDocument? = null,
+    @SerialName(value = "albums")
+    val albums: SearchResultsAlbumsMultiRelationshipDataDocument? = null,
+    @SerialName(value = "artists")
+    val artists: SearchResultsArtistsMultiRelationshipDataDocument? = null,
+    @SerialName(value = "playlists")
+    val playlists: SearchResultsPlaylistsMultiRelationshipDataDocument? = null,
+    @SerialName(value = "topHits")
+    val topHits: SearchResultsTopHitsMultiRelationshipDataDocument? = null,
+    @SerialName(value = "tracks")
+    val tracks: SearchResultsTracksMultiRelationshipDataDocument? = null,
+    @SerialName(value = "videos")
+    val videos: SearchResultsVideosMultiRelationshipDataDocument? = null,
 ) {}

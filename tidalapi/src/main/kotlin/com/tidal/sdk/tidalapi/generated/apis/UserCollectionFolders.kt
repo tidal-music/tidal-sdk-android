@@ -31,6 +31,9 @@ interface UserCollectionFolders {
      *   &#x60;CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX&#x60;)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: items, owners, userCollection (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: items.items (optional)
      * @return [UserCollectionFoldersMultiResourceDataDocument]
      */
     @GET("userCollectionFolders")
@@ -38,6 +41,7 @@ interface UserCollectionFolders {
         @Query("filter[id]") filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<UserCollectionFoldersMultiResourceDataDocument>
 
     /**
@@ -80,6 +84,9 @@ interface UserCollectionFolders {
      * @param id Folder Id
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: items, owners, userCollection (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: items.items (optional)
      * @return [UserCollectionFoldersSingleResourceDataDocument]
      */
     @GET("userCollectionFolders/{id}")
@@ -87,6 +94,7 @@ interface UserCollectionFolders {
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<UserCollectionFoldersSingleResourceDataDocument>
 
     /**
@@ -182,6 +190,9 @@ interface UserCollectionFolders {
      *   sorted ascending. (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: items (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: items.items (optional)
      * @return [UserCollectionFoldersItemsMultiRelationshipDataDocument]
      */
     @GET("userCollectionFolders/{id}/relationships/items")
@@ -191,6 +202,7 @@ interface UserCollectionFolders {
         @Query("sort") sort: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<UserCollectionFoldersItemsMultiRelationshipDataDocument>
 
     /**
@@ -267,6 +279,9 @@ interface UserCollectionFolders {
      * @param id Folder Id
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: userCollection (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: userCollection.items.items (optional)
      * @return [UserCollectionFoldersSingleRelationshipDataDocument]
      */
     @GET("userCollectionFolders/{id}/relationships/userCollection")
@@ -274,6 +289,7 @@ interface UserCollectionFolders {
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<UserCollectionFoldersSingleRelationshipDataDocument>
 
     /**

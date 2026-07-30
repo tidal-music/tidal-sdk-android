@@ -23,6 +23,9 @@ interface UserOfflineMixes {
      *   unsupported. (optional, default to "en-US")
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: items (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: items.items (optional)
      * @return [UserOfflineMixesSingleResourceDataDocument]
      */
     @GET("userOfflineMixes/{id}")
@@ -31,6 +34,7 @@ interface UserOfflineMixes {
         @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<UserOfflineMixesSingleResourceDataDocument>
 
     /**
@@ -52,6 +56,9 @@ interface UserOfflineMixes {
      *   unsupported. (optional, default to "en-US")
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: items (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: items.items (optional)
      * @return [UserOfflineMixesMultiRelationshipDataDocument]
      */
     @GET("userOfflineMixes/{id}/relationships/items")
@@ -61,5 +68,6 @@ interface UserOfflineMixes {
         @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<UserOfflineMixesMultiRelationshipDataDocument>
 }

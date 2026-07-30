@@ -53,6 +53,9 @@ interface DynamicModules {
      *   unsupported. (optional, default to "en-US")
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: items, seedItem (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: items (optional)
      * @return [DynamicModulesMultiResourceDataDocument]
      */
     @GET("dynamicModules")
@@ -66,6 +69,7 @@ interface DynamicModules {
         @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<DynamicModulesMultiResourceDataDocument>
 
     /** enum for parameter deviceType */
@@ -110,6 +114,9 @@ interface DynamicModules {
      *   unsupported. (optional, default to "en-US")
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: items, seedItem (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: items (optional)
      * @return [DynamicModulesSingleResourceDataDocument]
      */
     @GET("dynamicModules/{id}")
@@ -123,6 +130,7 @@ interface DynamicModules {
         @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<DynamicModulesSingleResourceDataDocument>
 
     /** enum for parameter deviceType */
@@ -172,6 +180,9 @@ interface DynamicModules {
      *   unsupported. (optional, default to "en-US")
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: items (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: items (optional)
      * @return [DynamicModulesMultiRelationshipDataDocument]
      */
     @GET("dynamicModules/{id}/relationships/items")
@@ -186,6 +197,7 @@ interface DynamicModules {
         @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<DynamicModulesMultiRelationshipDataDocument>
 
     /** enum for parameter deviceType */
@@ -210,8 +222,7 @@ interface DynamicModules {
     /**
      * Get seedItem relationship (\&quot;to-one\&quot;). The item whose listen or add event seeded
      * this module&#39;s collection (e.g. the album a BECAUSE_YOU_* module is based on); null for
-     * modules that are not seeded by an item. The seed comes from the same fetch as the
-     * module&#39;s items, so the two always agree. Responses:
+     * modules that are not seeded by an item. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -233,6 +244,9 @@ interface DynamicModules {
      *   unsupported. (optional, default to "en-US")
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: seedItem (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: seedItem (optional)
      * @return [DynamicModulesSingleRelationshipDataDocument]
      */
     @GET("dynamicModules/{id}/relationships/seedItem")
@@ -246,5 +260,6 @@ interface DynamicModules {
         @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<DynamicModulesSingleRelationshipDataDocument>
 }

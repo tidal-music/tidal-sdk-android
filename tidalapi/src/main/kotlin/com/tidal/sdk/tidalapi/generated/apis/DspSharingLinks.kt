@@ -33,6 +33,9 @@ interface DspSharingLinks {
      *   (e.g. &#x60;tracks&#x60;)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: subject (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: subject (optional)
      * @return [DspSharingLinksMultiResourceDataDocument]
      */
     @GET("dspSharingLinks")
@@ -43,6 +46,7 @@ interface DspSharingLinks {
         filterSubjectType: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<DspSharingLinksMultiResourceDataDocument>
 
     /**
@@ -60,6 +64,9 @@ interface DspSharingLinks {
      * @param id DspSharingLinks Id
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: subject (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: subject (optional)
      * @return [DspSharingLinksSingleRelationshipDataDocument]
      */
     @GET("dspSharingLinks/{id}/relationships/subject")
@@ -67,5 +74,6 @@ interface DspSharingLinks {
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<DspSharingLinksSingleRelationshipDataDocument>
 }

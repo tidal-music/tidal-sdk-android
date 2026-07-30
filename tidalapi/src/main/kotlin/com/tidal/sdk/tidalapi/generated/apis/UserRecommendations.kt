@@ -25,6 +25,9 @@ interface UserRecommendations {
      *   unsupported. (optional, default to "en-US")
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: discoveryMixes, myMixes, newArrivalMixes, offlineMixes (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: discoveryMixes.items (optional)
      * @return [UserRecommendationsSingleResourceDataDocument]
      */
     @Deprecated("This api was deprecated")
@@ -34,6 +37,7 @@ interface UserRecommendations {
         @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<UserRecommendationsSingleResourceDataDocument>
 
     /**
@@ -57,6 +61,9 @@ interface UserRecommendations {
      *   unsupported. (optional, default to "en-US")
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: discoveryMixes (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: discoveryMixes.items (optional)
      * @return [UserRecommendationsMultiRelationshipDataDocument]
      */
     @Deprecated("This api was deprecated")
@@ -67,6 +74,7 @@ interface UserRecommendations {
         @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<UserRecommendationsMultiRelationshipDataDocument>
 
     /**
@@ -90,6 +98,9 @@ interface UserRecommendations {
      *   unsupported. (optional, default to "en-US")
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: myMixes (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: myMixes.items (optional)
      * @return [UserRecommendationsMultiRelationshipDataDocument]
      */
     @Deprecated("This api was deprecated")
@@ -100,6 +111,7 @@ interface UserRecommendations {
         @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<UserRecommendationsMultiRelationshipDataDocument>
 
     /**
@@ -123,6 +135,9 @@ interface UserRecommendations {
      *   unsupported. (optional, default to "en-US")
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: newArrivalMixes (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: newArrivalMixes.items (optional)
      * @return [UserRecommendationsMultiRelationshipDataDocument]
      */
     @Deprecated("This api was deprecated")
@@ -133,6 +148,7 @@ interface UserRecommendations {
         @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<UserRecommendationsMultiRelationshipDataDocument>
 
     /**
@@ -156,6 +172,9 @@ interface UserRecommendations {
      *   unsupported. (optional, default to "en-US")
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: offlineMixes (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: offlineMixes.items (optional)
      * @return [UserRecommendationsMultiRelationshipDataDocument]
      */
     @Deprecated("This api was deprecated")
@@ -166,5 +185,6 @@ interface UserRecommendations {
         @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<UserRecommendationsMultiRelationshipDataDocument>
 }

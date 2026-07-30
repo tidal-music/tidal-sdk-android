@@ -25,6 +25,9 @@ interface ContentClaims {
      * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: claimedResource, claimingArtist, owners (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: claimedResource (optional)
      * @return [ContentClaimsMultiResourceDataDocument]
      */
     @GET("contentClaims")
@@ -33,6 +36,7 @@ interface ContentClaims {
         filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<ContentClaimsMultiResourceDataDocument>
 
     /**
@@ -50,6 +54,9 @@ interface ContentClaims {
      * @param id Content claim id
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: claimedResource, claimingArtist, owners (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: claimedResource (optional)
      * @return [ContentClaimsSingleResourceDataDocument]
      */
     @GET("contentClaims/{id}")
@@ -57,6 +64,7 @@ interface ContentClaims {
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<ContentClaimsSingleResourceDataDocument>
 
     /**
@@ -75,6 +83,9 @@ interface ContentClaims {
      * @param id Content claim id
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: claimedResource (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: claimedResource (optional)
      * @return [ContentClaimsSingleRelationshipDataDocument]
      */
     @GET("contentClaims/{id}/relationships/claimedResource")
@@ -82,6 +93,7 @@ interface ContentClaims {
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<ContentClaimsSingleRelationshipDataDocument>
 
     /**
@@ -100,6 +112,9 @@ interface ContentClaims {
      * @param id Content claim id
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: claimingArtist (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: claimingArtist.albums (optional)
      * @return [ContentClaimsSingleRelationshipDataDocument]
      */
     @GET("contentClaims/{id}/relationships/claimingArtist")
@@ -107,6 +122,7 @@ interface ContentClaims {
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<ContentClaimsSingleRelationshipDataDocument>
 
     /**

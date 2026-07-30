@@ -29,6 +29,9 @@ interface UserCollectionVideos {
      *   unsupported. (optional, default to "en-US")
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: items, owners (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: items (optional)
      * @return [UserCollectionVideosSingleResourceDataDocument]
      */
     @GET("userCollectionVideos/{id}")
@@ -37,6 +40,7 @@ interface UserCollectionVideos {
         @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<UserCollectionVideosSingleResourceDataDocument>
 
     /**
@@ -105,6 +109,9 @@ interface UserCollectionVideos {
      *   unsupported. (optional, default to "en-US")
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: items (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: items (optional)
      * @return [UserCollectionVideosItemsMultiRelationshipDataDocument]
      */
     @GET("userCollectionVideos/{id}/relationships/items")
@@ -115,6 +122,7 @@ interface UserCollectionVideos {
         @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<UserCollectionVideosItemsMultiRelationshipDataDocument>
 
     /**
