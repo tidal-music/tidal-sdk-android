@@ -16,6 +16,14 @@ internal class PlayerRenderersFactory(
     private val fallbackAudioRendererFactory: FallbackAudioRendererFactory,
 ) : RenderersFactory {
 
+    /**
+     * The order of audio renderers matters: ExoPlayer's MappingTrackSelector assigns an entire
+     * track group to a single renderer and breaks format-support ties by array order. Mixed-format
+     * adaptive groups (e.g. E-AC-3 JOC + FLAC + AAC) must map to the MediaCodec audio renderer, so
+     * it is registered before the libflac renderer. FLAC-only groups on devices whose platform FLAC
+     * decoder is missing still fall through to libflac, as MediaCodec reports them unsupported
+     * there.
+     */
     override fun createRenderers(
         eventHandler: Handler,
         videoRendererEventListener: VideoRendererEventListener,
@@ -25,8 +33,8 @@ internal class PlayerRenderersFactory(
     ) =
         arrayOf(
                 mediaCodecVideoRendererFactory.create(eventHandler, videoRendererEventListener),
-                libflacAudioRendererFactory?.create(eventHandler, audioRendererEventListener),
                 fallbackAudioRendererFactory.create(eventHandler, audioRendererEventListener),
+                libflacAudioRendererFactory?.create(eventHandler, audioRendererEventListener),
             )
             .filterNotNull()
             .toTypedArray()

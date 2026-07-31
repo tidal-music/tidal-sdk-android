@@ -71,7 +71,7 @@ internal class PlayerRenderersFactoryTest {
 
         assertThat(actual)
             .isEqualTo(
-                arrayOf(mediaCodecVideoRenderer, libflacAudioRenderer, fallbackAudioRenderer)
+                arrayOf(mediaCodecVideoRenderer, fallbackAudioRenderer, libflacAudioRenderer)
                     .filterNotNull()
                     .toTypedArray()
             )
