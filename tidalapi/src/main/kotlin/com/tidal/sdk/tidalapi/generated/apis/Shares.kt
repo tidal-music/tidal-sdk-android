@@ -1,6 +1,7 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.SharesCreateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.SharesCreateSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.SharesMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.SharesMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.SharesSingleResourceDataDocument
@@ -143,11 +144,11 @@ interface Shares {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param sharesCreateOperationPayload (optional)
-     * @return [SharesSingleResourceDataDocument]
+     * @return [SharesCreateSingleResourceDataDocument]
      */
     @POST("shares")
     suspend fun sharesPost(
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body sharesCreateOperationPayload: SharesCreateOperationPayload? = null,
-    ): Response<SharesSingleResourceDataDocument>
+    ): Response<SharesCreateSingleResourceDataDocument>
 }

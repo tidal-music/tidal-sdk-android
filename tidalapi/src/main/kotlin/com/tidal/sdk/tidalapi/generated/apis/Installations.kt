@@ -1,6 +1,7 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.InstallationsCreateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.InstallationsCreateSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.InstallationsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.InstallationsMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.InstallationsOfflineInventoryMultiRelationshipDataDocument
@@ -178,6 +179,7 @@ interface Installations {
     /**
      * Add to offlineInventory relationship (\&quot;to-many\&quot;). Adds item(s) to
      * offlineInventory relationship. Responses:
+     * - 201: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -251,11 +253,11 @@ interface Installations {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param installationsCreateOperationPayload (optional)
-     * @return [InstallationsSingleResourceDataDocument]
+     * @return [InstallationsCreateSingleResourceDataDocument]
      */
     @POST("installations")
     suspend fun installationsPost(
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body installationsCreateOperationPayload: InstallationsCreateOperationPayload? = null,
-    ): Response<InstallationsSingleResourceDataDocument>
+    ): Response<InstallationsCreateSingleResourceDataDocument>
 }

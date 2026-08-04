@@ -1,7 +1,7 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.UserDataExportRequestsCreateOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.UserDataExportRequestsSingleResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.UserDataExportRequestsCreateSingleResourceDataDocument
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -24,7 +24,7 @@ interface UserDataExportRequests {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param userDataExportRequestsCreateOperationPayload (optional)
-     * @return [UserDataExportRequestsSingleResourceDataDocument]
+     * @return [UserDataExportRequestsCreateSingleResourceDataDocument]
      */
     @POST("userDataExportRequests")
     suspend fun userDataExportRequestsPost(
@@ -33,5 +33,5 @@ interface UserDataExportRequests {
         userDataExportRequestsCreateOperationPayload:
             UserDataExportRequestsCreateOperationPayload? =
             null,
-    ): Response<UserDataExportRequestsSingleResourceDataDocument>
+    ): Response<UserDataExportRequestsCreateSingleResourceDataDocument>
 }

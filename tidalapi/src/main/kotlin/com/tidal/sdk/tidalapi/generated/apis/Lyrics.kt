@@ -1,6 +1,7 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.LyricsCreateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.LyricsCreateSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.LyricsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.LyricsSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.LyricsSingleResourceDataDocument
@@ -166,11 +167,11 @@ interface Lyrics {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param lyricsCreateOperationPayload (optional)
-     * @return [LyricsSingleResourceDataDocument]
+     * @return [LyricsCreateSingleResourceDataDocument]
      */
     @POST("lyrics")
     suspend fun lyricsPost(
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body lyricsCreateOperationPayload: LyricsCreateOperationPayload? = null,
-    ): Response<LyricsSingleResourceDataDocument>
+    ): Response<LyricsCreateSingleResourceDataDocument>
 }

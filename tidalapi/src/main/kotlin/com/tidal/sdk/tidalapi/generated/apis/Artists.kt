@@ -1,6 +1,7 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.ArtistsCreateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.ArtistsCreateSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistsFollowersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistsFollowingMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistsFollowingRelationshipAddOperationPayload
@@ -301,6 +302,7 @@ interface Artists {
     /**
      * Add to following relationship (\&quot;to-many\&quot;). Adds item(s) to following
      * relationship. Responses:
+     * - 201: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -635,11 +637,11 @@ interface Artists {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param artistsCreateOperationPayload (optional)
-     * @return [ArtistsSingleResourceDataDocument]
+     * @return [ArtistsCreateSingleResourceDataDocument]
      */
     @POST("artists")
     suspend fun artistsPost(
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body artistsCreateOperationPayload: ArtistsCreateOperationPayload? = null,
-    ): Response<ArtistsSingleResourceDataDocument>
+    ): Response<ArtistsCreateSingleResourceDataDocument>
 }

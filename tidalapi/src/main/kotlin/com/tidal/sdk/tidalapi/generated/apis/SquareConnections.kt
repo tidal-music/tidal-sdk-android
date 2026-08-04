@@ -1,8 +1,10 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.SquareConnectionsCreateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.SquareConnectionsCreateSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.SquareConnectionsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.SquareConnectionsSelectedSiteRelationshipUpdateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.SquareConnectionsSelectedSiteUpdateSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.SquareConnectionsSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.SquareConnectionsSingleResourceDataDocument
 import retrofit2.Response
@@ -79,7 +81,7 @@ interface SquareConnections {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param squareConnectionsSelectedSiteRelationshipUpdateOperationPayload (optional)
-     * @return [SquareConnectionsSingleRelationshipDataDocument]
+     * @return [SquareConnectionsSelectedSiteUpdateSingleRelationshipDataDocument]
      */
     @PATCH("squareConnections/{id}/relationships/selectedSite")
     suspend fun squareConnectionsIdRelationshipsSelectedSitePatch(
@@ -89,7 +91,7 @@ interface SquareConnections {
         squareConnectionsSelectedSiteRelationshipUpdateOperationPayload:
             SquareConnectionsSelectedSiteRelationshipUpdateOperationPayload? =
             null,
-    ): Response<SquareConnectionsSingleRelationshipDataDocument>
+    ): Response<SquareConnectionsSelectedSiteUpdateSingleRelationshipDataDocument>
 
     /**
      * Get sites relationship (\&quot;to-many\&quot;). Retrieves sites relationship. Responses:
@@ -137,7 +139,7 @@ interface SquareConnections {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param squareConnectionsCreateOperationPayload (optional)
-     * @return [SquareConnectionsSingleResourceDataDocument]
+     * @return [SquareConnectionsCreateSingleResourceDataDocument]
      */
     @POST("squareConnections")
     suspend fun squareConnectionsPost(
@@ -145,5 +147,5 @@ interface SquareConnections {
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body
         squareConnectionsCreateOperationPayload: SquareConnectionsCreateOperationPayload? = null,
-    ): Response<SquareConnectionsSingleResourceDataDocument>
+    ): Response<SquareConnectionsCreateSingleResourceDataDocument>
 }

@@ -1,10 +1,12 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.ClientsCreateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.ClientsCreateSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ClientsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ClientsMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ClientsSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ClientsUpdateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.ClientsUpdateSingleResourceDataDocument
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -103,14 +105,14 @@ interface Clients {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param clientsUpdateOperationPayload (optional)
-     * @return [ClientsSingleResourceDataDocument]
+     * @return [ClientsUpdateSingleResourceDataDocument]
      */
     @PATCH("clients/{id}")
     suspend fun clientsIdPatch(
         @Path("id") id: kotlin.String,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body clientsUpdateOperationPayload: ClientsUpdateOperationPayload? = null,
-    ): Response<ClientsSingleResourceDataDocument>
+    ): Response<ClientsUpdateSingleResourceDataDocument>
 
     /**
      * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
@@ -157,11 +159,11 @@ interface Clients {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param clientsCreateOperationPayload (optional)
-     * @return [ClientsSingleResourceDataDocument]
+     * @return [ClientsCreateSingleResourceDataDocument]
      */
     @POST("clients")
     suspend fun clientsPost(
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body clientsCreateOperationPayload: ClientsCreateOperationPayload? = null,
-    ): Response<ClientsSingleResourceDataDocument>
+    ): Response<ClientsCreateSingleResourceDataDocument>
 }

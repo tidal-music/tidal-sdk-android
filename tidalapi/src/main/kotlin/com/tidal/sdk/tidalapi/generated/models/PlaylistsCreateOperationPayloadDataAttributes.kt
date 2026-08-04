@@ -11,14 +11,14 @@ import kotlinx.serialization.Serializable
 
 /**
  * @param name
- * @param accessType Access type
+ * @param accessType User-selectable playlist visibility.
  * @param createdAt
  * @param description
  */
 @Serializable
 data class PlaylistsCreateOperationPayloadDataAttributes(
     @SerialName(value = "name") val name: kotlin.String,
-    /* Access type */
+    /* User-selectable playlist visibility. */
 
     @SerialName(value = "accessType")
     val accessType: PlaylistsCreateOperationPayloadDataAttributes.AccessType? = null,
@@ -27,7 +27,7 @@ data class PlaylistsCreateOperationPayloadDataAttributes(
 ) {
 
     /**
-     * Access type
+     * User-selectable playlist visibility.
      *
      * Values: PUBLIC,UNLISTED
      */

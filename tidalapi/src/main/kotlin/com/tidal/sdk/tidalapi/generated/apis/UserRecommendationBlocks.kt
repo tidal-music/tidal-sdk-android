@@ -1,13 +1,16 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.models.UserRecommendationBlocksArtistsAddMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserRecommendationBlocksArtistsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserRecommendationBlocksArtistsRelationshipAddOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.UserRecommendationBlocksArtistsRelationshipRemoveOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.UserRecommendationBlocksMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserRecommendationBlocksSingleResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.UserRecommendationBlocksTracksAddMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserRecommendationBlocksTracksMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserRecommendationBlocksTracksRelationshipAddOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.UserRecommendationBlocksTracksRelationshipRemoveOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.UserRecommendationBlocksVideosAddMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserRecommendationBlocksVideosMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserRecommendationBlocksVideosRelationshipAddOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.UserRecommendationBlocksVideosRelationshipRemoveOperationPayload
@@ -138,7 +141,7 @@ interface UserRecommendationBlocks {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param userRecommendationBlocksArtistsRelationshipAddOperationPayload (optional)
-     * @return [UserRecommendationBlocksArtistsMultiRelationshipDataDocument]
+     * @return [UserRecommendationBlocksArtistsAddMultiRelationshipDataDocument]
      */
     @POST("userRecommendationBlocks/{id}/relationships/artists")
     suspend fun userRecommendationBlocksIdRelationshipsArtistsPost(
@@ -148,7 +151,7 @@ interface UserRecommendationBlocks {
         userRecommendationBlocksArtistsRelationshipAddOperationPayload:
             UserRecommendationBlocksArtistsRelationshipAddOperationPayload? =
             null,
-    ): Response<UserRecommendationBlocksArtistsMultiRelationshipDataDocument>
+    ): Response<UserRecommendationBlocksArtistsAddMultiRelationshipDataDocument>
 
     /**
      * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
@@ -268,7 +271,7 @@ interface UserRecommendationBlocks {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param userRecommendationBlocksTracksRelationshipAddOperationPayload (optional)
-     * @return [UserRecommendationBlocksTracksMultiRelationshipDataDocument]
+     * @return [UserRecommendationBlocksTracksAddMultiRelationshipDataDocument]
      */
     @POST("userRecommendationBlocks/{id}/relationships/tracks")
     suspend fun userRecommendationBlocksIdRelationshipsTracksPost(
@@ -278,7 +281,7 @@ interface UserRecommendationBlocks {
         userRecommendationBlocksTracksRelationshipAddOperationPayload:
             UserRecommendationBlocksTracksRelationshipAddOperationPayload? =
             null,
-    ): Response<UserRecommendationBlocksTracksMultiRelationshipDataDocument>
+    ): Response<UserRecommendationBlocksTracksAddMultiRelationshipDataDocument>
 
     /**
      * Delete from videos relationship (\&quot;to-many\&quot;). Deletes item(s) from videos
@@ -370,7 +373,7 @@ interface UserRecommendationBlocks {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param userRecommendationBlocksVideosRelationshipAddOperationPayload (optional)
-     * @return [UserRecommendationBlocksVideosMultiRelationshipDataDocument]
+     * @return [UserRecommendationBlocksVideosAddMultiRelationshipDataDocument]
      */
     @POST("userRecommendationBlocks/{id}/relationships/videos")
     suspend fun userRecommendationBlocksIdRelationshipsVideosPost(
@@ -380,5 +383,5 @@ interface UserRecommendationBlocks {
         userRecommendationBlocksVideosRelationshipAddOperationPayload:
             UserRecommendationBlocksVideosRelationshipAddOperationPayload? =
             null,
-    ): Response<UserRecommendationBlocksVideosMultiRelationshipDataDocument>
+    ): Response<UserRecommendationBlocksVideosAddMultiRelationshipDataDocument>
 }

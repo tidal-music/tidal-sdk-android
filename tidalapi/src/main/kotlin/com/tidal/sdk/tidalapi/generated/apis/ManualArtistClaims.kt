@@ -1,7 +1,7 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.ManualArtistClaimsCreateOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.ManualArtistClaimsSingleResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ManualArtistClaimsCreateSingleResourceDataDocument
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -24,12 +24,12 @@ interface ManualArtistClaims {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param manualArtistClaimsCreateOperationPayload (optional)
-     * @return [ManualArtistClaimsSingleResourceDataDocument]
+     * @return [ManualArtistClaimsCreateSingleResourceDataDocument]
      */
     @POST("manualArtistClaims")
     suspend fun manualArtistClaimsPost(
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body
         manualArtistClaimsCreateOperationPayload: ManualArtistClaimsCreateOperationPayload? = null,
-    ): Response<ManualArtistClaimsSingleResourceDataDocument>
+    ): Response<ManualArtistClaimsCreateSingleResourceDataDocument>
 }

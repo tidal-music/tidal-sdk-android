@@ -1,7 +1,7 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.CollaborationInviteRedemptionsCreateOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.CollaborationInviteRedemptionsSingleResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.CollaborationInviteRedemptionsCreateSingleResourceDataDocument
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -25,7 +25,7 @@ interface CollaborationInviteRedemptions {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param collaborationInviteRedemptionsCreateOperationPayload (optional)
-     * @return [CollaborationInviteRedemptionsSingleResourceDataDocument]
+     * @return [CollaborationInviteRedemptionsCreateSingleResourceDataDocument]
      */
     @POST("collaborationInviteRedemptions")
     suspend fun collaborationInviteRedemptionsPost(
@@ -34,5 +34,5 @@ interface CollaborationInviteRedemptions {
         collaborationInviteRedemptionsCreateOperationPayload:
             CollaborationInviteRedemptionsCreateOperationPayload? =
             null,
-    ): Response<CollaborationInviteRedemptionsSingleResourceDataDocument>
+    ): Response<CollaborationInviteRedemptionsCreateSingleResourceDataDocument>
 }

@@ -1,6 +1,7 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersCreateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersCreateSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersItemsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersItemsRelationshipAddOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersItemsRelationshipRemoveOperationPayload
@@ -208,6 +209,7 @@ interface UserCollectionFolders {
     /**
      * Add to items relationship (\&quot;to-many\&quot;). Adds item(s) to items relationship.
      * Responses:
+     * - 201: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -310,7 +312,7 @@ interface UserCollectionFolders {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param userCollectionFoldersCreateOperationPayload (optional)
-     * @return [UserCollectionFoldersSingleResourceDataDocument]
+     * @return [UserCollectionFoldersCreateSingleResourceDataDocument]
      */
     @POST("userCollectionFolders")
     suspend fun userCollectionFoldersPost(
@@ -318,5 +320,5 @@ interface UserCollectionFolders {
         @Body
         userCollectionFoldersCreateOperationPayload: UserCollectionFoldersCreateOperationPayload? =
             null,
-    ): Response<UserCollectionFoldersSingleResourceDataDocument>
+    ): Response<UserCollectionFoldersCreateSingleResourceDataDocument>
 }

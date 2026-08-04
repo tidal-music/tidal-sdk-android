@@ -1,7 +1,7 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.UserReportsCreateOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.UserReportsSingleResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.UserReportsCreateSingleResourceDataDocument
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -24,11 +24,11 @@ interface UserReports {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param userReportsCreateOperationPayload (optional)
-     * @return [UserReportsSingleResourceDataDocument]
+     * @return [UserReportsCreateSingleResourceDataDocument]
      */
     @POST("userReports")
     suspend fun userReportsPost(
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body userReportsCreateOperationPayload: UserReportsCreateOperationPayload? = null,
-    ): Response<UserReportsSingleResourceDataDocument>
+    ): Response<UserReportsCreateSingleResourceDataDocument>
 }

@@ -1,10 +1,10 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.AcceptedTermsCreateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.AcceptedTermsCreateSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.AcceptedTermsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.AcceptedTermsMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.AcceptedTermsSingleRelationshipDataDocument
-import com.tidal.sdk.tidalapi.generated.models.AcceptedTermsSingleResourceDataDocument
 import kotlinx.serialization.SerialName
 import retrofit2.Response
 import retrofit2.http.*
@@ -120,11 +120,11 @@ interface AcceptedTerms {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param acceptedTermsCreateOperationPayload (optional)
-     * @return [AcceptedTermsSingleResourceDataDocument]
+     * @return [AcceptedTermsCreateSingleResourceDataDocument]
      */
     @POST("acceptedTerms")
     suspend fun acceptedTermsPost(
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body acceptedTermsCreateOperationPayload: AcceptedTermsCreateOperationPayload? = null,
-    ): Response<AcceptedTermsSingleResourceDataDocument>
+    ): Response<AcceptedTermsCreateSingleResourceDataDocument>
 }

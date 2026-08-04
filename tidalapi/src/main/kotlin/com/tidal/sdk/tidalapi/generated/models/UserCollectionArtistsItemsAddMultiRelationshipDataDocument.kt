@@ -10,17 +10,15 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param links
  * @param `data`
- * @param included
+ * @param links
  * @param meta
  */
 @Serializable
 data class UserCollectionArtistsItemsAddMultiRelationshipDataDocument(
-    @SerialName(value = "links") val links: Links,
     @SerialName(value = "data")
-    val `data`: kotlin.collections.List<UserCollectionArtistsItemsResourceIdentifier>? = null,
-    @SerialName(value = "included") val included: kotlin.collections.List<IncludedInner>? = null,
+    val `data`: kotlin.collections.List<UserCollectionArtistsItemsAddResourceIdentifier>,
+    @SerialName(value = "links") val links: Links,
     @SerialName(value = "meta")
     val meta: UserCollectionArtistsItemsAddMultiRelationshipDataDocumentMeta? = null,
 ) {}

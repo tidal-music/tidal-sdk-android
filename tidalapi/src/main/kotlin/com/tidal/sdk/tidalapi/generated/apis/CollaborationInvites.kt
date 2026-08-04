@@ -1,6 +1,7 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.CollaborationInvitesCreateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.CollaborationInvitesCreateSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.CollaborationInvitesMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.CollaborationInvitesMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.CollaborationInvitesSingleRelationshipDataDocument
@@ -165,7 +166,7 @@ interface CollaborationInvites {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param collaborationInvitesCreateOperationPayload (optional)
-     * @return [CollaborationInvitesSingleResourceDataDocument]
+     * @return [CollaborationInvitesCreateSingleResourceDataDocument]
      */
     @POST("collaborationInvites")
     suspend fun collaborationInvitesPost(
@@ -173,5 +174,5 @@ interface CollaborationInvites {
         @Body
         collaborationInvitesCreateOperationPayload: CollaborationInvitesCreateOperationPayload? =
             null,
-    ): Response<CollaborationInvitesSingleResourceDataDocument>
+    ): Response<CollaborationInvitesCreateSingleResourceDataDocument>
 }

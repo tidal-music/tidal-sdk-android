@@ -1,9 +1,9 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.ReactionsCreateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.ReactionsCreateSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ReactionsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ReactionsMultiResourceDataDocument
-import com.tidal.sdk.tidalapi.generated.models.ReactionsSingleResourceDataDocument
 import kotlinx.serialization.SerialName
 import retrofit2.Response
 import retrofit2.http.*
@@ -166,11 +166,11 @@ interface Reactions {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param reactionsCreateOperationPayload (optional)
-     * @return [ReactionsSingleResourceDataDocument]
+     * @return [ReactionsCreateSingleResourceDataDocument]
      */
     @POST("reactions")
     suspend fun reactionsPost(
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body reactionsCreateOperationPayload: ReactionsCreateOperationPayload? = null,
-    ): Response<ReactionsSingleResourceDataDocument>
+    ): Response<ReactionsCreateSingleResourceDataDocument>
 }

@@ -2,6 +2,7 @@ package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.ArtistClaimsAcceptedArtistsRelationshipUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.ArtistClaimsCreateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.ArtistClaimsCreateSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistClaimsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistClaimsMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistClaimsSingleResourceDataDocument
@@ -265,12 +266,12 @@ interface ArtistClaims {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param artistClaimsCreateOperationPayload (optional)
-     * @return [ArtistClaimsSingleResourceDataDocument]
+     * @return [ArtistClaimsCreateSingleResourceDataDocument]
      */
     @POST("artistClaims")
     suspend fun artistClaimsPost(
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body artistClaimsCreateOperationPayload: ArtistClaimsCreateOperationPayload? = null,
-    ): Response<ArtistClaimsSingleResourceDataDocument>
+    ): Response<ArtistClaimsCreateSingleResourceDataDocument>
 }

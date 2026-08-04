@@ -2,6 +2,7 @@ package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.AlbumsCoverArtRelationshipUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.AlbumsCreateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.AlbumsCreateSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.AlbumsItemsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.AlbumsItemsRelationshipUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.AlbumsMultiRelationshipDataDocument
@@ -665,11 +666,11 @@ interface Albums {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param albumsCreateOperationPayload (optional)
-     * @return [AlbumsSingleResourceDataDocument]
+     * @return [AlbumsCreateSingleResourceDataDocument]
      */
     @POST("albums")
     suspend fun albumsPost(
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body albumsCreateOperationPayload: AlbumsCreateOperationPayload? = null,
-    ): Response<AlbumsSingleResourceDataDocument>
+    ): Response<AlbumsCreateSingleResourceDataDocument>
 }
