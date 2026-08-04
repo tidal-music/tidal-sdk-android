@@ -1,6 +1,7 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.ContentClaimsCreateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.ContentClaimsCreateSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ContentClaimsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ContentClaimsMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ContentClaimsSingleRelationshipDataDocument
@@ -170,11 +171,11 @@ interface ContentClaims {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param contentClaimsCreateOperationPayload (optional)
-     * @return [ContentClaimsSingleResourceDataDocument]
+     * @return [ContentClaimsCreateSingleResourceDataDocument]
      */
     @POST("contentClaims")
     suspend fun contentClaimsPost(
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body contentClaimsCreateOperationPayload: ContentClaimsCreateOperationPayload? = null,
-    ): Response<ContentClaimsSingleResourceDataDocument>
+    ): Response<ContentClaimsCreateSingleResourceDataDocument>
 }

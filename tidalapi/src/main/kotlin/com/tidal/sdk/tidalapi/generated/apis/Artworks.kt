@@ -1,6 +1,7 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.ArtworksCreateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.ArtworksCreateSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtworksMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtworksMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtworksSingleResourceDataDocument
@@ -106,11 +107,11 @@ interface Artworks {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param artworksCreateOperationPayload (optional)
-     * @return [ArtworksSingleResourceDataDocument]
+     * @return [ArtworksCreateSingleResourceDataDocument]
      */
     @POST("artworks")
     suspend fun artworksPost(
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body artworksCreateOperationPayload: ArtworksCreateOperationPayload? = null,
-    ): Response<ArtworksSingleResourceDataDocument>
+    ): Response<ArtworksCreateSingleResourceDataDocument>
 }

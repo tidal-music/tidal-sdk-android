@@ -1,10 +1,11 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.SubscriptionPriceChangeDecisionsCreateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.SubscriptionPriceChangeDecisionsCreateSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.SubscriptionPriceChangeDecisionsMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.SubscriptionPriceChangeDecisionsSingleRelationshipDataDocument
-import com.tidal.sdk.tidalapi.generated.models.SubscriptionPriceChangeDecisionsSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.SubscriptionPriceChangeDecisionsUpdateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.SubscriptionPriceChangeDecisionsUpdateSingleResourceDataDocument
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -55,7 +56,7 @@ interface SubscriptionPriceChangeDecisions {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param subscriptionPriceChangeDecisionsUpdateOperationPayload (optional)
-     * @return [SubscriptionPriceChangeDecisionsSingleResourceDataDocument]
+     * @return [SubscriptionPriceChangeDecisionsUpdateSingleResourceDataDocument]
      */
     @PATCH("subscriptionPriceChangeDecisions/{id}")
     suspend fun subscriptionPriceChangeDecisionsIdPatch(
@@ -65,7 +66,7 @@ interface SubscriptionPriceChangeDecisions {
         subscriptionPriceChangeDecisionsUpdateOperationPayload:
             SubscriptionPriceChangeDecisionsUpdateOperationPayload? =
             null,
-    ): Response<SubscriptionPriceChangeDecisionsSingleResourceDataDocument>
+    ): Response<SubscriptionPriceChangeDecisionsUpdateSingleResourceDataDocument>
 
     /**
      * Get priceChange relationship (\&quot;to-one\&quot;). Retrieves priceChange relationship.
@@ -111,7 +112,7 @@ interface SubscriptionPriceChangeDecisions {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param subscriptionPriceChangeDecisionsCreateOperationPayload (optional)
-     * @return [SubscriptionPriceChangeDecisionsSingleResourceDataDocument]
+     * @return [SubscriptionPriceChangeDecisionsCreateSingleResourceDataDocument]
      */
     @POST("subscriptionPriceChangeDecisions")
     suspend fun subscriptionPriceChangeDecisionsPost(
@@ -120,5 +121,5 @@ interface SubscriptionPriceChangeDecisions {
         subscriptionPriceChangeDecisionsCreateOperationPayload:
             SubscriptionPriceChangeDecisionsCreateOperationPayload? =
             null,
-    ): Response<SubscriptionPriceChangeDecisionsSingleResourceDataDocument>
+    ): Response<SubscriptionPriceChangeDecisionsCreateSingleResourceDataDocument>
 }

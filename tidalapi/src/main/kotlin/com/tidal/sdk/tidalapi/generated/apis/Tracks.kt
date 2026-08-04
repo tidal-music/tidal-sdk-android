@@ -2,6 +2,7 @@ package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.TracksAlbumsRelationshipUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.TracksCreateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.TracksCreateSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.TracksMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.TracksMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.TracksSingleRelationshipDataDocument
@@ -791,11 +792,11 @@ interface Tracks {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param tracksCreateOperationPayload (optional)
-     * @return [TracksSingleResourceDataDocument]
+     * @return [TracksCreateSingleResourceDataDocument]
      */
     @POST("tracks")
     suspend fun tracksPost(
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body tracksCreateOperationPayload: TracksCreateOperationPayload? = null,
-    ): Response<TracksSingleResourceDataDocument>
+    ): Response<TracksCreateSingleResourceDataDocument>
 }

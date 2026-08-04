@@ -1,6 +1,7 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.CommentsCreateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.CommentsCreateSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.CommentsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.CommentsMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.CommentsSingleRelationshipDataDocument
@@ -243,11 +244,11 @@ interface Comments {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param commentsCreateOperationPayload (optional)
-     * @return [CommentsSingleResourceDataDocument]
+     * @return [CommentsCreateSingleResourceDataDocument]
      */
     @POST("comments")
     suspend fun commentsPost(
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body commentsCreateOperationPayload: CommentsCreateOperationPayload? = null,
-    ): Response<CommentsSingleResourceDataDocument>
+    ): Response<CommentsCreateSingleResourceDataDocument>
 }

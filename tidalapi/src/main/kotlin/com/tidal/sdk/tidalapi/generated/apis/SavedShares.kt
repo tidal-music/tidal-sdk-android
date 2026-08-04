@@ -1,7 +1,7 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.SavedSharesCreateOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.SavedSharesSingleResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.SavedSharesCreateSingleResourceDataDocument
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -24,11 +24,11 @@ interface SavedShares {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param savedSharesCreateOperationPayload (optional)
-     * @return [SavedSharesSingleResourceDataDocument]
+     * @return [SavedSharesCreateSingleResourceDataDocument]
      */
     @POST("savedShares")
     suspend fun savedSharesPost(
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body savedSharesCreateOperationPayload: SavedSharesCreateOperationPayload? = null,
-    ): Response<SavedSharesSingleResourceDataDocument>
+    ): Response<SavedSharesCreateSingleResourceDataDocument>
 }

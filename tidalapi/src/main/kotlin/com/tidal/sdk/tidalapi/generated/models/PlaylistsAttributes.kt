@@ -61,12 +61,13 @@ data class PlaylistsAttributes(
     /**
      * Access type
      *
-     * Values: PUBLIC,UNLISTED
+     * Values: PUBLIC,UNLISTED,PRIVATE
      */
     @Serializable
     enum class AccessType(val value: kotlin.String) {
         @SerialName(value = "PUBLIC") PUBLIC("PUBLIC"),
         @SerialName(value = "UNLISTED") UNLISTED("UNLISTED"),
+        @SerialName(value = "PRIVATE") PRIVATE("PRIVATE"),
     }
 
     /**

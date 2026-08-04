@@ -1,6 +1,7 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.PlayQueuesCreateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.PlayQueuesCreateSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlayQueuesCurrentRelationshipUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.PlayQueuesCurrentSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlayQueuesFutureMultiRelationshipDataDocument
@@ -282,6 +283,7 @@ interface PlayQueues {
     /**
      * Add to future relationship (\&quot;to-many\&quot;). Adds item(s) to future relationship.
      * Responses:
+     * - 201: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -386,11 +388,11 @@ interface PlayQueues {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param playQueuesCreateOperationPayload (optional)
-     * @return [PlayQueuesSingleResourceDataDocument]
+     * @return [PlayQueuesCreateSingleResourceDataDocument]
      */
     @POST("playQueues")
     suspend fun playQueuesPost(
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body playQueuesCreateOperationPayload: PlayQueuesCreateOperationPayload? = null,
-    ): Response<PlayQueuesSingleResourceDataDocument>
+    ): Response<PlayQueuesCreateSingleResourceDataDocument>
 }

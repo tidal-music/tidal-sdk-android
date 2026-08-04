@@ -1,6 +1,7 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.TrackSourceFilesCreateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.TrackSourceFilesCreateSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.TrackSourceFilesMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.TrackSourceFilesSingleResourceDataDocument
 import retrofit2.Response
@@ -78,11 +79,11 @@ interface TrackSourceFiles {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param trackSourceFilesCreateOperationPayload (optional)
-     * @return [TrackSourceFilesSingleResourceDataDocument]
+     * @return [TrackSourceFilesCreateSingleResourceDataDocument]
      */
     @POST("trackSourceFiles")
     suspend fun trackSourceFilesPost(
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body trackSourceFilesCreateOperationPayload: TrackSourceFilesCreateOperationPayload? = null,
-    ): Response<TrackSourceFilesSingleResourceDataDocument>
+    ): Response<TrackSourceFilesCreateSingleResourceDataDocument>
 }

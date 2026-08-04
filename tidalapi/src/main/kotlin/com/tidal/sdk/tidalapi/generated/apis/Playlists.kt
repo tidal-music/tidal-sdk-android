@@ -4,6 +4,8 @@ import com.tidal.sdk.tidalapi.generated.models.PlaylistsCollaboratorProfilesRela
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsCollaboratorProfilesRelationshipRemoveOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsCoverArtRelationshipUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsCreateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.PlaylistsCreateSingleResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.PlaylistsItemsAddMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsItemsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsItemsRelationshipAddOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsItemsRelationshipRemoveOperationPayload
@@ -13,6 +15,7 @@ import com.tidal.sdk.tidalapi.generated.models.PlaylistsMultiResourceDataDocumen
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsSuggestedCoverArtsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsUpdateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.PlaylistsUpdateSingleResourceDataDocument
 import kotlinx.serialization.SerialName
 import retrofit2.Response
 import retrofit2.http.*
@@ -50,6 +53,8 @@ interface Playlists {
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: collaboratorProfiles, collaborators, coverArt, items, ownerProfiles,
      *   owners, suggestedCoverArts (optional)
+     * @param filterCollaboratorsId User id. Use &#x60;me&#x60; for the authenticated user
+     *   (optional)
      * @param filterId List of playlist IDs (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;)
      *   (optional)
      * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user (optional)
@@ -65,6 +70,8 @@ interface Playlists {
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("filter[collaborators.id]")
+        filterCollaboratorsId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[id]")
         filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[owners.id]")
@@ -130,6 +137,7 @@ interface Playlists {
 
     /**
      * Update single playlist. Updates existing playlist. Responses:
+     * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -142,20 +150,18 @@ interface Playlists {
      * - 503: Service temporarily unavailable
      *
      * @param id Playlist id
-     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param playlistsUpdateOperationPayload (optional)
-     * @return [Unit]
+     * @return [PlaylistsUpdateSingleResourceDataDocument]
      */
     @PATCH("playlists/{id}")
     suspend fun playlistsIdPatch(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String? = null,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body playlistsUpdateOperationPayload: PlaylistsUpdateOperationPayload? = null,
-    ): Response<Unit>
+    ): Response<PlaylistsUpdateSingleResourceDataDocument>
 
     /**
      * Delete from collaboratorProfiles relationship (\&quot;to-many\&quot;). Deletes item(s) from
@@ -225,6 +231,7 @@ interface Playlists {
     /**
      * Add to collaboratorProfiles relationship (\&quot;to-many\&quot;). Adds item(s) to
      * collaboratorProfiles relationship. Responses:
+     * - 201: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -473,23 +480,21 @@ interface Playlists {
      * - 503: Service temporarily unavailable
      *
      * @param id Playlist id
-     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param playlistsItemsRelationshipAddOperationPayload (optional)
-     * @return [PlaylistsItemsMultiRelationshipDataDocument]
+     * @return [PlaylistsItemsAddMultiRelationshipDataDocument]
      */
     @POST("playlists/{id}/relationships/items")
     suspend fun playlistsIdRelationshipsItemsPost(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String? = null,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body
         playlistsItemsRelationshipAddOperationPayload:
             PlaylistsItemsRelationshipAddOperationPayload? =
             null,
-    ): Response<PlaylistsItemsMultiRelationshipDataDocument>
+    ): Response<PlaylistsItemsAddMultiRelationshipDataDocument>
 
     /**
      * Get ownerProfiles relationship (\&quot;to-many\&quot;). Retrieves ownerProfiles relationship.
@@ -592,17 +597,15 @@ interface Playlists {
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
-     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param playlistsCreateOperationPayload (optional)
-     * @return [PlaylistsSingleResourceDataDocument]
+     * @return [PlaylistsCreateSingleResourceDataDocument]
      */
     @POST("playlists")
     suspend fun playlistsPost(
-        @Query("countryCode") countryCode: kotlin.String? = null,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body playlistsCreateOperationPayload: PlaylistsCreateOperationPayload? = null,
-    ): Response<PlaylistsSingleResourceDataDocument>
+    ): Response<PlaylistsCreateSingleResourceDataDocument>
 }

@@ -1,6 +1,7 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.TemporaryUserTokensCreateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.TemporaryUserTokensCreateSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.TemporaryUserTokensMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.TemporaryUserTokensSingleResourceDataDocument
 import retrofit2.Response
@@ -76,12 +77,12 @@ interface TemporaryUserTokens {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param temporaryUserTokensCreateOperationPayload (optional)
-     * @return [TemporaryUserTokensSingleResourceDataDocument]
+     * @return [TemporaryUserTokensCreateSingleResourceDataDocument]
      */
     @POST("temporaryUserTokens")
     suspend fun temporaryUserTokensPost(
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body
         temporaryUserTokensCreateOperationPayload: TemporaryUserTokensCreateOperationPayload? = null,
-    ): Response<TemporaryUserTokensSingleResourceDataDocument>
+    ): Response<TemporaryUserTokensCreateSingleResourceDataDocument>
 }

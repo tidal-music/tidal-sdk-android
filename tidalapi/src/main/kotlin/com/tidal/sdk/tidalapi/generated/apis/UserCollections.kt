@@ -142,6 +142,7 @@ interface UserCollections {
     /**
      * Add to albums relationship (\&quot;to-many\&quot;). Deprecated. Use the userCollectionAlbums
      * resource and its items relationship instead. Responses:
+     * - 201: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -254,6 +255,7 @@ interface UserCollections {
     /**
      * Add to artists relationship (\&quot;to-many\&quot;). Deprecated. Use the
      * userCollectionArtists resource and its items relationship instead. Responses:
+     * - 201: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -285,7 +287,9 @@ interface UserCollections {
     ): Response<Unit>
 
     /**
-     * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
+     * Get owners relationship (\&quot;to-many\&quot;). Deprecated. Use the owners relationship on
+     * the dedicated collection resources instead: userCollectionAlbums, userCollectionArtists,
+     * userCollectionTracks, userCollectionVideos, or userCollectionPlaylists. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -303,6 +307,7 @@ interface UserCollections {
      *   targets first page if not specified (optional)
      * @return [UserCollectionsMultiRelationshipDataDocument]
      */
+    @Deprecated("This api was deprecated")
     @GET("userCollections/{id}/relationships/owners")
     suspend fun userCollectionsIdRelationshipsOwnersGet(
         @Path("id") id: kotlin.String,
@@ -402,6 +407,7 @@ interface UserCollections {
     /**
      * Add to playlists relationship (\&quot;to-many\&quot;). Deprecated. Use the
      * userCollectionPlaylists resource and its items relationship instead. Responses:
+     * - 201: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -520,6 +526,7 @@ interface UserCollections {
     /**
      * Add to tracks relationship (\&quot;to-many\&quot;). Deprecated. Use the userCollectionTracks
      * resource and its items relationship instead. Responses:
+     * - 201: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -636,6 +643,7 @@ interface UserCollections {
     /**
      * Add to videos relationship (\&quot;to-many\&quot;). Deprecated. Use the userCollectionVideos
      * resource and its items relationship instead. Responses:
+     * - 201: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed

@@ -1,9 +1,9 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.StripeConnectionsCreateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.StripeConnectionsCreateSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.StripeConnectionsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.StripeConnectionsMultiResourceDataDocument
-import com.tidal.sdk.tidalapi.generated.models.StripeConnectionsSingleResourceDataDocument
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -80,7 +80,7 @@ interface StripeConnections {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param stripeConnectionsCreateOperationPayload (optional)
-     * @return [StripeConnectionsSingleResourceDataDocument]
+     * @return [StripeConnectionsCreateSingleResourceDataDocument]
      */
     @POST("stripeConnections")
     suspend fun stripeConnectionsPost(
@@ -88,5 +88,5 @@ interface StripeConnections {
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body
         stripeConnectionsCreateOperationPayload: StripeConnectionsCreateOperationPayload? = null,
-    ): Response<StripeConnectionsSingleResourceDataDocument>
+    ): Response<StripeConnectionsCreateSingleResourceDataDocument>
 }

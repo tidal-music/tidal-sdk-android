@@ -1,6 +1,7 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.PriceConfigurationsCreateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.PriceConfigurationsCreateSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PriceConfigurationsMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PriceConfigurationsSingleResourceDataDocument
 import retrofit2.Response
@@ -67,12 +68,12 @@ interface PriceConfigurations {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param priceConfigurationsCreateOperationPayload (optional)
-     * @return [PriceConfigurationsSingleResourceDataDocument]
+     * @return [PriceConfigurationsCreateSingleResourceDataDocument]
      */
     @POST("priceConfigurations")
     suspend fun priceConfigurationsPost(
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body
         priceConfigurationsCreateOperationPayload: PriceConfigurationsCreateOperationPayload? = null,
-    ): Response<PriceConfigurationsSingleResourceDataDocument>
+    ): Response<PriceConfigurationsCreateSingleResourceDataDocument>
 }

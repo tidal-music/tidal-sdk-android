@@ -1,6 +1,7 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.UsageRulesCreateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.UsageRulesCreateSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UsageRulesSingleResourceDataDocument
 import retrofit2.Response
 import retrofit2.http.*
@@ -44,11 +45,11 @@ interface UsageRules {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param usageRulesCreateOperationPayload (optional)
-     * @return [UsageRulesSingleResourceDataDocument]
+     * @return [UsageRulesCreateSingleResourceDataDocument]
      */
     @POST("usageRules")
     suspend fun usageRulesPost(
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body usageRulesCreateOperationPayload: UsageRulesCreateOperationPayload? = null,
-    ): Response<UsageRulesSingleResourceDataDocument>
+    ): Response<UsageRulesCreateSingleResourceDataDocument>
 }
