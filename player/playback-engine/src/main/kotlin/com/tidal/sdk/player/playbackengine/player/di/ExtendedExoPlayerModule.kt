@@ -5,6 +5,7 @@ import android.os.Handler
 import android.os.Looper
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
+import androidx.media3.common.MimeTypes
 import androidx.media3.common.PriorityTaskManager
 import androidx.media3.exoplayer.DefaultLoadControl
 import androidx.media3.exoplayer.ExoPlayer
@@ -21,6 +22,7 @@ import com.tidal.sdk.player.playbackengine.model.BufferConfiguration
 import com.tidal.sdk.player.playbackengine.player.ExtendedExoPlayer
 import com.tidal.sdk.player.playbackengine.player.ExtendedExoPlayerState
 import com.tidal.sdk.player.playbackengine.player.ExtendedExoPlayerStateUpdateRunnable
+import com.tidal.sdk.player.playbackengine.player.trackselection.TidalTrackSelectionFactory
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
@@ -36,7 +38,8 @@ internal object ExtendedExoPlayerModule {
 
     @Provides
     @Reusable
-    fun trackSelectionFactory(): ExoTrackSelection.Factory = AdaptiveTrackSelection.Factory()
+    fun trackSelectionFactory(): ExoTrackSelection.Factory =
+        TidalTrackSelectionFactory(AdaptiveTrackSelection.Factory())
 
     @Provides
     @Reusable
@@ -51,6 +54,9 @@ internal object ExtendedExoPlayerModule {
                     .setAllowAudioMixedMimeTypeAdaptiveness(true)
                     .setAllowAudioMixedSampleRateAdaptiveness(true)
                     .setAllowAudioMixedChannelCountAdaptiveness(true)
+                    // E-AC-3 is only present in manifests when immersive audio was requested, so
+                    // it is always preferred.
+                    .setPreferredAudioMimeTypes(MimeTypes.AUDIO_E_AC3_JOC, MimeTypes.AUDIO_E_AC3)
                     .build()
         }
 
