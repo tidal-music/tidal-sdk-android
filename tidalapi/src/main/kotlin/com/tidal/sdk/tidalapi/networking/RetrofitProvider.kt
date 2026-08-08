@@ -40,10 +40,14 @@ constructor(
         }
     }
 
+    private val jsonSerializer = createJsonSerializer()
+    private val jsonConverterFactory =
+        jsonSerializer.asConverterFactory("application/json".toMediaType())
     private val converterFactories: List<Converter.Factory> =
         listOf(
             ScalarsConverterFactory.create(),
-            createJsonSerializer().asConverterFactory("application/json".toMediaType()),
+            OptionalCreateResponseConverterFactory(jsonSerializer, jsonConverterFactory),
+            jsonConverterFactory,
         )
 
     private fun provideOkHttpClient(credentialsProvider: CredentialsProvider): OkHttpClient =
