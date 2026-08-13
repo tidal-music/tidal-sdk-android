@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.71] - 2026-08-13
+
+### Changed
+- Dropped media3 fork dependency
+- Removed useLibflacAudioRenderer flag
+
 ## [0.0.70] - 2026-09-04
 
 ### Fixed
