@@ -31,7 +31,6 @@ dependencies {
     api(libs.tidal.exoPlayer.core)
     implementation(libs.tidal.exoPlayer.dash)
     implementation(libs.tidal.exoPlayer.hls)
-    implementation(libs.tidal.exoPlayer.extension.flac)
     implementation(libs.tidal.exoPlayer.extension.okhttp)
     implementation(libs.dagger)
 

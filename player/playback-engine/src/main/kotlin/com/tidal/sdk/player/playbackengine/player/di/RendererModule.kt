@@ -9,7 +9,6 @@ import androidx.media3.exoplayer.audio.DefaultAudioTrackBufferSizeProvider
 import com.tidal.sdk.player.playbackengine.model.BufferConfiguration
 import com.tidal.sdk.player.playbackengine.player.renderer.PlayerRenderersFactory
 import com.tidal.sdk.player.playbackengine.player.renderer.audio.fallback.FallbackAudioRendererFactory
-import com.tidal.sdk.player.playbackengine.player.renderer.audio.flac.LibflacAudioRendererFactory
 import com.tidal.sdk.player.playbackengine.player.renderer.video.MediaCodecVideoRendererFactory
 import dagger.Module
 import dagger.Provides
@@ -23,16 +22,6 @@ internal object RendererModule {
     @Provides
     @Reusable
     fun mediaCodecVideoRendererFactory(context: Context) = MediaCodecVideoRendererFactory(context)
-
-    @Provides
-    @Reusable
-    fun libflacAudioRendererFactory(
-        @Named("useLibflacAudioRenderer") useLibflacAudioRenderer: Boolean
-    ) =
-        when (useLibflacAudioRenderer) {
-            true -> LibflacAudioRendererFactory()
-            false -> null
-        }
 
     @Provides
     @Reusable
@@ -78,12 +67,7 @@ internal object RendererModule {
     @Suppress("SpreadOperator")
     fun renderersFactory(
         mediaCodecVideoRendererFactory: MediaCodecVideoRendererFactory,
-        libflacAudioRendererFactory: LibflacAudioRendererFactory?,
         fallbackAudioRendererFactory: FallbackAudioRendererFactory,
     ): RenderersFactory =
-        PlayerRenderersFactory(
-            mediaCodecVideoRendererFactory,
-            libflacAudioRendererFactory,
-            fallbackAudioRendererFactory,
-        )
+        PlayerRenderersFactory(mediaCodecVideoRendererFactory, fallbackAudioRendererFactory)
 }

@@ -46,7 +46,6 @@ interface ExoPlayerPlaybackEngineComponent {
             @BindsInstance assetTimeoutConfig: AssetTimeoutConfig,
             @BindsInstance cacheProvider: CacheProvider,
             @BindsInstance configuration: Configuration,
-            @BindsInstance @Named("useLibflacAudioRenderer") useLibflacAudioRenderer: Boolean,
             @BindsInstance @Named("enableDecoderFallback") enableDecoderFallback: Boolean,
             @BindsInstance appSpecificCacheDir: File,
             @BindsInstance streamingApi: StreamingApi,

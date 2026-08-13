@@ -21,6 +21,7 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.verifyNoMoreInteractions
 import org.mockito.kotlin.whenever
 
+private const val MANIFEST_URI = "https://example.com/manifest.mpd"
 private const val ENCODED_MANIFEST = "encodedManifest"
 
 internal class PlayerDashOfflineMediaSourceFactoryTest {
@@ -47,7 +48,116 @@ internal class PlayerDashOfflineMediaSourceFactoryTest {
         )
 
     @Test
-    fun createDrmProtected() {
+    fun createFromUriDrmProtected() {
+        val mediaItem = mock<MediaItem>()
+        val storage = mock<Storage>()
+        val offlineLicense = "1a2b3c4d"
+        val isDrmProtected = true
+        val builtMediaItem = mock<MediaItem>()
+        val drmSessionManager = mock<DrmSessionManager>()
+        val drmSessionManagerProvider =
+            mock<DrmSessionManagerProvider> { on { it.get(mediaItem) } doReturn drmSessionManager }
+        val expectedDashMediaSource = mock<DashMediaSource>()
+        val dataSourceFactoryForOfflinePlay = mock<DataSource.Factory>()
+        val dashMediaSourceFactory = mock<DashMediaSource.Factory>()
+        val mediaItemBuilder = mock<MediaItem.Builder>(defaultAnswer = Answers.RETURNS_SELF)
+        whenever(mediaItem.buildUpon()) doReturn mediaItemBuilder
+        whenever(mediaItemBuilder.build()) doReturn builtMediaItem
+        whenever(offlineStorageProvider.getDataSourceFactoryForOfflinePlay(storage, isDrmProtected))
+            .thenReturn(dataSourceFactoryForOfflinePlay)
+        whenever(dashMediaSourceFactoryFactory.create(dataSourceFactoryForOfflinePlay))
+            .thenReturn(dashMediaSourceFactory)
+        whenever(dashMediaSourceFactory.setDrmSessionManagerProvider(drmSessionManagerProvider))
+            .thenReturn(dashMediaSourceFactory)
+        whenever(dashMediaSourceFactory.createMediaSource(builtMediaItem))
+            .thenReturn(expectedDashMediaSource)
+
+        val actualDashMediaSource =
+            playerDashOfflineMediaSourceFactory.create(
+                mediaItem,
+                MANIFEST_URI,
+                offlineLicense,
+                storage,
+                drmSessionManagerProvider,
+            )
+
+        assertThat(actualDashMediaSource).isSameInstanceAs(expectedDashMediaSource)
+        verify(offlineStorageProvider).getDataSourceFactoryForOfflinePlay(storage, isDrmProtected)
+        verify(drmSessionManagerProvider).get(mediaItem)
+        verify(offlineDrmHelper).setOfflineLicense(offlineLicense, drmSessionManager)
+        verify(mediaItem).buildUpon()
+        verify(mediaItemBuilder).setUri(MANIFEST_URI)
+        verify(mediaItemBuilder).build()
+        verify(dashMediaSourceFactoryFactory).create(dataSourceFactoryForOfflinePlay)
+        verify(dashMediaSourceFactory).setDrmSessionManagerProvider(drmSessionManagerProvider)
+        verify(dashMediaSourceFactory).createMediaSource(builtMediaItem)
+        verifyNoMoreInteractions(
+            mediaItem,
+            storage,
+            builtMediaItem,
+            drmSessionManager,
+            drmSessionManagerProvider,
+            expectedDashMediaSource,
+            dataSourceFactoryForOfflinePlay,
+            dashMediaSourceFactory,
+        )
+    }
+
+    @Test
+    fun createFromUriNotProtected() {
+        val mediaItem = mock<MediaItem>()
+        val storage = mock<Storage>()
+        val offlineLicense = ""
+        val isDrmProtected = false
+        val builtMediaItem = mock<MediaItem>()
+        val drmSessionManager = mock<DrmSessionManager>()
+        val drmSessionManagerProvider = mock<DrmSessionManagerProvider>()
+        val expectedDashMediaSource = mock<DashMediaSource>()
+        val dataSourceFactoryForOfflinePlay = mock<DataSource.Factory>()
+        val dashMediaSourceFactory = mock<DashMediaSource.Factory>()
+        val mediaItemBuilder = mock<MediaItem.Builder>(defaultAnswer = Answers.RETURNS_SELF)
+        whenever(mediaItem.buildUpon()) doReturn mediaItemBuilder
+        whenever(mediaItemBuilder.build()) doReturn builtMediaItem
+        whenever(offlineStorageProvider.getDataSourceFactoryForOfflinePlay(storage, isDrmProtected))
+            .thenReturn(dataSourceFactoryForOfflinePlay)
+        whenever(dashMediaSourceFactoryFactory.create(dataSourceFactoryForOfflinePlay))
+            .thenReturn(dashMediaSourceFactory)
+        whenever(dashMediaSourceFactory.setDrmSessionManagerProvider(drmSessionManagerProvider))
+            .thenReturn(dashMediaSourceFactory)
+        whenever(dashMediaSourceFactory.createMediaSource(builtMediaItem))
+            .thenReturn(expectedDashMediaSource)
+
+        val actualDashMediaSource =
+            playerDashOfflineMediaSourceFactory.create(
+                mediaItem,
+                MANIFEST_URI,
+                offlineLicense,
+                storage,
+                drmSessionManagerProvider,
+            )
+
+        assertThat(actualDashMediaSource).isSameInstanceAs(expectedDashMediaSource)
+        verify(offlineStorageProvider).getDataSourceFactoryForOfflinePlay(storage, isDrmProtected)
+        verify(mediaItem).buildUpon()
+        verify(mediaItemBuilder).setUri(MANIFEST_URI)
+        verify(mediaItemBuilder).build()
+        verify(dashMediaSourceFactoryFactory).create(dataSourceFactoryForOfflinePlay)
+        verify(dashMediaSourceFactory).setDrmSessionManagerProvider(drmSessionManagerProvider)
+        verify(dashMediaSourceFactory).createMediaSource(builtMediaItem)
+        verifyNoMoreInteractions(
+            mediaItem,
+            storage,
+            builtMediaItem,
+            drmSessionManager,
+            drmSessionManagerProvider,
+            expectedDashMediaSource,
+            dataSourceFactoryForOfflinePlay,
+            dashMediaSourceFactory,
+        )
+    }
+
+    @Test
+    fun createFromLegacyEncodedManifestDrmProtected() {
         val mediaItem = mock<MediaItem>()
         val storage = mock<Storage>()
         val offlineLicense = "1a2b3c4d"
@@ -99,12 +209,11 @@ internal class PlayerDashOfflineMediaSourceFactoryTest {
     }
 
     @Test
-    fun createNotProtected() {
+    fun createFromLegacyEncodedManifestNotProtected() {
         val mediaItem = mock<MediaItem>()
         val storage = mock<Storage>()
         val offlineLicense = ""
         val isDrmProtected = false
-        val builtMediaItem = mock<MediaItem>()
         val dashManifest = mock<DashManifest>()
         val drmSessionManager = mock<DrmSessionManager>()
         val drmSessionManagerProvider = mock<DrmSessionManagerProvider>()
@@ -112,9 +221,6 @@ internal class PlayerDashOfflineMediaSourceFactoryTest {
         val dataSourceFactoryForOfflinePlay = mock<DataSource.Factory>()
         val dashMediaSourceFactory = mock<DashMediaSource.Factory>()
         whenever(dashManifestFactory.create(ENCODED_MANIFEST)).thenReturn(dashManifest)
-        val mediaItemBuilder = mock<MediaItem.Builder>(defaultAnswer = Answers.RETURNS_SELF)
-        whenever(mediaItem.buildUpon()) doReturn mediaItemBuilder
-        whenever(mediaItemBuilder.build()) doReturn builtMediaItem
         whenever(offlineStorageProvider.getDataSourceFactoryForOfflinePlay(storage, isDrmProtected))
             .thenReturn(dataSourceFactoryForOfflinePlay)
         whenever(dashMediaSourceFactoryFactory.create(dataSourceFactoryForOfflinePlay))
@@ -142,7 +248,6 @@ internal class PlayerDashOfflineMediaSourceFactoryTest {
         verifyNoMoreInteractions(
             mediaItem,
             storage,
-            builtMediaItem,
             dashManifest,
             drmSessionManager,
             drmSessionManagerProvider,
