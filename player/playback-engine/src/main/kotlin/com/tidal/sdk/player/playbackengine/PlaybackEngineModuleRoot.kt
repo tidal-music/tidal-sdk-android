@@ -12,6 +12,7 @@ import com.tidal.sdk.player.playbackengine.di.DaggerExoPlayerPlaybackEngineCompo
 import com.tidal.sdk.player.playbackengine.model.AssetTimeoutConfig
 import com.tidal.sdk.player.playbackengine.model.BufferConfiguration
 import com.tidal.sdk.player.playbackengine.model.Event
+import com.tidal.sdk.player.playbackengine.offline.OfflineLicenseProvider
 import com.tidal.sdk.player.playbackengine.offline.cache.OfflineCacheProvider
 import com.tidal.sdk.player.playbackengine.playbackprivilege.PlaybackPrivilegeProvider
 import com.tidal.sdk.player.playbackengine.player.CacheProvider
@@ -78,6 +79,7 @@ class PlaybackEngineModuleRoot(
                 coroutineScope,
             )
     val playbackEngine = component.playbackEngine
+    val offlineLicenseProvider: OfflineLicenseProvider = component.offlineLicenseProvider
 
     companion object {
 

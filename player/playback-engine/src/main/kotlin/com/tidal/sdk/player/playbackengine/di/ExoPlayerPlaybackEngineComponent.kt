@@ -13,6 +13,7 @@ import com.tidal.sdk.player.playbackengine.PlaybackEngine
 import com.tidal.sdk.player.playbackengine.model.AssetTimeoutConfig
 import com.tidal.sdk.player.playbackengine.model.BufferConfiguration
 import com.tidal.sdk.player.playbackengine.model.Event
+import com.tidal.sdk.player.playbackengine.offline.OfflineLicenseProvider
 import com.tidal.sdk.player.playbackengine.offline.cache.OfflineCacheProvider
 import com.tidal.sdk.player.playbackengine.playbackprivilege.PlaybackPrivilegeProvider
 import com.tidal.sdk.player.playbackengine.player.CacheProvider
@@ -34,6 +35,7 @@ import okhttp3.OkHttpClient
 interface ExoPlayerPlaybackEngineComponent {
 
     val playbackEngine: PlaybackEngine
+    val offlineLicenseProvider: OfflineLicenseProvider
 
     @Component.Factory
     interface Factory {

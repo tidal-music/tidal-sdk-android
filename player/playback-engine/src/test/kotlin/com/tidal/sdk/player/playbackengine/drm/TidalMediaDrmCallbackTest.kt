@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.verifyNoInteractions
 import org.mockito.kotlin.whenever
 
 internal class TidalMediaDrmCallbackTest {
@@ -84,6 +85,28 @@ internal class TidalMediaDrmCallbackTest {
                 tidalMediaDrmCallback.executeKeyRequest(C.WIDEVINE_UUID, request)
             }
         assertThat(actual).isSameInstanceAs(expected)
+    }
+
+    @Test
+    fun executeKeyRequestWithOfflineReleaseReturnsTheCdmPayload() {
+        val request =
+            mock<ExoMediaDrm.KeyRequest> { on { data } doReturn "keyRequest".toByteArray() }
+        val callback =
+            TidalMediaDrmCallback(
+                streamingApiRepository,
+                streamingSessionId,
+                licenseUrl,
+                DrmMode.OfflineRelease,
+                okHttpClient,
+                lazy { provisionRequestBuilder },
+                lazy { provisionRequestBody },
+                emptyMap(),
+            )
+
+        val actual = callback.executeKeyRequest(C.WIDEVINE_UUID, request)
+
+        assertThat(actual).isSameInstanceAs(request.data)
+        verifyNoInteractions(streamingApiRepository)
     }
 
     @Test

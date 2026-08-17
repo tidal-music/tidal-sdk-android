@@ -8,4 +8,13 @@ internal sealed class DrmMode {
      * key.
      */
     object Streaming : DrmMode()
+
+    /** Drm mode for acquiring a persistent license during an offline download. */
+    object OfflineAcquisition : DrmMode()
+
+    /** Drm mode for renewing an existing persistent offline license. */
+    object OfflineRenewal : DrmMode()
+
+    /** Drm mode for releasing an existing persistent offline license. */
+    object OfflineRelease : DrmMode()
 }

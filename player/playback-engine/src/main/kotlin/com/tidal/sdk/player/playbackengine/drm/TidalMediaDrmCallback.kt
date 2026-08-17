@@ -39,7 +39,9 @@ internal class TidalMediaDrmCallback(
     override fun executeKeyRequest(uuid: UUID, request: ExoMediaDrm.KeyRequest): ByteArray {
         val drmLicense =
             when (mode) {
-                DrmMode.Streaming ->
+                DrmMode.Streaming,
+                DrmMode.OfflineAcquisition,
+                DrmMode.OfflineRenewal ->
                     runBlocking {
                         streamingApiRepository.getDrmLicense(
                             licenseUrl,
@@ -48,6 +50,7 @@ internal class TidalMediaDrmCallback(
                             extras,
                         )
                     }
+                DrmMode.OfflineRelease -> return request.data
             }
 
         return drmLicense.body()?.bytes()

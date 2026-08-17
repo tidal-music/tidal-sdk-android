@@ -40,6 +40,8 @@ import com.tidal.sdk.player.playbackengine.di.ExoPlayerPlaybackEngineComponent
 import com.tidal.sdk.player.playbackengine.drm.DrmSessionManagerFactory
 import com.tidal.sdk.player.playbackengine.drm.DrmSessionManagerProviderFactory
 import com.tidal.sdk.player.playbackengine.drm.MediaDrmCallbackExceptionFactory
+import com.tidal.sdk.player.playbackengine.drm.OfflineLicenseHelperFactory
+import com.tidal.sdk.player.playbackengine.drm.OfflineLicenseProviderDefault
 import com.tidal.sdk.player.playbackengine.drm.TidalMediaDrmCallbackFactory
 import com.tidal.sdk.player.playbackengine.emu.EmuManifestFactory
 import com.tidal.sdk.player.playbackengine.error.ErrorHandler
@@ -60,6 +62,7 @@ import com.tidal.sdk.player.playbackengine.mediasource.loadable.PlaybackInfoLoad
 import com.tidal.sdk.player.playbackengine.mediasource.streamingsession.StreamingSession
 import com.tidal.sdk.player.playbackengine.model.AssetTimeoutConfig
 import com.tidal.sdk.player.playbackengine.offline.OfflineDrmHelper
+import com.tidal.sdk.player.playbackengine.offline.OfflineLicenseProvider
 import com.tidal.sdk.player.playbackengine.offline.OfflinePlayDataSourceFactoryHelper
 import com.tidal.sdk.player.playbackengine.offline.OfflinePlayDrmDataSourceFactoryHelper
 import com.tidal.sdk.player.playbackengine.offline.OfflineStorageProvider
@@ -424,6 +427,25 @@ internal object MediaSourcererModule {
         streamingApiRepository: StreamingApiRepository,
         @ExtendedExoPlayerComponent.Local okHttpClient: OkHttpClient,
     ) = TidalMediaDrmCallbackFactory(streamingApiRepository, okHttpClient)
+
+    @Provides @Reusable fun offlineLicenseHelperFactory() = OfflineLicenseHelperFactory()
+
+    @Provides
+    @Reusable
+    fun offlineLicenseProvider(
+        defaultDrmSessionManagerBuilder: DefaultDrmSessionManager.Builder,
+        tidalMediaDrmCallbackFactory: TidalMediaDrmCallbackFactory,
+        offlineLicenseHelperFactory: OfflineLicenseHelperFactory,
+        base64Codec: Base64Codec,
+        coroutineDispatcher: CoroutineDispatcher,
+    ): OfflineLicenseProvider =
+        OfflineLicenseProviderDefault(
+            defaultDrmSessionManagerBuilder,
+            tidalMediaDrmCallbackFactory,
+            offlineLicenseHelperFactory,
+            base64Codec,
+            coroutineDispatcher,
+        )
 
     @Provides
     @Reusable

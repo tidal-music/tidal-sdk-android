@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.72] - 2026-08-14
+
+### Added
+- Added a public Widevine offline-license provider for acquiring, renewing, and releasing persistent licenses during downloads.
+
 ## [0.0.71] - 2026-08-13
 
 ### Changed

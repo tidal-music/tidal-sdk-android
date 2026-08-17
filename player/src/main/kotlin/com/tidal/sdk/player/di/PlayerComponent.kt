@@ -8,6 +8,7 @@ import com.tidal.sdk.player.offlineplay.OfflinePlayProvider
 import com.tidal.sdk.player.playbackengine.PlaybackEngine
 import com.tidal.sdk.player.playbackengine.model.AssetTimeoutConfig
 import com.tidal.sdk.player.playbackengine.model.BufferConfiguration
+import com.tidal.sdk.player.playbackengine.offline.OfflineLicenseProvider
 import com.tidal.sdk.player.playbackengine.playbackprivilege.PlaybackPrivilegeProvider
 import com.tidal.sdk.player.playbackengine.player.CacheProvider
 import com.tidal.sdk.player.streamingapi.StreamingApi
@@ -35,6 +36,7 @@ internal interface PlayerComponent {
 
     val configuration: Configuration
     val playbackEngine: PlaybackEngine
+    val offlineLicenseProvider: OfflineLicenseProvider
     val streamingApi: StreamingApi
     val streamingPrivileges: StreamingPrivileges
 

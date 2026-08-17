@@ -13,6 +13,7 @@ import com.tidal.sdk.player.playbackengine.PlaybackEngineModuleRoot
 import com.tidal.sdk.player.playbackengine.model.AssetTimeoutConfig
 import com.tidal.sdk.player.playbackengine.model.BufferConfiguration
 import com.tidal.sdk.player.playbackengine.model.Event
+import com.tidal.sdk.player.playbackengine.offline.OfflineLicenseProvider
 import com.tidal.sdk.player.playbackengine.playbackprivilege.PlaybackPrivilegeProvider
 import com.tidal.sdk.player.playbackengine.player.CacheProvider
 import com.tidal.sdk.player.streamingapi.StreamingApi
@@ -38,7 +39,7 @@ internal object PlaybackEngineModule {
 
     @Provides
     @Singleton
-    fun playbackEngine(
+    fun playbackEngineModuleRoot(
         context: Context,
         connectivityManager: ConnectivityManager,
         @Named("enableDecoderFallback") enableDecoderFallback: Boolean,
@@ -61,31 +62,36 @@ internal object PlaybackEngineModule {
         base64Codec: Base64Codec,
         coroutineDispatcher: CoroutineDispatcher,
         coroutineScope: CoroutineScope,
-    ) =
+    ): PlaybackEngineModuleRoot =
         PlaybackEngineModuleRoot(
-                context,
-                connectivityManager,
-                enableDecoderFallback,
-                events,
-                bufferConfiguration,
-                assetTimeoutConfig,
-                cacheProvider,
-                configuration,
-                appSpecificCacheDir,
-                streamingApi,
-                okHttpClient,
-                okHttpClientWithAuth,
-                gson,
-                eventReporter,
-                streamingPrivileges,
-                uuidWrapper,
-                trueTimeWrapper,
-                playbackPrivilegeProvider,
-                offlinePlayProvider?.offlineCacheProvider,
-                offlinePlayProvider?.encryption,
-                base64Codec,
-                coroutineDispatcher,
-                coroutineScope,
-            )
-            .playbackEngine
+            context,
+            connectivityManager,
+            enableDecoderFallback,
+            events,
+            bufferConfiguration,
+            assetTimeoutConfig,
+            cacheProvider,
+            configuration,
+            appSpecificCacheDir,
+            streamingApi,
+            okHttpClient,
+            okHttpClientWithAuth,
+            gson,
+            eventReporter,
+            streamingPrivileges,
+            uuidWrapper,
+            trueTimeWrapper,
+            playbackPrivilegeProvider,
+            offlinePlayProvider?.offlineCacheProvider,
+            offlinePlayProvider?.encryption,
+            base64Codec,
+            coroutineDispatcher,
+            coroutineScope,
+        )
+
+    @Provides fun playbackEngine(root: PlaybackEngineModuleRoot) = root.playbackEngine
+
+    @Provides
+    fun offlineLicenseProvider(root: PlaybackEngineModuleRoot): OfflineLicenseProvider =
+        root.offlineLicenseProvider
 }

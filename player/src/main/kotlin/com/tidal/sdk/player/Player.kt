@@ -92,6 +92,9 @@ class Player(
             )
     val configuration = playerComponent.configuration
     val playbackEngine = playerComponent.playbackEngine
+
+    /** Manages persistent Widevine licenses for media downloaded by the host application. */
+    val offlineLicenseProvider = playerComponent.offlineLicenseProvider
     val streamingApi = playerComponent.streamingApi
     private val streamingPrivileges = playerComponent.streamingPrivileges
 
