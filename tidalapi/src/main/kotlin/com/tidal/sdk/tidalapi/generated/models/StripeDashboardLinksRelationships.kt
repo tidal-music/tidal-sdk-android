@@ -12,5 +12,6 @@ import kotlinx.serialization.Serializable
 /** @param owners */
 @Serializable
 data class StripeDashboardLinksRelationships(
-    @SerialName(value = "owners") val owners: MultiRelationshipDataDocument? = null
+    @SerialName(value = "owners")
+    val owners: StripeDashboardLinksOwnersMultiRelationshipDataDocument? = null
 ) {}

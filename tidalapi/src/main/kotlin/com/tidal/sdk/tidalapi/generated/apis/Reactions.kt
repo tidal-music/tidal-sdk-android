@@ -1,9 +1,11 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.models.MutationResponseDocument
 import com.tidal.sdk.tidalapi.generated.models.ReactionsCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.ReactionsCreateSingleResourceDataDocument
-import com.tidal.sdk.tidalapi.generated.models.ReactionsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ReactionsMultiResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ReactionsOwnerProfilesMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ReactionsOwnersMultiRelationshipDataDocument
 import kotlinx.serialization.SerialName
 import retrofit2.Response
 import retrofit2.http.*
@@ -70,6 +72,7 @@ interface Reactions {
 
     /**
      * Delete single reaction. Deletes existing reaction. Responses:
+     * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -85,13 +88,13 @@ interface Reactions {
      * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
-     * @return [Unit]
+     * @return [MutationResponseDocument]
      */
     @DELETE("reactions/{id}")
     suspend fun reactionsIdDelete(
         @Path("id") id: kotlin.String,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
-    ): Response<Unit>
+    ): Response<MutationResponseDocument>
 
     /**
      * Get ownerProfiles relationship (\&quot;to-many\&quot;). Retrieves ownerProfiles relationship.
@@ -111,7 +114,7 @@ interface Reactions {
      *   Available options: ownerProfiles (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [ReactionsMultiRelationshipDataDocument]
+     * @return [ReactionsOwnerProfilesMultiRelationshipDataDocument]
      */
     @GET("reactions/{id}/relationships/ownerProfiles")
     suspend fun reactionsIdRelationshipsOwnerProfilesGet(
@@ -119,7 +122,7 @@ interface Reactions {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<ReactionsMultiRelationshipDataDocument>
+    ): Response<ReactionsOwnerProfilesMultiRelationshipDataDocument>
 
     /**
      * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
@@ -138,7 +141,7 @@ interface Reactions {
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [ReactionsMultiRelationshipDataDocument]
+     * @return [ReactionsOwnersMultiRelationshipDataDocument]
      */
     @GET("reactions/{id}/relationships/owners")
     suspend fun reactionsIdRelationshipsOwnersGet(
@@ -146,7 +149,7 @@ interface Reactions {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<ReactionsMultiRelationshipDataDocument>
+    ): Response<ReactionsOwnersMultiRelationshipDataDocument>
 
     /**
      * Create single reaction. Creates a new reaction. Responses:

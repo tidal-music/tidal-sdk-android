@@ -2,10 +2,11 @@ package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.CollaborationInvitesCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.CollaborationInvitesCreateSingleResourceDataDocument
-import com.tidal.sdk.tidalapi.generated.models.CollaborationInvitesMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.CollaborationInvitesMultiResourceDataDocument
-import com.tidal.sdk.tidalapi.generated.models.CollaborationInvitesSingleRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.CollaborationInvitesOwnersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.CollaborationInvitesSingleResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.CollaborationInvitesSubjectSingleRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.MutationResponseDocument
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -42,6 +43,7 @@ interface CollaborationInvites {
 
     /**
      * Delete single collaborationInvite. Deletes existing collaborationInvite. Responses:
+     * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -57,13 +59,13 @@ interface CollaborationInvites {
      * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
-     * @return [Unit]
+     * @return [MutationResponseDocument]
      */
     @DELETE("collaborationInvites/{id}")
     suspend fun collaborationInvitesIdDelete(
         @Path("id") id: kotlin.String,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
-    ): Response<Unit>
+    ): Response<MutationResponseDocument>
 
     /**
      * Get single collaborationInvite. Retrieves single collaborationInvite by id. Responses:
@@ -110,7 +112,7 @@ interface CollaborationInvites {
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [CollaborationInvitesMultiRelationshipDataDocument]
+     * @return [CollaborationInvitesOwnersMultiRelationshipDataDocument]
      */
     @GET("collaborationInvites/{id}/relationships/owners")
     suspend fun collaborationInvitesIdRelationshipsOwnersGet(
@@ -118,7 +120,7 @@ interface CollaborationInvites {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<CollaborationInvitesMultiRelationshipDataDocument>
+    ): Response<CollaborationInvitesOwnersMultiRelationshipDataDocument>
 
     /**
      * Get subject relationship (\&quot;to-one\&quot;). Retrieves subject relationship. Responses:
@@ -138,7 +140,7 @@ interface CollaborationInvites {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: subject.items (optional)
-     * @return [CollaborationInvitesSingleRelationshipDataDocument]
+     * @return [CollaborationInvitesSubjectSingleRelationshipDataDocument]
      */
     @GET("collaborationInvites/{id}/relationships/subject")
     suspend fun collaborationInvitesIdRelationshipsSubjectGet(
@@ -146,7 +148,7 @@ interface CollaborationInvites {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
-    ): Response<CollaborationInvitesSingleRelationshipDataDocument>
+    ): Response<CollaborationInvitesSubjectSingleRelationshipDataDocument>
 
     /**
      * Create single collaborationInvite. Creates a new collaborationInvite. Responses:

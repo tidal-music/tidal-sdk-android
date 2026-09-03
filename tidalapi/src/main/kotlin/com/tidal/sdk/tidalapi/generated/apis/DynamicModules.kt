@@ -1,8 +1,8 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
-import com.tidal.sdk.tidalapi.generated.models.DynamicModulesMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.DynamicModulesItemsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.DynamicModulesMultiResourceDataDocument
-import com.tidal.sdk.tidalapi.generated.models.DynamicModulesSingleRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.DynamicModulesSeedItemSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.DynamicModulesSingleResourceDataDocument
 import kotlinx.serialization.SerialName
 import retrofit2.Response
@@ -183,7 +183,7 @@ interface DynamicModules {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: items (optional)
-     * @return [DynamicModulesMultiRelationshipDataDocument]
+     * @return [DynamicModulesItemsMultiRelationshipDataDocument]
      */
     @GET("dynamicModules/{id}/relationships/items")
     suspend fun dynamicModulesIdRelationshipsItemsGet(
@@ -198,7 +198,7 @@ interface DynamicModules {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
-    ): Response<DynamicModulesMultiRelationshipDataDocument>
+    ): Response<DynamicModulesItemsMultiRelationshipDataDocument>
 
     /** enum for parameter deviceType */
     enum class DeviceTypeDynamicModulesIdRelationshipsSeedItemGet(val value: kotlin.String) {
@@ -247,7 +247,7 @@ interface DynamicModules {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: seedItem (optional)
-     * @return [DynamicModulesSingleRelationshipDataDocument]
+     * @return [DynamicModulesSeedItemSingleRelationshipDataDocument]
      */
     @GET("dynamicModules/{id}/relationships/seedItem")
     suspend fun dynamicModulesIdRelationshipsSeedItemGet(
@@ -261,5 +261,5 @@ interface DynamicModules {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
-    ): Response<DynamicModulesSingleRelationshipDataDocument>
+    ): Response<DynamicModulesSeedItemSingleRelationshipDataDocument>
 }

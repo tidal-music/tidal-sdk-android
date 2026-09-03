@@ -10,11 +10,16 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param length
- * @param start
+ * @param length Length of the highlight range, measured in UTF-16 code units
+ * @param start Zero-based start offset in the suggested query, measured in UTF-16 code units
  */
 @Serializable
 data class SearchSuggestionsHighlights(
+
+    /* Length of the highlight range, measured in UTF-16 code units */
+
     @SerialName(value = "length") val length: kotlin.Int,
+    /* Zero-based start offset in the suggested query, measured in UTF-16 code units */
+
     @SerialName(value = "start") val start: kotlin.Int,
 ) {}

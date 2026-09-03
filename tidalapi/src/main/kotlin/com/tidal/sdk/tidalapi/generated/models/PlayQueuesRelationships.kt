@@ -20,6 +20,6 @@ data class PlayQueuesRelationships(
     @SerialName(value = "current")
     val current: PlayQueuesCurrentSingleRelationshipDataDocument? = null,
     @SerialName(value = "future") val future: PlayQueuesFutureMultiRelationshipDataDocument? = null,
-    @SerialName(value = "owners") val owners: MultiRelationshipDataDocument? = null,
+    @SerialName(value = "owners") val owners: PlayQueuesOwnersMultiRelationshipDataDocument? = null,
     @SerialName(value = "past") val past: PlayQueuesPastMultiRelationshipDataDocument? = null,
 ) {}

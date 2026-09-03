@@ -12,5 +12,5 @@ import kotlinx.serialization.Serializable
 /** @param owners */
 @Serializable
 data class DownloadsRelationships(
-    @SerialName(value = "owners") val owners: MultiRelationshipDataDocument? = null
+    @SerialName(value = "owners") val owners: DownloadsOwnersMultiRelationshipDataDocument? = null
 ) {}

@@ -2,11 +2,12 @@ package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.ClientsCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.ClientsCreateSingleResourceDataDocument
-import com.tidal.sdk.tidalapi.generated.models.ClientsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ClientsMultiResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ClientsOwnersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ClientsSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ClientsUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.ClientsUpdateSingleResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.MutationResponseDocument
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -39,6 +40,7 @@ interface Clients {
 
     /**
      * Delete single client. Deletes existing client. Responses:
+     * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -54,13 +56,13 @@ interface Clients {
      * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
-     * @return [Unit]
+     * @return [MutationResponseDocument]
      */
     @DELETE("clients/{id}")
     suspend fun clientsIdDelete(
         @Path("id") id: kotlin.String,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
-    ): Response<Unit>
+    ): Response<MutationResponseDocument>
 
     /**
      * Get single client. Retrieves single client by id. Responses:
@@ -131,7 +133,7 @@ interface Clients {
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [ClientsMultiRelationshipDataDocument]
+     * @return [ClientsOwnersMultiRelationshipDataDocument]
      */
     @GET("clients/{id}/relationships/owners")
     suspend fun clientsIdRelationshipsOwnersGet(
@@ -139,7 +141,7 @@ interface Clients {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<ClientsMultiRelationshipDataDocument>
+    ): Response<ClientsOwnersMultiRelationshipDataDocument>
 
     /**
      * Create single client. Creates a new client. Responses:

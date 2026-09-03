@@ -17,5 +17,6 @@ import kotlinx.serialization.Serializable
 data class SearchSuggestionsRelationships(
     @SerialName(value = "directHits")
     val directHits: SearchSuggestionsDirectHitsMultiRelationshipDataDocument? = null,
-    @SerialName(value = "history") val history: MultiRelationshipDataDocument? = null,
+    @SerialName(value = "history")
+    val history: SearchSuggestionsHistoryMultiRelationshipDataDocument? = null,
 ) {}

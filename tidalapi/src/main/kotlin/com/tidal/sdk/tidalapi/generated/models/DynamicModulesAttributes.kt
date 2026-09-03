@@ -12,22 +12,23 @@ import kotlinx.serialization.Serializable
 /**
  * @param icons Semantic icons the module should show. SPOTLIGHT_INFO identifies modules whose
  *   content was selected by TIDAL's editorial team.
- * @param previewLayout Rendering layout for a dynamic module. previewLayout controls the module on
- *   a dynamic page. viewAllLayout controls its view-all screen; when omitted, the module has no
- *   view-all screen. GRID means artwork-forward tiles; the client owns scroll axis and column
- *   count. LIST means detailed text-forward rows in a single column and may be a table on wide
- *   screens. COMPACT means dense rows the client may pack into multiple columns; clients should
- *   treat it as LIST in a full view. UNKNOWN is the forward-compatible default; clients should skip
- *   the module or use a safe default.
+ * @param previewLayout Presentation family for items in a dynamic module preview. The API selects
+ *   the semantic presentation intent while clients own platform-specific geometry. A layout does
+ *   not prescribe scroll direction, row or column count, dimensions, spacing, breakpoints, or
+ *   visible item count; clients preserve the server-provided item order. GRID means artwork-forward
+ *   tiles or cards. LIST means detail-forward row cells, which clients may arrange in one or more
+ *   columns. SHORTCUT means compact quick-access items, which clients may arrange as a responsive
+ *   grid or rail. UNKNOWN is the forward-compatible default; clients should skip the module or use
+ *   a safe default.
  * @param subtitle Subtitle of the module
  * @param title Title of the module
- * @param viewAllLayout Rendering layout for a dynamic module. previewLayout controls the module on
- *   a dynamic page. viewAllLayout controls its view-all screen; when omitted, the module has no
- *   view-all screen. GRID means artwork-forward tiles; the client owns scroll axis and column
- *   count. LIST means detailed text-forward rows in a single column and may be a table on wide
- *   screens. COMPACT means dense rows the client may pack into multiple columns; clients should
- *   treat it as LIST in a full view. UNKNOWN is the forward-compatible default; clients should skip
- *   the module or use a safe default.
+ * @param viewAllLayout Presentation family for items on a dynamic module's view-all screen. The API
+ *   selects the semantic presentation intent while clients own platform-specific geometry. A layout
+ *   does not prescribe scroll direction, row or column count, dimensions, spacing, or breakpoints;
+ *   clients preserve the server-provided item order. When viewAllLayout is omitted, the module has
+ *   no view-all screen. GRID means artwork-forward tiles or cards. LIST means detail-forward row
+ *   cells, which clients may arrange in one or more columns or as a table. UNKNOWN is the
+ *   forward-compatible default; clients should skip the module or use a safe default.
  */
 @Serializable
 data class DynamicModulesAttributes(
@@ -35,7 +36,7 @@ data class DynamicModulesAttributes(
     /* Semantic icons the module should show. SPOTLIGHT_INFO identifies modules whose content was selected by TIDAL's editorial team. */
 
     @SerialName(value = "icons") val icons: kotlin.collections.List<DynamicModulesAttributes.Icons>,
-    /* Rendering layout for a dynamic module. previewLayout controls the module on a dynamic page. viewAllLayout controls its view-all screen; when omitted, the module has no view-all screen. GRID means artwork-forward tiles; the client owns scroll axis and column count. LIST means detailed text-forward rows in a single column and may be a table on wide screens. COMPACT means dense rows the client may pack into multiple columns; clients should treat it as LIST in a full view. UNKNOWN is the forward-compatible default; clients should skip the module or use a safe default. */
+    /* Presentation family for items in a dynamic module preview. The API selects the semantic presentation intent while clients own platform-specific geometry. A layout does not prescribe scroll direction, row or column count, dimensions, spacing, breakpoints, or visible item count; clients preserve the server-provided item order. GRID means artwork-forward tiles or cards. LIST means detail-forward row cells, which clients may arrange in one or more columns. SHORTCUT means compact quick-access items, which clients may arrange as a responsive grid or rail. UNKNOWN is the forward-compatible default; clients should skip the module or use a safe default. */
 
     @SerialName(value = "previewLayout") val previewLayout: DynamicModulesAttributes.PreviewLayout,
     /* Subtitle of the module */
@@ -44,7 +45,7 @@ data class DynamicModulesAttributes(
     /* Title of the module */
 
     @SerialName(value = "title") val title: kotlin.String? = null,
-    /* Rendering layout for a dynamic module. previewLayout controls the module on a dynamic page. viewAllLayout controls its view-all screen; when omitted, the module has no view-all screen. GRID means artwork-forward tiles; the client owns scroll axis and column count. LIST means detailed text-forward rows in a single column and may be a table on wide screens. COMPACT means dense rows the client may pack into multiple columns; clients should treat it as LIST in a full view. UNKNOWN is the forward-compatible default; clients should skip the module or use a safe default. */
+    /* Presentation family for items on a dynamic module's view-all screen. The API selects the semantic presentation intent while clients own platform-specific geometry. A layout does not prescribe scroll direction, row or column count, dimensions, spacing, or breakpoints; clients preserve the server-provided item order. When viewAllLayout is omitted, the module has no view-all screen. GRID means artwork-forward tiles or cards. LIST means detail-forward row cells, which clients may arrange in one or more columns or as a table. UNKNOWN is the forward-compatible default; clients should skip the module or use a safe default. */
 
     @SerialName(value = "viewAllLayout")
     val viewAllLayout: DynamicModulesAttributes.ViewAllLayout? = null,
@@ -63,40 +64,40 @@ data class DynamicModulesAttributes(
     }
 
     /**
-     * Rendering layout for a dynamic module. previewLayout controls the module on a dynamic page.
-     * viewAllLayout controls its view-all screen; when omitted, the module has no view-all screen.
-     * GRID means artwork-forward tiles; the client owns scroll axis and column count. LIST means
-     * detailed text-forward rows in a single column and may be a table on wide screens. COMPACT
-     * means dense rows the client may pack into multiple columns; clients should treat it as LIST
-     * in a full view. UNKNOWN is the forward-compatible default; clients should skip the module or
-     * use a safe default.
+     * Presentation family for items in a dynamic module preview. The API selects the semantic
+     * presentation intent while clients own platform-specific geometry. A layout does not prescribe
+     * scroll direction, row or column count, dimensions, spacing, breakpoints, or visible item
+     * count; clients preserve the server-provided item order. GRID means artwork-forward tiles or
+     * cards. LIST means detail-forward row cells, which clients may arrange in one or more columns.
+     * SHORTCUT means compact quick-access items, which clients may arrange as a responsive grid or
+     * rail. UNKNOWN is the forward-compatible default; clients should skip the module or use a safe
+     * default.
      *
-     * Values: GRID,LIST,COMPACT,UNKNOWN
+     * Values: GRID,LIST,SHORTCUT,UNKNOWN
      */
     @Serializable
     enum class PreviewLayout(val value: kotlin.String) {
         @SerialName(value = "GRID") GRID("GRID"),
         @SerialName(value = "LIST") LIST("LIST"),
-        @SerialName(value = "COMPACT") COMPACT("COMPACT"),
+        @SerialName(value = "SHORTCUT") SHORTCUT("SHORTCUT"),
         @SerialName(value = "UNKNOWN") UNKNOWN("UNKNOWN"),
     }
 
     /**
-     * Rendering layout for a dynamic module. previewLayout controls the module on a dynamic page.
-     * viewAllLayout controls its view-all screen; when omitted, the module has no view-all screen.
-     * GRID means artwork-forward tiles; the client owns scroll axis and column count. LIST means
-     * detailed text-forward rows in a single column and may be a table on wide screens. COMPACT
-     * means dense rows the client may pack into multiple columns; clients should treat it as LIST
-     * in a full view. UNKNOWN is the forward-compatible default; clients should skip the module or
-     * use a safe default.
+     * Presentation family for items on a dynamic module's view-all screen. The API selects the
+     * semantic presentation intent while clients own platform-specific geometry. A layout does not
+     * prescribe scroll direction, row or column count, dimensions, spacing, or breakpoints; clients
+     * preserve the server-provided item order. When viewAllLayout is omitted, the module has no
+     * view-all screen. GRID means artwork-forward tiles or cards. LIST means detail-forward row
+     * cells, which clients may arrange in one or more columns or as a table. UNKNOWN is the
+     * forward-compatible default; clients should skip the module or use a safe default.
      *
-     * Values: GRID,LIST,COMPACT,UNKNOWN
+     * Values: GRID,LIST,UNKNOWN
      */
     @Serializable
     enum class ViewAllLayout(val value: kotlin.String) {
         @SerialName(value = "GRID") GRID("GRID"),
         @SerialName(value = "LIST") LIST("LIST"),
-        @SerialName(value = "COMPACT") COMPACT("COMPACT"),
         @SerialName(value = "UNKNOWN") UNKNOWN("UNKNOWN"),
     }
 }

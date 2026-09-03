@@ -1,9 +1,16 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
-import com.tidal.sdk.tidalapi.generated.models.VideosMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.VideosAlbumsMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.VideosArtistsMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.VideosCreditsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.VideosMultiResourceDataDocument
-import com.tidal.sdk.tidalapi.generated.models.VideosSingleRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.VideosProvidersMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.VideosReplacementSingleRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.VideosSimilarVideosMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.VideosSingleResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.VideosSuggestedVideosMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.VideosThumbnailArtMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.VideosUsageRulesSingleRelationshipDataDocument
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -96,7 +103,7 @@ interface Videos {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: albums (optional)
-     * @return [VideosMultiRelationshipDataDocument]
+     * @return [VideosAlbumsMultiRelationshipDataDocument]
      */
     @GET("videos/{id}/relationships/albums")
     suspend fun videosIdRelationshipsAlbumsGet(
@@ -106,7 +113,7 @@ interface Videos {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
-    ): Response<VideosMultiRelationshipDataDocument>
+    ): Response<VideosAlbumsMultiRelationshipDataDocument>
 
     /**
      * Get artists relationship (\&quot;to-many\&quot;). Retrieves artists relationship. Responses:
@@ -129,7 +136,7 @@ interface Videos {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: artists.albums (optional)
-     * @return [VideosMultiRelationshipDataDocument]
+     * @return [VideosArtistsMultiRelationshipDataDocument]
      */
     @GET("videos/{id}/relationships/artists")
     suspend fun videosIdRelationshipsArtistsGet(
@@ -139,7 +146,7 @@ interface Videos {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
-    ): Response<VideosMultiRelationshipDataDocument>
+    ): Response<VideosArtistsMultiRelationshipDataDocument>
 
     /**
      * Get credits relationship (\&quot;to-many\&quot;). Retrieves credits relationship. Responses:
@@ -161,7 +168,7 @@ interface Videos {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: credits.artist.albums (optional)
-     * @return [VideosMultiRelationshipDataDocument]
+     * @return [VideosCreditsMultiRelationshipDataDocument]
      */
     @GET("videos/{id}/relationships/credits")
     suspend fun videosIdRelationshipsCreditsGet(
@@ -170,7 +177,7 @@ interface Videos {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
-    ): Response<VideosMultiRelationshipDataDocument>
+    ): Response<VideosCreditsMultiRelationshipDataDocument>
 
     /**
      * Get providers relationship (\&quot;to-many\&quot;). Retrieves providers relationship.
@@ -191,7 +198,7 @@ interface Videos {
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: providers (optional)
-     * @return [VideosMultiRelationshipDataDocument]
+     * @return [VideosProvidersMultiRelationshipDataDocument]
      */
     @GET("videos/{id}/relationships/providers")
     suspend fun videosIdRelationshipsProvidersGet(
@@ -200,7 +207,7 @@ interface Videos {
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<VideosMultiRelationshipDataDocument>
+    ): Response<VideosProvidersMultiRelationshipDataDocument>
 
     /**
      * Get replacement relationship (\&quot;to-one\&quot;). Retrieves replacement relationship.
@@ -222,7 +229,7 @@ interface Videos {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: replacement (optional)
-     * @return [VideosSingleRelationshipDataDocument]
+     * @return [VideosReplacementSingleRelationshipDataDocument]
      */
     @GET("videos/{id}/relationships/replacement")
     suspend fun videosIdRelationshipsReplacementGet(
@@ -231,7 +238,7 @@ interface Videos {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
-    ): Response<VideosSingleRelationshipDataDocument>
+    ): Response<VideosReplacementSingleRelationshipDataDocument>
 
     /**
      * Get similarVideos relationship (\&quot;to-many\&quot;). Retrieves similarVideos relationship.
@@ -255,7 +262,7 @@ interface Videos {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: similarVideos (optional)
-     * @return [VideosMultiRelationshipDataDocument]
+     * @return [VideosSimilarVideosMultiRelationshipDataDocument]
      */
     @GET("videos/{id}/relationships/similarVideos")
     suspend fun videosIdRelationshipsSimilarVideosGet(
@@ -265,7 +272,7 @@ interface Videos {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
-    ): Response<VideosMultiRelationshipDataDocument>
+    ): Response<VideosSimilarVideosMultiRelationshipDataDocument>
 
     /**
      * Get suggestedVideos relationship (\&quot;to-many\&quot;). Retrieves suggestedVideos
@@ -289,7 +296,7 @@ interface Videos {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: suggestedVideos (optional)
-     * @return [VideosMultiRelationshipDataDocument]
+     * @return [VideosSuggestedVideosMultiRelationshipDataDocument]
      */
     @GET("videos/{id}/relationships/suggestedVideos")
     suspend fun videosIdRelationshipsSuggestedVideosGet(
@@ -299,7 +306,7 @@ interface Videos {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
-    ): Response<VideosMultiRelationshipDataDocument>
+    ): Response<VideosSuggestedVideosMultiRelationshipDataDocument>
 
     /**
      * Get thumbnailArt relationship (\&quot;to-many\&quot;). Retrieves thumbnailArt relationship.
@@ -320,7 +327,7 @@ interface Videos {
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: thumbnailArt (optional)
-     * @return [VideosMultiRelationshipDataDocument]
+     * @return [VideosThumbnailArtMultiRelationshipDataDocument]
      */
     @GET("videos/{id}/relationships/thumbnailArt")
     suspend fun videosIdRelationshipsThumbnailArtGet(
@@ -329,7 +336,7 @@ interface Videos {
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<VideosMultiRelationshipDataDocument>
+    ): Response<VideosThumbnailArtMultiRelationshipDataDocument>
 
     /**
      * Get usageRules relationship (\&quot;to-one\&quot;). Retrieves usageRules relationship.
@@ -348,7 +355,7 @@ interface Videos {
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: usageRules (optional)
-     * @return [VideosSingleRelationshipDataDocument]
+     * @return [VideosUsageRulesSingleRelationshipDataDocument]
      */
     @GET("videos/{id}/relationships/usageRules")
     suspend fun videosIdRelationshipsUsageRulesGet(
@@ -356,5 +363,5 @@ interface Videos {
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<VideosSingleRelationshipDataDocument>
+    ): Response<VideosUsageRulesSingleRelationshipDataDocument>
 }

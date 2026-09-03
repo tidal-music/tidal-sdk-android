@@ -2,8 +2,9 @@ package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.SharesCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.SharesCreateSingleResourceDataDocument
-import com.tidal.sdk.tidalapi.generated.models.SharesMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.SharesMultiResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.SharesOwnersMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.SharesSharedResourcesMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.SharesSingleResourceDataDocument
 import retrofit2.Response
 import retrofit2.http.*
@@ -84,7 +85,7 @@ interface Shares {
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [SharesMultiRelationshipDataDocument]
+     * @return [SharesOwnersMultiRelationshipDataDocument]
      */
     @GET("shares/{id}/relationships/owners")
     suspend fun sharesIdRelationshipsOwnersGet(
@@ -92,7 +93,7 @@ interface Shares {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<SharesMultiRelationshipDataDocument>
+    ): Response<SharesOwnersMultiRelationshipDataDocument>
 
     /**
      * Get sharedResources relationship (\&quot;to-many\&quot;). Retrieves sharedResources
@@ -115,7 +116,7 @@ interface Shares {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: sharedResources (optional)
-     * @return [SharesMultiRelationshipDataDocument]
+     * @return [SharesSharedResourcesMultiRelationshipDataDocument]
      */
     @GET("shares/{id}/relationships/sharedResources")
     suspend fun sharesIdRelationshipsSharedResourcesGet(
@@ -124,7 +125,7 @@ interface Shares {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
-    ): Response<SharesMultiRelationshipDataDocument>
+    ): Response<SharesSharedResourcesMultiRelationshipDataDocument>
 
     /**
      * Create single share. Creates a new share. Responses:

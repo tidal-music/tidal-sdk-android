@@ -1,10 +1,11 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.models.MutationResponseDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionPlaylistsItemsAddMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionPlaylistsItemsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionPlaylistsItemsRelationshipAddOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionPlaylistsItemsRelationshipRemoveOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.UserCollectionPlaylistsMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionPlaylistsOwnersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionPlaylistsSingleResourceDataDocument
 import kotlinx.serialization.SerialName
 import retrofit2.Response
@@ -46,6 +47,7 @@ interface UserCollectionPlaylists {
     /**
      * Delete from items relationship (\&quot;to-many\&quot;). Deletes item(s) from items
      * relationship. Responses:
+     * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -63,7 +65,7 @@ interface UserCollectionPlaylists {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param userCollectionPlaylistsItemsRelationshipRemoveOperationPayload (optional)
-     * @return [Unit]
+     * @return [MutationResponseDocument]
      */
     @HTTP(
         method = "DELETE",
@@ -77,7 +79,7 @@ interface UserCollectionPlaylists {
         userCollectionPlaylistsItemsRelationshipRemoveOperationPayload:
             UserCollectionPlaylistsItemsRelationshipRemoveOperationPayload? =
             null,
-    ): Response<Unit>
+    ): Response<MutationResponseDocument>
 
     /** enum for parameter collectionView */
     enum class CollectionViewUserCollectionPlaylistsIdRelationshipsItemsGet(
@@ -187,7 +189,7 @@ interface UserCollectionPlaylists {
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [UserCollectionPlaylistsMultiRelationshipDataDocument]
+     * @return [UserCollectionPlaylistsOwnersMultiRelationshipDataDocument]
      */
     @GET("userCollectionPlaylists/{id}/relationships/owners")
     suspend fun userCollectionPlaylistsIdRelationshipsOwnersGet(
@@ -195,5 +197,5 @@ interface UserCollectionPlaylists {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<UserCollectionPlaylistsMultiRelationshipDataDocument>
+    ): Response<UserCollectionPlaylistsOwnersMultiRelationshipDataDocument>
 }

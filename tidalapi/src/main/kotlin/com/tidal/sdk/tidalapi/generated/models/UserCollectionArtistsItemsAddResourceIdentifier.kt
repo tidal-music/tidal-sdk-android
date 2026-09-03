@@ -12,11 +12,14 @@ import kotlinx.serialization.Serializable
 /**
  * @param id
  * @param type
+ * @param meta
  */
 @Serializable
 data class UserCollectionArtistsItemsAddResourceIdentifier(
     @SerialName(value = "id") val id: kotlin.String,
     @SerialName(value = "type") val type: UserCollectionArtistsItemsAddResourceIdentifier.Type,
+    @SerialName(value = "meta")
+    val meta: UserCollectionArtistsItemsAddResourceIdentifierMeta? = null,
 ) {
 
     /** Values: artists */

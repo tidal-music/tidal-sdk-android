@@ -12,6 +12,10 @@ import kotlinx.serialization.Serializable
 /**
  * @param accessType Access type
  * @param albumType
+ * @param barcodeId A barcode the rights holder already owns: a GTIN-12 or GTIN-13 (UPC-A or EAN-13)
+ *   with a valid GS1 check digit. It can only be set while the album has no barcode of its own: the
+ *   barcode TIDAL assigns at the album's first sale is permanent. Omit the field, and TIDAL assigns
+ *   one then.
  * @param copyright
  * @param explicit Explicit content
  * @param explicitLyrics Explicit content. Deprecated: use 'explicit' instead. This field will be
@@ -29,6 +33,9 @@ data class AlbumsUpdateOperationPayloadDataAttributes(
     val accessType: AlbumsUpdateOperationPayloadDataAttributes.AccessType? = null,
     @SerialName(value = "albumType")
     val albumType: AlbumsUpdateOperationPayloadDataAttributes.AlbumType? = null,
+    /* A barcode the rights holder already owns: a GTIN-12 or GTIN-13 (UPC-A or EAN-13) with a valid GS1 check digit. It can only be set while the album has no barcode of its own: the barcode TIDAL assigns at the album's first sale is permanent. Omit the field, and TIDAL assigns one then. */
+
+    @SerialName(value = "barcodeId") val barcodeId: kotlin.String? = null,
     @SerialName(value = "copyright") val copyright: Copyright? = null,
     /* Explicit content */
 

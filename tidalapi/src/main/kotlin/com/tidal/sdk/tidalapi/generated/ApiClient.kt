@@ -27,6 +27,8 @@ import com.tidal.sdk.tidalapi.generated.apis.Lyrics
 import com.tidal.sdk.tidalapi.generated.apis.ManualArtistClaims
 import com.tidal.sdk.tidalapi.generated.apis.OfflineTasks
 import com.tidal.sdk.tidalapi.generated.apis.PlayQueues
+import com.tidal.sdk.tidalapi.generated.apis.PlaylistGenerationSchedules
+import com.tidal.sdk.tidalapi.generated.apis.PlaylistGenerations
 import com.tidal.sdk.tidalapi.generated.apis.Playlists
 import com.tidal.sdk.tidalapi.generated.apis.PriceConfigurations
 import com.tidal.sdk.tidalapi.generated.apis.ProviderOwners
@@ -60,14 +62,13 @@ import com.tidal.sdk.tidalapi.generated.apis.UserCollectionPlaylists
 import com.tidal.sdk.tidalapi.generated.apis.UserCollectionSaveForLaters
 import com.tidal.sdk.tidalapi.generated.apis.UserCollectionTracks
 import com.tidal.sdk.tidalapi.generated.apis.UserCollectionVideos
-import com.tidal.sdk.tidalapi.generated.apis.UserCollections
 import com.tidal.sdk.tidalapi.generated.apis.UserDailyMixes
 import com.tidal.sdk.tidalapi.generated.apis.UserDataExportRequests
 import com.tidal.sdk.tidalapi.generated.apis.UserDiscoveryMixes
 import com.tidal.sdk.tidalapi.generated.apis.UserNewReleaseMixes
 import com.tidal.sdk.tidalapi.generated.apis.UserOfflineMixes
+import com.tidal.sdk.tidalapi.generated.apis.UserPlaybackStates
 import com.tidal.sdk.tidalapi.generated.apis.UserRecommendationBlocks
-import com.tidal.sdk.tidalapi.generated.apis.UserRecommendations
 import com.tidal.sdk.tidalapi.generated.apis.UserReports
 import com.tidal.sdk.tidalapi.generated.apis.UserSubscriptionPriceChanges
 import com.tidal.sdk.tidalapi.generated.apis.Users
@@ -220,6 +221,21 @@ class TidalApiClient(
     /** Returns an instance of the [PlayQueues] which can be used to make API calls to the */
     fun createPlayQueues(): PlayQueues {
         return retrofit.create(PlayQueues::class.java)
+    }
+
+    /**
+     * Returns an instance of the [PlaylistGenerationSchedules] which can be used to make API calls
+     * to the
+     */
+    fun createPlaylistGenerationSchedules(): PlaylistGenerationSchedules {
+        return retrofit.create(PlaylistGenerationSchedules::class.java)
+    }
+
+    /**
+     * Returns an instance of the [PlaylistGenerations] which can be used to make API calls to the
+     */
+    fun createPlaylistGenerations(): PlaylistGenerations {
+        return retrofit.create(PlaylistGenerations::class.java)
     }
 
     /** Returns an instance of the [Playlists] which can be used to make API calls to the */
@@ -418,11 +434,6 @@ class TidalApiClient(
         return retrofit.create(UserCollectionVideos::class.java)
     }
 
-    /** Returns an instance of the [UserCollections] which can be used to make API calls to the */
-    fun createUserCollections(): UserCollections {
-        return retrofit.create(UserCollections::class.java)
-    }
-
     /** Returns an instance of the [UserDailyMixes] which can be used to make API calls to the */
     fun createUserDailyMixes(): UserDailyMixes {
         return retrofit.create(UserDailyMixes::class.java)
@@ -456,18 +467,18 @@ class TidalApiClient(
     }
 
     /**
+     * Returns an instance of the [UserPlaybackStates] which can be used to make API calls to the
+     */
+    fun createUserPlaybackStates(): UserPlaybackStates {
+        return retrofit.create(UserPlaybackStates::class.java)
+    }
+
+    /**
      * Returns an instance of the [UserRecommendationBlocks] which can be used to make API calls to
      * the
      */
     fun createUserRecommendationBlocks(): UserRecommendationBlocks {
         return retrofit.create(UserRecommendationBlocks::class.java)
-    }
-
-    /**
-     * Returns an instance of the [UserRecommendations] which can be used to make API calls to the
-     */
-    fun createUserRecommendations(): UserRecommendations {
-        return retrofit.create(UserRecommendations::class.java)
     }
 
     /** Returns an instance of the [UserReports] which can be used to make API calls to the */

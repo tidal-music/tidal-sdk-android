@@ -19,7 +19,8 @@ import kotlinx.serialization.Serializable
 data class UserRecommendationBlocksRelationships(
     @SerialName(value = "artists")
     val artists: UserRecommendationBlocksArtistsMultiRelationshipDataDocument? = null,
-    @SerialName(value = "owners") val owners: MultiRelationshipDataDocument? = null,
+    @SerialName(value = "owners")
+    val owners: UserRecommendationBlocksOwnersMultiRelationshipDataDocument? = null,
     @SerialName(value = "tracks")
     val tracks: UserRecommendationBlocksTracksMultiRelationshipDataDocument? = null,
     @SerialName(value = "videos")

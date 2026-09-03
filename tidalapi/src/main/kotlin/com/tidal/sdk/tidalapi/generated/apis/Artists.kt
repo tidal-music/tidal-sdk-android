@@ -1,18 +1,26 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.models.ArtistsAlbumsMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ArtistsBiographySingleRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ArtistsClaimStatusSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistsCreateOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.ArtistsCreateSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistsFollowersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistsFollowingMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistsFollowingRelationshipAddOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.ArtistsFollowingRelationshipRemoveOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.ArtistsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistsMultiResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ArtistsOwnersMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ArtistsProfileArtMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistsProfileArtRelationshipUpdateOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.ArtistsSingleRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ArtistsRadioMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ArtistsRolesMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ArtistsSimilarArtistsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistsSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistsTrackProvidersMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ArtistsTracksMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistsUpdateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.ArtistsVideosMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.MutationResponseDocument
 import kotlinx.serialization.SerialName
 import retrofit2.Response
 import retrofit2.http.*
@@ -90,6 +98,7 @@ interface Artists {
 
     /**
      * Update single artist. Updates existing artist. Responses:
+     * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -106,14 +115,14 @@ interface Artists {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param artistsUpdateOperationPayload (optional)
-     * @return [Unit]
+     * @return [MutationResponseDocument]
      */
     @PATCH("artists/{id}")
     suspend fun artistsIdPatch(
         @Path("id") id: kotlin.String,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body artistsUpdateOperationPayload: ArtistsUpdateOperationPayload? = null,
-    ): Response<Unit>
+    ): Response<MutationResponseDocument>
 
     /**
      * Get albums relationship (\&quot;to-many\&quot;). Retrieves albums relationship. Responses:
@@ -136,7 +145,7 @@ interface Artists {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: albums (optional)
-     * @return [ArtistsMultiRelationshipDataDocument]
+     * @return [ArtistsAlbumsMultiRelationshipDataDocument]
      */
     @GET("artists/{id}/relationships/albums")
     suspend fun artistsIdRelationshipsAlbumsGet(
@@ -146,7 +155,7 @@ interface Artists {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
-    ): Response<ArtistsMultiRelationshipDataDocument>
+    ): Response<ArtistsAlbumsMultiRelationshipDataDocument>
 
     /**
      * Get biography relationship (\&quot;to-one\&quot;). Retrieves biography relationship.
@@ -165,7 +174,7 @@ interface Artists {
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: biography (optional)
-     * @return [ArtistsSingleRelationshipDataDocument]
+     * @return [ArtistsBiographySingleRelationshipDataDocument]
      */
     @GET("artists/{id}/relationships/biography")
     suspend fun artistsIdRelationshipsBiographyGet(
@@ -173,7 +182,7 @@ interface Artists {
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<ArtistsSingleRelationshipDataDocument>
+    ): Response<ArtistsBiographySingleRelationshipDataDocument>
 
     /**
      * Get claimStatus relationship (\&quot;to-one\&quot;). Retrieves claimStatus relationship.
@@ -191,14 +200,14 @@ interface Artists {
      * @param id Artist id
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: claimStatus (optional)
-     * @return [ArtistsSingleRelationshipDataDocument]
+     * @return [ArtistsClaimStatusSingleRelationshipDataDocument]
      */
     @GET("artists/{id}/relationships/claimStatus")
     suspend fun artistsIdRelationshipsClaimStatusGet(
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<ArtistsSingleRelationshipDataDocument>
+    ): Response<ArtistsClaimStatusSingleRelationshipDataDocument>
 
     /**
      * Get followers relationship (\&quot;to-many\&quot;). Retrieves followers relationship.
@@ -237,6 +246,7 @@ interface Artists {
     /**
      * Delete from following relationship (\&quot;to-many\&quot;). Deletes item(s) from following
      * relationship. Responses:
+     * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -253,7 +263,7 @@ interface Artists {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param artistsFollowingRelationshipRemoveOperationPayload (optional)
-     * @return [Unit]
+     * @return [MutationResponseDocument]
      */
     @HTTP(method = "DELETE", path = "artists/{id}/relationships/following", hasBody = true)
     suspend fun artistsIdRelationshipsFollowingDelete(
@@ -263,7 +273,7 @@ interface Artists {
         artistsFollowingRelationshipRemoveOperationPayload:
             ArtistsFollowingRelationshipRemoveOperationPayload? =
             null,
-    ): Response<Unit>
+    ): Response<MutationResponseDocument>
 
     /**
      * Get following relationship (\&quot;to-many\&quot;). Retrieves following relationship.
@@ -302,7 +312,7 @@ interface Artists {
     /**
      * Add to following relationship (\&quot;to-many\&quot;). Adds item(s) to following
      * relationship. Responses:
-     * - 201: Successful response
+     * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -315,23 +325,21 @@ interface Artists {
      * - 503: Service temporarily unavailable
      *
      * @param id Artist id
-     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param artistsFollowingRelationshipAddOperationPayload (optional)
-     * @return [Unit]
+     * @return [MutationResponseDocument]
      */
     @POST("artists/{id}/relationships/following")
     suspend fun artistsIdRelationshipsFollowingPost(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String? = null,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body
         artistsFollowingRelationshipAddOperationPayload:
             ArtistsFollowingRelationshipAddOperationPayload? =
             null,
-    ): Response<Unit>
+    ): Response<MutationResponseDocument>
 
     /**
      * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
@@ -350,7 +358,7 @@ interface Artists {
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [ArtistsMultiRelationshipDataDocument]
+     * @return [ArtistsOwnersMultiRelationshipDataDocument]
      */
     @GET("artists/{id}/relationships/owners")
     suspend fun artistsIdRelationshipsOwnersGet(
@@ -358,7 +366,7 @@ interface Artists {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<ArtistsMultiRelationshipDataDocument>
+    ): Response<ArtistsOwnersMultiRelationshipDataDocument>
 
     /**
      * Get profileArt relationship (\&quot;to-many\&quot;). Retrieves profileArt relationship.
@@ -379,7 +387,7 @@ interface Artists {
      *   Available options: profileArt (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [ArtistsMultiRelationshipDataDocument]
+     * @return [ArtistsProfileArtMultiRelationshipDataDocument]
      */
     @GET("artists/{id}/relationships/profileArt")
     suspend fun artistsIdRelationshipsProfileArtGet(
@@ -388,11 +396,12 @@ interface Artists {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<ArtistsMultiRelationshipDataDocument>
+    ): Response<ArtistsProfileArtMultiRelationshipDataDocument>
 
     /**
      * Update profileArt relationship (\&quot;to-many\&quot;). Updates profileArt relationship.
      * Responses:
+     * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -409,7 +418,7 @@ interface Artists {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param artistsProfileArtRelationshipUpdateOperationPayload (optional)
-     * @return [Unit]
+     * @return [MutationResponseDocument]
      */
     @PATCH("artists/{id}/relationships/profileArt")
     suspend fun artistsIdRelationshipsProfileArtPatch(
@@ -419,7 +428,7 @@ interface Artists {
         artistsProfileArtRelationshipUpdateOperationPayload:
             ArtistsProfileArtRelationshipUpdateOperationPayload? =
             null,
-    ): Response<Unit>
+    ): Response<MutationResponseDocument>
 
     /**
      * Get radio relationship (\&quot;to-many\&quot;). Retrieves radio relationship. Responses:
@@ -442,7 +451,7 @@ interface Artists {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: radio.items (optional)
-     * @return [ArtistsMultiRelationshipDataDocument]
+     * @return [ArtistsRadioMultiRelationshipDataDocument]
      */
     @GET("artists/{id}/relationships/radio")
     suspend fun artistsIdRelationshipsRadioGet(
@@ -452,7 +461,7 @@ interface Artists {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
-    ): Response<ArtistsMultiRelationshipDataDocument>
+    ): Response<ArtistsRadioMultiRelationshipDataDocument>
 
     /**
      * Get roles relationship (\&quot;to-many\&quot;). Retrieves roles relationship. Responses:
@@ -471,7 +480,7 @@ interface Artists {
      *   Available options: roles (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [ArtistsMultiRelationshipDataDocument]
+     * @return [ArtistsRolesMultiRelationshipDataDocument]
      */
     @GET("artists/{id}/relationships/roles")
     suspend fun artistsIdRelationshipsRolesGet(
@@ -479,7 +488,7 @@ interface Artists {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<ArtistsMultiRelationshipDataDocument>
+    ): Response<ArtistsRolesMultiRelationshipDataDocument>
 
     /**
      * Get similarArtists relationship (\&quot;to-many\&quot;). Retrieves similarArtists
@@ -503,7 +512,7 @@ interface Artists {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: similarArtists.albums (optional)
-     * @return [ArtistsMultiRelationshipDataDocument]
+     * @return [ArtistsSimilarArtistsMultiRelationshipDataDocument]
      */
     @GET("artists/{id}/relationships/similarArtists")
     suspend fun artistsIdRelationshipsSimilarArtistsGet(
@@ -513,7 +522,7 @@ interface Artists {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
-    ): Response<ArtistsMultiRelationshipDataDocument>
+    ): Response<ArtistsSimilarArtistsMultiRelationshipDataDocument>
 
     /**
      * Get trackProviders relationship (\&quot;to-many\&quot;). Retrieves trackProviders
@@ -573,7 +582,7 @@ interface Artists {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: tracks (optional)
-     * @return [ArtistsMultiRelationshipDataDocument]
+     * @return [ArtistsTracksMultiRelationshipDataDocument]
      */
     @GET("artists/{id}/relationships/tracks")
     suspend fun artistsIdRelationshipsTracksGet(
@@ -584,7 +593,7 @@ interface Artists {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
-    ): Response<ArtistsMultiRelationshipDataDocument>
+    ): Response<ArtistsTracksMultiRelationshipDataDocument>
 
     /**
      * Get videos relationship (\&quot;to-many\&quot;). Retrieves videos relationship. Responses:
@@ -607,7 +616,7 @@ interface Artists {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: videos (optional)
-     * @return [ArtistsMultiRelationshipDataDocument]
+     * @return [ArtistsVideosMultiRelationshipDataDocument]
      */
     @GET("artists/{id}/relationships/videos")
     suspend fun artistsIdRelationshipsVideosGet(
@@ -617,10 +626,11 @@ interface Artists {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
-    ): Response<ArtistsMultiRelationshipDataDocument>
+    ): Response<ArtistsVideosMultiRelationshipDataDocument>
 
     /**
      * Create single artist. Creates a new artist. Responses:
+     * - 200: Successful dry run
      * - 201: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -637,11 +647,11 @@ interface Artists {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param artistsCreateOperationPayload (optional)
-     * @return [ArtistsCreateSingleResourceDataDocument]
+     * @return [MutationResponseDocument]
      */
     @POST("artists")
     suspend fun artistsPost(
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body artistsCreateOperationPayload: ArtistsCreateOperationPayload? = null,
-    ): Response<ArtistsCreateSingleResourceDataDocument>
+    ): Response<MutationResponseDocument>
 }

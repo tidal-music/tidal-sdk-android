@@ -27,17 +27,21 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ArtistsRelationships(
     @SerialName(value = "albums") val albums: ArtistsAlbumsMultiRelationshipDataDocument? = null,
-    @SerialName(value = "biography") val biography: SingleRelationshipDataDocument? = null,
-    @SerialName(value = "claimStatus") val claimStatus: SingleRelationshipDataDocument? = null,
+    @SerialName(value = "biography")
+    val biography: ArtistsBiographySingleRelationshipDataDocument? = null,
+    @SerialName(value = "claimStatus")
+    val claimStatus: ArtistsClaimStatusSingleRelationshipDataDocument? = null,
     @SerialName(value = "followers")
     val followers: ArtistsFollowersMultiRelationshipDataDocument? = null,
     @SerialName(value = "following")
     val following: ArtistsFollowingMultiRelationshipDataDocument? = null,
-    @SerialName(value = "owners") val owners: MultiRelationshipDataDocument? = null,
-    @SerialName(value = "profileArt") val profileArt: MultiRelationshipDataDocument? = null,
-    @SerialName(value = "radio") val radio: MultiRelationshipDataDocument? = null,
-    @SerialName(value = "roles") val roles: MultiRelationshipDataDocument? = null,
-    @SerialName(value = "similarArtists") val similarArtists: MultiRelationshipDataDocument? = null,
+    @SerialName(value = "owners") val owners: ArtistsOwnersMultiRelationshipDataDocument? = null,
+    @SerialName(value = "profileArt")
+    val profileArt: ArtistsProfileArtMultiRelationshipDataDocument? = null,
+    @SerialName(value = "radio") val radio: ArtistsRadioMultiRelationshipDataDocument? = null,
+    @SerialName(value = "roles") val roles: ArtistsRolesMultiRelationshipDataDocument? = null,
+    @SerialName(value = "similarArtists")
+    val similarArtists: ArtistsSimilarArtistsMultiRelationshipDataDocument? = null,
     @SerialName(value = "trackProviders")
     val trackProviders: ArtistsTrackProvidersMultiRelationshipDataDocument? = null,
     @SerialName(value = "tracks") val tracks: ArtistsTracksMultiRelationshipDataDocument? = null,

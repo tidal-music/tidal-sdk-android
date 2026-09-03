@@ -1,13 +1,14 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.AppreciationsCreateOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.AppreciationsCreateSingleResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.MutationResponseDocument
 import retrofit2.Response
 import retrofit2.http.*
 
 interface Appreciations {
     /**
      * Create single appreciation. Creates a new appreciation. Responses:
+     * - 200: Successful dry run
      * - 201: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -24,11 +25,11 @@ interface Appreciations {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param appreciationsCreateOperationPayload (optional)
-     * @return [AppreciationsCreateSingleResourceDataDocument]
+     * @return [MutationResponseDocument]
      */
     @POST("appreciations")
     suspend fun appreciationsPost(
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body appreciationsCreateOperationPayload: AppreciationsCreateOperationPayload? = null,
-    ): Response<AppreciationsCreateSingleResourceDataDocument>
+    ): Response<MutationResponseDocument>
 }

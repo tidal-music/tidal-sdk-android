@@ -12,5 +12,5 @@ import kotlinx.serialization.Serializable
 /** @param name */
 @Serializable
 data class UserCollectionFoldersUpdateOperationPayloadDataAttributes(
-    @SerialName(value = "name") val name: kotlin.String? = null
+    @SerialName(value = "name") val name: kotlin.String
 ) {}

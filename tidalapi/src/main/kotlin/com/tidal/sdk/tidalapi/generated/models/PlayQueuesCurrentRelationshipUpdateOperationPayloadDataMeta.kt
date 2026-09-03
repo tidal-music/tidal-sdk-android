@@ -9,8 +9,15 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param itemId */
+/**
+ * @param itemId
+ * @param position
+ * @param updatedByInstallationId
+ */
 @Serializable
 data class PlayQueuesCurrentRelationshipUpdateOperationPayloadDataMeta(
-    @SerialName(value = "itemId") val itemId: kotlin.String
+    @SerialName(value = "itemId") val itemId: kotlin.String,
+    @SerialName(value = "position") val position: kotlin.String? = null,
+    @SerialName(value = "updatedByInstallationId")
+    val updatedByInstallationId: kotlin.String? = null,
 ) {}

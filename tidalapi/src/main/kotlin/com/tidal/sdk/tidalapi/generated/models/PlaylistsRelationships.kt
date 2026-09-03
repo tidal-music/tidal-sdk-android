@@ -21,12 +21,15 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class PlaylistsRelationships(
     @SerialName(value = "collaboratorProfiles")
-    val collaboratorProfiles: MultiRelationshipDataDocument? = null,
-    @SerialName(value = "collaborators") val collaborators: MultiRelationshipDataDocument? = null,
-    @SerialName(value = "coverArt") val coverArt: MultiRelationshipDataDocument? = null,
+    val collaboratorProfiles: PlaylistsCollaboratorProfilesMultiRelationshipDataDocument? = null,
+    @SerialName(value = "collaborators")
+    val collaborators: PlaylistsCollaboratorsMultiRelationshipDataDocument? = null,
+    @SerialName(value = "coverArt")
+    val coverArt: PlaylistsCoverArtMultiRelationshipDataDocument? = null,
     @SerialName(value = "items") val items: PlaylistsItemsMultiRelationshipDataDocument? = null,
-    @SerialName(value = "ownerProfiles") val ownerProfiles: MultiRelationshipDataDocument? = null,
-    @SerialName(value = "owners") val owners: MultiRelationshipDataDocument? = null,
+    @SerialName(value = "ownerProfiles")
+    val ownerProfiles: PlaylistsOwnerProfilesMultiRelationshipDataDocument? = null,
+    @SerialName(value = "owners") val owners: PlaylistsOwnersMultiRelationshipDataDocument? = null,
     @SerialName(value = "suggestedCoverArts")
     val suggestedCoverArts: PlaylistsSuggestedCoverArtsMultiRelationshipDataDocument? = null,
 ) {}

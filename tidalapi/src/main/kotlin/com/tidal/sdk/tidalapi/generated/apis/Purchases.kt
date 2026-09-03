@@ -1,8 +1,8 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
-import com.tidal.sdk.tidalapi.generated.models.PurchasesMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PurchasesMultiResourceDataDocument
-import com.tidal.sdk.tidalapi.generated.models.PurchasesSingleRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.PurchasesOwnersMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.PurchasesSubjectSingleRelationshipDataDocument
 import kotlinx.serialization.SerialName
 import retrofit2.Response
 import retrofit2.http.*
@@ -68,7 +68,7 @@ interface Purchases {
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [PurchasesMultiRelationshipDataDocument]
+     * @return [PurchasesOwnersMultiRelationshipDataDocument]
      */
     @GET("purchases/{id}/relationships/owners")
     suspend fun purchasesIdRelationshipsOwnersGet(
@@ -76,7 +76,7 @@ interface Purchases {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<PurchasesMultiRelationshipDataDocument>
+    ): Response<PurchasesOwnersMultiRelationshipDataDocument>
 
     /**
      * Get subject relationship (\&quot;to-one\&quot;). Retrieves subject relationship. Responses:
@@ -96,7 +96,7 @@ interface Purchases {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: subject (optional)
-     * @return [PurchasesSingleRelationshipDataDocument]
+     * @return [PurchasesSubjectSingleRelationshipDataDocument]
      */
     @GET("purchases/{id}/relationships/subject")
     suspend fun purchasesIdRelationshipsSubjectGet(
@@ -104,5 +104,5 @@ interface Purchases {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
-    ): Response<PurchasesSingleRelationshipDataDocument>
+    ): Response<PurchasesSubjectSingleRelationshipDataDocument>
 }

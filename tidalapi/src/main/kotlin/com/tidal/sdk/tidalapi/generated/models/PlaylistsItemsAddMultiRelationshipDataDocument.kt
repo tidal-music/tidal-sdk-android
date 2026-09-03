@@ -12,10 +12,12 @@ import kotlinx.serialization.Serializable
 /**
  * @param `data`
  * @param links
+ * @param meta
  */
 @Serializable
 data class PlaylistsItemsAddMultiRelationshipDataDocument(
     @SerialName(value = "data")
     val `data`: kotlin.collections.List<PlaylistsItemsAddResourceIdentifier>,
     @SerialName(value = "links") val links: Links,
+    @SerialName(value = "meta") val meta: PlaylistsItemsAddMultiRelationshipDataDocumentMeta? = null,
 ) {}

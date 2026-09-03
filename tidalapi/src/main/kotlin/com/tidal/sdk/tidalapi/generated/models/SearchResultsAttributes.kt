@@ -10,12 +10,16 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
+ * @param query The search query represented by this resource
  * @param trackingId search request unique tracking number
  * @param didYouMean 'did you mean' prompt
  */
 @Serializable
 data class SearchResultsAttributes(
 
+    /* The search query represented by this resource */
+
+    @SerialName(value = "query") val query: kotlin.String,
     /* search request unique tracking number */
 
     @SerialName(value = "trackingId") val trackingId: kotlin.String,

@@ -1,7 +1,7 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.DspSharingLinksMultiResourceDataDocument
-import com.tidal.sdk.tidalapi.generated.models.DspSharingLinksSingleRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.DspSharingLinksSubjectSingleRelationshipDataDocument
 import kotlinx.serialization.SerialName
 import retrofit2.Response
 import retrofit2.http.*
@@ -67,7 +67,7 @@ interface DspSharingLinks {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: subject (optional)
-     * @return [DspSharingLinksSingleRelationshipDataDocument]
+     * @return [DspSharingLinksSubjectSingleRelationshipDataDocument]
      */
     @GET("dspSharingLinks/{id}/relationships/subject")
     suspend fun dspSharingLinksIdRelationshipsSubjectGet(
@@ -75,5 +75,5 @@ interface DspSharingLinks {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
-    ): Response<DspSharingLinksSingleRelationshipDataDocument>
+    ): Response<DspSharingLinksSubjectSingleRelationshipDataDocument>
 }

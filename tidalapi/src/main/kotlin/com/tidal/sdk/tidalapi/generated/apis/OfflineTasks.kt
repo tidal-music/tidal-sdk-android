@@ -1,8 +1,10 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
-import com.tidal.sdk.tidalapi.generated.models.OfflineTasksMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.MutationResponseDocument
+import com.tidal.sdk.tidalapi.generated.models.OfflineTasksCollectionSingleRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.OfflineTasksItemSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.OfflineTasksMultiResourceDataDocument
-import com.tidal.sdk.tidalapi.generated.models.OfflineTasksSingleRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.OfflineTasksOwnersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.OfflineTasksSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.OfflineTasksUpdateOperationPayload
 import retrofit2.Response
@@ -72,6 +74,7 @@ interface OfflineTasks {
 
     /**
      * Update single offlineTask. Updates existing offlineTask. Responses:
+     * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -88,14 +91,14 @@ interface OfflineTasks {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param offlineTasksUpdateOperationPayload (optional)
-     * @return [Unit]
+     * @return [MutationResponseDocument]
      */
     @PATCH("offlineTasks/{id}")
     suspend fun offlineTasksIdPatch(
         @Path("id") id: kotlin.String,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body offlineTasksUpdateOperationPayload: OfflineTasksUpdateOperationPayload? = null,
-    ): Response<Unit>
+    ): Response<MutationResponseDocument>
 
     /**
      * Get collection relationship (\&quot;to-one\&quot;). Retrieves collection relationship.
@@ -116,7 +119,7 @@ interface OfflineTasks {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: collection (optional)
-     * @return [OfflineTasksSingleRelationshipDataDocument]
+     * @return [OfflineTasksCollectionSingleRelationshipDataDocument]
      */
     @GET("offlineTasks/{id}/relationships/collection")
     suspend fun offlineTasksIdRelationshipsCollectionGet(
@@ -124,7 +127,7 @@ interface OfflineTasks {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
-    ): Response<OfflineTasksSingleRelationshipDataDocument>
+    ): Response<OfflineTasksCollectionSingleRelationshipDataDocument>
 
     /**
      * Get item relationship (\&quot;to-one\&quot;). Retrieves item relationship. Responses:
@@ -144,7 +147,7 @@ interface OfflineTasks {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: item (optional)
-     * @return [OfflineTasksSingleRelationshipDataDocument]
+     * @return [OfflineTasksItemSingleRelationshipDataDocument]
      */
     @GET("offlineTasks/{id}/relationships/item")
     suspend fun offlineTasksIdRelationshipsItemGet(
@@ -152,7 +155,7 @@ interface OfflineTasks {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
-    ): Response<OfflineTasksSingleRelationshipDataDocument>
+    ): Response<OfflineTasksItemSingleRelationshipDataDocument>
 
     /**
      * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
@@ -171,7 +174,7 @@ interface OfflineTasks {
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [OfflineTasksMultiRelationshipDataDocument]
+     * @return [OfflineTasksOwnersMultiRelationshipDataDocument]
      */
     @GET("offlineTasks/{id}/relationships/owners")
     suspend fun offlineTasksIdRelationshipsOwnersGet(
@@ -179,5 +182,5 @@ interface OfflineTasks {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<OfflineTasksMultiRelationshipDataDocument>
+    ): Response<OfflineTasksOwnersMultiRelationshipDataDocument>
 }

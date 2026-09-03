@@ -1,7 +1,7 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
-import com.tidal.sdk.tidalapi.generated.models.DownloadsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.DownloadsMultiResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.DownloadsOwnersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.DownloadsSingleResourceDataDocument
 import retrofit2.Response
 import retrofit2.http.*
@@ -73,7 +73,7 @@ interface Downloads {
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [DownloadsMultiRelationshipDataDocument]
+     * @return [DownloadsOwnersMultiRelationshipDataDocument]
      */
     @GET("downloads/{id}/relationships/owners")
     suspend fun downloadsIdRelationshipsOwnersGet(
@@ -81,5 +81,5 @@ interface Downloads {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<DownloadsMultiRelationshipDataDocument>
+    ): Response<DownloadsOwnersMultiRelationshipDataDocument>
 }

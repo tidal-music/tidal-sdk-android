@@ -1,7 +1,12 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
-import com.tidal.sdk.tidalapi.generated.models.SearchResultsMultiRelationshipDataDocument
-import com.tidal.sdk.tidalapi.generated.models.SearchResultsSingleResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.SearchResultsAlbumsMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.SearchResultsArtistsMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.SearchResultsMultiResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.SearchResultsPlaylistsMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.SearchResultsTopHitsMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.SearchResultsTracksMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.SearchResultsVideosMultiRelationshipDataDocument
 import kotlinx.serialization.SerialName
 import retrofit2.Response
 import retrofit2.http.*
@@ -9,13 +14,13 @@ import retrofit2.http.*
 interface SearchResults {
 
     /** enum for parameter explicitFilter */
-    enum class ExplicitFilterSearchResultsIdGet(val value: kotlin.String) {
+    enum class ExplicitFilterSearchResultsGet(val value: kotlin.String) {
         @SerialName(value = "INCLUDE") INCLUDE("INCLUDE"),
         @SerialName(value = "EXCLUDE") EXCLUDE("EXCLUDE"),
     }
 
     /** enum for parameter deviceType */
-    enum class DeviceTypeSearchResultsIdGet(val value: kotlin.String) {
+    enum class DeviceTypeSearchResultsGet(val value: kotlin.String) {
         @SerialName(value = "BROWSER") BROWSER("BROWSER"),
         @SerialName(value = "CAR") CAR("CAR"),
         @SerialName(value = "DESKTOP") DESKTOP("DESKTOP"),
@@ -25,7 +30,7 @@ interface SearchResults {
     }
 
     /** enum for parameter systemType */
-    enum class SystemTypeSearchResultsIdGet(val value: kotlin.String) {
+    enum class SystemTypeSearchResultsGet(val value: kotlin.String) {
         @SerialName(value = "ANDROID") ANDROID("ANDROID"),
         @SerialName(value = "DESKTOP") DESKTOP("DESKTOP"),
         @SerialName(value = "TESLA") TESLA("TESLA"),
@@ -34,7 +39,8 @@ interface SearchResults {
     }
 
     /**
-     * Get single searchResult. Retrieves single searchResult by id. Responses:
+     * Get search results by query. Searches for a query and returns a collection containing exactly
+     * one search results resource. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -45,7 +51,7 @@ interface SearchResults {
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
-     * @param id Search query string used as the resource identifier
+     * @param filterQuery Search query (e.g. &#x60;hello&#x60;)
      * @param explicitFilter Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to
      *   INCLUDE)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
@@ -57,22 +63,21 @@ interface SearchResults {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: albums (optional)
-     * @return [SearchResultsSingleResourceDataDocument]
+     * @return [SearchResultsMultiResourceDataDocument]
      */
-    @GET("searchResults/{id}")
-    suspend fun searchResultsIdGet(
-        @Path("id") id: kotlin.String,
+    @GET("searchResults")
+    suspend fun searchResultsGet(
+        @Query("filter[query]") filterQuery: kotlin.String,
         @Query("explicitFilter")
-        explicitFilter: ExplicitFilterSearchResultsIdGet? =
-            ExplicitFilterSearchResultsIdGet.INCLUDE,
+        explicitFilter: ExplicitFilterSearchResultsGet? = ExplicitFilterSearchResultsGet.INCLUDE,
         @Query("countryCode") countryCode: kotlin.String? = null,
-        @Query("deviceType") deviceType: DeviceTypeSearchResultsIdGet? = null,
-        @Query("systemType") systemType: SystemTypeSearchResultsIdGet? = null,
+        @Query("deviceType") deviceType: DeviceTypeSearchResultsGet? = null,
+        @Query("systemType") systemType: SystemTypeSearchResultsGet? = null,
         @Query("clientVersion") clientVersion: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
-    ): Response<SearchResultsSingleResourceDataDocument>
+    ): Response<SearchResultsMultiResourceDataDocument>
 
     /** enum for parameter explicitFilter */
     enum class ExplicitFilterSearchResultsIdRelationshipsAlbumsGet(val value: kotlin.String) {
@@ -111,7 +116,7 @@ interface SearchResults {
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
-     * @param id Search query string used as the resource identifier
+     * @param id An opaque search results identifier
      * @param explicitFilter Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to
      *   INCLUDE)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -125,7 +130,7 @@ interface SearchResults {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: albums (optional)
-     * @return [SearchResultsMultiRelationshipDataDocument]
+     * @return [SearchResultsAlbumsMultiRelationshipDataDocument]
      */
     @GET("searchResults/{id}/relationships/albums")
     suspend fun searchResultsIdRelationshipsAlbumsGet(
@@ -141,7 +146,7 @@ interface SearchResults {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
-    ): Response<SearchResultsMultiRelationshipDataDocument>
+    ): Response<SearchResultsAlbumsMultiRelationshipDataDocument>
 
     /** enum for parameter explicitFilter */
     enum class ExplicitFilterSearchResultsIdRelationshipsArtistsGet(val value: kotlin.String) {
@@ -180,7 +185,7 @@ interface SearchResults {
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
-     * @param id Search query string used as the resource identifier
+     * @param id An opaque search results identifier
      * @param explicitFilter Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to
      *   INCLUDE)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -194,7 +199,7 @@ interface SearchResults {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: artists (optional)
-     * @return [SearchResultsMultiRelationshipDataDocument]
+     * @return [SearchResultsArtistsMultiRelationshipDataDocument]
      */
     @GET("searchResults/{id}/relationships/artists")
     suspend fun searchResultsIdRelationshipsArtistsGet(
@@ -210,7 +215,7 @@ interface SearchResults {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
-    ): Response<SearchResultsMultiRelationshipDataDocument>
+    ): Response<SearchResultsArtistsMultiRelationshipDataDocument>
 
     /** enum for parameter explicitFilter */
     enum class ExplicitFilterSearchResultsIdRelationshipsPlaylistsGet(val value: kotlin.String) {
@@ -250,7 +255,7 @@ interface SearchResults {
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
-     * @param id Search query string used as the resource identifier
+     * @param id An opaque search results identifier
      * @param explicitFilter Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to
      *   INCLUDE)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -264,7 +269,7 @@ interface SearchResults {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: playlists (optional)
-     * @return [SearchResultsMultiRelationshipDataDocument]
+     * @return [SearchResultsPlaylistsMultiRelationshipDataDocument]
      */
     @GET("searchResults/{id}/relationships/playlists")
     suspend fun searchResultsIdRelationshipsPlaylistsGet(
@@ -280,7 +285,7 @@ interface SearchResults {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
-    ): Response<SearchResultsMultiRelationshipDataDocument>
+    ): Response<SearchResultsPlaylistsMultiRelationshipDataDocument>
 
     /** enum for parameter explicitFilter */
     enum class ExplicitFilterSearchResultsIdRelationshipsTopHitsGet(val value: kotlin.String) {
@@ -319,7 +324,7 @@ interface SearchResults {
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
-     * @param id Search query string used as the resource identifier
+     * @param id An opaque search results identifier
      * @param explicitFilter Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to
      *   INCLUDE)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -333,7 +338,7 @@ interface SearchResults {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: topHits (optional)
-     * @return [SearchResultsMultiRelationshipDataDocument]
+     * @return [SearchResultsTopHitsMultiRelationshipDataDocument]
      */
     @GET("searchResults/{id}/relationships/topHits")
     suspend fun searchResultsIdRelationshipsTopHitsGet(
@@ -349,7 +354,7 @@ interface SearchResults {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
-    ): Response<SearchResultsMultiRelationshipDataDocument>
+    ): Response<SearchResultsTopHitsMultiRelationshipDataDocument>
 
     /** enum for parameter explicitFilter */
     enum class ExplicitFilterSearchResultsIdRelationshipsTracksGet(val value: kotlin.String) {
@@ -388,7 +393,7 @@ interface SearchResults {
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
-     * @param id Search query string used as the resource identifier
+     * @param id An opaque search results identifier
      * @param explicitFilter Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to
      *   INCLUDE)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -402,7 +407,7 @@ interface SearchResults {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: tracks (optional)
-     * @return [SearchResultsMultiRelationshipDataDocument]
+     * @return [SearchResultsTracksMultiRelationshipDataDocument]
      */
     @GET("searchResults/{id}/relationships/tracks")
     suspend fun searchResultsIdRelationshipsTracksGet(
@@ -418,7 +423,7 @@ interface SearchResults {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
-    ): Response<SearchResultsMultiRelationshipDataDocument>
+    ): Response<SearchResultsTracksMultiRelationshipDataDocument>
 
     /** enum for parameter explicitFilter */
     enum class ExplicitFilterSearchResultsIdRelationshipsVideosGet(val value: kotlin.String) {
@@ -457,7 +462,7 @@ interface SearchResults {
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
-     * @param id Search query string used as the resource identifier
+     * @param id An opaque search results identifier
      * @param explicitFilter Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to
      *   INCLUDE)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -471,7 +476,7 @@ interface SearchResults {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: videos (optional)
-     * @return [SearchResultsMultiRelationshipDataDocument]
+     * @return [SearchResultsVideosMultiRelationshipDataDocument]
      */
     @GET("searchResults/{id}/relationships/videos")
     suspend fun searchResultsIdRelationshipsVideosGet(
@@ -487,5 +492,5 @@ interface SearchResults {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
-    ): Response<SearchResultsMultiRelationshipDataDocument>
+    ): Response<SearchResultsVideosMultiRelationshipDataDocument>
 }

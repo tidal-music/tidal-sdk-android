@@ -1,7 +1,7 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
-import com.tidal.sdk.tidalapi.generated.models.StripeDashboardLinksMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.StripeDashboardLinksMultiResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.StripeDashboardLinksOwnersMultiRelationshipDataDocument
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -50,7 +50,7 @@ interface StripeDashboardLinks {
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [StripeDashboardLinksMultiRelationshipDataDocument]
+     * @return [StripeDashboardLinksOwnersMultiRelationshipDataDocument]
      */
     @GET("stripeDashboardLinks/{id}/relationships/owners")
     suspend fun stripeDashboardLinksIdRelationshipsOwnersGet(
@@ -58,5 +58,5 @@ interface StripeDashboardLinks {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<StripeDashboardLinksMultiRelationshipDataDocument>
+    ): Response<StripeDashboardLinksOwnersMultiRelationshipDataDocument>
 }

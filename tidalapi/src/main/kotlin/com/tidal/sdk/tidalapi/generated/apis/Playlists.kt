@@ -1,7 +1,11 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.models.MutationResponseDocument
+import com.tidal.sdk.tidalapi.generated.models.PlaylistsCollaboratorProfilesMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsCollaboratorProfilesRelationshipAddOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsCollaboratorProfilesRelationshipRemoveOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.PlaylistsCollaboratorsMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.PlaylistsCoverArtMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsCoverArtRelationshipUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsCreateSingleResourceDataDocument
@@ -10,8 +14,9 @@ import com.tidal.sdk.tidalapi.generated.models.PlaylistsItemsMultiRelationshipDa
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsItemsRelationshipAddOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsItemsRelationshipRemoveOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsItemsRelationshipUpdateOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.PlaylistsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsMultiResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.PlaylistsOwnerProfilesMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.PlaylistsOwnersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsSuggestedCoverArtsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsUpdateOperationPayload
@@ -81,6 +86,7 @@ interface Playlists {
 
     /**
      * Delete single playlist. Deletes existing playlist. Responses:
+     * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -96,13 +102,13 @@ interface Playlists {
      * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
-     * @return [Unit]
+     * @return [MutationResponseDocument]
      */
     @DELETE("playlists/{id}")
     suspend fun playlistsIdDelete(
         @Path("id") id: kotlin.String,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
-    ): Response<Unit>
+    ): Response<MutationResponseDocument>
 
     /**
      * Get single playlist. Retrieves single playlist by id. Responses:
@@ -166,6 +172,7 @@ interface Playlists {
     /**
      * Delete from collaboratorProfiles relationship (\&quot;to-many\&quot;). Deletes item(s) from
      * collaboratorProfiles relationship. Responses:
+     * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -182,7 +189,7 @@ interface Playlists {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param playlistsCollaboratorProfilesRelationshipRemoveOperationPayload (optional)
-     * @return [Unit]
+     * @return [MutationResponseDocument]
      */
     @HTTP(
         method = "DELETE",
@@ -196,7 +203,7 @@ interface Playlists {
         playlistsCollaboratorProfilesRelationshipRemoveOperationPayload:
             PlaylistsCollaboratorProfilesRelationshipRemoveOperationPayload? =
             null,
-    ): Response<Unit>
+    ): Response<MutationResponseDocument>
 
     /**
      * Get collaboratorProfiles relationship (\&quot;to-many\&quot;). Retrieves collaboratorProfiles
@@ -217,7 +224,7 @@ interface Playlists {
      *   Available options: collaboratorProfiles (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [PlaylistsMultiRelationshipDataDocument]
+     * @return [PlaylistsCollaboratorProfilesMultiRelationshipDataDocument]
      */
     @GET("playlists/{id}/relationships/collaboratorProfiles")
     suspend fun playlistsIdRelationshipsCollaboratorProfilesGet(
@@ -226,12 +233,12 @@ interface Playlists {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<PlaylistsMultiRelationshipDataDocument>
+    ): Response<PlaylistsCollaboratorProfilesMultiRelationshipDataDocument>
 
     /**
      * Add to collaboratorProfiles relationship (\&quot;to-many\&quot;). Adds item(s) to
      * collaboratorProfiles relationship. Responses:
-     * - 201: Successful response
+     * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -248,7 +255,7 @@ interface Playlists {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param playlistsCollaboratorProfilesRelationshipAddOperationPayload (optional)
-     * @return [Unit]
+     * @return [MutationResponseDocument]
      */
     @POST("playlists/{id}/relationships/collaboratorProfiles")
     suspend fun playlistsIdRelationshipsCollaboratorProfilesPost(
@@ -258,7 +265,7 @@ interface Playlists {
         playlistsCollaboratorProfilesRelationshipAddOperationPayload:
             PlaylistsCollaboratorProfilesRelationshipAddOperationPayload? =
             null,
-    ): Response<Unit>
+    ): Response<MutationResponseDocument>
 
     /**
      * Get collaborators relationship (\&quot;to-many\&quot;). Retrieves collaborators relationship.
@@ -279,7 +286,7 @@ interface Playlists {
      *   Available options: collaborators (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [PlaylistsMultiRelationshipDataDocument]
+     * @return [PlaylistsCollaboratorsMultiRelationshipDataDocument]
      */
     @GET("playlists/{id}/relationships/collaborators")
     suspend fun playlistsIdRelationshipsCollaboratorsGet(
@@ -288,7 +295,7 @@ interface Playlists {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<PlaylistsMultiRelationshipDataDocument>
+    ): Response<PlaylistsCollaboratorsMultiRelationshipDataDocument>
 
     /**
      * Get coverArt relationship (\&quot;to-many\&quot;). Retrieves coverArt relationship.
@@ -309,7 +316,7 @@ interface Playlists {
      *   Available options: coverArt (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [PlaylistsMultiRelationshipDataDocument]
+     * @return [PlaylistsCoverArtMultiRelationshipDataDocument]
      */
     @GET("playlists/{id}/relationships/coverArt")
     suspend fun playlistsIdRelationshipsCoverArtGet(
@@ -318,11 +325,12 @@ interface Playlists {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<PlaylistsMultiRelationshipDataDocument>
+    ): Response<PlaylistsCoverArtMultiRelationshipDataDocument>
 
     /**
      * Update coverArt relationship (\&quot;to-many\&quot;). Updates coverArt relationship.
      * Responses:
+     * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -339,7 +347,7 @@ interface Playlists {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param playlistsCoverArtRelationshipUpdateOperationPayload (optional)
-     * @return [Unit]
+     * @return [MutationResponseDocument]
      */
     @PATCH("playlists/{id}/relationships/coverArt")
     suspend fun playlistsIdRelationshipsCoverArtPatch(
@@ -349,11 +357,12 @@ interface Playlists {
         playlistsCoverArtRelationshipUpdateOperationPayload:
             PlaylistsCoverArtRelationshipUpdateOperationPayload? =
             null,
-    ): Response<Unit>
+    ): Response<MutationResponseDocument>
 
     /**
      * Delete from items relationship (\&quot;to-many\&quot;). Deletes item(s) from items
      * relationship. Responses:
+     * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -370,7 +379,7 @@ interface Playlists {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param playlistsItemsRelationshipRemoveOperationPayload (optional)
-     * @return [Unit]
+     * @return [MutationResponseDocument]
      */
     @HTTP(method = "DELETE", path = "playlists/{id}/relationships/items", hasBody = true)
     suspend fun playlistsIdRelationshipsItemsDelete(
@@ -380,7 +389,7 @@ interface Playlists {
         playlistsItemsRelationshipRemoveOperationPayload:
             PlaylistsItemsRelationshipRemoveOperationPayload? =
             null,
-    ): Response<Unit>
+    ): Response<MutationResponseDocument>
 
     /** enum for parameter sort */
     enum class SortPlaylistsIdRelationshipsItemsGet(val value: kotlin.String) {
@@ -418,6 +427,8 @@ interface Playlists {
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: items (optional)
+     * @param filterQuery Filter playlist items by a free-text query (e.g. &#x60;halo&#x60;)
+     *   (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: items (optional)
@@ -431,11 +442,13 @@ interface Playlists {
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("filter[query]") filterQuery: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<PlaylistsItemsMultiRelationshipDataDocument>
 
     /**
      * Update items relationship (\&quot;to-many\&quot;). Updates items relationship. Responses:
+     * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -452,7 +465,7 @@ interface Playlists {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param playlistsItemsRelationshipUpdateOperationPayload (optional)
-     * @return [Unit]
+     * @return [MutationResponseDocument]
      */
     @PATCH("playlists/{id}/relationships/items")
     suspend fun playlistsIdRelationshipsItemsPatch(
@@ -462,7 +475,7 @@ interface Playlists {
         playlistsItemsRelationshipUpdateOperationPayload:
             PlaylistsItemsRelationshipUpdateOperationPayload? =
             null,
-    ): Response<Unit>
+    ): Response<MutationResponseDocument>
 
     /**
      * Add to items relationship (\&quot;to-many\&quot;). Adds item(s) to items relationship.
@@ -515,7 +528,7 @@ interface Playlists {
      *   Available options: ownerProfiles (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [PlaylistsMultiRelationshipDataDocument]
+     * @return [PlaylistsOwnerProfilesMultiRelationshipDataDocument]
      */
     @GET("playlists/{id}/relationships/ownerProfiles")
     suspend fun playlistsIdRelationshipsOwnerProfilesGet(
@@ -524,7 +537,7 @@ interface Playlists {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<PlaylistsMultiRelationshipDataDocument>
+    ): Response<PlaylistsOwnerProfilesMultiRelationshipDataDocument>
 
     /**
      * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
@@ -544,7 +557,7 @@ interface Playlists {
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [PlaylistsMultiRelationshipDataDocument]
+     * @return [PlaylistsOwnersMultiRelationshipDataDocument]
      */
     @GET("playlists/{id}/relationships/owners")
     suspend fun playlistsIdRelationshipsOwnersGet(
@@ -553,7 +566,7 @@ interface Playlists {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<PlaylistsMultiRelationshipDataDocument>
+    ): Response<PlaylistsOwnersMultiRelationshipDataDocument>
 
     /**
      * Get suggestedCoverArts relationship (\&quot;to-many\&quot;). Retrieves suggestedCoverArts

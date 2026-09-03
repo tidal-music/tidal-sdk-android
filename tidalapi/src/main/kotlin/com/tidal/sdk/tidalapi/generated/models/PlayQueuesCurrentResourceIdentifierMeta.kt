@@ -14,12 +14,19 @@ import kotlinx.serialization.Serializable
  * @param batchId
  * @param itemId
  * @param legacySource
+ * @param position
+ * @param positionUpdatedAt
  * @param replacement
+ * @param updatedByInstallationId
  */
 @Serializable
 data class PlayQueuesCurrentResourceIdentifierMeta(
     @Contextual @SerialName(value = "batchId") val batchId: java.util.UUID,
     @SerialName(value = "itemId") val itemId: kotlin.String,
     @SerialName(value = "legacySource") val legacySource: LegacySource? = null,
+    @SerialName(value = "position") val position: kotlin.String? = null,
+    @SerialName(value = "positionUpdatedAt") val positionUpdatedAt: kotlin.String? = null,
     @SerialName(value = "replacement") val replacement: ReplacementProvenance? = null,
+    @SerialName(value = "updatedByInstallationId")
+    val updatedByInstallationId: kotlin.String? = null,
 ) {}

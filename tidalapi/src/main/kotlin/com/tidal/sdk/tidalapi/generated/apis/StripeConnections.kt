@@ -2,8 +2,8 @@ package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.StripeConnectionsCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.StripeConnectionsCreateSingleResourceDataDocument
-import com.tidal.sdk.tidalapi.generated.models.StripeConnectionsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.StripeConnectionsMultiResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.StripeConnectionsOwnersMultiRelationshipDataDocument
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -51,7 +51,7 @@ interface StripeConnections {
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [StripeConnectionsMultiRelationshipDataDocument]
+     * @return [StripeConnectionsOwnersMultiRelationshipDataDocument]
      */
     @GET("stripeConnections/{id}/relationships/owners")
     suspend fun stripeConnectionsIdRelationshipsOwnersGet(
@@ -59,7 +59,7 @@ interface StripeConnections {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<StripeConnectionsMultiRelationshipDataDocument>
+    ): Response<StripeConnectionsOwnersMultiRelationshipDataDocument>
 
     /**
      * Create single stripeConnection. Creates a new stripeConnection. Responses:
@@ -75,7 +75,6 @@ interface StripeConnections {
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
-     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
@@ -84,7 +83,6 @@ interface StripeConnections {
      */
     @POST("stripeConnections")
     suspend fun stripeConnectionsPost(
-        @Query("countryCode") countryCode: kotlin.String? = null,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body
         stripeConnectionsCreateOperationPayload: StripeConnectionsCreateOperationPayload? = null,

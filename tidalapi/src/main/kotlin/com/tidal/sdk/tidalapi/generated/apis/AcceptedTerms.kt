@@ -2,9 +2,9 @@ package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.AcceptedTermsCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.AcceptedTermsCreateSingleResourceDataDocument
-import com.tidal.sdk.tidalapi.generated.models.AcceptedTermsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.AcceptedTermsMultiResourceDataDocument
-import com.tidal.sdk.tidalapi.generated.models.AcceptedTermsSingleRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.AcceptedTermsOwnersMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.AcceptedTermsTermsSingleRelationshipDataDocument
 import kotlinx.serialization.SerialName
 import retrofit2.Response
 import retrofit2.http.*
@@ -15,6 +15,7 @@ interface AcceptedTerms {
     enum class FilterTermsTermsTypeAcceptedTermsGet(val value: kotlin.String) {
         @SerialName(value = "DEVELOPER") DEVELOPER("DEVELOPER"),
         @SerialName(value = "UPLOAD_MARKETPLACE") UPLOAD_MARKETPLACE("UPLOAD_MARKETPLACE"),
+        @SerialName(value = "MERCH_GUIDELINES") MERCH_GUIDELINES("MERCH_GUIDELINES"),
     }
 
     /**
@@ -31,7 +32,7 @@ interface AcceptedTerms {
      * - 503: Service temporarily unavailable
      *
      * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user
-     * @param filterTermsTermsType One of: DEVELOPER, UPLOAD_MARKETPLACE (e.g.
+     * @param filterTermsTermsType One of: DEVELOPER, UPLOAD_MARKETPLACE, MERCH_GUIDELINES (e.g.
      *   &#x60;DEVELOPER&#x60;)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: owners, terms (optional)
@@ -68,7 +69,7 @@ interface AcceptedTerms {
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [AcceptedTermsMultiRelationshipDataDocument]
+     * @return [AcceptedTermsOwnersMultiRelationshipDataDocument]
      */
     @GET("acceptedTerms/{id}/relationships/owners")
     suspend fun acceptedTermsIdRelationshipsOwnersGet(
@@ -76,7 +77,7 @@ interface AcceptedTerms {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<AcceptedTermsMultiRelationshipDataDocument>
+    ): Response<AcceptedTermsOwnersMultiRelationshipDataDocument>
 
     /**
      * Get terms relationship (\&quot;to-one\&quot;). Retrieves terms relationship. Responses:
@@ -93,14 +94,14 @@ interface AcceptedTerms {
      * @param id Accepted terms id
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: terms (optional)
-     * @return [AcceptedTermsSingleRelationshipDataDocument]
+     * @return [AcceptedTermsTermsSingleRelationshipDataDocument]
      */
     @GET("acceptedTerms/{id}/relationships/terms")
     suspend fun acceptedTermsIdRelationshipsTermsGet(
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<AcceptedTermsSingleRelationshipDataDocument>
+    ): Response<AcceptedTermsTermsSingleRelationshipDataDocument>
 
     /**
      * Create single acceptedTerm. Creates a new acceptedTerm. Responses:

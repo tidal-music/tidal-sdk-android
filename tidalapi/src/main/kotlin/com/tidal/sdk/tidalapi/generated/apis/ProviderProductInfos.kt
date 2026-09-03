@@ -1,7 +1,8 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.ProviderProductInfosMultiResourceDataDocument
-import com.tidal.sdk.tidalapi.generated.models.ProviderProductInfosSingleRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ProviderProductInfosProviderSingleRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ProviderProductInfosSubjectSingleRelationshipDataDocument
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -61,14 +62,14 @@ interface ProviderProductInfos {
      * @param id Provider product info id
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: provider (optional)
-     * @return [ProviderProductInfosSingleRelationshipDataDocument]
+     * @return [ProviderProductInfosProviderSingleRelationshipDataDocument]
      */
     @GET("providerProductInfos/{id}/relationships/provider")
     suspend fun providerProductInfosIdRelationshipsProviderGet(
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<ProviderProductInfosSingleRelationshipDataDocument>
+    ): Response<ProviderProductInfosProviderSingleRelationshipDataDocument>
 
     /**
      * Get subject relationship (\&quot;to-one\&quot;). Retrieves subject relationship. Responses:
@@ -89,7 +90,7 @@ interface ProviderProductInfos {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: subject (optional)
-     * @return [ProviderProductInfosSingleRelationshipDataDocument]
+     * @return [ProviderProductInfosSubjectSingleRelationshipDataDocument]
      */
     @GET("providerProductInfos/{id}/relationships/subject")
     suspend fun providerProductInfosIdRelationshipsSubjectGet(
@@ -98,5 +99,5 @@ interface ProviderProductInfos {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
-    ): Response<ProviderProductInfosSingleRelationshipDataDocument>
+    ): Response<ProviderProductInfosSubjectSingleRelationshipDataDocument>
 }
