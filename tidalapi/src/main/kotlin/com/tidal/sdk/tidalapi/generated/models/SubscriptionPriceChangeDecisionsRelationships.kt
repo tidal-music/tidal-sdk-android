@@ -12,5 +12,7 @@ import kotlinx.serialization.Serializable
 /** @param priceChange */
 @Serializable
 data class SubscriptionPriceChangeDecisionsRelationships(
-    @SerialName(value = "priceChange") val priceChange: SingleRelationshipDataDocument? = null
+    @SerialName(value = "priceChange")
+    val priceChange: SubscriptionPriceChangeDecisionsPriceChangeSingleRelationshipDataDocument? =
+        null
 ) {}

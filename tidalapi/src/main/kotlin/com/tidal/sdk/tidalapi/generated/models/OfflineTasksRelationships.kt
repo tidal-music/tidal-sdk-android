@@ -19,5 +19,6 @@ data class OfflineTasksRelationships(
     @SerialName(value = "collection")
     val collection: OfflineTasksCollectionSingleRelationshipDataDocument? = null,
     @SerialName(value = "item") val item: OfflineTasksItemSingleRelationshipDataDocument? = null,
-    @SerialName(value = "owners") val owners: MultiRelationshipDataDocument? = null,
+    @SerialName(value = "owners")
+    val owners: OfflineTasksOwnersMultiRelationshipDataDocument? = null,
 ) {}

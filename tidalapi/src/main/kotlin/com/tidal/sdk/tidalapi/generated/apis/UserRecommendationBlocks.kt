@@ -1,10 +1,11 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.models.MutationResponseDocument
 import com.tidal.sdk.tidalapi.generated.models.UserRecommendationBlocksArtistsAddMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserRecommendationBlocksArtistsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserRecommendationBlocksArtistsRelationshipAddOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.UserRecommendationBlocksArtistsRelationshipRemoveOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.UserRecommendationBlocksMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.UserRecommendationBlocksOwnersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserRecommendationBlocksSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserRecommendationBlocksTracksAddMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserRecommendationBlocksTracksMultiRelationshipDataDocument
@@ -54,6 +55,7 @@ interface UserRecommendationBlocks {
     /**
      * Delete from artists relationship (\&quot;to-many\&quot;). Deletes item(s) from artists
      * relationship. Responses:
+     * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -71,7 +73,7 @@ interface UserRecommendationBlocks {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param userRecommendationBlocksArtistsRelationshipRemoveOperationPayload (optional)
-     * @return [Unit]
+     * @return [MutationResponseDocument]
      */
     @HTTP(
         method = "DELETE",
@@ -85,7 +87,7 @@ interface UserRecommendationBlocks {
         userRecommendationBlocksArtistsRelationshipRemoveOperationPayload:
             UserRecommendationBlocksArtistsRelationshipRemoveOperationPayload? =
             null,
-    ): Response<Unit>
+    ): Response<MutationResponseDocument>
 
     /**
      * Get artists relationship (\&quot;to-many\&quot;). Retrieves artists relationship. Responses:
@@ -171,7 +173,7 @@ interface UserRecommendationBlocks {
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [UserRecommendationBlocksMultiRelationshipDataDocument]
+     * @return [UserRecommendationBlocksOwnersMultiRelationshipDataDocument]
      */
     @GET("userRecommendationBlocks/{id}/relationships/owners")
     suspend fun userRecommendationBlocksIdRelationshipsOwnersGet(
@@ -179,11 +181,12 @@ interface UserRecommendationBlocks {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<UserRecommendationBlocksMultiRelationshipDataDocument>
+    ): Response<UserRecommendationBlocksOwnersMultiRelationshipDataDocument>
 
     /**
      * Delete from tracks relationship (\&quot;to-many\&quot;). Deletes item(s) from tracks
      * relationship. Responses:
+     * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -201,7 +204,7 @@ interface UserRecommendationBlocks {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param userRecommendationBlocksTracksRelationshipRemoveOperationPayload (optional)
-     * @return [Unit]
+     * @return [MutationResponseDocument]
      */
     @HTTP(
         method = "DELETE",
@@ -215,7 +218,7 @@ interface UserRecommendationBlocks {
         userRecommendationBlocksTracksRelationshipRemoveOperationPayload:
             UserRecommendationBlocksTracksRelationshipRemoveOperationPayload? =
             null,
-    ): Response<Unit>
+    ): Response<MutationResponseDocument>
 
     /**
      * Get tracks relationship (\&quot;to-many\&quot;). Retrieves tracks relationship. Responses:
@@ -286,6 +289,7 @@ interface UserRecommendationBlocks {
     /**
      * Delete from videos relationship (\&quot;to-many\&quot;). Deletes item(s) from videos
      * relationship. Responses:
+     * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -303,7 +307,7 @@ interface UserRecommendationBlocks {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param userRecommendationBlocksVideosRelationshipRemoveOperationPayload (optional)
-     * @return [Unit]
+     * @return [MutationResponseDocument]
      */
     @HTTP(
         method = "DELETE",
@@ -317,7 +321,7 @@ interface UserRecommendationBlocks {
         userRecommendationBlocksVideosRelationshipRemoveOperationPayload:
             UserRecommendationBlocksVideosRelationshipRemoveOperationPayload? =
             null,
-    ): Response<Unit>
+    ): Response<MutationResponseDocument>
 
     /**
      * Get videos relationship (\&quot;to-many\&quot;). Retrieves videos relationship. Responses:

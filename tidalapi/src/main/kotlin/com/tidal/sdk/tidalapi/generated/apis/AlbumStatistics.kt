@@ -1,6 +1,6 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
-import com.tidal.sdk.tidalapi.generated.models.AlbumStatisticsMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.AlbumStatisticsOwnersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.AlbumStatisticsSingleResourceDataDocument
 import retrofit2.Response
 import retrofit2.http.*
@@ -50,7 +50,7 @@ interface AlbumStatistics {
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [AlbumStatisticsMultiRelationshipDataDocument]
+     * @return [AlbumStatisticsOwnersMultiRelationshipDataDocument]
      */
     @GET("albumStatistics/{id}/relationships/owners")
     suspend fun albumStatisticsIdRelationshipsOwnersGet(
@@ -59,5 +59,5 @@ interface AlbumStatistics {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<AlbumStatisticsMultiRelationshipDataDocument>
+    ): Response<AlbumStatisticsOwnersMultiRelationshipDataDocument>
 }

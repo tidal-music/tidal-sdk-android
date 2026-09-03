@@ -1,7 +1,7 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.models.UserSubscriptionPriceChangesDecisionSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserSubscriptionPriceChangesMultiResourceDataDocument
-import com.tidal.sdk.tidalapi.generated.models.UserSubscriptionPriceChangesSingleRelationshipDataDocument
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -47,12 +47,12 @@ interface UserSubscriptionPriceChanges {
      * @param id Price change id
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: decision (optional)
-     * @return [UserSubscriptionPriceChangesSingleRelationshipDataDocument]
+     * @return [UserSubscriptionPriceChangesDecisionSingleRelationshipDataDocument]
      */
     @GET("userSubscriptionPriceChanges/{id}/relationships/decision")
     suspend fun userSubscriptionPriceChangesIdRelationshipsDecisionGet(
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<UserSubscriptionPriceChangesSingleRelationshipDataDocument>
+    ): Response<UserSubscriptionPriceChangesDecisionSingleRelationshipDataDocument>
 }

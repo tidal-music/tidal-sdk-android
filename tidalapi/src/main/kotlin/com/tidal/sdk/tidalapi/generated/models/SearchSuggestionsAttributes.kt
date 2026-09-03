@@ -10,24 +10,21 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param trackingId Unique tracking id
- * @param history Suggestions from search history. Deprecated — use the history relationship
- *   instead. Will be deleted shortly.
+ * @param query The search query represented by this resource
  * @param suggestions Suggested search queries
+ * @param trackingId Unique tracking id
  */
 @Serializable
 data class SearchSuggestionsAttributes(
 
-    /* Unique tracking id */
+    /* The search query represented by this resource */
 
-    @SerialName(value = "trackingId") val trackingId: kotlin.String,
-    /* Suggestions from search history. Deprecated — use the history relationship instead. Will be deleted shortly. */
-
-    @SerialName(value = "history")
-    @Deprecated(message = "This property is deprecated.")
-    val history: kotlin.collections.List<SearchSuggestionsHistory>? = null,
+    @SerialName(value = "query") val query: kotlin.String,
     /* Suggested search queries */
 
     @SerialName(value = "suggestions")
-    val suggestions: kotlin.collections.List<SearchSuggestionsSuggestions>? = null,
+    val suggestions: kotlin.collections.List<SearchSuggestionsSuggestions>,
+    /* Unique tracking id */
+
+    @SerialName(value = "trackingId") val trackingId: kotlin.String,
 ) {}

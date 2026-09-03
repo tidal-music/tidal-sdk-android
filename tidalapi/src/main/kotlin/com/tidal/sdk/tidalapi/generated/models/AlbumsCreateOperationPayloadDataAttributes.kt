@@ -12,14 +12,11 @@ import kotlinx.serialization.Serializable
 /**
  * @param title
  * @param albumType
- * @param barcodeId Barcode id (EAN-13 or UPC-A)
  * @param copyright
  * @param explicit Explicit content
  * @param explicitLyrics Explicit content. Deprecated: use 'explicit' instead. This field will be
  *   removed in a future version.
  * @param releaseDate
- * @param upc Barcode id (EAN-13 or UPC-A). Deprecated: use 'barcodeId' instead. This field will be
- *   removed in a future version.
  * @param version
  */
 @Serializable
@@ -27,9 +24,6 @@ data class AlbumsCreateOperationPayloadDataAttributes(
     @SerialName(value = "title") val title: kotlin.String,
     @SerialName(value = "albumType")
     val albumType: AlbumsCreateOperationPayloadDataAttributes.AlbumType? = null,
-    /* Barcode id (EAN-13 or UPC-A) */
-
-    @SerialName(value = "barcodeId") val barcodeId: kotlin.String? = null,
     @SerialName(value = "copyright") val copyright: Copyright? = null,
     /* Explicit content */
 
@@ -40,11 +34,6 @@ data class AlbumsCreateOperationPayloadDataAttributes(
     @Deprecated(message = "This property is deprecated.")
     val explicitLyrics: kotlin.Boolean? = null,
     @SerialName(value = "releaseDate") val releaseDate: kotlin.String? = null,
-    /* Barcode id (EAN-13 or UPC-A). Deprecated: use 'barcodeId' instead. This field will be removed in a future version. */
-
-    @SerialName(value = "upc")
-    @Deprecated(message = "This property is deprecated.")
-    val upc: kotlin.String? = null,
     @SerialName(value = "version") val version: kotlin.String? = null,
 ) {
 

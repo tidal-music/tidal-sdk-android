@@ -20,7 +20,10 @@ import kotlinx.serialization.Serializable
  * @param playlistType The type of the playlist
  * @param description Playlist description
  * @param duration Duration of playlist (ISO 8601)
- * @param numberOfItems Number of items in the playlist
+ * @param hasGenerations Whether the playlist has AI generations
+ * @param numberOfItems Number of items in the items relationship
+ * @param numberOfTrackItems Number of track items in the items relationship
+ * @param numberOfVideoItems Number of video items in the items relationship
  */
 @Serializable
 data class PlaylistsAttributes(
@@ -53,9 +56,18 @@ data class PlaylistsAttributes(
     /* Duration of playlist (ISO 8601) */
 
     @SerialName(value = "duration") val duration: kotlin.String? = null,
-    /* Number of items in the playlist */
+    /* Whether the playlist has AI generations */
+
+    @SerialName(value = "hasGenerations") val hasGenerations: kotlin.Boolean? = null,
+    /* Number of items in the items relationship */
 
     @SerialName(value = "numberOfItems") val numberOfItems: kotlin.Int? = null,
+    /* Number of track items in the items relationship */
+
+    @SerialName(value = "numberOfTrackItems") val numberOfTrackItems: kotlin.Int? = null,
+    /* Number of video items in the items relationship */
+
+    @SerialName(value = "numberOfVideoItems") val numberOfVideoItems: kotlin.Int? = null,
 ) {
 
     /**

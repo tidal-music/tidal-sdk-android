@@ -2,12 +2,13 @@ package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.InstallationsCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.InstallationsCreateSingleResourceDataDocument
-import com.tidal.sdk.tidalapi.generated.models.InstallationsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.InstallationsMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.InstallationsOfflineInventoryMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.InstallationsOfflineInventoryRelationshipAddOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.InstallationsOfflineInventoryRelationshipRemoveOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.InstallationsOwnersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.InstallationsSingleResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.MutationResponseDocument
 import kotlinx.serialization.SerialName
 import retrofit2.Response
 import retrofit2.http.*
@@ -85,6 +86,7 @@ interface Installations {
     /**
      * Delete from offlineInventory relationship (\&quot;to-many\&quot;). Deletes item(s) from
      * offlineInventory relationship. Responses:
+     * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -101,7 +103,7 @@ interface Installations {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param installationsOfflineInventoryRelationshipRemoveOperationPayload (optional)
-     * @return [Unit]
+     * @return [MutationResponseDocument]
      */
     @HTTP(
         method = "DELETE",
@@ -115,7 +117,7 @@ interface Installations {
         installationsOfflineInventoryRelationshipRemoveOperationPayload:
             InstallationsOfflineInventoryRelationshipRemoveOperationPayload? =
             null,
-    ): Response<Unit>
+    ): Response<MutationResponseDocument>
 
     /** enum for parameter filterType */
     enum class FilterTypeInstallationsIdRelationshipsOfflineInventoryGet(val value: kotlin.String) {
@@ -132,6 +134,7 @@ interface Installations {
     ) {
         @SerialName(value = "PENDING") PENDING("PENDING"),
         @SerialName(value = "STORED") STORED("STORED"),
+        @SerialName(value = "FAILED") FAILED("FAILED"),
     }
 
     /**
@@ -155,7 +158,7 @@ interface Installations {
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: offlineInventory (optional)
      * @param filterId Offline item id (e.g. &#x60;1234&#x60;) (optional)
-     * @param filterState One of: PENDING, STORED (e.g. &#x60;PENDING&#x60;) (optional)
+     * @param filterState One of: PENDING, STORED, FAILED (e.g. &#x60;PENDING&#x60;) (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: offlineInventory (optional)
@@ -179,7 +182,7 @@ interface Installations {
     /**
      * Add to offlineInventory relationship (\&quot;to-many\&quot;). Adds item(s) to
      * offlineInventory relationship. Responses:
-     * - 201: Successful response
+     * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -196,7 +199,7 @@ interface Installations {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param installationsOfflineInventoryRelationshipAddOperationPayload (optional)
-     * @return [Unit]
+     * @return [MutationResponseDocument]
      */
     @POST("installations/{id}/relationships/offlineInventory")
     suspend fun installationsIdRelationshipsOfflineInventoryPost(
@@ -206,7 +209,7 @@ interface Installations {
         installationsOfflineInventoryRelationshipAddOperationPayload:
             InstallationsOfflineInventoryRelationshipAddOperationPayload? =
             null,
-    ): Response<Unit>
+    ): Response<MutationResponseDocument>
 
     /**
      * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
@@ -225,7 +228,7 @@ interface Installations {
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [InstallationsMultiRelationshipDataDocument]
+     * @return [InstallationsOwnersMultiRelationshipDataDocument]
      */
     @GET("installations/{id}/relationships/owners")
     suspend fun installationsIdRelationshipsOwnersGet(
@@ -233,7 +236,7 @@ interface Installations {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<InstallationsMultiRelationshipDataDocument>
+    ): Response<InstallationsOwnersMultiRelationshipDataDocument>
 
     /**
      * Create single installation. Creates a new installation. Responses:

@@ -41,7 +41,7 @@ data class TracksAttributes(
     @SerialName(value = "explicit") val explicit: kotlin.Boolean,
     /* International Standard Recording Code (ISRC) */
 
-    @SerialName(value = "isrc") val isrc: kotlin.String,
+    @SerialName(value = "isrc") val isrc: kotlin.String?,
     /* Key */
 
     @SerialName(value = "key") val key: TracksAttributes.Key,

@@ -1,8 +1,8 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
-import com.tidal.sdk.tidalapi.generated.models.ProviderOwnersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ProviderOwnersMultiResourceDataDocument
-import com.tidal.sdk.tidalapi.generated.models.ProviderOwnersSingleRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ProviderOwnersOwnersMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ProviderOwnersProviderSingleRelationshipDataDocument
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -50,7 +50,7 @@ interface ProviderOwners {
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [ProviderOwnersMultiRelationshipDataDocument]
+     * @return [ProviderOwnersOwnersMultiRelationshipDataDocument]
      */
     @GET("providerOwners/{id}/relationships/owners")
     suspend fun providerOwnersIdRelationshipsOwnersGet(
@@ -58,7 +58,7 @@ interface ProviderOwners {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<ProviderOwnersMultiRelationshipDataDocument>
+    ): Response<ProviderOwnersOwnersMultiRelationshipDataDocument>
 
     /**
      * Get provider relationship (\&quot;to-one\&quot;). Retrieves provider relationship. Responses:
@@ -75,12 +75,12 @@ interface ProviderOwners {
      * @param id Provider owner id
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: provider (optional)
-     * @return [ProviderOwnersSingleRelationshipDataDocument]
+     * @return [ProviderOwnersProviderSingleRelationshipDataDocument]
      */
     @GET("providerOwners/{id}/relationships/provider")
     suspend fun providerOwnersIdRelationshipsProviderGet(
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<ProviderOwnersSingleRelationshipDataDocument>
+    ): Response<ProviderOwnersProviderSingleRelationshipDataDocument>
 }

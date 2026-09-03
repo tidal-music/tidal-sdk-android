@@ -1,8 +1,8 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
-import com.tidal.sdk.tidalapi.generated.models.DynamicPagesMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.DynamicPagesModulesMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.DynamicPagesMultiResourceDataDocument
-import com.tidal.sdk.tidalapi.generated.models.DynamicPagesSingleRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.DynamicPagesSubjectSingleRelationshipDataDocument
 import kotlinx.serialization.SerialName
 import retrofit2.Response
 import retrofit2.http.*
@@ -123,7 +123,7 @@ interface DynamicPages {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: modules.items (optional)
-     * @return [DynamicPagesMultiRelationshipDataDocument]
+     * @return [DynamicPagesModulesMultiRelationshipDataDocument]
      */
     @GET("dynamicPages/{id}/relationships/modules")
     suspend fun dynamicPagesIdRelationshipsModulesGet(
@@ -138,7 +138,7 @@ interface DynamicPages {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
-    ): Response<DynamicPagesMultiRelationshipDataDocument>
+    ): Response<DynamicPagesModulesMultiRelationshipDataDocument>
 
     /**
      * Get subject relationship (\&quot;to-one\&quot;). Retrieves subject relationship. Responses:
@@ -158,7 +158,7 @@ interface DynamicPages {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: subject (optional)
-     * @return [DynamicPagesSingleRelationshipDataDocument]
+     * @return [DynamicPagesSubjectSingleRelationshipDataDocument]
      */
     @GET("dynamicPages/{id}/relationships/subject")
     suspend fun dynamicPagesIdRelationshipsSubjectGet(
@@ -166,5 +166,5 @@ interface DynamicPages {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
-    ): Response<DynamicPagesSingleRelationshipDataDocument>
+    ): Response<DynamicPagesSubjectSingleRelationshipDataDocument>
 }

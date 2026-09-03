@@ -1,6 +1,6 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
-import com.tidal.sdk.tidalapi.generated.models.TrackStatisticsMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.TrackStatisticsOwnersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.TrackStatisticsSingleResourceDataDocument
 import retrofit2.Response
 import retrofit2.http.*
@@ -50,7 +50,7 @@ interface TrackStatistics {
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [TrackStatisticsMultiRelationshipDataDocument]
+     * @return [TrackStatisticsOwnersMultiRelationshipDataDocument]
      */
     @GET("trackStatistics/{id}/relationships/owners")
     suspend fun trackStatisticsIdRelationshipsOwnersGet(
@@ -59,5 +59,5 @@ interface TrackStatistics {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<TrackStatisticsMultiRelationshipDataDocument>
+    ): Response<TrackStatisticsOwnersMultiRelationshipDataDocument>
 }

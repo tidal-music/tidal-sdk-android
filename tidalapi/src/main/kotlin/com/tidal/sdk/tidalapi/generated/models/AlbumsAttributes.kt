@@ -37,7 +37,7 @@ data class AlbumsAttributes(
     /* Album type */
 
     @SerialName(value = "albumType") val albumType: AlbumsAttributes.AlbumType,
-    @SerialName(value = "barcodeId") val barcodeId: kotlin.String,
+    @SerialName(value = "barcodeId") val barcodeId: kotlin.String?,
     /* Duration (ISO 8601) */
 
     @SerialName(value = "duration") val duration: kotlin.String,

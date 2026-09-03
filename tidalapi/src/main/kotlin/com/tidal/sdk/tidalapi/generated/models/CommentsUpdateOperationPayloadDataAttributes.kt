@@ -11,12 +11,14 @@ import kotlinx.serialization.Serializable
 
 /**
  * @param endTime
- * @param message
+ * @param message The comment message content
  * @param startTime
  */
 @Serializable
 data class CommentsUpdateOperationPayloadDataAttributes(
     @SerialName(value = "endTime") val endTime: kotlin.String? = null,
+    /* The comment message content */
+
     @SerialName(value = "message") val message: kotlin.String? = null,
     @SerialName(value = "startTime") val startTime: kotlin.String? = null,
 ) {}

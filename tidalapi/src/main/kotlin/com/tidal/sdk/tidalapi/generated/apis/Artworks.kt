@@ -2,8 +2,8 @@ package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.ArtworksCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.ArtworksCreateSingleResourceDataDocument
-import com.tidal.sdk.tidalapi.generated.models.ArtworksMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtworksMultiResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ArtworksOwnersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtworksSingleResourceDataDocument
 import retrofit2.Response
 import retrofit2.http.*
@@ -79,7 +79,7 @@ interface Artworks {
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [ArtworksMultiRelationshipDataDocument]
+     * @return [ArtworksOwnersMultiRelationshipDataDocument]
      */
     @GET("artworks/{id}/relationships/owners")
     suspend fun artworksIdRelationshipsOwnersGet(
@@ -87,7 +87,7 @@ interface Artworks {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<ArtworksMultiRelationshipDataDocument>
+    ): Response<ArtworksOwnersMultiRelationshipDataDocument>
 
     /**
      * Create single artwork. Creates a new artwork. Responses:

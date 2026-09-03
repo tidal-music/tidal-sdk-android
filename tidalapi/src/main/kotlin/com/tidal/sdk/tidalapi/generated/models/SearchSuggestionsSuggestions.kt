@@ -12,12 +12,18 @@ import kotlinx.serialization.Serializable
 /**
  * Suggested search queries
  *
- * @param query
- * @param highlights
+ * @param highlights Ranges in `query` that clients should highlight as matches for the requested
+ *   search query
+ * @param query The suggested search query
  */
 @Serializable
 data class SearchSuggestionsSuggestions(
-    @SerialName(value = "query") val query: kotlin.String,
+
+    /* Ranges in `query` that clients should highlight as matches for the requested search query */
+
     @SerialName(value = "highlights")
-    val highlights: kotlin.collections.List<SearchSuggestionsHighlights>? = null,
+    val highlights: kotlin.collections.List<SearchSuggestionsHighlights>,
+    /* The suggested search query */
+
+    @SerialName(value = "query") val query: kotlin.String,
 ) {}

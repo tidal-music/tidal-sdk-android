@@ -9,12 +9,6 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/**
- * @param highlights
- * @param query
- */
+/** @param query */
 @Serializable
-data class SearchHistoryEntriesAttributes(
-    @SerialName(value = "highlights") val highlights: kotlin.collections.List<Highlight>,
-    @SerialName(value = "query") val query: kotlin.String,
-) {}
+data class SearchHistoryEntriesAttributes(@SerialName(value = "query") val query: kotlin.String) {}

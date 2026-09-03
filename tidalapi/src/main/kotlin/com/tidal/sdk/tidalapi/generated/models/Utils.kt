@@ -47,6 +47,14 @@ fun getOneOfSerializer() = SerializersModule {
         )
         subclass(OfflineTasksResourceObject::class, OfflineTasksResourceObject.serializer())
         subclass(PlayQueuesResourceObject::class, PlayQueuesResourceObject.serializer())
+        subclass(
+            PlaylistGenerationSchedulesResourceObject::class,
+            PlaylistGenerationSchedulesResourceObject.serializer(),
+        )
+        subclass(
+            PlaylistGenerationsResourceObject::class,
+            PlaylistGenerationsResourceObject.serializer(),
+        )
         subclass(PlaylistsResourceObject::class, PlaylistsResourceObject.serializer())
         subclass(
             PriceConfigurationsResourceObject::class,
@@ -132,7 +140,6 @@ fun getOneOfSerializer() = SerializersModule {
             UserCollectionVideosResourceObject::class,
             UserCollectionVideosResourceObject.serializer(),
         )
-        subclass(UserCollectionsResourceObject::class, UserCollectionsResourceObject.serializer())
         subclass(UserDailyMixesResourceObject::class, UserDailyMixesResourceObject.serializer())
         subclass(
             UserDataExportRequestsResourceObject::class,
@@ -148,12 +155,12 @@ fun getOneOfSerializer() = SerializersModule {
         )
         subclass(UserOfflineMixesResourceObject::class, UserOfflineMixesResourceObject.serializer())
         subclass(
-            UserRecommendationBlocksResourceObject::class,
-            UserRecommendationBlocksResourceObject.serializer(),
+            UserPlaybackStatesResourceObject::class,
+            UserPlaybackStatesResourceObject.serializer(),
         )
         subclass(
-            UserRecommendationsResourceObject::class,
-            UserRecommendationsResourceObject.serializer(),
+            UserRecommendationBlocksResourceObject::class,
+            UserRecommendationBlocksResourceObject.serializer(),
         )
         subclass(UserReportsResourceObject::class, UserReportsResourceObject.serializer())
         subclass(

@@ -19,6 +19,7 @@ data class ContentClaimsRelationships(
     @SerialName(value = "claimedResource")
     val claimedResource: ContentClaimsClaimedResourceSingleRelationshipDataDocument? = null,
     @SerialName(value = "claimingArtist")
-    val claimingArtist: SingleRelationshipDataDocument? = null,
-    @SerialName(value = "owners") val owners: MultiRelationshipDataDocument? = null,
+    val claimingArtist: ContentClaimsClaimingArtistSingleRelationshipDataDocument? = null,
+    @SerialName(value = "owners")
+    val owners: ContentClaimsOwnersMultiRelationshipDataDocument? = null,
 ) {}

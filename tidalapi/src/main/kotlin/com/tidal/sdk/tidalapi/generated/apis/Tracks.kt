@@ -1,13 +1,30 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.models.MutationResponseDocument
+import com.tidal.sdk.tidalapi.generated.models.TracksAlbumsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.TracksAlbumsRelationshipUpdateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.TracksArtistsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.TracksCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.TracksCreateSingleResourceDataDocument
-import com.tidal.sdk.tidalapi.generated.models.TracksMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.TracksCreditsMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.TracksDownloadSingleRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.TracksGenresMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.TracksLyricsMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.TracksMetadataStatusSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.TracksMultiResourceDataDocument
-import com.tidal.sdk.tidalapi.generated.models.TracksSingleRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.TracksOwnersMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.TracksPriceConfigSingleRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.TracksProvidersMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.TracksRadioMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.TracksReplacementSingleRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.TracksSharesMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.TracksSimilarTracksMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.TracksSingleResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.TracksSourceFileSingleRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.TracksSuggestedTracksMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.TracksTrackStatisticsSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.TracksUpdateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.TracksUsageRulesSingleRelationshipDataDocument
 import kotlinx.serialization.SerialName
 import retrofit2.Response
 import retrofit2.http.*
@@ -75,6 +92,7 @@ interface Tracks {
 
     /**
      * Delete single track. Deletes existing track. Responses:
+     * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -90,13 +108,13 @@ interface Tracks {
      * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
-     * @return [Unit]
+     * @return [MutationResponseDocument]
      */
     @DELETE("tracks/{id}")
     suspend fun tracksIdDelete(
         @Path("id") id: kotlin.String,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
-    ): Response<Unit>
+    ): Response<MutationResponseDocument>
 
     /**
      * Get single track. Retrieves single track by id. Responses:
@@ -135,6 +153,7 @@ interface Tracks {
 
     /**
      * Update single track. Updates existing track. Responses:
+     * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -151,14 +170,14 @@ interface Tracks {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param tracksUpdateOperationPayload (optional)
-     * @return [Unit]
+     * @return [MutationResponseDocument]
      */
     @PATCH("tracks/{id}")
     suspend fun tracksIdPatch(
         @Path("id") id: kotlin.String,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body tracksUpdateOperationPayload: TracksUpdateOperationPayload? = null,
-    ): Response<Unit>
+    ): Response<MutationResponseDocument>
 
     /**
      * Get albums relationship (\&quot;to-many\&quot;). Retrieves albums relationship. Responses:
@@ -183,7 +202,7 @@ interface Tracks {
      *   &#x60;include&#x60; syntax. Example: albums (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
-     * @return [TracksMultiRelationshipDataDocument]
+     * @return [TracksAlbumsMultiRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/albums")
     suspend fun tracksIdRelationshipsAlbumsGet(
@@ -194,10 +213,11 @@ interface Tracks {
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
-    ): Response<TracksMultiRelationshipDataDocument>
+    ): Response<TracksAlbumsMultiRelationshipDataDocument>
 
     /**
      * Update albums relationship (\&quot;to-many\&quot;). Updates albums relationship. Responses:
+     * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -214,7 +234,7 @@ interface Tracks {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param tracksAlbumsRelationshipUpdateOperationPayload (optional)
-     * @return [Unit]
+     * @return [MutationResponseDocument]
      */
     @PATCH("tracks/{id}/relationships/albums")
     suspend fun tracksIdRelationshipsAlbumsPatch(
@@ -224,7 +244,7 @@ interface Tracks {
         tracksAlbumsRelationshipUpdateOperationPayload:
             TracksAlbumsRelationshipUpdateOperationPayload? =
             null,
-    ): Response<Unit>
+    ): Response<MutationResponseDocument>
 
     /**
      * Get artists relationship (\&quot;to-many\&quot;). Retrieves artists relationship. Responses:
@@ -249,7 +269,7 @@ interface Tracks {
      *   &#x60;include&#x60; syntax. Example: artists.albums (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
-     * @return [TracksMultiRelationshipDataDocument]
+     * @return [TracksArtistsMultiRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/artists")
     suspend fun tracksIdRelationshipsArtistsGet(
@@ -260,7 +280,7 @@ interface Tracks {
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
-    ): Response<TracksMultiRelationshipDataDocument>
+    ): Response<TracksArtistsMultiRelationshipDataDocument>
 
     /**
      * Get credits relationship (\&quot;to-many\&quot;). Retrieves credits relationship. Responses:
@@ -284,7 +304,7 @@ interface Tracks {
      *   &#x60;include&#x60; syntax. Example: credits.artist.albums (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
-     * @return [TracksMultiRelationshipDataDocument]
+     * @return [TracksCreditsMultiRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/credits")
     suspend fun tracksIdRelationshipsCreditsGet(
@@ -294,7 +314,7 @@ interface Tracks {
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
-    ): Response<TracksMultiRelationshipDataDocument>
+    ): Response<TracksCreditsMultiRelationshipDataDocument>
 
     /**
      * Get download relationship (\&quot;to-one\&quot;). Retrieves download relationship. Responses:
@@ -313,7 +333,7 @@ interface Tracks {
      *   Available options: download (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
-     * @return [TracksSingleRelationshipDataDocument]
+     * @return [TracksDownloadSingleRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/download")
     suspend fun tracksIdRelationshipsDownloadGet(
@@ -321,7 +341,7 @@ interface Tracks {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
-    ): Response<TracksSingleRelationshipDataDocument>
+    ): Response<TracksDownloadSingleRelationshipDataDocument>
 
     /**
      * Get genres relationship (\&quot;to-many\&quot;). Retrieves genres relationship. Responses:
@@ -343,7 +363,7 @@ interface Tracks {
      *   targets first page if not specified (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
-     * @return [TracksMultiRelationshipDataDocument]
+     * @return [TracksGenresMultiRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/genres")
     suspend fun tracksIdRelationshipsGenresGet(
@@ -353,7 +373,7 @@ interface Tracks {
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
-    ): Response<TracksMultiRelationshipDataDocument>
+    ): Response<TracksGenresMultiRelationshipDataDocument>
 
     /**
      * Get lyrics relationship (\&quot;to-many\&quot;). Retrieves lyrics relationship. Responses:
@@ -377,7 +397,7 @@ interface Tracks {
      *   &#x60;include&#x60; syntax. Example: lyrics.track (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
-     * @return [TracksMultiRelationshipDataDocument]
+     * @return [TracksLyricsMultiRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/lyrics")
     suspend fun tracksIdRelationshipsLyricsGet(
@@ -387,7 +407,7 @@ interface Tracks {
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
-    ): Response<TracksMultiRelationshipDataDocument>
+    ): Response<TracksLyricsMultiRelationshipDataDocument>
 
     /**
      * Get metadataStatus relationship (\&quot;to-one\&quot;). Retrieves metadataStatus
@@ -407,7 +427,7 @@ interface Tracks {
      *   Available options: metadataStatus (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
-     * @return [TracksSingleRelationshipDataDocument]
+     * @return [TracksMetadataStatusSingleRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/metadataStatus")
     suspend fun tracksIdRelationshipsMetadataStatusGet(
@@ -415,7 +435,7 @@ interface Tracks {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
-    ): Response<TracksSingleRelationshipDataDocument>
+    ): Response<TracksMetadataStatusSingleRelationshipDataDocument>
 
     /**
      * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
@@ -437,7 +457,7 @@ interface Tracks {
      *   targets first page if not specified (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
-     * @return [TracksMultiRelationshipDataDocument]
+     * @return [TracksOwnersMultiRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/owners")
     suspend fun tracksIdRelationshipsOwnersGet(
@@ -447,7 +467,7 @@ interface Tracks {
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
-    ): Response<TracksMultiRelationshipDataDocument>
+    ): Response<TracksOwnersMultiRelationshipDataDocument>
 
     /**
      * Get priceConfig relationship (\&quot;to-one\&quot;). Retrieves priceConfig relationship.
@@ -468,7 +488,7 @@ interface Tracks {
      *   Available options: priceConfig (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
-     * @return [TracksSingleRelationshipDataDocument]
+     * @return [TracksPriceConfigSingleRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/priceConfig")
     suspend fun tracksIdRelationshipsPriceConfigGet(
@@ -477,7 +497,7 @@ interface Tracks {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
-    ): Response<TracksSingleRelationshipDataDocument>
+    ): Response<TracksPriceConfigSingleRelationshipDataDocument>
 
     /**
      * Get providers relationship (\&quot;to-many\&quot;). Retrieves providers relationship.
@@ -500,7 +520,7 @@ interface Tracks {
      *   targets first page if not specified (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
-     * @return [TracksMultiRelationshipDataDocument]
+     * @return [TracksProvidersMultiRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/providers")
     suspend fun tracksIdRelationshipsProvidersGet(
@@ -510,7 +530,7 @@ interface Tracks {
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
-    ): Response<TracksMultiRelationshipDataDocument>
+    ): Response<TracksProvidersMultiRelationshipDataDocument>
 
     /**
      * Get radio relationship (\&quot;to-many\&quot;). Retrieves radio relationship. Responses:
@@ -534,7 +554,7 @@ interface Tracks {
      *   &#x60;include&#x60; syntax. Example: radio.items (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
-     * @return [TracksMultiRelationshipDataDocument]
+     * @return [TracksRadioMultiRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/radio")
     suspend fun tracksIdRelationshipsRadioGet(
@@ -544,7 +564,7 @@ interface Tracks {
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
-    ): Response<TracksMultiRelationshipDataDocument>
+    ): Response<TracksRadioMultiRelationshipDataDocument>
 
     /**
      * Get replacement relationship (\&quot;to-one\&quot;). Retrieves replacement relationship.
@@ -568,7 +588,7 @@ interface Tracks {
      *   &#x60;include&#x60; syntax. Example: replacement (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
-     * @return [TracksSingleRelationshipDataDocument]
+     * @return [TracksReplacementSingleRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/replacement")
     suspend fun tracksIdRelationshipsReplacementGet(
@@ -578,7 +598,7 @@ interface Tracks {
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
-    ): Response<TracksSingleRelationshipDataDocument>
+    ): Response<TracksReplacementSingleRelationshipDataDocument>
 
     /**
      * Get shares relationship (\&quot;to-many\&quot;). Retrieves shares relationship. Responses:
@@ -602,7 +622,7 @@ interface Tracks {
      *   &#x60;include&#x60; syntax. Example: shares.sharedResources (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
-     * @return [TracksMultiRelationshipDataDocument]
+     * @return [TracksSharesMultiRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/shares")
     suspend fun tracksIdRelationshipsSharesGet(
@@ -612,7 +632,7 @@ interface Tracks {
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
-    ): Response<TracksMultiRelationshipDataDocument>
+    ): Response<TracksSharesMultiRelationshipDataDocument>
 
     /**
      * Get similarTracks relationship (\&quot;to-many\&quot;). Retrieves similarTracks relationship.
@@ -638,7 +658,7 @@ interface Tracks {
      *   &#x60;include&#x60; syntax. Example: similarTracks (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
-     * @return [TracksMultiRelationshipDataDocument]
+     * @return [TracksSimilarTracksMultiRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/similarTracks")
     suspend fun tracksIdRelationshipsSimilarTracksGet(
@@ -649,7 +669,7 @@ interface Tracks {
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
-    ): Response<TracksMultiRelationshipDataDocument>
+    ): Response<TracksSimilarTracksMultiRelationshipDataDocument>
 
     /**
      * Get sourceFile relationship (\&quot;to-one\&quot;). Retrieves sourceFile relationship.
@@ -669,7 +689,7 @@ interface Tracks {
      *   Available options: sourceFile (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
-     * @return [TracksSingleRelationshipDataDocument]
+     * @return [TracksSourceFileSingleRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/sourceFile")
     suspend fun tracksIdRelationshipsSourceFileGet(
@@ -677,7 +697,7 @@ interface Tracks {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
-    ): Response<TracksSingleRelationshipDataDocument>
+    ): Response<TracksSourceFileSingleRelationshipDataDocument>
 
     /**
      * Get suggestedTracks relationship (\&quot;to-many\&quot;). Retrieves suggestedTracks
@@ -703,7 +723,7 @@ interface Tracks {
      *   &#x60;include&#x60; syntax. Example: suggestedTracks (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
-     * @return [TracksMultiRelationshipDataDocument]
+     * @return [TracksSuggestedTracksMultiRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/suggestedTracks")
     suspend fun tracksIdRelationshipsSuggestedTracksGet(
@@ -714,7 +734,7 @@ interface Tracks {
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
-    ): Response<TracksMultiRelationshipDataDocument>
+    ): Response<TracksSuggestedTracksMultiRelationshipDataDocument>
 
     /**
      * Get trackStatistics relationship (\&quot;to-one\&quot;). Retrieves trackStatistics
@@ -734,7 +754,7 @@ interface Tracks {
      *   Available options: trackStatistics (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
-     * @return [TracksSingleRelationshipDataDocument]
+     * @return [TracksTrackStatisticsSingleRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/trackStatistics")
     suspend fun tracksIdRelationshipsTrackStatisticsGet(
@@ -742,7 +762,7 @@ interface Tracks {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
-    ): Response<TracksSingleRelationshipDataDocument>
+    ): Response<TracksTrackStatisticsSingleRelationshipDataDocument>
 
     /**
      * Get usageRules relationship (\&quot;to-one\&quot;). Retrieves usageRules relationship.
@@ -763,7 +783,7 @@ interface Tracks {
      *   Available options: usageRules (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
-     * @return [TracksSingleRelationshipDataDocument]
+     * @return [TracksUsageRulesSingleRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/usageRules")
     suspend fun tracksIdRelationshipsUsageRulesGet(
@@ -772,7 +792,7 @@ interface Tracks {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
-    ): Response<TracksSingleRelationshipDataDocument>
+    ): Response<TracksUsageRulesSingleRelationshipDataDocument>
 
     /**
      * Create single track. Creates a new track. Responses:

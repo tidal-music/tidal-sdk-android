@@ -2,11 +2,11 @@ package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.SquareConnectionsCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.SquareConnectionsCreateSingleResourceDataDocument
-import com.tidal.sdk.tidalapi.generated.models.SquareConnectionsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.SquareConnectionsSelectedSiteRelationshipUpdateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.SquareConnectionsSelectedSiteSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.SquareConnectionsSelectedSiteUpdateSingleRelationshipDataDocument
-import com.tidal.sdk.tidalapi.generated.models.SquareConnectionsSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.SquareConnectionsSingleResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.SquareConnectionsSitesMultiRelationshipDataDocument
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -15,6 +15,7 @@ interface SquareConnections {
      * Get single squareConnection. Retrieves single squareConnection by id. Responses:
      * - 200: Successful response
      * - 400: Invalid request
+     * - 403: Latest terms and conditions must be accepted
      * - 404: Resource not found
      * - 405: HTTP method not allowed
      * - 406: No acceptable response media type
@@ -40,6 +41,7 @@ interface SquareConnections {
      * Responses:
      * - 200: Successful response
      * - 400: Invalid request
+     * - 403: Latest terms and conditions must be accepted
      * - 404: Resource not found
      * - 405: HTTP method not allowed
      * - 406: No acceptable response media type
@@ -51,20 +53,21 @@ interface SquareConnections {
      * @param id Square connection id. Use &#x60;me&#x60; for the authenticated user&#39;s resource
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: selectedSite (optional)
-     * @return [SquareConnectionsSingleRelationshipDataDocument]
+     * @return [SquareConnectionsSelectedSiteSingleRelationshipDataDocument]
      */
     @GET("squareConnections/{id}/relationships/selectedSite")
     suspend fun squareConnectionsIdRelationshipsSelectedSiteGet(
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<SquareConnectionsSingleRelationshipDataDocument>
+    ): Response<SquareConnectionsSelectedSiteSingleRelationshipDataDocument>
 
     /**
      * Update selectedSite relationship (\&quot;to-one\&quot;). Updates selectedSite relationship.
      * Responses:
      * - 200: Successful response
      * - 400: Invalid request
+     * - 403: Latest terms and conditions must be accepted
      * - 404: Resource not found
      * - 405: HTTP method not allowed
      * - 406: No acceptable response media type
@@ -97,6 +100,7 @@ interface SquareConnections {
      * Get sites relationship (\&quot;to-many\&quot;). Retrieves sites relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
+     * - 403: Latest terms and conditions must be accepted
      * - 404: Resource not found
      * - 405: HTTP method not allowed
      * - 406: No acceptable response media type
@@ -110,7 +114,7 @@ interface SquareConnections {
      *   Available options: sites (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [SquareConnectionsMultiRelationshipDataDocument]
+     * @return [SquareConnectionsSitesMultiRelationshipDataDocument]
      */
     @GET("squareConnections/{id}/relationships/sites")
     suspend fun squareConnectionsIdRelationshipsSitesGet(
@@ -118,7 +122,7 @@ interface SquareConnections {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<SquareConnectionsMultiRelationshipDataDocument>
+    ): Response<SquareConnectionsSitesMultiRelationshipDataDocument>
 
     /**
      * Create single squareConnection. Creates a new squareConnection. Responses:
@@ -134,7 +138,6 @@ interface SquareConnections {
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
-     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
@@ -143,7 +146,6 @@ interface SquareConnections {
      */
     @POST("squareConnections")
     suspend fun squareConnectionsPost(
-        @Query("countryCode") countryCode: kotlin.String? = null,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body
         squareConnectionsCreateOperationPayload: SquareConnectionsCreateOperationPayload? = null,

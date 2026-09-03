@@ -23,10 +23,11 @@ data class TermsAttributes(
     @SerialName(value = "termsType") val termsType: TermsAttributes.TermsType,
 ) {
 
-    /** Values: DEVELOPER,UPLOAD_MARKETPLACE */
+    /** Values: DEVELOPER,UPLOAD_MARKETPLACE,MERCH_GUIDELINES */
     @Serializable
     enum class TermsType(val value: kotlin.String) {
         @SerialName(value = "DEVELOPER") DEVELOPER("DEVELOPER"),
         @SerialName(value = "UPLOAD_MARKETPLACE") UPLOAD_MARKETPLACE("UPLOAD_MARKETPLACE"),
+        @SerialName(value = "MERCH_GUIDELINES") MERCH_GUIDELINES("MERCH_GUIDELINES"),
     }
 }

@@ -1,10 +1,11 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.models.MutationResponseDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionSaveForLatersItemsAddMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionSaveForLatersItemsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionSaveForLatersItemsRelationshipAddOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionSaveForLatersItemsRelationshipRemoveOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.UserCollectionSaveForLatersMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionSaveForLatersOwnersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionSaveForLatersSingleResourceDataDocument
 import retrofit2.Response
 import retrofit2.http.*
@@ -43,6 +44,7 @@ interface UserCollectionSaveForLaters {
     /**
      * Delete from items relationship (\&quot;to-many\&quot;). Deletes item(s) from items
      * relationship. Responses:
+     * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -60,7 +62,7 @@ interface UserCollectionSaveForLaters {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param userCollectionSaveForLatersItemsRelationshipRemoveOperationPayload (optional)
-     * @return [Unit]
+     * @return [MutationResponseDocument]
      */
     @HTTP(
         method = "DELETE",
@@ -74,7 +76,7 @@ interface UserCollectionSaveForLaters {
         userCollectionSaveForLatersItemsRelationshipRemoveOperationPayload:
             UserCollectionSaveForLatersItemsRelationshipRemoveOperationPayload? =
             null,
-    ): Response<Unit>
+    ): Response<MutationResponseDocument>
 
     /**
      * Get items relationship (\&quot;to-many\&quot;). Retrieves items relationship. Responses:
@@ -160,7 +162,7 @@ interface UserCollectionSaveForLaters {
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [UserCollectionSaveForLatersMultiRelationshipDataDocument]
+     * @return [UserCollectionSaveForLatersOwnersMultiRelationshipDataDocument]
      */
     @GET("userCollectionSaveForLaters/{id}/relationships/owners")
     suspend fun userCollectionSaveForLatersIdRelationshipsOwnersGet(
@@ -168,5 +170,5 @@ interface UserCollectionSaveForLaters {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<UserCollectionSaveForLatersMultiRelationshipDataDocument>
+    ): Response<UserCollectionSaveForLatersOwnersMultiRelationshipDataDocument>
 }

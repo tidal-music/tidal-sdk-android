@@ -1,5 +1,6 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.models.MutationResponseDocument
 import com.tidal.sdk.tidalapi.generated.models.PlayQueuesCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.PlayQueuesCreateSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlayQueuesCurrentRelationshipUpdateOperationPayload
@@ -8,8 +9,8 @@ import com.tidal.sdk.tidalapi.generated.models.PlayQueuesFutureMultiRelationship
 import com.tidal.sdk.tidalapi.generated.models.PlayQueuesFutureRelationshipAddOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.PlayQueuesFutureRelationshipRemoveOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.PlayQueuesFutureRelationshipUpdateOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.PlayQueuesMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlayQueuesMultiResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.PlayQueuesOwnersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlayQueuesPastMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlayQueuesSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlayQueuesUpdateOperationPayload
@@ -52,6 +53,7 @@ interface PlayQueues {
 
     /**
      * Delete single playQueue. Deletes existing playQueue. Responses:
+     * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -67,13 +69,13 @@ interface PlayQueues {
      * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
-     * @return [Unit]
+     * @return [MutationResponseDocument]
      */
     @DELETE("playQueues/{id}")
     suspend fun playQueuesIdDelete(
         @Path("id") id: kotlin.String,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
-    ): Response<Unit>
+    ): Response<MutationResponseDocument>
 
     /**
      * Get single playQueue. Retrieves single playQueue by id. Responses:
@@ -105,6 +107,7 @@ interface PlayQueues {
 
     /**
      * Update single playQueue. Updates existing playQueue. Responses:
+     * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -121,14 +124,14 @@ interface PlayQueues {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param playQueuesUpdateOperationPayload (optional)
-     * @return [Unit]
+     * @return [MutationResponseDocument]
      */
     @PATCH("playQueues/{id}")
     suspend fun playQueuesIdPatch(
         @Path("id") id: kotlin.String,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body playQueuesUpdateOperationPayload: PlayQueuesUpdateOperationPayload? = null,
-    ): Response<Unit>
+    ): Response<MutationResponseDocument>
 
     /**
      * Get current relationship (\&quot;to-one\&quot;). Retrieves current relationship. Responses:
@@ -160,6 +163,7 @@ interface PlayQueues {
 
     /**
      * Update current relationship (\&quot;to-one\&quot;). Updates current relationship. Responses:
+     * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -176,7 +180,7 @@ interface PlayQueues {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param playQueuesCurrentRelationshipUpdateOperationPayload (optional)
-     * @return [Unit]
+     * @return [MutationResponseDocument]
      */
     @PATCH("playQueues/{id}/relationships/current")
     suspend fun playQueuesIdRelationshipsCurrentPatch(
@@ -186,11 +190,12 @@ interface PlayQueues {
         playQueuesCurrentRelationshipUpdateOperationPayload:
             PlayQueuesCurrentRelationshipUpdateOperationPayload? =
             null,
-    ): Response<Unit>
+    ): Response<MutationResponseDocument>
 
     /**
      * Delete from future relationship (\&quot;to-many\&quot;). Deletes item(s) from future
      * relationship. Responses:
+     * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -207,7 +212,7 @@ interface PlayQueues {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param playQueuesFutureRelationshipRemoveOperationPayload (optional)
-     * @return [Unit]
+     * @return [MutationResponseDocument]
      */
     @HTTP(method = "DELETE", path = "playQueues/{id}/relationships/future", hasBody = true)
     suspend fun playQueuesIdRelationshipsFutureDelete(
@@ -217,7 +222,7 @@ interface PlayQueues {
         playQueuesFutureRelationshipRemoveOperationPayload:
             PlayQueuesFutureRelationshipRemoveOperationPayload? =
             null,
-    ): Response<Unit>
+    ): Response<MutationResponseDocument>
 
     /**
      * Get future relationship (\&quot;to-many\&quot;). Retrieves future relationship. Responses:
@@ -252,6 +257,7 @@ interface PlayQueues {
 
     /**
      * Update future relationship (\&quot;to-many\&quot;). Updates future relationship. Responses:
+     * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -268,7 +274,7 @@ interface PlayQueues {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param playQueuesFutureRelationshipUpdateOperationPayload (optional)
-     * @return [Unit]
+     * @return [MutationResponseDocument]
      */
     @PATCH("playQueues/{id}/relationships/future")
     suspend fun playQueuesIdRelationshipsFuturePatch(
@@ -278,12 +284,12 @@ interface PlayQueues {
         playQueuesFutureRelationshipUpdateOperationPayload:
             PlayQueuesFutureRelationshipUpdateOperationPayload? =
             null,
-    ): Response<Unit>
+    ): Response<MutationResponseDocument>
 
     /**
      * Add to future relationship (\&quot;to-many\&quot;). Adds item(s) to future relationship.
      * Responses:
-     * - 201: Successful response
+     * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -300,7 +306,7 @@ interface PlayQueues {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param playQueuesFutureRelationshipAddOperationPayload (optional)
-     * @return [Unit]
+     * @return [MutationResponseDocument]
      */
     @POST("playQueues/{id}/relationships/future")
     suspend fun playQueuesIdRelationshipsFuturePost(
@@ -310,7 +316,7 @@ interface PlayQueues {
         playQueuesFutureRelationshipAddOperationPayload:
             PlayQueuesFutureRelationshipAddOperationPayload? =
             null,
-    ): Response<Unit>
+    ): Response<MutationResponseDocument>
 
     /**
      * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
@@ -329,7 +335,7 @@ interface PlayQueues {
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [PlayQueuesMultiRelationshipDataDocument]
+     * @return [PlayQueuesOwnersMultiRelationshipDataDocument]
      */
     @GET("playQueues/{id}/relationships/owners")
     suspend fun playQueuesIdRelationshipsOwnersGet(
@@ -337,7 +343,7 @@ interface PlayQueues {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<PlayQueuesMultiRelationshipDataDocument>
+    ): Response<PlayQueuesOwnersMultiRelationshipDataDocument>
 
     /**
      * Get past relationship (\&quot;to-many\&quot;). Retrieves past relationship. Responses:

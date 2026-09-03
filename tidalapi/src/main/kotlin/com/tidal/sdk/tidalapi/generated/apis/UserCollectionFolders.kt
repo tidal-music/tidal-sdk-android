@@ -1,15 +1,16 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.models.MutationResponseDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersCreateSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersItemsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersItemsRelationshipAddOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersItemsRelationshipRemoveOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersMultiResourceDataDocument
-import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersSingleRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersOwnersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersUpdateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionFoldersUserCollectionSingleRelationshipDataDocument
 import kotlinx.serialization.SerialName
 import retrofit2.Response
 import retrofit2.http.*
@@ -47,6 +48,7 @@ interface UserCollectionFolders {
 
     /**
      * Delete single userCollectionFolder. Deletes existing userCollectionFolder. Responses:
+     * - 200: Successful response
      * - 400: Folder must be empty and owned by you
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -62,13 +64,13 @@ interface UserCollectionFolders {
      * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
-     * @return [Unit]
+     * @return [MutationResponseDocument]
      */
     @DELETE("userCollectionFolders/{id}")
     suspend fun userCollectionFoldersIdDelete(
         @Path("id") id: kotlin.String,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
-    ): Response<Unit>
+    ): Response<MutationResponseDocument>
 
     /**
      * Get single userCollectionFolder. Retrieves single userCollectionFolder by id. Responses:
@@ -100,6 +102,7 @@ interface UserCollectionFolders {
 
     /**
      * Update single userCollectionFolder. Updates existing userCollectionFolder. Responses:
+     * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -116,7 +119,7 @@ interface UserCollectionFolders {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param userCollectionFoldersUpdateOperationPayload (optional)
-     * @return [Unit]
+     * @return [MutationResponseDocument]
      */
     @PATCH("userCollectionFolders/{id}")
     suspend fun userCollectionFoldersIdPatch(
@@ -125,11 +128,12 @@ interface UserCollectionFolders {
         @Body
         userCollectionFoldersUpdateOperationPayload: UserCollectionFoldersUpdateOperationPayload? =
             null,
-    ): Response<Unit>
+    ): Response<MutationResponseDocument>
 
     /**
      * Delete from items relationship (\&quot;to-many\&quot;). Deletes item(s) from items
      * relationship. Responses:
+     * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -146,7 +150,7 @@ interface UserCollectionFolders {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param userCollectionFoldersItemsRelationshipRemoveOperationPayload (optional)
-     * @return [Unit]
+     * @return [MutationResponseDocument]
      */
     @HTTP(
         method = "DELETE",
@@ -160,7 +164,7 @@ interface UserCollectionFolders {
         userCollectionFoldersItemsRelationshipRemoveOperationPayload:
             UserCollectionFoldersItemsRelationshipRemoveOperationPayload? =
             null,
-    ): Response<Unit>
+    ): Response<MutationResponseDocument>
 
     /** enum for parameter sort */
     enum class SortUserCollectionFoldersIdRelationshipsItemsGet(val value: kotlin.String) {
@@ -209,7 +213,7 @@ interface UserCollectionFolders {
     /**
      * Add to items relationship (\&quot;to-many\&quot;). Adds item(s) to items relationship.
      * Responses:
-     * - 201: Successful response
+     * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -226,7 +230,7 @@ interface UserCollectionFolders {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param userCollectionFoldersItemsRelationshipAddOperationPayload (optional)
-     * @return [Unit]
+     * @return [MutationResponseDocument]
      */
     @POST("userCollectionFolders/{id}/relationships/items")
     suspend fun userCollectionFoldersIdRelationshipsItemsPost(
@@ -236,7 +240,7 @@ interface UserCollectionFolders {
         userCollectionFoldersItemsRelationshipAddOperationPayload:
             UserCollectionFoldersItemsRelationshipAddOperationPayload? =
             null,
-    ): Response<Unit>
+    ): Response<MutationResponseDocument>
 
     /**
      * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
@@ -255,7 +259,7 @@ interface UserCollectionFolders {
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [UserCollectionFoldersMultiRelationshipDataDocument]
+     * @return [UserCollectionFoldersOwnersMultiRelationshipDataDocument]
      */
     @GET("userCollectionFolders/{id}/relationships/owners")
     suspend fun userCollectionFoldersIdRelationshipsOwnersGet(
@@ -263,7 +267,7 @@ interface UserCollectionFolders {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<UserCollectionFoldersMultiRelationshipDataDocument>
+    ): Response<UserCollectionFoldersOwnersMultiRelationshipDataDocument>
 
     /**
      * Get userCollection relationship (\&quot;to-one\&quot;). Retrieves userCollection
@@ -284,7 +288,7 @@ interface UserCollectionFolders {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: userCollection.items.items (optional)
-     * @return [UserCollectionFoldersSingleRelationshipDataDocument]
+     * @return [UserCollectionFoldersUserCollectionSingleRelationshipDataDocument]
      */
     @GET("userCollectionFolders/{id}/relationships/userCollection")
     suspend fun userCollectionFoldersIdRelationshipsUserCollectionGet(
@@ -292,7 +296,7 @@ interface UserCollectionFolders {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
-    ): Response<UserCollectionFoldersSingleRelationshipDataDocument>
+    ): Response<UserCollectionFoldersUserCollectionSingleRelationshipDataDocument>
 
     /**
      * Create single userCollectionFolder. Creates a new userCollectionFolder. Responses:

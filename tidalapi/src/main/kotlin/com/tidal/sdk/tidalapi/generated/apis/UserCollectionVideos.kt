@@ -1,10 +1,11 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.models.MutationResponseDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionVideosItemsAddMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionVideosItemsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionVideosItemsRelationshipAddOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionVideosItemsRelationshipRemoveOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.UserCollectionVideosMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionVideosOwnersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionVideosSingleResourceDataDocument
 import kotlinx.serialization.SerialName
 import retrofit2.Response
@@ -46,6 +47,7 @@ interface UserCollectionVideos {
     /**
      * Delete from items relationship (\&quot;to-many\&quot;). Deletes item(s) from items
      * relationship. Responses:
+     * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -63,7 +65,7 @@ interface UserCollectionVideos {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param userCollectionVideosItemsRelationshipRemoveOperationPayload (optional)
-     * @return [Unit]
+     * @return [MutationResponseDocument]
      */
     @HTTP(method = "DELETE", path = "userCollectionVideos/{id}/relationships/items", hasBody = true)
     suspend fun userCollectionVideosIdRelationshipsItemsDelete(
@@ -73,7 +75,7 @@ interface UserCollectionVideos {
         userCollectionVideosItemsRelationshipRemoveOperationPayload:
             UserCollectionVideosItemsRelationshipRemoveOperationPayload? =
             null,
-    ): Response<Unit>
+    ): Response<MutationResponseDocument>
 
     /** enum for parameter sort */
     enum class SortUserCollectionVideosIdRelationshipsItemsGet(val value: kotlin.String) {
@@ -177,7 +179,7 @@ interface UserCollectionVideos {
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [UserCollectionVideosMultiRelationshipDataDocument]
+     * @return [UserCollectionVideosOwnersMultiRelationshipDataDocument]
      */
     @GET("userCollectionVideos/{id}/relationships/owners")
     suspend fun userCollectionVideosIdRelationshipsOwnersGet(
@@ -185,5 +187,5 @@ interface UserCollectionVideos {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<UserCollectionVideosMultiRelationshipDataDocument>
+    ): Response<UserCollectionVideosOwnersMultiRelationshipDataDocument>
 }

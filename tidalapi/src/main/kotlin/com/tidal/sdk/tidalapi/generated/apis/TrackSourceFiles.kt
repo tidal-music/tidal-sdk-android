@@ -2,7 +2,7 @@ package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.TrackSourceFilesCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.TrackSourceFilesCreateSingleResourceDataDocument
-import com.tidal.sdk.tidalapi.generated.models.TrackSourceFilesMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.TrackSourceFilesOwnersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.TrackSourceFilesSingleResourceDataDocument
 import retrofit2.Response
 import retrofit2.http.*
@@ -49,7 +49,7 @@ interface TrackSourceFiles {
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [TrackSourceFilesMultiRelationshipDataDocument]
+     * @return [TrackSourceFilesOwnersMultiRelationshipDataDocument]
      */
     @GET("trackSourceFiles/{id}/relationships/owners")
     suspend fun trackSourceFilesIdRelationshipsOwnersGet(
@@ -57,7 +57,7 @@ interface TrackSourceFiles {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<TrackSourceFilesMultiRelationshipDataDocument>
+    ): Response<TrackSourceFilesOwnersMultiRelationshipDataDocument>
 
     /**
      * Create single trackSourceFile. Create a track source file. &lt;p/&gt; The response contains a

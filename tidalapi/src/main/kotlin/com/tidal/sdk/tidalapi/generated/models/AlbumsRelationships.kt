@@ -27,20 +27,24 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class AlbumsRelationships(
     @SerialName(value = "albumStatistics")
-    val albumStatistics: SingleRelationshipDataDocument? = null,
-    @SerialName(value = "artists") val artists: MultiRelationshipDataDocument? = null,
-    @SerialName(value = "coverArt") val coverArt: MultiRelationshipDataDocument? = null,
-    @SerialName(value = "genres") val genres: MultiRelationshipDataDocument? = null,
+    val albumStatistics: AlbumsAlbumStatisticsSingleRelationshipDataDocument? = null,
+    @SerialName(value = "artists") val artists: AlbumsArtistsMultiRelationshipDataDocument? = null,
+    @SerialName(value = "coverArt")
+    val coverArt: AlbumsCoverArtMultiRelationshipDataDocument? = null,
+    @SerialName(value = "genres") val genres: AlbumsGenresMultiRelationshipDataDocument? = null,
     @SerialName(value = "items") val items: AlbumsItemsMultiRelationshipDataDocument? = null,
-    @SerialName(value = "owners") val owners: MultiRelationshipDataDocument? = null,
-    @SerialName(value = "priceConfig") val priceConfig: SingleRelationshipDataDocument? = null,
-    @SerialName(value = "providers") val providers: MultiRelationshipDataDocument? = null,
+    @SerialName(value = "owners") val owners: AlbumsOwnersMultiRelationshipDataDocument? = null,
+    @SerialName(value = "priceConfig")
+    val priceConfig: AlbumsPriceConfigSingleRelationshipDataDocument? = null,
+    @SerialName(value = "providers")
+    val providers: AlbumsProvidersMultiRelationshipDataDocument? = null,
     @SerialName(value = "replacement")
     val replacement: AlbumsReplacementSingleRelationshipDataDocument? = null,
-    @SerialName(value = "shares") val shares: MultiRelationshipDataDocument? = null,
+    @SerialName(value = "shares") val shares: AlbumsSharesMultiRelationshipDataDocument? = null,
     @SerialName(value = "similarAlbums")
     val similarAlbums: AlbumsSimilarAlbumsMultiRelationshipDataDocument? = null,
     @SerialName(value = "suggestedCoverArts")
     val suggestedCoverArts: AlbumsSuggestedCoverArtsMultiRelationshipDataDocument? = null,
-    @SerialName(value = "usageRules") val usageRules: SingleRelationshipDataDocument? = null,
+    @SerialName(value = "usageRules")
+    val usageRules: AlbumsUsageRulesSingleRelationshipDataDocument? = null,
 ) {}

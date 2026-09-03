@@ -1,10 +1,11 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.models.ContentClaimsClaimedResourceSingleRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ContentClaimsClaimingArtistSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ContentClaimsCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.ContentClaimsCreateSingleResourceDataDocument
-import com.tidal.sdk.tidalapi.generated.models.ContentClaimsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ContentClaimsMultiResourceDataDocument
-import com.tidal.sdk.tidalapi.generated.models.ContentClaimsSingleRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ContentClaimsOwnersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ContentClaimsSingleResourceDataDocument
 import retrofit2.Response
 import retrofit2.http.*
@@ -87,7 +88,7 @@ interface ContentClaims {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: claimedResource (optional)
-     * @return [ContentClaimsSingleRelationshipDataDocument]
+     * @return [ContentClaimsClaimedResourceSingleRelationshipDataDocument]
      */
     @GET("contentClaims/{id}/relationships/claimedResource")
     suspend fun contentClaimsIdRelationshipsClaimedResourceGet(
@@ -95,7 +96,7 @@ interface ContentClaims {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
-    ): Response<ContentClaimsSingleRelationshipDataDocument>
+    ): Response<ContentClaimsClaimedResourceSingleRelationshipDataDocument>
 
     /**
      * Get claimingArtist relationship (\&quot;to-one\&quot;). Retrieves claimingArtist
@@ -116,7 +117,7 @@ interface ContentClaims {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: claimingArtist.albums (optional)
-     * @return [ContentClaimsSingleRelationshipDataDocument]
+     * @return [ContentClaimsClaimingArtistSingleRelationshipDataDocument]
      */
     @GET("contentClaims/{id}/relationships/claimingArtist")
     suspend fun contentClaimsIdRelationshipsClaimingArtistGet(
@@ -124,7 +125,7 @@ interface ContentClaims {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
-    ): Response<ContentClaimsSingleRelationshipDataDocument>
+    ): Response<ContentClaimsClaimingArtistSingleRelationshipDataDocument>
 
     /**
      * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
@@ -143,7 +144,7 @@ interface ContentClaims {
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [ContentClaimsMultiRelationshipDataDocument]
+     * @return [ContentClaimsOwnersMultiRelationshipDataDocument]
      */
     @GET("contentClaims/{id}/relationships/owners")
     suspend fun contentClaimsIdRelationshipsOwnersGet(
@@ -151,7 +152,7 @@ interface ContentClaims {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<ContentClaimsMultiRelationshipDataDocument>
+    ): Response<ContentClaimsOwnersMultiRelationshipDataDocument>
 
     /**
      * Create single contentClaim. Creates a new contentClaim. Responses:

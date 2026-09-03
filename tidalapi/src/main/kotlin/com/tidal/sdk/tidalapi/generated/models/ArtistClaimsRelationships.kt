@@ -17,8 +17,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ArtistClaimsRelationships(
     @SerialName(value = "acceptedArtists")
-    val acceptedArtists: MultiRelationshipDataDocument? = null,
-    @SerialName(value = "owners") val owners: MultiRelationshipDataDocument? = null,
+    val acceptedArtists: ArtistClaimsAcceptedArtistsMultiRelationshipDataDocument? = null,
+    @SerialName(value = "owners")
+    val owners: ArtistClaimsOwnersMultiRelationshipDataDocument? = null,
     @SerialName(value = "recommendedArtists")
-    val recommendedArtists: MultiRelationshipDataDocument? = null,
+    val recommendedArtists: ArtistClaimsRecommendedArtistsMultiRelationshipDataDocument? = null,
 ) {}

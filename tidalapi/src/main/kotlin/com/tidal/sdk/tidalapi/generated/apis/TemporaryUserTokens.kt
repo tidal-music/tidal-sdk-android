@@ -2,7 +2,7 @@ package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.TemporaryUserTokensCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.TemporaryUserTokensCreateSingleResourceDataDocument
-import com.tidal.sdk.tidalapi.generated.models.TemporaryUserTokensMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.TemporaryUserTokensOwnersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.TemporaryUserTokensSingleResourceDataDocument
 import retrofit2.Response
 import retrofit2.http.*
@@ -49,7 +49,7 @@ interface TemporaryUserTokens {
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [TemporaryUserTokensMultiRelationshipDataDocument]
+     * @return [TemporaryUserTokensOwnersMultiRelationshipDataDocument]
      */
     @GET("temporaryUserTokens/{id}/relationships/owners")
     suspend fun temporaryUserTokensIdRelationshipsOwnersGet(
@@ -57,7 +57,7 @@ interface TemporaryUserTokens {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<TemporaryUserTokensMultiRelationshipDataDocument>
+    ): Response<TemporaryUserTokensOwnersMultiRelationshipDataDocument>
 
     /**
      * Create single temporaryUserToken. Creates a new temporaryUserToken. Responses:

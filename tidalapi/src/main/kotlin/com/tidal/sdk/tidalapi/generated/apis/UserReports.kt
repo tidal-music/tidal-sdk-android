@@ -10,6 +10,7 @@ interface UserReports {
      * Create single userReport. Creates a new userReport. Responses:
      * - 201: Successful response
      * - 400: Invalid request
+     * - 403: Active report limit reached
      * - 404: Resource not found
      * - 405: HTTP method not allowed
      * - 406: No acceptable response media type

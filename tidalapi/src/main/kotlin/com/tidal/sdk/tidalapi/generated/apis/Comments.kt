@@ -2,11 +2,13 @@ package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.CommentsCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.CommentsCreateSingleResourceDataDocument
-import com.tidal.sdk.tidalapi.generated.models.CommentsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.CommentsMultiResourceDataDocument
-import com.tidal.sdk.tidalapi.generated.models.CommentsSingleRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.CommentsOwnerProfilesMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.CommentsOwnersMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.CommentsParentCommentSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.CommentsSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.CommentsUpdateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.MutationResponseDocument
 import kotlinx.serialization.SerialName
 import retrofit2.Response
 import retrofit2.http.*
@@ -72,6 +74,7 @@ interface Comments {
 
     /**
      * Delete single comment. Deletes existing comment. Responses:
+     * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -87,13 +90,13 @@ interface Comments {
      * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
-     * @return [Unit]
+     * @return [MutationResponseDocument]
      */
     @DELETE("comments/{id}")
     suspend fun commentsIdDelete(
         @Path("id") id: kotlin.String,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
-    ): Response<Unit>
+    ): Response<MutationResponseDocument>
 
     /**
      * Get single comment. Retrieves single comment by id. Responses:
@@ -121,6 +124,7 @@ interface Comments {
 
     /**
      * Update single comment. Updates existing comment. Responses:
+     * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -137,14 +141,14 @@ interface Comments {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param commentsUpdateOperationPayload (optional)
-     * @return [Unit]
+     * @return [MutationResponseDocument]
      */
     @PATCH("comments/{id}")
     suspend fun commentsIdPatch(
         @Path("id") id: kotlin.String,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body commentsUpdateOperationPayload: CommentsUpdateOperationPayload? = null,
-    ): Response<Unit>
+    ): Response<MutationResponseDocument>
 
     /**
      * Get ownerProfiles relationship (\&quot;to-many\&quot;). Retrieves ownerProfiles relationship.
@@ -164,7 +168,7 @@ interface Comments {
      *   Available options: ownerProfiles (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [CommentsMultiRelationshipDataDocument]
+     * @return [CommentsOwnerProfilesMultiRelationshipDataDocument]
      */
     @GET("comments/{id}/relationships/ownerProfiles")
     suspend fun commentsIdRelationshipsOwnerProfilesGet(
@@ -172,7 +176,7 @@ interface Comments {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<CommentsMultiRelationshipDataDocument>
+    ): Response<CommentsOwnerProfilesMultiRelationshipDataDocument>
 
     /**
      * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
@@ -191,7 +195,7 @@ interface Comments {
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [CommentsMultiRelationshipDataDocument]
+     * @return [CommentsOwnersMultiRelationshipDataDocument]
      */
     @GET("comments/{id}/relationships/owners")
     suspend fun commentsIdRelationshipsOwnersGet(
@@ -199,7 +203,7 @@ interface Comments {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<CommentsMultiRelationshipDataDocument>
+    ): Response<CommentsOwnersMultiRelationshipDataDocument>
 
     /**
      * Get parentComment relationship (\&quot;to-one\&quot;). Retrieves parentComment relationship.
@@ -217,14 +221,14 @@ interface Comments {
      * @param id Comment Id
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: parentComment (optional)
-     * @return [CommentsSingleRelationshipDataDocument]
+     * @return [CommentsParentCommentSingleRelationshipDataDocument]
      */
     @GET("comments/{id}/relationships/parentComment")
     suspend fun commentsIdRelationshipsParentCommentGet(
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-    ): Response<CommentsSingleRelationshipDataDocument>
+    ): Response<CommentsParentCommentSingleRelationshipDataDocument>
 
     /**
      * Create single comment. Creates a new comment. Responses:

@@ -1,10 +1,11 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.models.MutationResponseDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionTracksItemsAddMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionTracksItemsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionTracksItemsRelationshipAddOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionTracksItemsRelationshipRemoveOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.UserCollectionTracksMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.UserCollectionTracksOwnersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionTracksSingleResourceDataDocument
 import kotlinx.serialization.SerialName
 import retrofit2.Response
@@ -46,6 +47,7 @@ interface UserCollectionTracks {
     /**
      * Delete from items relationship (\&quot;to-many\&quot;). Deletes item(s) from items
      * relationship. Responses:
+     * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
      * - 405: HTTP method not allowed
@@ -63,7 +65,7 @@ interface UserCollectionTracks {
      *   duplicate key is sent with the same payload, the original response is replayed. If the
      *   payload differs, a 422 error is returned. (optional)
      * @param userCollectionTracksItemsRelationshipRemoveOperationPayload (optional)
-     * @return [Unit]
+     * @return [MutationResponseDocument]
      */
     @HTTP(method = "DELETE", path = "userCollectionTracks/{id}/relationships/items", hasBody = true)
     suspend fun userCollectionTracksIdRelationshipsItemsDelete(
@@ -73,7 +75,7 @@ interface UserCollectionTracks {
         userCollectionTracksItemsRelationshipRemoveOperationPayload:
             UserCollectionTracksItemsRelationshipRemoveOperationPayload? =
             null,
-    ): Response<Unit>
+    ): Response<MutationResponseDocument>
 
     /** enum for parameter sort */
     enum class SortUserCollectionTracksIdRelationshipsItemsGet(val value: kotlin.String) {
@@ -179,7 +181,7 @@ interface UserCollectionTracks {
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @return [UserCollectionTracksMultiRelationshipDataDocument]
+     * @return [UserCollectionTracksOwnersMultiRelationshipDataDocument]
      */
     @GET("userCollectionTracks/{id}/relationships/owners")
     suspend fun userCollectionTracksIdRelationshipsOwnersGet(
@@ -187,5 +189,5 @@ interface UserCollectionTracks {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<UserCollectionTracksMultiRelationshipDataDocument>
+    ): Response<UserCollectionTracksOwnersMultiRelationshipDataDocument>
 }

@@ -15,7 +15,8 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class DynamicPagesRelationships(
-    @SerialName(value = "modules") val modules: MultiRelationshipDataDocument? = null,
+    @SerialName(value = "modules")
+    val modules: DynamicPagesModulesMultiRelationshipDataDocument? = null,
     @SerialName(value = "subject")
     val subject: DynamicPagesSubjectSingleRelationshipDataDocument? = null,
 ) {}

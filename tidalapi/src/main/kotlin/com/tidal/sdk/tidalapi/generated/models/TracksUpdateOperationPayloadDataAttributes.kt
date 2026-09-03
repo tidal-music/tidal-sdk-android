@@ -13,6 +13,10 @@ import kotlinx.serialization.Serializable
  * @param accessType Access type
  * @param bpm
  * @param explicit Explicit content
+ * @param isrc An ISRC the rights holder already owns: the 12 characters ISO 3901 defines, without
+ *   the hyphens of the display form. It can only be set while the track has no ISRC of its own: the
+ *   ISRC TIDAL assigns at the track's first sale is permanent. Omit the field, and TIDAL assigns
+ *   one then.
  * @param key
  * @param keyScale
  * @param title
@@ -29,6 +33,9 @@ data class TracksUpdateOperationPayloadDataAttributes(
     /* Explicit content */
 
     @SerialName(value = "explicit") val explicit: kotlin.Boolean? = null,
+    /* An ISRC the rights holder already owns: the 12 characters ISO 3901 defines, without the hyphens of the display form. It can only be set while the track has no ISRC of its own: the ISRC TIDAL assigns at the track's first sale is permanent. Omit the field, and TIDAL assigns one then. */
+
+    @SerialName(value = "isrc") val isrc: kotlin.String? = null,
     @SerialName(value = "key") val key: TracksUpdateOperationPayloadDataAttributes.Key? = null,
     @SerialName(value = "keyScale")
     val keyScale: TracksUpdateOperationPayloadDataAttributes.KeyScale? = null,

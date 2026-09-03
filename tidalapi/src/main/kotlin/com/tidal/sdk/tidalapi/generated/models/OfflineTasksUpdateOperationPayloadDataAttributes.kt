@@ -21,10 +21,11 @@ data class OfflineTasksUpdateOperationPayloadDataAttributes(
     /**
      * New state for the offline task
      *
-     * Values: IN_PROGRESS,FAILED,COMPLETED
+     * Values: PENDING,IN_PROGRESS,FAILED,COMPLETED
      */
     @Serializable
     enum class State(val value: kotlin.String) {
+        @SerialName(value = "PENDING") PENDING("PENDING"),
         @SerialName(value = "IN_PROGRESS") IN_PROGRESS("IN_PROGRESS"),
         @SerialName(value = "FAILED") FAILED("FAILED"),
         @SerialName(value = "COMPLETED") COMPLETED("COMPLETED"),

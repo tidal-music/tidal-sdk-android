@@ -15,6 +15,8 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class CollaborationInvitesRelationships(
-    @SerialName(value = "owners") val owners: MultiRelationshipDataDocument? = null,
-    @SerialName(value = "subject") val subject: SingleRelationshipDataDocument? = null,
+    @SerialName(value = "owners")
+    val owners: CollaborationInvitesOwnersMultiRelationshipDataDocument? = null,
+    @SerialName(value = "subject")
+    val subject: CollaborationInvitesSubjectSingleRelationshipDataDocument? = null,
 ) {}

@@ -12,5 +12,5 @@ import kotlinx.serialization.Serializable
 /** @param items */
 @Serializable
 data class UserDailyMixesRelationships(
-    @SerialName(value = "items") val items: MultiRelationshipDataDocument? = null
+    @SerialName(value = "items") val items: UserDailyMixesItemsMultiRelationshipDataDocument? = null
 ) {}
