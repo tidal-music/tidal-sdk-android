@@ -19,7 +19,6 @@ data class MutationResponseDocument(
     @SerialName(value = "links") val links: Links,
     /* Non-standard meta information */
 
-    @Contextual
     @SerialName(value = "meta")
-    val meta: kotlin.collections.Map<kotlin.String, kotlin.Any>? = null,
+    val meta: kotlin.collections.Map<kotlin.String, @Contextual kotlin.Any>? = null,
 ) {}
