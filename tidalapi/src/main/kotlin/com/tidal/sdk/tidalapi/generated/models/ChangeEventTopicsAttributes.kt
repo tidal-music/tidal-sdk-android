@@ -6,20 +6,9 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/**
- * @param links
- * @param meta Non-standard meta information
- */
+/** @param topic */
 @Serializable
-data class MutationResponseDocument(
-    @SerialName(value = "links") val links: Links,
-    /* Non-standard meta information */
-
-    @Contextual
-    @SerialName(value = "meta")
-    val meta: kotlin.collections.Map<kotlin.String, kotlin.Any>? = null,
-) {}
+data class ChangeEventTopicsAttributes(@SerialName(value = "topic") val topic: kotlin.String) {}
