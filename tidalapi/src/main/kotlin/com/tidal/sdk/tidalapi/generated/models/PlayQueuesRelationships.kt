@@ -10,6 +10,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
+ * @param changeEventTopic
  * @param current
  * @param future
  * @param owners
@@ -17,6 +18,8 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class PlayQueuesRelationships(
+    @SerialName(value = "changeEventTopic")
+    val changeEventTopic: PlayQueuesChangeEventTopicSingleRelationshipDataDocument? = null,
     @SerialName(value = "current")
     val current: PlayQueuesCurrentSingleRelationshipDataDocument? = null,
     @SerialName(value = "future") val future: PlayQueuesFutureMultiRelationshipDataDocument? = null,
