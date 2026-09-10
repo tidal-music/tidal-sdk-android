@@ -272,15 +272,36 @@ jobs:
         run: |
           pr_title="Automatic Tidal API module update - ${CHANGED_FILE_COUNT} files changed"
 
+          # GitHub caps issue/PR bodies at 65536 characters. A large regeneration
+          # (e.g. after a generator/jar upgrade) can change 1000+ files; dumping
+          # the full file list into the body pushes it past that limit and the PR
+          # create/update API call fails with HTTP 422. Cap the number of files
+          # listed, and hard-truncate the final body as a safety net (the change
+          # report can also be large).
+          MAX_LISTED_FILES=200
+          BODY_CHAR_LIMIT=60000
+
+          files_listed=$(printf '%s\n' "$CHANGED_FILES" | head -n "$MAX_LISTED_FILES")
+          if [ "${CHANGED_FILE_COUNT:-0}" -gt "$MAX_LISTED_FILES" ]; then
+            remaining=$((CHANGED_FILE_COUNT - MAX_LISTED_FILES))
+            files_listed=$(printf '%s\n\n...and %s more file(s) - see the diff for the full list.' "$files_listed" "$remaining")
+          fi
+
           # Build PR body using printf with shell env vars to avoid
           # GitHub Actions template expansion injecting multiline content
           # directly into the script (which causes 'command not found' errors).
-          printf -v pr_body "Changed files:\n\n%s\n\nAPI Version: %s\nNew module Version: %s\n\nAutomatically generated on %s\n\nThis PR is automatically updated when API changes are detected.\n\n---\n\n%s" \
-            "$CHANGED_FILES" \
+          printf -v pr_body "Changed files (%s total):\n\n%s\n\nAPI Version: %s\nNew module Version: %s\n\nAutomatically generated on %s\n\nThis PR is automatically updated when API changes are detected.\n\n---\n\n%s" \
+            "$CHANGED_FILE_COUNT" \
+            "$files_listed" \
             "$API_VERSION" \
             "$MODULE_VERSION" \
             "$(date)" \
             "$CHANGE_REPORT"
+
+          # Safety net: hard-cap the body length so we never exceed GitHub's limit.
+          if [ "${#pr_body}" -gt "$BODY_CHAR_LIMIT" ]; then
+            pr_body=$(printf '%s\n\n---\n\n**Body truncated to stay under the GitHub 65536-character limit.** See the diff and CI logs for full details.' "${pr_body:0:$BODY_CHAR_LIMIT}")
+          fi
 
           if [ "${{ steps.check_pr.outputs.existing_pr }}" == "true" ]; then
             # Update existing PR
