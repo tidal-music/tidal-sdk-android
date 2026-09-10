@@ -12,7 +12,8 @@ import retrofit2.http.*
 
 interface SquareConnections {
     /**
-     * Get single squareConnection. Retrieves single squareConnection by id. Responses:
+     * GET squareConnections/{id} Get single squareConnection. Retrieves single squareConnection by
+     * id. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 403: Latest terms and conditions must be accepted
@@ -37,8 +38,8 @@ interface SquareConnections {
     ): Response<SquareConnectionsSingleResourceDataDocument>
 
     /**
-     * Get selectedSite relationship (\&quot;to-one\&quot;). Retrieves selectedSite relationship.
-     * Responses:
+     * GET squareConnections/{id}/relationships/selectedSite Get selectedSite relationship
+     * (\&quot;to-one\&quot;). Retrieves selectedSite relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 403: Latest terms and conditions must be accepted
@@ -63,8 +64,8 @@ interface SquareConnections {
     ): Response<SquareConnectionsSelectedSiteSingleRelationshipDataDocument>
 
     /**
-     * Update selectedSite relationship (\&quot;to-one\&quot;). Updates selectedSite relationship.
-     * Responses:
+     * PATCH squareConnections/{id}/relationships/selectedSite Update selectedSite relationship
+     * (\&quot;to-one\&quot;). Updates selectedSite relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 403: Latest terms and conditions must be accepted
@@ -97,7 +98,8 @@ interface SquareConnections {
     ): Response<SquareConnectionsSelectedSiteUpdateSingleRelationshipDataDocument>
 
     /**
-     * Get sites relationship (\&quot;to-many\&quot;). Retrieves sites relationship. Responses:
+     * GET squareConnections/{id}/relationships/sites Get sites relationship
+     * (\&quot;to-many\&quot;). Retrieves sites relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 403: Latest terms and conditions must be accepted
@@ -125,7 +127,8 @@ interface SquareConnections {
     ): Response<SquareConnectionsSitesMultiRelationshipDataDocument>
 
     /**
-     * Create single squareConnection. Creates a new squareConnection. Responses:
+     * POST squareConnections Create single squareConnection. Creates a new squareConnection.
+     * Responses:
      * - 201: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

@@ -7,8 +7,8 @@ import retrofit2.http.*
 
 interface StripeDashboardLinks {
     /**
-     * Get multiple stripeDashboardLinks. Retrieves multiple stripeDashboardLinks by available
-     * filters, or without if applicable. Responses:
+     * GET stripeDashboardLinks Get multiple stripeDashboardLinks. Retrieves multiple
+     * stripeDashboardLinks by available filters, or without if applicable. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -33,7 +33,8 @@ interface StripeDashboardLinks {
     ): Response<StripeDashboardLinksMultiResourceDataDocument>
 
     /**
-     * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
+     * GET stripeDashboardLinks/{id}/relationships/owners Get owners relationship
+     * (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

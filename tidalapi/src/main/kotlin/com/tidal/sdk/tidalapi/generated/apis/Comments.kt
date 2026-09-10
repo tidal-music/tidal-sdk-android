@@ -10,18 +10,22 @@ import com.tidal.sdk.tidalapi.generated.models.CommentsSingleResourceDataDocumen
 import com.tidal.sdk.tidalapi.generated.models.CommentsUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.MutationResponseDocument
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface Comments {
 
     /** enum for parameter filterSubjectType */
+    @Serializable
     enum class FilterSubjectTypeCommentsGet(val value: kotlin.String) {
         @SerialName(value = "albums") albums("albums"),
         @SerialName(value = "tracks") tracks("tracks"),
+        @SerialName(value = "trackSourceFiles") trackSourceFiles("trackSourceFiles"),
     }
 
     /** enum for parameter sort */
+    @Serializable
     enum class SortCommentsGet(val value: kotlin.String) {
         @SerialName(value = "createdAt") CreatedAtAsc("createdAt"),
         @SerialName(value = "-createdAt") CreatedAtDesc("-createdAt"),
@@ -34,8 +38,8 @@ interface Comments {
     }
 
     /**
-     * Get multiple comments. Retrieves multiple comments by available filters, or without if
-     * applicable. Responses:
+     * GET comments Get multiple comments. Retrieves multiple comments by available filters, or
+     * without if applicable. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -73,7 +77,7 @@ interface Comments {
     ): Response<CommentsMultiResourceDataDocument>
 
     /**
-     * Delete single comment. Deletes existing comment. Responses:
+     * DELETE comments/{id} Delete single comment. Deletes existing comment. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -99,7 +103,7 @@ interface Comments {
     ): Response<MutationResponseDocument>
 
     /**
-     * Get single comment. Retrieves single comment by id. Responses:
+     * GET comments/{id} Get single comment. Retrieves single comment by id. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -123,7 +127,7 @@ interface Comments {
     ): Response<CommentsSingleResourceDataDocument>
 
     /**
-     * Update single comment. Updates existing comment. Responses:
+     * PATCH comments/{id} Update single comment. Updates existing comment. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -151,8 +155,8 @@ interface Comments {
     ): Response<MutationResponseDocument>
 
     /**
-     * Get ownerProfiles relationship (\&quot;to-many\&quot;). Retrieves ownerProfiles relationship.
-     * Responses:
+     * GET comments/{id}/relationships/ownerProfiles Get ownerProfiles relationship
+     * (\&quot;to-many\&quot;). Retrieves ownerProfiles relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -179,7 +183,8 @@ interface Comments {
     ): Response<CommentsOwnerProfilesMultiRelationshipDataDocument>
 
     /**
-     * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
+     * GET comments/{id}/relationships/owners Get owners relationship (\&quot;to-many\&quot;).
+     * Retrieves owners relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -206,8 +211,8 @@ interface Comments {
     ): Response<CommentsOwnersMultiRelationshipDataDocument>
 
     /**
-     * Get parentComment relationship (\&quot;to-one\&quot;). Retrieves parentComment relationship.
-     * Responses:
+     * GET comments/{id}/relationships/parentComment Get parentComment relationship
+     * (\&quot;to-one\&quot;). Retrieves parentComment relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -231,7 +236,7 @@ interface Comments {
     ): Response<CommentsParentCommentSingleRelationshipDataDocument>
 
     /**
-     * Create single comment. Creates a new comment. Responses:
+     * POST comments Create single comment. Creates a new comment. Responses:
      * - 201: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

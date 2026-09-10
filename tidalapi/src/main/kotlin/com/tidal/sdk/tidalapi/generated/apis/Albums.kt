@@ -22,12 +22,14 @@ import com.tidal.sdk.tidalapi.generated.models.AlbumsUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.AlbumsUsageRulesSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.MutationResponseDocument
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface Albums {
 
     /** enum for parameter sort */
+    @Serializable
     enum class SortAlbumsGet(val value: kotlin.String) {
         @SerialName(value = "createdAt") CreatedAtAsc("createdAt"),
         @SerialName(value = "-createdAt") CreatedAtDesc("-createdAt"),
@@ -36,7 +38,7 @@ interface Albums {
     }
 
     /**
-     * Get multiple albums. Retrieves multiple albums by available filters, or without if
+     * GET albums Get multiple albums. Retrieves multiple albums by available filters, or without if
      * applicable. Responses:
      * - 200: Successful response
      * - 400: Invalid request
@@ -86,7 +88,7 @@ interface Albums {
     ): Response<AlbumsMultiResourceDataDocument>
 
     /**
-     * Delete single album. Deletes existing album. Responses:
+     * DELETE albums/{id} Delete single album. Deletes existing album. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -112,7 +114,7 @@ interface Albums {
     ): Response<MutationResponseDocument>
 
     /**
-     * Get single album. Retrieves single album by id. Responses:
+     * GET albums/{id} Get single album. Retrieves single album by id. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -146,7 +148,7 @@ interface Albums {
     ): Response<AlbumsSingleResourceDataDocument>
 
     /**
-     * Update single album. Updates existing album. Responses:
+     * PATCH albums/{id} Update single album. Updates existing album. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -174,8 +176,8 @@ interface Albums {
     ): Response<MutationResponseDocument>
 
     /**
-     * Get albumStatistics relationship (\&quot;to-one\&quot;). Retrieves albumStatistics
-     * relationship. Responses:
+     * GET albums/{id}/relationships/albumStatistics Get albumStatistics relationship
+     * (\&quot;to-one\&quot;). Retrieves albumStatistics relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -202,7 +204,8 @@ interface Albums {
     ): Response<AlbumsAlbumStatisticsSingleRelationshipDataDocument>
 
     /**
-     * Get artists relationship (\&quot;to-many\&quot;). Retrieves artists relationship. Responses:
+     * GET albums/{id}/relationships/artists Get artists relationship (\&quot;to-many\&quot;).
+     * Retrieves artists relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -238,8 +241,8 @@ interface Albums {
     ): Response<AlbumsArtistsMultiRelationshipDataDocument>
 
     /**
-     * Get coverArt relationship (\&quot;to-many\&quot;). Retrieves coverArt relationship.
-     * Responses:
+     * GET albums/{id}/relationships/coverArt Get coverArt relationship (\&quot;to-many\&quot;).
+     * Retrieves coverArt relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -271,8 +274,8 @@ interface Albums {
     ): Response<AlbumsCoverArtMultiRelationshipDataDocument>
 
     /**
-     * Update coverArt relationship (\&quot;to-many\&quot;). Updates coverArt relationship.
-     * Responses:
+     * PATCH albums/{id}/relationships/coverArt Update coverArt relationship
+     * (\&quot;to-many\&quot;). Updates coverArt relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -303,7 +306,8 @@ interface Albums {
     ): Response<MutationResponseDocument>
 
     /**
-     * Get genres relationship (\&quot;to-many\&quot;). Retrieves genres relationship. Responses:
+     * GET albums/{id}/relationships/genres Get genres relationship (\&quot;to-many\&quot;).
+     * Retrieves genres relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -335,7 +339,8 @@ interface Albums {
     ): Response<AlbumsGenresMultiRelationshipDataDocument>
 
     /**
-     * Get items relationship (\&quot;to-many\&quot;). Retrieves items relationship. Responses:
+     * GET albums/{id}/relationships/items Get items relationship (\&quot;to-many\&quot;). Retrieves
+     * items relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -371,7 +376,8 @@ interface Albums {
     ): Response<AlbumsItemsMultiRelationshipDataDocument>
 
     /**
-     * Update items relationship (\&quot;to-many\&quot;). Updates items relationship. Responses:
+     * PATCH albums/{id}/relationships/items Update items relationship (\&quot;to-many\&quot;).
+     * Updates items relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -402,7 +408,8 @@ interface Albums {
     ): Response<MutationResponseDocument>
 
     /**
-     * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
+     * GET albums/{id}/relationships/owners Get owners relationship (\&quot;to-many\&quot;).
+     * Retrieves owners relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -434,8 +441,8 @@ interface Albums {
     ): Response<AlbumsOwnersMultiRelationshipDataDocument>
 
     /**
-     * Get priceConfig relationship (\&quot;to-one\&quot;). Retrieves priceConfig relationship.
-     * Responses:
+     * GET albums/{id}/relationships/priceConfig Get priceConfig relationship
+     * (\&quot;to-one\&quot;). Retrieves priceConfig relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -464,8 +471,8 @@ interface Albums {
     ): Response<AlbumsPriceConfigSingleRelationshipDataDocument>
 
     /**
-     * Get providers relationship (\&quot;to-many\&quot;). Retrieves providers relationship.
-     * Responses:
+     * GET albums/{id}/relationships/providers Get providers relationship (\&quot;to-many\&quot;).
+     * Retrieves providers relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -497,8 +504,8 @@ interface Albums {
     ): Response<AlbumsProvidersMultiRelationshipDataDocument>
 
     /**
-     * Get replacement relationship (\&quot;to-one\&quot;). Retrieves replacement relationship.
-     * Responses:
+     * GET albums/{id}/relationships/replacement Get replacement relationship
+     * (\&quot;to-one\&quot;). Retrieves replacement relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -531,7 +538,8 @@ interface Albums {
     ): Response<AlbumsReplacementSingleRelationshipDataDocument>
 
     /**
-     * Get shares relationship (\&quot;to-many\&quot;). Retrieves shares relationship. Responses:
+     * GET albums/{id}/relationships/shares Get shares relationship (\&quot;to-many\&quot;).
+     * Retrieves shares relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -565,8 +573,8 @@ interface Albums {
     ): Response<AlbumsSharesMultiRelationshipDataDocument>
 
     /**
-     * Get similarAlbums relationship (\&quot;to-many\&quot;). Retrieves similarAlbums relationship.
-     * Responses:
+     * GET albums/{id}/relationships/similarAlbums Get similarAlbums relationship
+     * (\&quot;to-many\&quot;). Retrieves similarAlbums relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -602,8 +610,8 @@ interface Albums {
     ): Response<AlbumsSimilarAlbumsMultiRelationshipDataDocument>
 
     /**
-     * Get suggestedCoverArts relationship (\&quot;to-many\&quot;). Retrieves suggestedCoverArts
-     * relationship. Responses:
+     * GET albums/{id}/relationships/suggestedCoverArts Get suggestedCoverArts relationship
+     * (\&quot;to-many\&quot;). Retrieves suggestedCoverArts relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -633,8 +641,8 @@ interface Albums {
     ): Response<AlbumsSuggestedCoverArtsMultiRelationshipDataDocument>
 
     /**
-     * Get usageRules relationship (\&quot;to-one\&quot;). Retrieves usageRules relationship.
-     * Responses:
+     * GET albums/{id}/relationships/usageRules Get usageRules relationship (\&quot;to-one\&quot;).
+     * Retrieves usageRules relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -663,7 +671,7 @@ interface Albums {
     ): Response<AlbumsUsageRulesSingleRelationshipDataDocument>
 
     /**
-     * Create single album. Creates a new album. Responses:
+     * POST albums Create single album. Creates a new album. Responses:
      * - 201: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

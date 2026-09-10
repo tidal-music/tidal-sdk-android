@@ -26,12 +26,14 @@ import com.tidal.sdk.tidalapi.generated.models.TracksTrackStatisticsSingleRelati
 import com.tidal.sdk.tidalapi.generated.models.TracksUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.TracksUsageRulesSingleRelationshipDataDocument
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface Tracks {
 
     /** enum for parameter sort */
+    @Serializable
     enum class SortTracksGet(val value: kotlin.String) {
         @SerialName(value = "createdAt") CreatedAtAsc("createdAt"),
         @SerialName(value = "-createdAt") CreatedAtDesc("-createdAt"),
@@ -40,7 +42,7 @@ interface Tracks {
     }
 
     /**
-     * Get multiple tracks. Retrieves multiple tracks by available filters, or without if
+     * GET tracks Get multiple tracks. Retrieves multiple tracks by available filters, or without if
      * applicable. Responses:
      * - 200: Successful response
      * - 400: Invalid request
@@ -91,7 +93,7 @@ interface Tracks {
     ): Response<TracksMultiResourceDataDocument>
 
     /**
-     * Delete single track. Deletes existing track. Responses:
+     * DELETE tracks/{id} Delete single track. Deletes existing track. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -117,7 +119,7 @@ interface Tracks {
     ): Response<MutationResponseDocument>
 
     /**
-     * Get single track. Retrieves single track by id. Responses:
+     * GET tracks/{id} Get single track. Retrieves single track by id. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -152,7 +154,7 @@ interface Tracks {
     ): Response<TracksSingleResourceDataDocument>
 
     /**
-     * Update single track. Updates existing track. Responses:
+     * PATCH tracks/{id} Update single track. Updates existing track. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -180,7 +182,8 @@ interface Tracks {
     ): Response<MutationResponseDocument>
 
     /**
-     * Get albums relationship (\&quot;to-many\&quot;). Retrieves albums relationship. Responses:
+     * GET tracks/{id}/relationships/albums Get albums relationship (\&quot;to-many\&quot;).
+     * Retrieves albums relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -216,7 +219,8 @@ interface Tracks {
     ): Response<TracksAlbumsMultiRelationshipDataDocument>
 
     /**
-     * Update albums relationship (\&quot;to-many\&quot;). Updates albums relationship. Responses:
+     * PATCH tracks/{id}/relationships/albums Update albums relationship (\&quot;to-many\&quot;).
+     * Updates albums relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -247,7 +251,8 @@ interface Tracks {
     ): Response<MutationResponseDocument>
 
     /**
-     * Get artists relationship (\&quot;to-many\&quot;). Retrieves artists relationship. Responses:
+     * GET tracks/{id}/relationships/artists Get artists relationship (\&quot;to-many\&quot;).
+     * Retrieves artists relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -283,7 +288,8 @@ interface Tracks {
     ): Response<TracksArtistsMultiRelationshipDataDocument>
 
     /**
-     * Get credits relationship (\&quot;to-many\&quot;). Retrieves credits relationship. Responses:
+     * GET tracks/{id}/relationships/credits Get credits relationship (\&quot;to-many\&quot;).
+     * Retrieves credits relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -317,7 +323,8 @@ interface Tracks {
     ): Response<TracksCreditsMultiRelationshipDataDocument>
 
     /**
-     * Get download relationship (\&quot;to-one\&quot;). Retrieves download relationship. Responses:
+     * GET tracks/{id}/relationships/download Get download relationship (\&quot;to-one\&quot;).
+     * Retrieves download relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -344,7 +351,8 @@ interface Tracks {
     ): Response<TracksDownloadSingleRelationshipDataDocument>
 
     /**
-     * Get genres relationship (\&quot;to-many\&quot;). Retrieves genres relationship. Responses:
+     * GET tracks/{id}/relationships/genres Get genres relationship (\&quot;to-many\&quot;).
+     * Retrieves genres relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -376,7 +384,8 @@ interface Tracks {
     ): Response<TracksGenresMultiRelationshipDataDocument>
 
     /**
-     * Get lyrics relationship (\&quot;to-many\&quot;). Retrieves lyrics relationship. Responses:
+     * GET tracks/{id}/relationships/lyrics Get lyrics relationship (\&quot;to-many\&quot;).
+     * Retrieves lyrics relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -410,8 +419,8 @@ interface Tracks {
     ): Response<TracksLyricsMultiRelationshipDataDocument>
 
     /**
-     * Get metadataStatus relationship (\&quot;to-one\&quot;). Retrieves metadataStatus
-     * relationship. Responses:
+     * GET tracks/{id}/relationships/metadataStatus Get metadataStatus relationship
+     * (\&quot;to-one\&quot;). Retrieves metadataStatus relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -438,7 +447,8 @@ interface Tracks {
     ): Response<TracksMetadataStatusSingleRelationshipDataDocument>
 
     /**
-     * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
+     * GET tracks/{id}/relationships/owners Get owners relationship (\&quot;to-many\&quot;).
+     * Retrieves owners relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -470,8 +480,8 @@ interface Tracks {
     ): Response<TracksOwnersMultiRelationshipDataDocument>
 
     /**
-     * Get priceConfig relationship (\&quot;to-one\&quot;). Retrieves priceConfig relationship.
-     * Responses:
+     * GET tracks/{id}/relationships/priceConfig Get priceConfig relationship
+     * (\&quot;to-one\&quot;). Retrieves priceConfig relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -500,8 +510,8 @@ interface Tracks {
     ): Response<TracksPriceConfigSingleRelationshipDataDocument>
 
     /**
-     * Get providers relationship (\&quot;to-many\&quot;). Retrieves providers relationship.
-     * Responses:
+     * GET tracks/{id}/relationships/providers Get providers relationship (\&quot;to-many\&quot;).
+     * Retrieves providers relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -533,7 +543,8 @@ interface Tracks {
     ): Response<TracksProvidersMultiRelationshipDataDocument>
 
     /**
-     * Get radio relationship (\&quot;to-many\&quot;). Retrieves radio relationship. Responses:
+     * GET tracks/{id}/relationships/radio Get radio relationship (\&quot;to-many\&quot;). Retrieves
+     * radio relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -567,8 +578,8 @@ interface Tracks {
     ): Response<TracksRadioMultiRelationshipDataDocument>
 
     /**
-     * Get replacement relationship (\&quot;to-one\&quot;). Retrieves replacement relationship.
-     * Responses:
+     * GET tracks/{id}/relationships/replacement Get replacement relationship
+     * (\&quot;to-one\&quot;). Retrieves replacement relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -601,7 +612,8 @@ interface Tracks {
     ): Response<TracksReplacementSingleRelationshipDataDocument>
 
     /**
-     * Get shares relationship (\&quot;to-many\&quot;). Retrieves shares relationship. Responses:
+     * GET tracks/{id}/relationships/shares Get shares relationship (\&quot;to-many\&quot;).
+     * Retrieves shares relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -635,8 +647,8 @@ interface Tracks {
     ): Response<TracksSharesMultiRelationshipDataDocument>
 
     /**
-     * Get similarTracks relationship (\&quot;to-many\&quot;). Retrieves similarTracks relationship.
-     * Responses:
+     * GET tracks/{id}/relationships/similarTracks Get similarTracks relationship
+     * (\&quot;to-many\&quot;). Retrieves similarTracks relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -672,8 +684,8 @@ interface Tracks {
     ): Response<TracksSimilarTracksMultiRelationshipDataDocument>
 
     /**
-     * Get sourceFile relationship (\&quot;to-one\&quot;). Retrieves sourceFile relationship.
-     * Responses:
+     * GET tracks/{id}/relationships/sourceFile Get sourceFile relationship (\&quot;to-one\&quot;).
+     * Retrieves sourceFile relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -700,8 +712,8 @@ interface Tracks {
     ): Response<TracksSourceFileSingleRelationshipDataDocument>
 
     /**
-     * Get suggestedTracks relationship (\&quot;to-many\&quot;). Retrieves suggestedTracks
-     * relationship. Responses:
+     * GET tracks/{id}/relationships/suggestedTracks Get suggestedTracks relationship
+     * (\&quot;to-many\&quot;). Retrieves suggestedTracks relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -737,8 +749,8 @@ interface Tracks {
     ): Response<TracksSuggestedTracksMultiRelationshipDataDocument>
 
     /**
-     * Get trackStatistics relationship (\&quot;to-one\&quot;). Retrieves trackStatistics
-     * relationship. Responses:
+     * GET tracks/{id}/relationships/trackStatistics Get trackStatistics relationship
+     * (\&quot;to-one\&quot;). Retrieves trackStatistics relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -765,8 +777,8 @@ interface Tracks {
     ): Response<TracksTrackStatisticsSingleRelationshipDataDocument>
 
     /**
-     * Get usageRules relationship (\&quot;to-one\&quot;). Retrieves usageRules relationship.
-     * Responses:
+     * GET tracks/{id}/relationships/usageRules Get usageRules relationship (\&quot;to-one\&quot;).
+     * Retrieves usageRules relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -795,7 +807,7 @@ interface Tracks {
     ): Response<TracksUsageRulesSingleRelationshipDataDocument>
 
     /**
-     * Create single track. Creates a new track. Responses:
+     * POST tracks Create single track. Creates a new track. Responses:
      * - 201: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

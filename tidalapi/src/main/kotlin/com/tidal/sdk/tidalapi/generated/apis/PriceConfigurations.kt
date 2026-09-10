@@ -9,8 +9,8 @@ import retrofit2.http.*
 
 interface PriceConfigurations {
     /**
-     * Get multiple priceConfigurations. Retrieves multiple priceConfigurations by available
-     * filters, or without if applicable. Responses:
+     * GET priceConfigurations Get multiple priceConfigurations. Retrieves multiple
+     * priceConfigurations by available filters, or without if applicable. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -31,7 +31,8 @@ interface PriceConfigurations {
     ): Response<PriceConfigurationsMultiResourceDataDocument>
 
     /**
-     * Get single priceConfiguration. Retrieves single priceConfiguration by id. Responses:
+     * GET priceConfigurations/{id} Get single priceConfiguration. Retrieves single
+     * priceConfiguration by id. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -51,7 +52,8 @@ interface PriceConfigurations {
     ): Response<PriceConfigurationsSingleResourceDataDocument>
 
     /**
-     * Create single priceConfiguration. Creates a new priceConfiguration. Responses:
+     * POST priceConfigurations Create single priceConfiguration. Creates a new priceConfiguration.
+     * Responses:
      * - 201: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

@@ -9,8 +9,8 @@ import retrofit2.http.*
 
 interface StripeConnections {
     /**
-     * Get multiple stripeConnections. Retrieves multiple stripeConnections by available filters, or
-     * without if applicable. Responses:
+     * GET stripeConnections Get multiple stripeConnections. Retrieves multiple stripeConnections by
+     * available filters, or without if applicable. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -35,7 +35,8 @@ interface StripeConnections {
     ): Response<StripeConnectionsMultiResourceDataDocument>
 
     /**
-     * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
+     * GET stripeConnections/{id}/relationships/owners Get owners relationship
+     * (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -62,7 +63,8 @@ interface StripeConnections {
     ): Response<StripeConnectionsOwnersMultiRelationshipDataDocument>
 
     /**
-     * Create single stripeConnection. Creates a new stripeConnection. Responses:
+     * POST stripeConnections Create single stripeConnection. Creates a new stripeConnection.
+     * Responses:
      * - 201: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

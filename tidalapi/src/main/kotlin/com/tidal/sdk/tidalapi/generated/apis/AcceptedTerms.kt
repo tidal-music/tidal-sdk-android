@@ -6,12 +6,14 @@ import com.tidal.sdk.tidalapi.generated.models.AcceptedTermsMultiResourceDataDoc
 import com.tidal.sdk.tidalapi.generated.models.AcceptedTermsOwnersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.AcceptedTermsTermsSingleRelationshipDataDocument
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface AcceptedTerms {
 
     /** enum for parameter filterTermsTermsType */
+    @Serializable
     enum class FilterTermsTermsTypeAcceptedTermsGet(val value: kotlin.String) {
         @SerialName(value = "DEVELOPER") DEVELOPER("DEVELOPER"),
         @SerialName(value = "UPLOAD_MARKETPLACE") UPLOAD_MARKETPLACE("UPLOAD_MARKETPLACE"),
@@ -19,8 +21,8 @@ interface AcceptedTerms {
     }
 
     /**
-     * Get multiple acceptedTerms. Retrieves multiple acceptedTerms by available filters, or without
-     * if applicable. Responses:
+     * GET acceptedTerms Get multiple acceptedTerms. Retrieves multiple acceptedTerms by available
+     * filters, or without if applicable. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -53,7 +55,8 @@ interface AcceptedTerms {
     ): Response<AcceptedTermsMultiResourceDataDocument>
 
     /**
-     * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
+     * GET acceptedTerms/{id}/relationships/owners Get owners relationship (\&quot;to-many\&quot;).
+     * Retrieves owners relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -80,7 +83,8 @@ interface AcceptedTerms {
     ): Response<AcceptedTermsOwnersMultiRelationshipDataDocument>
 
     /**
-     * Get terms relationship (\&quot;to-one\&quot;). Retrieves terms relationship. Responses:
+     * GET acceptedTerms/{id}/relationships/terms Get terms relationship (\&quot;to-one\&quot;).
+     * Retrieves terms relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -104,7 +108,7 @@ interface AcceptedTerms {
     ): Response<AcceptedTermsTermsSingleRelationshipDataDocument>
 
     /**
-     * Create single acceptedTerm. Creates a new acceptedTerm. Responses:
+     * POST acceptedTerms Create single acceptedTerm. Creates a new acceptedTerm. Responses:
      * - 201: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

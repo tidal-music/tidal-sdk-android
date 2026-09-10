@@ -8,7 +8,7 @@ import retrofit2.http.*
 
 interface UsageRules {
     /**
-     * Get single usageRule. Retrieves single usageRule by id. Responses:
+     * GET usageRules/{id} Get single usageRule. Retrieves single usageRule by id. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -28,7 +28,7 @@ interface UsageRules {
     ): Response<UsageRulesSingleResourceDataDocument>
 
     /**
-     * Create single usageRule. Creates a new usageRule. Responses:
+     * POST usageRules Create single usageRule. Creates a new usageRule. Responses:
      * - 201: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

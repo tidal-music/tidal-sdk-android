@@ -6,7 +6,8 @@ import retrofit2.http.*
 
 interface SearchHistoryEntries {
     /**
-     * Delete single searchHistoryEntrie. Deletes existing searchHistoryEntrie. Responses:
+     * DELETE searchHistoryEntries/{id} Delete single searchHistoryEntrie. Deletes existing
+     * searchHistoryEntrie. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

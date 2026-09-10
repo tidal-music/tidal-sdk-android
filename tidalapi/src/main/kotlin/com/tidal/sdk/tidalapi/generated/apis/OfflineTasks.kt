@@ -12,8 +12,8 @@ import retrofit2.http.*
 
 interface OfflineTasks {
     /**
-     * Get multiple offlineTasks. Retrieves multiple offlineTasks by available filters, or without
-     * if applicable. Responses:
+     * GET offlineTasks Get multiple offlineTasks. Retrieves multiple offlineTasks by available
+     * filters, or without if applicable. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -45,7 +45,7 @@ interface OfflineTasks {
     ): Response<OfflineTasksMultiResourceDataDocument>
 
     /**
-     * Get single offlineTask. Retrieves single offlineTask by id. Responses:
+     * GET offlineTasks/{id} Get single offlineTask. Retrieves single offlineTask by id. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -73,7 +73,7 @@ interface OfflineTasks {
     ): Response<OfflineTasksSingleResourceDataDocument>
 
     /**
-     * Update single offlineTask. Updates existing offlineTask. Responses:
+     * PATCH offlineTasks/{id} Update single offlineTask. Updates existing offlineTask. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -101,8 +101,8 @@ interface OfflineTasks {
     ): Response<MutationResponseDocument>
 
     /**
-     * Get collection relationship (\&quot;to-one\&quot;). Retrieves collection relationship.
-     * Responses:
+     * GET offlineTasks/{id}/relationships/collection Get collection relationship
+     * (\&quot;to-one\&quot;). Retrieves collection relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -130,7 +130,8 @@ interface OfflineTasks {
     ): Response<OfflineTasksCollectionSingleRelationshipDataDocument>
 
     /**
-     * Get item relationship (\&quot;to-one\&quot;). Retrieves item relationship. Responses:
+     * GET offlineTasks/{id}/relationships/item Get item relationship (\&quot;to-one\&quot;).
+     * Retrieves item relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -158,7 +159,8 @@ interface OfflineTasks {
     ): Response<OfflineTasksItemSingleRelationshipDataDocument>
 
     /**
-     * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
+     * GET offlineTasks/{id}/relationships/owners Get owners relationship (\&quot;to-many\&quot;).
+     * Retrieves owners relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

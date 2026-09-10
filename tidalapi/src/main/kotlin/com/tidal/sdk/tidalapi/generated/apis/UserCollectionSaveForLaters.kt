@@ -12,8 +12,8 @@ import retrofit2.http.*
 
 interface UserCollectionSaveForLaters {
     /**
-     * Get single userCollectionSaveForLater. Retrieves single userCollectionSaveForLater by id.
-     * Responses:
+     * GET userCollectionSaveForLaters/{id} Get single userCollectionSaveForLater. Retrieves single
+     * userCollectionSaveForLater by id. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -42,8 +42,8 @@ interface UserCollectionSaveForLaters {
     ): Response<UserCollectionSaveForLatersSingleResourceDataDocument>
 
     /**
-     * Delete from items relationship (\&quot;to-many\&quot;). Deletes item(s) from items
-     * relationship. Responses:
+     * DELETE userCollectionSaveForLaters/{id}/relationships/items Delete from items relationship
+     * (\&quot;to-many\&quot;). Deletes item(s) from items relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -64,11 +64,7 @@ interface UserCollectionSaveForLaters {
      * @param userCollectionSaveForLatersItemsRelationshipRemoveOperationPayload (optional)
      * @return [MutationResponseDocument]
      */
-    @HTTP(
-        method = "DELETE",
-        path = "userCollectionSaveForLaters/{id}/relationships/items",
-        hasBody = true,
-    )
+    @DELETE("userCollectionSaveForLaters/{id}/relationships/items")
     suspend fun userCollectionSaveForLatersIdRelationshipsItemsDelete(
         @Path("id") id: kotlin.String,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
@@ -79,7 +75,8 @@ interface UserCollectionSaveForLaters {
     ): Response<MutationResponseDocument>
 
     /**
-     * Get items relationship (\&quot;to-many\&quot;). Retrieves items relationship. Responses:
+     * GET userCollectionSaveForLaters/{id}/relationships/items Get items relationship
+     * (\&quot;to-many\&quot;). Retrieves items relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -111,8 +108,8 @@ interface UserCollectionSaveForLaters {
     ): Response<UserCollectionSaveForLatersItemsMultiRelationshipDataDocument>
 
     /**
-     * Add to items relationship (\&quot;to-many\&quot;). Adds item(s) to items relationship.
-     * Responses:
+     * POST userCollectionSaveForLaters/{id}/relationships/items Add to items relationship
+     * (\&quot;to-many\&quot;). Adds item(s) to items relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -145,7 +142,8 @@ interface UserCollectionSaveForLaters {
     ): Response<UserCollectionSaveForLatersItemsAddMultiRelationshipDataDocument>
 
     /**
-     * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
+     * GET userCollectionSaveForLaters/{id}/relationships/owners Get owners relationship
+     * (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

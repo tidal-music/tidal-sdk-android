@@ -7,7 +7,7 @@ import retrofit2.http.*
 
 interface Appreciations {
     /**
-     * Create single appreciation. Creates a new appreciation. Responses:
+     * POST appreciations Create single appreciation. Creates a new appreciation. Responses:
      * - 200: Successful dry run
      * - 201: Successful response
      * - 400: Invalid request

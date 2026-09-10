@@ -4,12 +4,14 @@ import com.tidal.sdk.tidalapi.generated.models.DynamicPagesModulesMultiRelations
 import com.tidal.sdk.tidalapi.generated.models.DynamicPagesMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.DynamicPagesSubjectSingleRelationshipDataDocument
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface DynamicPages {
 
     /** enum for parameter deviceType */
+    @Serializable
     enum class DeviceTypeDynamicPagesGet(val value: kotlin.String) {
         @SerialName(value = "BROWSER") BROWSER("BROWSER"),
         @SerialName(value = "CAR") CAR("CAR"),
@@ -20,6 +22,7 @@ interface DynamicPages {
     }
 
     /** enum for parameter systemType */
+    @Serializable
     enum class SystemTypeDynamicPagesGet(val value: kotlin.String) {
         @SerialName(value = "ANDROID") ANDROID("ANDROID"),
         @SerialName(value = "DESKTOP") DESKTOP("DESKTOP"),
@@ -29,8 +32,8 @@ interface DynamicPages {
     }
 
     /**
-     * Get multiple dynamicPages. Retrieves multiple dynamicPages by available filters, or without
-     * if applicable. Responses:
+     * GET dynamicPages Get multiple dynamicPages. Retrieves multiple dynamicPages by available
+     * filters, or without if applicable. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -77,6 +80,7 @@ interface DynamicPages {
     ): Response<DynamicPagesMultiResourceDataDocument>
 
     /** enum for parameter deviceType */
+    @Serializable
     enum class DeviceTypeDynamicPagesIdRelationshipsModulesGet(val value: kotlin.String) {
         @SerialName(value = "BROWSER") BROWSER("BROWSER"),
         @SerialName(value = "CAR") CAR("CAR"),
@@ -87,6 +91,7 @@ interface DynamicPages {
     }
 
     /** enum for parameter systemType */
+    @Serializable
     enum class SystemTypeDynamicPagesIdRelationshipsModulesGet(val value: kotlin.String) {
         @SerialName(value = "ANDROID") ANDROID("ANDROID"),
         @SerialName(value = "DESKTOP") DESKTOP("DESKTOP"),
@@ -96,7 +101,8 @@ interface DynamicPages {
     }
 
     /**
-     * Get modules relationship (\&quot;to-many\&quot;). Retrieves modules relationship. Responses:
+     * GET dynamicPages/{id}/relationships/modules Get modules relationship (\&quot;to-many\&quot;).
+     * Retrieves modules relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -141,7 +147,8 @@ interface DynamicPages {
     ): Response<DynamicPagesModulesMultiRelationshipDataDocument>
 
     /**
-     * Get subject relationship (\&quot;to-one\&quot;). Retrieves subject relationship. Responses:
+     * GET dynamicPages/{id}/relationships/subject Get subject relationship (\&quot;to-one\&quot;).
+     * Retrieves subject relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

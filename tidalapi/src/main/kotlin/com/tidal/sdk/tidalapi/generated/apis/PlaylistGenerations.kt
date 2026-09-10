@@ -2,6 +2,7 @@ package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.PlaylistGenerationsCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.PlaylistGenerationsCreateSingleResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.PlaylistGenerationsMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlaylistGenerationsPlaylistSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlaylistGenerationsSingleResourceDataDocument
 import retrofit2.Response
@@ -9,7 +10,38 @@ import retrofit2.http.*
 
 interface PlaylistGenerations {
     /**
-     * Get single playlistGeneration. Retrieves single playlistGeneration by id. Responses:
+     * GET playlistGenerations Get multiple playlistGenerations. Retrieves multiple
+     * playlistGenerations by available filters, or without if applicable. Responses:
+     * - 200: Successful response
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
+     * - 429: Rate limit exceeded
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
+     *
+     * @param filterPlaylistId Playlist id (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;)
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: playlist (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: playlist.items (optional)
+     * @return [PlaylistGenerationsMultiResourceDataDocument]
+     */
+    @GET("playlistGenerations")
+    suspend fun playlistGenerationsGet(
+        @Query("filter[playlist.id]")
+        filterPlaylistId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
+    ): Response<PlaylistGenerationsMultiResourceDataDocument>
+
+    /**
+     * GET playlistGenerations/{id} Get single playlistGeneration. Retrieves single
+     * playlistGeneration by id. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -37,7 +69,8 @@ interface PlaylistGenerations {
     ): Response<PlaylistGenerationsSingleResourceDataDocument>
 
     /**
-     * Get playlist relationship (\&quot;to-one\&quot;). Retrieves playlist relationship. Responses:
+     * GET playlistGenerations/{id}/relationships/playlist Get playlist relationship
+     * (\&quot;to-one\&quot;). Retrieves playlist relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -65,7 +98,8 @@ interface PlaylistGenerations {
     ): Response<PlaylistGenerationsPlaylistSingleRelationshipDataDocument>
 
     /**
-     * Create single playlistGeneration. Creates a new playlistGeneration. Responses:
+     * POST playlistGenerations Create single playlistGeneration. Creates a new playlistGeneration.
+     * Responses:
      * - 201: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

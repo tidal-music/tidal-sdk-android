@@ -4,20 +4,22 @@ import com.tidal.sdk.tidalapi.generated.models.PurchasesMultiResourceDataDocumen
 import com.tidal.sdk.tidalapi.generated.models.PurchasesOwnersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PurchasesSubjectSingleRelationshipDataDocument
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface Purchases {
 
     /** enum for parameter filterSubjectType */
+    @Serializable
     enum class FilterSubjectTypePurchasesGet(val value: kotlin.String) {
         @SerialName(value = "albums") albums("albums"),
         @SerialName(value = "tracks") tracks("tracks"),
     }
 
     /**
-     * Get multiple purchases. Retrieves multiple purchases by available filters, or without if
-     * applicable. Responses:
+     * GET purchases Get multiple purchases. Retrieves multiple purchases by available filters, or
+     * without if applicable. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -52,7 +54,8 @@ interface Purchases {
     ): Response<PurchasesMultiResourceDataDocument>
 
     /**
-     * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
+     * GET purchases/{id}/relationships/owners Get owners relationship (\&quot;to-many\&quot;).
+     * Retrieves owners relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -79,7 +82,8 @@ interface Purchases {
     ): Response<PurchasesOwnersMultiRelationshipDataDocument>
 
     /**
-     * Get subject relationship (\&quot;to-one\&quot;). Retrieves subject relationship. Responses:
+     * GET purchases/{id}/relationships/subject Get subject relationship (\&quot;to-one\&quot;).
+     * Retrieves subject relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

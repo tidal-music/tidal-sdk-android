@@ -9,7 +9,8 @@ import retrofit2.http.*
 
 interface TemporaryUserTokens {
     /**
-     * Get single temporaryUserToken. Retrieves single temporaryUserToken by id. Responses:
+     * GET temporaryUserTokens/{id} Get single temporaryUserToken. Retrieves single
+     * temporaryUserToken by id. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -33,7 +34,8 @@ interface TemporaryUserTokens {
     ): Response<TemporaryUserTokensSingleResourceDataDocument>
 
     /**
-     * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
+     * GET temporaryUserTokens/{id}/relationships/owners Get owners relationship
+     * (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -60,7 +62,8 @@ interface TemporaryUserTokens {
     ): Response<TemporaryUserTokensOwnersMultiRelationshipDataDocument>
 
     /**
-     * Create single temporaryUserToken. Creates a new temporaryUserToken. Responses:
+     * POST temporaryUserTokens Create single temporaryUserToken. Creates a new temporaryUserToken.
+     * Responses:
      * - 201: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

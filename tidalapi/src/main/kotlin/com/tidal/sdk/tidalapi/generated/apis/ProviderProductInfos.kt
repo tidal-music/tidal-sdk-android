@@ -8,8 +8,8 @@ import retrofit2.http.*
 
 interface ProviderProductInfos {
     /**
-     * Get multiple providerProductInfos. Retrieves multiple providerProductInfos by available
-     * filters, or without if applicable. Responses:
+     * GET providerProductInfos Get multiple providerProductInfos. Retrieves multiple
+     * providerProductInfos by available filters, or without if applicable. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -48,7 +48,8 @@ interface ProviderProductInfos {
     ): Response<ProviderProductInfosMultiResourceDataDocument>
 
     /**
-     * Get provider relationship (\&quot;to-one\&quot;). Retrieves provider relationship. Responses:
+     * GET providerProductInfos/{id}/relationships/provider Get provider relationship
+     * (\&quot;to-one\&quot;). Retrieves provider relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -72,7 +73,8 @@ interface ProviderProductInfos {
     ): Response<ProviderProductInfosProviderSingleRelationshipDataDocument>
 
     /**
-     * Get subject relationship (\&quot;to-one\&quot;). Retrieves subject relationship. Responses:
+     * GET providerProductInfos/{id}/relationships/subject Get subject relationship
+     * (\&quot;to-one\&quot;). Retrieves subject relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

@@ -8,12 +8,14 @@ import com.tidal.sdk.tidalapi.generated.models.UserCollectionPlaylistsItemsRelat
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionPlaylistsOwnersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionPlaylistsSingleResourceDataDocument
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface UserCollectionPlaylists {
     /**
-     * Get single userCollectionPlaylist. Retrieves single userCollectionPlaylist by id. Responses:
+     * GET userCollectionPlaylists/{id} Get single userCollectionPlaylist. Retrieves single
+     * userCollectionPlaylist by id. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -45,8 +47,8 @@ interface UserCollectionPlaylists {
     ): Response<UserCollectionPlaylistsSingleResourceDataDocument>
 
     /**
-     * Delete from items relationship (\&quot;to-many\&quot;). Deletes item(s) from items
-     * relationship. Responses:
+     * DELETE userCollectionPlaylists/{id}/relationships/items Delete from items relationship
+     * (\&quot;to-many\&quot;). Deletes item(s) from items relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -67,11 +69,7 @@ interface UserCollectionPlaylists {
      * @param userCollectionPlaylistsItemsRelationshipRemoveOperationPayload (optional)
      * @return [MutationResponseDocument]
      */
-    @HTTP(
-        method = "DELETE",
-        path = "userCollectionPlaylists/{id}/relationships/items",
-        hasBody = true,
-    )
+    @DELETE("userCollectionPlaylists/{id}/relationships/items")
     suspend fun userCollectionPlaylistsIdRelationshipsItemsDelete(
         @Path("id") id: kotlin.String,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
@@ -82,6 +80,7 @@ interface UserCollectionPlaylists {
     ): Response<MutationResponseDocument>
 
     /** enum for parameter collectionView */
+    @Serializable
     enum class CollectionViewUserCollectionPlaylistsIdRelationshipsItemsGet(
         val value: kotlin.String
     ) {
@@ -90,6 +89,7 @@ interface UserCollectionPlaylists {
     }
 
     /** enum for parameter sort */
+    @Serializable
     enum class SortUserCollectionPlaylistsIdRelationshipsItemsGet(val value: kotlin.String) {
         @SerialName(value = "addedAt") AddedAtAsc("addedAt"),
         @SerialName(value = "-addedAt") AddedAtDesc("-addedAt"),
@@ -100,7 +100,8 @@ interface UserCollectionPlaylists {
     }
 
     /**
-     * Get items relationship (\&quot;to-many\&quot;). Retrieves items relationship. Responses:
+     * GET userCollectionPlaylists/{id}/relationships/items Get items relationship
+     * (\&quot;to-many\&quot;). Retrieves items relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -138,8 +139,8 @@ interface UserCollectionPlaylists {
     ): Response<UserCollectionPlaylistsItemsMultiRelationshipDataDocument>
 
     /**
-     * Add to items relationship (\&quot;to-many\&quot;). Adds item(s) to items relationship.
-     * Responses:
+     * POST userCollectionPlaylists/{id}/relationships/items Add to items relationship
+     * (\&quot;to-many\&quot;). Adds item(s) to items relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -172,7 +173,8 @@ interface UserCollectionPlaylists {
     ): Response<UserCollectionPlaylistsItemsAddMultiRelationshipDataDocument>
 
     /**
-     * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
+     * GET userCollectionPlaylists/{id}/relationships/owners Get owners relationship
+     * (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

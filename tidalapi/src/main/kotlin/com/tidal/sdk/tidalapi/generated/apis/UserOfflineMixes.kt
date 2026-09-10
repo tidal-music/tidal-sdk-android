@@ -7,7 +7,8 @@ import retrofit2.http.*
 
 interface UserOfflineMixes {
     /**
-     * Get single userOfflineMixe. Retrieves single userOfflineMixe by id. Responses:
+     * GET userOfflineMixes/{id} Get single userOfflineMixe. Retrieves single userOfflineMixe by id.
+     * Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -38,7 +39,8 @@ interface UserOfflineMixes {
     ): Response<UserOfflineMixesSingleResourceDataDocument>
 
     /**
-     * Get items relationship (\&quot;to-many\&quot;). Retrieves items relationship. Responses:
+     * GET userOfflineMixes/{id}/relationships/items Get items relationship (\&quot;to-many\&quot;).
+     * Retrieves items relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

@@ -7,7 +7,8 @@ import retrofit2.http.*
 
 interface ManualArtistClaims {
     /**
-     * Create single manualArtistClaim. Creates a new manualArtistClaim. Responses:
+     * POST manualArtistClaims Create single manualArtistClaim. Creates a new manualArtistClaim.
+     * Responses:
      * - 201: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

@@ -8,18 +8,21 @@ import com.tidal.sdk.tidalapi.generated.models.SearchResultsTopHitsMultiRelation
 import com.tidal.sdk.tidalapi.generated.models.SearchResultsTracksMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.SearchResultsVideosMultiRelationshipDataDocument
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface SearchResults {
 
     /** enum for parameter explicitFilter */
+    @Serializable
     enum class ExplicitFilterSearchResultsGet(val value: kotlin.String) {
         @SerialName(value = "INCLUDE") INCLUDE("INCLUDE"),
         @SerialName(value = "EXCLUDE") EXCLUDE("EXCLUDE"),
     }
 
     /** enum for parameter deviceType */
+    @Serializable
     enum class DeviceTypeSearchResultsGet(val value: kotlin.String) {
         @SerialName(value = "BROWSER") BROWSER("BROWSER"),
         @SerialName(value = "CAR") CAR("CAR"),
@@ -30,6 +33,7 @@ interface SearchResults {
     }
 
     /** enum for parameter systemType */
+    @Serializable
     enum class SystemTypeSearchResultsGet(val value: kotlin.String) {
         @SerialName(value = "ANDROID") ANDROID("ANDROID"),
         @SerialName(value = "DESKTOP") DESKTOP("DESKTOP"),
@@ -39,8 +43,8 @@ interface SearchResults {
     }
 
     /**
-     * Get search results by query. Searches for a query and returns a collection containing exactly
-     * one search results resource. Responses:
+     * GET searchResults Get search results by query. Searches for a query and returns a collection
+     * containing exactly one search results resource. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -53,7 +57,7 @@ interface SearchResults {
      *
      * @param filterQuery Search query (e.g. &#x60;hello&#x60;)
      * @param explicitFilter Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to
-     *   INCLUDE)
+     *   ExplicitFilter.INCLUDE)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param deviceType The type of device making the request (optional)
      * @param systemType The system type of the device making the request (optional)
@@ -80,12 +84,14 @@ interface SearchResults {
     ): Response<SearchResultsMultiResourceDataDocument>
 
     /** enum for parameter explicitFilter */
+    @Serializable
     enum class ExplicitFilterSearchResultsIdRelationshipsAlbumsGet(val value: kotlin.String) {
         @SerialName(value = "INCLUDE") INCLUDE("INCLUDE"),
         @SerialName(value = "EXCLUDE") EXCLUDE("EXCLUDE"),
     }
 
     /** enum for parameter deviceType */
+    @Serializable
     enum class DeviceTypeSearchResultsIdRelationshipsAlbumsGet(val value: kotlin.String) {
         @SerialName(value = "BROWSER") BROWSER("BROWSER"),
         @SerialName(value = "CAR") CAR("CAR"),
@@ -96,6 +102,7 @@ interface SearchResults {
     }
 
     /** enum for parameter systemType */
+    @Serializable
     enum class SystemTypeSearchResultsIdRelationshipsAlbumsGet(val value: kotlin.String) {
         @SerialName(value = "ANDROID") ANDROID("ANDROID"),
         @SerialName(value = "DESKTOP") DESKTOP("DESKTOP"),
@@ -105,7 +112,8 @@ interface SearchResults {
     }
 
     /**
-     * Get albums relationship (\&quot;to-many\&quot;). Retrieves albums relationship. Responses:
+     * GET searchResults/{id}/relationships/albums Get albums relationship (\&quot;to-many\&quot;).
+     * Retrieves albums relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -118,7 +126,7 @@ interface SearchResults {
      *
      * @param id An opaque search results identifier
      * @param explicitFilter Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to
-     *   INCLUDE)
+     *   ExplicitFilter.INCLUDE)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
@@ -149,12 +157,14 @@ interface SearchResults {
     ): Response<SearchResultsAlbumsMultiRelationshipDataDocument>
 
     /** enum for parameter explicitFilter */
+    @Serializable
     enum class ExplicitFilterSearchResultsIdRelationshipsArtistsGet(val value: kotlin.String) {
         @SerialName(value = "INCLUDE") INCLUDE("INCLUDE"),
         @SerialName(value = "EXCLUDE") EXCLUDE("EXCLUDE"),
     }
 
     /** enum for parameter deviceType */
+    @Serializable
     enum class DeviceTypeSearchResultsIdRelationshipsArtistsGet(val value: kotlin.String) {
         @SerialName(value = "BROWSER") BROWSER("BROWSER"),
         @SerialName(value = "CAR") CAR("CAR"),
@@ -165,6 +175,7 @@ interface SearchResults {
     }
 
     /** enum for parameter systemType */
+    @Serializable
     enum class SystemTypeSearchResultsIdRelationshipsArtistsGet(val value: kotlin.String) {
         @SerialName(value = "ANDROID") ANDROID("ANDROID"),
         @SerialName(value = "DESKTOP") DESKTOP("DESKTOP"),
@@ -174,7 +185,8 @@ interface SearchResults {
     }
 
     /**
-     * Get artists relationship (\&quot;to-many\&quot;). Retrieves artists relationship. Responses:
+     * GET searchResults/{id}/relationships/artists Get artists relationship
+     * (\&quot;to-many\&quot;). Retrieves artists relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -187,7 +199,7 @@ interface SearchResults {
      *
      * @param id An opaque search results identifier
      * @param explicitFilter Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to
-     *   INCLUDE)
+     *   ExplicitFilter.INCLUDE)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
@@ -218,12 +230,14 @@ interface SearchResults {
     ): Response<SearchResultsArtistsMultiRelationshipDataDocument>
 
     /** enum for parameter explicitFilter */
+    @Serializable
     enum class ExplicitFilterSearchResultsIdRelationshipsPlaylistsGet(val value: kotlin.String) {
         @SerialName(value = "INCLUDE") INCLUDE("INCLUDE"),
         @SerialName(value = "EXCLUDE") EXCLUDE("EXCLUDE"),
     }
 
     /** enum for parameter deviceType */
+    @Serializable
     enum class DeviceTypeSearchResultsIdRelationshipsPlaylistsGet(val value: kotlin.String) {
         @SerialName(value = "BROWSER") BROWSER("BROWSER"),
         @SerialName(value = "CAR") CAR("CAR"),
@@ -234,6 +248,7 @@ interface SearchResults {
     }
 
     /** enum for parameter systemType */
+    @Serializable
     enum class SystemTypeSearchResultsIdRelationshipsPlaylistsGet(val value: kotlin.String) {
         @SerialName(value = "ANDROID") ANDROID("ANDROID"),
         @SerialName(value = "DESKTOP") DESKTOP("DESKTOP"),
@@ -243,8 +258,8 @@ interface SearchResults {
     }
 
     /**
-     * Get playlists relationship (\&quot;to-many\&quot;). Retrieves playlists relationship.
-     * Responses:
+     * GET searchResults/{id}/relationships/playlists Get playlists relationship
+     * (\&quot;to-many\&quot;). Retrieves playlists relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -257,7 +272,7 @@ interface SearchResults {
      *
      * @param id An opaque search results identifier
      * @param explicitFilter Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to
-     *   INCLUDE)
+     *   ExplicitFilter.INCLUDE)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
@@ -288,12 +303,14 @@ interface SearchResults {
     ): Response<SearchResultsPlaylistsMultiRelationshipDataDocument>
 
     /** enum for parameter explicitFilter */
+    @Serializable
     enum class ExplicitFilterSearchResultsIdRelationshipsTopHitsGet(val value: kotlin.String) {
         @SerialName(value = "INCLUDE") INCLUDE("INCLUDE"),
         @SerialName(value = "EXCLUDE") EXCLUDE("EXCLUDE"),
     }
 
     /** enum for parameter deviceType */
+    @Serializable
     enum class DeviceTypeSearchResultsIdRelationshipsTopHitsGet(val value: kotlin.String) {
         @SerialName(value = "BROWSER") BROWSER("BROWSER"),
         @SerialName(value = "CAR") CAR("CAR"),
@@ -304,6 +321,7 @@ interface SearchResults {
     }
 
     /** enum for parameter systemType */
+    @Serializable
     enum class SystemTypeSearchResultsIdRelationshipsTopHitsGet(val value: kotlin.String) {
         @SerialName(value = "ANDROID") ANDROID("ANDROID"),
         @SerialName(value = "DESKTOP") DESKTOP("DESKTOP"),
@@ -313,7 +331,8 @@ interface SearchResults {
     }
 
     /**
-     * Get topHits relationship (\&quot;to-many\&quot;). Retrieves topHits relationship. Responses:
+     * GET searchResults/{id}/relationships/topHits Get topHits relationship
+     * (\&quot;to-many\&quot;). Retrieves topHits relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -326,7 +345,7 @@ interface SearchResults {
      *
      * @param id An opaque search results identifier
      * @param explicitFilter Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to
-     *   INCLUDE)
+     *   ExplicitFilter.INCLUDE)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
@@ -357,12 +376,14 @@ interface SearchResults {
     ): Response<SearchResultsTopHitsMultiRelationshipDataDocument>
 
     /** enum for parameter explicitFilter */
+    @Serializable
     enum class ExplicitFilterSearchResultsIdRelationshipsTracksGet(val value: kotlin.String) {
         @SerialName(value = "INCLUDE") INCLUDE("INCLUDE"),
         @SerialName(value = "EXCLUDE") EXCLUDE("EXCLUDE"),
     }
 
     /** enum for parameter deviceType */
+    @Serializable
     enum class DeviceTypeSearchResultsIdRelationshipsTracksGet(val value: kotlin.String) {
         @SerialName(value = "BROWSER") BROWSER("BROWSER"),
         @SerialName(value = "CAR") CAR("CAR"),
@@ -373,6 +394,7 @@ interface SearchResults {
     }
 
     /** enum for parameter systemType */
+    @Serializable
     enum class SystemTypeSearchResultsIdRelationshipsTracksGet(val value: kotlin.String) {
         @SerialName(value = "ANDROID") ANDROID("ANDROID"),
         @SerialName(value = "DESKTOP") DESKTOP("DESKTOP"),
@@ -382,7 +404,8 @@ interface SearchResults {
     }
 
     /**
-     * Get tracks relationship (\&quot;to-many\&quot;). Retrieves tracks relationship. Responses:
+     * GET searchResults/{id}/relationships/tracks Get tracks relationship (\&quot;to-many\&quot;).
+     * Retrieves tracks relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -395,7 +418,7 @@ interface SearchResults {
      *
      * @param id An opaque search results identifier
      * @param explicitFilter Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to
-     *   INCLUDE)
+     *   ExplicitFilter.INCLUDE)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
@@ -426,12 +449,14 @@ interface SearchResults {
     ): Response<SearchResultsTracksMultiRelationshipDataDocument>
 
     /** enum for parameter explicitFilter */
+    @Serializable
     enum class ExplicitFilterSearchResultsIdRelationshipsVideosGet(val value: kotlin.String) {
         @SerialName(value = "INCLUDE") INCLUDE("INCLUDE"),
         @SerialName(value = "EXCLUDE") EXCLUDE("EXCLUDE"),
     }
 
     /** enum for parameter deviceType */
+    @Serializable
     enum class DeviceTypeSearchResultsIdRelationshipsVideosGet(val value: kotlin.String) {
         @SerialName(value = "BROWSER") BROWSER("BROWSER"),
         @SerialName(value = "CAR") CAR("CAR"),
@@ -442,6 +467,7 @@ interface SearchResults {
     }
 
     /** enum for parameter systemType */
+    @Serializable
     enum class SystemTypeSearchResultsIdRelationshipsVideosGet(val value: kotlin.String) {
         @SerialName(value = "ANDROID") ANDROID("ANDROID"),
         @SerialName(value = "DESKTOP") DESKTOP("DESKTOP"),
@@ -451,7 +477,8 @@ interface SearchResults {
     }
 
     /**
-     * Get videos relationship (\&quot;to-many\&quot;). Retrieves videos relationship. Responses:
+     * GET searchResults/{id}/relationships/videos Get videos relationship (\&quot;to-many\&quot;).
+     * Retrieves videos relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -464,7 +491,7 @@ interface SearchResults {
      *
      * @param id An opaque search results identifier
      * @param explicitFilter Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to
-     *   INCLUDE)
+     *   ExplicitFilter.INCLUDE)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)

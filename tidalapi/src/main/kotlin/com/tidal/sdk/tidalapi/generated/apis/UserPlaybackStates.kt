@@ -8,6 +8,7 @@ import com.tidal.sdk.tidalapi.generated.models.UserPlaybackStatesAvailablePlayer
 import com.tidal.sdk.tidalapi.generated.models.UserPlaybackStatesAvailablePlayersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserPlaybackStatesAvailablePlayersRelationshipAddOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.UserPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.UserPlaybackStatesChangeEventStreamSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserPlaybackStatesPlayQueueRelationshipUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.UserPlaybackStatesPlayQueueSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserPlaybackStatesPlayQueueUpdateSingleRelationshipDataDocument
@@ -19,7 +20,8 @@ import retrofit2.http.*
 
 interface UserPlaybackStates {
     /**
-     * Get single userPlaybackState. Retrieves single userPlaybackState by id. Responses:
+     * GET userPlaybackStates/{id} Get single userPlaybackState. Retrieves single userPlaybackState
+     * by id. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -33,7 +35,7 @@ interface UserPlaybackStates {
      * @param id User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s
      *   resource
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: activePlayer, availablePlayers, playQueue (optional)
+     *   Available options: activePlayer, availablePlayers, changeEventStream, playQueue (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: activePlayer.offlineInventory (optional)
@@ -48,7 +50,8 @@ interface UserPlaybackStates {
     ): Response<UserPlaybackStatesSingleResourceDataDocument>
 
     /**
-     * Update single userPlaybackState. Updates existing userPlaybackState. Responses:
+     * PATCH userPlaybackStates/{id} Update single userPlaybackState. Updates existing
+     * userPlaybackState. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -78,8 +81,8 @@ interface UserPlaybackStates {
     ): Response<UserPlaybackStatesUpdateSingleResourceDataDocument>
 
     /**
-     * Get activePlayer relationship (\&quot;to-one\&quot;). Retrieves activePlayer relationship.
-     * Responses:
+     * GET userPlaybackStates/{id}/relationships/activePlayer Get activePlayer relationship
+     * (\&quot;to-one\&quot;). Retrieves activePlayer relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -108,8 +111,8 @@ interface UserPlaybackStates {
     ): Response<UserPlaybackStatesActivePlayerSingleRelationshipDataDocument>
 
     /**
-     * Update activePlayer relationship (\&quot;to-one\&quot;). Updates activePlayer relationship.
-     * Responses:
+     * PATCH userPlaybackStates/{id}/relationships/activePlayer Update activePlayer relationship
+     * (\&quot;to-one\&quot;). Updates activePlayer relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -141,8 +144,9 @@ interface UserPlaybackStates {
     ): Response<UserPlaybackStatesActivePlayerUpdateSingleRelationshipDataDocument>
 
     /**
-     * Delete from availablePlayers relationship (\&quot;to-many\&quot;). Deletes item(s) from
-     * availablePlayers relationship. Responses:
+     * DELETE userPlaybackStates/{id}/relationships/availablePlayers Delete from availablePlayers
+     * relationship (\&quot;to-many\&quot;). Deletes item(s) from availablePlayers relationship.
+     * Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -163,11 +167,7 @@ interface UserPlaybackStates {
      * @param userPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload (optional)
      * @return [MutationResponseDocument]
      */
-    @HTTP(
-        method = "DELETE",
-        path = "userPlaybackStates/{id}/relationships/availablePlayers",
-        hasBody = true,
-    )
+    @DELETE("userPlaybackStates/{id}/relationships/availablePlayers")
     suspend fun userPlaybackStatesIdRelationshipsAvailablePlayersDelete(
         @Path("id") id: kotlin.String,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
@@ -178,8 +178,8 @@ interface UserPlaybackStates {
     ): Response<MutationResponseDocument>
 
     /**
-     * Get availablePlayers relationship (\&quot;to-many\&quot;). Retrieves availablePlayers
-     * relationship. Responses:
+     * GET userPlaybackStates/{id}/relationships/availablePlayers Get availablePlayers relationship
+     * (\&quot;to-many\&quot;). Retrieves availablePlayers relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -211,8 +211,9 @@ interface UserPlaybackStates {
     ): Response<UserPlaybackStatesAvailablePlayersMultiRelationshipDataDocument>
 
     /**
-     * Add to availablePlayers relationship (\&quot;to-many\&quot;). Adds item(s) to
-     * availablePlayers relationship. Responses:
+     * POST userPlaybackStates/{id}/relationships/availablePlayers Add to availablePlayers
+     * relationship (\&quot;to-many\&quot;). Adds item(s) to availablePlayers relationship.
+     * Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -244,8 +245,33 @@ interface UserPlaybackStates {
     ): Response<UserPlaybackStatesAvailablePlayersAddMultiRelationshipDataDocument>
 
     /**
-     * Get playQueue relationship (\&quot;to-one\&quot;). Retrieves playQueue relationship.
-     * Responses:
+     * GET userPlaybackStates/{id}/relationships/changeEventStream Get changeEventStream
+     * relationship (\&quot;to-one\&quot;). Retrieves changeEventStream relationship. Responses:
+     * - 200: Successful response
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
+     * - 429: Rate limit exceeded
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
+     *
+     * @param id
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: changeEventStream (optional)
+     * @return [UserPlaybackStatesChangeEventStreamSingleRelationshipDataDocument]
+     */
+    @GET("userPlaybackStates/{id}/relationships/changeEventStream")
+    suspend fun userPlaybackStatesIdRelationshipsChangeEventStreamGet(
+        @Path("id") id: kotlin.String,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+    ): Response<UserPlaybackStatesChangeEventStreamSingleRelationshipDataDocument>
+
+    /**
+     * GET userPlaybackStates/{id}/relationships/playQueue Get playQueue relationship
+     * (\&quot;to-one\&quot;). Retrieves playQueue relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -274,8 +300,8 @@ interface UserPlaybackStates {
     ): Response<UserPlaybackStatesPlayQueueSingleRelationshipDataDocument>
 
     /**
-     * Update playQueue relationship (\&quot;to-one\&quot;). Updates playQueue relationship.
-     * Responses:
+     * PATCH userPlaybackStates/{id}/relationships/playQueue Update playQueue relationship
+     * (\&quot;to-one\&quot;). Updates playQueue relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

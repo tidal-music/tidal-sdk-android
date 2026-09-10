@@ -2,25 +2,29 @@ package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.VideoManifestsSingleResourceDataDocument
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface VideoManifests {
 
     /** enum for parameter uriScheme */
+    @Serializable
     enum class UriSchemeVideoManifestsIdGet(val value: kotlin.String) {
         @SerialName(value = "HTTPS") HTTPS("HTTPS"),
         @SerialName(value = "DATA") DATA("DATA"),
     }
 
     /** enum for parameter usage */
+    @Serializable
     enum class UsageVideoManifestsIdGet(val value: kotlin.String) {
         @SerialName(value = "PLAYBACK") PLAYBACK("PLAYBACK"),
         @SerialName(value = "DOWNLOAD") DOWNLOAD("DOWNLOAD"),
     }
 
     /**
-     * Get single videoManifest. Retrieves single videoManifest by id. Responses:
+     * GET videoManifests/{id} Get single videoManifest. Retrieves single videoManifest by id.
+     * Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 403: Required playback prerequisites are missing; Content is unavailable in your location;

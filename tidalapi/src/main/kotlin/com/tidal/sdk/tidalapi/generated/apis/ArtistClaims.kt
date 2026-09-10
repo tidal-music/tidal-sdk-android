@@ -15,8 +15,8 @@ import retrofit2.http.*
 
 interface ArtistClaims {
     /**
-     * Get multiple artistClaims. Retrieves multiple artistClaims by available filters, or without
-     * if applicable. Responses:
+     * GET artistClaims Get multiple artistClaims. Retrieves multiple artistClaims by available
+     * filters, or without if applicable. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -45,7 +45,7 @@ interface ArtistClaims {
     ): Response<ArtistClaimsMultiResourceDataDocument>
 
     /**
-     * Delete single artistClaim. Deletes existing artistClaim. Responses:
+     * DELETE artistClaims/{id} Delete single artistClaim. Deletes existing artistClaim. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -71,7 +71,7 @@ interface ArtistClaims {
     ): Response<MutationResponseDocument>
 
     /**
-     * Get single artistClaim. Retrieves single artistClaim by id. Responses:
+     * GET artistClaims/{id} Get single artistClaim. Retrieves single artistClaim by id. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -99,7 +99,7 @@ interface ArtistClaims {
     ): Response<ArtistClaimsSingleResourceDataDocument>
 
     /**
-     * Update single artistClaim. Updates existing artistClaim. Responses:
+     * PATCH artistClaims/{id} Update single artistClaim. Updates existing artistClaim. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -127,8 +127,8 @@ interface ArtistClaims {
     ): Response<MutationResponseDocument>
 
     /**
-     * Get acceptedArtists relationship (\&quot;to-many\&quot;). Retrieves acceptedArtists
-     * relationship. Responses:
+     * GET artistClaims/{id}/relationships/acceptedArtists Get acceptedArtists relationship
+     * (\&quot;to-many\&quot;). Retrieves acceptedArtists relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -159,8 +159,8 @@ interface ArtistClaims {
     ): Response<ArtistClaimsAcceptedArtistsMultiRelationshipDataDocument>
 
     /**
-     * Update acceptedArtists relationship (\&quot;to-many\&quot;). Updates acceptedArtists
-     * relationship. Responses:
+     * PATCH artistClaims/{id}/relationships/acceptedArtists Update acceptedArtists relationship
+     * (\&quot;to-many\&quot;). Updates acceptedArtists relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -191,7 +191,8 @@ interface ArtistClaims {
     ): Response<MutationResponseDocument>
 
     /**
-     * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
+     * GET artistClaims/{id}/relationships/owners Get owners relationship (\&quot;to-many\&quot;).
+     * Retrieves owners relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -218,8 +219,8 @@ interface ArtistClaims {
     ): Response<ArtistClaimsOwnersMultiRelationshipDataDocument>
 
     /**
-     * Get recommendedArtists relationship (\&quot;to-many\&quot;). Retrieves recommendedArtists
-     * relationship. Responses:
+     * GET artistClaims/{id}/relationships/recommendedArtists Get recommendedArtists relationship
+     * (\&quot;to-many\&quot;). Retrieves recommendedArtists relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -250,7 +251,7 @@ interface ArtistClaims {
     ): Response<ArtistClaimsRecommendedArtistsMultiRelationshipDataDocument>
 
     /**
-     * Create single artistClaim. Creates a new artistClaim. Responses:
+     * POST artistClaims Create single artistClaim. Creates a new artistClaim. Responses:
      * - 201: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

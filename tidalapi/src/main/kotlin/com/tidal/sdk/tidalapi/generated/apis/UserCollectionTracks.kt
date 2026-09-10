@@ -8,12 +8,14 @@ import com.tidal.sdk.tidalapi.generated.models.UserCollectionTracksItemsRelation
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionTracksOwnersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionTracksSingleResourceDataDocument
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface UserCollectionTracks {
     /**
-     * Get single userCollectionTrack. Retrieves single userCollectionTrack by id. Responses:
+     * GET userCollectionTracks/{id} Get single userCollectionTrack. Retrieves single
+     * userCollectionTrack by id. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -45,8 +47,8 @@ interface UserCollectionTracks {
     ): Response<UserCollectionTracksSingleResourceDataDocument>
 
     /**
-     * Delete from items relationship (\&quot;to-many\&quot;). Deletes item(s) from items
-     * relationship. Responses:
+     * DELETE userCollectionTracks/{id}/relationships/items Delete from items relationship
+     * (\&quot;to-many\&quot;). Deletes item(s) from items relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -67,7 +69,7 @@ interface UserCollectionTracks {
      * @param userCollectionTracksItemsRelationshipRemoveOperationPayload (optional)
      * @return [MutationResponseDocument]
      */
-    @HTTP(method = "DELETE", path = "userCollectionTracks/{id}/relationships/items", hasBody = true)
+    @DELETE("userCollectionTracks/{id}/relationships/items")
     suspend fun userCollectionTracksIdRelationshipsItemsDelete(
         @Path("id") id: kotlin.String,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
@@ -78,6 +80,7 @@ interface UserCollectionTracks {
     ): Response<MutationResponseDocument>
 
     /** enum for parameter sort */
+    @Serializable
     enum class SortUserCollectionTracksIdRelationshipsItemsGet(val value: kotlin.String) {
         @SerialName(value = "addedAt") AddedAtAsc("addedAt"),
         @SerialName(value = "-addedAt") AddedAtDesc("-addedAt"),
@@ -92,7 +95,8 @@ interface UserCollectionTracks {
     }
 
     /**
-     * Get items relationship (\&quot;to-many\&quot;). Retrieves items relationship. Responses:
+     * GET userCollectionTracks/{id}/relationships/items Get items relationship
+     * (\&quot;to-many\&quot;). Retrieves items relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -130,8 +134,8 @@ interface UserCollectionTracks {
     ): Response<UserCollectionTracksItemsMultiRelationshipDataDocument>
 
     /**
-     * Add to items relationship (\&quot;to-many\&quot;). Adds item(s) to items relationship.
-     * Responses:
+     * POST userCollectionTracks/{id}/relationships/items Add to items relationship
+     * (\&quot;to-many\&quot;). Adds item(s) to items relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -164,7 +168,8 @@ interface UserCollectionTracks {
     ): Response<UserCollectionTracksItemsAddMultiRelationshipDataDocument>
 
     /**
-     * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
+     * GET userCollectionTracks/{id}/relationships/owners Get owners relationship
+     * (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

@@ -9,7 +9,8 @@ import retrofit2.http.*
 
 interface TrackSourceFiles {
     /**
-     * Get single trackSourceFile. Retrieves single trackSourceFile by id. Responses:
+     * GET trackSourceFiles/{id} Get single trackSourceFile. Retrieves single trackSourceFile by id.
+     * Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -33,7 +34,8 @@ interface TrackSourceFiles {
     ): Response<TrackSourceFilesSingleResourceDataDocument>
 
     /**
-     * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
+     * GET trackSourceFiles/{id}/relationships/owners Get owners relationship
+     * (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -60,9 +62,9 @@ interface TrackSourceFiles {
     ): Response<TrackSourceFilesOwnersMultiRelationshipDataDocument>
 
     /**
-     * Create single trackSourceFile. Create a track source file. &lt;p/&gt; The response contains a
-     * upload link that must be used to upload the actual content.&lt;p/&gt; The headers in the
-     * upload link response must be sent doing the actual upload. Responses:
+     * POST trackSourceFiles Create single trackSourceFile. Create a track source file. &lt;p/&gt;
+     * The response contains a upload link that must be used to upload the actual content.&lt;p/&gt;
+     * The headers in the upload link response must be sent doing the actual upload. Responses:
      * - 201: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

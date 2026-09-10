@@ -7,7 +7,8 @@ import retrofit2.http.*
 
 interface UserDataExportRequests {
     /**
-     * Create single userDataExportRequest. Creates a new userDataExportRequest. Responses:
+     * POST userDataExportRequests Create single userDataExportRequest. Creates a new
+     * userDataExportRequest. Responses:
      * - 201: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

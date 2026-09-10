@@ -12,7 +12,7 @@ import retrofit2.http.*
 
 interface Lyrics {
     /**
-     * Delete single lyric. Deletes existing lyric. Responses:
+     * DELETE lyrics/{id} Delete single lyric. Deletes existing lyric. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -38,7 +38,7 @@ interface Lyrics {
     ): Response<MutationResponseDocument>
 
     /**
-     * Get single lyric. Retrieves single lyric by id. Responses:
+     * GET lyrics/{id} Get single lyric. Retrieves single lyric by id. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -66,7 +66,7 @@ interface Lyrics {
     ): Response<LyricsSingleResourceDataDocument>
 
     /**
-     * Update single lyric. Updates existing lyric. Responses:
+     * PATCH lyrics/{id} Update single lyric. Updates existing lyric. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -94,7 +94,8 @@ interface Lyrics {
     ): Response<MutationResponseDocument>
 
     /**
-     * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
+     * GET lyrics/{id}/relationships/owners Get owners relationship (\&quot;to-many\&quot;).
+     * Retrieves owners relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -123,7 +124,8 @@ interface Lyrics {
     ): Response<LyricsOwnersMultiRelationshipDataDocument>
 
     /**
-     * Get track relationship (\&quot;to-one\&quot;). Retrieves track relationship. Responses:
+     * GET lyrics/{id}/relationships/track Get track relationship (\&quot;to-one\&quot;). Retrieves
+     * track relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -153,7 +155,7 @@ interface Lyrics {
     ): Response<LyricsTrackSingleRelationshipDataDocument>
 
     /**
-     * Create single lyric. Creates a new lyric. Responses:
+     * POST lyrics Create single lyric. Creates a new lyric. Responses:
      * - 201: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

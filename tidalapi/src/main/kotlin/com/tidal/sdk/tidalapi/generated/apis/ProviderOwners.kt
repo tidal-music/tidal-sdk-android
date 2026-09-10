@@ -8,8 +8,8 @@ import retrofit2.http.*
 
 interface ProviderOwners {
     /**
-     * Get multiple providerOwners. Retrieves multiple providerOwners by available filters, or
-     * without if applicable. Responses:
+     * GET providerOwners Get multiple providerOwners. Retrieves multiple providerOwners by
+     * available filters, or without if applicable. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -34,7 +34,8 @@ interface ProviderOwners {
     ): Response<ProviderOwnersMultiResourceDataDocument>
 
     /**
-     * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
+     * GET providerOwners/{id}/relationships/owners Get owners relationship (\&quot;to-many\&quot;).
+     * Retrieves owners relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -61,7 +62,8 @@ interface ProviderOwners {
     ): Response<ProviderOwnersOwnersMultiRelationshipDataDocument>
 
     /**
-     * Get provider relationship (\&quot;to-one\&quot;). Retrieves provider relationship. Responses:
+     * GET providerOwners/{id}/relationships/provider Get provider relationship
+     * (\&quot;to-one\&quot;). Retrieves provider relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

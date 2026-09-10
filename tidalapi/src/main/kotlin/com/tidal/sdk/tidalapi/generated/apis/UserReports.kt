@@ -7,7 +7,7 @@ import retrofit2.http.*
 
 interface UserReports {
     /**
-     * Create single userReport. Creates a new userReport. Responses:
+     * POST userReports Create single userReport. Creates a new userReport. Responses:
      * - 201: Successful response
      * - 400: Invalid request
      * - 403: Active report limit reached

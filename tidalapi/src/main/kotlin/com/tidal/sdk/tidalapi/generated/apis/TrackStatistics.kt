@@ -7,7 +7,8 @@ import retrofit2.http.*
 
 interface TrackStatistics {
     /**
-     * Get single trackStatistic. Retrieves single trackStatistic by id. Responses:
+     * GET trackStatistics/{id} Get single trackStatistic. Retrieves single trackStatistic by id.
+     * Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -33,7 +34,8 @@ interface TrackStatistics {
     ): Response<TrackStatisticsSingleResourceDataDocument>
 
     /**
-     * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
+     * GET trackStatistics/{id}/relationships/owners Get owners relationship
+     * (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

@@ -7,7 +7,7 @@ import retrofit2.http.*
 
 interface Genres {
     /**
-     * Get multiple genres. Retrieves multiple genres by available filters, or without if
+     * GET genres Get multiple genres. Retrieves multiple genres by available filters, or without if
      * applicable. Responses:
      * - 200: Successful response
      * - 400: Invalid request
@@ -36,7 +36,7 @@ interface Genres {
     ): Response<GenresMultiResourceDataDocument>
 
     /**
-     * Get single genre. Retrieves single genre by id. Responses:
+     * GET genres/{id} Get single genre. Retrieves single genre by id. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

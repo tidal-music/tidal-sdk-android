@@ -13,8 +13,8 @@ import retrofit2.http.*
 
 interface Clients {
     /**
-     * Get multiple clients. Retrieves multiple clients by available filters, or without if
-     * applicable. Responses:
+     * GET clients Get multiple clients. Retrieves multiple clients by available filters, or without
+     * if applicable. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -39,7 +39,7 @@ interface Clients {
     ): Response<ClientsMultiResourceDataDocument>
 
     /**
-     * Delete single client. Deletes existing client. Responses:
+     * DELETE clients/{id} Delete single client. Deletes existing client. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -65,7 +65,7 @@ interface Clients {
     ): Response<MutationResponseDocument>
 
     /**
-     * Get single client. Retrieves single client by id. Responses:
+     * GET clients/{id} Get single client. Retrieves single client by id. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -89,7 +89,7 @@ interface Clients {
     ): Response<ClientsSingleResourceDataDocument>
 
     /**
-     * Update single client. Updates existing client. Responses:
+     * PATCH clients/{id} Update single client. Updates existing client. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -117,7 +117,8 @@ interface Clients {
     ): Response<ClientsUpdateSingleResourceDataDocument>
 
     /**
-     * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
+     * GET clients/{id}/relationships/owners Get owners relationship (\&quot;to-many\&quot;).
+     * Retrieves owners relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -144,7 +145,7 @@ interface Clients {
     ): Response<ClientsOwnersMultiRelationshipDataDocument>
 
     /**
-     * Create single client. Creates a new client. Responses:
+     * POST clients Create single client. Creates a new client. Responses:
      * - 201: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

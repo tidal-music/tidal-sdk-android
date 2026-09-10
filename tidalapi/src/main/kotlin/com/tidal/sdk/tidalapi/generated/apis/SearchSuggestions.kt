@@ -4,20 +4,22 @@ import com.tidal.sdk.tidalapi.generated.models.SearchSuggestionsDirectHitsMultiR
 import com.tidal.sdk.tidalapi.generated.models.SearchSuggestionsHistoryMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.SearchSuggestionsMultiResourceDataDocument
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface SearchSuggestions {
 
     /** enum for parameter explicitFilter */
+    @Serializable
     enum class ExplicitFilterSearchSuggestionsGet(val value: kotlin.String) {
         @SerialName(value = "INCLUDE") INCLUDE("INCLUDE"),
         @SerialName(value = "EXCLUDE") EXCLUDE("EXCLUDE"),
     }
 
     /**
-     * Get search suggestions by query. Searches for a query and returns a collection containing
-     * exactly one search suggestions resource. Responses:
+     * GET searchSuggestions Get search suggestions by query. Searches for a query and returns a
+     * collection containing exactly one search suggestions resource. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -30,7 +32,7 @@ interface SearchSuggestions {
      *
      * @param filterQuery Search query (e.g. &#x60;hello&#x60;)
      * @param explicitFilter Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to
-     *   INCLUDE)
+     *   ExplicitFilter.INCLUDE)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: directHits, history (optional)
@@ -52,6 +54,7 @@ interface SearchSuggestions {
     ): Response<SearchSuggestionsMultiResourceDataDocument>
 
     /** enum for parameter explicitFilter */
+    @Serializable
     enum class ExplicitFilterSearchSuggestionsIdRelationshipsDirectHitsGet(
         val value: kotlin.String
     ) {
@@ -60,8 +63,8 @@ interface SearchSuggestions {
     }
 
     /**
-     * Get directHits relationship (\&quot;to-many\&quot;). Retrieves directHits relationship.
-     * Responses:
+     * GET searchSuggestions/{id}/relationships/directHits Get directHits relationship
+     * (\&quot;to-many\&quot;). Retrieves directHits relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -74,7 +77,7 @@ interface SearchSuggestions {
      *
      * @param id An opaque search suggestions identifier
      * @param explicitFilter Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to
-     *   INCLUDE)
+     *   ExplicitFilter.INCLUDE)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: directHits (optional)
@@ -99,13 +102,15 @@ interface SearchSuggestions {
     ): Response<SearchSuggestionsDirectHitsMultiRelationshipDataDocument>
 
     /** enum for parameter explicitFilter */
+    @Serializable
     enum class ExplicitFilterSearchSuggestionsIdRelationshipsHistoryGet(val value: kotlin.String) {
         @SerialName(value = "INCLUDE") INCLUDE("INCLUDE"),
         @SerialName(value = "EXCLUDE") EXCLUDE("EXCLUDE"),
     }
 
     /**
-     * Get history relationship (\&quot;to-many\&quot;). Retrieves history relationship. Responses:
+     * GET searchSuggestions/{id}/relationships/history Get history relationship
+     * (\&quot;to-many\&quot;). Retrieves history relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -118,7 +123,7 @@ interface SearchSuggestions {
      *
      * @param id An opaque search suggestions identifier
      * @param explicitFilter Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to
-     *   INCLUDE)
+     *   ExplicitFilter.INCLUDE)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: history (optional)

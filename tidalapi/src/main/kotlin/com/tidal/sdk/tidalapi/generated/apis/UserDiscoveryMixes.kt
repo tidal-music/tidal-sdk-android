@@ -7,7 +7,8 @@ import retrofit2.http.*
 
 interface UserDiscoveryMixes {
     /**
-     * Get single userDiscoveryMixe. Retrieves single userDiscoveryMixe by id. Responses:
+     * GET userDiscoveryMixes/{id} Get single userDiscoveryMixe. Retrieves single userDiscoveryMixe
+     * by id. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -39,7 +40,8 @@ interface UserDiscoveryMixes {
     ): Response<UserDiscoveryMixesSingleResourceDataDocument>
 
     /**
-     * Get items relationship (\&quot;to-many\&quot;). Retrieves items relationship. Responses:
+     * GET userDiscoveryMixes/{id}/relationships/items Get items relationship
+     * (\&quot;to-many\&quot;). Retrieves items relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

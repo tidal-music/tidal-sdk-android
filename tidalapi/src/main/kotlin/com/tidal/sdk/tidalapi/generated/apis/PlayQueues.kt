@@ -1,6 +1,7 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.MutationResponseDocument
+import com.tidal.sdk.tidalapi.generated.models.PlayQueuesChangeEventStreamSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlayQueuesCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.PlayQueuesCreateSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlayQueuesCurrentRelationshipUpdateOperationPayload
@@ -19,8 +20,8 @@ import retrofit2.http.*
 
 interface PlayQueues {
     /**
-     * Get multiple playQueues. Retrieves multiple playQueues by available filters, or without if
-     * applicable. Responses:
+     * GET playQueues Get multiple playQueues. Retrieves multiple playQueues by available filters,
+     * or without if applicable. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -35,7 +36,7 @@ interface PlayQueues {
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: current, future, owners, past (optional)
+     *   Available options: changeEventStream, current, future, owners, past (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: current (optional)
@@ -52,7 +53,7 @@ interface PlayQueues {
     ): Response<PlayQueuesMultiResourceDataDocument>
 
     /**
-     * Delete single playQueue. Deletes existing playQueue. Responses:
+     * DELETE playQueues/{id} Delete single playQueue. Deletes existing playQueue. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -78,7 +79,7 @@ interface PlayQueues {
     ): Response<MutationResponseDocument>
 
     /**
-     * Get single playQueue. Retrieves single playQueue by id. Responses:
+     * GET playQueues/{id} Get single playQueue. Retrieves single playQueue by id. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -91,7 +92,7 @@ interface PlayQueues {
      *
      * @param id Play queue id
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: current, future, owners, past (optional)
+     *   Available options: changeEventStream, current, future, owners, past (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: current (optional)
@@ -106,7 +107,7 @@ interface PlayQueues {
     ): Response<PlayQueuesSingleResourceDataDocument>
 
     /**
-     * Update single playQueue. Updates existing playQueue. Responses:
+     * PATCH playQueues/{id} Update single playQueue. Updates existing playQueue. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -134,7 +135,33 @@ interface PlayQueues {
     ): Response<MutationResponseDocument>
 
     /**
-     * Get current relationship (\&quot;to-one\&quot;). Retrieves current relationship. Responses:
+     * GET playQueues/{id}/relationships/changeEventStream Get changeEventStream relationship
+     * (\&quot;to-one\&quot;). Retrieves changeEventStream relationship. Responses:
+     * - 200: Successful response
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
+     * - 429: Rate limit exceeded
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
+     *
+     * @param id
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: changeEventStream (optional)
+     * @return [PlayQueuesChangeEventStreamSingleRelationshipDataDocument]
+     */
+    @GET("playQueues/{id}/relationships/changeEventStream")
+    suspend fun playQueuesIdRelationshipsChangeEventStreamGet(
+        @Path("id") id: kotlin.String,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+    ): Response<PlayQueuesChangeEventStreamSingleRelationshipDataDocument>
+
+    /**
+     * GET playQueues/{id}/relationships/current Get current relationship (\&quot;to-one\&quot;).
+     * Retrieves current relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -162,7 +189,8 @@ interface PlayQueues {
     ): Response<PlayQueuesCurrentSingleRelationshipDataDocument>
 
     /**
-     * Update current relationship (\&quot;to-one\&quot;). Updates current relationship. Responses:
+     * PATCH playQueues/{id}/relationships/current Update current relationship
+     * (\&quot;to-one\&quot;). Updates current relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -193,8 +221,8 @@ interface PlayQueues {
     ): Response<MutationResponseDocument>
 
     /**
-     * Delete from future relationship (\&quot;to-many\&quot;). Deletes item(s) from future
-     * relationship. Responses:
+     * DELETE playQueues/{id}/relationships/future Delete from future relationship
+     * (\&quot;to-many\&quot;). Deletes item(s) from future relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -214,7 +242,7 @@ interface PlayQueues {
      * @param playQueuesFutureRelationshipRemoveOperationPayload (optional)
      * @return [MutationResponseDocument]
      */
-    @HTTP(method = "DELETE", path = "playQueues/{id}/relationships/future", hasBody = true)
+    @DELETE("playQueues/{id}/relationships/future")
     suspend fun playQueuesIdRelationshipsFutureDelete(
         @Path("id") id: kotlin.String,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
@@ -225,7 +253,8 @@ interface PlayQueues {
     ): Response<MutationResponseDocument>
 
     /**
-     * Get future relationship (\&quot;to-many\&quot;). Retrieves future relationship. Responses:
+     * GET playQueues/{id}/relationships/future Get future relationship (\&quot;to-many\&quot;).
+     * Retrieves future relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -256,7 +285,8 @@ interface PlayQueues {
     ): Response<PlayQueuesFutureMultiRelationshipDataDocument>
 
     /**
-     * Update future relationship (\&quot;to-many\&quot;). Updates future relationship. Responses:
+     * PATCH playQueues/{id}/relationships/future Update future relationship
+     * (\&quot;to-many\&quot;). Updates future relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -287,8 +317,8 @@ interface PlayQueues {
     ): Response<MutationResponseDocument>
 
     /**
-     * Add to future relationship (\&quot;to-many\&quot;). Adds item(s) to future relationship.
-     * Responses:
+     * POST playQueues/{id}/relationships/future Add to future relationship (\&quot;to-many\&quot;).
+     * Adds item(s) to future relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -319,7 +349,8 @@ interface PlayQueues {
     ): Response<MutationResponseDocument>
 
     /**
-     * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
+     * GET playQueues/{id}/relationships/owners Get owners relationship (\&quot;to-many\&quot;).
+     * Retrieves owners relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -346,7 +377,8 @@ interface PlayQueues {
     ): Response<PlayQueuesOwnersMultiRelationshipDataDocument>
 
     /**
-     * Get past relationship (\&quot;to-many\&quot;). Retrieves past relationship. Responses:
+     * GET playQueues/{id}/relationships/past Get past relationship (\&quot;to-many\&quot;).
+     * Retrieves past relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -377,7 +409,7 @@ interface PlayQueues {
     ): Response<PlayQueuesPastMultiRelationshipDataDocument>
 
     /**
-     * Create single playQueue. Creates a new playQueue. Responses:
+     * POST playQueues Create single playQueue. Creates a new playQueue. Responses:
      * - 201: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

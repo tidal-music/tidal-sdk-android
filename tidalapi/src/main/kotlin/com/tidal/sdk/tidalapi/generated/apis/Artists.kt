@@ -22,13 +22,14 @@ import com.tidal.sdk.tidalapi.generated.models.ArtistsUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.ArtistsVideosMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.MutationResponseDocument
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface Artists {
     /**
-     * Get multiple artists. Retrieves multiple artists by available filters, or without if
-     * applicable. Responses:
+     * GET artists Get multiple artists. Retrieves multiple artists by available filters, or without
+     * if applicable. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -66,7 +67,7 @@ interface Artists {
     ): Response<ArtistsMultiResourceDataDocument>
 
     /**
-     * Get single artist. Retrieves single artist by id. Responses:
+     * GET artists/{id} Get single artist. Retrieves single artist by id. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -97,7 +98,7 @@ interface Artists {
     ): Response<ArtistsSingleResourceDataDocument>
 
     /**
-     * Update single artist. Updates existing artist. Responses:
+     * PATCH artists/{id} Update single artist. Updates existing artist. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -125,7 +126,8 @@ interface Artists {
     ): Response<MutationResponseDocument>
 
     /**
-     * Get albums relationship (\&quot;to-many\&quot;). Retrieves albums relationship. Responses:
+     * GET artists/{id}/relationships/albums Get albums relationship (\&quot;to-many\&quot;).
+     * Retrieves albums relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -158,8 +160,8 @@ interface Artists {
     ): Response<ArtistsAlbumsMultiRelationshipDataDocument>
 
     /**
-     * Get biography relationship (\&quot;to-one\&quot;). Retrieves biography relationship.
-     * Responses:
+     * GET artists/{id}/relationships/biography Get biography relationship (\&quot;to-one\&quot;).
+     * Retrieves biography relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -185,8 +187,8 @@ interface Artists {
     ): Response<ArtistsBiographySingleRelationshipDataDocument>
 
     /**
-     * Get claimStatus relationship (\&quot;to-one\&quot;). Retrieves claimStatus relationship.
-     * Responses:
+     * GET artists/{id}/relationships/claimStatus Get claimStatus relationship
+     * (\&quot;to-one\&quot;). Retrieves claimStatus relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -210,8 +212,8 @@ interface Artists {
     ): Response<ArtistsClaimStatusSingleRelationshipDataDocument>
 
     /**
-     * Get followers relationship (\&quot;to-many\&quot;). Retrieves followers relationship.
-     * Responses:
+     * GET artists/{id}/relationships/followers Get followers relationship (\&quot;to-many\&quot;).
+     * Retrieves followers relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -244,8 +246,8 @@ interface Artists {
     ): Response<ArtistsFollowersMultiRelationshipDataDocument>
 
     /**
-     * Delete from following relationship (\&quot;to-many\&quot;). Deletes item(s) from following
-     * relationship. Responses:
+     * DELETE artists/{id}/relationships/following Delete from following relationship
+     * (\&quot;to-many\&quot;). Deletes item(s) from following relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -265,7 +267,7 @@ interface Artists {
      * @param artistsFollowingRelationshipRemoveOperationPayload (optional)
      * @return [MutationResponseDocument]
      */
-    @HTTP(method = "DELETE", path = "artists/{id}/relationships/following", hasBody = true)
+    @DELETE("artists/{id}/relationships/following")
     suspend fun artistsIdRelationshipsFollowingDelete(
         @Path("id") id: kotlin.String,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
@@ -276,8 +278,8 @@ interface Artists {
     ): Response<MutationResponseDocument>
 
     /**
-     * Get following relationship (\&quot;to-many\&quot;). Retrieves following relationship.
-     * Responses:
+     * GET artists/{id}/relationships/following Get following relationship (\&quot;to-many\&quot;).
+     * Retrieves following relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -310,8 +312,8 @@ interface Artists {
     ): Response<ArtistsFollowingMultiRelationshipDataDocument>
 
     /**
-     * Add to following relationship (\&quot;to-many\&quot;). Adds item(s) to following
-     * relationship. Responses:
+     * POST artists/{id}/relationships/following Add to following relationship
+     * (\&quot;to-many\&quot;). Adds item(s) to following relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -342,7 +344,8 @@ interface Artists {
     ): Response<MutationResponseDocument>
 
     /**
-     * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
+     * GET artists/{id}/relationships/owners Get owners relationship (\&quot;to-many\&quot;).
+     * Retrieves owners relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -369,8 +372,8 @@ interface Artists {
     ): Response<ArtistsOwnersMultiRelationshipDataDocument>
 
     /**
-     * Get profileArt relationship (\&quot;to-many\&quot;). Retrieves profileArt relationship.
-     * Responses:
+     * GET artists/{id}/relationships/profileArt Get profileArt relationship
+     * (\&quot;to-many\&quot;). Retrieves profileArt relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -399,8 +402,8 @@ interface Artists {
     ): Response<ArtistsProfileArtMultiRelationshipDataDocument>
 
     /**
-     * Update profileArt relationship (\&quot;to-many\&quot;). Updates profileArt relationship.
-     * Responses:
+     * PATCH artists/{id}/relationships/profileArt Update profileArt relationship
+     * (\&quot;to-many\&quot;). Updates profileArt relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -431,7 +434,8 @@ interface Artists {
     ): Response<MutationResponseDocument>
 
     /**
-     * Get radio relationship (\&quot;to-many\&quot;). Retrieves radio relationship. Responses:
+     * GET artists/{id}/relationships/radio Get radio relationship (\&quot;to-many\&quot;).
+     * Retrieves radio relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -464,7 +468,8 @@ interface Artists {
     ): Response<ArtistsRadioMultiRelationshipDataDocument>
 
     /**
-     * Get roles relationship (\&quot;to-many\&quot;). Retrieves roles relationship. Responses:
+     * GET artists/{id}/relationships/roles Get roles relationship (\&quot;to-many\&quot;).
+     * Retrieves roles relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -491,8 +496,8 @@ interface Artists {
     ): Response<ArtistsRolesMultiRelationshipDataDocument>
 
     /**
-     * Get similarArtists relationship (\&quot;to-many\&quot;). Retrieves similarArtists
-     * relationship. Responses:
+     * GET artists/{id}/relationships/similarArtists Get similarArtists relationship
+     * (\&quot;to-many\&quot;). Retrieves similarArtists relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -525,8 +530,8 @@ interface Artists {
     ): Response<ArtistsSimilarArtistsMultiRelationshipDataDocument>
 
     /**
-     * Get trackProviders relationship (\&quot;to-many\&quot;). Retrieves trackProviders
-     * relationship. Responses:
+     * GET artists/{id}/relationships/trackProviders Get trackProviders relationship
+     * (\&quot;to-many\&quot;). Retrieves trackProviders relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -553,13 +558,15 @@ interface Artists {
     ): Response<ArtistsTrackProvidersMultiRelationshipDataDocument>
 
     /** enum for parameter collapseBy */
+    @Serializable
     enum class CollapseByArtistsIdRelationshipsTracksGet(val value: kotlin.String) {
         @SerialName(value = "FINGERPRINT") FINGERPRINT("FINGERPRINT"),
         @SerialName(value = "NONE") NONE("NONE"),
     }
 
     /**
-     * Get tracks relationship (\&quot;to-many\&quot;). Retrieves tracks relationship. Responses:
+     * GET artists/{id}/relationships/tracks Get tracks relationship (\&quot;to-many\&quot;).
+     * Retrieves tracks relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -596,7 +603,8 @@ interface Artists {
     ): Response<ArtistsTracksMultiRelationshipDataDocument>
 
     /**
-     * Get videos relationship (\&quot;to-many\&quot;). Retrieves videos relationship. Responses:
+     * GET artists/{id}/relationships/videos Get videos relationship (\&quot;to-many\&quot;).
+     * Retrieves videos relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -629,7 +637,7 @@ interface Artists {
     ): Response<ArtistsVideosMultiRelationshipDataDocument>
 
     /**
-     * Create single artist. Creates a new artist. Responses:
+     * POST artists Create single artist. Creates a new artist. Responses:
      * - 200: Successful dry run
      * - 201: Successful response
      * - 400: Invalid request

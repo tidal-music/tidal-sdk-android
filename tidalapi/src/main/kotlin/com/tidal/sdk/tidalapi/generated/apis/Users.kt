@@ -6,7 +6,7 @@ import retrofit2.http.*
 
 interface Users {
     /**
-     * Get single user. Retrieves single user by id. Responses:
+     * GET users/{id} Get single user. Retrieves single user by id. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

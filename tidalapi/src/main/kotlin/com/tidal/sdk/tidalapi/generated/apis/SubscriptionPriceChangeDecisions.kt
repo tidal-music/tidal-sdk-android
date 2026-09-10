@@ -11,8 +11,9 @@ import retrofit2.http.*
 
 interface SubscriptionPriceChangeDecisions {
     /**
-     * Get multiple subscriptionPriceChangeDecisions. Retrieves multiple
-     * subscriptionPriceChangeDecisions by available filters, or without if applicable. Responses:
+     * GET subscriptionPriceChangeDecisions Get multiple subscriptionPriceChangeDecisions. Retrieves
+     * multiple subscriptionPriceChangeDecisions by available filters, or without if applicable.
+     * Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -37,8 +38,8 @@ interface SubscriptionPriceChangeDecisions {
     ): Response<SubscriptionPriceChangeDecisionsMultiResourceDataDocument>
 
     /**
-     * Update single subscriptionPriceChangeDecision. Updates existing
-     * subscriptionPriceChangeDecision. Responses:
+     * PATCH subscriptionPriceChangeDecisions/{id} Update single subscriptionPriceChangeDecision.
+     * Updates existing subscriptionPriceChangeDecision. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -69,8 +70,8 @@ interface SubscriptionPriceChangeDecisions {
     ): Response<SubscriptionPriceChangeDecisionsUpdateSingleResourceDataDocument>
 
     /**
-     * Get priceChange relationship (\&quot;to-one\&quot;). Retrieves priceChange relationship.
-     * Responses:
+     * GET subscriptionPriceChangeDecisions/{id}/relationships/priceChange Get priceChange
+     * relationship (\&quot;to-one\&quot;). Retrieves priceChange relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -94,8 +95,8 @@ interface SubscriptionPriceChangeDecisions {
     ): Response<SubscriptionPriceChangeDecisionsPriceChangeSingleRelationshipDataDocument>
 
     /**
-     * Create single subscriptionPriceChangeDecision. Creates a new subscriptionPriceChangeDecision.
-     * Responses:
+     * POST subscriptionPriceChangeDecisions Create single subscriptionPriceChangeDecision. Creates
+     * a new subscriptionPriceChangeDecision. Responses:
      * - 201: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

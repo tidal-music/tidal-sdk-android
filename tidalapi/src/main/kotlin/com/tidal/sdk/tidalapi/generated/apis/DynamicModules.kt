@@ -5,12 +5,14 @@ import com.tidal.sdk.tidalapi.generated.models.DynamicModulesMultiResourceDataDo
 import com.tidal.sdk.tidalapi.generated.models.DynamicModulesSeedItemSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.DynamicModulesSingleResourceDataDocument
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface DynamicModules {
 
     /** enum for parameter deviceType */
+    @Serializable
     enum class DeviceTypeDynamicModulesGet(val value: kotlin.String) {
         @SerialName(value = "BROWSER") BROWSER("BROWSER"),
         @SerialName(value = "CAR") CAR("CAR"),
@@ -21,6 +23,7 @@ interface DynamicModules {
     }
 
     /** enum for parameter systemType */
+    @Serializable
     enum class SystemTypeDynamicModulesGet(val value: kotlin.String) {
         @SerialName(value = "ANDROID") ANDROID("ANDROID"),
         @SerialName(value = "DESKTOP") DESKTOP("DESKTOP"),
@@ -30,8 +33,8 @@ interface DynamicModules {
     }
 
     /**
-     * Get multiple dynamicModules. Retrieves multiple dynamicModules by available filters, or
-     * without if applicable. Responses:
+     * GET dynamicModules Get multiple dynamicModules. Retrieves multiple dynamicModules by
+     * available filters, or without if applicable. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -73,6 +76,7 @@ interface DynamicModules {
     ): Response<DynamicModulesMultiResourceDataDocument>
 
     /** enum for parameter deviceType */
+    @Serializable
     enum class DeviceTypeDynamicModulesIdGet(val value: kotlin.String) {
         @SerialName(value = "BROWSER") BROWSER("BROWSER"),
         @SerialName(value = "CAR") CAR("CAR"),
@@ -83,6 +87,7 @@ interface DynamicModules {
     }
 
     /** enum for parameter systemType */
+    @Serializable
     enum class SystemTypeDynamicModulesIdGet(val value: kotlin.String) {
         @SerialName(value = "ANDROID") ANDROID("ANDROID"),
         @SerialName(value = "DESKTOP") DESKTOP("DESKTOP"),
@@ -92,7 +97,8 @@ interface DynamicModules {
     }
 
     /**
-     * Get single dynamicModule. Retrieves single dynamicModule by id. Responses:
+     * GET dynamicModules/{id} Get single dynamicModule. Retrieves single dynamicModule by id.
+     * Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -134,6 +140,7 @@ interface DynamicModules {
     ): Response<DynamicModulesSingleResourceDataDocument>
 
     /** enum for parameter deviceType */
+    @Serializable
     enum class DeviceTypeDynamicModulesIdRelationshipsItemsGet(val value: kotlin.String) {
         @SerialName(value = "BROWSER") BROWSER("BROWSER"),
         @SerialName(value = "CAR") CAR("CAR"),
@@ -144,6 +151,7 @@ interface DynamicModules {
     }
 
     /** enum for parameter systemType */
+    @Serializable
     enum class SystemTypeDynamicModulesIdRelationshipsItemsGet(val value: kotlin.String) {
         @SerialName(value = "ANDROID") ANDROID("ANDROID"),
         @SerialName(value = "DESKTOP") DESKTOP("DESKTOP"),
@@ -153,10 +161,11 @@ interface DynamicModules {
     }
 
     /**
-     * Get items relationship (\&quot;to-many\&quot;). The module&#39;s items, in order — one stable
-     * collection per module, consistent for a given refreshSeed. Reads without a cursor return the
-     * first page (the slice a page shelf renders, sized for the module&#39;s previewLayout and
-     * device) with a continuation cursor; passing the cursor returns subsequent pages. Responses:
+     * GET dynamicModules/{id}/relationships/items Get items relationship (\&quot;to-many\&quot;).
+     * The module&#39;s items, in order — one stable collection per module, consistent for a given
+     * refreshSeed. Reads without a cursor return the first page (the slice a page shelf renders,
+     * sized for the module&#39;s previewLayout and device) with a continuation cursor; passing the
+     * cursor returns subsequent pages. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -201,6 +210,7 @@ interface DynamicModules {
     ): Response<DynamicModulesItemsMultiRelationshipDataDocument>
 
     /** enum for parameter deviceType */
+    @Serializable
     enum class DeviceTypeDynamicModulesIdRelationshipsSeedItemGet(val value: kotlin.String) {
         @SerialName(value = "BROWSER") BROWSER("BROWSER"),
         @SerialName(value = "CAR") CAR("CAR"),
@@ -211,6 +221,7 @@ interface DynamicModules {
     }
 
     /** enum for parameter systemType */
+    @Serializable
     enum class SystemTypeDynamicModulesIdRelationshipsSeedItemGet(val value: kotlin.String) {
         @SerialName(value = "ANDROID") ANDROID("ANDROID"),
         @SerialName(value = "DESKTOP") DESKTOP("DESKTOP"),
@@ -220,9 +231,10 @@ interface DynamicModules {
     }
 
     /**
-     * Get seedItem relationship (\&quot;to-one\&quot;). The item whose listen or add event seeded
-     * this module&#39;s collection (e.g. the album a BECAUSE_YOU_* module is based on); null for
-     * modules that are not seeded by an item. Responses:
+     * GET dynamicModules/{id}/relationships/seedItem Get seedItem relationship
+     * (\&quot;to-one\&quot;). The item whose listen or add event seeded this module&#39;s
+     * collection (e.g. the album a BECAUSE_YOU_* module is based on); null for modules that are not
+     * seeded by an item. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

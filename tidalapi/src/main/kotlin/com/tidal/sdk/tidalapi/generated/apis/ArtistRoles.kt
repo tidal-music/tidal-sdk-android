@@ -6,7 +6,7 @@ import retrofit2.http.*
 
 interface ArtistRoles {
     /**
-     * Get single artistRole. Retrieves single artistRole by id. Responses:
+     * GET artistRoles/{id} Get single artistRole. Retrieves single artistRole by id. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

@@ -20,8 +20,8 @@ import retrofit2.http.*
 
 interface UserRecommendationBlocks {
     /**
-     * Get single userRecommendationBlock. Retrieves single userRecommendationBlock by id.
-     * Responses:
+     * GET userRecommendationBlocks/{id} Get single userRecommendationBlock. Retrieves single
+     * userRecommendationBlock by id. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -53,8 +53,8 @@ interface UserRecommendationBlocks {
     ): Response<UserRecommendationBlocksSingleResourceDataDocument>
 
     /**
-     * Delete from artists relationship (\&quot;to-many\&quot;). Deletes item(s) from artists
-     * relationship. Responses:
+     * DELETE userRecommendationBlocks/{id}/relationships/artists Delete from artists relationship
+     * (\&quot;to-many\&quot;). Deletes item(s) from artists relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -75,11 +75,7 @@ interface UserRecommendationBlocks {
      * @param userRecommendationBlocksArtistsRelationshipRemoveOperationPayload (optional)
      * @return [MutationResponseDocument]
      */
-    @HTTP(
-        method = "DELETE",
-        path = "userRecommendationBlocks/{id}/relationships/artists",
-        hasBody = true,
-    )
+    @DELETE("userRecommendationBlocks/{id}/relationships/artists")
     suspend fun userRecommendationBlocksIdRelationshipsArtistsDelete(
         @Path("id") id: kotlin.String,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
@@ -90,7 +86,8 @@ interface UserRecommendationBlocks {
     ): Response<MutationResponseDocument>
 
     /**
-     * Get artists relationship (\&quot;to-many\&quot;). Retrieves artists relationship. Responses:
+     * GET userRecommendationBlocks/{id}/relationships/artists Get artists relationship
+     * (\&quot;to-many\&quot;). Retrieves artists relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -122,8 +119,8 @@ interface UserRecommendationBlocks {
     ): Response<UserRecommendationBlocksArtistsMultiRelationshipDataDocument>
 
     /**
-     * Add to artists relationship (\&quot;to-many\&quot;). Adds item(s) to artists relationship.
-     * Responses:
+     * POST userRecommendationBlocks/{id}/relationships/artists Add to artists relationship
+     * (\&quot;to-many\&quot;). Adds item(s) to artists relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -156,7 +153,8 @@ interface UserRecommendationBlocks {
     ): Response<UserRecommendationBlocksArtistsAddMultiRelationshipDataDocument>
 
     /**
-     * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
+     * GET userRecommendationBlocks/{id}/relationships/owners Get owners relationship
+     * (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -184,8 +182,8 @@ interface UserRecommendationBlocks {
     ): Response<UserRecommendationBlocksOwnersMultiRelationshipDataDocument>
 
     /**
-     * Delete from tracks relationship (\&quot;to-many\&quot;). Deletes item(s) from tracks
-     * relationship. Responses:
+     * DELETE userRecommendationBlocks/{id}/relationships/tracks Delete from tracks relationship
+     * (\&quot;to-many\&quot;). Deletes item(s) from tracks relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -206,11 +204,7 @@ interface UserRecommendationBlocks {
      * @param userRecommendationBlocksTracksRelationshipRemoveOperationPayload (optional)
      * @return [MutationResponseDocument]
      */
-    @HTTP(
-        method = "DELETE",
-        path = "userRecommendationBlocks/{id}/relationships/tracks",
-        hasBody = true,
-    )
+    @DELETE("userRecommendationBlocks/{id}/relationships/tracks")
     suspend fun userRecommendationBlocksIdRelationshipsTracksDelete(
         @Path("id") id: kotlin.String,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
@@ -221,7 +215,8 @@ interface UserRecommendationBlocks {
     ): Response<MutationResponseDocument>
 
     /**
-     * Get tracks relationship (\&quot;to-many\&quot;). Retrieves tracks relationship. Responses:
+     * GET userRecommendationBlocks/{id}/relationships/tracks Get tracks relationship
+     * (\&quot;to-many\&quot;). Retrieves tracks relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -253,8 +248,8 @@ interface UserRecommendationBlocks {
     ): Response<UserRecommendationBlocksTracksMultiRelationshipDataDocument>
 
     /**
-     * Add to tracks relationship (\&quot;to-many\&quot;). Adds item(s) to tracks relationship.
-     * Responses:
+     * POST userRecommendationBlocks/{id}/relationships/tracks Add to tracks relationship
+     * (\&quot;to-many\&quot;). Adds item(s) to tracks relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -287,8 +282,8 @@ interface UserRecommendationBlocks {
     ): Response<UserRecommendationBlocksTracksAddMultiRelationshipDataDocument>
 
     /**
-     * Delete from videos relationship (\&quot;to-many\&quot;). Deletes item(s) from videos
-     * relationship. Responses:
+     * DELETE userRecommendationBlocks/{id}/relationships/videos Delete from videos relationship
+     * (\&quot;to-many\&quot;). Deletes item(s) from videos relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -309,11 +304,7 @@ interface UserRecommendationBlocks {
      * @param userRecommendationBlocksVideosRelationshipRemoveOperationPayload (optional)
      * @return [MutationResponseDocument]
      */
-    @HTTP(
-        method = "DELETE",
-        path = "userRecommendationBlocks/{id}/relationships/videos",
-        hasBody = true,
-    )
+    @DELETE("userRecommendationBlocks/{id}/relationships/videos")
     suspend fun userRecommendationBlocksIdRelationshipsVideosDelete(
         @Path("id") id: kotlin.String,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
@@ -324,7 +315,8 @@ interface UserRecommendationBlocks {
     ): Response<MutationResponseDocument>
 
     /**
-     * Get videos relationship (\&quot;to-many\&quot;). Retrieves videos relationship. Responses:
+     * GET userRecommendationBlocks/{id}/relationships/videos Get videos relationship
+     * (\&quot;to-many\&quot;). Retrieves videos relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -356,8 +348,8 @@ interface UserRecommendationBlocks {
     ): Response<UserRecommendationBlocksVideosMultiRelationshipDataDocument>
 
     /**
-     * Add to videos relationship (\&quot;to-many\&quot;). Adds item(s) to videos relationship.
-     * Responses:
+     * POST userRecommendationBlocks/{id}/relationships/videos Add to videos relationship
+     * (\&quot;to-many\&quot;). Adds item(s) to videos relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
