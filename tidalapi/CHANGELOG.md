@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Fixed
+- Bundled openapi-generator now emits `@Contextual` on free-form map value types (`Map<String, @Contextual Any>`) for kotlinx.serialization, instead of a property-level `@Contextual` the compiler plugin ignores. This replaces a manual post-generation patch and fixes the runtime error "Serializer for element of type kotlin.Any has not been found". (TM-1938)
 
 ## [0.3.54] - 2026-09-03
 ### Changed
