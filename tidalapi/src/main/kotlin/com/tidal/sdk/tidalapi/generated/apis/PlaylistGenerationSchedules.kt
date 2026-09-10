@@ -163,6 +163,7 @@ interface PlaylistGenerationSchedules {
      * Responses:
      * - 201: Successful response
      * - 400: Invalid request
+     * - 403: Active playlist schedule limit reached
      * - 404: Resource not found
      * - 405: HTTP method not allowed
      * - 406: No acceptable response media type

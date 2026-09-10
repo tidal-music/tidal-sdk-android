@@ -6,20 +6,13 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/**
- * @param links
- * @param meta Non-standard meta information
- */
+/** @param errors */
 @Serializable
-data class MutationResponseDocument(
-    @SerialName(value = "links") val links: Links,
-    /* Non-standard meta information */
-
-    @Contextual
-    @SerialName(value = "meta")
-    val meta: kotlin.collections.Map<kotlin.String, kotlin.Any>? = null,
+data class PlaylistGenerationSchedulesCreateResource403ResponseBody(
+    @SerialName(value = "errors")
+    val errors:
+        kotlin.collections.List<PlaylistGenerationSchedulesCreateResource403ResponseBodyErrorsInner>
 ) {}

@@ -20,6 +20,7 @@ interface Reactions {
         @SerialName(value = "videos") videos("videos"),
         @SerialName(value = "playlists") playlists("playlists"),
         @SerialName(value = "comments") comments("comments"),
+        @SerialName(value = "trackSourceFiles") trackSourceFiles("trackSourceFiles"),
     }
 
     /** enum for parameter stats */

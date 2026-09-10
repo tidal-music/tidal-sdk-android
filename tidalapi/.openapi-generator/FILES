@@ -239,6 +239,8 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtworksRelationships.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtworksResourceObject.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ArtworksSingleResourceDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/AudioNormalizationData.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ChangeEventTopicsAttributes.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ChangeEventTopicsResourceObject.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ClientsAttributes.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ClientsCreateOperationPayload.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ClientsCreateOperationPayloadData.kt
@@ -456,6 +458,7 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/OfflineTasksUpdateOperat
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/OfflineTasksUpdateOperationPayloadData.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/OfflineTasksUpdateOperationPayloadDataAttributes.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlayQueuesAttributes.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlayQueuesChangeEventTopicSingleRelationshipDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlayQueuesCreateOperationPayload.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlayQueuesCreateOperationPayloadData.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlayQueuesCreateSingleResourceDataDocument.kt
@@ -498,6 +501,8 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlaylistGenerationSchedu
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlaylistGenerationSchedulesCreateOperationPayloadDataRelationships.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlaylistGenerationSchedulesCreateOperationPayloadDataRelationshipsPlaylist.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlaylistGenerationSchedulesCreateOperationPayloadDataRelationshipsPlaylistData.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlaylistGenerationSchedulesCreateResource403ResponseBody.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlaylistGenerationSchedulesCreateResource403ResponseBodyErrorsInner.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlaylistGenerationSchedulesCreateSingleResourceDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlaylistGenerationSchedulesMultiResourceDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlaylistGenerationSchedulesPlaylistSingleRelationshipDataDocument.kt
@@ -516,6 +521,7 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlaylistGenerationsCreat
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlaylistGenerationsCreateOperationPayloadDataRelationshipsPlaylist.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlaylistGenerationsCreateOperationPayloadDataRelationshipsPlaylistData.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlaylistGenerationsCreateSingleResourceDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlaylistGenerationsMultiResourceDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlaylistGenerationsPlaylistSingleRelationshipDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlaylistGenerationsRelationships.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlaylistGenerationsResourceObject.kt
@@ -1017,6 +1023,7 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserPlaybackStatesAvaila
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserPlaybackStatesAvailablePlayersRelationshipAddOperationPayload.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserPlaybackStatesAvailablePlayersRelationshipOperationPayloadData.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserPlaybackStatesChangeEventTopicSingleRelationshipDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserPlaybackStatesPlayQueueRelationshipUpdateOperationPayload.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserPlaybackStatesPlayQueueRelationshipUpdateOperationPayloadData.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/UserPlaybackStatesPlayQueueSingleRelationshipDataDocument.kt

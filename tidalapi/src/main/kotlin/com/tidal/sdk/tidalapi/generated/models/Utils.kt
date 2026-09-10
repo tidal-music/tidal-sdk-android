@@ -22,6 +22,10 @@ fun getOneOfSerializer() = SerializersModule {
         subclass(ArtistRolesResourceObject::class, ArtistRolesResourceObject.serializer())
         subclass(ArtistsResourceObject::class, ArtistsResourceObject.serializer())
         subclass(ArtworksResourceObject::class, ArtworksResourceObject.serializer())
+        subclass(
+            ChangeEventTopicsResourceObject::class,
+            ChangeEventTopicsResourceObject.serializer(),
+        )
         subclass(ClientsResourceObject::class, ClientsResourceObject.serializer())
         subclass(
             CollaborationInviteRedemptionsResourceObject::class,

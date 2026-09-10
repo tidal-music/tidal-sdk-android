@@ -1,6 +1,7 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.MutationResponseDocument
+import com.tidal.sdk.tidalapi.generated.models.PlayQueuesChangeEventTopicSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlayQueuesCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.PlayQueuesCreateSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlayQueuesCurrentRelationshipUpdateOperationPayload
@@ -35,7 +36,7 @@ interface PlayQueues {
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: current, future, owners, past (optional)
+     *   Available options: changeEventTopic, current, future, owners, past (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: current (optional)
@@ -91,7 +92,7 @@ interface PlayQueues {
      *
      * @param id Play queue id
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: current, future, owners, past (optional)
+     *   Available options: changeEventTopic, current, future, owners, past (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: current (optional)
@@ -132,6 +133,31 @@ interface PlayQueues {
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
         @Body playQueuesUpdateOperationPayload: PlayQueuesUpdateOperationPayload? = null,
     ): Response<MutationResponseDocument>
+
+    /**
+     * Get changeEventTopic relationship (\&quot;to-one\&quot;). Retrieves changeEventTopic
+     * relationship. Responses:
+     * - 200: Successful response
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
+     * - 429: Rate limit exceeded
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
+     *
+     * @param id
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: changeEventTopic (optional)
+     * @return [PlayQueuesChangeEventTopicSingleRelationshipDataDocument]
+     */
+    @GET("playQueues/{id}/relationships/changeEventTopic")
+    suspend fun playQueuesIdRelationshipsChangeEventTopicGet(
+        @Path("id") id: kotlin.String,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+    ): Response<PlayQueuesChangeEventTopicSingleRelationshipDataDocument>
 
     /**
      * Get current relationship (\&quot;to-one\&quot;). Retrieves current relationship. Responses:

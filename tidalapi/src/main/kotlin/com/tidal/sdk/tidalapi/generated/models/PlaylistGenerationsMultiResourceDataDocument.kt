@@ -6,20 +6,18 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
+ * @param `data`
  * @param links
- * @param meta Non-standard meta information
+ * @param included
  */
 @Serializable
-data class MutationResponseDocument(
+data class PlaylistGenerationsMultiResourceDataDocument(
+    @SerialName(value = "data")
+    val `data`: kotlin.collections.List<PlaylistGenerationsResourceObject>,
     @SerialName(value = "links") val links: Links,
-    /* Non-standard meta information */
-
-    @Contextual
-    @SerialName(value = "meta")
-    val meta: kotlin.collections.Map<kotlin.String, kotlin.Any>? = null,
+    @SerialName(value = "included") val included: kotlin.collections.List<IncludedInner>? = null,
 ) {}

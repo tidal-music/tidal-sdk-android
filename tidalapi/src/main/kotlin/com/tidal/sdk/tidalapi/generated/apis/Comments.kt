@@ -19,6 +19,7 @@ interface Comments {
     enum class FilterSubjectTypeCommentsGet(val value: kotlin.String) {
         @SerialName(value = "albums") albums("albums"),
         @SerialName(value = "tracks") tracks("tracks"),
+        @SerialName(value = "trackSourceFiles") trackSourceFiles("trackSourceFiles"),
     }
 
     /** enum for parameter sort */

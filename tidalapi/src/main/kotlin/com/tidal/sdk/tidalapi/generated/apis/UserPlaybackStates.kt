@@ -8,6 +8,7 @@ import com.tidal.sdk.tidalapi.generated.models.UserPlaybackStatesAvailablePlayer
 import com.tidal.sdk.tidalapi.generated.models.UserPlaybackStatesAvailablePlayersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserPlaybackStatesAvailablePlayersRelationshipAddOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.UserPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.UserPlaybackStatesChangeEventTopicSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserPlaybackStatesPlayQueueRelationshipUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.UserPlaybackStatesPlayQueueSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserPlaybackStatesPlayQueueUpdateSingleRelationshipDataDocument
@@ -33,7 +34,7 @@ interface UserPlaybackStates {
      * @param id User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s
      *   resource
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: activePlayer, availablePlayers, playQueue (optional)
+     *   Available options: activePlayer, availablePlayers, changeEventTopic, playQueue (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: activePlayer.offlineInventory (optional)
@@ -242,6 +243,31 @@ interface UserPlaybackStates {
             UserPlaybackStatesAvailablePlayersRelationshipAddOperationPayload? =
             null,
     ): Response<UserPlaybackStatesAvailablePlayersAddMultiRelationshipDataDocument>
+
+    /**
+     * Get changeEventTopic relationship (\&quot;to-one\&quot;). Retrieves changeEventTopic
+     * relationship. Responses:
+     * - 200: Successful response
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
+     * - 429: Rate limit exceeded
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
+     *
+     * @param id
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: changeEventTopic (optional)
+     * @return [UserPlaybackStatesChangeEventTopicSingleRelationshipDataDocument]
+     */
+    @GET("userPlaybackStates/{id}/relationships/changeEventTopic")
+    suspend fun userPlaybackStatesIdRelationshipsChangeEventTopicGet(
+        @Path("id") id: kotlin.String,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+    ): Response<UserPlaybackStatesChangeEventTopicSingleRelationshipDataDocument>
 
     /**
      * Get playQueue relationship (\&quot;to-one\&quot;). Retrieves playQueue relationship.

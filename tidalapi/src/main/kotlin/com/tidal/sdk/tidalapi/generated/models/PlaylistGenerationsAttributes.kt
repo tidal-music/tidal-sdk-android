@@ -12,6 +12,10 @@ import kotlinx.serialization.Serializable
 /**
  * @param progress
  * @param status Current prompted-playlist generation status
+ * @param lastGeneratedAt Datetime the playlist content this generation produced was committed (ISO
+ *   8601). Unlike progress.lastModifiedAt, which any write moves, this only moves when a generation
+ *   succeeds. Omitted while a generation is still running, when it failed, and for playlists
+ *   generated before generation history was recorded
  * @param prompt Prompt used to create the generation; omitted for legacy generations
  */
 @Serializable
@@ -20,6 +24,9 @@ data class PlaylistGenerationsAttributes(
     /* Current prompted-playlist generation status */
 
     @SerialName(value = "status") val status: PlaylistGenerationsAttributes.Status,
+    /* Datetime the playlist content this generation produced was committed (ISO 8601). Unlike progress.lastModifiedAt, which any write moves, this only moves when a generation succeeds. Omitted while a generation is still running, when it failed, and for playlists generated before generation history was recorded */
+
+    @SerialName(value = "lastGeneratedAt") val lastGeneratedAt: kotlin.String? = null,
     /* Prompt used to create the generation; omitted for legacy generations */
 
     @SerialName(value = "prompt") val prompt: kotlin.String? = null,
