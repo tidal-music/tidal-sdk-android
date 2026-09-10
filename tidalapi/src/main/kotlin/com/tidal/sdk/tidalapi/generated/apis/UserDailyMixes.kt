@@ -7,7 +7,8 @@ import retrofit2.http.*
 
 interface UserDailyMixes {
     /**
-     * Get single userDailyMixe. Retrieves single userDailyMixe by id. Responses:
+     * GET userDailyMixes/{id} Get single userDailyMixe. Retrieves single userDailyMixe by id.
+     * Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -38,7 +39,8 @@ interface UserDailyMixes {
     ): Response<UserDailyMixesSingleResourceDataDocument>
 
     /**
-     * Get items relationship (\&quot;to-many\&quot;). Retrieves items relationship. Responses:
+     * GET userDailyMixes/{id}/relationships/items Get items relationship (\&quot;to-many\&quot;).
+     * Retrieves items relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

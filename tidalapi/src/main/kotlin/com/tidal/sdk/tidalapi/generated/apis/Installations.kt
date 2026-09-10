@@ -10,13 +10,14 @@ import com.tidal.sdk.tidalapi.generated.models.InstallationsOwnersMultiRelations
 import com.tidal.sdk.tidalapi.generated.models.InstallationsSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.MutationResponseDocument
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface Installations {
     /**
-     * Get multiple installations. Retrieves multiple installations by available filters, or without
-     * if applicable. Responses:
+     * GET installations Get multiple installations. Retrieves multiple installations by available
+     * filters, or without if applicable. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -56,7 +57,8 @@ interface Installations {
     ): Response<InstallationsMultiResourceDataDocument>
 
     /**
-     * Get single installation. Retrieves single installation by id. Responses:
+     * GET installations/{id} Get single installation. Retrieves single installation by id.
+     * Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -84,8 +86,9 @@ interface Installations {
     ): Response<InstallationsSingleResourceDataDocument>
 
     /**
-     * Delete from offlineInventory relationship (\&quot;to-many\&quot;). Deletes item(s) from
-     * offlineInventory relationship. Responses:
+     * DELETE installations/{id}/relationships/offlineInventory Delete from offlineInventory
+     * relationship (\&quot;to-many\&quot;). Deletes item(s) from offlineInventory relationship.
+     * Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -105,11 +108,7 @@ interface Installations {
      * @param installationsOfflineInventoryRelationshipRemoveOperationPayload (optional)
      * @return [MutationResponseDocument]
      */
-    @HTTP(
-        method = "DELETE",
-        path = "installations/{id}/relationships/offlineInventory",
-        hasBody = true,
-    )
+    @DELETE("installations/{id}/relationships/offlineInventory")
     suspend fun installationsIdRelationshipsOfflineInventoryDelete(
         @Path("id") id: kotlin.String,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
@@ -120,6 +119,7 @@ interface Installations {
     ): Response<MutationResponseDocument>
 
     /** enum for parameter filterType */
+    @Serializable
     enum class FilterTypeInstallationsIdRelationshipsOfflineInventoryGet(val value: kotlin.String) {
         @SerialName(value = "tracks") tracks("tracks"),
         @SerialName(value = "videos") videos("videos"),
@@ -129,6 +129,7 @@ interface Installations {
     }
 
     /** enum for parameter filterState */
+    @Serializable
     enum class FilterStateInstallationsIdRelationshipsOfflineInventoryGet(
         val value: kotlin.String
     ) {
@@ -138,8 +139,8 @@ interface Installations {
     }
 
     /**
-     * Get offlineInventory relationship (\&quot;to-many\&quot;). Retrieves offlineInventory
-     * relationship. Responses:
+     * GET installations/{id}/relationships/offlineInventory Get offlineInventory relationship
+     * (\&quot;to-many\&quot;). Retrieves offlineInventory relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -180,8 +181,8 @@ interface Installations {
     ): Response<InstallationsOfflineInventoryMultiRelationshipDataDocument>
 
     /**
-     * Add to offlineInventory relationship (\&quot;to-many\&quot;). Adds item(s) to
-     * offlineInventory relationship. Responses:
+     * POST installations/{id}/relationships/offlineInventory Add to offlineInventory relationship
+     * (\&quot;to-many\&quot;). Adds item(s) to offlineInventory relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -212,7 +213,8 @@ interface Installations {
     ): Response<MutationResponseDocument>
 
     /**
-     * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
+     * GET installations/{id}/relationships/owners Get owners relationship (\&quot;to-many\&quot;).
+     * Retrieves owners relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -239,7 +241,7 @@ interface Installations {
     ): Response<InstallationsOwnersMultiRelationshipDataDocument>
 
     /**
-     * Create single installation. Creates a new installation. Responses:
+     * POST installations Create single installation. Creates a new installation. Responses:
      * - 201: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

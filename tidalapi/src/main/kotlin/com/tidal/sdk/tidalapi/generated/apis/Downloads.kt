@@ -8,8 +8,8 @@ import retrofit2.http.*
 
 interface Downloads {
     /**
-     * Get multiple downloads. Retrieves multiple downloads by available filters, or without if
-     * applicable. Responses:
+     * GET downloads Get multiple downloads. Retrieves multiple downloads by available filters, or
+     * without if applicable. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -33,7 +33,7 @@ interface Downloads {
     ): Response<DownloadsMultiResourceDataDocument>
 
     /**
-     * Get single download. Retrieves single download by id. Responses:
+     * GET downloads/{id} Get single download. Retrieves single download by id. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -57,7 +57,8 @@ interface Downloads {
     ): Response<DownloadsSingleResourceDataDocument>
 
     /**
-     * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
+     * GET downloads/{id}/relationships/owners Get owners relationship (\&quot;to-many\&quot;).
+     * Retrieves owners relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

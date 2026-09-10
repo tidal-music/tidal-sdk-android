@@ -7,8 +7,9 @@ import retrofit2.http.*
 
 interface UserSubscriptionPriceChanges {
     /**
-     * Get multiple userSubscriptionPriceChanges. Retrieves multiple userSubscriptionPriceChanges by
-     * available filters, or without if applicable. Responses:
+     * GET userSubscriptionPriceChanges Get multiple userSubscriptionPriceChanges. Retrieves
+     * multiple userSubscriptionPriceChanges by available filters, or without if applicable.
+     * Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -33,7 +34,8 @@ interface UserSubscriptionPriceChanges {
     ): Response<UserSubscriptionPriceChangesMultiResourceDataDocument>
 
     /**
-     * Get decision relationship (\&quot;to-one\&quot;). Retrieves decision relationship. Responses:
+     * GET userSubscriptionPriceChanges/{id}/relationships/decision Get decision relationship
+     * (\&quot;to-one\&quot;). Retrieves decision relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

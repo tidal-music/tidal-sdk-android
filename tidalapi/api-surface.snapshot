@@ -1,5 +1,5 @@
 # TIDAL API Surface Snapshot
-# Spec version: 1.10.123 | Endpoints: 343 | Models: 1024
+# Spec version: 1.10.128 | Endpoints: 346 | Models: 1030
 
 ## Endpoints
 
@@ -316,7 +316,7 @@ GET /collaborationInvites/{id}/relationships/subject
   returns: CollaborationInvites_Subject_Single_Relationship_Data_Document
 
 GET /comments
-  params: filter[parentComment.id]?: array[string], filter[subject.id]: array[string], filter[subject.type]: array[enum[albums, tracks]], include?: array[string], page[cursor]?: string, sort?: array[enum[createdAt, -createdAt, likeCount, -likeCount, replyCount, -replyCount, startTime, -startTime]]
+  params: filter[parentComment.id]?: array[string], filter[subject.id]: array[string], filter[subject.type]: array[enum[albums, tracks, trackSourceFiles]], include?: array[string], page[cursor]?: string, sort?: array[enum[createdAt, -createdAt, likeCount, -likeCount, replyCount, -replyCount, startTime, -startTime]]
   returns: Comments_Multi_Resource_Data_Document
 
 POST /comments
@@ -539,6 +539,10 @@ DELETE /playQueues/{id}
   params: ??: any, id: string
   returns: Mutation_Response_Document
 
+GET /playQueues/{id}/relationships/changeEventStream
+  params: id: string, include?: array[string]
+  returns: PlayQueues_ChangeEventStream_Single_Relationship_Data_Document
+
 GET /playQueues/{id}/relationships/current
   params: id: string, include?: array[string], replaceMedia?: string
   returns: PlayQueues_Current_Single_Relationship_Data_Document
@@ -594,6 +598,10 @@ DELETE /playlistGenerationSchedules/{id}
 GET /playlistGenerationSchedules/{id}/relationships/playlist
   params: id: string, include?: array[string], replaceMedia?: string
   returns: PlaylistGenerationSchedules_Playlist_Single_Relationship_Data_Document
+
+GET /playlistGenerations
+  params: filter[playlist.id]: array[string], include?: array[string], replaceMedia?: string
+  returns: PlaylistGenerations_Multi_Resource_Data_Document
 
 POST /playlistGenerations
   params: ??: any
@@ -732,7 +740,7 @@ GET /purchases/{id}/relationships/subject
   returns: Purchases_Subject_Single_Relationship_Data_Document
 
 GET /reactions
-  params: filter[emoji]?: array[string], filter[subject.id]: array[string], filter[subject.type]: array[enum[albums, tracks, artists, videos, playlists, comments]], include?: array[string], page[cursor]?: string, stats?: enum[ALL, COUNTS_BY_TYPE, TOTAL_COUNT], statsOnly?: boolean, viewerContext?: string
+  params: filter[emoji]?: array[string], filter[subject.id]: array[string], filter[subject.type]: array[enum[albums, tracks, artists, videos, playlists, comments, trackSourceFiles]], include?: array[string], page[cursor]?: string, stats?: enum[ALL, COUNTS_BY_TYPE, TOTAL_COUNT], statsOnly?: boolean, viewerContext?: string
   returns: Reactions_Multi_Resource_Data_Document
 
 POST /reactions
@@ -1258,6 +1266,10 @@ POST /userPlaybackStates/{id}/relationships/availablePlayers
 DELETE /userPlaybackStates/{id}/relationships/availablePlayers
   params: ??: any, id: string
   returns: Mutation_Response_Document
+
+GET /userPlaybackStates/{id}/relationships/changeEventStream
+  params: id: string, include?: array[string]
+  returns: UserPlaybackStates_ChangeEventStream_Single_Relationship_Data_Document
 
 GET /userPlaybackStates/{id}/relationships/playQueue
   params: id: string, include?: array[string], replaceMedia?: string
@@ -2163,6 +2175,14 @@ AudioNormalizationData
   peakAmplitude: number(float) (optional)
   replayGain: number(float) (optional)
 
+ChangeEventStreams_Attributes
+  eventStreamLink: Link_Object (required)
+
+ChangeEventStreams_Resource_Object
+  id: string (required)
+  type: string (required)
+  attributes: ChangeEventStreams_Attributes (optional)
+
 ClientsCreateOperation_Payload
   data: ClientsCreateOperation_Payload_Data (required)
 
@@ -2344,7 +2364,7 @@ CommentsCreateOperation_Payload_Data_Relationships_Subject
 
 CommentsCreateOperation_Payload_Data_Relationships_Subject_Data
   id: string (required)
-  type: enum[albums, tracks] (required)
+  type: enum[albums, tracks, trackSourceFiles] (required)
 
 CommentsUpdateOperation_Payload
   data: CommentsUpdateOperation_Payload_Data (required)
@@ -2862,7 +2882,7 @@ LegacySource
   type: string (required)
 
 Link_Object
-  href: string (optional)
+  href: string (required)
 
 Links
   self: string (required)
@@ -3173,6 +3193,11 @@ PlayQueues_Attributes
   shuffle: enum[OFF, BATCH, ALL] (required)
   shuffled: boolean (required)
 
+PlayQueues_ChangeEventStream_Single_Relationship_Data_Document
+  links: Links (required)
+  data: Resource_Identifier | enum[None] (optional)
+  included: Included (optional)
+
 PlayQueues_Create_Single_Resource_Data_Document
   data: PlayQueues_Resource_Object (required)
   links: Links (required)
@@ -3239,6 +3264,7 @@ PlayQueues_Past_Resource_Identifier_Meta
   replacement: Replacement_Provenance (optional)
 
 PlayQueues_Relationships
+  changeEventStream: PlayQueues_ChangeEventStream_Single_Relationship_Data_Document (optional)
   current: PlayQueues_Current_Single_Relationship_Data_Document (optional)
   future: PlayQueues_Future_Multi_Relationship_Data_Document (optional)
   owners: PlayQueues_Owners_Multi_Relationship_Data_Document (optional)
@@ -3286,6 +3312,9 @@ PlaylistGenerationSchedulesCreateOperation_Payload_Data_Relationships_Playlist
 PlaylistGenerationSchedulesCreateOperation_Payload_Data_Relationships_Playlist_Data
   id: string (required)
   type: enum[playlists] (required)
+
+PlaylistGenerationSchedulesCreateResource403ResponseBody
+  errors: array[object] (required)
 
 PlaylistGenerationSchedulesUpdateOperation_Payload
   data: PlaylistGenerationSchedulesUpdateOperation_Payload_Data (required)
@@ -3364,11 +3393,17 @@ PlaylistGenerationsCreateOperation_Payload_Data_Relationships_Playlist_Data
 PlaylistGenerations_Attributes
   progress: PlaylistGenerationProgress (required)
   status: enum[PENDING, PROCESSING, ERROR, OK] (required)
+  lastGeneratedAt: string(date-time) (optional)
   prompt: string (optional)
 
 PlaylistGenerations_Create_Single_Resource_Data_Document
   data: PlaylistGenerations_Resource_Object (required)
   links: Links (required)
+
+PlaylistGenerations_Multi_Resource_Data_Document
+  data: array[PlaylistGenerations_Resource_Object] (required)
+  links: Links (required)
+  included: Included (optional)
 
 PlaylistGenerations_Playlist_Single_Relationship_Data_Document
   links: Links (required)
@@ -3789,7 +3824,7 @@ ReactionsCreateOperation_Payload_Data_Relationships_Subject
 
 ReactionsCreateOperation_Payload_Data_Relationships_Subject_Data
   id: string (required)
-  type: enum[albums, tracks, artists, videos, playlists, comments] (required)
+  type: enum[albums, tracks, artists, videos, playlists, comments, trackSourceFiles] (required)
 
 Reactions_Attributes
   createdAt: string(date-time) (required)
@@ -5592,6 +5627,11 @@ UserPlaybackStates_AvailablePlayers_Multi_Relationship_Data_Document
   data: array[Resource_Identifier] (optional)
   included: Included (optional)
 
+UserPlaybackStates_ChangeEventStream_Single_Relationship_Data_Document
+  links: Links (required)
+  data: Resource_Identifier | enum[None] (optional)
+  included: Included (optional)
+
 UserPlaybackStates_PlayQueue_Single_Relationship_Data_Document
   links: Links (required)
   data: Resource_Identifier | enum[None] (optional)
@@ -5608,6 +5648,7 @@ UserPlaybackStates_PlayQueue_Update_Single_Relationship_Data_Document
 UserPlaybackStates_Relationships
   activePlayer: UserPlaybackStates_ActivePlayer_Single_Relationship_Data_Document (optional)
   availablePlayers: UserPlaybackStates_AvailablePlayers_Multi_Relationship_Data_Document (optional)
+  changeEventStream: UserPlaybackStates_ChangeEventStream_Single_Relationship_Data_Document (optional)
   playQueue: UserPlaybackStates_PlayQueue_Single_Relationship_Data_Document (optional)
 
 UserPlaybackStates_Resource_Object

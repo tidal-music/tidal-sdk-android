@@ -6,8 +6,8 @@ import retrofit2.http.*
 
 interface ArtistClaimStatuses {
     /**
-     * Get multiple artistClaimStatuses. Retrieves multiple artistClaimStatuses by available
-     * filters, or without if applicable. Responses:
+     * GET artistClaimStatuses Get multiple artistClaimStatuses. Retrieves multiple
+     * artistClaimStatuses by available filters, or without if applicable. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

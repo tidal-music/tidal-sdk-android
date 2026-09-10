@@ -2,12 +2,14 @@ package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.TrackFilesSingleResourceDataDocument
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface TrackFiles {
 
     /** enum for parameter formats */
+    @Serializable
     enum class FormatsTrackFilesIdGet(val value: kotlin.String) {
         @SerialName(value = "HEAACV1") HEAACV1("HEAACV1"),
         @SerialName(value = "AACLC") AACLC("AACLC"),
@@ -17,13 +19,14 @@ interface TrackFiles {
     }
 
     /** enum for parameter usage */
+    @Serializable
     enum class UsageTrackFilesIdGet(val value: kotlin.String) {
         @SerialName(value = "PLAYBACK") PLAYBACK("PLAYBACK"),
         @SerialName(value = "DOWNLOAD") DOWNLOAD("DOWNLOAD"),
     }
 
     /**
-     * Get single trackFile. Retrieves single trackFile by id. Responses:
+     * GET trackFiles/{id} Get single trackFile. Retrieves single trackFile by id. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 403: Required playback prerequisites are missing; Content is unavailable in your location;

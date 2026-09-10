@@ -7,7 +7,8 @@ import retrofit2.http.*
 
 interface AlbumStatistics {
     /**
-     * Get single albumStatistic. Retrieves single albumStatistic by id. Responses:
+     * GET albumStatistics/{id} Get single albumStatistic. Retrieves single albumStatistic by id.
+     * Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -33,7 +34,8 @@ interface AlbumStatistics {
     ): Response<AlbumStatisticsSingleResourceDataDocument>
 
     /**
-     * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
+     * GET albumStatistics/{id}/relationships/owners Get owners relationship
+     * (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

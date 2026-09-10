@@ -10,8 +10,8 @@ import retrofit2.http.*
 
 interface Artworks {
     /**
-     * Get multiple artworks. Retrieves multiple artworks by available filters, or without if
-     * applicable. Responses:
+     * GET artworks Get multiple artworks. Retrieves multiple artworks by available filters, or
+     * without if applicable. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -37,7 +37,7 @@ interface Artworks {
     ): Response<ArtworksMultiResourceDataDocument>
 
     /**
-     * Get single artwork. Retrieves single artwork by id. Responses:
+     * GET artworks/{id} Get single artwork. Retrieves single artwork by id. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -63,7 +63,8 @@ interface Artworks {
     ): Response<ArtworksSingleResourceDataDocument>
 
     /**
-     * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
+     * GET artworks/{id}/relationships/owners Get owners relationship (\&quot;to-many\&quot;).
+     * Retrieves owners relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -90,7 +91,7 @@ interface Artworks {
     ): Response<ArtworksOwnersMultiRelationshipDataDocument>
 
     /**
-     * Create single artwork. Creates a new artwork. Responses:
+     * POST artworks Create single artwork. Creates a new artwork. Responses:
      * - 201: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

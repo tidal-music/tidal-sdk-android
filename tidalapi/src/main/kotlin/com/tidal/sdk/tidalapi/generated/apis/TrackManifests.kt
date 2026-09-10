@@ -2,18 +2,21 @@ package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.TrackManifestsSingleResourceDataDocument
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface TrackManifests {
 
     /** enum for parameter manifestType */
+    @Serializable
     enum class ManifestTypeTrackManifestsIdGet(val value: kotlin.String) {
         @SerialName(value = "HLS") HLS("HLS"),
         @SerialName(value = "MPEG_DASH") MPEG_DASH("MPEG_DASH"),
     }
 
     /** enum for parameter formats */
+    @Serializable
     enum class FormatsTrackManifestsIdGet(val value: kotlin.String) {
         @SerialName(value = "HEAACV1") HEAACV1("HEAACV1"),
         @SerialName(value = "AACLC") AACLC("AACLC"),
@@ -23,19 +26,22 @@ interface TrackManifests {
     }
 
     /** enum for parameter uriScheme */
+    @Serializable
     enum class UriSchemeTrackManifestsIdGet(val value: kotlin.String) {
         @SerialName(value = "HTTPS") HTTPS("HTTPS"),
         @SerialName(value = "DATA") DATA("DATA"),
     }
 
     /** enum for parameter usage */
+    @Serializable
     enum class UsageTrackManifestsIdGet(val value: kotlin.String) {
         @SerialName(value = "PLAYBACK") PLAYBACK("PLAYBACK"),
         @SerialName(value = "DOWNLOAD") DOWNLOAD("DOWNLOAD"),
     }
 
     /**
-     * Get single trackManifest. Retrieves single trackManifest by id. Responses:
+     * GET trackManifests/{id} Get single trackManifest. Retrieves single trackManifest by id.
+     * Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 403: Required playback prerequisites are missing; Content is unavailable in your location;

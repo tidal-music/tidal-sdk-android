@@ -7,12 +7,14 @@ import com.tidal.sdk.tidalapi.generated.models.ReactionsMultiResourceDataDocumen
 import com.tidal.sdk.tidalapi.generated.models.ReactionsOwnerProfilesMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ReactionsOwnersMultiRelationshipDataDocument
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface Reactions {
 
     /** enum for parameter filterSubjectType */
+    @Serializable
     enum class FilterSubjectTypeReactionsGet(val value: kotlin.String) {
         @SerialName(value = "albums") albums("albums"),
         @SerialName(value = "tracks") tracks("tracks"),
@@ -20,9 +22,11 @@ interface Reactions {
         @SerialName(value = "videos") videos("videos"),
         @SerialName(value = "playlists") playlists("playlists"),
         @SerialName(value = "comments") comments("comments"),
+        @SerialName(value = "trackSourceFiles") trackSourceFiles("trackSourceFiles"),
     }
 
     /** enum for parameter stats */
+    @Serializable
     enum class StatsReactionsGet(val value: kotlin.String) {
         @SerialName(value = "ALL") ALL("ALL"),
         @SerialName(value = "COUNTS_BY_TYPE") COUNTS_BY_TYPE("COUNTS_BY_TYPE"),
@@ -30,8 +34,8 @@ interface Reactions {
     }
 
     /**
-     * Get multiple reactions. Retrieves multiple reactions by available filters, or without if
-     * applicable. Responses:
+     * GET reactions Get multiple reactions. Retrieves multiple reactions by available filters, or
+     * without if applicable. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -71,7 +75,7 @@ interface Reactions {
     ): Response<ReactionsMultiResourceDataDocument>
 
     /**
-     * Delete single reaction. Deletes existing reaction. Responses:
+     * DELETE reactions/{id} Delete single reaction. Deletes existing reaction. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -97,8 +101,8 @@ interface Reactions {
     ): Response<MutationResponseDocument>
 
     /**
-     * Get ownerProfiles relationship (\&quot;to-many\&quot;). Retrieves ownerProfiles relationship.
-     * Responses:
+     * GET reactions/{id}/relationships/ownerProfiles Get ownerProfiles relationship
+     * (\&quot;to-many\&quot;). Retrieves ownerProfiles relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -125,7 +129,8 @@ interface Reactions {
     ): Response<ReactionsOwnerProfilesMultiRelationshipDataDocument>
 
     /**
-     * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
+     * GET reactions/{id}/relationships/owners Get owners relationship (\&quot;to-many\&quot;).
+     * Retrieves owners relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -152,7 +157,7 @@ interface Reactions {
     ): Response<ReactionsOwnersMultiRelationshipDataDocument>
 
     /**
-     * Create single reaction. Creates a new reaction. Responses:
+     * POST reactions Create single reaction. Creates a new reaction. Responses:
      * - 201: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

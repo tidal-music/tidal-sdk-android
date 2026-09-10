@@ -7,7 +7,8 @@ import retrofit2.http.*
 
 interface UserNewReleaseMixes {
     /**
-     * Get single userNewReleaseMixe. Retrieves single userNewReleaseMixe by id. Responses:
+     * GET userNewReleaseMixes/{id} Get single userNewReleaseMixe. Retrieves single
+     * userNewReleaseMixe by id. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -39,7 +40,8 @@ interface UserNewReleaseMixes {
     ): Response<UserNewReleaseMixesSingleResourceDataDocument>
 
     /**
-     * Get items relationship (\&quot;to-many\&quot;). Retrieves items relationship. Responses:
+     * GET userNewReleaseMixes/{id}/relationships/items Get items relationship
+     * (\&quot;to-many\&quot;). Retrieves items relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

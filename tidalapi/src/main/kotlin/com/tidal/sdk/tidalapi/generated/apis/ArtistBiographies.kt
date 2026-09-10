@@ -9,7 +9,8 @@ import retrofit2.http.*
 
 interface ArtistBiographies {
     /**
-     * Get single artistBiographie. Retrieves single artistBiographie by id. Responses:
+     * GET artistBiographies/{id} Get single artistBiographie. Retrieves single artistBiographie by
+     * id. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -35,7 +36,8 @@ interface ArtistBiographies {
     ): Response<ArtistBiographiesSingleResourceDataDocument>
 
     /**
-     * Update single artistBiographie. Updates existing artistBiographie. Responses:
+     * PATCH artistBiographies/{id} Update single artistBiographie. Updates existing
+     * artistBiographie. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -64,7 +66,8 @@ interface ArtistBiographies {
     ): Response<MutationResponseDocument>
 
     /**
-     * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
+     * GET artistBiographies/{id}/relationships/owners Get owners relationship
+     * (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

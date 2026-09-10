@@ -12,8 +12,8 @@ import retrofit2.http.*
 
 interface CollaborationInvites {
     /**
-     * Get multiple collaborationInvites. Retrieves multiple collaborationInvites by available
-     * filters, or without if applicable. Responses:
+     * GET collaborationInvites Get multiple collaborationInvites. Retrieves multiple
+     * collaborationInvites by available filters, or without if applicable. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -42,7 +42,8 @@ interface CollaborationInvites {
     ): Response<CollaborationInvitesMultiResourceDataDocument>
 
     /**
-     * Delete single collaborationInvite. Deletes existing collaborationInvite. Responses:
+     * DELETE collaborationInvites/{id} Delete single collaborationInvite. Deletes existing
+     * collaborationInvite. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -68,7 +69,8 @@ interface CollaborationInvites {
     ): Response<MutationResponseDocument>
 
     /**
-     * Get single collaborationInvite. Retrieves single collaborationInvite by id. Responses:
+     * GET collaborationInvites/{id} Get single collaborationInvite. Retrieves single
+     * collaborationInvite by id. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -96,7 +98,8 @@ interface CollaborationInvites {
     ): Response<CollaborationInvitesSingleResourceDataDocument>
 
     /**
-     * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
+     * GET collaborationInvites/{id}/relationships/owners Get owners relationship
+     * (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -123,7 +126,8 @@ interface CollaborationInvites {
     ): Response<CollaborationInvitesOwnersMultiRelationshipDataDocument>
 
     /**
-     * Get subject relationship (\&quot;to-one\&quot;). Retrieves subject relationship. Responses:
+     * GET collaborationInvites/{id}/relationships/subject Get subject relationship
+     * (\&quot;to-one\&quot;). Retrieves subject relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -151,7 +155,8 @@ interface CollaborationInvites {
     ): Response<CollaborationInvitesSubjectSingleRelationshipDataDocument>
 
     /**
-     * Create single collaborationInvite. Creates a new collaborationInvite. Responses:
+     * POST collaborationInvites Create single collaborationInvite. Creates a new
+     * collaborationInvite. Responses:
      * - 201: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

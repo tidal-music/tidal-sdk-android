@@ -2,12 +2,14 @@ package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.ScopesMultiResourceDataDocument
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface Scopes {
 
     /** enum for parameter filterRequiredAccessTier */
+    @Serializable
     enum class FilterRequiredAccessTierScopesGet(val value: kotlin.String) {
         @SerialName(value = "THIRD_PARTY") THIRD_PARTY("THIRD_PARTY"),
         @SerialName(value = "THIRD_PARTY_PROD") THIRD_PARTY_PROD("THIRD_PARTY_PROD"),
@@ -16,7 +18,7 @@ interface Scopes {
     }
 
     /**
-     * Get multiple scopes. Retrieves multiple scopes by available filters, or without if
+     * GET scopes Get multiple scopes. Retrieves multiple scopes by available filters, or without if
      * applicable. Responses:
      * - 200: Successful response
      * - 400: Invalid request

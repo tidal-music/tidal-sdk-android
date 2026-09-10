@@ -3,12 +3,14 @@ package com.tidal.sdk.tidalapi.generated.apis
 import com.tidal.sdk.tidalapi.generated.models.TermsMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.TermsSingleResourceDataDocument
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface Terms {
 
     /** enum for parameter filterTermsType */
+    @Serializable
     enum class FilterTermsTypeTermsGet(val value: kotlin.String) {
         @SerialName(value = "DEVELOPER") DEVELOPER("DEVELOPER"),
         @SerialName(value = "UPLOAD_MARKETPLACE") UPLOAD_MARKETPLACE("UPLOAD_MARKETPLACE"),
@@ -16,8 +18,8 @@ interface Terms {
     }
 
     /**
-     * Get multiple terms. Retrieves multiple terms by available filters, or without if applicable.
-     * Responses:
+     * GET terms Get multiple terms. Retrieves multiple terms by available filters, or without if
+     * applicable. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -48,7 +50,7 @@ interface Terms {
     ): Response<TermsMultiResourceDataDocument>
 
     /**
-     * Get single term. Retrieves single term by id. Responses:
+     * GET terms/{id} Get single term. Retrieves single term by id. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

@@ -12,8 +12,8 @@ import retrofit2.http.*
 
 interface ContentClaims {
     /**
-     * Get multiple contentClaims. Retrieves multiple contentClaims by available filters, or without
-     * if applicable. Responses:
+     * GET contentClaims Get multiple contentClaims. Retrieves multiple contentClaims by available
+     * filters, or without if applicable. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -42,7 +42,8 @@ interface ContentClaims {
     ): Response<ContentClaimsMultiResourceDataDocument>
 
     /**
-     * Get single contentClaim. Retrieves single contentClaim by id. Responses:
+     * GET contentClaims/{id} Get single contentClaim. Retrieves single contentClaim by id.
+     * Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -70,8 +71,8 @@ interface ContentClaims {
     ): Response<ContentClaimsSingleResourceDataDocument>
 
     /**
-     * Get claimedResource relationship (\&quot;to-one\&quot;). Retrieves claimedResource
-     * relationship. Responses:
+     * GET contentClaims/{id}/relationships/claimedResource Get claimedResource relationship
+     * (\&quot;to-one\&quot;). Retrieves claimedResource relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -99,8 +100,8 @@ interface ContentClaims {
     ): Response<ContentClaimsClaimedResourceSingleRelationshipDataDocument>
 
     /**
-     * Get claimingArtist relationship (\&quot;to-one\&quot;). Retrieves claimingArtist
-     * relationship. Responses:
+     * GET contentClaims/{id}/relationships/claimingArtist Get claimingArtist relationship
+     * (\&quot;to-one\&quot;). Retrieves claimingArtist relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -128,7 +129,8 @@ interface ContentClaims {
     ): Response<ContentClaimsClaimingArtistSingleRelationshipDataDocument>
 
     /**
-     * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
+     * GET contentClaims/{id}/relationships/owners Get owners relationship (\&quot;to-many\&quot;).
+     * Retrieves owners relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -155,7 +157,7 @@ interface ContentClaims {
     ): Response<ContentClaimsOwnersMultiRelationshipDataDocument>
 
     /**
-     * Create single contentClaim. Creates a new contentClaim. Responses:
+     * POST contentClaims Create single contentClaim. Creates a new contentClaim. Responses:
      * - 201: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

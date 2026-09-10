@@ -6,7 +6,8 @@ import retrofit2.http.*
 
 interface TracksMetadataStatus {
     /**
-     * Get single tracksMetadataStatu. Retrieves single tracksMetadataStatu by id. Responses:
+     * GET tracksMetadataStatus/{id} Get single tracksMetadataStatu. Retrieves single
+     * tracksMetadataStatu by id. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

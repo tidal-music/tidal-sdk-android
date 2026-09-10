@@ -22,12 +22,14 @@ import com.tidal.sdk.tidalapi.generated.models.PlaylistsSuggestedCoverArtsMultiR
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsUpdateSingleResourceDataDocument
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface Playlists {
 
     /** enum for parameter sort */
+    @Serializable
     enum class SortPlaylistsGet(val value: kotlin.String) {
         @SerialName(value = "createdAt") CreatedAtAsc("createdAt"),
         @SerialName(value = "-createdAt") CreatedAtDesc("-createdAt"),
@@ -38,8 +40,8 @@ interface Playlists {
     }
 
     /**
-     * Get multiple playlists. Retrieves multiple playlists by available filters, or without if
-     * applicable. Responses:
+     * GET playlists Get multiple playlists. Retrieves multiple playlists by available filters, or
+     * without if applicable. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -85,7 +87,7 @@ interface Playlists {
     ): Response<PlaylistsMultiResourceDataDocument>
 
     /**
-     * Delete single playlist. Deletes existing playlist. Responses:
+     * DELETE playlists/{id} Delete single playlist. Deletes existing playlist. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -111,7 +113,7 @@ interface Playlists {
     ): Response<MutationResponseDocument>
 
     /**
-     * Get single playlist. Retrieves single playlist by id. Responses:
+     * GET playlists/{id} Get single playlist. Retrieves single playlist by id. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -142,7 +144,7 @@ interface Playlists {
     ): Response<PlaylistsSingleResourceDataDocument>
 
     /**
-     * Update single playlist. Updates existing playlist. Responses:
+     * PATCH playlists/{id} Update single playlist. Updates existing playlist. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -170,8 +172,9 @@ interface Playlists {
     ): Response<PlaylistsUpdateSingleResourceDataDocument>
 
     /**
-     * Delete from collaboratorProfiles relationship (\&quot;to-many\&quot;). Deletes item(s) from
-     * collaboratorProfiles relationship. Responses:
+     * DELETE playlists/{id}/relationships/collaboratorProfiles Delete from collaboratorProfiles
+     * relationship (\&quot;to-many\&quot;). Deletes item(s) from collaboratorProfiles relationship.
+     * Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -191,11 +194,7 @@ interface Playlists {
      * @param playlistsCollaboratorProfilesRelationshipRemoveOperationPayload (optional)
      * @return [MutationResponseDocument]
      */
-    @HTTP(
-        method = "DELETE",
-        path = "playlists/{id}/relationships/collaboratorProfiles",
-        hasBody = true,
-    )
+    @DELETE("playlists/{id}/relationships/collaboratorProfiles")
     suspend fun playlistsIdRelationshipsCollaboratorProfilesDelete(
         @Path("id") id: kotlin.String,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
@@ -206,8 +205,8 @@ interface Playlists {
     ): Response<MutationResponseDocument>
 
     /**
-     * Get collaboratorProfiles relationship (\&quot;to-many\&quot;). Retrieves collaboratorProfiles
-     * relationship. Responses:
+     * GET playlists/{id}/relationships/collaboratorProfiles Get collaboratorProfiles relationship
+     * (\&quot;to-many\&quot;). Retrieves collaboratorProfiles relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -236,8 +235,9 @@ interface Playlists {
     ): Response<PlaylistsCollaboratorProfilesMultiRelationshipDataDocument>
 
     /**
-     * Add to collaboratorProfiles relationship (\&quot;to-many\&quot;). Adds item(s) to
-     * collaboratorProfiles relationship. Responses:
+     * POST playlists/{id}/relationships/collaboratorProfiles Add to collaboratorProfiles
+     * relationship (\&quot;to-many\&quot;). Adds item(s) to collaboratorProfiles relationship.
+     * Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -268,8 +268,8 @@ interface Playlists {
     ): Response<MutationResponseDocument>
 
     /**
-     * Get collaborators relationship (\&quot;to-many\&quot;). Retrieves collaborators relationship.
-     * Responses:
+     * GET playlists/{id}/relationships/collaborators Get collaborators relationship
+     * (\&quot;to-many\&quot;). Retrieves collaborators relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -298,8 +298,8 @@ interface Playlists {
     ): Response<PlaylistsCollaboratorsMultiRelationshipDataDocument>
 
     /**
-     * Get coverArt relationship (\&quot;to-many\&quot;). Retrieves coverArt relationship.
-     * Responses:
+     * GET playlists/{id}/relationships/coverArt Get coverArt relationship (\&quot;to-many\&quot;).
+     * Retrieves coverArt relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -328,8 +328,8 @@ interface Playlists {
     ): Response<PlaylistsCoverArtMultiRelationshipDataDocument>
 
     /**
-     * Update coverArt relationship (\&quot;to-many\&quot;). Updates coverArt relationship.
-     * Responses:
+     * PATCH playlists/{id}/relationships/coverArt Update coverArt relationship
+     * (\&quot;to-many\&quot;). Updates coverArt relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -360,8 +360,8 @@ interface Playlists {
     ): Response<MutationResponseDocument>
 
     /**
-     * Delete from items relationship (\&quot;to-many\&quot;). Deletes item(s) from items
-     * relationship. Responses:
+     * DELETE playlists/{id}/relationships/items Delete from items relationship
+     * (\&quot;to-many\&quot;). Deletes item(s) from items relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -381,7 +381,7 @@ interface Playlists {
      * @param playlistsItemsRelationshipRemoveOperationPayload (optional)
      * @return [MutationResponseDocument]
      */
-    @HTTP(method = "DELETE", path = "playlists/{id}/relationships/items", hasBody = true)
+    @DELETE("playlists/{id}/relationships/items")
     suspend fun playlistsIdRelationshipsItemsDelete(
         @Path("id") id: kotlin.String,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
@@ -392,6 +392,7 @@ interface Playlists {
     ): Response<MutationResponseDocument>
 
     /** enum for parameter sort */
+    @Serializable
     enum class SortPlaylistsIdRelationshipsItemsGet(val value: kotlin.String) {
         @SerialName(value = "addedAt") AddedAtAsc("addedAt"),
         @SerialName(value = "-addedAt") AddedAtDesc("-addedAt"),
@@ -408,7 +409,8 @@ interface Playlists {
     }
 
     /**
-     * Get items relationship (\&quot;to-many\&quot;). Retrieves items relationship. Responses:
+     * GET playlists/{id}/relationships/items Get items relationship (\&quot;to-many\&quot;).
+     * Retrieves items relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -447,7 +449,8 @@ interface Playlists {
     ): Response<PlaylistsItemsMultiRelationshipDataDocument>
 
     /**
-     * Update items relationship (\&quot;to-many\&quot;). Updates items relationship. Responses:
+     * PATCH playlists/{id}/relationships/items Update items relationship (\&quot;to-many\&quot;).
+     * Updates items relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -478,8 +481,8 @@ interface Playlists {
     ): Response<MutationResponseDocument>
 
     /**
-     * Add to items relationship (\&quot;to-many\&quot;). Adds item(s) to items relationship.
-     * Responses:
+     * POST playlists/{id}/relationships/items Add to items relationship (\&quot;to-many\&quot;).
+     * Adds item(s) to items relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -510,8 +513,8 @@ interface Playlists {
     ): Response<PlaylistsItemsAddMultiRelationshipDataDocument>
 
     /**
-     * Get ownerProfiles relationship (\&quot;to-many\&quot;). Retrieves ownerProfiles relationship.
-     * Responses:
+     * GET playlists/{id}/relationships/ownerProfiles Get ownerProfiles relationship
+     * (\&quot;to-many\&quot;). Retrieves ownerProfiles relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -540,7 +543,8 @@ interface Playlists {
     ): Response<PlaylistsOwnerProfilesMultiRelationshipDataDocument>
 
     /**
-     * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
+     * GET playlists/{id}/relationships/owners Get owners relationship (\&quot;to-many\&quot;).
+     * Retrieves owners relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -569,8 +573,8 @@ interface Playlists {
     ): Response<PlaylistsOwnersMultiRelationshipDataDocument>
 
     /**
-     * Get suggestedCoverArts relationship (\&quot;to-many\&quot;). Retrieves suggestedCoverArts
-     * relationship. Responses:
+     * GET playlists/{id}/relationships/suggestedCoverArts Get suggestedCoverArts relationship
+     * (\&quot;to-many\&quot;). Retrieves suggestedCoverArts relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -597,7 +601,7 @@ interface Playlists {
     ): Response<PlaylistsSuggestedCoverArtsMultiRelationshipDataDocument>
 
     /**
-     * Create single playlist. Creates a new playlist. Responses:
+     * POST playlists Create single playlist. Creates a new playlist. Responses:
      * - 201: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

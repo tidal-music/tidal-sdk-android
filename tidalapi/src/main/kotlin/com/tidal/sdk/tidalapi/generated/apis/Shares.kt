@@ -11,7 +11,7 @@ import retrofit2.http.*
 
 interface Shares {
     /**
-     * Get multiple shares. Retrieves multiple shares by available filters, or without if
+     * GET shares Get multiple shares. Retrieves multiple shares by available filters, or without if
      * applicable. Responses:
      * - 200: Successful response
      * - 400: Invalid request
@@ -41,7 +41,7 @@ interface Shares {
     ): Response<SharesMultiResourceDataDocument>
 
     /**
-     * Get single share. Retrieves single share by id. Responses:
+     * GET shares/{id} Get single share. Retrieves single share by id. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -69,7 +69,8 @@ interface Shares {
     ): Response<SharesSingleResourceDataDocument>
 
     /**
-     * Get owners relationship (\&quot;to-many\&quot;). Retrieves owners relationship. Responses:
+     * GET shares/{id}/relationships/owners Get owners relationship (\&quot;to-many\&quot;).
+     * Retrieves owners relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -96,8 +97,8 @@ interface Shares {
     ): Response<SharesOwnersMultiRelationshipDataDocument>
 
     /**
-     * Get sharedResources relationship (\&quot;to-many\&quot;). Retrieves sharedResources
-     * relationship. Responses:
+     * GET shares/{id}/relationships/sharedResources Get sharedResources relationship
+     * (\&quot;to-many\&quot;). Retrieves sharedResources relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -128,7 +129,7 @@ interface Shares {
     ): Response<SharesSharedResourcesMultiRelationshipDataDocument>
 
     /**
-     * Create single share. Creates a new share. Responses:
+     * POST shares Create single share. Creates a new share. Responses:
      * - 201: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

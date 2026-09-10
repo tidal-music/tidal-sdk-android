@@ -16,7 +16,7 @@ import retrofit2.http.*
 
 interface Videos {
     /**
-     * Get multiple videos. Retrieves multiple videos by available filters, or without if
+     * GET videos Get multiple videos. Retrieves multiple videos by available filters, or without if
      * applicable. Responses:
      * - 200: Successful response
      * - 400: Invalid request
@@ -52,7 +52,7 @@ interface Videos {
     ): Response<VideosMultiResourceDataDocument>
 
     /**
-     * Get single video. Retrieves single video by id. Responses:
+     * GET videos/{id} Get single video. Retrieves single video by id. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -83,7 +83,8 @@ interface Videos {
     ): Response<VideosSingleResourceDataDocument>
 
     /**
-     * Get albums relationship (\&quot;to-many\&quot;). Retrieves albums relationship. Responses:
+     * GET videos/{id}/relationships/albums Get albums relationship (\&quot;to-many\&quot;).
+     * Retrieves albums relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -116,7 +117,8 @@ interface Videos {
     ): Response<VideosAlbumsMultiRelationshipDataDocument>
 
     /**
-     * Get artists relationship (\&quot;to-many\&quot;). Retrieves artists relationship. Responses:
+     * GET videos/{id}/relationships/artists Get artists relationship (\&quot;to-many\&quot;).
+     * Retrieves artists relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -149,7 +151,8 @@ interface Videos {
     ): Response<VideosArtistsMultiRelationshipDataDocument>
 
     /**
-     * Get credits relationship (\&quot;to-many\&quot;). Retrieves credits relationship. Responses:
+     * GET videos/{id}/relationships/credits Get credits relationship (\&quot;to-many\&quot;).
+     * Retrieves credits relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -180,8 +183,8 @@ interface Videos {
     ): Response<VideosCreditsMultiRelationshipDataDocument>
 
     /**
-     * Get providers relationship (\&quot;to-many\&quot;). Retrieves providers relationship.
-     * Responses:
+     * GET videos/{id}/relationships/providers Get providers relationship (\&quot;to-many\&quot;).
+     * Retrieves providers relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -210,8 +213,8 @@ interface Videos {
     ): Response<VideosProvidersMultiRelationshipDataDocument>
 
     /**
-     * Get replacement relationship (\&quot;to-one\&quot;). Retrieves replacement relationship.
-     * Responses:
+     * GET videos/{id}/relationships/replacement Get replacement relationship
+     * (\&quot;to-one\&quot;). Retrieves replacement relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -241,8 +244,8 @@ interface Videos {
     ): Response<VideosReplacementSingleRelationshipDataDocument>
 
     /**
-     * Get similarVideos relationship (\&quot;to-many\&quot;). Retrieves similarVideos relationship.
-     * Responses:
+     * GET videos/{id}/relationships/similarVideos Get similarVideos relationship
+     * (\&quot;to-many\&quot;). Retrieves similarVideos relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -275,8 +278,8 @@ interface Videos {
     ): Response<VideosSimilarVideosMultiRelationshipDataDocument>
 
     /**
-     * Get suggestedVideos relationship (\&quot;to-many\&quot;). Retrieves suggestedVideos
-     * relationship. Responses:
+     * GET videos/{id}/relationships/suggestedVideos Get suggestedVideos relationship
+     * (\&quot;to-many\&quot;). Retrieves suggestedVideos relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -309,8 +312,8 @@ interface Videos {
     ): Response<VideosSuggestedVideosMultiRelationshipDataDocument>
 
     /**
-     * Get thumbnailArt relationship (\&quot;to-many\&quot;). Retrieves thumbnailArt relationship.
-     * Responses:
+     * GET videos/{id}/relationships/thumbnailArt Get thumbnailArt relationship
+     * (\&quot;to-many\&quot;). Retrieves thumbnailArt relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -339,8 +342,8 @@ interface Videos {
     ): Response<VideosThumbnailArtMultiRelationshipDataDocument>
 
     /**
-     * Get usageRules relationship (\&quot;to-one\&quot;). Retrieves usageRules relationship.
-     * Responses:
+     * GET videos/{id}/relationships/usageRules Get usageRules relationship (\&quot;to-one\&quot;).
+     * Retrieves usageRules relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

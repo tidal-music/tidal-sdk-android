@@ -7,8 +7,8 @@ import retrofit2.http.*
 
 interface CollaborationInviteRedemptions {
     /**
-     * Create single collaborationInviteRedemption. Creates a new collaborationInviteRedemption.
-     * Responses:
+     * POST collaborationInviteRedemptions Create single collaborationInviteRedemption. Creates a
+     * new collaborationInviteRedemption. Responses:
      * - 201: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

@@ -3,12 +3,14 @@ package com.tidal.sdk.tidalapi.generated.apis
 import com.tidal.sdk.tidalapi.generated.models.DspSharingLinksMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.DspSharingLinksSubjectSingleRelationshipDataDocument
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface DspSharingLinks {
 
     /** enum for parameter filterSubjectType */
+    @Serializable
     enum class FilterSubjectTypeDspSharingLinksGet(val value: kotlin.String) {
         @SerialName(value = "tracks") tracks("tracks"),
         @SerialName(value = "albums") albums("albums"),
@@ -16,8 +18,8 @@ interface DspSharingLinks {
     }
 
     /**
-     * Get multiple dspSharingLinks. Retrieves multiple dspSharingLinks by available filters, or
-     * without if applicable. Responses:
+     * GET dspSharingLinks Get multiple dspSharingLinks. Retrieves multiple dspSharingLinks by
+     * available filters, or without if applicable. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -50,7 +52,8 @@ interface DspSharingLinks {
     ): Response<DspSharingLinksMultiResourceDataDocument>
 
     /**
-     * Get subject relationship (\&quot;to-one\&quot;). Retrieves subject relationship. Responses:
+     * GET dspSharingLinks/{id}/relationships/subject Get subject relationship
+     * (\&quot;to-one\&quot;). Retrieves subject relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

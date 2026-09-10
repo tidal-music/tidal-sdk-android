@@ -7,7 +7,7 @@ import retrofit2.http.*
 
 interface SavedShares {
     /**
-     * Create single savedShare. Creates a new savedShare. Responses:
+     * POST savedShares Create single savedShare. Creates a new savedShare. Responses:
      * - 201: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

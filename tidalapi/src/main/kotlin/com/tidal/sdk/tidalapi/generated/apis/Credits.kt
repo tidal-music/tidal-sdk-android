@@ -8,7 +8,7 @@ import retrofit2.http.*
 
 interface Credits {
     /**
-     * Get single credit. Retrieves single credit by id. Responses:
+     * GET credits/{id} Get single credit. Retrieves single credit by id. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -36,7 +36,8 @@ interface Credits {
     ): Response<CreditsSingleResourceDataDocument>
 
     /**
-     * Get artist relationship (\&quot;to-one\&quot;). Retrieves artist relationship. Responses:
+     * GET credits/{id}/relationships/artist Get artist relationship (\&quot;to-one\&quot;).
+     * Retrieves artist relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -64,7 +65,8 @@ interface Credits {
     ): Response<CreditsArtistSingleRelationshipDataDocument>
 
     /**
-     * Get category relationship (\&quot;to-one\&quot;). Retrieves category relationship. Responses:
+     * GET credits/{id}/relationships/category Get category relationship (\&quot;to-one\&quot;).
+     * Retrieves category relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

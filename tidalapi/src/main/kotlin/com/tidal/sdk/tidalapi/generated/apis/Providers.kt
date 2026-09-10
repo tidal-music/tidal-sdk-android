@@ -6,7 +6,7 @@ import retrofit2.http.*
 
 interface Providers {
     /**
-     * Get single provider. Retrieves single provider by id. Responses:
+     * GET providers/{id} Get single provider. Retrieves single provider by id. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

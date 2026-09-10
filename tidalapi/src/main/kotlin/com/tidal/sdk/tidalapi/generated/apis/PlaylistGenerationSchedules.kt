@@ -13,8 +13,8 @@ import retrofit2.http.*
 
 interface PlaylistGenerationSchedules {
     /**
-     * Get multiple playlistGenerationSchedules. Retrieves multiple playlistGenerationSchedules by
-     * available filters, or without if applicable. Responses:
+     * GET playlistGenerationSchedules Get multiple playlistGenerationSchedules. Retrieves multiple
+     * playlistGenerationSchedules by available filters, or without if applicable. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -43,8 +43,8 @@ interface PlaylistGenerationSchedules {
     ): Response<PlaylistGenerationSchedulesMultiResourceDataDocument>
 
     /**
-     * Delete single playlistGenerationSchedule. Deletes existing playlistGenerationSchedule.
-     * Responses:
+     * DELETE playlistGenerationSchedules/{id} Delete single playlistGenerationSchedule. Deletes
+     * existing playlistGenerationSchedule. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -70,8 +70,8 @@ interface PlaylistGenerationSchedules {
     ): Response<MutationResponseDocument>
 
     /**
-     * Get single playlistGenerationSchedule. Retrieves single playlistGenerationSchedule by id.
-     * Responses:
+     * GET playlistGenerationSchedules/{id} Get single playlistGenerationSchedule. Retrieves single
+     * playlistGenerationSchedule by id. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -99,8 +99,8 @@ interface PlaylistGenerationSchedules {
     ): Response<PlaylistGenerationSchedulesSingleResourceDataDocument>
 
     /**
-     * Update single playlistGenerationSchedule. Updates existing playlistGenerationSchedule.
-     * Responses:
+     * PATCH playlistGenerationSchedules/{id} Update single playlistGenerationSchedule. Updates
+     * existing playlistGenerationSchedule. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -131,7 +131,8 @@ interface PlaylistGenerationSchedules {
     ): Response<PlaylistGenerationSchedulesUpdateSingleResourceDataDocument>
 
     /**
-     * Get playlist relationship (\&quot;to-one\&quot;). Retrieves playlist relationship. Responses:
+     * GET playlistGenerationSchedules/{id}/relationships/playlist Get playlist relationship
+     * (\&quot;to-one\&quot;). Retrieves playlist relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -159,10 +160,11 @@ interface PlaylistGenerationSchedules {
     ): Response<PlaylistGenerationSchedulesPlaylistSingleRelationshipDataDocument>
 
     /**
-     * Create single playlistGenerationSchedule. Creates a new playlistGenerationSchedule.
-     * Responses:
+     * POST playlistGenerationSchedules Create single playlistGenerationSchedule. Creates a new
+     * playlistGenerationSchedule. Responses:
      * - 201: Successful response
      * - 400: Invalid request
+     * - 403: Active playlist schedule limit reached
      * - 404: Resource not found
      * - 405: HTTP method not allowed
      * - 406: No acceptable response media type
