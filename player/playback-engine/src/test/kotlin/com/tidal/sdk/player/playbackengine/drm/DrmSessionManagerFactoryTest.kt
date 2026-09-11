@@ -7,16 +7,25 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isSameInstanceAs
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
 import org.junit.jupiter.api.Test
+import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 internal class DrmSessionManagerFactoryTest {
 
     private val tidalMediaDrmCallbackFactory = mock<TidalMediaDrmCallbackFactory>()
     private val defaultDrmSessionManagerBuilder = mock<DefaultDrmSessionManager.Builder>()
+    private val offlineLicenseManager = mock<OfflineLicenseManager>()
     private val drmSessionManagerFactory =
-        DrmSessionManagerFactory(defaultDrmSessionManagerBuilder, tidalMediaDrmCallbackFactory)
+        DrmSessionManagerFactory(
+            defaultDrmSessionManagerBuilder,
+            tidalMediaDrmCallbackFactory,
+            offlineLicenseManager,
+        )
 
     @Test
     fun createDrmSessionManagerForOnlinePlayWithNullLicenseSecurityToken() {
@@ -61,6 +70,56 @@ internal class DrmSessionManagerFactoryTest {
             drmSessionManagerFactory.createDrmSessionManagerForOnlinePlay(playbackInfo, emptyMap())
 
         assertThat(actual).isSameInstanceAs(defaultDrmSessionManager)
+    }
+
+    @Test
+    fun createDrmSessionManagerForOnlinePlayWithoutCachedLicenseTriggersLazyAcquisition() {
+        val playbackInfo = mock<PlaybackInfo.Track> { on { licenseUrl } doReturn "licenseUrl" }
+        val tidalMediaDrmCallback = mock<TidalMediaDrmCallback>()
+        val defaultDrmSessionManager = mock<DefaultDrmSessionManager>()
+        whenever(
+                tidalMediaDrmCallbackFactory.create(
+                    playbackInfo.licenseUrl!!,
+                    playbackInfo.streamingSessionId,
+                    DrmMode.Streaming,
+                    emptyMap(),
+                )
+            )
+            .thenReturn(tidalMediaDrmCallback)
+        whenever(defaultDrmSessionManagerBuilder.build(tidalMediaDrmCallback))
+            .thenReturn(defaultDrmSessionManager)
+        whenever(offlineLicenseManager.getValidKeySetId(playbackInfo)).thenReturn(null)
+
+        drmSessionManagerFactory.createDrmSessionManagerForOnlinePlay(playbackInfo, emptyMap())
+
+        verify(offlineLicenseManager).acquireAndStoreAsync(playbackInfo, emptyMap())
+        verify(defaultDrmSessionManager, never()).setMode(any(), any())
+    }
+
+    @Test
+    fun createDrmSessionManagerForOnlinePlayWithCachedLicenseSetsPlaybackMode() {
+        val playbackInfo = mock<PlaybackInfo.Track> { on { licenseUrl } doReturn "licenseUrl" }
+        val tidalMediaDrmCallback = mock<TidalMediaDrmCallback>()
+        val defaultDrmSessionManager = mock<DefaultDrmSessionManager>()
+        val cachedKeySetId = byteArrayOf(1, 2, 3)
+        whenever(
+                tidalMediaDrmCallbackFactory.create(
+                    playbackInfo.licenseUrl!!,
+                    playbackInfo.streamingSessionId,
+                    DrmMode.Streaming,
+                    emptyMap(),
+                )
+            )
+            .thenReturn(tidalMediaDrmCallback)
+        whenever(defaultDrmSessionManagerBuilder.build(tidalMediaDrmCallback))
+            .thenReturn(defaultDrmSessionManager)
+        whenever(offlineLicenseManager.getValidKeySetId(playbackInfo)).thenReturn(cachedKeySetId)
+
+        drmSessionManagerFactory.createDrmSessionManagerForOnlinePlay(playbackInfo, emptyMap())
+
+        verify(defaultDrmSessionManager)
+            .setMode(eq(DefaultDrmSessionManager.MODE_PLAYBACK), eq(cachedKeySetId))
+        verify(offlineLicenseManager, never()).acquireAndStoreAsync(any(), any())
     }
 
     @Test
