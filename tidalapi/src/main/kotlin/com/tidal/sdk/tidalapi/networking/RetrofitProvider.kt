@@ -40,11 +40,14 @@ constructor(
         }
     }
 
-    private val converterFactories: List<Converter.Factory> =
+    // Built lazily so the ~100+ generated kotlinx.serialization descriptors are initialized on
+    // first request rather than at construction, keeping serializer init off callers' hot paths.
+    private val converterFactories: List<Converter.Factory> by lazy {
         listOf(
             ScalarsConverterFactory.create(),
             createJsonSerializer().asConverterFactory("application/json".toMediaType()),
         )
+    }
 
     private fun provideOkHttpClient(credentialsProvider: CredentialsProvider): OkHttpClient =
         OkHttpClient.Builder()
