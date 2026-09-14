@@ -100,6 +100,10 @@ internal class CrossfadeController(
     /** The next item, kept off [Host.player] while the current one may still crossfade into it. */
     private var heldNext: MediaProduct? = null
 
+    /** The next item [setNext] is holding back, if any. */
+    val heldNextProduct: MediaProduct?
+        get() = heldNext
+
     private var disabledForCurrent = false
 
     private var cancelledFade: CancelledFade? = null
