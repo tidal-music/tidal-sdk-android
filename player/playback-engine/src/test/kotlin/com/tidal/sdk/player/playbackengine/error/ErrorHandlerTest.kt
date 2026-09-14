@@ -531,6 +531,46 @@ internal class ErrorHandlerTest {
         assertThat(actualErrorEvent.cause).isSameInstanceAs(cause)
     }
 
+    @ParameterizedTest
+    @MethodSource("retryableDecoderErrorCodes")
+    fun `getErrorEvent should return Retryable for transient renderer decoder errors`(
+        errorCode: Int
+    ) {
+        val throwable = mock<ExoPlaybackException>()
+        throwable.reflectionSetErrorCode(errorCode)
+        throwable.reflectionSetType(ExoPlaybackException.TYPE_RENDERER)
+        val extra = ErrorCodeFactory.Extra.PlayerRendererError
+        val expectedErrorCode = "errorCode"
+        whenever(errorCodeFactory.createForOther(extra, errorCode)).thenReturn(expectedErrorCode)
+
+        val actualErrorEvent = errorHandler.getErrorEvent(throwable)
+
+        verify(errorCodeFactory).createForOther(extra, errorCode)
+        assertThat(actualErrorEvent).isInstanceOf(Event.Error.Retryable::class)
+        assertThat(actualErrorEvent.errorCode).isSameInstanceAs(expectedErrorCode)
+        assertThat(actualErrorEvent.cause).isSameInstanceAs(throwable)
+    }
+
+    @ParameterizedTest
+    @MethodSource("notAllowedDecoderErrorCodes")
+    fun `getErrorEvent should return NotAllowed for permanent renderer decoder errors`(
+        errorCode: Int
+    ) {
+        val throwable = mock<ExoPlaybackException>()
+        throwable.reflectionSetErrorCode(errorCode)
+        throwable.reflectionSetType(ExoPlaybackException.TYPE_RENDERER)
+        val extra = ErrorCodeFactory.Extra.PlayerRendererError
+        val expectedErrorCode = "errorCode"
+        whenever(errorCodeFactory.createForOther(extra, errorCode)).thenReturn(expectedErrorCode)
+
+        val actualErrorEvent = errorHandler.getErrorEvent(throwable)
+
+        verify(errorCodeFactory).createForOther(extra, errorCode)
+        assertThat(actualErrorEvent).isInstanceOf(Event.Error.NotAllowed::class)
+        assertThat(actualErrorEvent.errorCode).isSameInstanceAs(expectedErrorCode)
+        assertThat(actualErrorEvent.cause).isSameInstanceAs(throwable)
+    }
+
     @Test
     fun `getErrorEvent should return correct errorEvent for unknown renderer errors`() {
         val throwable = mock<ExoPlaybackException> { on { rendererException } doReturn mock() }
@@ -668,6 +708,24 @@ internal class ErrorHandlerTest {
             setOf(
                 Arguments.of(ApiError.SubStatus.NoContentMatchingSubscriptionLocation),
                 Arguments.of(ApiError.SubStatus.NoContentMatchingPrePaywallLocation),
+            )
+
+        @JvmStatic
+        @Suppress("UnusedPrivateMember")
+        private fun retryableDecoderErrorCodes() =
+            setOf(
+                Arguments.of(PlaybackException.ERROR_CODE_DECODER_INIT_FAILED),
+                Arguments.of(PlaybackException.ERROR_CODE_DECODER_QUERY_FAILED),
+                Arguments.of(PlaybackException.ERROR_CODE_DECODING_FAILED),
+                Arguments.of(PlaybackException.ERROR_CODE_DECODING_RESOURCES_RECLAIMED),
+            )
+
+        @JvmStatic
+        @Suppress("UnusedPrivateMember")
+        private fun notAllowedDecoderErrorCodes() =
+            setOf(
+                Arguments.of(PlaybackException.ERROR_CODE_DECODING_FORMAT_EXCEEDS_CAPABILITIES),
+                Arguments.of(PlaybackException.ERROR_CODE_DECODING_FORMAT_UNSUPPORTED),
             )
     }
 }
