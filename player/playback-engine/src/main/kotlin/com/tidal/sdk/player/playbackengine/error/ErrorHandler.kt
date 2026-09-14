@@ -212,6 +212,14 @@ internal class ErrorHandler(private val errorCodeFactory: ErrorCodeFactory) {
 
                                     else -> null
                                 }
+                            } else if (
+                                exoPlaybackExceptionType == ExoPlaybackException.TYPE_RENDERER
+                            ) {
+                                handleRendererError(
+                                    cause,
+                                    exoPlaybackExceptionExtra,
+                                    playbackExceptionErrorCode,
+                                )
                             } else {
                                 null
                             }
@@ -231,6 +239,37 @@ internal class ErrorHandler(private val errorCodeFactory: ErrorCodeFactory) {
                 throwable,
             )
     }
+
+    private fun handleRendererError(
+        cause: ExoPlaybackException,
+        exoPlaybackExceptionExtra: ErrorCodeFactory.Extra,
+        playbackExceptionErrorCode: Int?,
+    ): Event.Error? =
+        when (playbackExceptionErrorCode) {
+            PlaybackException.ERROR_CODE_DECODER_INIT_FAILED,
+            PlaybackException.ERROR_CODE_DECODER_QUERY_FAILED,
+            PlaybackException.ERROR_CODE_DECODING_FAILED,
+            PlaybackException.ERROR_CODE_DECODING_RESOURCES_RECLAIMED ->
+                Event.Error.Retryable(
+                    errorCodeFactory.createForOther(
+                        exoPlaybackExceptionExtra,
+                        playbackExceptionErrorCode,
+                    ),
+                    cause,
+                )
+
+            PlaybackException.ERROR_CODE_DECODING_FORMAT_EXCEEDS_CAPABILITIES,
+            PlaybackException.ERROR_CODE_DECODING_FORMAT_UNSUPPORTED ->
+                Event.Error.NotAllowed(
+                    errorCodeFactory.createForOther(
+                        exoPlaybackExceptionExtra,
+                        playbackExceptionErrorCode,
+                    ),
+                    cause,
+                )
+
+            else -> null
+        }
 
     @Suppress("ComplexMethod")
     private fun handleApiError(apiError: ApiError): Event.Error {
