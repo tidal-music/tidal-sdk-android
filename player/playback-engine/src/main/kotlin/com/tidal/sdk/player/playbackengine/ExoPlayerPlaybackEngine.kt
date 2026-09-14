@@ -11,6 +11,7 @@ import androidx.media3.common.Timeline
 import androidx.media3.common.VideoSize
 import androidx.media3.datasource.HttpDataSource.InvalidResponseCodeException
 import androidx.media3.exoplayer.DecoderReuseEvaluation
+import androidx.media3.exoplayer.ExoPlaybackException
 import androidx.media3.exoplayer.analytics.AnalyticsListener
 import androidx.media3.exoplayer.analytics.AnalyticsListener.EventTime
 import androidx.media3.exoplayer.hls.HlsManifest
@@ -269,6 +270,8 @@ internal class ExoPlayerPlaybackEngine(
 
     private var nextPlaybackStatistics: PlaybackStatistics.Undetermined? = null
 
+    private var rendererErrorRetriedProduct: MediaProduct? = null
+
     private var currentStall: StartedStall? by
         Delegates.observable(null) { _, oldValue, _ -> oldValue?.complete() }
 
@@ -317,6 +320,11 @@ internal class ExoPlayerPlaybackEngine(
     }
 
     override fun load(mediaProduct: MediaProduct) {
+        rendererErrorRetriedProduct = null
+        loadInternal(mediaProduct)
+    }
+
+    private fun loadInternal(mediaProduct: MediaProduct) {
         abortCrossfade(restoreNext = false)
         val positionInSeconds =
             if (this.forwardingMediaProduct?.productType == ProductType.BROADCAST) {
@@ -1066,7 +1074,6 @@ internal class ExoPlayerPlaybackEngine(
         }
 
         val eventError = errorHandler.getErrorEvent(error, forwardingMediaProduct?.productType)
-        coroutineScope.launch { eventSink.emit(eventError) }
         playbackInfoFetchException.report(errorMessage, eventError.errorCode)
         val matchingMediaProduct = eventTime.correspondingForwardingMediaProductIfMatching
         if (
@@ -1074,17 +1081,33 @@ internal class ExoPlayerPlaybackEngine(
                 matchingMediaProduct === nextForwardingMediaProduct
         ) {
             if (playbackInfoFetchException != null) {
+                coroutineScope.launch { eventSink.emit(eventError) }
                 reset()
-            } else if (matchingMediaProduct === forwardingMediaProduct) {
-                val positionInSeconds =
-                    if (forwardingMediaProduct?.productType == ProductType.BROADCAST) {
-                            extendedExoPlayer.currentPositionSinceEpochMs
-                        } else {
-                            extendedExoPlayer.currentPositionMs
-                        }
-                        .toDouble() / MS_IN_SECOND
-                reportEnd(EndReason.ERROR, errorMessage, eventError.errorCode, positionInSeconds)
+            } else if (
+                matchingMediaProduct === forwardingMediaProduct &&
+                    shouldRetryAfterRendererError(error, eventError)
+            ) {
+                retryAfterRendererError(errorMessage, eventError.errorCode)
+            } else {
+                coroutineScope.launch { eventSink.emit(eventError) }
+                if (matchingMediaProduct === forwardingMediaProduct) {
+                    val positionInSeconds =
+                        if (forwardingMediaProduct?.productType == ProductType.BROADCAST) {
+                                extendedExoPlayer.currentPositionSinceEpochMs
+                            } else {
+                                extendedExoPlayer.currentPositionMs
+                            }
+                            .toDouble() / MS_IN_SECOND
+                    reportEnd(
+                        EndReason.ERROR,
+                        errorMessage,
+                        eventError.errorCode,
+                        positionInSeconds,
+                    )
+                }
             }
+        } else {
+            coroutineScope.launch { eventSink.emit(eventError) }
         }
     }
 
@@ -1217,6 +1240,39 @@ internal class ExoPlayerPlaybackEngine(
                         startTimestamp,
                         trueTimeWrapper.currentTimeMillis,
                     )
+        }
+    }
+
+    private fun shouldRetryAfterRendererError(error: PlaybackException, eventError: Event.Error) =
+        eventError is Event.Error.Retryable &&
+            (error as? ExoPlaybackException)?.type == ExoPlaybackException.TYPE_RENDERER &&
+            mediaProduct !== rendererErrorRetriedProduct
+
+    private fun retryAfterRendererError(errorMessage: String, errorCode: String) {
+        val productToRetry = mediaProduct ?: return
+        val isBroadcast = productToRetry.productType == ProductType.BROADCAST
+        val positionMs = extendedExoPlayer.currentPositionMs
+        val nextProduct = nextForwardingMediaProduct?.delegate
+        val shouldPlay = extendedExoPlayer.playWhenReady
+        val positionInSeconds =
+            if (isBroadcast) {
+                    extendedExoPlayer.currentPositionSinceEpochMs
+                } else {
+                    positionMs
+                }
+                .toDouble() / MS_IN_SECOND
+        reportEnd(EndReason.ERROR, errorMessage, errorCode, positionInSeconds)
+        rendererErrorRetriedProduct = productToRetry
+        resetInternal()
+        loadInternal(productToRetry)
+        if (!isBroadcast && positionMs > 0L) {
+            extendedExoPlayer.seekTo(positionMs)
+        }
+        if (nextProduct != null) {
+            setNext(nextProduct)
+        }
+        if (shouldPlay) {
+            play()
         }
     }
 
