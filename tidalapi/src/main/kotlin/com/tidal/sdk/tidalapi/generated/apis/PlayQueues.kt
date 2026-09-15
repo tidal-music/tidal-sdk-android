@@ -242,7 +242,7 @@ interface PlayQueues {
      * @param playQueuesFutureRelationshipRemoveOperationPayload (optional)
      * @return [MutationResponseDocument]
      */
-    @DELETE("playQueues/{id}/relationships/future")
+    @HTTP(method = "DELETE", path = "playQueues/{id}/relationships/future", hasBody = true)
     suspend fun playQueuesIdRelationshipsFutureDelete(
         @Path("id") id: kotlin.String,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,

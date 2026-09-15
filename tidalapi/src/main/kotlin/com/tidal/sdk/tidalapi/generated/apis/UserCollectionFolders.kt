@@ -156,7 +156,11 @@ interface UserCollectionFolders {
      * @param userCollectionFoldersItemsRelationshipRemoveOperationPayload (optional)
      * @return [MutationResponseDocument]
      */
-    @DELETE("userCollectionFolders/{id}/relationships/items")
+    @HTTP(
+        method = "DELETE",
+        path = "userCollectionFolders/{id}/relationships/items",
+        hasBody = true,
+    )
     suspend fun userCollectionFoldersIdRelationshipsItemsDelete(
         @Path("id") id: kotlin.String,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,

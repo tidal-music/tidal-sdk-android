@@ -108,7 +108,11 @@ interface Installations {
      * @param installationsOfflineInventoryRelationshipRemoveOperationPayload (optional)
      * @return [MutationResponseDocument]
      */
-    @DELETE("installations/{id}/relationships/offlineInventory")
+    @HTTP(
+        method = "DELETE",
+        path = "installations/{id}/relationships/offlineInventory",
+        hasBody = true,
+    )
     suspend fun installationsIdRelationshipsOfflineInventoryDelete(
         @Path("id") id: kotlin.String,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
