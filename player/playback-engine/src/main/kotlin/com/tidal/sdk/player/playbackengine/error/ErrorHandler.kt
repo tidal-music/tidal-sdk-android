@@ -181,39 +181,71 @@ internal class ErrorHandler(private val errorCodeFactory: ErrorCodeFactory) {
 
                     is ExoPlaybackException ->
                         lazy {
-                            if (exoPlaybackExceptionType == ExoPlaybackException.TYPE_SOURCE) {
-                                when (playbackExceptionErrorCode) {
-                                    ExoPlaybackException.ERROR_CODE_IO_UNSPECIFIED ->
-                                        Event.Error.Retryable(
-                                            errorCodeFactory.createForOther(
-                                                exoPlaybackExceptionExtra,
-                                                playbackExceptionErrorCode,
-                                            ),
-                                            cause,
-                                        )
+                            when (exoPlaybackExceptionType) {
+                                ExoPlaybackException.TYPE_SOURCE ->
+                                    when (playbackExceptionErrorCode) {
+                                        ExoPlaybackException.ERROR_CODE_IO_UNSPECIFIED ->
+                                            Event.Error.Retryable(
+                                                errorCodeFactory.createForOther(
+                                                    exoPlaybackExceptionExtra,
+                                                    playbackExceptionErrorCode,
+                                                ),
+                                                cause,
+                                            )
 
-                                    ExoPlaybackException.ERROR_CODE_IO_NETWORK_CONNECTION_FAILED ->
-                                        Event.Error.Network(
-                                            errorCodeFactory.createForNetwork(
-                                                exoPlaybackExceptionExtra,
-                                                playbackExceptionErrorCode,
-                                            ),
-                                            cause,
-                                        )
+                                        ExoPlaybackException
+                                            .ERROR_CODE_IO_NETWORK_CONNECTION_FAILED ->
+                                            Event.Error.Network(
+                                                errorCodeFactory.createForNetwork(
+                                                    exoPlaybackExceptionExtra,
+                                                    playbackExceptionErrorCode,
+                                                ),
+                                                cause,
+                                            )
 
-                                    ExoPlaybackException.ERROR_CODE_IO_NETWORK_CONNECTION_TIMEOUT ->
-                                        Event.Error.Network(
-                                            errorCodeFactory.createForTimeout(
-                                                exoPlaybackExceptionExtra,
-                                                playbackExceptionErrorCode,
-                                            ),
-                                            cause,
-                                        )
+                                        ExoPlaybackException
+                                            .ERROR_CODE_IO_NETWORK_CONNECTION_TIMEOUT ->
+                                            Event.Error.Network(
+                                                errorCodeFactory.createForTimeout(
+                                                    exoPlaybackExceptionExtra,
+                                                    playbackExceptionErrorCode,
+                                                ),
+                                                cause,
+                                            )
 
-                                    else -> null
-                                }
-                            } else {
-                                null
+                                        else -> null
+                                    }
+
+                                ExoPlaybackException.TYPE_RENDERER ->
+                                    when (playbackExceptionErrorCode) {
+                                        PlaybackException.ERROR_CODE_DECODER_INIT_FAILED,
+                                        PlaybackException.ERROR_CODE_DECODER_QUERY_FAILED,
+                                        PlaybackException.ERROR_CODE_DECODING_FAILED,
+                                        PlaybackException.ERROR_CODE_DECODING_RESOURCES_RECLAIMED ->
+                                            Event.Error.Retryable(
+                                                errorCodeFactory.createForOther(
+                                                    exoPlaybackExceptionExtra,
+                                                    playbackExceptionErrorCode,
+                                                ),
+                                                cause,
+                                            )
+
+                                        PlaybackException
+                                            .ERROR_CODE_DECODING_FORMAT_EXCEEDS_CAPABILITIES,
+                                        PlaybackException
+                                            .ERROR_CODE_DECODING_FORMAT_UNSUPPORTED ->
+                                            Event.Error.NotAllowed(
+                                                errorCodeFactory.createForOther(
+                                                    exoPlaybackExceptionExtra,
+                                                    playbackExceptionErrorCode,
+                                                ),
+                                                cause,
+                                            )
+
+                                        else -> null
+                                    }
+
+                                else -> null
                             }
                         }
 
