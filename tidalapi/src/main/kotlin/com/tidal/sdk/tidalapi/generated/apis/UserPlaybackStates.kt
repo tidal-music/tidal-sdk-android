@@ -167,7 +167,11 @@ interface UserPlaybackStates {
      * @param userPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload (optional)
      * @return [MutationResponseDocument]
      */
-    @DELETE("userPlaybackStates/{id}/relationships/availablePlayers")
+    @HTTP(
+        method = "DELETE",
+        path = "userPlaybackStates/{id}/relationships/availablePlayers",
+        hasBody = true,
+    )
     suspend fun userPlaybackStatesIdRelationshipsAvailablePlayersDelete(
         @Path("id") id: kotlin.String,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,

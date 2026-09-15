@@ -194,7 +194,11 @@ interface Playlists {
      * @param playlistsCollaboratorProfilesRelationshipRemoveOperationPayload (optional)
      * @return [MutationResponseDocument]
      */
-    @DELETE("playlists/{id}/relationships/collaboratorProfiles")
+    @HTTP(
+        method = "DELETE",
+        path = "playlists/{id}/relationships/collaboratorProfiles",
+        hasBody = true,
+    )
     suspend fun playlistsIdRelationshipsCollaboratorProfilesDelete(
         @Path("id") id: kotlin.String,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
@@ -218,7 +222,6 @@ interface Playlists {
      * - 503: Service temporarily unavailable
      *
      * @param id Playlist id
-     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: collaboratorProfiles (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -228,7 +231,6 @@ interface Playlists {
     @GET("playlists/{id}/relationships/collaboratorProfiles")
     suspend fun playlistsIdRelationshipsCollaboratorProfilesGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
@@ -281,7 +283,6 @@ interface Playlists {
      * - 503: Service temporarily unavailable
      *
      * @param id Playlist id
-     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: collaborators (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -291,7 +292,6 @@ interface Playlists {
     @GET("playlists/{id}/relationships/collaborators")
     suspend fun playlistsIdRelationshipsCollaboratorsGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
@@ -381,7 +381,7 @@ interface Playlists {
      * @param playlistsItemsRelationshipRemoveOperationPayload (optional)
      * @return [MutationResponseDocument]
      */
-    @DELETE("playlists/{id}/relationships/items")
+    @HTTP(method = "DELETE", path = "playlists/{id}/relationships/items", hasBody = true)
     suspend fun playlistsIdRelationshipsItemsDelete(
         @Path("id") id: kotlin.String,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
@@ -526,7 +526,6 @@ interface Playlists {
      * - 503: Service temporarily unavailable
      *
      * @param id Playlist id
-     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: ownerProfiles (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -536,7 +535,6 @@ interface Playlists {
     @GET("playlists/{id}/relationships/ownerProfiles")
     suspend fun playlistsIdRelationshipsOwnerProfilesGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
@@ -556,7 +554,6 @@ interface Playlists {
      * - 503: Service temporarily unavailable
      *
      * @param id Playlist id
-     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -566,7 +563,6 @@ interface Playlists {
     @GET("playlists/{id}/relationships/owners")
     suspend fun playlistsIdRelationshipsOwnersGet(
         @Path("id") id: kotlin.String,
-        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,

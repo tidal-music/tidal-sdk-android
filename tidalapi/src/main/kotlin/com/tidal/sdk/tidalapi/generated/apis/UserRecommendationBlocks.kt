@@ -75,7 +75,11 @@ interface UserRecommendationBlocks {
      * @param userRecommendationBlocksArtistsRelationshipRemoveOperationPayload (optional)
      * @return [MutationResponseDocument]
      */
-    @DELETE("userRecommendationBlocks/{id}/relationships/artists")
+    @HTTP(
+        method = "DELETE",
+        path = "userRecommendationBlocks/{id}/relationships/artists",
+        hasBody = true,
+    )
     suspend fun userRecommendationBlocksIdRelationshipsArtistsDelete(
         @Path("id") id: kotlin.String,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
@@ -204,7 +208,11 @@ interface UserRecommendationBlocks {
      * @param userRecommendationBlocksTracksRelationshipRemoveOperationPayload (optional)
      * @return [MutationResponseDocument]
      */
-    @DELETE("userRecommendationBlocks/{id}/relationships/tracks")
+    @HTTP(
+        method = "DELETE",
+        path = "userRecommendationBlocks/{id}/relationships/tracks",
+        hasBody = true,
+    )
     suspend fun userRecommendationBlocksIdRelationshipsTracksDelete(
         @Path("id") id: kotlin.String,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
@@ -304,7 +312,11 @@ interface UserRecommendationBlocks {
      * @param userRecommendationBlocksVideosRelationshipRemoveOperationPayload (optional)
      * @return [MutationResponseDocument]
      */
-    @DELETE("userRecommendationBlocks/{id}/relationships/videos")
+    @HTTP(
+        method = "DELETE",
+        path = "userRecommendationBlocks/{id}/relationships/videos",
+        hasBody = true,
+    )
     suspend fun userRecommendationBlocksIdRelationshipsVideosDelete(
         @Path("id") id: kotlin.String,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,

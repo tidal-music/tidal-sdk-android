@@ -42,6 +42,8 @@ fun getOneOfSerializer() = SerializersModule {
         subclass(DspSharingLinksResourceObject::class, DspSharingLinksResourceObject.serializer())
         subclass(DynamicModulesResourceObject::class, DynamicModulesResourceObject.serializer())
         subclass(DynamicPagesResourceObject::class, DynamicPagesResourceObject.serializer())
+        subclass(FolderItemsResourceObject::class, FolderItemsResourceObject.serializer())
+        subclass(FoldersResourceObject::class, FoldersResourceObject.serializer())
         subclass(GenresResourceObject::class, GenresResourceObject.serializer())
         subclass(InstallationsResourceObject::class, InstallationsResourceObject.serializer())
         subclass(LyricsResourceObject::class, LyricsResourceObject.serializer())

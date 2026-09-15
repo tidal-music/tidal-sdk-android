@@ -64,7 +64,11 @@ interface UserCollectionSaveForLaters {
      * @param userCollectionSaveForLatersItemsRelationshipRemoveOperationPayload (optional)
      * @return [MutationResponseDocument]
      */
-    @DELETE("userCollectionSaveForLaters/{id}/relationships/items")
+    @HTTP(
+        method = "DELETE",
+        path = "userCollectionSaveForLaters/{id}/relationships/items",
+        hasBody = true,
+    )
     suspend fun userCollectionSaveForLatersIdRelationshipsItemsDelete(
         @Path("id") id: kotlin.String,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,

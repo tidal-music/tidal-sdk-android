@@ -1,5 +1,5 @@
 # TIDAL API Surface Snapshot
-# Spec version: 1.10.128 | Endpoints: 346 | Models: 1030
+# Spec version: 1.10.130 | Endpoints: 359 | Models: 1069
 
 ## Endpoints
 
@@ -24,7 +24,7 @@ GET /albumStatistics/{id}
   returns: AlbumStatistics_Single_Resource_Data_Document
 
 GET /albumStatistics/{id}/relationships/owners
-  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string
+  params: id: string, include?: array[string], page[cursor]?: string
   returns: AlbumStatistics_Owners_Multi_Relationship_Data_Document
 
 GET /albums
@@ -76,7 +76,7 @@ PATCH /albums/{id}/relationships/items
   returns: Mutation_Response_Document
 
 GET /albums/{id}/relationships/owners
-  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string, shareCode?: string
+  params: id: string, include?: array[string], page[cursor]?: string, shareCode?: string
   returns: Albums_Owners_Multi_Relationship_Data_Document
 
 GET /albums/{id}/relationships/priceConfig
@@ -431,6 +431,58 @@ GET /dynamicPages/{id}/relationships/subject
   params: id: string, include?: array[string], replaceMedia?: string
   returns: DynamicPages_Subject_Single_Relationship_Data_Document
 
+POST /folderItems
+  params: ??: any
+  returns: FolderItems_Create_Single_Resource_Data_Document
+
+GET /folderItems/{id}
+  params: id: string, include?: array[string], replaceMedia?: string
+  returns: FolderItems_Single_Resource_Data_Document
+
+DELETE /folderItems/{id}
+  params: ??: any, id: string
+  returns: Mutation_Response_Document
+
+GET /folderItems/{id}/relationships/owners
+  params: id: string, include?: array[string], page[cursor]?: string
+  returns: FolderItems_Owners_Multi_Relationship_Data_Document
+
+GET /folderItems/{id}/relationships/parent
+  params: id: string, include?: array[string], replaceMedia?: string
+  returns: FolderItems_Parent_Single_Relationship_Data_Document
+
+PATCH /folderItems/{id}/relationships/parent
+  params: ??: any, id: string
+  returns: FolderItems_Parent_Update_Single_Relationship_Data_Document
+
+GET /folderItems/{id}/relationships/subject
+  params: id: string, include?: array[string], replaceMedia?: string
+  returns: FolderItems_Subject_Single_Relationship_Data_Document
+
+POST /folders
+  params: ??: any
+  returns: Folders_Create_Single_Resource_Data_Document
+
+GET /folders/{id}
+  params: id: string, include?: array[string], replaceMedia?: string
+  returns: Folders_Single_Resource_Data_Document
+
+PATCH /folders/{id}
+  params: ??: any, id: string
+  returns: Folders_Update_Single_Resource_Data_Document
+
+DELETE /folders/{id}
+  params: ??: any, id: string
+  returns: Mutation_Response_Document
+
+GET /folders/{id}/relationships/children
+  params: id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string
+  returns: Folders_Children_Multi_Relationship_Data_Document
+
+GET /folders/{id}/relationships/owners
+  params: id: string, include?: array[string], page[cursor]?: string
+  returns: Folders_Owners_Multi_Relationship_Data_Document
+
 GET /genres
   params: filter[id]: array[string], locale?: string, page[cursor]?: string
   returns: Genres_Multi_Resource_Data_Document
@@ -484,7 +536,7 @@ DELETE /lyrics/{id}
   returns: Mutation_Response_Document
 
 GET /lyrics/{id}/relationships/owners
-  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string
+  params: id: string, include?: array[string], page[cursor]?: string
   returns: Lyrics_Owners_Multi_Relationship_Data_Document
 
 GET /lyrics/{id}/relationships/track
@@ -636,7 +688,7 @@ DELETE /playlists/{id}
   returns: Mutation_Response_Document
 
 GET /playlists/{id}/relationships/collaboratorProfiles
-  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string
+  params: id: string, include?: array[string], page[cursor]?: string
   returns: Playlists_CollaboratorProfiles_Multi_Relationship_Data_Document
 
 POST /playlists/{id}/relationships/collaboratorProfiles
@@ -648,7 +700,7 @@ DELETE /playlists/{id}/relationships/collaboratorProfiles
   returns: Mutation_Response_Document
 
 GET /playlists/{id}/relationships/collaborators
-  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string
+  params: id: string, include?: array[string], page[cursor]?: string
   returns: Playlists_Collaborators_Multi_Relationship_Data_Document
 
 GET /playlists/{id}/relationships/coverArt
@@ -676,11 +728,11 @@ DELETE /playlists/{id}/relationships/items
   returns: Mutation_Response_Document
 
 GET /playlists/{id}/relationships/ownerProfiles
-  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string
+  params: id: string, include?: array[string], page[cursor]?: string
   returns: Playlists_OwnerProfiles_Multi_Relationship_Data_Document
 
 GET /playlists/{id}/relationships/owners
-  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string
+  params: id: string, include?: array[string], page[cursor]?: string
   returns: Playlists_Owners_Multi_Relationship_Data_Document
 
 GET /playlists/{id}/relationships/suggestedCoverArts
@@ -932,7 +984,7 @@ GET /trackStatistics/{id}
   returns: TrackStatistics_Single_Resource_Data_Document
 
 GET /trackStatistics/{id}/relationships/owners
-  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string
+  params: id: string, include?: array[string], page[cursor]?: string
   returns: TrackStatistics_Owners_Multi_Relationship_Data_Document
 
 GET /tracks
@@ -988,7 +1040,7 @@ GET /tracks/{id}/relationships/metadataStatus
   returns: Tracks_MetadataStatus_Single_Relationship_Data_Document
 
 GET /tracks/{id}/relationships/owners
-  params: countryCode?: string, id: string, include?: array[string], page[cursor]?: string, shareCode?: string
+  params: id: string, include?: array[string], page[cursor]?: string, shareCode?: string
   returns: Tracks_Owners_Multi_Relationship_Data_Document
 
 GET /tracks/{id}/relationships/priceConfig
@@ -2779,6 +2831,160 @@ File_Upload_Link
 File_Upload_Link_Meta
   method: string (required)
   headers: object (optional)
+
+FolderItemsCreateOperation_Payload
+  data: FolderItemsCreateOperation_Payload_Data (required)
+
+FolderItemsCreateOperation_Payload_Data
+  relationships: FolderItemsCreateOperation_Payload_Data_Relationships (required)
+  type: enum[folderItems] (required)
+
+FolderItemsCreateOperation_Payload_Data_Relationships
+  parent: FolderItemsCreateOperation_Payload_Data_Relationships_Parent (required)
+  subject: FolderItemsCreateOperation_Payload_Data_Relationships_Subject (required)
+
+FolderItemsCreateOperation_Payload_Data_Relationships_Parent
+  data: FolderItemsCreateOperation_Payload_Data_Relationships_Parent_Data (required)
+
+FolderItemsCreateOperation_Payload_Data_Relationships_Parent_Data
+  id: string (required)
+  type: enum[folders] (required)
+
+FolderItemsCreateOperation_Payload_Data_Relationships_Subject
+  data: FolderItemsCreateOperation_Payload_Data_Relationships_Subject_Data (required)
+
+FolderItemsCreateOperation_Payload_Data_Relationships_Subject_Data
+  id: string (required)
+  type: enum[folders, albums] (required)
+
+FolderItemsCreateResource400ResponseBody
+  errors: array[object] (required)
+
+FolderItemsParentRelationshipUpdateOperation_Payload
+  data: FolderItemsParentRelationshipUpdateOperation_Payload_Data (required)
+
+FolderItemsParentRelationshipUpdateOperation_Payload_Data
+  id: string (required)
+  type: enum[folders] (required)
+
+FolderItemsUpdateSingleDataRelationship400ResponseBody
+  errors: array[object] (required)
+
+FolderItems_Attributes
+
+FolderItems_Create_Single_Resource_Data_Document
+  data: FolderItems_Resource_Object (required)
+  links: Links (required)
+
+FolderItems_Owners_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[Resource_Identifier] (optional)
+  included: Included (optional)
+
+FolderItems_Parent_Single_Relationship_Data_Document
+  links: Links (required)
+  data: Resource_Identifier | enum[None] (optional)
+  included: Included (optional)
+
+FolderItems_Parent_Update_Resource_Identifier
+  id: string (required)
+  type: enum[folders] (required)
+
+FolderItems_Parent_Update_Single_Relationship_Data_Document
+  data: FolderItems_Parent_Update_Resource_Identifier | enum[None] (required)
+  links: Links (required)
+
+FolderItems_Relationships
+  owners: FolderItems_Owners_Multi_Relationship_Data_Document (optional)
+  parent: FolderItems_Parent_Single_Relationship_Data_Document (optional)
+  subject: FolderItems_Subject_Single_Relationship_Data_Document (optional)
+
+FolderItems_Resource_Object
+  id: string (required)
+  type: string (required)
+  attributes: FolderItems_Attributes (optional)
+  relationships: FolderItems_Relationships (optional)
+
+FolderItems_Single_Resource_Data_Document
+  data: FolderItems_Resource_Object (required)
+  links: Links (required)
+  included: Included (optional)
+
+FolderItems_Subject_Resource_Identifier
+  id: string (required)
+  type: string (required)
+  meta: FolderItems_Subject_Resource_Identifier_Meta (optional)
+
+FolderItems_Subject_Resource_Identifier_Meta
+  replacement: Replacement_Provenance (optional)
+
+FolderItems_Subject_Single_Relationship_Data_Document
+  links: Links (required)
+  data: FolderItems_Subject_Resource_Identifier | enum[None] (optional)
+  included: Included (optional)
+
+FoldersCreateOperation_Payload
+  data: FoldersCreateOperation_Payload_Data (required)
+
+FoldersCreateOperation_Payload_Data
+  attributes: FoldersCreateOperation_Payload_Data_Attributes (required)
+  type: enum[folders] (required)
+
+FoldersCreateOperation_Payload_Data_Attributes
+  name: string (required)
+
+FoldersDeleteResource400ResponseBody
+  errors: array[object] (required)
+
+FoldersUpdateOperation_Payload
+  data: FoldersUpdateOperation_Payload_Data (required)
+
+FoldersUpdateOperation_Payload_Data
+  attributes: FoldersUpdateOperation_Payload_Data_Attributes (required)
+  id: string (required)
+  type: enum[folders] (required)
+
+FoldersUpdateOperation_Payload_Data_Attributes
+  name: string (required)
+
+FoldersUpdateResource400ResponseBody
+  errors: array[object] (required)
+
+Folders_Attributes
+  name: string (required)
+
+Folders_Children_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[Resource_Identifier] (optional)
+  included: Included (optional)
+
+Folders_Create_Single_Resource_Data_Document
+  data: Folders_Resource_Object (required)
+  links: Links (required)
+
+Folders_Owners_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[Resource_Identifier] (optional)
+  included: Included (optional)
+
+Folders_Relationships
+  children: Folders_Children_Multi_Relationship_Data_Document (optional)
+  owners: Folders_Owners_Multi_Relationship_Data_Document (optional)
+
+Folders_Resource_Object
+  id: string (required)
+  type: string (required)
+  attributes: Folders_Attributes (optional)
+  relationships: Folders_Relationships (optional)
+
+Folders_Single_Resource_Data_Document
+  data: Folders_Resource_Object (required)
+  links: Links (required)
+  included: Included (optional)
+
+Folders_Update_Single_Resource_Data_Document
+  data: Folders_Resource_Object (required)
+  links: Links (required)
 
 Genres_Attributes
   genreName: string (required)

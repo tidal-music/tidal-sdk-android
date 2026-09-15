@@ -267,7 +267,7 @@ interface Artists {
      * @param artistsFollowingRelationshipRemoveOperationPayload (optional)
      * @return [MutationResponseDocument]
      */
-    @DELETE("artists/{id}/relationships/following")
+    @HTTP(method = "DELETE", path = "artists/{id}/relationships/following", hasBody = true)
     suspend fun artistsIdRelationshipsFollowingDelete(
         @Path("id") id: kotlin.String,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,

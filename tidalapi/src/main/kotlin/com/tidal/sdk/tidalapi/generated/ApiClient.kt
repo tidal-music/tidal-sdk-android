@@ -21,6 +21,8 @@ import com.tidal.sdk.tidalapi.generated.apis.Downloads
 import com.tidal.sdk.tidalapi.generated.apis.DspSharingLinks
 import com.tidal.sdk.tidalapi.generated.apis.DynamicModules
 import com.tidal.sdk.tidalapi.generated.apis.DynamicPages
+import com.tidal.sdk.tidalapi.generated.apis.FolderItems
+import com.tidal.sdk.tidalapi.generated.apis.Folders
 import com.tidal.sdk.tidalapi.generated.apis.Genres
 import com.tidal.sdk.tidalapi.generated.apis.Installations
 import com.tidal.sdk.tidalapi.generated.apis.Lyrics
@@ -189,6 +191,16 @@ class TidalApiClient(
     /** Returns an instance of the [DynamicPages] which can be used to make API calls to the */
     fun createDynamicPages(): DynamicPages {
         return retrofit.create(DynamicPages::class.java)
+    }
+
+    /** Returns an instance of the [FolderItems] which can be used to make API calls to the */
+    fun createFolderItems(): FolderItems {
+        return retrofit.create(FolderItems::class.java)
+    }
+
+    /** Returns an instance of the [Folders] which can be used to make API calls to the */
+    fun createFolders(): Folders {
+        return retrofit.create(Folders::class.java)
     }
 
     /** Returns an instance of the [Genres] which can be used to make API calls to the */
