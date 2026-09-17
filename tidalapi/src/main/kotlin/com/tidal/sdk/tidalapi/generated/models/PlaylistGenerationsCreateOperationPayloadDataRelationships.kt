@@ -22,9 +22,15 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param playlist */
+/**
+ * @param playlist
+ * @param baseGeneration
+ */
 @Serializable
 data class PlaylistGenerationsCreateOperationPayloadDataRelationships(
     @SerialName(value = "playlist")
-    val playlist: PlaylistGenerationsCreateOperationPayloadDataRelationshipsPlaylist
+    val playlist: PlaylistGenerationsCreateOperationPayloadDataRelationshipsPlaylist,
+    @SerialName(value = "baseGeneration")
+    val baseGeneration: PlaylistGenerationsCreateOperationPayloadDataRelationshipsBaseGeneration? =
+        null,
 ) {}

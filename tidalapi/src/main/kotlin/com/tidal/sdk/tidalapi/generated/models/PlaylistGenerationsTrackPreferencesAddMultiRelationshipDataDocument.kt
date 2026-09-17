@@ -23,16 +23,15 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param baseGeneration
- * @param playlist
- * @param trackPreferences
+ * @param `data`
+ * @param links
+ * @param meta
  */
 @Serializable
-data class PlaylistGenerationsRelationships(
-    @SerialName(value = "baseGeneration")
-    val baseGeneration: PlaylistGenerationsBaseGenerationSingleRelationshipDataDocument? = null,
-    @SerialName(value = "playlist")
-    val playlist: PlaylistGenerationsPlaylistSingleRelationshipDataDocument? = null,
-    @SerialName(value = "trackPreferences")
-    val trackPreferences: PlaylistGenerationsTrackPreferencesMultiRelationshipDataDocument? = null,
+data class PlaylistGenerationsTrackPreferencesAddMultiRelationshipDataDocument(
+    @SerialName(value = "data")
+    val `data`: kotlin.collections.List<PlaylistGenerationsTrackPreferencesAddResourceIdentifier>,
+    @SerialName(value = "links") val links: Links,
+    @SerialName(value = "meta")
+    val meta: PlaylistGenerationsTrackPreferencesAddMultiRelationshipDataDocumentMeta? = null,
 ) {}

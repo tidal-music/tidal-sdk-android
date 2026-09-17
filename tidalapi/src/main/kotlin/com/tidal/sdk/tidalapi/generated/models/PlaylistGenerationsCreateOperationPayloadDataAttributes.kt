@@ -22,8 +22,14 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param prompt */
+/**
+ * @param prompt
+ * @param preferenceVersion Current track-preference version
+ */
 @Serializable
 data class PlaylistGenerationsCreateOperationPayloadDataAttributes(
-    @SerialName(value = "prompt") val prompt: kotlin.String
+    @SerialName(value = "prompt") val prompt: kotlin.String,
+
+    /* Current track-preference version */
+    @SerialName(value = "preferenceVersion") val preferenceVersion: kotlin.Int? = null,
 ) {}

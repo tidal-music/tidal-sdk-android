@@ -1,5 +1,5 @@
 # TIDAL API Surface Snapshot
-# Spec version: 1.10.130 | Endpoints: 359 | Models: 1069
+# Spec version: 1.10.134 | Endpoints: 363 | Models: 1094
 
 ## Endpoints
 
@@ -663,9 +663,29 @@ GET /playlistGenerations/{id}
   params: id: string, include?: array[string], replaceMedia?: string
   returns: PlaylistGenerations_Single_Resource_Data_Document
 
+GET /playlistGenerations/{id}/relationships/baseGeneration
+  params: id: string, include?: array[string], replaceMedia?: string
+  returns: PlaylistGenerations_BaseGeneration_Single_Relationship_Data_Document
+
 GET /playlistGenerations/{id}/relationships/playlist
   params: id: string, include?: array[string], replaceMedia?: string
   returns: PlaylistGenerations_Playlist_Single_Relationship_Data_Document
+
+GET /playlistGenerations/{id}/relationships/trackPreferences
+  params: id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string
+  returns: PlaylistGenerations_TrackPreferences_Multi_Relationship_Data_Document
+
+POST /playlistGenerations/{id}/relationships/trackPreferences
+  params: ??: any, id: string
+  returns: PlaylistGenerations_TrackPreferences_Add_Multi_Relationship_Data_Document
+
+PATCH /playlistGenerations/{id}/relationships/trackPreferences
+  params: ??: any, id: string
+  returns: PlaylistGenerations_TrackPreferences_Update_Multi_Relationship_Data_Document
+
+DELETE /playlistGenerations/{id}/relationships/trackPreferences
+  params: ??: any, id: string
+  returns: Mutation_Response_Document
 
 GET /playlists
   params: countryCode?: string, filter[collaborators.id]?: array[string], filter[id]?: array[string], filter[owners.id]?: array[string], include?: array[string], page[cursor]?: string, replaceMedia?: string, sort?: array[enum[createdAt, -createdAt, lastModifiedAt, -lastModifiedAt, name, -name]]
@@ -690,10 +710,6 @@ DELETE /playlists/{id}
 GET /playlists/{id}/relationships/collaboratorProfiles
   params: id: string, include?: array[string], page[cursor]?: string
   returns: Playlists_CollaboratorProfiles_Multi_Relationship_Data_Document
-
-POST /playlists/{id}/relationships/collaboratorProfiles
-  params: ??: any, id: string
-  returns: Mutation_Response_Document
 
 DELETE /playlists/{id}/relationships/collaboratorProfiles
   params: ??: any, id: string
@@ -2013,6 +2029,7 @@ Artists_Attributes
   contributionsSalesPitch: string (optional)
   externalLinks: array[External_Link] (optional)
   handle: string (optional)
+  numberOfFollowers: integer(int32) (optional)
   ownerType: enum[LABEL, USER, MIXED] (optional)
   spotlighted: boolean (optional)
 
@@ -3575,6 +3592,9 @@ PlaylistGenerationSchedules_Update_Single_Resource_Data_Document
   data: PlaylistGenerationSchedules_Resource_Object (required)
   links: Links (required)
 
+PlaylistGenerationsAddMultiDataRelationshipWithResponse409ResponseBody
+  errors: array[object] (required)
+
 PlaylistGenerationsCreateOperation_Payload
   data: PlaylistGenerationsCreateOperation_Payload_Data (required)
 
@@ -3585,9 +3605,18 @@ PlaylistGenerationsCreateOperation_Payload_Data
 
 PlaylistGenerationsCreateOperation_Payload_Data_Attributes
   prompt: string (required)
+  preferenceVersion: integer(int32) (optional)
 
 PlaylistGenerationsCreateOperation_Payload_Data_Relationships
   playlist: PlaylistGenerationsCreateOperation_Payload_Data_Relationships_Playlist (required)
+  baseGeneration: PlaylistGenerationsCreateOperation_Payload_Data_Relationships_BaseGeneration (optional)
+
+PlaylistGenerationsCreateOperation_Payload_Data_Relationships_BaseGeneration
+  data: PlaylistGenerationsCreateOperation_Payload_Data_Relationships_BaseGeneration_Data (required)
+
+PlaylistGenerationsCreateOperation_Payload_Data_Relationships_BaseGeneration_Data
+  id: string (required)
+  type: enum[playlistGenerations] (required)
 
 PlaylistGenerationsCreateOperation_Payload_Data_Relationships_Playlist
   data: PlaylistGenerationsCreateOperation_Payload_Data_Relationships_Playlist_Data (required)
@@ -3596,11 +3625,53 @@ PlaylistGenerationsCreateOperation_Payload_Data_Relationships_Playlist_Data
   id: string (required)
   type: enum[playlists] (required)
 
+PlaylistGenerationsCreateResource409ResponseBody
+  errors: array[object] (required)
+
+PlaylistGenerationsRemoveMultiDataRelationship409ResponseBody
+  errors: array[object] (required)
+
+PlaylistGenerationsTrackPreferencesRelationshipAddOperation_Payload
+  data: array[PlaylistGenerationsTrackPreferencesRelationship_Payload_Data] (required)
+  meta: PlaylistGenerationsTrackPreferencesRelationship_Payload_Meta (required)
+
+PlaylistGenerationsTrackPreferencesRelationshipRemoveOperation_Payload
+  data: array[PlaylistGenerationsTrackPreferencesRelationshipRemoveOperation_Payload_Data] (required)
+  meta: PlaylistGenerationsTrackPreferencesRelationship_Payload_Meta (required)
+
+PlaylistGenerationsTrackPreferencesRelationshipRemoveOperation_Payload_Data
+  id: string (required)
+  type: enum[tracks] (required)
+
+PlaylistGenerationsTrackPreferencesRelationshipUpdateOperation_Payload
+  data: array[PlaylistGenerationsTrackPreferencesRelationship_Payload_Data] (required)
+  meta: PlaylistGenerationsTrackPreferencesRelationship_Payload_Meta (required)
+
+PlaylistGenerationsTrackPreferencesRelationship_Payload_Data
+  id: string (required)
+  meta: PlaylistGenerationsTrackPreferencesRelationship_Payload_Data_Meta (required)
+  type: enum[tracks] (required)
+
+PlaylistGenerationsTrackPreferencesRelationship_Payload_Data_Meta
+  preference: enum[KEEP, REMOVE, MORE_LIKE_THIS] (required)
+
+PlaylistGenerationsTrackPreferencesRelationship_Payload_Meta
+  expectedPreferenceVersion: integer(int32) (required)
+
+PlaylistGenerationsUpdateMultiDataRelationship409ResponseBody
+  errors: array[object] (required)
+
 PlaylistGenerations_Attributes
+  preferenceVersion: integer(int32) (required)
   progress: PlaylistGenerationProgress (required)
   status: enum[PENDING, PROCESSING, ERROR, OK] (required)
   lastGeneratedAt: string(date-time) (optional)
   prompt: string (optional)
+
+PlaylistGenerations_BaseGeneration_Single_Relationship_Data_Document
+  links: Links (required)
+  data: Resource_Identifier | enum[None] (optional)
+  included: Included (optional)
 
 PlaylistGenerations_Create_Single_Resource_Data_Document
   data: PlaylistGenerations_Resource_Object (required)
@@ -3617,7 +3688,9 @@ PlaylistGenerations_Playlist_Single_Relationship_Data_Document
   included: Included (optional)
 
 PlaylistGenerations_Relationships
+  baseGeneration: PlaylistGenerations_BaseGeneration_Single_Relationship_Data_Document (optional)
   playlist: PlaylistGenerations_Playlist_Single_Relationship_Data_Document (optional)
+  trackPreferences: PlaylistGenerations_TrackPreferences_Multi_Relationship_Data_Document (optional)
 
 PlaylistGenerations_Resource_Object
   id: string (required)
@@ -3630,12 +3703,58 @@ PlaylistGenerations_Single_Resource_Data_Document
   links: Links (required)
   included: Included (optional)
 
-PlaylistsCollaboratorProfilesRelationshipAddOperation_Payload
-  data: array[PlaylistsCollaboratorProfilesRelationshipAddOperation_Payload_Data] (required)
+PlaylistGenerations_TrackPreferences_Add_Multi_Relationship_Data_Document
+  data: array[PlaylistGenerations_TrackPreferences_Add_Resource_Identifier] (required)
+  links: Links (required)
+  meta: PlaylistGenerations_TrackPreferences_Add_Multi_Relationship_Data_Document_Meta (optional)
 
-PlaylistsCollaboratorProfilesRelationshipAddOperation_Payload_Data
+PlaylistGenerations_TrackPreferences_Add_Multi_Relationship_Data_Document_Meta
+  preferenceVersion: integer(int32) (required)
+
+PlaylistGenerations_TrackPreferences_Add_Resource_Identifier
   id: string (required)
-  type: enum[artists] (required)
+  type: enum[tracks] (required)
+  meta: PlaylistGenerations_TrackPreferences_Add_Resource_Identifier_Meta (optional)
+
+PlaylistGenerations_TrackPreferences_Add_Resource_Identifier_Meta
+  preference: enum[KEEP, REMOVE, MORE_LIKE_THIS, UNKNOWN] (required)
+
+PlaylistGenerations_TrackPreferences_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[PlaylistGenerations_TrackPreferences_Resource_Identifier] (optional)
+  included: Included (optional)
+  meta: PlaylistGenerations_TrackPreferences_Multi_Relationship_Data_Document_Meta (optional)
+
+PlaylistGenerations_TrackPreferences_Multi_Relationship_Data_Document_Meta
+  preferenceVersion: integer(int32) (required)
+
+PlaylistGenerations_TrackPreferences_Resource_Identifier
+  id: string (required)
+  type: string (required)
+  meta: PlaylistGenerations_TrackPreferences_Resource_Identifier_Meta (optional)
+
+PlaylistGenerations_TrackPreferences_Resource_Identifier_Meta
+  preference: enum[KEEP, REMOVE, MORE_LIKE_THIS, UNKNOWN] (required)
+  replacement: Replacement_Provenance (optional)
+
+PlaylistGenerations_TrackPreferences_Update_Multi_Relationship_Data_Document
+  data: array[PlaylistGenerations_TrackPreferences_Update_Resource_Identifier] (required)
+  links: Links (required)
+  meta: PlaylistGenerations_TrackPreferences_Update_Multi_Relationship_Data_Document_Meta (optional)
+
+PlaylistGenerations_TrackPreferences_Update_Multi_Relationship_Data_Document_Meta
+  preferenceVersion: integer(int32) (required)
+
+PlaylistGenerations_TrackPreferences_Update_Resource_Identifier
+  id: string (required)
+  type: enum[tracks] (required)
+  meta: PlaylistGenerations_TrackPreferences_Update_Resource_Identifier_Meta (optional)
+
+PlaylistGenerations_TrackPreferences_Update_Resource_Identifier_Meta
+  preference: enum[KEEP, REMOVE, MORE_LIKE_THIS, UNKNOWN] (required)
+
+PlaylistsAddMultiDataRelationshipWithResponse409ResponseBody
+  errors: array[object] (required)
 
 PlaylistsCollaboratorProfilesRelationshipRemoveOperation_Payload
   data: array[PlaylistsCollaboratorProfilesRelationshipRemoveOperation_Payload_Data] (required)
@@ -3677,11 +3796,12 @@ PlaylistsItemsRelationshipAddOperation_Payload_Data_Meta
   addedAt: string(date-time) (optional)
 
 PlaylistsItemsRelationshipAddOperation_Payload_Meta
-  positionBefore: string (required)
+  onDuplicates: enum[ADD, FAIL, SKIP] (optional)
+  positionBefore: string (optional)
 
 PlaylistsItemsRelationshipAddOperation_Response_Meta_SkippedItem
   id: string (required)
-  reason: enum[NOT_FOUND] (required)
+  reason: enum[NOT_FOUND, ALREADY_PRESENT] (required)
   type: enum[tracks, videos] (required)
 
 PlaylistsItemsRelationshipRemoveOperation_Payload
