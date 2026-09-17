@@ -22,8 +22,40 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param positionBefore */
+/**
+ * @param onDuplicates How to handle available items already present in the playlist. Presence is
+ *   evaluated against playlist state immediately before the operation; duplicate occurrences within
+ *   this request do not make one another already present. ADD adds every requested occurrence. FAIL
+ *   returns 409 and adds nothing when any requested resource type and id is already present. SKIP
+ *   adds only absent resources and reports every omitted occurrence in response meta.skipped with
+ *   reason ALREADY_PRESENT. Track and video identities with the same id are distinct. Defaults to
+ *   ADD.
+ * @param positionBefore
+ */
 @Serializable
 data class PlaylistsItemsRelationshipAddOperationPayloadMeta(
-    @SerialName(value = "positionBefore") val positionBefore: kotlin.String
-) {}
+
+    /* How to handle available items already present in the playlist. Presence is evaluated against playlist state immediately before the operation; duplicate occurrences within this request do not make one another already present. ADD adds every requested occurrence. FAIL returns 409 and adds nothing when any requested resource type and id is already present. SKIP adds only absent resources and reports every omitted occurrence in response meta.skipped with reason ALREADY_PRESENT. Track and video identities with the same id are distinct. Defaults to ADD. */
+    @SerialName(value = "onDuplicates")
+    val onDuplicates: PlaylistsItemsRelationshipAddOperationPayloadMeta.OnDuplicates? =
+        OnDuplicates.ADD,
+    @SerialName(value = "positionBefore") val positionBefore: kotlin.String? = null,
+) {
+
+    /**
+     * How to handle available items already present in the playlist. Presence is evaluated against
+     * playlist state immediately before the operation; duplicate occurrences within this request do
+     * not make one another already present. ADD adds every requested occurrence. FAIL returns 409
+     * and adds nothing when any requested resource type and id is already present. SKIP adds only
+     * absent resources and reports every omitted occurrence in response meta.skipped with reason
+     * ALREADY_PRESENT. Track and video identities with the same id are distinct. Defaults to ADD.
+     *
+     * Values: ADD,FAIL,SKIP
+     */
+    @Serializable
+    enum class OnDuplicates(val value: kotlin.String) {
+        @SerialName(value = "ADD") ADD("ADD"),
+        @SerialName(value = "FAIL") FAIL("FAIL"),
+        @SerialName(value = "SKIP") SKIP("SKIP"),
+    }
+}
