@@ -27,6 +27,7 @@ import com.tidal.sdk.player.common.model.AudioQuality
 import com.tidal.sdk.player.common.model.LoudnessNormalizationMode
 import com.tidal.sdk.player.common.model.MediaProduct
 import com.tidal.sdk.player.common.model.ProductType
+import com.tidal.sdk.player.common.model.StreamType
 import com.tidal.sdk.player.common.model.VideoQuality
 import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
 import com.tidal.sdk.player.events.EventReporter
@@ -69,6 +70,8 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
@@ -95,6 +98,7 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.never
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.spy
+import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.verifyNoInteractions
 import org.mockito.kotlin.verifyNoMoreInteractions
@@ -123,6 +127,8 @@ internal class ExoPlayerPlaybackEngineTest {
     private val outputDeviceManager = mock<OutputDeviceManager>()
     private val playerCache = mock<PlayerCache.Internal>()
     private lateinit var playbackEngine: ExoPlayerPlaybackEngine
+
+    private val trackDuration = 24.seconds
 
     private val forwardingMediaProduct =
         ForwardingMediaProduct(MediaProduct(ProductType.TRACK, "1"))
@@ -2111,6 +2117,103 @@ internal class ExoPlayerPlaybackEngineTest {
     }
 
     @Test
+    fun autoTransitionShouldPopulateAudioInfoOnNewTrackWhenNoFormatChangeFollows() =
+        runTest(testDispatcher) {
+            val newPlaybackContext = trackPlaybackContext()
+            val autoTransition = prepareAutoTransition(newPlaybackContext)
+            playbackEngine.prefetchNextItemAudioFormat(autoTransition, losslessFormat())
+
+            val emittedEvents =
+                async(start = CoroutineStart.UNDISPATCHED) {
+                    playbackEngine.events.take(2).toList()
+                }
+            playbackEngine.autoAdvance(autoTransition)
+
+            assertThat(emittedEvents.await())
+                .isEqualTo(
+                    listOf(
+                        Event.MediaProductTransition(
+                            autoTransition.nextMediaProduct,
+                            newPlaybackContext,
+                        ),
+                        Event.PlaybackQualityChanged(losslessTrackPlaybackContext()),
+                    )
+                )
+            assertThat(playbackEngine.playbackContext).isEqualTo(losslessTrackPlaybackContext())
+        }
+
+    @Test
+    fun audioInputFormatChangedAfterTransitionWithSameFormatShouldNotEmitAgain() =
+        runTest(testDispatcher) {
+            val autoTransition = prepareAutoTransition(trackPlaybackContext())
+            playbackEngine.prefetchNextItemAudioFormat(autoTransition, losslessFormat())
+
+            val emittedEvents =
+                async(start = CoroutineStart.UNDISPATCHED) {
+                    playbackEngine.events.take(2).toList()
+                }
+            playbackEngine.autoAdvance(autoTransition)
+            emittedEvents.await()
+            playbackEngine.onAudioInputFormatChanged(
+                autoTransition.currentItemEventTime,
+                losslessFormat(),
+                null,
+            )
+            advanceUntilIdle()
+
+            assertThat(playbackEngine.playbackContext).isEqualTo(losslessTrackPlaybackContext())
+            verify(events, times(2)).emit(any())
+        }
+
+    @Test
+    fun autoTransitionShouldNotApplyAFormatReportedForTheOutgoingItem() =
+        runTest(testDispatcher) {
+            val newPlaybackContext = trackPlaybackContext()
+            val autoTransition = prepareAutoTransition(newPlaybackContext)
+            // The outgoing item reports a differing audio format, and the incoming one reports
+            // nothing before it becomes current. A video context makes folding the outgoing
+            // format in a no-op, so only the transition itself can emit afterwards.
+            playbackEngine.reflectionPlaybackContext = videoPlaybackContext()
+            playbackEngine.onAudioInputFormatChanged(
+                autoTransition.eventTime,
+                losslessFormat(),
+                null,
+            )
+            advanceUntilIdle()
+            reset(events)
+
+            val transitionEvent =
+                async(start = CoroutineStart.UNDISPATCHED) { playbackEngine.events.first() }
+            playbackEngine.autoAdvance(autoTransition)
+
+            assertThat(transitionEvent.await())
+                .isEqualTo(
+                    Event.MediaProductTransition(
+                        autoTransition.nextMediaProduct,
+                        newPlaybackContext,
+                    )
+                )
+            advanceUntilIdle()
+            assertThat(playbackEngine.playbackContext).isEqualTo(newPlaybackContext)
+            verify(events, times(1)).emit(any())
+        }
+
+    @Test
+    fun audioInputFormatChangedWithUnparseableFormatShouldNotDegradePlaybackContext() =
+        runTest(testDispatcher) {
+            val currentPlaybackContext = trackPlaybackContext()
+            playbackEngine.reflectionPlaybackContext = currentPlaybackContext
+            // A Format without an id yields no audio format info at all.
+            val format = Format.Builder().setAverageBitrate(LOSSLESS_BIT_RATE).build()
+
+            playbackEngine.onAudioInputFormatChanged(eventTimeFor(Timeline.EMPTY, 1L), format, null)
+            advanceUntilIdle()
+
+            assertThat(playbackEngine.playbackContext).isSameInstanceAs(currentPlaybackContext)
+            verify(events, never()).emit(any())
+        }
+
+    @Test
     fun testAudioTrackAdaptationOnCurrentWindowIndexWithInvalidPosition() {
         val decoderReuseEvaluation = mock<DecoderReuseEvaluation>()
 
@@ -2315,7 +2418,208 @@ internal class ExoPlayerPlaybackEngineTest {
         verifyNoMoreInteractions(eventTime, videoSurfaceView, surfaceHolder)
     }
 
+    /** An [EventTime] for the first window of [timeline]. */
+    private fun eventTimeFor(timeline: Timeline, eventPlaybackPositionMs: Long) =
+        EventTime(-1, timeline, 0, null, eventPlaybackPositionMs, Timeline.EMPTY, -1, null, -1, -1)
+
+    /** A [Timeline.Window] of [trackDuration] holding a [mediaId] media item. */
+    private fun windowFor(mediaId: String) =
+        Timeline.Window()
+            .set(
+                Unit,
+                MediaItem.Builder().setMediaId(mediaId).build(),
+                null,
+                -1L,
+                -1L,
+                -1L,
+                false,
+                false,
+                null,
+                -1L,
+                trackDuration.toLong(DurationUnit.MICROSECONDS),
+                -1,
+                -1,
+                -1L,
+            )
+
+    /** A [Timeline] with a single window holding a [mediaId] media item. */
+    private fun singleWindowTimeline(mediaId: String) =
+        mock<Timeline> {
+            on { it.windowCount } doReturn 1
+            on { it.getWindow(eq(0), any()) } doReturn windowFor(mediaId)
+        }
+
+    /** A [Timeline] whose current and next windows hold the given media items. */
+    private fun twoWindowTimeline(currentMediaId: String, nextMediaId: String) =
+        mock<Timeline> {
+            on { it.windowCount } doReturn 2
+            on { it.getWindow(eq(0), any()) } doReturn windowFor(currentMediaId)
+            on { it.getWindow(eq(1), any()) } doReturn windowFor(nextMediaId)
+        }
+
+    /**
+     * Arranges an auto transition from the current item to a next item whose playback context is
+     * [nextPlaybackContext], and returns everything a test needs to drive and assert on it.
+     */
+    private fun prepareAutoTransition(nextPlaybackContext: PlaybackContext): AutoTransition {
+        val nextMediaProduct = mock<MediaProduct>()
+        val nextForwardingMediaProduct =
+            mock<ForwardingMediaProduct<MediaProduct>> {
+                on { it.delegate } doReturn nextMediaProduct
+                on { it.productType } doReturn ProductType.TRACK
+            }
+        val playbackInfo = mock<PlaybackInfo.Track>()
+        val nextMediaSource =
+            mock<PlaybackInfoMediaSource> {
+                on { it.forwardingMediaProduct } doReturn nextForwardingMediaProduct
+                on { it.playbackInfo } doReturn playbackInfo
+            }
+        playbackEngine.testMediaSource = mediaSource
+        playbackEngine.testNextMediaSource = nextMediaSource
+        playbackEngine.reflectionPlaybackContext = mock<PlaybackContext.Track>()
+        playbackEngine.reflectionNextPlaybackContext = nextPlaybackContext
+        val startTimestampMs = -1L
+        whenever(trueTimeWrapper.currentTimeMillis) doReturn startTimestampMs
+        val preparedPlaybackStatistics =
+            mock<PlaybackStatistics.Success.Prepared.Audio> {
+                on { it.toStarted(startTimestampMs) } doReturn
+                    mock<PlaybackStatistics.Success.Started>()
+            }
+        val undeterminedPlaybackStatisticsWithIdealStartTimestampMs =
+            mock<PlaybackStatistics.Undetermined>()
+        val undeterminedPlaybackStatistics =
+            mock<PlaybackStatistics.Undetermined> {
+                on {
+                        copy(
+                            idealStartTimestampMs =
+                                PlaybackStatistics.IdealStartTimestampMs.Known(startTimestampMs)
+                        )
+                    }
+                    .thenReturn(undeterminedPlaybackStatisticsWithIdealStartTimestampMs)
+            }
+        whenever(
+                undeterminedPlaybackSessionResolver(
+                    undeterminedPlaybackStatisticsWithIdealStartTimestampMs,
+                    playbackInfo,
+                    emptyMap(),
+                )
+            )
+            .thenReturn(preparedPlaybackStatistics)
+        playbackEngine.reflectionNextPlaybackStatistics = undeterminedPlaybackStatistics
+        playbackEngine.reflectionNextPlaybackSession = mock<PlaybackSession.Audio>()
+        whenever(initialExtendedExoPlayer.repeatMode) doReturn Player.REPEAT_MODE_OFF
+        whenever(volumeHelper.getVolume(playbackInfo)) doReturn 1.0F
+        // The prefetch adaptation folds the reported format into the next item's statistics.
+        // Returning the same instance keeps the transition's copy stub above applicable.
+        whenever(undeterminedPlaybackStatistics + any<Adaptation>())
+            .thenReturn(undeterminedPlaybackStatistics)
+        return AutoTransition(
+            nextMediaProduct,
+            eventTimeFor(
+                singleWindowTimeline(forwardingMediaProduct.hashCode().toString()),
+                Long.MAX_VALUE,
+            ),
+            eventTimeFor(
+                singleWindowTimeline(nextForwardingMediaProduct.hashCode().toString()),
+                1L,
+            ),
+            EventTime(
+                -1,
+                twoWindowTimeline(
+                    forwardingMediaProduct.hashCode().toString(),
+                    nextForwardingMediaProduct.hashCode().toString(),
+                ),
+                1,
+                null,
+                0L,
+                Timeline.EMPTY,
+                -1,
+                null,
+                -1,
+                -1,
+            ),
+        )
+    }
+
+    /**
+     * Reports [format] as the audio format of the not yet current next item, the way ExoPlayer does
+     * while prefetching it.
+     */
+    private fun ExoPlayerPlaybackEngine.prefetchNextItemAudioFormat(
+        autoTransition: AutoTransition,
+        format: Format,
+    ) = onAudioInputFormatChanged(autoTransition.prefetchEventTime, format, null)
+
+    /** Performs the auto transition arranged by [prepareAutoTransition]. */
+    private fun ExoPlayerPlaybackEngine.autoAdvance(autoTransition: AutoTransition) =
+        onPositionDiscontinuity(
+            autoTransition.eventTime,
+            Player.PositionInfo(null, -1, null, -1, 12459L, -1, -1, -1),
+            Player.PositionInfo(null, -1, null, -1, 87L, -1, -1, -1),
+            Player.DISCONTINUITY_REASON_AUTO_TRANSITION,
+        )
+
+    /** A [Format] that FormatHelper parses into lossless stereo FLAC audio info. */
+    private fun losslessFormat() =
+        Format.Builder().setId("FLAC,44100,16").setAverageBitrate(LOSSLESS_BIT_RATE).build()
+
+    private fun trackPlaybackContext(
+        audioMode: AudioMode? = AudioMode.STEREO,
+        audioQuality: AudioQuality? = AudioQuality.HIGH,
+        audioBitRate: Int? = null,
+        audioBitDepth: Int? = null,
+        audioCodec: String? = null,
+        audioSampleRate: Int? = null,
+    ) =
+        PlaybackContext.Track(
+            audioMode,
+            audioQuality,
+            audioBitRate,
+            audioBitDepth,
+            audioCodec,
+            audioSampleRate,
+            null,
+            "123",
+            AssetPresentation.FULL,
+            trackDuration.toDouble(DurationUnit.SECONDS).toFloat(),
+            AssetSource.ONLINE,
+            "123-abc",
+            "123-abc",
+        )
+
+    /** The [trackPlaybackContext] as it looks after [losslessFormat] has been folded into it. */
+    private fun losslessTrackPlaybackContext() =
+        trackPlaybackContext(
+            audioMode = AudioMode.STEREO,
+            audioQuality = AudioQuality.LOSSLESS,
+            audioBitRate = LOSSLESS_BIT_RATE,
+            audioBitDepth = 16,
+            audioCodec = "flac",
+            audioSampleRate = 44100,
+        )
+
+    private fun videoPlaybackContext() =
+        PlaybackContext.Video(
+            StreamType.ON_DEMAND,
+            VideoQuality.HIGH,
+            "123",
+            AssetPresentation.FULL,
+            trackDuration.toDouble(DurationUnit.SECONDS).toFloat(),
+            AssetSource.ONLINE,
+            "123-abc",
+            "123-abc",
+        )
+
+    private class AutoTransition(
+        val nextMediaProduct: MediaProduct,
+        val eventTime: EventTime,
+        val currentItemEventTime: EventTime,
+        val prefetchEventTime: EventTime,
+    )
+
     companion object {
+
+        private const val LOSSLESS_BIT_RATE = 1_411_000
 
         @JvmStatic
         @Suppress("UnusedPrivateMember")

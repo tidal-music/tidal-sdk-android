@@ -150,6 +150,16 @@ internal class ExoPlayerPlaybackEngine(
 
     private var delayedMediaProductTransition: DelayedMediaProductTransition? = null
 
+    /**
+     * The audio [Format] most recently reported by ExoPlayer, paired with the media product it was
+     * reported for.
+     *
+     * Deliberately not cleared when [mediaSource] changes: a transition consumes the entry recorded
+     * for the incoming item while that item is being made current. The pairing is what keeps a
+     * format from being applied to the wrong item, so a stale entry is harmless.
+     */
+    private var lastReportedAudioFormat: Pair<ForwardingMediaProduct<MediaProduct>, Format>? = null
+
     override var playbackState by
         Delegates.observable(PlaybackState.IDLE) { _, value, newValue ->
             if (newValue == value) {
@@ -660,6 +670,7 @@ internal class ExoPlayerPlaybackEngine(
 
         playbackContext =
             targetPlaybackContext!!.copy(eventTime.windowDurationMs.toFloat() / MS_IN_SECOND)
+        refreshPlaybackContextWithCurrentAudioFormat()
         currentPlaybackStatistics =
             undeterminedPlaybackSessionResolver(
                     targetPlaybackStatistics!!.copy(
@@ -770,7 +781,12 @@ internal class ExoPlayerPlaybackEngine(
         eventTime: EventTime,
         format: Format,
         decoderReuseEvaluation: DecoderReuseEvaluation?,
-    ) = trackNewAdaptation(eventTime, format)
+    ) {
+        eventTime.correspondingForwardingMediaProductIfMatching?.let {
+            lastReportedAudioFormat = it to format
+        }
+        trackNewAdaptation(eventTime, format)
+    }
 
     override fun onVideoInputFormatChanged(
         eventTime: EventTime,
@@ -1269,20 +1285,44 @@ internal class ExoPlayerPlaybackEngine(
             }
 
     /**
+     * Folds the audio [Format] already reported for the now current media product into its
+     * playbackContext.
+     *
+     * ExoPlayer reports the next item's audio format while that item is still being prefetched, so
+     * it arrives at window index 1 and only reaches [nextPlaybackStatistics]. Once the item becomes
+     * current no further format change follows, and without this its context would keep the null
+     * audio fields [PlaybackContextFactory] created it with.
+     *
+     * Only a format recorded for this very media product is applied, so a format belonging to the
+     * outgoing item can never be copied onto the incoming one. When nothing has been recorded yet,
+     * this is a no-op and the eventual [onAudioInputFormatChanged] fills the fields in instead.
+     */
+    private fun refreshPlaybackContextWithCurrentAudioFormat() {
+        val (product, format) = lastReportedAudioFormat ?: return
+        if (product === forwardingMediaProduct) {
+            updatePlaybackContextWithAudioInfo(format)
+        }
+    }
+
+    /**
      * Updates the current playbackContext with audio format info and emits PlaybackQualityChanged.
+     *
+     * A [format] that carries no parseable audio info is ignored rather than applied, so that it
+     * cannot erase the audioQuality and audioMode that [PlaybackContextFactory] already derived
+     * from the server side PlaybackInfo.
      */
     private fun updatePlaybackContextWithAudioInfo(format: Format) {
         val currentContext = playbackContext
         if (currentContext is PlaybackContext.Track) {
-            val audioInfo = FormatHelper.extractAudioFormatInfo(format)
+            val audioInfo = FormatHelper.extractAudioFormatInfo(format) ?: return
             val updatedContext =
                 currentContext.copy(
-                    audioQuality = audioInfo?.audioQuality,
-                    audioMode = audioInfo?.audioMode,
-                    audioBitRate = audioInfo?.bitRate,
-                    audioBitDepth = audioInfo?.bitDepth,
-                    audioCodec = audioInfo?.codec,
-                    audioSampleRate = audioInfo?.sampleRate,
+                    audioQuality = audioInfo.audioQuality,
+                    audioMode = audioInfo.audioMode,
+                    audioBitRate = audioInfo.bitRate,
+                    audioBitDepth = audioInfo.bitDepth,
+                    audioCodec = audioInfo.codec,
+                    audioSampleRate = audioInfo.sampleRate,
                 )
             if (updatedContext != currentContext) {
                 playbackContext = updatedContext
