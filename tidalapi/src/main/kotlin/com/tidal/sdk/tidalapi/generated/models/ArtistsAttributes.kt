@@ -29,6 +29,7 @@ import kotlinx.serialization.Serializable
  * @param contributionsSalesPitch Contributions sales pitch
  * @param externalLinks Artist links external to TIDAL API
  * @param handle Artist handle
+ * @param numberOfFollowers Number of users in the followers relationship
  * @param ownerType Ownership type of the artist profile. LABEL: label-managed profile, USER:
  *   user-created profile, MIXED: claimed profile with both label and user content. May be null
  *   during rollout/backfill.
@@ -56,6 +57,9 @@ data class ArtistsAttributes(
 
     /* Artist handle */
     @SerialName(value = "handle") val handle: kotlin.String? = null,
+
+    /* Number of users in the followers relationship */
+    @SerialName(value = "numberOfFollowers") val numberOfFollowers: kotlin.Int? = null,
 
     /* Ownership type of the artist profile. LABEL: label-managed profile, USER: user-created profile, MIXED: claimed profile with both label and user content. May be null during rollout/backfill. */
     @SerialName(value = "ownerType") val ownerType: ArtistsAttributes.OwnerType? = null,

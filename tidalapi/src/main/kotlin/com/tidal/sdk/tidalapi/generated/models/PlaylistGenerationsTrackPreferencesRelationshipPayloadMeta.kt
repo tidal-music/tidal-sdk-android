@@ -22,17 +22,8 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/**
- * @param baseGeneration
- * @param playlist
- * @param trackPreferences
- */
+/** @param expectedPreferenceVersion */
 @Serializable
-data class PlaylistGenerationsRelationships(
-    @SerialName(value = "baseGeneration")
-    val baseGeneration: PlaylistGenerationsBaseGenerationSingleRelationshipDataDocument? = null,
-    @SerialName(value = "playlist")
-    val playlist: PlaylistGenerationsPlaylistSingleRelationshipDataDocument? = null,
-    @SerialName(value = "trackPreferences")
-    val trackPreferences: PlaylistGenerationsTrackPreferencesMultiRelationshipDataDocument? = null,
+data class PlaylistGenerationsTrackPreferencesRelationshipPayloadMeta(
+    @SerialName(value = "expectedPreferenceVersion") val expectedPreferenceVersion: kotlin.Int
 ) {}

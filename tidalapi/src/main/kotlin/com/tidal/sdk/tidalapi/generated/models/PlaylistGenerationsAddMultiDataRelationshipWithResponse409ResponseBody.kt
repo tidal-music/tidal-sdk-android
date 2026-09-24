@@ -22,17 +22,12 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/**
- * @param baseGeneration
- * @param playlist
- * @param trackPreferences
- */
+/** @param errors */
 @Serializable
-data class PlaylistGenerationsRelationships(
-    @SerialName(value = "baseGeneration")
-    val baseGeneration: PlaylistGenerationsBaseGenerationSingleRelationshipDataDocument? = null,
-    @SerialName(value = "playlist")
-    val playlist: PlaylistGenerationsPlaylistSingleRelationshipDataDocument? = null,
-    @SerialName(value = "trackPreferences")
-    val trackPreferences: PlaylistGenerationsTrackPreferencesMultiRelationshipDataDocument? = null,
+data class PlaylistGenerationsAddMultiDataRelationshipWithResponse409ResponseBody(
+    @SerialName(value = "errors")
+    val errors:
+        kotlin.collections.List<
+            PlaylistGenerationsAddMultiDataRelationshipWithResponse409ResponseBodyErrorsInner
+        >
 ) {}
