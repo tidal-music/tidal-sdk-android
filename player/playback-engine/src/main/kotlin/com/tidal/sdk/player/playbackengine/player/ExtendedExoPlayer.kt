@@ -61,6 +61,18 @@ internal class ExtendedExoPlayer(
         return playbackInfoMediaSource
     }
 
+    /**
+     * Like [load], but for a product that continues from another player, so its streaming session
+     * is reported as implicit.
+     */
+    fun loadAsNext(
+        forwardingMediaProduct: ForwardingMediaProduct<MediaProduct>
+    ): PlaybackInfoMediaSource {
+        val playbackInfoMediaSource = mediaSourcerer.load(forwardingMediaProduct, implicit = true)
+        delegate.prepare()
+        return playbackInfoMediaSource
+    }
+
     fun setNext(forwardingMediaProduct: ForwardingMediaProduct<MediaProduct>?) =
         mediaSourcerer.setNext(forwardingMediaProduct)
 

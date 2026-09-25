@@ -44,10 +44,13 @@ internal class MediaSourcerer(
      * Make sure to set the returned [ConcatenatingMediaSource] on the player and prepare it.
      */
     fun load(
-        forwardingMediaProduct: ForwardingMediaProduct<MediaProduct>
+        forwardingMediaProduct: ForwardingMediaProduct<MediaProduct>,
+        implicit: Boolean = false,
     ): PlaybackInfoMediaSource {
+        val creator =
+            if (implicit) implicitStreamingSessionCreator else explicitStreamingSessionCreator
         val currentStreamingSession =
-            explicitStreamingSessionCreator.createAndReportStart(
+            creator.createAndReportStart(
                 forwardingMediaProduct.productType,
                 forwardingMediaProduct.productId,
                 forwardingMediaProduct.extras,

@@ -63,6 +63,9 @@ internal class SingleHandlerPlaybackEngineThreadingTest {
             override var enableAdaptive = false
                 set(_) = assignThreadAndReleaseLock()
 
+            override var crossfadeDurationMs = 0L
+                set(_) = assignThreadAndReleaseLock()
+
             override var loudnessNormalizationMode = LoudnessNormalizationMode.ALBUM
                 set(_) = assignThreadAndReleaseLock()
 
