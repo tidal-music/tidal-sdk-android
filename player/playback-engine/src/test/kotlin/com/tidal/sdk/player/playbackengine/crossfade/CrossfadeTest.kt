@@ -164,7 +164,7 @@ internal class CrossfadeTest {
     @Test
     fun isDueIsFalseWithRepeatOne() {
         whenever(outgoing.repeatMode) doReturn Player.REPEAT_MODE_ONE
-        whenever(outgoing.currentPosition) doReturn TRACK_MS - 1
+        whenever(outgoing.currentPosition) doReturn TRACK_MS - CROSSFADE_MS - 1
 
         assertThat(Crossfade.isDue(outgoing, CROSSFADE_MS)).isFalse()
     }
@@ -172,9 +172,44 @@ internal class CrossfadeTest {
     @Test
     fun isDueIsFalseForTracksShorterThanTwoFades() {
         whenever(outgoing.duration) doReturn CROSSFADE_MS * 2
-        whenever(outgoing.currentPosition) doReturn CROSSFADE_MS * 2 - 1
+        whenever(outgoing.currentPosition) doReturn 0L
 
         assertThat(Crossfade.isDue(outgoing, CROSSFADE_MS)).isFalse()
+    }
+
+    @Test
+    fun isDueIsFalseOnceTheFadeWindowHasOpened() {
+        whenever(outgoing.currentPosition) doReturn TRACK_MS - CROSSFADE_MS
+
+        assertThat(Crossfade.isDue(outgoing, CROSSFADE_MS)).isFalse()
+    }
+
+    @Test
+    fun isInWindowFromTheFadeLengthBeforeTheEnd() {
+        whenever(outgoing.currentPosition) doReturn TRACK_MS - CROSSFADE_MS
+
+        assertThat(crossfade.isInWindow(outgoing)).isTrue()
+    }
+
+    @Test
+    fun isInWindowIsFalseBeforeTheFadeLengthBeforeTheEnd() {
+        whenever(outgoing.currentPosition) doReturn TRACK_MS - CROSSFADE_MS - 1
+
+        assertThat(crossfade.isInWindow(outgoing)).isFalse()
+    }
+
+    @Test
+    fun isInWindowIsFalseWithUnknownDuration() {
+        whenever(outgoing.duration) doReturn C.TIME_UNSET
+
+        assertThat(crossfade.isInWindow(outgoing)).isFalse()
+    }
+
+    @Test
+    fun isLongEnoughOnlyForTracksLongerThanTwoFades() {
+        assertThat(Crossfade.isLongEnough(CROSSFADE_MS * 2 + 1, CROSSFADE_MS)).isTrue()
+        assertThat(Crossfade.isLongEnough(CROSSFADE_MS * 2, CROSSFADE_MS)).isFalse()
+        assertThat(Crossfade.isLongEnough(C.TIME_UNSET, CROSSFADE_MS)).isFalse()
     }
 
     private companion object {

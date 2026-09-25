@@ -23,7 +23,7 @@ private const val PREPARE_LEAD_MS = 15_000L
 internal class Crossfade(
     val incoming: ExtendedExoPlayer,
     val nextProduct: MediaProduct,
-    private val durationMs: Long,
+    val durationMs: Long,
     private val currentTimeMillis: () -> Long,
     onIncomingError: (Crossfade) -> Unit,
 ) {
@@ -52,14 +52,16 @@ internal class Crossfade(
         }
     }
 
+    /** Whether [outgoing] is within [durationMs] of its end. */
+    fun isInWindow(outgoing: ExtendedExoPlayer): Boolean =
+        remainingMs(outgoing)?.let { it <= durationMs } ?: false
+
     /**
      * Starts the fade once the outgoing player is within [durationMs] of its end and the incoming
      * one is ready, then advances the volume ramp. Call it periodically.
      */
     fun tick(outgoing: ExtendedExoPlayer, outgoingVolume: Float, incomingVolume: Float) {
-        val outgoingDurationMs = outgoing.duration
-        if (outgoingDurationMs == C.TIME_UNSET) return
-        val remainingMs = (outgoingDurationMs - outgoing.currentPosition).coerceAtLeast(0L)
+        val remainingMs = remainingMs(outgoing) ?: return
         if (!isFading) {
             if (remainingMs > durationMs || incoming.playbackState != Player.STATE_READY) return
             fadeStartedAtMillis = currentTimeMillis()
@@ -100,15 +102,33 @@ internal class Crossfade(
         }
     }
 
+    private fun remainingMs(outgoing: ExtendedExoPlayer): Long? {
+        val outgoingDurationMs = outgoing.duration
+        if (outgoingDurationMs == C.TIME_UNSET) return null
+        return (outgoingDurationMs - outgoing.currentPosition).coerceAtLeast(0L)
+    }
+
     companion object {
 
-        /** Whether [current] is close enough to its end to preload the next track. */
+        /**
+         * Whether [current] is close enough to its end to preload the next track, but not yet in
+         * the fade window.
+         */
         fun isDue(current: ExtendedExoPlayer, crossfadeDurationMs: Long): Boolean {
             val durationMs = current.duration
-            return current.repeatMode == Player.REPEAT_MODE_OFF &&
-                durationMs != C.TIME_UNSET &&
-                durationMs > crossfadeDurationMs * 2 &&
-                durationMs - current.currentPosition <= crossfadeDurationMs + PREPARE_LEAD_MS
+            if (
+                current.repeatMode != Player.REPEAT_MODE_OFF ||
+                    !isLongEnough(durationMs, crossfadeDurationMs)
+            ) {
+                return false
+            }
+            val remainingMs = durationMs - current.currentPosition
+            return remainingMs > crossfadeDurationMs &&
+                remainingMs <= crossfadeDurationMs + PREPARE_LEAD_MS
         }
+
+        /** Whether a track of [durationMs] is long enough to fade in over [crossfadeDurationMs]. */
+        fun isLongEnough(durationMs: Long, crossfadeDurationMs: Long): Boolean =
+            durationMs != C.TIME_UNSET && durationMs > crossfadeDurationMs * 2
     }
 }

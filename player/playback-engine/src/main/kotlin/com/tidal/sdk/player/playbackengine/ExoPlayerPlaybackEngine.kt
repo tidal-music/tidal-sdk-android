@@ -822,6 +822,11 @@ internal class ExoPlayerPlaybackEngine(
             if (shouldPrepareCrossfade()) prepareCrossfade()
             return
         }
+        if (shouldFallBackToGapless(crossfade)) {
+            crossfadeDisabledForCurrent = true
+            abortCrossfade(restoreNext = true)
+            return
+        }
         crossfade.tick(
             extendedExoPlayer,
             volumeHelper.getVolume(mediaSource?.playbackInfo),
@@ -841,6 +846,30 @@ internal class ExoPlayerPlaybackEngine(
             nextForwardingMediaProduct?.productType == ProductType.TRACK &&
             Crossfade.isDue(extendedExoPlayer, crossfadeDurationMs)
     }
+
+    /** Whether [crossfade] should be dropped so the next item plays gaplessly instead. */
+    private fun shouldFallBackToGapless(crossfade: Crossfade): Boolean {
+        if (crossfade.isFading) return false
+        if (cannotFadeInto(crossfade)) return true
+        return crossfade.isInWindow(extendedExoPlayer) && !isReadyToFadeInto(crossfade)
+    }
+
+    /** Whether what's known so far about [crossfade]'s track already rules the fade out. */
+    private fun cannotFadeInto(crossfade: Crossfade): Boolean {
+        val context = nextPlaybackContext
+        val durationMs = crossfade.incoming.duration
+        return context != null &&
+            (context !is PlaybackContext.Track || context.audioMode == AudioMode.DOLBY_ATMOS) ||
+            durationMs != C.TIME_UNSET && !Crossfade.isLongEnough(durationMs, crossfade.durationMs)
+    }
+
+    /** Whether [crossfade]'s track is loaded far enough to take over when the fade ends. */
+    private fun isReadyToFadeInto(crossfade: Crossfade) =
+        nextPlaybackContext != null &&
+            nextMediaSource?.playbackInfo != null &&
+            nextPlaybackStatistics != null &&
+            crossfade.incoming.playbackState == Player.STATE_READY &&
+            crossfade.incoming.duration != C.TIME_UNSET
 
     private fun prepareCrossfade() {
         val nextProduct = nextForwardingMediaProduct!!.delegate
