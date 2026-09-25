@@ -3,8 +3,15 @@ package com.tidal.sdk.player.playbackengine
 import android.os.Handler
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
+import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
+import androidx.media3.common.Timeline
+import androidx.media3.exoplayer.analytics.AnalyticsListener.EventTime
+import assertk.assertThat
+import assertk.assertions.isEqualTo
+import assertk.assertions.isSameInstanceAs
 import com.tidal.sdk.player.common.ForwardingMediaProduct
+import com.tidal.sdk.player.common.model.AssetPresentation
 import com.tidal.sdk.player.common.model.AudioMode
 import com.tidal.sdk.player.common.model.MediaProduct
 import com.tidal.sdk.player.common.model.ProductType
@@ -29,6 +36,7 @@ import com.tidal.sdk.player.playbackengine.util.SynchronousSurfaceHolder
 import com.tidal.sdk.player.playbackengine.volume.VolumeHelper
 import com.tidal.sdk.player.streamingapi.playbackinfo.model.PlaybackInfo
 import com.tidal.sdk.player.streamingprivileges.StreamingPrivileges
+import java.util.UUID
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -70,6 +78,13 @@ internal class ExoPlayerPlaybackEngineCrossfadeTest {
     private val incomingMediaSource = mock<PlaybackInfoMediaSource>()
     private val internalHandler = mock<Handler>()
     private val playbackContextFactory = mock<PlaybackContextFactory>()
+    private val undeterminedPlaybackSessionResolver =
+        mock<UndeterminedPlaybackSessionResolver> {
+            on { it.invoke(any(), any(), anyOrNull()) } doReturn
+                mock<PlaybackStatistics.Success.Prepared.Audio>()
+        }
+    private val nextPlaybackContext = trackContext(AudioMode.STEREO, "next")
+    private lateinit var currentForwardingMediaProduct: ForwardingMediaProduct<MediaProduct>
     private val nextMediaProduct = MediaProduct(ProductType.TRACK, "2")
     private lateinit var playbackEngine: ExoPlayerPlaybackEngine
     private lateinit var ticker: Runnable
@@ -100,12 +115,13 @@ internal class ExoPlayerPlaybackEngineCrossfadeTest {
                 mock<EventReporter>(),
                 mock<ErrorHandler>(),
                 mock<DjSessionManager>(),
-                mock<UndeterminedPlaybackSessionResolver>(),
+                undeterminedPlaybackSessionResolver,
                 mock<OutputDeviceManager>(),
                 mock<PlayerCache.Internal>(),
             )
         whenever(outgoing.load(any())).then { invocation ->
-            mediaSourceFor(invocation.getArgument(0))
+            currentForwardingMediaProduct = invocation.getArgument(0)
+            mediaSourceFor(currentForwardingMediaProduct)
         }
         whenever(outgoing.setNext(anyOrNull())).then { invocation ->
             invocation.getArgument<ForwardingMediaProduct<MediaProduct>?>(0)?.let(::mediaSourceFor)
@@ -117,7 +133,7 @@ internal class ExoPlayerPlaybackEngineCrossfadeTest {
         }
         playbackEngine.load(MediaProduct(ProductType.TRACK, "1"))
         playbackEngine.reflectionSetPlaybackState(PlaybackState.PLAYING)
-        playbackEngine.reflectionPlaybackContext = trackContext(AudioMode.STEREO)
+        playbackEngine.reflectionPlaybackContext = trackContext(AudioMode.STEREO, "current")
         playbackEngine.setNext(nextMediaProduct)
 
         playbackEngine.crossfadeDurationMs = CROSSFADE_MS
@@ -169,12 +185,49 @@ internal class ExoPlayerPlaybackEngineCrossfadeTest {
         assertFellBackToGapless()
     }
 
+    @Test
+    fun handsOverToTheIncomingPlayerWhenTheOutgoingTrackEnds() {
+        incomingIsLoaded(AudioMode.STEREO, durationMs = TRACK_MS)
+        tickAt(FADE_POSITION_MS)
+
+        playbackEngine.onPlaybackStateChanged(currentEventTime(), Player.STATE_ENDED)
+
+        assertHandedOver()
+    }
+
+    @Test
+    fun skipToNextDuringTheFadeHandsOverToTheIncomingPlayer() {
+        incomingIsLoaded(AudioMode.STEREO, durationMs = TRACK_MS)
+        tickAt(FADE_POSITION_MS)
+
+        playbackEngine.skipToNext()
+
+        assertHandedOver()
+        verify(outgoing, never()).seekToNextMediaItem()
+    }
+
+    @Test
+    fun skipToNextBeforeTheIncomingTrackLoadsFallsBackToAGaplessSkip() {
+        playbackEngine.skipToNext()
+
+        assertFellBackToGapless()
+        verify(outgoing).seekToNextMediaItem()
+        assertThat(playbackEngine.reflectionExtendedExoPlayer).isSameInstanceAs(outgoing)
+    }
+
     private fun incomingIsLoaded(audioMode: AudioMode, durationMs: Long) {
         val playbackInfo = mock<PlaybackInfo.Track>()
-        val playbackContext = trackContext(audioMode)
+        val playbackContext = nextPlaybackContext.copy(audioMode = audioMode)
         whenever(playbackContextFactory.create(eq(playbackInfo), anyOrNull()))
             .thenReturn(playbackContext)
-        val playbackStatistics = mock<PlaybackStatistics.Undetermined>()
+        val playbackStatistics =
+            PlaybackStatistics.Undetermined(
+                UUID.randomUUID(),
+                PlaybackStatistics.IdealStartTimestampMs.NotYetKnown,
+                emptyList(),
+                null,
+                false,
+            )
         val streamingSession =
             mock<StreamingSession.Implicit> {
                 on { it.createUndeterminedPlaybackStatistics(any(), anyOrNull()) } doReturn
@@ -204,12 +257,48 @@ internal class ExoPlayerPlaybackEngineCrossfadeTest {
             )
     }
 
+    private fun assertHandedOver() {
+        verify(outgoing).release()
+        verify(incoming).analyticsListener = playbackEngine
+        verify(incoming).setAudioAttributes(AudioAttributes.DEFAULT, true)
+        verify(incoming, never()).release()
+        assertThat(playbackEngine.reflectionExtendedExoPlayer).isSameInstanceAs(incoming)
+        assertThat(playbackEngine.mediaProduct).isSameInstanceAs(nextMediaProduct)
+        assertThat(playbackEngine.playbackContext?.playbackSessionId)
+            .isEqualTo(nextPlaybackContext.playbackSessionId)
+    }
+
+    private fun currentEventTime(): EventTime {
+        val mediaItem =
+            MediaItem.Builder()
+                .setMediaId(currentForwardingMediaProduct.hashCode().toString())
+                .build()
+        val window = Timeline.Window().apply { this.mediaItem = mediaItem }
+        val timeline =
+            mock<Timeline> {
+                on { it.windowCount } doReturn 1
+                on { it.getWindow(eq(0), any()) } doReturn window
+            }
+        return EventTime(-1L, timeline, 0, null, -1L, Timeline.EMPTY, -1, null, -1L, -1L)
+    }
+
     private fun mediaSourceFor(product: ForwardingMediaProduct<MediaProduct>) =
         mock<PlaybackInfoMediaSource> { on { it.forwardingMediaProduct } doReturn product }
 
-    private fun trackContext(audioMode: AudioMode) =
-        mock<PlaybackContext.Track> {
-            on { it.audioMode } doReturn audioMode
-            on { it.playbackSessionId } doReturn audioMode.name
-        }
+    private fun trackContext(audioMode: AudioMode, playbackSessionId: String) =
+        PlaybackContext.Track(
+            audioMode,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            playbackSessionId,
+            AssetPresentation.FULL,
+            0f,
+            AssetSource.ONLINE,
+            playbackSessionId,
+            null,
+        )
 }
