@@ -23,6 +23,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
+ * @param preferenceVersion Track-preference version snapshotted by this generation
  * @param progress
  * @param status Current prompted-playlist generation status
  * @param lastGeneratedAt Datetime the playlist content this generation produced was committed (ISO
@@ -33,6 +34,9 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class PlaylistGenerationsAttributes(
+
+    /* Track-preference version snapshotted by this generation */
+    @SerialName(value = "preferenceVersion") val preferenceVersion: kotlin.Int,
     @SerialName(value = "progress") val progress: PlaylistGenerationProgress,
 
     /* Current prompted-playlist generation status */

@@ -22,20 +22,12 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/**
- * @param id
- * @param type
- */
+/** @param errors */
 @Serializable
-data class PlaylistsCollaboratorProfilesRelationshipAddOperationPayloadData(
-    @SerialName(value = "id") val id: kotlin.String,
-    @SerialName(value = "type")
-    val type: PlaylistsCollaboratorProfilesRelationshipAddOperationPayloadData.Type,
-) {
-
-    /** Values: artists */
-    @Serializable
-    enum class Type(val value: kotlin.String) {
-        @SerialName(value = "artists") artists("artists")
-    }
-}
+data class PlaylistGenerationsUpdateMultiDataRelationship409ResponseBody(
+    @SerialName(value = "errors")
+    val errors:
+        kotlin.collections.List<
+            PlaylistGenerationsAddMultiDataRelationshipWithResponse409ResponseBodyErrorsInner
+        >
+) {}

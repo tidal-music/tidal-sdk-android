@@ -24,22 +24,33 @@ import kotlinx.serialization.Serializable
 
 /**
  * @param id
- * @param reason
+ * @param reason Why the requested occurrence was not added: NOT_FOUND means it was not available;
+ *   ALREADY_PRESENT means SKIP omitted it because the playlist already contained that resource type
+ *   and id.
  * @param type
  */
 @Serializable
 data class PlaylistsItemsRelationshipAddOperationResponseMetaSkippedItem(
     @SerialName(value = "id") val id: kotlin.String,
+
+    /* Why the requested occurrence was not added: NOT_FOUND means it was not available; ALREADY_PRESENT means SKIP omitted it because the playlist already contained that resource type and id. */
     @SerialName(value = "reason")
     val reason: PlaylistsItemsRelationshipAddOperationResponseMetaSkippedItem.Reason,
     @SerialName(value = "type")
     val type: PlaylistsItemsRelationshipAddOperationResponseMetaSkippedItem.Type,
 ) {
 
-    /** Values: NOT_FOUND */
+    /**
+     * Why the requested occurrence was not added: NOT_FOUND means it was not available;
+     * ALREADY_PRESENT means SKIP omitted it because the playlist already contained that resource
+     * type and id.
+     *
+     * Values: NOT_FOUND,ALREADY_PRESENT
+     */
     @Serializable
     enum class Reason(val value: kotlin.String) {
-        @SerialName(value = "NOT_FOUND") NOT_FOUND("NOT_FOUND")
+        @SerialName(value = "NOT_FOUND") NOT_FOUND("NOT_FOUND"),
+        @SerialName(value = "ALREADY_PRESENT") ALREADY_PRESENT("ALREADY_PRESENT"),
     }
 
     /** Values: tracks,videos */
