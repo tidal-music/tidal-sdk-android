@@ -121,6 +121,7 @@ internal object ExtendedExoPlayerModule {
         loadControl: LoadControl,
         mediaSourcerer: MediaSourcerer,
         extendedExoPlayerState: ExtendedExoPlayerState,
+        stateUpdateRunnable: ExtendedExoPlayerStateUpdateRunnable,
         crossfadeGainProcessor: CrossfadeGainProcessor,
     ) =
         ExtendedExoPlayer(
@@ -128,11 +129,12 @@ internal object ExtendedExoPlayerModule {
             loadControl,
             mediaSourcerer,
             extendedExoPlayerState,
+            stateUpdateRunnable,
             crossfadeGainProcessor,
         )
 
     @Provides
-    @Reusable
+    @ExtendedExoPlayerComponent.Scoped
     fun extendedExoPlayerStateUpdateRunnable(
         extendedExoPlayerState: ExtendedExoPlayerState,
         exoPlayer: ExoPlayer,

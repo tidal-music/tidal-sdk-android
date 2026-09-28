@@ -36,4 +36,11 @@ internal class ExtendedExoPlayerStateUpdateRunnableTest {
                 ExtendedExoPlayerStateUpdateRunnable.reflectionDELAY_MILLIS,
             )
     }
+
+    @Test
+    fun stopRemovesThePendingUpdate() {
+        extendedExoPlayerStateUpdateRunnable.stop()
+
+        verify(handler).removeCallbacks(extendedExoPlayerStateUpdateRunnable)
+    }
 }

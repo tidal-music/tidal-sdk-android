@@ -23,12 +23,15 @@ import kotlin.properties.Delegates
  * @param mediaSourcerer A [MediaSourcerer] instance that holds the MediaSource of what we play.
  * @param extendedExoPlayerState A [ExtendedExoPlayerState] instance that holds the some shared
  *   state for ExtendedExoPlayer.
+ * @param stateUpdateRunnable The [ExtendedExoPlayerStateUpdateRunnable] polling this player's
+ *   position, stopped on [release].
  */
 internal class ExtendedExoPlayer(
     private val delegate: ExoPlayer,
     private val loadControl: LoadControl,
     private val mediaSourcerer: MediaSourcerer,
     private val extendedExoPlayerState: ExtendedExoPlayerState,
+    private val stateUpdateRunnable: ExtendedExoPlayerStateUpdateRunnable,
     val crossfadeGain: CrossfadeGainProcessor = CrossfadeGainProcessor(),
 ) : ExoPlayer by delegate {
 
@@ -101,6 +104,7 @@ internal class ExtendedExoPlayer(
         mediaSourcerer.onRepeatOne(forwardingMediaProduct)
 
     override fun release() {
+        stateUpdateRunnable.stop()
         delegate.release()
         mediaSourcerer.release()
         extendedExoPlayerState.playbackInfoListener = null

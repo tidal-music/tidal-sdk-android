@@ -14,6 +14,8 @@ internal class ExtendedExoPlayerStateUpdateRunnable(
         handler.postDelayed(this, DELAY_MILLIS)
     }
 
+    fun stop() = handler.removeCallbacks(this)
+
     companion object {
 
         private const val DELAY_MILLIS = 200L
