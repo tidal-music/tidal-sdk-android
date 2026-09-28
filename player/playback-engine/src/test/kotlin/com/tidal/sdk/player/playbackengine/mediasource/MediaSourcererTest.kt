@@ -75,6 +75,28 @@ internal class MediaSourcererTest {
     }
 
     @Test
+    fun loadImplicitStartsAnImplicitStreamingSession() {
+        val productType = ProductType.TRACK
+        val productId = "123"
+        val mediaProduct = ForwardingMediaProduct(MediaProduct(productType, productId))
+        val mediaSource = mock<PlaybackInfoMediaSource>()
+        val implicitStreamingSession = mock<StreamingSession.Implicit>()
+        whenever(implicitStreamingSessionCreator.createAndReportStart(productType, productId, null))
+            .thenReturn(implicitStreamingSession)
+        whenever(playbackInfoMediaSourceFactory.create(implicitStreamingSession, mediaProduct))
+            .thenReturn(mediaSource)
+
+        mediaSourcerer.load(mediaProduct, implicit = true)
+
+        assertThat(mediaSourcerer.reflectionCurrentStreamingSession)
+            .isSameInstanceAs(implicitStreamingSession)
+        verify(implicitStreamingSessionCreator).createAndReportStart(productType, productId, null)
+        verify(playbackInfoMediaSourceFactory).create(implicitStreamingSession, mediaProduct)
+        verify(exoPlayer).setMediaSource(mediaSource)
+        verifyNoMoreInteractions(mediaSource, implicitStreamingSession)
+    }
+
+    @Test
     fun nextWithOneMediaSource() {
         val productType = ProductType.TRACK
         val productId = "456"

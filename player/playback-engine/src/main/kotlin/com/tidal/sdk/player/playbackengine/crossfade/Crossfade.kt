@@ -51,11 +51,14 @@ internal class Crossfade(
 
     /** Whether [outgoing] is within [durationMs] of its end. */
     fun isInWindow(outgoing: ExtendedExoPlayer): Boolean =
-        remainingMs(outgoing)?.let { it <= durationMs } ?: false
+        msUntilWindow(outgoing)?.let { it <= 0L } ?: false
+
+    /** How long until [outgoing] is within [durationMs] of its end, or null if it can't tell. */
+    fun msUntilWindow(outgoing: ExtendedExoPlayer): Long? = remainingMs(outgoing)?.minus(durationMs)
 
     /**
      * Starts the fade once the outgoing player is within [durationMs] of its end and the incoming
-     * one is ready, then keeps both players in step. Call it periodically.
+     * one is ready, then keeps both players in step.
      */
     fun tick(outgoing: ExtendedExoPlayer, outgoingVolume: Float, incomingVolume: Float) {
         val remainingMs = remainingMs(outgoing) ?: return
@@ -64,11 +67,17 @@ internal class Crossfade(
             if (remainingMs > durationMs || incoming.playbackState != Player.STATE_READY) return
             fadeStartedAtMillis = currentTimeMillis()
         }
+        follow(outgoing)
+        outgoing.volume = outgoingVolume
+        incoming.volume = incomingVolume
+    }
+
+    /** Once fading, plays [incoming] exactly while [outgoing] plays. */
+    fun follow(outgoing: ExtendedExoPlayer) {
+        if (!isFading) return
         incoming.playWhenReady =
             outgoing.playWhenReady &&
                 outgoing.playbackSuppressionReason == Player.PLAYBACK_SUPPRESSION_REASON_NONE
-        outgoing.volume = outgoingVolume
-        incoming.volume = incomingVolume
     }
 
     fun play() {
