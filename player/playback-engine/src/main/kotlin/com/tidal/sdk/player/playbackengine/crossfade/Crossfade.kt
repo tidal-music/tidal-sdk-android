@@ -13,9 +13,10 @@ private const val PREPARE_LEAD_MS = 15_000L
  * The next track preloaded on its own silent [incoming] player, fading in over the last
  * [durationMs] of the outgoing one.
  *
- * Owns the fade itself: the incoming player's setup, the S-curve volume ramp, mirroring the
- * outgoing player's play/pause, and swapping the players at the end. Moving the reporting state
- * over to the incoming track is left to the engine, which owns it.
+ * Owns the fade itself: the incoming player's setup, the S-curve each player's
+ * [CrossfadeGainProcessor] applies, mirroring the outgoing player's play/pause, and swapping the
+ * players at the end. Moving the reporting state over to the incoming track is left to the engine,
+ * which owns it.
  */
 internal class Crossfade(
     val incoming: ExtendedExoPlayer,
@@ -32,14 +33,13 @@ internal class Crossfade(
     val isFading: Boolean
         get() = fadeStartedAtMillis != null
 
-    private var fadeDurationMs = 0L
-
     init {
         incoming.apply {
             analyticsListener = null
             setAudioAttributes(audioAttributes, false)
             volume = 0f
             playWhenReady = false
+            crossfadeGain.fadeIn(durationMs)
             addListener(
                 object : Player.Listener {
                     override fun onPlayerError(error: PlaybackException) =
@@ -55,22 +55,20 @@ internal class Crossfade(
 
     /**
      * Starts the fade once the outgoing player is within [durationMs] of its end and the incoming
-     * one is ready, then advances the volume ramp. Call it periodically.
+     * one is ready, then keeps both players in step. Call it periodically.
      */
     fun tick(outgoing: ExtendedExoPlayer, outgoingVolume: Float, incomingVolume: Float) {
         val remainingMs = remainingMs(outgoing) ?: return
+        outgoing.crossfadeGain.fadeOut(outgoing.duration - durationMs, durationMs)
         if (!isFading) {
             if (remainingMs > durationMs || incoming.playbackState != Player.STATE_READY) return
             fadeStartedAtMillis = currentTimeMillis()
-            fadeDurationMs = remainingMs.coerceAtLeast(1L)
         }
         incoming.playWhenReady =
             outgoing.playWhenReady &&
                 outgoing.playbackSuppressionReason == Player.PLAYBACK_SUPPRESSION_REASON_NONE
-        val progress = (1f - remainingMs.toFloat() / fadeDurationMs).coerceIn(0f, 1f)
-        val fadeIn = progress * progress * (3 - 2 * progress)
-        outgoing.volume = outgoingVolume * (1 - fadeIn)
-        incoming.volume = incomingVolume * fadeIn
+        outgoing.volume = outgoingVolume
+        incoming.volume = incomingVolume
     }
 
     fun play() {
@@ -93,6 +91,7 @@ internal class Crossfade(
         outgoing.analyticsListener = null
         outgoing.release()
         return incoming.apply {
+            crossfadeGain.clear()
             this.analyticsListener = analyticsListener
             setAudioAttributes(audioAttributes, true)
             this.playWhenReady = playWhenReady

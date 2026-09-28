@@ -4,8 +4,11 @@ import android.content.Context
 import androidx.media3.common.audio.AudioProcessor
 import androidx.media3.exoplayer.RenderersFactory
 import androidx.media3.exoplayer.audio.AudioCapabilities
+import androidx.media3.exoplayer.audio.AudioSink
 import androidx.media3.exoplayer.audio.DefaultAudioSink
 import androidx.media3.exoplayer.audio.DefaultAudioTrackBufferSizeProvider
+import com.tidal.sdk.player.playbackengine.crossfade.CrossfadeAudioSink
+import com.tidal.sdk.player.playbackengine.crossfade.CrossfadeGainProcessor
 import com.tidal.sdk.player.playbackengine.model.BufferConfiguration
 import com.tidal.sdk.player.playbackengine.player.renderer.PlayerRenderersFactory
 import com.tidal.sdk.player.playbackengine.player.renderer.audio.fallback.FallbackAudioRendererFactory
@@ -39,7 +42,14 @@ internal object RendererModule {
             )
             .build()
 
-    @Provides @Reusable fun audioProcessors() = emptyArray<AudioProcessor>()
+    @Provides
+    @ExtendedExoPlayerComponent.Scoped
+    fun crossfadeGainProcessor() = CrossfadeGainProcessor()
+
+    @Provides
+    @Reusable
+    fun audioProcessors(crossfadeGainProcessor: CrossfadeGainProcessor) =
+        arrayOf<AudioProcessor>(crossfadeGainProcessor)
 
     @Provides
     @ExtendedExoPlayerComponent.Scoped
@@ -55,12 +65,19 @@ internal object RendererModule {
             .build()
 
     @Provides
+    @ExtendedExoPlayerComponent.Scoped
+    fun audioSink(
+        defaultAudioSink: DefaultAudioSink,
+        crossfadeGainProcessor: CrossfadeGainProcessor,
+    ): AudioSink = CrossfadeAudioSink(defaultAudioSink, crossfadeGainProcessor)
+
+    @Provides
     @Reusable
     fun fallbackAudioRendererFactory(
         context: Context,
-        defaultAudioSink: DefaultAudioSink,
+        audioSink: AudioSink,
         @Named("enableDecoderFallback") enableDecoderFallback: Boolean,
-    ) = FallbackAudioRendererFactory(context, defaultAudioSink, enableDecoderFallback)
+    ) = FallbackAudioRendererFactory(context, audioSink, enableDecoderFallback)
 
     @Provides
     @Reusable

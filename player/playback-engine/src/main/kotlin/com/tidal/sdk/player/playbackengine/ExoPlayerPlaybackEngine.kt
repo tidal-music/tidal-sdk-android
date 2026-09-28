@@ -894,6 +894,7 @@ internal class ExoPlayerPlaybackEngine(
         val crossfade = crossfade ?: return
         this.crossfade = null
         crossfade.release()
+        extendedExoPlayer.crossfadeGain.clear()
         nextMediaSource = null
         updatePlayerVolume()
         if (restoreNext && isOperating) {

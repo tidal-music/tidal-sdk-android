@@ -18,6 +18,7 @@ import com.tidal.sdk.player.common.model.ProductType
 import com.tidal.sdk.player.commonandroid.TrueTimeWrapper
 import com.tidal.sdk.player.events.EventReporter
 import com.tidal.sdk.player.playbackengine.audiomode.AudioModeRepository
+import com.tidal.sdk.player.playbackengine.crossfade.CrossfadeGainProcessor
 import com.tidal.sdk.player.playbackengine.dj.DjSessionManager
 import com.tidal.sdk.player.playbackengine.error.ErrorHandler
 import com.tidal.sdk.player.playbackengine.mediasource.PlaybackInfoMediaSource
@@ -61,8 +62,10 @@ private const val FADE_POSITION_MS = TRACK_MS - CROSSFADE_MS
 
 internal class ExoPlayerPlaybackEngineCrossfadeTest {
 
+    private val outgoingGain = mock<CrossfadeGainProcessor>()
     private val outgoing =
         mock<ExtendedExoPlayer> {
+            on { it.crossfadeGain } doReturn outgoingGain
             on { it.duration } doReturn TRACK_MS
             on { it.currentPosition } doReturn PRELOAD_POSITION_MS
             on { it.repeatMode } doReturn Player.REPEAT_MODE_OFF
@@ -72,6 +75,7 @@ internal class ExoPlayerPlaybackEngineCrossfadeTest {
     private val incoming =
         mock<ExtendedExoPlayer> {
             on { it.audioAttributes } doReturn AudioAttributes.DEFAULT
+            on { it.crossfadeGain } doReturn mock<CrossfadeGainProcessor>()
             on { it.duration } doReturn C.TIME_UNSET
             on { it.playbackState } doReturn Player.STATE_BUFFERING
         }
@@ -250,6 +254,7 @@ internal class ExoPlayerPlaybackEngineCrossfadeTest {
 
     private fun assertFellBackToGapless() {
         verify(incoming).release()
+        verify(outgoingGain).clear()
         verify(incoming, never()).playWhenReady = true
         verify(outgoing, times(2))
             .setNext(

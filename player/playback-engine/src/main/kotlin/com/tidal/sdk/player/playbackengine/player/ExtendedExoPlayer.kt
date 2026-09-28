@@ -8,6 +8,7 @@ import androidx.media3.exoplayer.analytics.AnalyticsListener
 import androidx.media3.exoplayer.analytics.PlayerId
 import com.tidal.sdk.player.common.ForwardingMediaProduct
 import com.tidal.sdk.player.common.model.MediaProduct
+import com.tidal.sdk.player.playbackengine.crossfade.CrossfadeGainProcessor
 import com.tidal.sdk.player.playbackengine.mediasource.MediaSourcerer
 import com.tidal.sdk.player.playbackengine.mediasource.PlaybackInfoMediaSource
 import com.tidal.sdk.player.playbackengine.mediasource.loadable.PlaybackInfoListener
@@ -28,6 +29,7 @@ internal class ExtendedExoPlayer(
     private val loadControl: LoadControl,
     private val mediaSourcerer: MediaSourcerer,
     private val extendedExoPlayerState: ExtendedExoPlayerState,
+    val crossfadeGain: CrossfadeGainProcessor = CrossfadeGainProcessor(),
 ) : ExoPlayer by delegate {
 
     val currentPositionMs: Long

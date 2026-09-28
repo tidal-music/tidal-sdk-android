@@ -6,7 +6,6 @@ import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.analytics.AnalyticsListener
 import assertk.assertThat
-import assertk.assertions.isCloseTo
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isNull
@@ -29,10 +28,16 @@ private const val FADE_STARTED_AT_MS = 42L
 
 internal class CrossfadeTest {
 
+    private val incomingGain = mock<CrossfadeGainProcessor>()
     private val incoming =
-        mock<ExtendedExoPlayer> { on { it.audioAttributes } doReturn AudioAttributes.DEFAULT }
+        mock<ExtendedExoPlayer> {
+            on { it.audioAttributes } doReturn AudioAttributes.DEFAULT
+            on { it.crossfadeGain } doReturn incomingGain
+        }
+    private val outgoingGain = mock<CrossfadeGainProcessor>()
     private val outgoing =
         mock<ExtendedExoPlayer> {
+            on { it.crossfadeGain } doReturn outgoingGain
             on { it.duration } doReturn TRACK_MS
             on { it.playWhenReady } doReturn true
             on { it.playbackSuppressionReason } doReturn Player.PLAYBACK_SUPPRESSION_REASON_NONE
@@ -49,6 +54,7 @@ internal class CrossfadeTest {
         verify(incoming).setAudioAttributes(AudioAttributes.DEFAULT, false)
         verify(incoming).volume = 0f
         verify(incoming).playWhenReady = false
+        verify(incomingGain).fadeIn(CROSSFADE_MS)
     }
 
     @Test
@@ -62,13 +68,14 @@ internal class CrossfadeTest {
     }
 
     @Test
-    fun tickBeforeTheFadeWindowDoesNothing() {
+    fun tickBeforeTheFadeWindowOnlySetsUpTheFadeOut() {
         whenever(incoming.playbackState) doReturn Player.STATE_READY
         whenever(outgoing.currentPosition) doReturn TRACK_MS - CROSSFADE_MS - 1
 
         crossfade.tick(outgoing, 1f, 1f)
 
         assertThat(crossfade.isFading).isFalse()
+        verify(outgoingGain).fadeOut(TRACK_MS - CROSSFADE_MS, CROSSFADE_MS)
         verify(outgoing, never()).volume = org.mockito.kotlin.any()
     }
 
@@ -92,7 +99,7 @@ internal class CrossfadeTest {
     }
 
     @Test
-    fun tickStartsTheFadeAndRampsWithAnSCurve() {
+    fun tickStartsTheFadeAtTheNormalizedVolumes() {
         whenever(incoming.playbackState) doReturn Player.STATE_READY
         whenever(outgoing.currentPosition) doReturn TRACK_MS - CROSSFADE_MS
 
@@ -101,18 +108,7 @@ internal class CrossfadeTest {
         assertThat(crossfade.fadeStartedAtMillis).isEqualTo(FADE_STARTED_AT_MS)
         verify(incoming).playWhenReady = true
         verify(outgoing).volume = 0.8f
-        verify(incoming, times(2)).volume = 0f
-
-        whenever(outgoing.currentPosition) doReturn TRACK_MS - CROSSFADE_MS / 2
-
-        crossfade.tick(outgoing, 0.8f, 0.5f)
-
-        val outgoingVolumes = argumentCaptor<Float>()
-        verify(outgoing, times(2)).volume = outgoingVolumes.capture()
-        assertThat(outgoingVolumes.lastValue).isCloseTo(0.8f * HALF_WAY_GAIN, TOLERANCE)
-        val incomingVolumes = argumentCaptor<Float>()
-        verify(incoming, times(3)).volume = incomingVolumes.capture()
-        assertThat(incomingVolumes.lastValue).isCloseTo(0.5f * HALF_WAY_GAIN, TOLERANCE)
+        verify(incoming).volume = 0.5f
     }
 
     @Test
@@ -145,6 +141,7 @@ internal class CrossfadeTest {
         verify(incoming).analyticsListener = analyticsListener
         verify(incoming).setAudioAttributes(AudioAttributes.DEFAULT, true)
         verify(incoming).playWhenReady = true
+        verify(incomingGain).clear()
     }
 
     @Test
@@ -210,10 +207,5 @@ internal class CrossfadeTest {
         assertThat(Crossfade.isLongEnough(CROSSFADE_MS * 2 + 1, CROSSFADE_MS)).isTrue()
         assertThat(Crossfade.isLongEnough(CROSSFADE_MS * 2, CROSSFADE_MS)).isFalse()
         assertThat(Crossfade.isLongEnough(C.TIME_UNSET, CROSSFADE_MS)).isFalse()
-    }
-
-    private companion object {
-        const val HALF_WAY_GAIN = 0.5f
-        const val TOLERANCE = 0.0001f
     }
 }
