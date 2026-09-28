@@ -6,9 +6,6 @@ import androidx.media3.common.Player
 import androidx.media3.exoplayer.analytics.AnalyticsListener
 import com.tidal.sdk.player.common.model.MediaProduct
 import com.tidal.sdk.player.playbackengine.player.ExtendedExoPlayer
-import kotlin.math.PI
-import kotlin.math.cos
-import kotlin.math.sin
 
 private const val PREPARE_LEAD_MS = 15_000L
 
@@ -16,7 +13,7 @@ private const val PREPARE_LEAD_MS = 15_000L
  * The next track preloaded on its own silent [incoming] player, fading in over the last
  * [durationMs] of the outgoing one.
  *
- * Owns the fade itself: the incoming player's setup, the equal-power volume ramp, mirroring the
+ * Owns the fade itself: the incoming player's setup, the S-curve volume ramp, mirroring the
  * outgoing player's play/pause, and swapping the players at the end. Moving the reporting state
  * over to the incoming track is left to the engine, which owns it.
  */
@@ -71,9 +68,9 @@ internal class Crossfade(
             outgoing.playWhenReady &&
                 outgoing.playbackSuppressionReason == Player.PLAYBACK_SUPPRESSION_REASON_NONE
         val progress = (1f - remainingMs.toFloat() / fadeDurationMs).coerceIn(0f, 1f)
-        val angle = progress * PI.toFloat() / 2
-        outgoing.volume = outgoingVolume * cos(angle)
-        incoming.volume = incomingVolume * sin(angle)
+        val fadeIn = progress * progress * (3 - 2 * progress)
+        outgoing.volume = outgoingVolume * (1 - fadeIn)
+        incoming.volume = incomingVolume * fadeIn
     }
 
     fun play() {

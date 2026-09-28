@@ -92,7 +92,7 @@ internal class CrossfadeTest {
     }
 
     @Test
-    fun tickStartsTheFadeAndRampsWithEqualPower() {
+    fun tickStartsTheFadeAndRampsWithAnSCurve() {
         whenever(incoming.playbackState) doReturn Player.STATE_READY
         whenever(outgoing.currentPosition) doReturn TRACK_MS - CROSSFADE_MS
 
@@ -213,7 +213,7 @@ internal class CrossfadeTest {
     }
 
     private companion object {
-        const val HALF_WAY_GAIN = 0.70710677f
+        const val HALF_WAY_GAIN = 0.5f
         const val TOLERANCE = 0.0001f
     }
 }
