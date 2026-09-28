@@ -379,7 +379,13 @@ internal class ExoPlayerPlaybackEngine(
 
     override fun seek(time: Float) {
         if (!isOperating) return
-        abortCrossfade(restoreNext = true)
+        val crossfade = crossfade
+        if (
+            crossfade != null &&
+                (crossfade.isFading || crossfade.isInWindow(extendedExoPlayer, time.toLong()))
+        ) {
+            abortCrossfade(restoreNext = true)
+        }
         extendedExoPlayer.seekTo(time.toLong())
     }
 
@@ -823,7 +829,7 @@ internal class ExoPlayerPlaybackEngine(
     /** Polls for the preload, then wakes up right as the fade window opens. */
     private fun nextCrossfadeTickDelayMs(): Long {
         val crossfade = crossfade
-        if (crossfade == null || crossfade.isFading || playbackState != PlaybackState.PLAYING) {
+        if (crossfade == null || crossfade.isFading || !extendedExoPlayer.isPlaying) {
             return CROSSFADE_TICK_MS
         }
         val untilWindowMs = crossfade.msUntilWindow(extendedExoPlayer) ?: return CROSSFADE_TICK_MS

@@ -4,13 +4,14 @@ import androidx.media3.common.C
 import androidx.media3.common.audio.AudioProcessor.AudioFormat
 import assertk.assertThat
 import assertk.assertions.containsExactly
+import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
+import assertk.assertions.isTrue
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import org.junit.jupiter.api.Test
 
-/** One frame per millisecond, so each sample sits at its index in ms. */
-private const val SAMPLE_RATE = 1_000
+private const val RAMP_UP_MS = 250
 
 internal class CrossfadeGainProcessorTest {
 
@@ -54,27 +55,71 @@ internal class CrossfadeGainProcessorTest {
     }
 
     @Test
-    fun appliesTheGainToFloatSamples() {
-        configure(C.ENCODING_PCM_FLOAT)
-        processor.anchor(2_000L)
+    fun appliesTheSameGainToEveryChannelOfAFrame() {
+        configure(C.ENCODING_PCM_16BIT, channelCount = 2)
+        processor.anchor(0L)
         processor.fadeIn(4L)
-        val input = ByteBuffer.allocateDirect(8).order(ByteOrder.nativeOrder())
-        input.asFloatBuffer().put(floatArrayOf(0.5f, -0.5f))
 
-        val output = processed(input).asFloatBuffer()
-
-        assertThat(FloatArray(output.remaining()) { output.get(it) }.toList())
-            .containsExactly(0.25f, -0.421875f)
+        assertThat(process(shortArrayOf(1_000, -500, 1_000, -500, 1_000, -500, 1_000, -500)))
+            .containsExactly(0, 0, 156, -78, 500, -250, 844, -422)
     }
 
     @Test
-    fun clearStopsTheFade() {
+    fun clearBeforeTheFadeOutStartsStopsItAtOnce() {
+        configure(C.ENCODING_PCM_16BIT)
+        processor.anchor(0L)
+        processor.fadeOut(startMs = 12L, durationMs = 4L)
+        processor.clear()
+
+        assertThat(process(ShortArray(16) { 1_000 }).last()).isEqualTo(1_000)
+    }
+
+    @Test
+    fun clearDuringTheFadeRampsBackUpFromWhereItGotTo() {
         configure(C.ENCODING_PCM_16BIT)
         processor.anchor(0L)
         processor.fadeIn(4L)
+        process(ShortArray(2) { 1_000 })
+
         processor.clear()
 
+        val ramp = process(ShortArray(RAMP_UP_MS + 1) { 1_000 })
+        assertThat(ramp.first()).isEqualTo(500)
+        assertThat(ramp.zipWithNext().all { (previous, next) -> next >= previous }).isTrue()
+        assertThat(ramp.last()).isEqualTo(1_000)
+    }
+
+    @Test
+    fun aNewAnchorDropsARampUp() {
+        configure(C.ENCODING_PCM_16BIT)
+        processor.anchor(0L)
+        processor.fadeIn(4L)
+        process(ShortArray(2) { 1_000 })
+        processor.clear()
+
+        processor.anchor(0L)
+
         assertThat(process(shortArrayOf(1_000))).containsExactly(1_000)
+    }
+
+    @Test
+    fun aFlushDropsARampUp() {
+        configure(C.ENCODING_PCM_16BIT)
+        processor.anchor(0L)
+        processor.fadeIn(4L)
+        process(ShortArray(2) { 1_000 })
+        processor.clear()
+
+        processor.flush()
+
+        assertThat(process(shortArrayOf(1_000))).containsExactly(1_000)
+    }
+
+    @Test
+    fun isInactiveForFloatAudio() {
+        processor.configure(AudioFormat(SAMPLE_RATE, 2, C.ENCODING_PCM_FLOAT))
+
+        assertThat(processor.isActive).isFalse()
     }
 
     @Test
@@ -84,20 +129,22 @@ internal class CrossfadeGainProcessorTest {
         assertThat(processor.isActive).isFalse()
     }
 
-    private fun configure(encoding: Int) {
-        processor.configure(AudioFormat(SAMPLE_RATE, 1, encoding))
+    private fun configure(encoding: Int, channelCount: Int = 1) {
+        processor.configure(AudioFormat(SAMPLE_RATE, channelCount, encoding))
         processor.flush()
     }
 
-    private fun process(samples: ShortArray): List<Int> {
-        val input = ByteBuffer.allocateDirect(samples.size * 2).order(ByteOrder.nativeOrder())
-        input.asShortBuffer().put(samples)
-        val output = processed(input).asShortBuffer()
-        return List(output.remaining()) { output.get(it).toInt() }
-    }
+    private fun process(samples: ShortArray) = processor.process(samples)
+}
 
-    private fun processed(input: ByteBuffer): ByteBuffer {
-        processor.queueInput(input)
-        return processor.output.order(ByteOrder.nativeOrder())
-    }
+/** One frame per millisecond, so each sample sits at its index in ms. */
+internal const val SAMPLE_RATE = 1_000
+
+/** Queues mono or interleaved 16-bit [samples] and returns what comes out. */
+internal fun CrossfadeGainProcessor.process(samples: ShortArray): List<Int> {
+    val input = ByteBuffer.allocateDirect(samples.size * 2).order(ByteOrder.nativeOrder())
+    input.asShortBuffer().put(samples)
+    queueInput(input)
+    val output = output.order(ByteOrder.nativeOrder()).asShortBuffer()
+    return List(output.remaining()) { output.get(it).toInt() }
 }

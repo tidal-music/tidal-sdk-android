@@ -49,12 +49,17 @@ internal class Crossfade(
         }
     }
 
-    /** Whether [outgoing] is within [durationMs] of its end. */
-    fun isInWindow(outgoing: ExtendedExoPlayer): Boolean =
-        msUntilWindow(outgoing)?.let { it <= 0L } ?: false
+    /** Whether [outgoing] is, or would be at [positionMs], within [durationMs] of its end. */
+    fun isInWindow(
+        outgoing: ExtendedExoPlayer,
+        positionMs: Long = outgoing.currentPosition,
+    ): Boolean = msUntilWindow(outgoing, positionMs)?.let { it <= 0L } ?: false
 
     /** How long until [outgoing] is within [durationMs] of its end, or null if it can't tell. */
-    fun msUntilWindow(outgoing: ExtendedExoPlayer): Long? = remainingMs(outgoing)?.minus(durationMs)
+    fun msUntilWindow(
+        outgoing: ExtendedExoPlayer,
+        positionMs: Long = outgoing.currentPosition,
+    ): Long? = remainingMs(outgoing, positionMs)?.minus(durationMs)
 
     /**
      * Starts the fade once the outgoing player is within [durationMs] of its end and the incoming
@@ -62,9 +67,11 @@ internal class Crossfade(
      */
     fun tick(outgoing: ExtendedExoPlayer, outgoingVolume: Float, incomingVolume: Float) {
         val remainingMs = remainingMs(outgoing) ?: return
-        outgoing.crossfadeGain.fadeOut(outgoing.duration - durationMs, durationMs)
         if (!isFading) {
-            if (remainingMs > durationMs || incoming.playbackState != Player.STATE_READY) return
+            if (incoming.playbackState != Player.STATE_READY) return
+            // Set ahead of the window, as samples are processed ahead of what's heard.
+            outgoing.crossfadeGain.fadeOut(outgoing.duration - durationMs, durationMs)
+            if (remainingMs > durationMs) return
             fadeStartedAtMillis = currentTimeMillis()
         }
         follow(outgoing)
@@ -107,10 +114,13 @@ internal class Crossfade(
         }
     }
 
-    private fun remainingMs(outgoing: ExtendedExoPlayer): Long? {
+    private fun remainingMs(
+        outgoing: ExtendedExoPlayer,
+        positionMs: Long = outgoing.currentPosition,
+    ): Long? {
         val outgoingDurationMs = outgoing.duration
         if (outgoingDurationMs == C.TIME_UNSET) return null
-        return (outgoingDurationMs - outgoing.currentPosition).coerceAtLeast(0L)
+        return (outgoingDurationMs - positionMs).coerceAtLeast(0L)
     }
 
     companion object {

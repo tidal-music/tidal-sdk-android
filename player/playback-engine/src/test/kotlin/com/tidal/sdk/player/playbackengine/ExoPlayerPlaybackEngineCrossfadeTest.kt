@@ -59,6 +59,7 @@ import org.mockito.kotlin.atLeastOnce
 import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.eq
+import org.mockito.kotlin.inOrder
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.never
 import org.mockito.kotlin.times
@@ -83,6 +84,7 @@ internal class ExoPlayerPlaybackEngineCrossfadeTest {
             on { it.currentPosition } doReturn PRELOAD_POSITION_MS
             on { it.repeatMode } doReturn Player.REPEAT_MODE_OFF
             on { it.playWhenReady } doReturn true
+            on { it.isPlaying } doReturn true
             on { it.playbackSuppressionReason } doReturn Player.PLAYBACK_SUPPRESSION_REASON_NONE
         }
     private val incoming =
@@ -209,6 +211,7 @@ internal class ExoPlayerPlaybackEngineCrossfadeTest {
         tickAt(FADE_POSITION_MS)
 
         assertFellBackToGapless()
+        verify(outgoingGain, never()).fadeOut(any(), any())
     }
 
     @Test
@@ -223,6 +226,28 @@ internal class ExoPlayerPlaybackEngineCrossfadeTest {
     }
 
     @Test
+    fun aSeekBackWhileTheNextTrackIsPreloadedKeepsIt() {
+        incomingIsLoaded(AudioMode.STEREO, durationMs = TRACK_MS)
+        tickAt(PRELOAD_POSITION_MS)
+
+        playbackEngine.seek(0f)
+
+        verify(incoming, never()).release()
+        verify(outgoing).seekTo(0L)
+    }
+
+    @Test
+    fun aSeekBackDuringTheFadeCancelsIt() {
+        incomingIsLoaded(AudioMode.STEREO, durationMs = TRACK_MS)
+        tickAt(FADE_POSITION_MS)
+
+        playbackEngine.seek(0f)
+
+        assertCancelledTheFade()
+        assertRestoredTheNextItem()
+    }
+
+    @Test
     fun theTickerWakesUpAsTheFadeWindowOpens() {
         incomingIsLoaded(AudioMode.STEREO, durationMs = TRACK_MS)
 
@@ -232,11 +257,58 @@ internal class ExoPlayerPlaybackEngineCrossfadeTest {
     }
 
     @Test
+    fun theTickerWaitsAtMostATick() {
+        incomingIsLoaded(AudioMode.STEREO, durationMs = TRACK_MS)
+
+        tickAt(FADE_POSITION_MS - TICK_MS - 1L)
+
+        verify(internalHandler, times(2)).postDelayed(ticker, TICK_MS)
+    }
+
+    @Test
+    fun theTickerWaitsAtLeastAMillisecond() {
+        incomingIsLoaded(AudioMode.STEREO, durationMs = TRACK_MS)
+
+        tickAt(FADE_POSITION_MS - 1L)
+
+        verify(internalHandler).postDelayed(ticker, 1L)
+    }
+
+    @Test
+    fun theTickerKeepsItsPaceWhilePlaybackIsSuppressed() {
+        incomingIsLoaded(AudioMode.STEREO, durationMs = TRACK_MS)
+        whenever(outgoing.isPlaying) doReturn false
+
+        tickAt(FADE_POSITION_MS - 3L)
+
+        verify(internalHandler, times(2)).postDelayed(ticker, TICK_MS)
+        verify(internalHandler, never()).postDelayed(ticker, 3L)
+    }
+
+    @Test
+    fun aPauseAndResumeDuringThePreloadKeepsTheIncomingPlayerSilent() {
+        incomingIsLoaded(AudioMode.STEREO, durationMs = TRACK_MS)
+        tickAt(PRELOAD_POSITION_MS)
+        val reason = Player.PLAY_WHEN_READY_CHANGE_REASON_USER_REQUEST
+
+        playbackEngine.onPlayWhenReadyChanged(currentEventTime(), false, reason)
+        playbackEngine.onPlayWhenReadyChanged(currentEventTime(), true, reason)
+
+        verify(incoming, never()).playWhenReady = true
+    }
+
+    @Test
     fun anEndBeforeTheIncomingTrackLoadsMovesOnToTheNextItem() {
         playbackEngine.onPlaybackStateChanged(currentEventTime(), Player.STATE_ENDED)
 
         assertFellBackToGapless()
-        verify(outgoing).seekToNextMediaItem()
+        inOrder(outgoing) {
+            verify(outgoing, times(2))
+                .setNext(
+                    argThat<ForwardingMediaProduct<MediaProduct>> { delegate === nextMediaProduct }
+                )
+            verify(outgoing).seekToNextMediaItem()
+        }
         verify(outgoing, never()).release()
         assertThat(emittedEvents().filterIsInstance<Event.MediaProductEnded>()).isEmpty()
     }

@@ -14,6 +14,7 @@ import assertk.assertions.isTrue
 import com.tidal.sdk.player.common.model.MediaProduct
 import com.tidal.sdk.player.playbackengine.player.ExtendedExoPlayer
 import org.junit.jupiter.api.Test
+import org.mockito.kotlin.any
 import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
@@ -76,7 +77,7 @@ internal class CrossfadeTest {
 
         assertThat(crossfade.isFading).isFalse()
         verify(outgoingGain).fadeOut(TRACK_MS - CROSSFADE_MS, CROSSFADE_MS)
-        verify(outgoing, never()).volume = org.mockito.kotlin.any()
+        verify(outgoing, never()).volume = any()
     }
 
     @Test
@@ -87,6 +88,7 @@ internal class CrossfadeTest {
         crossfade.tick(outgoing, 1f, 1f)
 
         assertThat(crossfade.isFading).isFalse()
+        verify(outgoingGain, never()).fadeOut(any(), any())
     }
 
     @Test
@@ -120,6 +122,13 @@ internal class CrossfadeTest {
         crossfade.tick(outgoing, 1f, 1f)
 
         verify(incoming, times(2)).playWhenReady = false
+    }
+
+    @Test
+    fun followLeavesIncomingPausedBeforeTheFade() {
+        crossfade.follow(outgoing)
+
+        verify(incoming, never()).playWhenReady = true
     }
 
     @Test

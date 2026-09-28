@@ -60,6 +60,7 @@ internal object RendererModule {
     ) =
         DefaultAudioSink.Builder()
             .setAudioCapabilities(audioCapabilities)
+            // Float output bypasses these, which would play crossfades at full volume.
             .setAudioProcessors(audioProcessors)
             .setAudioTrackBufferSizeProvider(defaultAudioTrackBufferSizeProvider)
             .build()
