@@ -16,6 +16,7 @@ import com.tidal.sdk.player.common.ForwardingMediaProduct
 import com.tidal.sdk.player.common.model.MediaProduct
 import com.tidal.sdk.player.common.model.ProductType
 import com.tidal.sdk.player.playbackengine.mediasource.MediaSourcerer
+import com.tidal.sdk.player.playbackengine.mediasource.PlaybackInfoMediaSource
 import com.tidal.sdk.player.playbackengine.mediasource.loadable.PlaybackInfoListener
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
@@ -40,8 +41,15 @@ internal class ExtendedExoPlayerTest {
     private val loadControl = mock<LoadControl>()
     private val mediaSourcerer = mock<MediaSourcerer>()
     private val extendedExoPlayerState = mock<ExtendedExoPlayerState>()
+    private val stateUpdateRunnable = mock<ExtendedExoPlayerStateUpdateRunnable>()
     private val extendedExoPlayer by lazy {
-        ExtendedExoPlayer(delegate, loadControl, mediaSourcerer, extendedExoPlayerState)
+        ExtendedExoPlayer(
+            delegate,
+            loadControl,
+            mediaSourcerer,
+            extendedExoPlayerState,
+            stateUpdateRunnable,
+        )
     }
 
     @Test
@@ -107,6 +115,20 @@ internal class ExtendedExoPlayerTest {
         verify(delegate).prepare()
     }
 
+    @Test
+    fun loadAsNextLoadsWithAnImplicitSession() = runBlocking {
+        val mediaProduct = ForwardingMediaProduct(MediaProduct(ProductType.TRACK, "1"))
+        val mediaSource = mock<PlaybackInfoMediaSource>()
+        whenever(mediaSourcerer.load(mediaProduct, implicit = true)) doReturn mediaSource
+
+        val actual = extendedExoPlayer.loadAsNext(mediaProduct)
+
+        assertThat(actual).isSameInstanceAs(mediaSource)
+        verify(mediaSourcerer).load(mediaProduct, implicit = true)
+        verify(mediaSourcerer, never()).load(mediaProduct, implicit = false)
+        verify(delegate).prepare()
+    }
+
     @ParameterizedTest
     @NullSource
     @MethodSource("nextMediaProducts")
@@ -157,7 +179,13 @@ internal class ExtendedExoPlayerTest {
     fun releaseForwardsToDelegateAndDontReleaseCache() {
         val playerCache = mock<PlayerCache.Provided> { on { cache } doReturn mock() }
         val extendedExoPlayer =
-            ExtendedExoPlayer(delegate, loadControl, mediaSourcerer, extendedExoPlayerState)
+            ExtendedExoPlayer(
+                delegate,
+                loadControl,
+                mediaSourcerer,
+                extendedExoPlayerState,
+                stateUpdateRunnable,
+            )
 
         extendedExoPlayer.release()
 
@@ -170,13 +198,26 @@ internal class ExtendedExoPlayerTest {
     @Test
     fun releaseForwardsToDelegate() {
         val extendedExoPlayer =
-            ExtendedExoPlayer(delegate, loadControl, mediaSourcerer, extendedExoPlayerState)
+            ExtendedExoPlayer(
+                delegate,
+                loadControl,
+                mediaSourcerer,
+                extendedExoPlayerState,
+                stateUpdateRunnable,
+            )
 
         extendedExoPlayer.release()
 
         verify(delegate).release()
         verify(mediaSourcerer).release()
         verify(extendedExoPlayerState).playbackInfoListener = null
+    }
+
+    @Test
+    fun releaseStopsThePositionUpdates() {
+        extendedExoPlayer.release()
+
+        verify(stateUpdateRunnable).stop()
     }
 
     @Test

@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.72] - 2026-09-28
+
+### Added
+- Crossfade between tracks. Set `PlaybackEngine.crossfadeDurationMs` to fade each track into the next over that many milliseconds; `0`, the default, keeps gapless playback.
+
 ## [0.0.71] - 2026-08-13
 
 ### Changed

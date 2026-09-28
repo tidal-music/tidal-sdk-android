@@ -8,6 +8,7 @@ import androidx.media3.exoplayer.analytics.AnalyticsListener
 import androidx.media3.exoplayer.analytics.PlayerId
 import com.tidal.sdk.player.common.ForwardingMediaProduct
 import com.tidal.sdk.player.common.model.MediaProduct
+import com.tidal.sdk.player.playbackengine.crossfade.CrossfadeGainProcessor
 import com.tidal.sdk.player.playbackengine.mediasource.MediaSourcerer
 import com.tidal.sdk.player.playbackengine.mediasource.PlaybackInfoMediaSource
 import com.tidal.sdk.player.playbackengine.mediasource.loadable.PlaybackInfoListener
@@ -22,12 +23,16 @@ import kotlin.properties.Delegates
  * @param mediaSourcerer A [MediaSourcerer] instance that holds the MediaSource of what we play.
  * @param extendedExoPlayerState A [ExtendedExoPlayerState] instance that holds the some shared
  *   state for ExtendedExoPlayer.
+ * @param stateUpdateRunnable The [ExtendedExoPlayerStateUpdateRunnable] polling this player's
+ *   position, stopped on [release].
  */
 internal class ExtendedExoPlayer(
     private val delegate: ExoPlayer,
     private val loadControl: LoadControl,
     private val mediaSourcerer: MediaSourcerer,
     private val extendedExoPlayerState: ExtendedExoPlayerState,
+    private val stateUpdateRunnable: ExtendedExoPlayerStateUpdateRunnable,
+    val crossfadeGain: CrossfadeGainProcessor = CrossfadeGainProcessor(),
 ) : ExoPlayer by delegate {
 
     val currentPositionMs: Long
@@ -61,6 +66,18 @@ internal class ExtendedExoPlayer(
         return playbackInfoMediaSource
     }
 
+    /**
+     * Like [load], but for a product that continues from another player, so its streaming session
+     * is reported as implicit.
+     */
+    fun loadAsNext(
+        forwardingMediaProduct: ForwardingMediaProduct<MediaProduct>
+    ): PlaybackInfoMediaSource {
+        val playbackInfoMediaSource = mediaSourcerer.load(forwardingMediaProduct, implicit = true)
+        delegate.prepare()
+        return playbackInfoMediaSource
+    }
+
     fun setNext(forwardingMediaProduct: ForwardingMediaProduct<MediaProduct>?) =
         mediaSourcerer.setNext(forwardingMediaProduct)
 
@@ -87,6 +104,7 @@ internal class ExtendedExoPlayer(
         mediaSourcerer.onRepeatOne(forwardingMediaProduct)
 
     override fun release() {
+        stateUpdateRunnable.stop()
         delegate.release()
         mediaSourcerer.release()
         extendedExoPlayerState.playbackInfoListener = null

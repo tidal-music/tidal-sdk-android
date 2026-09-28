@@ -51,6 +51,10 @@ internal class SingleHandlerPlaybackEngine(
         get() = delegate.enableAdaptive
         set(value) = postOrThrow { delegate.enableAdaptive = value }
 
+    override var crossfadeDurationMs: Long
+        get() = delegate.crossfadeDurationMs
+        set(value) = postOrThrow { delegate.crossfadeDurationMs = value }
+
     override var videoSurfaceView: AspectRatioAdjustingSurfaceView?
         set(value) = postOrThrow { delegate.videoSurfaceView = value }
         get() = delegate.videoSurfaceView
