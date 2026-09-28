@@ -190,6 +190,17 @@ internal class ExoPlayerPlaybackEngineCrossfadeTest {
     }
 
     @Test
+    fun aSeekIntoTheFadeWindowWhileTheNextTrackIsPreloadedFallsBackToGapless() {
+        incomingIsLoaded(AudioMode.STEREO, durationMs = TRACK_MS)
+        tickAt(PRELOAD_POSITION_MS)
+
+        playbackEngine.seek((TRACK_MS - 2_000L).toFloat())
+        tickAt(TRACK_MS - 2_000L)
+
+        assertFellBackToGapless()
+    }
+
+    @Test
     fun handsOverToTheIncomingPlayerWhenTheOutgoingTrackEnds() {
         incomingIsLoaded(AudioMode.STEREO, durationMs = TRACK_MS)
         tickAt(FADE_POSITION_MS)

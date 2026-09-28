@@ -381,7 +381,7 @@ internal class ExoPlayerPlaybackEngine(
 
     override fun seek(time: Float) {
         if (!isOperating) return
-        if (crossfade?.isFading == true) abortCrossfade(restoreNext = true)
+        abortCrossfade(restoreNext = true)
         extendedExoPlayer.seekTo(time.toLong())
     }
 
