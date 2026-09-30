@@ -77,6 +77,7 @@ import kotlinx.coroutines.launch
 private const val MS_IN_SECOND = 1000L
 private const val CROSSFADE_TICK_MS = 500L
 private const val CROSSFADE_FADE_TICK_MS = 50L
+private const val VOLUME_RECOVERY_MS = 250L
 
 /** The default implementation of [PlaybackEngine] that will use ExoPlayer to play media. */
 @Suppress("LargeClass", "LongParameterList")
@@ -312,6 +313,13 @@ internal class ExoPlayerPlaybackEngine(
 
     private var crossfadeDisabledForCurrent = false
 
+    /** When a cancelled fade started ramping the volume back up from [volumeRecoveryFrom]. */
+    private var volumeRecoveryStartedAtMillis: Long? = null
+
+    private var volumeRecoveryFrom = 0f
+
+    private val volumeRecoveryTicker = Runnable { updatePlayerVolume() }
+
     private val crossfadeTicker =
         object : Runnable {
             override fun run() {
@@ -444,6 +452,7 @@ internal class ExoPlayerPlaybackEngine(
     override fun release() {
         abortCrossfade(restoreNext = false)
         internalHandler.removeCallbacks(crossfadeTicker)
+        internalHandler.removeCallbacks(volumeRecoveryTicker)
         extendedExoPlayer.release()
         if (playerCache is PlayerCache.Internal) {
             playerCache.cache.release()
@@ -849,7 +858,25 @@ internal class ExoPlayerPlaybackEngine(
 
     private fun updatePlayerVolume() {
         if (crossfade?.isFading == true) return
-        playerVolume = volumeHelper.getVolume(mediaSource?.playbackInfo)
+        val volume = volumeHelper.getVolume(mediaSource?.playbackInfo)
+        val recoveryStartedAtMillis = volumeRecoveryStartedAtMillis
+        if (recoveryStartedAtMillis == null) {
+            playerVolume = volume
+            return
+        }
+        internalHandler.removeCallbacks(volumeRecoveryTicker)
+        val progress =
+            (trueTimeWrapper.currentTimeMillis - recoveryStartedAtMillis).toFloat() /
+                VOLUME_RECOVERY_MS
+        if (progress >= 1f) {
+            volumeRecoveryStartedAtMillis = null
+            playerVolume = volume
+        } else {
+            playerVolume =
+                volumeRecoveryFrom +
+                    (volume.coerceAtMost(1f) - volumeRecoveryFrom) * progress.coerceAtLeast(0f)
+            internalHandler.postDelayed(volumeRecoveryTicker, CROSSFADE_FADE_TICK_MS)
+        }
     }
 
     /** Polls for the preload, then wakes up right as the fade window opens. */
@@ -979,6 +1006,11 @@ internal class ExoPlayerPlaybackEngine(
         this.crossfade = null
         crossfade.release()
         nextMediaSource = null
+        if (crossfade.isFading) {
+            // Ramps back up from where the fade had got to, instead of jumping to full volume.
+            volumeRecoveryFrom = extendedExoPlayer.volume
+            volumeRecoveryStartedAtMillis = trueTimeWrapper.currentTimeMillis
+        }
         updatePlayerVolume()
         if (restoreNext && isOperating) {
             nextMediaSource =
@@ -1284,6 +1316,7 @@ internal class ExoPlayerPlaybackEngine(
         playbackState = PlaybackState.IDLE
         extendedExoPlayer.release()
         internalHandler.removeCallbacksAndMessages(null)
+        volumeRecoveryStartedAtMillis = null
         extendedExoPlayer = extendedExoPlayerFactory.create(this, this)
         if (crossfadeDurationMs > 0L) internalHandler.post(crossfadeTicker)
     }

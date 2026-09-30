@@ -99,6 +99,7 @@ internal class ExoPlayerPlaybackEngineCrossfadeTest {
     private val trueTimeWrapper =
         mock<TrueTimeWrapper> { on { it.currentTimeMillis } doAnswer { nowMs } }
     private val eventReporter = mock<EventReporter>()
+    private val volumeHelper = mock<VolumeHelper> { on { it.getVolume(anyOrNull()) } doReturn 1f }
     private val playbackContextFactory = mock<PlaybackContextFactory>()
     private val undeterminedPlaybackSessionResolver =
         mock<UndeterminedPlaybackSessionResolver> {
@@ -134,7 +135,7 @@ internal class ExoPlayerPlaybackEngineCrossfadeTest {
                 playbackContextFactory,
                 mock<AudioQualityRepository>(),
                 mock<AudioModeRepository>(),
-                mock<VolumeHelper>(),
+                volumeHelper,
                 trueTimeWrapper,
                 eventReporter,
                 mock<ErrorHandler>(),
@@ -457,6 +458,27 @@ internal class ExoPlayerPlaybackEngineCrossfadeTest {
         assertRestoredTheNextItem()
         verify(internalHandler, never()).post(ticker)
         verify(internalHandler).removeCallbacks(ticker)
+    }
+
+    @Test
+    fun cancellingTheFadeRampsTheVolumeBackUp() {
+        incomingIsLoaded(AudioMode.STEREO, durationMs = TRACK_MS)
+        tickAt(FADE_POSITION_MS)
+        whenever(outgoing.volume) doReturn 0f
+
+        playbackEngine.crossfadeDurationMs = 0L
+        val captor = argumentCaptor<Runnable>()
+        verify(internalHandler, times(2)).postDelayed(captor.capture(), eq(50L))
+        val recovery = captor.lastValue
+
+        nowMs += 125L
+        recovery.run()
+        verify(outgoing).volume = 0.5f
+
+        nowMs += 125L
+        recovery.run()
+        verify(outgoing, atLeastOnce()).volume = 1f
+        verify(internalHandler, times(2)).postDelayed(recovery, 50L)
     }
 
     @Test
