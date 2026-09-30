@@ -11,6 +11,7 @@ import androidx.media3.common.Timeline
 import androidx.media3.common.VideoSize
 import androidx.media3.datasource.cache.Cache
 import androidx.media3.exoplayer.DecoderReuseEvaluation
+import androidx.media3.exoplayer.ExoPlaybackException
 import androidx.media3.exoplayer.analytics.AnalyticsListener.EventTime
 import androidx.media3.exoplayer.hls.HlsManifest
 import androidx.media3.exoplayer.hls.playlist.HlsMediaPlaylist
@@ -69,6 +70,7 @@ import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.toList
@@ -91,6 +93,7 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.argThat
 import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.atLeastOnce
+import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.inOrder
@@ -2417,6 +2420,165 @@ internal class ExoPlayerPlaybackEngineTest {
             AspectRatioAdjustingSurfaceView.SuggestedDimensions(width, height)
         verifyNoMoreInteractions(eventTime, videoSurfaceView, surfaceHolder)
     }
+
+    @Test
+    fun onPlayerErrorWithRetryableRendererErrorShouldReloadWithoutEmitting() =
+        runTest(testDispatcher) {
+            val retryPlayer = mock<ExtendedExoPlayer>()
+            val playerError = playerErrorFixture(retryPlayer)
+            whenever(initialExtendedExoPlayer.playWhenReady) doReturn true
+            whenever(initialExtendedExoPlayer.currentPositionMs) doReturn 7_000L
+
+            playbackEngine.onPlayerError(playerError.eventTime, playerError.error)
+            advanceUntilIdle()
+
+            verify(events, never()).emit(argThat { this is Event.Error })
+            verify(initialExtendedExoPlayer).release()
+            verify(retryPlayer).load(argThat { delegate == forwardingMediaProduct.delegate })
+            verify(retryPlayer).seekTo(7_000L)
+            verify(retryPlayer).play()
+            assertThat(playbackEngine.mediaProduct).isEqualTo(forwardingMediaProduct.delegate)
+        }
+
+    @Test
+    fun onPlayerErrorWithRetryableRendererErrorShouldKeepTheNextProductAndPausedState() =
+        runTest(testDispatcher) {
+            val retryPlayer = mock<ExtendedExoPlayer>()
+            val playerError = playerErrorFixture(retryPlayer)
+            val nextMediaProduct = MediaProduct(ProductType.TRACK, "2")
+            val nextMediaSource =
+                mock<PlaybackInfoMediaSource> {
+                    on { it.forwardingMediaProduct } doReturn
+                        ForwardingMediaProduct(nextMediaProduct)
+                }
+            playbackEngine.testNextMediaSource = nextMediaSource
+            whenever(initialExtendedExoPlayer.playWhenReady) doReturn false
+
+            playbackEngine.onPlayerError(playerError.eventTime, playerError.error)
+            advanceUntilIdle()
+
+            verify(retryPlayer).setNext(argThat { delegate == nextMediaProduct })
+            verify(retryPlayer, never()).play()
+        }
+
+    @Test
+    fun onPlayerErrorWithRetryableRendererErrorShouldSurfaceTheSecondFailure() =
+        runTest(testDispatcher) {
+            val retryPlayer = mock<ExtendedExoPlayer>()
+            val playerError = playerErrorFixture(retryPlayer)
+            playbackEngine.onPlayerError(playerError.eventTime, playerError.error)
+            val retriedEventTime =
+                eventTimeFor(
+                    singleWindowTimeline(
+                        playbackEngine.testMediaSource!!
+                            .forwardingMediaProduct
+                            .hashCode()
+                            .toString()
+                    ),
+                    0L,
+                )
+
+            val emitted =
+                async(start = CoroutineStart.UNDISPATCHED) {
+                    playbackEngine.events.filterIsInstance<Event.Error>().first()
+                }
+            playbackEngine.onPlayerError(retriedEventTime, playerError.error)
+
+            assertThat(emitted.await()).isSameInstanceAs(playerError.eventError)
+            verify(retryPlayer, never()).release()
+        }
+
+    @Test
+    fun onPlayerErrorWithRetryableSourceErrorShouldEmitWithoutRetrying() =
+        runTest(testDispatcher) {
+            val retryPlayer = mock<ExtendedExoPlayer>()
+            val playerError = playerErrorFixture(retryPlayer, ExoPlaybackException.TYPE_SOURCE)
+
+            val emitted =
+                async(start = CoroutineStart.UNDISPATCHED) {
+                    playbackEngine.events.filterIsInstance<Event.Error>().first()
+                }
+            playbackEngine.onPlayerError(playerError.eventTime, playerError.error)
+
+            assertThat(emitted.await()).isSameInstanceAs(playerError.eventError)
+            verify(initialExtendedExoPlayer, never()).release()
+            verifyNoInteractions(retryPlayer)
+        }
+
+    @Test
+    fun onPlayerErrorWithNotAllowedRendererErrorShouldEmitWithoutRetrying() =
+        runTest(testDispatcher) {
+            val retryPlayer = mock<ExtendedExoPlayer>()
+            val eventError = Event.Error.NotAllowed("errorCode", null)
+            val playerError = playerErrorFixture(retryPlayer, eventError = eventError)
+
+            val emitted =
+                async(start = CoroutineStart.UNDISPATCHED) {
+                    playbackEngine.events.filterIsInstance<Event.Error>().first()
+                }
+            playbackEngine.onPlayerError(playerError.eventTime, playerError.error)
+
+            assertThat(emitted.await()).isSameInstanceAs(eventError)
+            verify(initialExtendedExoPlayer, never()).release()
+            verifyNoInteractions(retryPlayer)
+        }
+
+    @Test
+    fun loadShouldGiveANewProductItsOwnRendererErrorRetry() =
+        runTest(testDispatcher) {
+            val retryPlayer = mock<ExtendedExoPlayer>()
+            val playerError = playerErrorFixture(retryPlayer)
+            playbackEngine.onPlayerError(playerError.eventTime, playerError.error)
+            val secondRetryPlayer = mock<ExtendedExoPlayer>()
+            whenever(extendedExoPlayerFactory.create(any(), any())).thenReturn(secondRetryPlayer)
+            val otherProduct = MediaProduct(ProductType.TRACK, "3")
+            val otherMediaSource =
+                mock<PlaybackInfoMediaSource> {
+                    on { it.forwardingMediaProduct } doReturn ForwardingMediaProduct(otherProduct)
+                }
+            whenever(retryPlayer.load(any())) doReturn otherMediaSource
+            playbackEngine.load(otherProduct)
+            val otherEventTime =
+                eventTimeFor(
+                    singleWindowTimeline(
+                        otherMediaSource.forwardingMediaProduct.hashCode().toString()
+                    ),
+                    0L,
+                )
+
+            playbackEngine.onPlayerError(otherEventTime, playerError.error)
+            advanceUntilIdle()
+
+            verify(events, never()).emit(argThat { this is Event.Error })
+            verify(secondRetryPlayer).load(argThat { delegate == otherProduct })
+        }
+
+    private fun playerErrorFixture(
+        retryPlayer: ExtendedExoPlayer,
+        type: Int = ExoPlaybackException.TYPE_RENDERER,
+        eventError: Event.Error = Event.Error.Retryable("errorCode", null),
+    ): PlayerErrorFixture {
+        playbackEngine.testMediaSource = mediaSource
+        whenever(extendedExoPlayerFactory.create(any(), any())).thenReturn(retryPlayer)
+        whenever(retryPlayer.load(any())) doAnswer
+            {
+                val product = it.getArgument<ForwardingMediaProduct<MediaProduct>>(0)
+                mock<PlaybackInfoMediaSource> { on { it.forwardingMediaProduct } doReturn product }
+            }
+        whenever(retryPlayer.currentStreamingSession) doReturn mock<StreamingSession.Explicit>()
+        val error = mock<ExoPlaybackException>()
+        error.reflectionSetType(type)
+        whenever(errorHandler.getErrorEvent(error, ProductType.TRACK)) doReturn eventError
+        val eventTime =
+            eventTimeFor(singleWindowTimeline(forwardingMediaProduct.hashCode().toString()), 0L)
+        return PlayerErrorFixture(eventTime, error, eventError)
+    }
+
+    private class PlayerErrorFixture(
+        val eventTime: EventTime,
+        val error: ExoPlaybackException,
+        val eventError: Event.Error,
+    )
 
     /** An [EventTime] for the first window of [timeline]. */
     private fun eventTimeFor(timeline: Timeline, eventPlaybackPositionMs: Long) =
