@@ -55,8 +55,11 @@ interface DynamicPages {
      *   unsupported. (optional, default to "en-US")
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: modules, subject (optional)
-     * @param filterSubjectId The subject resource ID. Required except for HOME_FREE, where it must
-     *   be omitted. (e.g. &#x60;67890&#x60;) (optional)
+     * @param filterSubject The page subject. Its type must match pageType. Required unless
+     *   subject.id is supplied; both must be omitted for HOME_FREE. Do not combine with subject.id.
+     *   (optional)
+     * @param filterSubjectId Deprecated alternative to filter[subject]. Omit when subject is
+     *   supplied or pageType is HOME_FREE. (e.g. &#x60;67890&#x60;) (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: modules.items (optional)
@@ -74,6 +77,7 @@ interface DynamicPages {
         @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("filter[subject]") filterSubject: kotlin.String? = null,
         @Query("filter[subject.id]")
         filterSubjectId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,

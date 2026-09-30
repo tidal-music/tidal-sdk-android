@@ -26,6 +26,7 @@ import kotlinx.serialization.Serializable
  * @param collaboratorProfiles
  * @param collaborators
  * @param coverArt
+ * @param curators
  * @param items
  * @param ownerProfiles
  * @param owners
@@ -34,13 +35,17 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class PlaylistsRelationships(
     @SerialName(value = "collaboratorProfiles")
+    @Deprecated(message = "This property is deprecated.")
     val collaboratorProfiles: PlaylistsCollaboratorProfilesMultiRelationshipDataDocument? = null,
     @SerialName(value = "collaborators")
     val collaborators: PlaylistsCollaboratorsMultiRelationshipDataDocument? = null,
     @SerialName(value = "coverArt")
     val coverArt: PlaylistsCoverArtMultiRelationshipDataDocument? = null,
+    @SerialName(value = "curators")
+    val curators: PlaylistsCuratorsMultiRelationshipDataDocument? = null,
     @SerialName(value = "items") val items: PlaylistsItemsMultiRelationshipDataDocument? = null,
     @SerialName(value = "ownerProfiles")
+    @Deprecated(message = "This property is deprecated.")
     val ownerProfiles: PlaylistsOwnerProfilesMultiRelationshipDataDocument? = null,
     @SerialName(value = "owners") val owners: PlaylistsOwnersMultiRelationshipDataDocument? = null,
     @SerialName(value = "suggestedCoverArts")

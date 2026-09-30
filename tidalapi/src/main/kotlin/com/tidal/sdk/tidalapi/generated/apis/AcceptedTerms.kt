@@ -18,6 +18,8 @@ interface AcceptedTerms {
         @SerialName(value = "DEVELOPER") DEVELOPER("DEVELOPER"),
         @SerialName(value = "UPLOAD_MARKETPLACE") UPLOAD_MARKETPLACE("UPLOAD_MARKETPLACE"),
         @SerialName(value = "MERCH_GUIDELINES") MERCH_GUIDELINES("MERCH_GUIDELINES"),
+        @SerialName(value = "TIDAL_CONNECT_DEVELOPER")
+        TIDAL_CONNECT_DEVELOPER("TIDAL_CONNECT_DEVELOPER"),
     }
 
     /**
@@ -34,8 +36,8 @@ interface AcceptedTerms {
      * - 503: Service temporarily unavailable
      *
      * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user
-     * @param filterTermsTermsType One of: DEVELOPER, UPLOAD_MARKETPLACE, MERCH_GUIDELINES (e.g.
-     *   &#x60;DEVELOPER&#x60;)
+     * @param filterTermsTermsType One of: DEVELOPER, UPLOAD_MARKETPLACE, MERCH_GUIDELINES,
+     *   TIDAL_CONNECT_DEVELOPER (e.g. &#x60;DEVELOPER&#x60;)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: owners, terms (optional)
      * @param filterTermsIsLatestVersion Filter by terms.isLatestVersion (optional)

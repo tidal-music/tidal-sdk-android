@@ -23,12 +23,15 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
+ * @param author
  * @param ownerProfiles
  * @param owners
  */
 @Serializable
 data class ReactionsRelationships(
+    @SerialName(value = "author") val author: ReactionsAuthorSingleRelationshipDataDocument? = null,
     @SerialName(value = "ownerProfiles")
+    @Deprecated(message = "This property is deprecated.")
     val ownerProfiles: ReactionsOwnerProfilesMultiRelationshipDataDocument? = null,
     @SerialName(value = "owners") val owners: ReactionsOwnersMultiRelationshipDataDocument? = null,
 ) {}

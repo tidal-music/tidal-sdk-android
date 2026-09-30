@@ -1,9 +1,9 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.models.CommentsAuthorSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.CommentsCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.CommentsCreateSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.CommentsMultiResourceDataDocument
-import com.tidal.sdk.tidalapi.generated.models.CommentsOwnerProfilesMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.CommentsOwnersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.CommentsParentCommentSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.CommentsSingleResourceDataDocument
@@ -16,14 +16,6 @@ import retrofit2.http.*
 
 interface Comments {
 
-    /** enum for parameter filterSubjectType */
-    @Serializable
-    enum class FilterSubjectTypeCommentsGet(val value: kotlin.String) {
-        @SerialName(value = "albums") albums("albums"),
-        @SerialName(value = "tracks") tracks("tracks"),
-        @SerialName(value = "trackSourceFiles") trackSourceFiles("trackSourceFiles"),
-    }
-
     /** enum for parameter sort */
     @Serializable
     enum class SortCommentsGet(val value: kotlin.String) {
@@ -35,6 +27,14 @@ interface Comments {
         @SerialName(value = "-replyCount") ReplyCountDesc("-replyCount"),
         @SerialName(value = "startTime") StartTimeAsc("startTime"),
         @SerialName(value = "-startTime") StartTimeDesc("-startTime"),
+    }
+
+    /** enum for parameter filterSubjectType */
+    @Serializable
+    enum class FilterSubjectTypeCommentsGet(val value: kotlin.String) {
+        @SerialName(value = "albums") albums("albums"),
+        @SerialName(value = "tracks") tracks("tracks"),
+        @SerialName(value = "trackSourceFiles") trackSourceFiles("trackSourceFiles"),
     }
 
     /**
@@ -50,30 +50,39 @@ interface Comments {
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
-     * @param filterSubjectId Filter by subject resource ID (e.g. &#x60;12345&#x60;)
-     * @param filterSubjectType Filter by subject resource type (e.g. &#x60;albums&#x60;)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param sort Values prefixed with \&quot;-\&quot; are sorted descending; values without it are
      *   sorted ascending. (optional)
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: ownerProfiles, owners, parentComment (optional)
+     *   Available options: author, owners, parentComment (optional)
      * @param filterParentCommentId Filter by parent comment ID to get replies (e.g.
      *   &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) (optional)
+     * @param filterSubject The subject whose comments to return. Use either subject or the
+     *   deprecated subject.id and subject.type pair. (optional)
+     * @param filterSubjectId Deprecated: use filter[subject]. Filter by subject resource ID (e.g.
+     *   &#x60;12345&#x60;) (optional)
+     * @param filterSubjectType Deprecated: use filter[subject]. Filter by subject resource type
+     *   (e.g. &#x60;albums&#x60;) (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: author.albums (optional)
      * @return [CommentsMultiResourceDataDocument]
      */
     @GET("comments")
     suspend fun commentsGet(
-        @Query("filter[subject.id]")
-        filterSubjectId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
-        @Query("filter[subject.type]")
-        filterSubjectType: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("sort") sort: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[parentComment.id]")
         filterParentCommentId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("filter[subject]") filterSubject: kotlin.String? = null,
+        @Query("filter[subject.id]")
+        filterSubjectId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("filter[subject.type]")
+        filterSubjectType: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<CommentsMultiResourceDataDocument>
 
     /**
@@ -116,7 +125,10 @@ interface Comments {
      *
      * @param id Comment Id
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: ownerProfiles, owners, parentComment (optional)
+     *   Available options: author, owners, parentComment (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: author.albums (optional)
      * @return [CommentsSingleResourceDataDocument]
      */
     @GET("comments/{id}")
@@ -124,6 +136,7 @@ interface Comments {
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<CommentsSingleResourceDataDocument>
 
     /**
@@ -155,8 +168,8 @@ interface Comments {
     ): Response<MutationResponseDocument>
 
     /**
-     * GET comments/{id}/relationships/ownerProfiles Get ownerProfiles relationship
-     * (\&quot;to-many\&quot;). Retrieves ownerProfiles relationship. Responses:
+     * GET comments/{id}/relationships/author Get author relationship (\&quot;to-one\&quot;). The
+     * artist who wrote the comment. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -169,18 +182,19 @@ interface Comments {
      *
      * @param id Comment Id
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: ownerProfiles (optional)
-     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
-     *   targets first page if not specified (optional)
-     * @return [CommentsOwnerProfilesMultiRelationshipDataDocument]
+     *   Available options: author (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: author.albums (optional)
+     * @return [CommentsAuthorSingleRelationshipDataDocument]
      */
-    @GET("comments/{id}/relationships/ownerProfiles")
-    suspend fun commentsIdRelationshipsOwnerProfilesGet(
+    @GET("comments/{id}/relationships/author")
+    suspend fun commentsIdRelationshipsAuthorGet(
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<CommentsOwnerProfilesMultiRelationshipDataDocument>
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
+    ): Response<CommentsAuthorSingleRelationshipDataDocument>
 
     /**
      * GET comments/{id}/relationships/owners Get owners relationship (\&quot;to-many\&quot;).
@@ -226,6 +240,9 @@ interface Comments {
      * @param id Comment Id
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: parentComment (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: parentComment.author.albums (optional)
      * @return [CommentsParentCommentSingleRelationshipDataDocument]
      */
     @GET("comments/{id}/relationships/parentComment")
@@ -233,6 +250,7 @@ interface Comments {
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<CommentsParentCommentSingleRelationshipDataDocument>
 
     /**

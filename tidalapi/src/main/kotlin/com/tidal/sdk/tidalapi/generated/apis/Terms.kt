@@ -15,6 +15,8 @@ interface Terms {
         @SerialName(value = "DEVELOPER") DEVELOPER("DEVELOPER"),
         @SerialName(value = "UPLOAD_MARKETPLACE") UPLOAD_MARKETPLACE("UPLOAD_MARKETPLACE"),
         @SerialName(value = "MERCH_GUIDELINES") MERCH_GUIDELINES("MERCH_GUIDELINES"),
+        @SerialName(value = "TIDAL_CONNECT_DEVELOPER")
+        TIDAL_CONNECT_DEVELOPER("TIDAL_CONNECT_DEVELOPER"),
     }
 
     /**
@@ -30,8 +32,8 @@ interface Terms {
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
-     * @param filterTermsType One of: DEVELOPER, UPLOAD_MARKETPLACE, MERCH_GUIDELINES (e.g.
-     *   &#x60;DEVELOPER&#x60;)
+     * @param filterTermsType One of: DEVELOPER, UPLOAD_MARKETPLACE, MERCH_GUIDELINES,
+     *   TIDAL_CONNECT_DEVELOPER (e.g. &#x60;DEVELOPER&#x60;)
      * @param filterCountryCode Selects the country-specific terms variant when it has an effective
      *   version; otherwise falls back to the worldwide (WW) variant. Combine with
      *   &#x60;filter[isLatestVersion]&#x3D;true&#x60; to return the currently acceptable terms.

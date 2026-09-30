@@ -8,6 +8,7 @@ import com.tidal.sdk.tidalapi.generated.models.PlaylistsCoverArtMultiRelationshi
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsCoverArtRelationshipUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsCreateSingleResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.PlaylistsCuratorsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsItemsAddMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsItemsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsItemsRelationshipAddOperationPayload
@@ -57,8 +58,8 @@ interface Playlists {
      *   sorted ascending. (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: collaboratorProfiles, collaborators, coverArt, items, ownerProfiles,
-     *   owners, suggestedCoverArts (optional)
+     *   Available options: collaboratorProfiles, collaborators, coverArt, curators, items,
+     *   ownerProfiles, owners, suggestedCoverArts (optional)
      * @param filterCollaboratorsId User id. Use &#x60;me&#x60; for the authenticated user
      *   (optional)
      * @param filterId List of playlist IDs (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;)
@@ -66,7 +67,7 @@ interface Playlists {
      * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
-     *   &#x60;include&#x60; syntax. Example: items (optional)
+     *   &#x60;include&#x60; syntax. Example: curators.albums (optional)
      * @return [PlaylistsMultiResourceDataDocument]
      */
     @GET("playlists")
@@ -126,11 +127,11 @@ interface Playlists {
      * @param id Playlist id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: collaboratorProfiles, collaborators, coverArt, items, ownerProfiles,
-     *   owners, suggestedCoverArts (optional)
+     *   Available options: collaboratorProfiles, collaborators, coverArt, curators, items,
+     *   ownerProfiles, owners, suggestedCoverArts (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
-     *   &#x60;include&#x60; syntax. Example: items (optional)
+     *   &#x60;include&#x60; syntax. Example: curators.albums (optional)
      * @return [PlaylistsSingleResourceDataDocument]
      */
     @GET("playlists/{id}")
@@ -193,6 +194,7 @@ interface Playlists {
      * @param playlistsCollaboratorProfilesRelationshipRemoveOperationPayload (optional)
      * @return [MutationResponseDocument]
      */
+    @Deprecated("This api was deprecated")
     @HTTP(
         method = "DELETE",
         path = "playlists/{id}/relationships/collaboratorProfiles",
@@ -209,7 +211,7 @@ interface Playlists {
 
     /**
      * GET playlists/{id}/relationships/collaboratorProfiles Get collaboratorProfiles relationship
-     * (\&quot;to-many\&quot;). Retrieves collaboratorProfiles relationship. Responses:
+     * (\&quot;to-many\&quot;). Deprecated. Use curators for attribution. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -227,6 +229,7 @@ interface Playlists {
      *   targets first page if not specified (optional)
      * @return [PlaylistsCollaboratorProfilesMultiRelationshipDataDocument]
      */
+    @Deprecated("This api was deprecated")
     @GET("playlists/{id}/relationships/collaboratorProfiles")
     suspend fun playlistsIdRelationshipsCollaboratorProfilesGet(
         @Path("id") id: kotlin.String,
@@ -324,6 +327,38 @@ interface Playlists {
             PlaylistsCoverArtRelationshipUpdateOperationPayload? =
             null,
     ): Response<MutationResponseDocument>
+
+    /**
+     * GET playlists/{id}/relationships/curators Get curators relationship (\&quot;to-many\&quot;).
+     * Artist profiles credited for the playlist Responses:
+     * - 200: Successful response
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
+     * - 429: Rate limit exceeded
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
+     *
+     * @param id Playlist id
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: curators (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: curators.albums (optional)
+     * @return [PlaylistsCuratorsMultiRelationshipDataDocument]
+     */
+    @GET("playlists/{id}/relationships/curators")
+    suspend fun playlistsIdRelationshipsCuratorsGet(
+        @Path("id") id: kotlin.String,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
+    ): Response<PlaylistsCuratorsMultiRelationshipDataDocument>
 
     /**
      * DELETE playlists/{id}/relationships/items Delete from items relationship
@@ -481,7 +516,7 @@ interface Playlists {
 
     /**
      * GET playlists/{id}/relationships/ownerProfiles Get ownerProfiles relationship
-     * (\&quot;to-many\&quot;). Retrieves ownerProfiles relationship. Responses:
+     * (\&quot;to-many\&quot;). Deprecated. Use curators for attribution. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -499,6 +534,7 @@ interface Playlists {
      *   targets first page if not specified (optional)
      * @return [PlaylistsOwnerProfilesMultiRelationshipDataDocument]
      */
+    @Deprecated("This api was deprecated")
     @GET("playlists/{id}/relationships/ownerProfiles")
     suspend fun playlistsIdRelationshipsOwnerProfilesGet(
         @Path("id") id: kotlin.String,

@@ -23,14 +23,13 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param author
- * @param owners
- * @param parentComment
+ * @param links
+ * @param `data`
+ * @param included
  */
 @Serializable
-data class CommentsRelationships(
-    @SerialName(value = "author") val author: CommentsAuthorSingleRelationshipDataDocument? = null,
-    @SerialName(value = "owners") val owners: CommentsOwnersMultiRelationshipDataDocument? = null,
-    @SerialName(value = "parentComment")
-    val parentComment: CommentsParentCommentSingleRelationshipDataDocument? = null,
+data class PlaylistsCuratorsMultiRelationshipDataDocument(
+    @SerialName(value = "links") val links: Links,
+    @SerialName(value = "data") val `data`: kotlin.collections.List<ResourceIdentifier>? = null,
+    @SerialName(value = "included") val included: kotlin.collections.List<IncludedInner>? = null,
 ) {}

@@ -1,6 +1,7 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.MutationResponseDocument
+import com.tidal.sdk.tidalapi.generated.models.ReactionsAuthorSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ReactionsCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.ReactionsCreateSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ReactionsMultiResourceDataDocument
@@ -13,6 +14,14 @@ import retrofit2.http.*
 
 interface Reactions {
 
+    /** enum for parameter stats */
+    @Serializable
+    enum class StatsReactionsGet(val value: kotlin.String) {
+        @SerialName(value = "ALL") ALL("ALL"),
+        @SerialName(value = "COUNTS_BY_TYPE") COUNTS_BY_TYPE("COUNTS_BY_TYPE"),
+        @SerialName(value = "TOTAL_COUNT") TOTAL_COUNT("TOTAL_COUNT"),
+    }
+
     /** enum for parameter filterSubjectType */
     @Serializable
     enum class FilterSubjectTypeReactionsGet(val value: kotlin.String) {
@@ -23,14 +32,6 @@ interface Reactions {
         @SerialName(value = "playlists") playlists("playlists"),
         @SerialName(value = "comments") comments("comments"),
         @SerialName(value = "trackSourceFiles") trackSourceFiles("trackSourceFiles"),
-    }
-
-    /** enum for parameter stats */
-    @Serializable
-    enum class StatsReactionsGet(val value: kotlin.String) {
-        @SerialName(value = "ALL") ALL("ALL"),
-        @SerialName(value = "COUNTS_BY_TYPE") COUNTS_BY_TYPE("COUNTS_BY_TYPE"),
-        @SerialName(value = "TOTAL_COUNT") TOTAL_COUNT("TOTAL_COUNT"),
     }
 
     /**
@@ -46,24 +47,27 @@ interface Reactions {
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
-     * @param filterSubjectId Filter by subject resource ID (e.g. &#x60;12345&#x60;)
-     * @param filterSubjectType Filter by subject resource type (e.g. &#x60;albums&#x60;)
      * @param stats (optional)
      * @param statsOnly (optional)
      * @param viewerContext (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: ownerProfiles, owners (optional)
+     *   Available options: author, ownerProfiles, owners (optional)
      * @param filterEmoji Filter by emoji (e.g. &#x60;👍&#x60;) (optional)
+     * @param filterSubject The subject whose reactions to return. Use either subject or the
+     *   deprecated subject.id and subject.type pair. (optional)
+     * @param filterSubjectId Deprecated: use filter[subject]. Filter by subject resource ID (e.g.
+     *   &#x60;12345&#x60;) (optional)
+     * @param filterSubjectType Deprecated: use filter[subject]. Filter by subject resource type
+     *   (e.g. &#x60;albums&#x60;) (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: author.albums (optional)
      * @return [ReactionsMultiResourceDataDocument]
      */
     @GET("reactions")
     suspend fun reactionsGet(
-        @Query("filter[subject.id]")
-        filterSubjectId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
-        @Query("filter[subject.type]")
-        filterSubjectType: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
         @Query("stats") stats: StatsReactionsGet? = null,
         @Query("statsOnly") statsOnly: kotlin.Boolean? = null,
         @Query("viewerContext") viewerContext: kotlin.String? = null,
@@ -72,6 +76,12 @@ interface Reactions {
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[emoji]")
         filterEmoji: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("filter[subject]") filterSubject: kotlin.String? = null,
+        @Query("filter[subject.id]")
+        filterSubjectId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("filter[subject.type]")
+        filterSubjectType: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<ReactionsMultiResourceDataDocument>
 
     /**
@@ -101,8 +111,37 @@ interface Reactions {
     ): Response<MutationResponseDocument>
 
     /**
+     * GET reactions/{id}/relationships/author Get author relationship (\&quot;to-one\&quot;). The
+     * artist who left the reaction. Responses:
+     * - 200: Successful response
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
+     * - 429: Rate limit exceeded
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
+     *
+     * @param id Reaction Id
+     * @param include Allows the client to customize which related resources should be returned.
+     *   Available options: author (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: author.albums (optional)
+     * @return [ReactionsAuthorSingleRelationshipDataDocument]
+     */
+    @GET("reactions/{id}/relationships/author")
+    suspend fun reactionsIdRelationshipsAuthorGet(
+        @Path("id") id: kotlin.String,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
+    ): Response<ReactionsAuthorSingleRelationshipDataDocument>
+
+    /**
      * GET reactions/{id}/relationships/ownerProfiles Get ownerProfiles relationship
-     * (\&quot;to-many\&quot;). Retrieves ownerProfiles relationship. Responses:
+     * (\&quot;to-many\&quot;). Deprecated. Use author for attribution. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -120,6 +159,7 @@ interface Reactions {
      *   targets first page if not specified (optional)
      * @return [ReactionsOwnerProfilesMultiRelationshipDataDocument]
      */
+    @Deprecated("This api was deprecated")
     @GET("reactions/{id}/relationships/ownerProfiles")
     suspend fun reactionsIdRelationshipsOwnerProfilesGet(
         @Path("id") id: kotlin.String,

@@ -28,8 +28,8 @@ import kotlinx.serialization.Serializable
  * @param included
  */
 @Serializable
-data class CommentsOwnerProfilesMultiRelationshipDataDocument(
+data class ReactionsAuthorSingleRelationshipDataDocument(
     @SerialName(value = "links") val links: Links,
-    @SerialName(value = "data") val `data`: kotlin.collections.List<ResourceIdentifier>? = null,
+    @SerialName(value = "data") val `data`: ResourceIdentifier? = null,
     @SerialName(value = "included") val included: kotlin.collections.List<IncludedInner>? = null,
 ) {}

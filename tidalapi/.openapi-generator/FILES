@@ -279,6 +279,7 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/CollaborationInvitesReso
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/CollaborationInvitesSingleResourceDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/CollaborationInvitesSubjectSingleRelationshipDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/CommentsAttributes.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/CommentsAuthorSingleRelationshipDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/CommentsCreateOperationPayload.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/CommentsCreateOperationPayloadData.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/CommentsCreateOperationPayloadDataAttributes.kt
@@ -289,7 +290,6 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/CommentsCreateOperationP
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/CommentsCreateOperationPayloadDataRelationshipsSubjectData.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/CommentsCreateSingleResourceDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/CommentsMultiResourceDataDocument.kt
-src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/CommentsOwnerProfilesMultiRelationshipDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/CommentsOwnersMultiRelationshipDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/CommentsParentCommentSingleRelationshipDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/CommentsRelationships.kt
@@ -602,6 +602,7 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlaylistsCreateOperation
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlaylistsCreateOperationPayloadData.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlaylistsCreateOperationPayloadDataAttributes.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlaylistsCreateSingleResourceDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlaylistsCuratorsMultiRelationshipDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlaylistsItemsAddMultiRelationshipDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlaylistsItemsAddMultiRelationshipDataDocumentMeta.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PlaylistsItemsAddResourceIdentifier.kt
@@ -672,6 +673,7 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PurchasesSubjectResource
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/PurchasesSubjectSingleRelationshipDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ReactionStats.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ReactionsAttributes.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ReactionsAuthorSingleRelationshipDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ReactionsCreateOperationPayload.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ReactionsCreateOperationPayloadData.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/ReactionsCreateOperationPayloadDataAttributes.kt
