@@ -404,15 +404,17 @@ internal class ExoPlayerPlaybackEngine(
 
     override fun seek(time: Float) {
         if (!isOperating) return
+        val positionMs = time.toLong()
         val crossfade = crossfade
         if (
             crossfade != null &&
-                (crossfade.isFading || crossfade.isInWindow(extendedExoPlayer, time.toLong()))
+                (crossfade.isFading || crossfade.isInWindow(extendedExoPlayer, positionMs))
         ) {
-            abortCrossfade(restoreNext = true)
+            abortCrossfade(restoreNext = false)
+            heldNext = crossfade.nextProduct
         }
-        extendedExoPlayer.seekTo(time.toLong())
-        if (heldNext != null && isPastCrossfadeStart()) releaseHeldNext()
+        extendedExoPlayer.seekTo(positionMs)
+        if (heldNext != null && isPastCrossfadeStart(positionMs)) releaseHeldNext()
     }
 
     override fun skipToNext() {
@@ -926,10 +928,12 @@ internal class ExoPlayerPlaybackEngine(
     }
 
     /** Whether the current item is already past where its crossfade would have started. */
-    private fun isPastCrossfadeStart(): Boolean {
+    private fun isPastCrossfadeStart(
+        positionMs: Long = extendedExoPlayer.currentPosition
+    ): Boolean {
         val durationMs = extendedExoPlayer.duration
         if (durationMs == C.TIME_UNSET) return false
-        return durationMs - extendedExoPlayer.currentPosition <= crossfadeDurationMs
+        return durationMs - positionMs <= crossfadeDurationMs
     }
 
     private fun shouldPrepareCrossfade(): Boolean =

@@ -347,14 +347,16 @@ internal class ExoPlayerPlaybackEngineCrossfadeTest {
     }
 
     @Test
-    fun aSeekBackDuringTheFadeCancelsIt() {
+    fun aSeekBackDuringTheFadeCancelsItAndCrossfadesAgainLater() {
         incomingIsLoaded(AudioMode.STEREO, durationMs = TRACK_MS)
         tickAt(FADE_POSITION_MS)
 
         playbackEngine.seek(0f)
-
         assertCancelledTheFade()
-        assertRestoredTheNextItem()
+        verifyNeverOnOutgoing(nextMediaProduct)
+
+        tickAt(PRELOAD_POSITION_MS)
+        verify(incoming, times(2)).loadAsNext(argThat { delegate === nextMediaProduct })
     }
 
     @Test
