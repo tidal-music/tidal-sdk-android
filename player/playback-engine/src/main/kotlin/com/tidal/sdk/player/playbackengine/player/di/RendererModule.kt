@@ -62,6 +62,8 @@ internal object RendererModule {
             .setAudioCapabilities(audioCapabilities)
             // Float output bypasses these, which would play crossfades at full volume.
             .setAudioProcessors(audioProcessors)
+            // Keeps 24-bit tracks at 24-bit instead of converting them to 16-bit.
+            .setEnableFloatOutput(true)
             .setAudioTrackBufferSizeProvider(defaultAudioTrackBufferSizeProvider)
             .build()
 
