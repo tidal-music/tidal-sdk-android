@@ -76,6 +76,7 @@ import kotlinx.coroutines.launch
 
 private const val MS_IN_SECOND = 1000L
 private const val CROSSFADE_TICK_MS = 500L
+private const val CROSSFADE_FADE_TICK_MS = 50L
 
 /** The default implementation of [PlaybackEngine] that will use ExoPlayer to play media. */
 @Suppress("LargeClass", "LongParameterList")
@@ -829,9 +830,8 @@ internal class ExoPlayerPlaybackEngine(
     /** Polls for the preload, then wakes up right as the fade window opens. */
     private fun nextCrossfadeTickDelayMs(): Long {
         val crossfade = crossfade
-        if (crossfade == null || crossfade.isFading || !extendedExoPlayer.isPlaying) {
-            return CROSSFADE_TICK_MS
-        }
+        if (crossfade?.isFading == true) return CROSSFADE_FADE_TICK_MS
+        if (crossfade == null || !extendedExoPlayer.isPlaying) return CROSSFADE_TICK_MS
         val untilWindowMs = crossfade.msUntilWindow(extendedExoPlayer) ?: return CROSSFADE_TICK_MS
         return untilWindowMs.coerceIn(1L, CROSSFADE_TICK_MS)
     }
@@ -920,7 +920,6 @@ internal class ExoPlayerPlaybackEngine(
         val crossfade = crossfade ?: return
         this.crossfade = null
         crossfade.release()
-        extendedExoPlayer.crossfadeGain.clear()
         nextMediaSource = null
         updatePlayerVolume()
         if (restoreNext && isOperating) {

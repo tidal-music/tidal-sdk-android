@@ -17,7 +17,6 @@ import androidx.media3.exoplayer.trackselection.ExoTrackSelection
 import androidx.media3.exoplayer.trackselection.TrackSelector
 import androidx.media3.exoplayer.upstream.BandwidthMeter
 import androidx.media3.exoplayer.upstream.DefaultBandwidthMeter
-import com.tidal.sdk.player.playbackengine.crossfade.CrossfadeGainProcessor
 import com.tidal.sdk.player.playbackengine.mediasource.MediaSourcerer
 import com.tidal.sdk.player.playbackengine.model.BufferConfiguration
 import com.tidal.sdk.player.playbackengine.player.ExtendedExoPlayer
@@ -122,7 +121,6 @@ internal object ExtendedExoPlayerModule {
         mediaSourcerer: MediaSourcerer,
         extendedExoPlayerState: ExtendedExoPlayerState,
         stateUpdateRunnable: ExtendedExoPlayerStateUpdateRunnable,
-        crossfadeGainProcessor: CrossfadeGainProcessor,
     ) =
         ExtendedExoPlayer(
             exoPlayer,
@@ -130,7 +128,6 @@ internal object ExtendedExoPlayerModule {
             mediaSourcerer,
             extendedExoPlayerState,
             stateUpdateRunnable,
-            crossfadeGainProcessor,
         )
 
     @Provides
