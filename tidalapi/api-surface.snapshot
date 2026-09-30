@@ -1,10 +1,10 @@
 # TIDAL API Surface Snapshot
-# Spec version: 1.10.135 | Endpoints: 364 | Models: 1096
+# Spec version: 1.10.142 | Endpoints: 366 | Models: 1098
 
 ## Endpoints
 
 GET /acceptedTerms
-  params: filter[owners.id]: array[string], filter[terms.isLatestVersion]?: array[string], filter[terms.termsType]: array[enum[DEVELOPER, UPLOAD_MARKETPLACE, MERCH_GUIDELINES]], include?: array[string]
+  params: filter[owners.id]: array[string], filter[terms.isLatestVersion]?: array[string], filter[terms.termsType]: array[enum[DEVELOPER, UPLOAD_MARKETPLACE, MERCH_GUIDELINES, TIDAL_CONNECT_DEVELOPER]], include?: array[string]
   returns: AcceptedTerms_Multi_Resource_Data_Document
 
 POST /acceptedTerms
@@ -316,7 +316,7 @@ GET /collaborationInvites/{id}/relationships/subject
   returns: CollaborationInvites_Subject_Single_Relationship_Data_Document
 
 GET /comments
-  params: filter[parentComment.id]?: array[string], filter[subject.id]: array[string], filter[subject.type]: array[enum[albums, tracks, trackSourceFiles]], include?: array[string], page[cursor]?: string, sort?: array[enum[createdAt, -createdAt, likeCount, -likeCount, replyCount, -replyCount, startTime, -startTime]]
+  params: filter[parentComment.id]?: array[string], filter[subject.id]?: array[string], filter[subject.type]?: array[enum[albums, tracks, trackSourceFiles]], filter[subject]?: string, include?: array[string], page[cursor]?: string, replaceMedia?: string, sort?: array[enum[createdAt, -createdAt, likeCount, -likeCount, replyCount, -replyCount, startTime, -startTime]]
   returns: Comments_Multi_Resource_Data_Document
 
 POST /comments
@@ -324,7 +324,7 @@ POST /comments
   returns: Comments_Create_Single_Resource_Data_Document
 
 GET /comments/{id}
-  params: id: string, include?: array[string]
+  params: id: string, include?: array[string], replaceMedia?: string
   returns: Comments_Single_Resource_Data_Document
 
 PATCH /comments/{id}
@@ -335,16 +335,16 @@ DELETE /comments/{id}
   params: ??: any, id: string
   returns: Mutation_Response_Document
 
-GET /comments/{id}/relationships/ownerProfiles
-  params: id: string, include?: array[string], page[cursor]?: string
-  returns: Comments_OwnerProfiles_Multi_Relationship_Data_Document
+GET /comments/{id}/relationships/author
+  params: id: string, include?: array[string], replaceMedia?: string
+  returns: Comments_Author_Single_Relationship_Data_Document
 
 GET /comments/{id}/relationships/owners
   params: id: string, include?: array[string], page[cursor]?: string
   returns: Comments_Owners_Multi_Relationship_Data_Document
 
 GET /comments/{id}/relationships/parentComment
-  params: id: string, include?: array[string]
+  params: id: string, include?: array[string], replaceMedia?: string
   returns: Comments_ParentComment_Single_Relationship_Data_Document
 
 GET /contentClaims
@@ -396,7 +396,7 @@ GET /downloads/{id}/relationships/owners
   returns: Downloads_Owners_Multi_Relationship_Data_Document
 
 GET /dspSharingLinks
-  params: filter[subject.id]: array[string], filter[subject.type]: array[enum[tracks, albums, artists]], include?: array[string], replaceMedia?: string
+  params: filter[subject.id]?: array[string], filter[subject.type]?: array[enum[tracks, albums, artists]], filter[subject]?: string, include?: array[string], replaceMedia?: string
   returns: DspSharingLinks_Multi_Resource_Data_Document
 
 GET /dspSharingLinks/{id}/relationships/subject
@@ -420,7 +420,7 @@ GET /dynamicModules/{id}/relationships/seedItem
   returns: DynamicModules_SeedItem_Single_Relationship_Data_Document
 
 GET /dynamicPages
-  params: clientVersion: string, countryCode?: string, deviceType: enum[BROWSER, CAR, DESKTOP, PHONE, TABLET, TV], filter[pageType]: array[string], filter[subject.id]?: array[string], include?: array[string], locale?: string, refreshSeed?: string, replaceMedia?: string, systemType: enum[ANDROID, DESKTOP, TESLA, IOS, WEB]
+  params: clientVersion: string, countryCode?: string, deviceType: enum[BROWSER, CAR, DESKTOP, PHONE, TABLET, TV], filter[pageType]: array[string], filter[subject.id]?: array[string], filter[subject]?: string, include?: array[string], locale?: string, refreshSeed?: string, replaceMedia?: string, systemType: enum[ANDROID, DESKTOP, TESLA, IOS, WEB]
   returns: DynamicPages_Multi_Resource_Data_Document
 
 GET /dynamicPages/{id}/relationships/modules
@@ -727,6 +727,10 @@ PATCH /playlists/{id}/relationships/coverArt
   params: ??: any, id: string
   returns: Mutation_Response_Document
 
+GET /playlists/{id}/relationships/curators
+  params: id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string
+  returns: Playlists_Curators_Multi_Relationship_Data_Document
+
 GET /playlists/{id}/relationships/items
   params: countryCode?: string, filter[query]?: string, id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string, sort?: array[enum[addedAt, -addedAt, albums.title, -albums.title, artists.name, -artists.name, duration, -duration, itemIndex, -itemIndex, title, -title]]
   returns: Playlists_Items_Multi_Relationship_Data_Document
@@ -808,7 +812,7 @@ GET /purchases/{id}/relationships/subject
   returns: Purchases_Subject_Single_Relationship_Data_Document
 
 GET /reactions
-  params: filter[emoji]?: array[string], filter[subject.id]: array[string], filter[subject.type]: array[enum[albums, tracks, artists, videos, playlists, comments, trackSourceFiles]], include?: array[string], page[cursor]?: string, stats?: enum[ALL, COUNTS_BY_TYPE, TOTAL_COUNT], statsOnly?: boolean, viewerContext?: string
+  params: filter[emoji]?: array[string], filter[subject.id]?: array[string], filter[subject.type]?: array[enum[albums, tracks, artists, videos, playlists, comments, trackSourceFiles]], filter[subject]?: string, include?: array[string], page[cursor]?: string, replaceMedia?: string, stats?: enum[ALL, COUNTS_BY_TYPE, TOTAL_COUNT], statsOnly?: boolean, viewerContext?: string
   returns: Reactions_Multi_Resource_Data_Document
 
 POST /reactions
@@ -818,6 +822,10 @@ POST /reactions
 DELETE /reactions/{id}
   params: ??: any, id: string
   returns: Mutation_Response_Document
+
+GET /reactions/{id}/relationships/author
+  params: id: string, include?: array[string], replaceMedia?: string
+  returns: Reactions_Author_Single_Relationship_Data_Document
 
 GET /reactions/{id}/relationships/ownerProfiles
   params: id: string, include?: array[string], page[cursor]?: string
@@ -968,7 +976,7 @@ GET /temporaryUserTokens/{id}/relationships/owners
   returns: TemporaryUserTokens_Owners_Multi_Relationship_Data_Document
 
 GET /terms
-  params: filter[countryCode]?: array[string], filter[isLatestVersion]?: array[string], filter[termsType]: array[enum[DEVELOPER, UPLOAD_MARKETPLACE, MERCH_GUIDELINES]]
+  params: filter[countryCode]?: array[string], filter[isLatestVersion]?: array[string], filter[termsType]: array[enum[DEVELOPER, UPLOAD_MARKETPLACE, MERCH_GUIDELINES, TIDAL_CONNECT_DEVELOPER]]
   returns: Terms_Multi_Resource_Data_Document
 
 GET /terms/{id}
@@ -1196,7 +1204,7 @@ GET /userCollectionPlaylists/{id}
   returns: UserCollectionPlaylists_Single_Resource_Data_Document
 
 GET /userCollectionPlaylists/{id}/relationships/items
-  params: collectionView?: enum[FLAT, FOLDERS], id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string, sort?: array[enum[addedAt, -addedAt, lastModifiedAt, -lastModifiedAt, name, -name]]
+  params: collectionView?: enum[FLAT, FOLDERS], filter[query]?: string, id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string, sort?: array[enum[addedAt, -addedAt, lastModifiedAt, -lastModifiedAt, name, -name]]
   returns: UserCollectionPlaylists_Items_Multi_Relationship_Data_Document
 
 POST /userCollectionPlaylists/{id}/relationships/items
@@ -2462,6 +2470,11 @@ Comments_Attributes
   endTime: string (optional)
   startTime: string (optional)
 
+Comments_Author_Single_Relationship_Data_Document
+  links: Links (required)
+  data: Resource_Identifier | enum[None] (optional)
+  included: Included (optional)
+
 Comments_Create_Single_Resource_Data_Document
   data: Comments_Resource_Object (required)
   links: Links (required)
@@ -2469,11 +2482,6 @@ Comments_Create_Single_Resource_Data_Document
 Comments_Multi_Resource_Data_Document
   data: array[Comments_Resource_Object] (required)
   links: Links (required)
-  included: Included (optional)
-
-Comments_OwnerProfiles_Multi_Relationship_Data_Document
-  links: Links (required)
-  data: array[Resource_Identifier] (optional)
   included: Included (optional)
 
 Comments_Owners_Multi_Relationship_Data_Document
@@ -2487,7 +2495,7 @@ Comments_ParentComment_Single_Relationship_Data_Document
   included: Included (optional)
 
 Comments_Relationships
-  ownerProfiles: Comments_OwnerProfiles_Multi_Relationship_Data_Document (optional)
+  author: Comments_Author_Single_Relationship_Data_Document (optional)
   owners: Comments_Owners_Multi_Relationship_Data_Document (optional)
   parentComment: Comments_ParentComment_Single_Relationship_Data_Document (optional)
 
@@ -3882,6 +3890,11 @@ Playlists_Create_Single_Resource_Data_Document
   data: Playlists_Resource_Object (required)
   links: Links (required)
 
+Playlists_Curators_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[Resource_Identifier] (optional)
+  included: Included (optional)
+
 Playlists_Items_Add_Multi_Relationship_Data_Document
   data: array[Playlists_Items_Add_Resource_Identifier] (required)
   links: Links (required)
@@ -3931,11 +3944,12 @@ Playlists_Owners_Multi_Relationship_Data_Document
   included: Included (optional)
 
 Playlists_Relationships
-  collaboratorProfiles: Playlists_CollaboratorProfiles_Multi_Relationship_Data_Document (optional)
+  collaboratorProfiles: any (optional)
   collaborators: Playlists_Collaborators_Multi_Relationship_Data_Document (optional)
   coverArt: Playlists_CoverArt_Multi_Relationship_Data_Document (optional)
+  curators: Playlists_Curators_Multi_Relationship_Data_Document (optional)
   items: Playlists_Items_Multi_Relationship_Data_Document (optional)
-  ownerProfiles: Playlists_OwnerProfiles_Multi_Relationship_Data_Document (optional)
+  ownerProfiles: any (optional)
   owners: Playlists_Owners_Multi_Relationship_Data_Document (optional)
   suggestedCoverArts: Playlists_SuggestedCoverArts_Multi_Relationship_Data_Document (optional)
 
@@ -4160,6 +4174,11 @@ Reactions_Attributes
   createdAt: string(date-time) (required)
   emoji: string (required)
 
+Reactions_Author_Single_Relationship_Data_Document
+  links: Links (required)
+  data: Resource_Identifier | enum[None] (optional)
+  included: Included (optional)
+
 Reactions_Create_Single_Resource_Data_Document
   data: Reactions_Resource_Object (required)
   links: Links (required)
@@ -4185,7 +4204,8 @@ Reactions_Owners_Multi_Relationship_Data_Document
   included: Included (optional)
 
 Reactions_Relationships
-  ownerProfiles: Reactions_OwnerProfiles_Multi_Relationship_Data_Document (optional)
+  author: Reactions_Author_Single_Relationship_Data_Document (optional)
+  ownerProfiles: any (optional)
   owners: Reactions_Owners_Multi_Relationship_Data_Document (optional)
 
 Reactions_Resource_Object
@@ -4735,7 +4755,7 @@ Terms_Attributes
   contentLink: Link_Object (required)
   countryCode: string (required)
   effectiveAt: string(date-time) (required)
-  termsType: enum[DEVELOPER, UPLOAD_MARKETPLACE, MERCH_GUIDELINES] (required)
+  termsType: enum[DEVELOPER, UPLOAD_MARKETPLACE, MERCH_GUIDELINES, TIDAL_CONNECT_DEVELOPER] (required)
 
 Terms_Multi_Resource_Data_Document
   data: array[Terms_Resource_Object] (required)
@@ -6200,7 +6220,7 @@ Users_Artist_Single_Relationship_Data_Document
 
 Users_Attributes
   country: string (required)
-  developerAccessTier: enum[THIRD_PARTY, THIRD_PARTY_PROD, PARTNER, INTERNAL] (required)
+  developerAccessTier: enum[THIRD_PARTY, THIRD_PARTY_PROD, PARTNER, PARTNER_TIDAL_CONNECT, INTERNAL] (required)
   username: string (required)
   email: string (optional)
   emailVerified: boolean (optional)

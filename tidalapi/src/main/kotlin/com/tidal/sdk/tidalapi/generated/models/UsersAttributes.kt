@@ -64,13 +64,14 @@ data class UsersAttributes(
     /**
      * Developer access tier for this user.
      *
-     * Values: THIRD_PARTY,THIRD_PARTY_PROD,PARTNER,INTERNAL
+     * Values: THIRD_PARTY,THIRD_PARTY_PROD,PARTNER,PARTNER_TIDAL_CONNECT,INTERNAL
      */
     @Serializable
     enum class DeveloperAccessTier(val value: kotlin.String) {
         @SerialName(value = "THIRD_PARTY") THIRD_PARTY("THIRD_PARTY"),
         @SerialName(value = "THIRD_PARTY_PROD") THIRD_PARTY_PROD("THIRD_PARTY_PROD"),
         @SerialName(value = "PARTNER") PARTNER("PARTNER"),
+        @SerialName(value = "PARTNER_TIDAL_CONNECT") PARTNER_TIDAL_CONNECT("PARTNER_TIDAL_CONNECT"),
         @SerialName(value = "INTERNAL") INTERNAL("INTERNAL"),
     }
 }

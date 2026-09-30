@@ -125,6 +125,9 @@ interface UserCollectionPlaylists {
      *   sorted ascending. (optional)
      * @param include Allows the client to customize which related resources should be returned.
      *   Available options: items (optional)
+     * @param filterQuery Filter playlists by a free-text query. Returns matching playlists only (no
+     *   mixes or folders), including playlists inside folders. Cannot be combined with
+     *   collectionView&#x3D;FOLDERS. Internal clients only (e.g. &#x60;summer&#x60;) (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: items.items (optional)
@@ -139,6 +142,7 @@ interface UserCollectionPlaylists {
         @Query("sort") sort: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("filter[query]") filterQuery: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<UserCollectionPlaylistsItemsMultiRelationshipDataDocument>
 
