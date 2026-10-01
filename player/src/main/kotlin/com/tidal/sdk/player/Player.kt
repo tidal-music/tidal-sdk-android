@@ -23,6 +23,8 @@ import okhttp3.OkHttpClient
  * @param application An [Application] to use.
  * @param[credentialsProvider] A [CredentialsProvider] from the Auth SDK.
  * @param[eventSender] An [EventSender] from the EventProducer SDK.
+ * @param enableFloatOutput Whether to keep 24-bit tracks at 24-bit instead of converting them to
+ *   16-bit. Defaults to false.
  * @param userClientIdSupplier A function that supplies a userClientId used for event tracking. This
  *   value needs to be taken from the session. Internal use only.
  * @param bufferConfiguration The parameters to configure different values for player buffer
@@ -52,6 +54,7 @@ class Player(
     credentialsProvider: CredentialsProvider,
     eventSender: EventSender,
     enableDecoderFallback: Boolean = true,
+    enableFloatOutput: Boolean = false,
     userClientIdSupplier: (() -> Int)? = null,
     bufferConfiguration: BufferConfiguration = BufferConfiguration(),
     assetTimeoutConfig: AssetTimeoutConfig = AssetTimeoutConfig(),
@@ -76,6 +79,7 @@ class Player(
                 credentialsProvider,
                 eventSender,
                 enableDecoderFallback,
+                enableFloatOutput,
                 userClientIdSupplier,
                 version,
                 bufferConfiguration,

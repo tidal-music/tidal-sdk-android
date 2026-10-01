@@ -47,6 +47,7 @@ interface ExoPlayerPlaybackEngineComponent {
             @BindsInstance cacheProvider: CacheProvider,
             @BindsInstance configuration: Configuration,
             @BindsInstance @Named("enableDecoderFallback") enableDecoderFallback: Boolean,
+            @BindsInstance @Named("enableFloatOutput") enableFloatOutput: Boolean,
             @BindsInstance appSpecificCacheDir: File,
             @BindsInstance streamingApi: StreamingApi,
             @BindsInstance @Local okHttpClient: OkHttpClient,

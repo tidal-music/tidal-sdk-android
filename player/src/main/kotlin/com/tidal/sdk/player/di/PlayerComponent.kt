@@ -47,6 +47,7 @@ internal interface PlayerComponent {
             @BindsInstance credentialsProvider: CredentialsProvider,
             @BindsInstance eventSender: EventSender,
             @BindsInstance @Named("enableDecoderFallback") enableDecoderFallback: Boolean,
+            @BindsInstance @Named("enableFloatOutput") enableFloatOutput: Boolean,
             @BindsInstance userClientIdSupplier: (() -> Int)?,
             @BindsInstance version: String,
             @BindsInstance bufferConfiguration: BufferConfiguration,
