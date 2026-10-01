@@ -88,6 +88,7 @@ import org.junit.jupiter.params.provider.MethodSource
 import org.junit.jupiter.params.provider.NullSource
 import org.junit.jupiter.params.provider.ValueSource
 import org.mockito.kotlin.any
+import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.argThat
 import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.atLeastOnce
@@ -325,6 +326,39 @@ internal class ExoPlayerPlaybackEngineTest {
                     }
                 )
         }
+
+    @Test
+    fun withCrossfadeOffANextTrackThatCouldCrossfadeGoesStraightOnTheCurrentPlayer() {
+        playTrackThatCouldCrossfade()
+        val nextMediaProduct = MediaProduct(ProductType.TRACK, "2")
+
+        playbackEngine.setNext(nextMediaProduct)
+
+        verify(initialExtendedExoPlayer).setNext(argThat { delegate === nextMediaProduct })
+        verify(initialExtendedExoPlayer, never()).setNext(null)
+        verify(extendedExoPlayerFactory).create(any(), any())
+        verify(internalHandler, never()).post(any())
+        verify(internalHandler, never()).postDelayed(any(), any())
+    }
+
+    @Test
+    fun withCrossfadeOffRepeatOneSeekAndSkipOnlyUseTheCurrentPlayer() {
+        playTrackThatCouldCrossfade()
+        val nextMediaProduct = MediaProduct(ProductType.TRACK, "2")
+        playbackEngine.setNext(nextMediaProduct)
+
+        playbackEngine.setRepeatOne(true)
+        playbackEngine.setRepeatOne(false)
+        playbackEngine.seek(190_000f)
+        playbackEngine.skipToNext()
+
+        verify(initialExtendedExoPlayer).setNext(anyOrNull())
+        verify(initialExtendedExoPlayer).seekTo(190_000L)
+        verify(initialExtendedExoPlayer).seekToNextMediaItem()
+        verify(extendedExoPlayerFactory).create(any(), any())
+        verify(internalHandler, never()).post(any())
+        verify(internalHandler, never()).postDelayed(any(), any())
+    }
 
     @Test
     fun playShouldDoNothingIfPlaybackStateIsIdle() {
@@ -2616,6 +2650,21 @@ internal class ExoPlayerPlaybackEngineTest {
         val currentItemEventTime: EventTime,
         val prefetchEventTime: EventTime,
     )
+
+    /** Plays a long stereo track early on, which would crossfade into a next track if it could. */
+    private fun playTrackThatCouldCrossfade() {
+        whenever(initialExtendedExoPlayer.duration) doReturn 200_000L
+        whenever(initialExtendedExoPlayer.currentPosition) doReturn 0L
+        whenever(initialExtendedExoPlayer.repeatMode) doReturn Player.REPEAT_MODE_OFF
+        whenever(initialExtendedExoPlayer.isPlaying) doReturn true
+        whenever(initialExtendedExoPlayer.load(any())) doReturn mediaSource
+        playbackEngine.load(forwardingMediaProduct.delegate)
+        playbackEngine.reflectionSetPlaybackState(PlaybackState.PLAYING)
+        playbackEngine.reflectionPlaybackContext =
+            mock<PlaybackContext.Track> { on { it.audioMode } doReturn AudioMode.STEREO }
+        // What the app passes while its crossfade flag is off.
+        playbackEngine.crossfadeDurationMs = 0L
+    }
 
     companion object {
 

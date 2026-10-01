@@ -450,6 +450,20 @@ internal class ExoPlayerPlaybackEngineCrossfadeTest {
     }
 
     @Test
+    fun turningCrossfadeOffAfterThePreloadFallsBackToGaplessForGood() {
+        playbackEngine.crossfadeDurationMs = 0L
+
+        assertFellBackToGapless()
+        verify(internalHandler).removeCallbacks(ticker)
+        verify(internalHandler, never()).post(ticker)
+
+        // A next item set early in the track, where it would be held, now goes straight on.
+        whenever(outgoing.currentPosition) doReturn 0L
+        playbackEngine.setNext(otherMediaProduct)
+        verifyOnOutgoing(otherMediaProduct)
+    }
+
+    @Test
     fun turningCrossfadeOffDuringTheFadeFallsBackToGapless() {
         incomingIsLoaded(AudioMode.STEREO, durationMs = TRACK_MS)
         tickAt(FADE_POSITION_MS)
