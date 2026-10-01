@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.73] - 2026-10-01
+
+### Added
+- `Player.enableFloatOutput`, off by default, keeps 24-bit tracks at 24-bit.
+
+### Changed
+- Crossfade now ramps each player's volume instead of changing the audio samples, and respects loudness normalization.
+- With crossfade on, the next track's manifest and DRM license are fetched once instead of twice.
+
+### Fixed
+- 24-bit tracks can now play at 24-bit. They were converted to 16-bit before reaching the audio output.
+
 ## [0.0.72] - 2026-09-28
 
 ### Added
