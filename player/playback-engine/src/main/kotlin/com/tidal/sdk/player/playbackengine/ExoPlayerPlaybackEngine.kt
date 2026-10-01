@@ -55,6 +55,7 @@ import com.tidal.sdk.player.playbackengine.model.PlaybackContext
 import com.tidal.sdk.player.playbackengine.model.PlaybackState
 import com.tidal.sdk.player.playbackengine.outputdevice.OutputDevice
 import com.tidal.sdk.player.playbackengine.outputdevice.OutputDeviceManager
+import com.tidal.sdk.player.playbackengine.player.ExtendedExoPlayer
 import com.tidal.sdk.player.playbackengine.player.ExtendedExoPlayerFactory
 import com.tidal.sdk.player.playbackengine.player.PlayerCache
 import com.tidal.sdk.player.playbackengine.quality.AudioQualityRepository
@@ -142,6 +143,7 @@ internal class ExoPlayerPlaybackEngine(
             crossfadeDisabledForCurrent = false
             volumeRecoveryStartedAtMillis = null
             internalHandler.removeCallbacks(volumeRecoveryTicker)
+            releaseFadingOut()
             djSessionManager.cleanUp()
             if (new?.forwardingMediaProduct?.productType == ProductType.BROADCAST) {
                 djSessionManager.listener = this
@@ -320,6 +322,11 @@ internal class ExoPlayerPlaybackEngine(
 
     private var volumeRecoveryFrom = 0f
 
+    /** A cancelled fade's incoming player, ramping down from [fadingOutFrom] before release. */
+    private var fadingOut: ExtendedExoPlayer? = null
+
+    private var fadingOutFrom = 0f
+
     private val volumeRecoveryTicker = Runnable { updatePlayerVolume() }
 
     private val crossfadeTicker =
@@ -402,6 +409,7 @@ internal class ExoPlayerPlaybackEngine(
         if (!isOperating) return
         extendedExoPlayer.pause()
         crossfade?.pause()
+        releaseFadingOut()
     }
 
     override fun seek(time: Float) {
@@ -457,6 +465,7 @@ internal class ExoPlayerPlaybackEngine(
         abortCrossfade(restoreNext = false)
         internalHandler.removeCallbacks(crossfadeTicker)
         internalHandler.removeCallbacks(volumeRecoveryTicker)
+        releaseFadingOut()
         extendedExoPlayer.release()
         if (playerCache is PlayerCache.Internal) {
             playerCache.cache.release()
@@ -875,10 +884,12 @@ internal class ExoPlayerPlaybackEngine(
         if (progress >= 1f) {
             volumeRecoveryStartedAtMillis = null
             playerVolume = volume
+            releaseFadingOut()
         } else {
             playerVolume =
                 volumeRecoveryFrom +
                     (volume.coerceAtMost(1f) - volumeRecoveryFrom) * progress.coerceAtLeast(0f)
+            fadingOut?.volume = fadingOutFrom * (1f - progress.coerceAtLeast(0f))
             internalHandler.postDelayed(volumeRecoveryTicker, CROSSFADE_FADE_TICK_MS)
         }
     }
@@ -992,6 +1003,7 @@ internal class ExoPlayerPlaybackEngine(
 
     private fun prepareCrossfade(nextProduct: MediaProduct) {
         heldNext = null
+        releaseFadingOut()
         val crossfade =
             Crossfade(
                 extendedExoPlayerFactory.create(this, this),
@@ -1010,18 +1022,27 @@ internal class ExoPlayerPlaybackEngine(
     private fun abortCrossfade(restoreNext: Boolean) {
         val crossfade = crossfade ?: return
         this.crossfade = null
-        crossfade.release()
         nextMediaSource = null
+        releaseFadingOut()
         if (crossfade.isFading) {
-            // Ramps back up from where the fade had got to, instead of jumping to full volume.
+            // Ramps both players back from where the fade had got to, instead of cutting.
             volumeRecoveryFrom = extendedExoPlayer.volume
             volumeRecoveryStartedAtMillis = trueTimeWrapper.currentTimeMillis
+            fadingOut = crossfade.incoming
+            fadingOutFrom = crossfade.incoming.volume
+        } else {
+            crossfade.release()
         }
         updatePlayerVolume()
         if (restoreNext && isOperating) {
             nextMediaSource =
                 extendedExoPlayer.setNext(ForwardingMediaProduct(crossfade.nextProduct))
         }
+    }
+
+    private fun releaseFadingOut() {
+        fadingOut?.release()
+        fadingOut = null
     }
 
     /** Promotes the incoming player to current. Returns false if it isn't ready to take over. */

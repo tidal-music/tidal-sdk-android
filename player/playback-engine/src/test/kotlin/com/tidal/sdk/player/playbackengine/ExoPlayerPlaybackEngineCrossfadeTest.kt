@@ -363,7 +363,7 @@ internal class ExoPlayerPlaybackEngineCrossfadeTest {
         tickAt(FADE_POSITION_MS)
 
         playbackEngine.seek(0f)
-        assertCancelledTheFade()
+        assertFadedOutTheIncomingTrack()
         verifyNeverOnOutgoing(nextMediaProduct)
 
         tickAt(PRELOAD_POSITION_MS)
@@ -481,7 +481,7 @@ internal class ExoPlayerPlaybackEngineCrossfadeTest {
 
         playbackEngine.crossfadeDurationMs = 0L
 
-        assertCancelledTheFade()
+        assertFadedOutTheIncomingTrack()
         assertRestoredTheNextItem()
         verify(internalHandler, never()).post(ticker)
         verify(internalHandler).removeCallbacks(ticker)
@@ -509,6 +509,39 @@ internal class ExoPlayerPlaybackEngineCrossfadeTest {
     }
 
     @Test
+    fun cancellingTheFadeRampsTheIncomingTrackDown() {
+        incomingIsLoaded(AudioMode.STEREO, durationMs = TRACK_MS)
+        tickAt(FADE_POSITION_MS)
+        whenever(incoming.volume) doReturn 0.8f
+
+        playbackEngine.crossfadeDurationMs = 0L
+        verify(incoming, never()).release()
+        val captor = argumentCaptor<Runnable>()
+        verify(internalHandler, times(2)).postDelayed(captor.capture(), eq(50L))
+        val recovery = captor.lastValue
+
+        nowMs += 125L
+        recovery.run()
+        verify(incoming).volume = 0.4f
+        verify(incoming, never()).release()
+
+        nowMs += 125L
+        recovery.run()
+        verify(incoming).release()
+    }
+
+    @Test
+    fun pausingDuringTheVolumeRampStopsTheIncomingTrack() {
+        incomingIsLoaded(AudioMode.STEREO, durationMs = TRACK_MS)
+        tickAt(FADE_POSITION_MS)
+        playbackEngine.crossfadeDurationMs = 0L
+
+        playbackEngine.pause()
+
+        verify(incoming).release()
+    }
+
+    @Test
     fun loadingANewTrackDuringTheVolumeRampStopsIt() {
         incomingIsLoaded(AudioMode.STEREO, durationMs = TRACK_MS)
         tickAt(FADE_POSITION_MS)
@@ -523,6 +556,7 @@ internal class ExoPlayerPlaybackEngineCrossfadeTest {
         nowMs += 125L
         recovery.run()
 
+        verify(incoming).release()
         // The new track plays at its own volume, not partway up the old track's ramp.
         verify(outgoing).volume = 1f
         verify(outgoing, never()).volume = 0.5f
@@ -536,7 +570,7 @@ internal class ExoPlayerPlaybackEngineCrossfadeTest {
 
         playbackEngine.setRepeatOne(true)
 
-        assertCancelledTheFade()
+        assertFadedOutTheIncomingTrack()
         assertRestoredTheNextItem()
         verify(outgoing).repeatMode = Player.REPEAT_MODE_ONE
     }
@@ -548,7 +582,7 @@ internal class ExoPlayerPlaybackEngineCrossfadeTest {
 
         playbackEngine.setNext(otherMediaProduct)
 
-        assertCancelledTheFade()
+        assertFadedOutTheIncomingTrack()
         verifyOnOutgoing(otherMediaProduct)
         verifyNeverOnOutgoing(nextMediaProduct)
     }
@@ -622,6 +656,18 @@ internal class ExoPlayerPlaybackEngineCrossfadeTest {
     private fun assertCancelledTheFade() {
         verify(incoming).release()
         assertThat(playbackEngine.reflectionExtendedExoPlayer).isSameInstanceAs(outgoing)
+    }
+
+    /** The cancelled fade's incoming track ramps down alongside the volume recovery, then goes. */
+    private fun assertFadedOutTheIncomingTrack() {
+        assertThat(playbackEngine.reflectionExtendedExoPlayer).isSameInstanceAs(outgoing)
+        verify(incoming, never()).release()
+        val captor = argumentCaptor<Runnable>()
+        verify(internalHandler, atLeastOnce()).postDelayed(captor.capture(), eq(50L))
+
+        nowMs += 250L
+        captor.lastValue.run()
+        verify(incoming).release()
     }
 
     /** The next item went on the outgoing player once the crossfade gave it up. */
