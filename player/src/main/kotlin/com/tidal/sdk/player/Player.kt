@@ -23,8 +23,6 @@ import okhttp3.OkHttpClient
  * @param application An [Application] to use.
  * @param[credentialsProvider] A [CredentialsProvider] from the Auth SDK.
  * @param[eventSender] An [EventSender] from the EventProducer SDK.
- * @param enableFloatOutput Whether to keep 24-bit tracks at 24-bit instead of converting them to
- *   16-bit. Defaults to false.
  * @param userClientIdSupplier A function that supplies a userClientId used for event tracking. This
  *   value needs to be taken from the session. Internal use only.
  * @param bufferConfiguration The parameters to configure different values for player buffer
@@ -48,13 +46,14 @@ import okhttp3.OkHttpClient
  * @param openApiEndpoint Base URL the player SDK targets for OpenAPI /v2 calls. Defaults to
  *   [Common.TIDAL_OPEN_API_ENDPOINT_V2] (production). Override to point at a non-production
  *   environment, e.g. stage.
+ * @param enableFloatOutput Whether to keep 24-bit tracks at 24-bit instead of converting them to
+ *   16-bit. Defaults to false.
  */
 class Player(
     application: Application,
     credentialsProvider: CredentialsProvider,
     eventSender: EventSender,
     enableDecoderFallback: Boolean = true,
-    enableFloatOutput: Boolean = false,
     userClientIdSupplier: (() -> Int)? = null,
     bufferConfiguration: BufferConfiguration = BufferConfiguration(),
     assetTimeoutConfig: AssetTimeoutConfig = AssetTimeoutConfig(),
@@ -71,6 +70,7 @@ class Player(
     version: String = "1.0.0",
     apiEndpoint: String = Common.TIDAL_API_ENDPOINT_V1,
     openApiEndpoint: String = Common.TIDAL_OPEN_API_ENDPOINT_V2,
+    enableFloatOutput: Boolean = false,
 ) : ConfigurationListener {
     private val playerComponent =
         DaggerPlayerComponent.factory()
