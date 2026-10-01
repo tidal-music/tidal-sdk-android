@@ -126,8 +126,8 @@ internal class Crossfade(
     companion object {
 
         /**
-         * Whether [current] is close enough to its end to preload the next track, but not yet in
-         * the fade window.
+         * Whether [current] is close enough to its end to preload the next track, or fully buffered,
+         * which is when gapless playback would preload it, but not yet in the fade window.
          */
         fun isDue(current: ExtendedExoPlayer, crossfadeDurationMs: Long): Boolean {
             val durationMs = current.duration
@@ -139,7 +139,8 @@ internal class Crossfade(
             }
             val remainingMs = durationMs - current.currentPosition
             return remainingMs > crossfadeDurationMs &&
-                remainingMs <= crossfadeDurationMs + PREPARE_LEAD_MS
+                (remainingMs <= crossfadeDurationMs + PREPARE_LEAD_MS ||
+                    current.bufferedPosition >= durationMs)
         }
 
         /** Whether a track of [durationMs] is long enough to fade in over [crossfadeDurationMs]. */

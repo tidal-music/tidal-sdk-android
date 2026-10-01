@@ -205,6 +205,17 @@ internal class ExoPlayerPlaybackEngineCrossfadeTest {
     }
 
     @Test
+    fun aHeldNextItemPreloadsOnceTheCurrentTrackIsFullyBuffered() {
+        holdNext(otherMediaProduct)
+        whenever(outgoing.bufferedPosition) doReturn TRACK_MS
+
+        tickAt(0L)
+
+        verify(incoming).loadAsNext(argThat { delegate === otherMediaProduct })
+        verifyNeverOnOutgoing(otherMediaProduct)
+    }
+
+    @Test
     fun aHeldNextItemGoesGaplessWhenRepeatOneTurnsOn() {
         holdNext(otherMediaProduct)
 

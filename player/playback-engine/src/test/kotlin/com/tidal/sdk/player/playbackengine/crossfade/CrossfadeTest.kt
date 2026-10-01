@@ -187,6 +187,22 @@ internal class CrossfadeTest {
     }
 
     @Test
+    fun isDueOnceFullyBufferedBeforeThePreloadWindow() {
+        whenever(outgoing.currentPosition) doReturn 0L
+        whenever(outgoing.bufferedPosition) doReturn TRACK_MS
+
+        assertThat(Crossfade.isDue(outgoing, CROSSFADE_MS)).isTrue()
+    }
+
+    @Test
+    fun isDueIsFalseWhenFullyBufferedInTheFadeWindow() {
+        whenever(outgoing.currentPosition) doReturn TRACK_MS - CROSSFADE_MS
+        whenever(outgoing.bufferedPosition) doReturn TRACK_MS
+
+        assertThat(Crossfade.isDue(outgoing, CROSSFADE_MS)).isFalse()
+    }
+
+    @Test
     fun isDueIsFalseWithRepeatOne() {
         whenever(outgoing.repeatMode) doReturn Player.REPEAT_MODE_ONE
         whenever(outgoing.currentPosition) doReturn TRACK_MS - CROSSFADE_MS - 1
