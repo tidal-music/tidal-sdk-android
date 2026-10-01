@@ -498,6 +498,27 @@ internal class ExoPlayerPlaybackEngineCrossfadeTest {
     }
 
     @Test
+    fun loadingANewTrackDuringTheVolumeRampStopsIt() {
+        incomingIsLoaded(AudioMode.STEREO, durationMs = TRACK_MS)
+        tickAt(FADE_POSITION_MS)
+        whenever(outgoing.volume) doReturn 0f
+        playbackEngine.crossfadeDurationMs = 0L
+        val captor = argumentCaptor<Runnable>()
+        verify(internalHandler, times(2)).postDelayed(captor.capture(), eq(50L))
+        val recovery = captor.lastValue
+
+        playbackEngine.load(otherMediaProduct)
+        clearInvocations(outgoing, internalHandler)
+        nowMs += 125L
+        recovery.run()
+
+        // The new track plays at its own volume, not partway up the old track's ramp.
+        verify(outgoing).volume = 1f
+        verify(outgoing, never()).volume = 0.5f
+        verify(internalHandler, never()).postDelayed(recovery, 50L)
+    }
+
+    @Test
     fun repeatOneDuringTheFadeFallsBackToGapless() {
         incomingIsLoaded(AudioMode.STEREO, durationMs = TRACK_MS)
         tickAt(FADE_POSITION_MS)

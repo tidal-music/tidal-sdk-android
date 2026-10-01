@@ -140,6 +140,8 @@ internal class ExoPlayerPlaybackEngine(
             heldNext = null
             currentPlaybackSession = null
             crossfadeDisabledForCurrent = false
+            volumeRecoveryStartedAtMillis = null
+            internalHandler.removeCallbacks(volumeRecoveryTicker)
             djSessionManager.cleanUp()
             if (new?.forwardingMediaProduct?.productType == ProductType.BROADCAST) {
                 djSessionManager.listener = this
