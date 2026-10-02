@@ -527,8 +527,15 @@ internal class ExoPlayerPlaybackEngine(
                             playbackInfo,
                             nextForwardingMediaProduct.delegate.referenceId,
                         )
+                    // A crossfading next item streams on the incoming player, not this one.
+                    val nextStreamingSession =
+                        if (crossfade != null) {
+                            streamingSession
+                        } else {
+                            extendedExoPlayer.nextStreamingSession!!
+                        }
                     nextPlaybackStatistics =
-                        streamingSession.createUndeterminedPlaybackStatistics(
+                        nextStreamingSession.createUndeterminedPlaybackStatistics(
                             PlaybackStatistics.IdealStartTimestampMs.NotYetKnown,
                             nextForwardingMediaProduct.extras,
                         )
@@ -773,7 +780,6 @@ internal class ExoPlayerPlaybackEngine(
             invokedAtMillis,
             newPositionSeconds,
         )
-        refreshPlaybackContextWithCurrentAudioFormat()
     }
 
     /** Starts reporting for the item that just became current in [mediaSource]. */
@@ -786,6 +792,7 @@ internal class ExoPlayerPlaybackEngine(
         newPositionSeconds: Double,
     ) {
         playbackContext = targetPlaybackContext.copy(durationMs.toFloat() / MS_IN_SECOND)
+        refreshPlaybackContextWithCurrentAudioFormat()
         currentPlaybackStatistics =
             undeterminedPlaybackSessionResolver(
                     targetPlaybackStatistics.copy(
