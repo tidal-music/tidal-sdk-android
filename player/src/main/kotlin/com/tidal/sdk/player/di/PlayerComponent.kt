@@ -48,6 +48,7 @@ internal interface PlayerComponent {
             @BindsInstance eventSender: EventSender,
             @BindsInstance @Named("enableDecoderFallback") enableDecoderFallback: Boolean,
             @BindsInstance @Named("enableFloatOutput") enableFloatOutput: Boolean,
+            @BindsInstance @Named("enableCrossfade") enableCrossfade: Boolean,
             @BindsInstance userClientIdSupplier: (() -> Int)?,
             @BindsInstance version: String,
             @BindsInstance bufferConfiguration: BufferConfiguration,

@@ -4,7 +4,9 @@ import androidx.media3.common.C
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.analytics.AnalyticsListener
+import com.tidal.sdk.player.common.model.AudioMode
 import com.tidal.sdk.player.common.model.MediaProduct
+import com.tidal.sdk.player.playbackengine.model.PlaybackContext
 import com.tidal.sdk.player.playbackengine.player.ExtendedExoPlayer
 
 private const val PREPARE_LEAD_MS = 15_000L
@@ -13,10 +15,9 @@ private const val PREPARE_LEAD_MS = 15_000L
  * The next track preloaded on its own silent [incoming] player, fading in over the last
  * [durationMs] of the outgoing one.
  *
- * Owns the fade itself: the incoming player's setup, the S-curve each player's
- * [CrossfadeGainProcessor] applies, mirroring the outgoing player's play/pause, and swapping the
- * players at the end. Moving the reporting state over to the incoming track is left to the engine,
- * which owns it.
+ * Owns the fade itself: the incoming player's setup, the S-curve volume ramp, mirroring the
+ * outgoing player's play/pause, and swapping the players at the end. Moving the reporting state
+ * over to the incoming track is left to the engine, which owns it.
  */
 internal class Crossfade(
     val incoming: ExtendedExoPlayer,
@@ -33,13 +34,14 @@ internal class Crossfade(
     val isFading: Boolean
         get() = fadeStartedAtMillis != null
 
+    private var fadeDurationMs = 0L
+
     init {
         incoming.apply {
             analyticsListener = null
             setAudioAttributes(audioAttributes, false)
             volume = 0f
             playWhenReady = false
-            crossfadeGain.fadeIn(durationMs)
             addListener(
                 object : Player.Listener {
                     override fun onPlayerError(error: PlaybackException) =
@@ -63,20 +65,21 @@ internal class Crossfade(
 
     /**
      * Starts the fade once the outgoing player is within [durationMs] of its end and the incoming
-     * one is ready, then keeps both players in step.
+     * one is ready, then advances the volume ramp. Call it periodically.
      */
     fun tick(outgoing: ExtendedExoPlayer, outgoingVolume: Float, incomingVolume: Float) {
         val remainingMs = remainingMs(outgoing) ?: return
         if (!isFading) {
-            if (incoming.playbackState != Player.STATE_READY) return
-            // Set ahead of the window, as samples are processed ahead of what's heard.
-            outgoing.crossfadeGain.fadeOut(outgoing.duration - durationMs, durationMs)
-            if (remainingMs > durationMs) return
+            if (remainingMs > durationMs || incoming.playbackState != Player.STATE_READY) return
             fadeStartedAtMillis = currentTimeMillis()
+            fadeDurationMs = remainingMs.coerceAtLeast(1L)
         }
         follow(outgoing)
-        outgoing.volume = outgoingVolume
-        incoming.volume = incomingVolume
+        val progress = (1f - remainingMs.toFloat() / fadeDurationMs).coerceIn(0f, 1f)
+        val fadeIn = progress * progress * (3 - 2 * progress)
+        // Players cap volume at 1, so a louder normalized volume would flatten the curve.
+        outgoing.volume = outgoingVolume.coerceAtMost(1f) * (1 - fadeIn)
+        incoming.volume = incomingVolume.coerceAtMost(1f) * fadeIn
     }
 
     /** Once fading, plays [incoming] exactly while [outgoing] plays. */
@@ -107,7 +110,6 @@ internal class Crossfade(
         outgoing.analyticsListener = null
         outgoing.release()
         return incoming.apply {
-            crossfadeGain.clear()
             this.analyticsListener = analyticsListener
             setAudioAttributes(audioAttributes, true)
             this.playWhenReady = playWhenReady
@@ -126,8 +128,9 @@ internal class Crossfade(
     companion object {
 
         /**
-         * Whether [current] is close enough to its end to preload the next track, but not yet in
-         * the fade window.
+         * Whether [current] is close enough to its end to preload the next track, or fully
+         * buffered, which is when gapless playback would preload it, but not yet in the fade
+         * window.
          */
         fun isDue(current: ExtendedExoPlayer, crossfadeDurationMs: Long): Boolean {
             val durationMs = current.duration
@@ -139,11 +142,27 @@ internal class Crossfade(
             }
             val remainingMs = durationMs - current.currentPosition
             return remainingMs > crossfadeDurationMs &&
-                remainingMs <= crossfadeDurationMs + PREPARE_LEAD_MS
+                (remainingMs <= crossfadeDurationMs + PREPARE_LEAD_MS ||
+                    current.bufferedPosition >= durationMs)
         }
 
         /** Whether a track of [durationMs] is long enough to fade in over [crossfadeDurationMs]. */
         fun isLongEnough(durationMs: Long, crossfadeDurationMs: Long): Boolean =
             durationMs != C.TIME_UNSET && durationMs > crossfadeDurationMs * 2
+
+        /** [isLongEnough], counting a duration that isn't known yet as long enough. */
+        fun mayBeLongEnough(durationMs: Long, crossfadeDurationMs: Long): Boolean =
+            durationMs == C.TIME_UNSET || isLongEnough(durationMs, crossfadeDurationMs)
+
+        /**
+         * Whether a track playing in [context] may crossfade, counting a not yet known one as may.
+         */
+        fun mayFade(context: PlaybackContext?): Boolean =
+            context == null ||
+                context is PlaybackContext.Track && context.audioMode != AudioMode.DOLBY_ATMOS
+
+        /** Whether [positionMs] is past where a track of [durationMs] would start fading out. */
+        fun isPastStart(durationMs: Long, positionMs: Long, crossfadeDurationMs: Long): Boolean =
+            durationMs != C.TIME_UNSET && durationMs - positionMs <= crossfadeDurationMs
     }
 }

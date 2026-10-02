@@ -48,6 +48,8 @@ import okhttp3.OkHttpClient
  *   environment, e.g. stage.
  * @param enableFloatOutput Whether to keep 24-bit tracks at 24-bit instead of converting them to
  *   16-bit. Defaults to false.
+ * @param enableCrossfade Whether `PlaybackEngine.crossfadeDurationMs` can turn on crossfade. When
+ *   false, the duration is ignored and tracks play gaplessly as before. Defaults to false.
  */
 class Player(
     application: Application,
@@ -71,6 +73,7 @@ class Player(
     apiEndpoint: String = Common.TIDAL_API_ENDPOINT_V1,
     openApiEndpoint: String = Common.TIDAL_OPEN_API_ENDPOINT_V2,
     enableFloatOutput: Boolean = false,
+    enableCrossfade: Boolean = false,
 ) : ConfigurationListener {
     private val playerComponent =
         DaggerPlayerComponent.factory()
@@ -80,6 +83,7 @@ class Player(
                 eventSender,
                 enableDecoderFallback,
                 enableFloatOutput,
+                enableCrossfade,
                 userClientIdSupplier,
                 version,
                 bufferConfiguration,

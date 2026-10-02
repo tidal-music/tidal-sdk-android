@@ -26,6 +26,7 @@ internal class ExoPlayerPlaybackEngineLooperTest {
                 mock(),
                 true,
                 false,
+                false,
                 MutableSharedFlow(),
                 BufferConfiguration(),
                 AssetTimeoutConfig(),

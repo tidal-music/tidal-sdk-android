@@ -4,11 +4,8 @@ import android.content.Context
 import androidx.media3.common.audio.AudioProcessor
 import androidx.media3.exoplayer.RenderersFactory
 import androidx.media3.exoplayer.audio.AudioCapabilities
-import androidx.media3.exoplayer.audio.AudioSink
 import androidx.media3.exoplayer.audio.DefaultAudioSink
 import androidx.media3.exoplayer.audio.DefaultAudioTrackBufferSizeProvider
-import com.tidal.sdk.player.playbackengine.crossfade.CrossfadeAudioSink
-import com.tidal.sdk.player.playbackengine.crossfade.CrossfadeGainProcessor
 import com.tidal.sdk.player.playbackengine.model.BufferConfiguration
 import com.tidal.sdk.player.playbackengine.player.renderer.PlayerRenderersFactory
 import com.tidal.sdk.player.playbackengine.player.renderer.audio.fallback.FallbackAudioRendererFactory
@@ -42,14 +39,7 @@ internal object RendererModule {
             )
             .build()
 
-    @Provides
-    @ExtendedExoPlayerComponent.Scoped
-    fun crossfadeGainProcessor() = CrossfadeGainProcessor()
-
-    @Provides
-    @Reusable
-    fun audioProcessors(crossfadeGainProcessor: CrossfadeGainProcessor) =
-        arrayOf<AudioProcessor>(crossfadeGainProcessor)
+    @Provides @Reusable fun audioProcessors() = emptyArray<AudioProcessor>()
 
     @Provides
     @ExtendedExoPlayerComponent.Scoped
@@ -61,7 +51,6 @@ internal object RendererModule {
     ) =
         DefaultAudioSink.Builder()
             .setAudioCapabilities(audioCapabilities)
-            // Float output bypasses these, which would play crossfades at full volume.
             .setAudioProcessors(audioProcessors)
             // When on, keeps 24-bit tracks at 24-bit instead of converting them to 16-bit.
             .setEnableFloatOutput(enableFloatOutput)
@@ -69,19 +58,12 @@ internal object RendererModule {
             .build()
 
     @Provides
-    @ExtendedExoPlayerComponent.Scoped
-    fun audioSink(
-        defaultAudioSink: DefaultAudioSink,
-        crossfadeGainProcessor: CrossfadeGainProcessor,
-    ): AudioSink = CrossfadeAudioSink(defaultAudioSink, crossfadeGainProcessor)
-
-    @Provides
     @Reusable
     fun fallbackAudioRendererFactory(
         context: Context,
-        audioSink: AudioSink,
+        defaultAudioSink: DefaultAudioSink,
         @Named("enableDecoderFallback") enableDecoderFallback: Boolean,
-    ) = FallbackAudioRendererFactory(context, audioSink, enableDecoderFallback)
+    ) = FallbackAudioRendererFactory(context, defaultAudioSink, enableDecoderFallback)
 
     @Provides
     @Reusable
