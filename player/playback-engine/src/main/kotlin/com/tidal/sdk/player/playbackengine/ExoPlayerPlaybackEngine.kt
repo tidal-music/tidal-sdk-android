@@ -98,6 +98,7 @@ internal class ExoPlayerPlaybackEngine(
     private val undeterminedPlaybackSessionResolver: UndeterminedPlaybackSessionResolver,
     private val outputDeviceManager: OutputDeviceManager,
     private val playerCache: PlayerCache,
+    private val enableCrossfade: Boolean,
 ) :
     PlaybackEngine,
     StreamingPrivilegesListener,
@@ -293,6 +294,8 @@ internal class ExoPlayerPlaybackEngine(
 
     override var crossfadeDurationMs: Long = 0L
         set(value) {
+            // Without the flag, playback stays on the gapless route whatever the app sets.
+            if (!enableCrossfade) return
             field = value
             internalHandler.removeCallbacks(crossfadeTicker)
             if (value > 0L) {

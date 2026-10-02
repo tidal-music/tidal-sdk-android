@@ -143,6 +143,7 @@ internal class ExoPlayerPlaybackEngineCrossfadeTest {
                 undeterminedPlaybackSessionResolver,
                 mock<OutputDeviceManager>(),
                 mock<PlayerCache.Internal>(),
+                true,
             )
         whenever(outgoing.load(any())).then { invocation ->
             currentForwardingMediaProduct = invocation.getArgument(0)

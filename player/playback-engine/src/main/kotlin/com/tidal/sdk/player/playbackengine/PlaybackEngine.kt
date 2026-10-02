@@ -162,6 +162,9 @@ interface Configuration {
     /** Get or set [enableAdaptive] as [Boolean] to enable adaptive streaming. */
     var enableAdaptive: Boolean
 
-    /** Get or set the crossfade duration between tracks in milliseconds. 0 disables it. */
+    /**
+     * Get or set the crossfade duration between tracks in milliseconds. 0 disables it. Has no
+     * effect unless the player was created with `enableCrossfade`.
+     */
     var crossfadeDurationMs: Long
 }

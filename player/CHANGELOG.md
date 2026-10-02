@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - `Player.enableFloatOutput`, off by default, keeps 24-bit tracks at 24-bit.
+- `Player.enableCrossfade`, off by default. Crossfade only plays when it's on; with it off, `PlaybackEngine.crossfadeDurationMs` is ignored and tracks play gaplessly.
 
 ### Changed
 - Crossfade now ramps each player's volume instead of changing the audio samples, and respects loudness normalization.

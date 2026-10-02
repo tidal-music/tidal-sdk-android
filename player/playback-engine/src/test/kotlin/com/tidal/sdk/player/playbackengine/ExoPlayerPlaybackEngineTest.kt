@@ -160,6 +160,7 @@ internal class ExoPlayerPlaybackEngineTest {
                 undeterminedPlaybackSessionResolver,
                 outputDeviceManager,
                 playerCache,
+                false,
             )
     }
 
@@ -334,6 +335,22 @@ internal class ExoPlayerPlaybackEngineTest {
 
         playbackEngine.setNext(nextMediaProduct)
 
+        verify(initialExtendedExoPlayer).setNext(argThat { delegate === nextMediaProduct })
+        verify(initialExtendedExoPlayer, never()).setNext(null)
+        verify(extendedExoPlayerFactory).create(any(), any())
+        verify(internalHandler, never()).post(any())
+        verify(internalHandler, never()).postDelayed(any(), any())
+    }
+
+    @Test
+    fun withoutEnableCrossfadeACrossfadeDurationIsIgnored() {
+        playTrackThatCouldCrossfade()
+        val nextMediaProduct = MediaProduct(ProductType.TRACK, "2")
+
+        playbackEngine.crossfadeDurationMs = 6_000L
+        playbackEngine.setNext(nextMediaProduct)
+
+        assertThat(playbackEngine.crossfadeDurationMs).isEqualTo(0L)
         verify(initialExtendedExoPlayer).setNext(argThat { delegate === nextMediaProduct })
         verify(initialExtendedExoPlayer, never()).setNext(null)
         verify(extendedExoPlayerFactory).create(any(), any())
