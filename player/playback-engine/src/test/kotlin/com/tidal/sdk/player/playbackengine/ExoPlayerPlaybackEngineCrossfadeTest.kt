@@ -254,6 +254,20 @@ internal class ExoPlayerPlaybackEngineCrossfadeTest {
     }
 
     @Test
+    fun aSeekBackOutOfTheFadeWindowCrossfadesIntoTheNextItemAgain() {
+        holdNext(otherMediaProduct)
+        whenever(outgoing.currentPosition) doReturn FADE_POSITION_MS
+        playbackEngine.seek(FADE_POSITION_MS.toFloat())
+        verifyOnOutgoing(otherMediaProduct)
+
+        whenever(outgoing.currentPosition) doReturn 0L
+        playbackEngine.seek(0f)
+        tickAt(PRELOAD_POSITION_MS)
+
+        verify(incoming).loadAsNext(argThat { delegate === otherMediaProduct })
+    }
+
+    @Test
     fun skipToNextWithAHeldNextItemSkipsToIt() {
         holdNext(otherMediaProduct)
 

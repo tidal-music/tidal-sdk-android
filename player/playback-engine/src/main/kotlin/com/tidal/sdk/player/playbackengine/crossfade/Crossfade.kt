@@ -4,7 +4,9 @@ import androidx.media3.common.C
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.analytics.AnalyticsListener
+import com.tidal.sdk.player.common.model.AudioMode
 import com.tidal.sdk.player.common.model.MediaProduct
+import com.tidal.sdk.player.playbackengine.model.PlaybackContext
 import com.tidal.sdk.player.playbackengine.player.ExtendedExoPlayer
 
 private const val PREPARE_LEAD_MS = 15_000L
@@ -147,5 +149,20 @@ internal class Crossfade(
         /** Whether a track of [durationMs] is long enough to fade in over [crossfadeDurationMs]. */
         fun isLongEnough(durationMs: Long, crossfadeDurationMs: Long): Boolean =
             durationMs != C.TIME_UNSET && durationMs > crossfadeDurationMs * 2
+
+        /** [isLongEnough], counting a duration that isn't known yet as long enough. */
+        fun mayBeLongEnough(durationMs: Long, crossfadeDurationMs: Long): Boolean =
+            durationMs == C.TIME_UNSET || isLongEnough(durationMs, crossfadeDurationMs)
+
+        /**
+         * Whether a track playing in [context] may crossfade, counting a not yet known one as may.
+         */
+        fun mayFade(context: PlaybackContext?): Boolean =
+            context == null ||
+                context is PlaybackContext.Track && context.audioMode != AudioMode.DOLBY_ATMOS
+
+        /** Whether [positionMs] is past where a track of [durationMs] would start fading out. */
+        fun isPastStart(durationMs: Long, positionMs: Long, crossfadeDurationMs: Long): Boolean =
+            durationMs != C.TIME_UNSET && durationMs - positionMs <= crossfadeDurationMs
     }
 }

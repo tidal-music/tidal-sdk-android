@@ -12,7 +12,9 @@ import assertk.assertions.isFalse
 import assertk.assertions.isNull
 import assertk.assertions.isSameInstanceAs
 import assertk.assertions.isTrue
+import com.tidal.sdk.player.common.model.AudioMode
 import com.tidal.sdk.player.common.model.MediaProduct
+import com.tidal.sdk.player.playbackengine.model.PlaybackContext
 import com.tidal.sdk.player.playbackengine.player.ExtendedExoPlayer
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
@@ -252,6 +254,45 @@ internal class CrossfadeTest {
         assertThat(Crossfade.isLongEnough(CROSSFADE_MS * 2, CROSSFADE_MS)).isFalse()
         assertThat(Crossfade.isLongEnough(C.TIME_UNSET, CROSSFADE_MS)).isFalse()
     }
+
+    @Test
+    fun mayBeLongEnoughWhileTheDurationIsUnknown() {
+        assertThat(Crossfade.mayBeLongEnough(C.TIME_UNSET, CROSSFADE_MS)).isTrue()
+        assertThat(Crossfade.mayBeLongEnough(CROSSFADE_MS * 2 + 1, CROSSFADE_MS)).isTrue()
+        assertThat(Crossfade.mayBeLongEnough(CROSSFADE_MS * 2, CROSSFADE_MS)).isFalse()
+    }
+
+    @Test
+    fun mayFadeTracksExceptDolbyAtmos() {
+        assertThat(Crossfade.mayFade(trackContext(AudioMode.STEREO))).isTrue()
+        assertThat(Crossfade.mayFade(trackContext(null))).isTrue()
+        assertThat(Crossfade.mayFade(trackContext(AudioMode.DOLBY_ATMOS))).isFalse()
+    }
+
+    @Test
+    fun mayFadeWhileTheContextIsUnknown() {
+        assertThat(Crossfade.mayFade(null)).isTrue()
+    }
+
+    @Test
+    fun mayFadeIsFalseForVideos() {
+        assertThat(Crossfade.mayFade(mock<PlaybackContext.Video>())).isFalse()
+    }
+
+    @Test
+    fun isPastStartFromTheFadeLengthBeforeTheEnd() {
+        assertThat(Crossfade.isPastStart(TRACK_MS, TRACK_MS - CROSSFADE_MS, CROSSFADE_MS)).isTrue()
+        assertThat(Crossfade.isPastStart(TRACK_MS, TRACK_MS - CROSSFADE_MS - 1, CROSSFADE_MS))
+            .isFalse()
+    }
+
+    @Test
+    fun isPastStartIsFalseWithUnknownDuration() {
+        assertThat(Crossfade.isPastStart(C.TIME_UNSET, TRACK_MS, CROSSFADE_MS)).isFalse()
+    }
+
+    private fun trackContext(audioMode: AudioMode?) =
+        mock<PlaybackContext.Track> { on { it.audioMode } doReturn audioMode }
 
     private companion object {
         const val HALF_WAY_GAIN = 0.5f

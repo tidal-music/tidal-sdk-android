@@ -16,7 +16,6 @@ import androidx.media3.exoplayer.analytics.AnalyticsListener.EventTime
 import androidx.media3.exoplayer.hls.HlsManifest
 import androidx.media3.exoplayer.source.ForwardingTimeline
 import com.tidal.sdk.player.common.ForwardingMediaProduct
-import com.tidal.sdk.player.common.model.AudioMode
 import com.tidal.sdk.player.common.model.AudioQuality
 import com.tidal.sdk.player.common.model.LoudnessNormalizationMode
 import com.tidal.sdk.player.common.model.MediaProduct
@@ -37,6 +36,7 @@ import com.tidal.sdk.player.events.model.UCPlaybackStatistics
 import com.tidal.sdk.player.events.model.VideoPlaybackSession
 import com.tidal.sdk.player.events.model.VideoPlaybackStatistics
 import com.tidal.sdk.player.playbackengine.audiomode.AudioModeRepository
+import com.tidal.sdk.player.playbackengine.crossfade.CancelledFade
 import com.tidal.sdk.player.playbackengine.crossfade.Crossfade
 import com.tidal.sdk.player.playbackengine.dj.DjSessionManager
 import com.tidal.sdk.player.playbackengine.dj.DjSessionStatus
@@ -55,7 +55,6 @@ import com.tidal.sdk.player.playbackengine.model.PlaybackContext
 import com.tidal.sdk.player.playbackengine.model.PlaybackState
 import com.tidal.sdk.player.playbackengine.outputdevice.OutputDevice
 import com.tidal.sdk.player.playbackengine.outputdevice.OutputDeviceManager
-import com.tidal.sdk.player.playbackengine.player.ExtendedExoPlayer
 import com.tidal.sdk.player.playbackengine.player.ExtendedExoPlayerFactory
 import com.tidal.sdk.player.playbackengine.player.PlayerCache
 import com.tidal.sdk.player.playbackengine.quality.AudioQualityRepository
@@ -78,7 +77,6 @@ import kotlinx.coroutines.launch
 private const val MS_IN_SECOND = 1000L
 private const val CROSSFADE_TICK_MS = 500L
 private const val CROSSFADE_FADE_TICK_MS = 50L
-private const val VOLUME_RECOVERY_MS = 250L
 
 /** The default implementation of [PlaybackEngine] that will use ExoPlayer to play media. */
 @Suppress("LargeClass", "LongParameterList")
@@ -141,9 +139,8 @@ internal class ExoPlayerPlaybackEngine(
             heldNext = null
             currentPlaybackSession = null
             crossfadeDisabledForCurrent = false
-            volumeRecoveryStartedAtMillis = null
             internalHandler.removeCallbacks(volumeRecoveryTicker)
-            releaseFadingOut()
+            releaseCancelledFade()
             djSessionManager.cleanUp()
             if (new?.forwardingMediaProduct?.productType == ProductType.BROADCAST) {
                 djSessionManager.listener = this
@@ -317,15 +314,7 @@ internal class ExoPlayerPlaybackEngine(
 
     private var crossfadeDisabledForCurrent = false
 
-    /** When a cancelled fade started ramping the volume back up from [volumeRecoveryFrom]. */
-    private var volumeRecoveryStartedAtMillis: Long? = null
-
-    private var volumeRecoveryFrom = 0f
-
-    /** A cancelled fade's incoming player, ramping down from [fadingOutFrom] before release. */
-    private var fadingOut: ExtendedExoPlayer? = null
-
-    private var fadingOutFrom = 0f
+    private var cancelledFade: CancelledFade? = null
 
     private val volumeRecoveryTicker = Runnable { updatePlayerVolume() }
 
@@ -409,7 +398,7 @@ internal class ExoPlayerPlaybackEngine(
         if (!isOperating) return
         extendedExoPlayer.pause()
         crossfade?.pause()
-        releaseFadingOut()
+        releaseCancelledFade()
     }
 
     override fun seek(time: Float) {
@@ -424,7 +413,8 @@ internal class ExoPlayerPlaybackEngine(
             heldNext = crossfade.nextProduct
         }
         extendedExoPlayer.seekTo(positionMs)
-        if (heldNext != null && isPastCrossfadeStart(positionMs)) releaseHeldNext()
+        // A seek back out of the window takes a next item handed over for gapless back.
+        if (isPastCrossfadeStart(positionMs)) releaseHeldNext() else holdNext()
     }
 
     override fun skipToNext() {
@@ -465,7 +455,7 @@ internal class ExoPlayerPlaybackEngine(
         abortCrossfade(restoreNext = false)
         internalHandler.removeCallbacks(crossfadeTicker)
         internalHandler.removeCallbacks(volumeRecoveryTicker)
-        releaseFadingOut()
+        releaseCancelledFade()
         extendedExoPlayer.release()
         if (playerCache is PlayerCache.Internal) {
             playerCache.cache.release()
@@ -872,25 +862,16 @@ internal class ExoPlayerPlaybackEngine(
     private fun updatePlayerVolume() {
         if (crossfade?.isFading == true) return
         val volume = volumeHelper.getVolume(mediaSource?.playbackInfo)
-        val recoveryStartedAtMillis = volumeRecoveryStartedAtMillis
-        if (recoveryStartedAtMillis == null) {
+        val cancelledFade = cancelledFade
+        if (cancelledFade == null) {
             playerVolume = volume
             return
         }
         internalHandler.removeCallbacks(volumeRecoveryTicker)
-        val progress =
-            (trueTimeWrapper.currentTimeMillis - recoveryStartedAtMillis).toFloat() /
-                VOLUME_RECOVERY_MS
-        if (progress >= 1f) {
-            volumeRecoveryStartedAtMillis = null
-            playerVolume = volume
-            releaseFadingOut()
-        } else {
-            playerVolume =
-                volumeRecoveryFrom +
-                    (volume.coerceAtMost(1f) - volumeRecoveryFrom) * progress.coerceAtLeast(0f)
-            fadingOut?.volume = fadingOutFrom * (1f - progress.coerceAtLeast(0f))
+        if (cancelledFade.tick(extendedExoPlayer, volume, trueTimeWrapper.currentTimeMillis)) {
             internalHandler.postDelayed(volumeRecoveryTicker, CROSSFADE_FADE_TICK_MS)
+        } else {
+            this.cancelledFade = null
         }
     }
 
@@ -929,25 +910,16 @@ internal class ExoPlayerPlaybackEngine(
     private fun mayHold(next: MediaProduct): Boolean {
         if (crossfadeDurationMs <= 0L || crossfadeDisabledForCurrent) return false
         if (extendedExoPlayer.repeatMode != Player.REPEAT_MODE_OFF) return false
-        val context = playbackContext
-        val durationMs = extendedExoPlayer.duration
         return forwardingMediaProduct?.productType == ProductType.TRACK &&
             next.productType == ProductType.TRACK &&
-            (context == null ||
-                context is PlaybackContext.Track && context.audioMode != AudioMode.DOLBY_ATMOS) &&
-            (durationMs == C.TIME_UNSET ||
-                Crossfade.isLongEnough(durationMs, crossfadeDurationMs)) &&
+            Crossfade.mayFade(playbackContext) &&
+            Crossfade.mayBeLongEnough(extendedExoPlayer.duration, crossfadeDurationMs) &&
             !isPastCrossfadeStart()
     }
 
     /** Whether the current item is already past where its crossfade would have started. */
-    private fun isPastCrossfadeStart(
-        positionMs: Long = extendedExoPlayer.currentPosition
-    ): Boolean {
-        val durationMs = extendedExoPlayer.duration
-        if (durationMs == C.TIME_UNSET) return false
-        return durationMs - positionMs <= crossfadeDurationMs
-    }
+    private fun isPastCrossfadeStart(positionMs: Long = extendedExoPlayer.currentPosition) =
+        Crossfade.isPastStart(extendedExoPlayer.duration, positionMs, crossfadeDurationMs)
 
     private fun shouldPrepareCrossfade(): Boolean =
         playbackState == PlaybackState.PLAYING &&
@@ -979,16 +951,9 @@ internal class ExoPlayerPlaybackEngine(
     }
 
     /** Whether what's known so far about [crossfade]'s track already rules the fade out. */
-    private fun cannotFadeInto(crossfade: Crossfade): Boolean {
-        val context = nextPlaybackContext
-        val isKnownIneligible =
-            context != null &&
-                (context !is PlaybackContext.Track || context.audioMode == AudioMode.DOLBY_ATMOS)
-        val durationMs = crossfade.incoming.duration
-        val isKnownTooShort =
-            durationMs != C.TIME_UNSET && !Crossfade.isLongEnough(durationMs, crossfade.durationMs)
-        return isKnownIneligible || isKnownTooShort
-    }
+    private fun cannotFadeInto(crossfade: Crossfade) =
+        !Crossfade.mayFade(nextPlaybackContext) ||
+            !Crossfade.mayBeLongEnough(crossfade.incoming.duration, crossfade.durationMs)
 
     /** Whether [crossfade]'s track is loaded far enough to start fading into it. */
     private fun isReadyToFadeInto(crossfade: Crossfade) =
@@ -1003,7 +968,7 @@ internal class ExoPlayerPlaybackEngine(
 
     private fun prepareCrossfade(nextProduct: MediaProduct) {
         heldNext = null
-        releaseFadingOut()
+        releaseCancelledFade()
         val crossfade =
             Crossfade(
                 extendedExoPlayerFactory.create(this, this),
@@ -1023,13 +988,14 @@ internal class ExoPlayerPlaybackEngine(
         val crossfade = crossfade ?: return
         this.crossfade = null
         nextMediaSource = null
-        releaseFadingOut()
+        releaseCancelledFade()
         if (crossfade.isFading) {
-            // Ramps both players back from where the fade had got to, instead of cutting.
-            volumeRecoveryFrom = extendedExoPlayer.volume
-            volumeRecoveryStartedAtMillis = trueTimeWrapper.currentTimeMillis
-            fadingOut = crossfade.incoming
-            fadingOutFrom = crossfade.incoming.volume
+            cancelledFade =
+                CancelledFade(
+                    crossfade.incoming,
+                    extendedExoPlayer.volume,
+                    trueTimeWrapper.currentTimeMillis,
+                )
         } else {
             crossfade.release()
         }
@@ -1040,9 +1006,9 @@ internal class ExoPlayerPlaybackEngine(
         }
     }
 
-    private fun releaseFadingOut() {
-        fadingOut?.release()
-        fadingOut = null
+    private fun releaseCancelledFade() {
+        cancelledFade?.release()
+        cancelledFade = null
     }
 
     /** Promotes the incoming player to current. Returns false if it isn't ready to take over. */
@@ -1343,7 +1309,7 @@ internal class ExoPlayerPlaybackEngine(
         playbackState = PlaybackState.IDLE
         extendedExoPlayer.release()
         internalHandler.removeCallbacksAndMessages(null)
-        volumeRecoveryStartedAtMillis = null
+        releaseCancelledFade()
         extendedExoPlayer = extendedExoPlayerFactory.create(this, this)
         if (crossfadeDurationMs > 0L) internalHandler.post(crossfadeTicker)
     }
