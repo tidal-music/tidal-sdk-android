@@ -6,10 +6,20 @@ import com.tidal.sdk.tidalapi.generated.models.SharesMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.SharesOwnersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.SharesSharedResourcesMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.SharesSingleResourceDataDocument
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface Shares {
+
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageSharesGet(val value: kotlin.String) {
+        @SerialName(value = "owners") owners("owners"),
+        @SerialName(value = "sharedResources") sharedResources("sharedResources"),
+    }
+
     /**
      * GET shares Get multiple shares. Retrieves multiple shares by available filters, or without if
      * applicable. Responses:
@@ -24,8 +34,10 @@ interface Shares {
      * - 503: Service temporarily unavailable
      *
      * @param filterCode A share code (e.g. &#x60;xyz&#x60;)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners, sharedResources (optional)
+     * @param include Include related resources. Available relationships: owners, sharedResources
+     *   (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: sharedResources (optional)
@@ -37,8 +49,16 @@ interface Shares {
         filterCode: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<SharesMultiResourceDataDocument>
+
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageSharesIdGet(val value: kotlin.String) {
+        @SerialName(value = "owners") owners("owners"),
+        @SerialName(value = "sharedResources") sharedResources("sharedResources"),
+    }
 
     /**
      * GET shares/{id} Get single share. Retrieves single share by id. Responses:
@@ -53,8 +73,10 @@ interface Shares {
      * - 503: Service temporarily unavailable
      *
      * @param id User share id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners, sharedResources (optional)
+     * @param include Include related resources. Available relationships: owners, sharedResources
+     *   (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: sharedResources (optional)
@@ -65,6 +87,7 @@ interface Shares {
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<SharesSingleResourceDataDocument>
 
@@ -82,8 +105,7 @@ interface Shares {
      * - 503: Service temporarily unavailable
      *
      * @param id User share id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners (optional)
+     * @param include Include related resources. Available relationships: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @return [SharesOwnersMultiRelationshipDataDocument]
@@ -112,8 +134,7 @@ interface Shares {
      * @param id User share id
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: sharedResources (optional)
+     * @param include Include related resources. Available relationships: sharedResources (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: sharedResources (optional)

@@ -17,6 +17,15 @@ import retrofit2.Response
 import retrofit2.http.*
 
 interface UserCollectionFolders {
+
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageUserCollectionFoldersGet(val value: kotlin.String) {
+        @SerialName(value = "items") items("items"),
+        @SerialName(value = "owners") owners("owners"),
+        @SerialName(value = "userCollection") userCollection("userCollection"),
+    }
+
     /**
      * GET userCollectionFolders Get multiple userCollectionFolders. Retrieves multiple
      * userCollectionFolders by available filters, or without if applicable. Responses:
@@ -32,8 +41,10 @@ interface UserCollectionFolders {
      *
      * @param filterId Folder Id (e.g.
      *   &#x60;CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX&#x60;)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: items, owners, userCollection (optional)
+     * @param include Include related resources. Available relationships: items, owners,
+     *   userCollection (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: items.items (optional)
@@ -44,6 +55,7 @@ interface UserCollectionFolders {
         @Query("filter[id]") filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<UserCollectionFoldersMultiResourceDataDocument>
 
@@ -74,6 +86,14 @@ interface UserCollectionFolders {
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
     ): Response<MutationResponseDocument>
 
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageUserCollectionFoldersIdGet(val value: kotlin.String) {
+        @SerialName(value = "items") items("items"),
+        @SerialName(value = "owners") owners("owners"),
+        @SerialName(value = "userCollection") userCollection("userCollection"),
+    }
+
     /**
      * GET userCollectionFolders/{id} Get single userCollectionFolder. Retrieves single
      * userCollectionFolder by id. Responses:
@@ -88,8 +108,10 @@ interface UserCollectionFolders {
      * - 503: Service temporarily unavailable
      *
      * @param id Folder Id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: items, owners, userCollection (optional)
+     * @param include Include related resources. Available relationships: items, owners,
+     *   userCollection (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: items.items (optional)
@@ -100,6 +122,7 @@ interface UserCollectionFolders {
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<UserCollectionFoldersSingleResourceDataDocument>
 
@@ -199,8 +222,7 @@ interface UserCollectionFolders {
      *   targets first page if not specified (optional)
      * @param sort Values prefixed with \&quot;-\&quot; are sorted descending; values without it are
      *   sorted ascending. (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: items (optional)
+     * @param include Include related resources. Available relationships: items (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: items.items (optional)
@@ -262,8 +284,7 @@ interface UserCollectionFolders {
      * - 503: Service temporarily unavailable
      *
      * @param id Folder Id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners (optional)
+     * @param include Include related resources. Available relationships: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @return [UserCollectionFoldersOwnersMultiRelationshipDataDocument]
@@ -290,8 +311,7 @@ interface UserCollectionFolders {
      * - 503: Service temporarily unavailable
      *
      * @param id Folder Id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: userCollection (optional)
+     * @param include Include related resources. Available relationships: userCollection (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: userCollection.items.items (optional)

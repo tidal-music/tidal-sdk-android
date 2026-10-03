@@ -7,10 +7,20 @@ import com.tidal.sdk.tidalapi.generated.models.SquareConnectionsSelectedSiteSing
 import com.tidal.sdk.tidalapi.generated.models.SquareConnectionsSelectedSiteUpdateSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.SquareConnectionsSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.SquareConnectionsSitesMultiRelationshipDataDocument
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface SquareConnections {
+
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageSquareConnectionsIdGet(val value: kotlin.String) {
+        @SerialName(value = "selectedSite") selectedSite("selectedSite"),
+        @SerialName(value = "sites") sites("sites"),
+    }
+
     /**
      * GET squareConnections/{id} Get single squareConnection. Retrieves single squareConnection by
      * id. Responses:
@@ -26,8 +36,10 @@ interface SquareConnections {
      * - 503: Service temporarily unavailable
      *
      * @param id Square connection id. Use &#x60;me&#x60; for the authenticated user&#39;s resource
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: selectedSite, sites (optional)
+     * @param include Include related resources. Available relationships: selectedSite, sites
+     *   (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @return [SquareConnectionsSingleResourceDataDocument]
      */
     @GET("squareConnections/{id}")
@@ -35,6 +47,7 @@ interface SquareConnections {
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
     ): Response<SquareConnectionsSingleResourceDataDocument>
 
     /**
@@ -52,8 +65,7 @@ interface SquareConnections {
      * - 503: Service temporarily unavailable
      *
      * @param id Square connection id. Use &#x60;me&#x60; for the authenticated user&#39;s resource
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: selectedSite (optional)
+     * @param include Include related resources. Available relationships: selectedSite (optional)
      * @return [SquareConnectionsSelectedSiteSingleRelationshipDataDocument]
      */
     @GET("squareConnections/{id}/relationships/selectedSite")
@@ -112,8 +124,7 @@ interface SquareConnections {
      * - 503: Service temporarily unavailable
      *
      * @param id Square connection id. Use &#x60;me&#x60; for the authenticated user&#39;s resource
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: sites (optional)
+     * @param include Include related resources. Available relationships: sites (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @return [SquareConnectionsSitesMultiRelationshipDataDocument]

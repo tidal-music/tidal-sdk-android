@@ -1,5 +1,6 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.models.ClientsCertificatesMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ClientsCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.ClientsCreateSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ClientsMultiResourceDataDocument
@@ -8,10 +9,20 @@ import com.tidal.sdk.tidalapi.generated.models.ClientsSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ClientsUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.ClientsUpdateSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.MutationResponseDocument
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface Clients {
+
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageClientsGet(val value: kotlin.String) {
+        @SerialName(value = "certificates") certificates("certificates"),
+        @SerialName(value = "owners") owners("owners"),
+    }
+
     /**
      * GET clients Get multiple clients. Retrieves multiple clients by available filters, or without
      * if applicable. Responses:
@@ -26,8 +37,10 @@ interface Clients {
      * - 503: Service temporarily unavailable
      *
      * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners (optional)
+     * @param include Include related resources. Available relationships: certificates, owners
+     *   (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @return [ClientsMultiResourceDataDocument]
      */
     @GET("clients")
@@ -36,6 +49,7 @@ interface Clients {
         filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
     ): Response<ClientsMultiResourceDataDocument>
 
     /**
@@ -64,6 +78,13 @@ interface Clients {
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
     ): Response<MutationResponseDocument>
 
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageClientsIdGet(val value: kotlin.String) {
+        @SerialName(value = "certificates") certificates("certificates"),
+        @SerialName(value = "owners") owners("owners"),
+    }
+
     /**
      * GET clients/{id} Get single client. Retrieves single client by id. Responses:
      * - 200: Successful response
@@ -77,8 +98,10 @@ interface Clients {
      * - 503: Service temporarily unavailable
      *
      * @param id OAuth client identifier
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners (optional)
+     * @param include Include related resources. Available relationships: certificates, owners
+     *   (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @return [ClientsSingleResourceDataDocument]
      */
     @GET("clients/{id}")
@@ -86,6 +109,7 @@ interface Clients {
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
     ): Response<ClientsSingleResourceDataDocument>
 
     /**
@@ -117,6 +141,33 @@ interface Clients {
     ): Response<ClientsUpdateSingleResourceDataDocument>
 
     /**
+     * GET clients/{id}/relationships/certificates Get certificates relationship
+     * (\&quot;to-many\&quot;). Retrieves certificates relationship. Responses:
+     * - 200: Successful response
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
+     * - 429: Rate limit exceeded
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
+     *
+     * @param id OAuth client identifier
+     * @param include Include related resources. Available relationships: certificates (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
+     * @return [ClientsCertificatesMultiRelationshipDataDocument]
+     */
+    @GET("clients/{id}/relationships/certificates")
+    suspend fun clientsIdRelationshipsCertificatesGet(
+        @Path("id") id: kotlin.String,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
+    ): Response<ClientsCertificatesMultiRelationshipDataDocument>
+
+    /**
      * GET clients/{id}/relationships/owners Get owners relationship (\&quot;to-many\&quot;).
      * Retrieves owners relationship. Responses:
      * - 200: Successful response
@@ -130,8 +181,7 @@ interface Clients {
      * - 503: Service temporarily unavailable
      *
      * @param id OAuth client identifier
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners (optional)
+     * @param include Include related resources. Available relationships: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @return [ClientsOwnersMultiRelationshipDataDocument]

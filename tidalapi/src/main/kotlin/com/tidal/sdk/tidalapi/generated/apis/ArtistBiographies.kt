@@ -4,10 +4,19 @@ import com.tidal.sdk.tidalapi.generated.models.ArtistBiographiesOwnersMultiRelat
 import com.tidal.sdk.tidalapi.generated.models.ArtistBiographiesSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistBiographiesUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.MutationResponseDocument
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface ArtistBiographies {
+
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageArtistBiographiesIdGet(val value: kotlin.String) {
+        @SerialName(value = "owners") owners("owners")
+    }
+
     /**
      * GET artistBiographies/{id} Get single artistBiographie. Retrieves single artistBiographie by
      * id. Responses:
@@ -23,8 +32,9 @@ interface ArtistBiographies {
      *
      * @param id Artist biography id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners (optional)
+     * @param include Include related resources. Available relationships: owners (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @return [ArtistBiographiesSingleResourceDataDocument]
      */
     @GET("artistBiographies/{id}")
@@ -33,6 +43,7 @@ interface ArtistBiographies {
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
     ): Response<ArtistBiographiesSingleResourceDataDocument>
 
     /**
@@ -79,8 +90,7 @@ interface ArtistBiographies {
      * - 503: Service temporarily unavailable
      *
      * @param id Artist biography id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners (optional)
+     * @param include Include related resources. Available relationships: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @return [ArtistBiographiesOwnersMultiRelationshipDataDocument]

@@ -15,10 +15,23 @@ import com.tidal.sdk.tidalapi.generated.models.PlayQueuesOwnersMultiRelationship
 import com.tidal.sdk.tidalapi.generated.models.PlayQueuesPastMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlayQueuesSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlayQueuesUpdateOperationPayload
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface PlayQueues {
+
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkagePlayQueuesGet(val value: kotlin.String) {
+        @SerialName(value = "changeEventStream") changeEventStream("changeEventStream"),
+        @SerialName(value = "current") current("current"),
+        @SerialName(value = "future") future("future"),
+        @SerialName(value = "owners") owners("owners"),
+        @SerialName(value = "past") past("past"),
+    }
+
     /**
      * GET playQueues Get multiple playQueues. Retrieves multiple playQueues by available filters,
      * or without if applicable. Responses:
@@ -35,8 +48,10 @@ interface PlayQueues {
      * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: changeEventStream, current, future, owners, past (optional)
+     * @param include Include related resources. Available relationships: changeEventStream,
+     *   current, future, owners, past (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: current (optional)
@@ -49,6 +64,7 @@ interface PlayQueues {
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<PlayQueuesMultiResourceDataDocument>
 
@@ -78,6 +94,16 @@ interface PlayQueues {
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
     ): Response<MutationResponseDocument>
 
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkagePlayQueuesIdGet(val value: kotlin.String) {
+        @SerialName(value = "changeEventStream") changeEventStream("changeEventStream"),
+        @SerialName(value = "current") current("current"),
+        @SerialName(value = "future") future("future"),
+        @SerialName(value = "owners") owners("owners"),
+        @SerialName(value = "past") past("past"),
+    }
+
     /**
      * GET playQueues/{id} Get single playQueue. Retrieves single playQueue by id. Responses:
      * - 200: Successful response
@@ -91,8 +117,10 @@ interface PlayQueues {
      * - 503: Service temporarily unavailable
      *
      * @param id Play queue id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: changeEventStream, current, future, owners, past (optional)
+     * @param include Include related resources. Available relationships: changeEventStream,
+     *   current, future, owners, past (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: current (optional)
@@ -103,6 +131,7 @@ interface PlayQueues {
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<PlayQueuesSingleResourceDataDocument>
 
@@ -148,8 +177,8 @@ interface PlayQueues {
      * - 503: Service temporarily unavailable
      *
      * @param id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: changeEventStream (optional)
+     * @param include Include related resources. Available relationships: changeEventStream
+     *   (optional)
      * @return [PlayQueuesChangeEventStreamSingleRelationshipDataDocument]
      */
     @GET("playQueues/{id}/relationships/changeEventStream")
@@ -173,8 +202,7 @@ interface PlayQueues {
      * - 503: Service temporarily unavailable
      *
      * @param id Play queue id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: current (optional)
+     * @param include Include related resources. Available relationships: current (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: current (optional)
@@ -268,8 +296,7 @@ interface PlayQueues {
      * @param id Play queue id
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: future (optional)
+     * @param include Include related resources. Available relationships: future (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: future (optional)
@@ -318,7 +345,11 @@ interface PlayQueues {
 
     /**
      * POST playQueues/{id}/relationships/future Add to future relationship (\&quot;to-many\&quot;).
-     * Adds item(s) to future relationship. Responses:
+     * With meta.source, startIndex selects an entry in the first page&#39;s data before unsupported
+     * types are skipped. Tracks and videos are added in page order, retaining duplicates; other
+     * types are skipped without expansion. Reaching 1000 added items or 100 pages queues the
+     * collected prefix. Invalid sources or indexes, a suffix with no playable items, repeated
+     * pages, and read failures encountered before a cap leave the queue unchanged. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -362,8 +393,7 @@ interface PlayQueues {
      * - 503: Service temporarily unavailable
      *
      * @param id Play queue id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners (optional)
+     * @param include Include related resources. Available relationships: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @return [PlayQueuesOwnersMultiRelationshipDataDocument]
@@ -392,8 +422,7 @@ interface PlayQueues {
      * @param id Play queue id
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: past (optional)
+     * @param include Include related resources. Available relationships: past (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: past (optional)

@@ -3,10 +3,19 @@ package com.tidal.sdk.tidalapi.generated.apis
 import com.tidal.sdk.tidalapi.generated.models.DownloadsMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.DownloadsOwnersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.DownloadsSingleResourceDataDocument
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface Downloads {
+
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageDownloadsGet(val value: kotlin.String) {
+        @SerialName(value = "owners") owners("owners")
+    }
+
     /**
      * GET downloads Get multiple downloads. Retrieves multiple downloads by available filters, or
      * without if applicable. Responses:
@@ -21,8 +30,9 @@ interface Downloads {
      * - 503: Service temporarily unavailable
      *
      * @param filterId Download id (e.g. &#x60;VFJBQ0tTOjEyMzQ1&#x60;)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners (optional)
+     * @param include Include related resources. Available relationships: owners (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @return [DownloadsMultiResourceDataDocument]
      */
     @GET("downloads")
@@ -30,7 +40,14 @@ interface Downloads {
         @Query("filter[id]") filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
     ): Response<DownloadsMultiResourceDataDocument>
+
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageDownloadsIdGet(val value: kotlin.String) {
+        @SerialName(value = "owners") owners("owners")
+    }
 
     /**
      * GET downloads/{id} Get single download. Retrieves single download by id. Responses:
@@ -45,8 +62,9 @@ interface Downloads {
      * - 503: Service temporarily unavailable
      *
      * @param id Download id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners (optional)
+     * @param include Include related resources. Available relationships: owners (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @return [DownloadsSingleResourceDataDocument]
      */
     @GET("downloads/{id}")
@@ -54,6 +72,7 @@ interface Downloads {
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
     ): Response<DownloadsSingleResourceDataDocument>
 
     /**
@@ -70,8 +89,7 @@ interface Downloads {
      * - 503: Service temporarily unavailable
      *
      * @param id Download id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners (optional)
+     * @param include Include related resources. Available relationships: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @return [DownloadsOwnersMultiRelationshipDataDocument]

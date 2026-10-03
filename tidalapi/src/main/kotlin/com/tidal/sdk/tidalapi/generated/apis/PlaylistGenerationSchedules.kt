@@ -8,10 +8,19 @@ import com.tidal.sdk.tidalapi.generated.models.PlaylistGenerationSchedulesPlayli
 import com.tidal.sdk.tidalapi.generated.models.PlaylistGenerationSchedulesSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlaylistGenerationSchedulesUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.PlaylistGenerationSchedulesUpdateSingleResourceDataDocument
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface PlaylistGenerationSchedules {
+
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkagePlaylistGenerationSchedulesGet(val value: kotlin.String) {
+        @SerialName(value = "playlist") playlist("playlist")
+    }
+
     /**
      * GET playlistGenerationSchedules Get multiple playlistGenerationSchedules. Retrieves multiple
      * playlistGenerationSchedules by available filters, or without if applicable. Responses:
@@ -26,8 +35,9 @@ interface PlaylistGenerationSchedules {
      * - 503: Service temporarily unavailable
      *
      * @param filterPlaylistId Playlist id (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: playlist (optional)
+     * @param include Include related resources. Available relationships: playlist (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: playlist.items (optional)
@@ -39,6 +49,7 @@ interface PlaylistGenerationSchedules {
         filterPlaylistId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<PlaylistGenerationSchedulesMultiResourceDataDocument>
 
@@ -69,6 +80,12 @@ interface PlaylistGenerationSchedules {
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
     ): Response<MutationResponseDocument>
 
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkagePlaylistGenerationSchedulesIdGet(val value: kotlin.String) {
+        @SerialName(value = "playlist") playlist("playlist")
+    }
+
     /**
      * GET playlistGenerationSchedules/{id} Get single playlistGenerationSchedule. Retrieves single
      * playlistGenerationSchedule by id. Responses:
@@ -83,8 +100,9 @@ interface PlaylistGenerationSchedules {
      * - 503: Service temporarily unavailable
      *
      * @param id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: playlist (optional)
+     * @param include Include related resources. Available relationships: playlist (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: playlist.items (optional)
@@ -95,6 +113,7 @@ interface PlaylistGenerationSchedules {
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<PlaylistGenerationSchedulesSingleResourceDataDocument>
 
@@ -144,8 +163,7 @@ interface PlaylistGenerationSchedules {
      * - 503: Service temporarily unavailable
      *
      * @param id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: playlist (optional)
+     * @param include Include related resources. Available relationships: playlist (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: playlist.items (optional)

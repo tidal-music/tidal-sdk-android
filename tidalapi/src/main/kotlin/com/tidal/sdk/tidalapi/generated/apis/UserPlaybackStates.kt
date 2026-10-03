@@ -15,10 +15,22 @@ import com.tidal.sdk.tidalapi.generated.models.UserPlaybackStatesPlayQueueUpdate
 import com.tidal.sdk.tidalapi.generated.models.UserPlaybackStatesSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserPlaybackStatesUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.UserPlaybackStatesUpdateSingleResourceDataDocument
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface UserPlaybackStates {
+
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageUserPlaybackStatesIdGet(val value: kotlin.String) {
+        @SerialName(value = "activePlayer") activePlayer("activePlayer"),
+        @SerialName(value = "availablePlayers") availablePlayers("availablePlayers"),
+        @SerialName(value = "changeEventStream") changeEventStream("changeEventStream"),
+        @SerialName(value = "playQueue") playQueue("playQueue"),
+    }
+
     /**
      * GET userPlaybackStates/{id} Get single userPlaybackState. Retrieves single userPlaybackState
      * by id. Responses:
@@ -34,8 +46,10 @@ interface UserPlaybackStates {
      *
      * @param id User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s
      *   resource
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: activePlayer, availablePlayers, changeEventStream, playQueue (optional)
+     * @param include Include related resources. Available relationships: activePlayer,
+     *   availablePlayers, changeEventStream, playQueue (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: activePlayer.offlineInventory (optional)
@@ -46,6 +60,7 @@ interface UserPlaybackStates {
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<UserPlaybackStatesSingleResourceDataDocument>
 
@@ -95,8 +110,7 @@ interface UserPlaybackStates {
      *
      * @param id User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s
      *   resource
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: activePlayer (optional)
+     * @param include Include related resources. Available relationships: activePlayer (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: activePlayer.offlineInventory (optional)
@@ -196,8 +210,8 @@ interface UserPlaybackStates {
      *
      * @param id User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s
      *   resource
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: availablePlayers (optional)
+     * @param include Include related resources. Available relationships: availablePlayers
+     *   (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
@@ -262,8 +276,8 @@ interface UserPlaybackStates {
      * - 503: Service temporarily unavailable
      *
      * @param id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: changeEventStream (optional)
+     * @param include Include related resources. Available relationships: changeEventStream
+     *   (optional)
      * @return [UserPlaybackStatesChangeEventStreamSingleRelationshipDataDocument]
      */
     @GET("userPlaybackStates/{id}/relationships/changeEventStream")
@@ -288,8 +302,7 @@ interface UserPlaybackStates {
      *
      * @param id User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s
      *   resource
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: playQueue (optional)
+     * @param include Include related resources. Available relationships: playQueue (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: playQueue.current (optional)

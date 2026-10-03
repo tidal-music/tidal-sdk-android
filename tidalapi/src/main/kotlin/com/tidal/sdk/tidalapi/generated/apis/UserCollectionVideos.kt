@@ -13,6 +13,14 @@ import retrofit2.Response
 import retrofit2.http.*
 
 interface UserCollectionVideos {
+
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageUserCollectionVideosIdGet(val value: kotlin.String) {
+        @SerialName(value = "items") items("items"),
+        @SerialName(value = "owners") owners("owners"),
+    }
+
     /**
      * GET userCollectionVideos/{id} Get single userCollectionVideo. Retrieves single
      * userCollectionVideo by id. Responses:
@@ -30,8 +38,9 @@ interface UserCollectionVideos {
      *   resource
      * @param locale BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or
      *   unsupported. (optional, default to "en-US")
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: items, owners (optional)
+     * @param include Include related resources. Available relationships: items, owners (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: items (optional)
@@ -43,6 +52,7 @@ interface UserCollectionVideos {
         @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<UserCollectionVideosSingleResourceDataDocument>
 
@@ -97,6 +107,7 @@ interface UserCollectionVideos {
      * (\&quot;to-many\&quot;). Retrieves items relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
+     * - 403: filter[query] requires INTERNAL access tier
      * - 404: Resource not found
      * - 405: HTTP method not allowed
      * - 406: No acceptable response media type
@@ -113,8 +124,9 @@ interface UserCollectionVideos {
      *   sorted ascending. (optional)
      * @param locale BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or
      *   unsupported. (optional, default to "en-US")
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: items (optional)
+     * @param include Include related resources. Available relationships: items (optional)
+     * @param filterQuery Filter videos by a free-text query matched against the video title and
+     *   artist names. Internal clients only (e.g. &#x60;love&#x60;) (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: items (optional)
@@ -128,6 +140,7 @@ interface UserCollectionVideos {
         @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("filter[query]") filterQuery: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<UserCollectionVideosItemsMultiRelationshipDataDocument>
 
@@ -180,8 +193,7 @@ interface UserCollectionVideos {
      *
      * @param id User collection videos id. Use &#x60;me&#x60; for the authenticated user&#39;s
      *   resource
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners (optional)
+     * @param include Include related resources. Available relationships: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @return [UserCollectionVideosOwnersMultiRelationshipDataDocument]

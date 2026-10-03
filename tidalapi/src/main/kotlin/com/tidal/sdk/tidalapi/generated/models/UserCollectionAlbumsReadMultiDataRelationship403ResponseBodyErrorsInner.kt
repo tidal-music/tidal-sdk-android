@@ -22,8 +22,22 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param itemCursor */
+/**
+ * @param code
+ * @param status
+ * @param detail
+ */
 @Serializable
-data class PlayQueuesFutureRelationshipAddOperationPayloadDataMeta(
-    @SerialName(value = "itemCursor") val itemCursor: kotlin.String? = null
-) {}
+data class UserCollectionAlbumsReadMultiDataRelationship403ResponseBodyErrorsInner(
+    @SerialName(value = "code")
+    val code: UserCollectionAlbumsReadMultiDataRelationship403ResponseBodyErrorsInner.Code,
+    @SerialName(value = "status") val status: kotlin.String,
+    @SerialName(value = "detail") val detail: kotlin.String? = null,
+) {
+
+    /** Values: UNAUTHORIZED */
+    @Serializable
+    enum class Code(val value: kotlin.String) {
+        @SerialName(value = "UNAUTHORIZED") UNAUTHORIZED("UNAUTHORIZED")
+    }
+}

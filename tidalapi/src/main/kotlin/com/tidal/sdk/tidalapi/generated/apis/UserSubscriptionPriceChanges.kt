@@ -2,10 +2,19 @@ package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.models.UserSubscriptionPriceChangesDecisionSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserSubscriptionPriceChangesMultiResourceDataDocument
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface UserSubscriptionPriceChanges {
+
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageUserSubscriptionPriceChangesGet(val value: kotlin.String) {
+        @SerialName(value = "decision") decision("decision")
+    }
+
     /**
      * GET userSubscriptionPriceChanges Get multiple userSubscriptionPriceChanges. Retrieves
      * multiple userSubscriptionPriceChanges by available filters, or without if applicable.
@@ -21,8 +30,9 @@ interface UserSubscriptionPriceChanges {
      * - 503: Service temporarily unavailable
      *
      * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: decision (optional)
+     * @param include Include related resources. Available relationships: decision (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @return [UserSubscriptionPriceChangesMultiResourceDataDocument]
      */
     @GET("userSubscriptionPriceChanges")
@@ -31,6 +41,7 @@ interface UserSubscriptionPriceChanges {
         filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
     ): Response<UserSubscriptionPriceChangesMultiResourceDataDocument>
 
     /**
@@ -47,8 +58,7 @@ interface UserSubscriptionPriceChanges {
      * - 503: Service temporarily unavailable
      *
      * @param id Price change id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: decision (optional)
+     * @param include Include related resources. Available relationships: decision (optional)
      * @return [UserSubscriptionPriceChangesDecisionSingleRelationshipDataDocument]
      */
     @GET("userSubscriptionPriceChanges/{id}/relationships/decision")
