@@ -26,6 +26,10 @@ fun getOneOfSerializer() = SerializersModule {
             ChangeEventStreamsResourceObject::class,
             ChangeEventStreamsResourceObject.serializer(),
         )
+        subclass(
+            ClientCertificatesResourceObject::class,
+            ClientCertificatesResourceObject.serializer(),
+        )
         subclass(ClientsResourceObject::class, ClientsResourceObject.serializer())
         subclass(
             CollaborationInviteRedemptionsResourceObject::class,
@@ -176,6 +180,7 @@ fun getOneOfSerializer() = SerializersModule {
         subclass(UsersResourceObject::class, UsersResourceObject.serializer())
         subclass(VideoManifestsResourceObject::class, VideoManifestsResourceObject.serializer())
         subclass(VideosResourceObject::class, VideosResourceObject.serializer())
+        subclass(ViewerContextsResourceObject::class, ViewerContextsResourceObject.serializer())
     }
     contextual(LyricsAttributesProvider::class, LyricsAttributesProviderSerializer)
 }

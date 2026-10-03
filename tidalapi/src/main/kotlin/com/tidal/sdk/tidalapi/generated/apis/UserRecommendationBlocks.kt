@@ -15,10 +15,22 @@ import com.tidal.sdk.tidalapi.generated.models.UserRecommendationBlocksVideosAdd
 import com.tidal.sdk.tidalapi.generated.models.UserRecommendationBlocksVideosMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserRecommendationBlocksVideosRelationshipAddOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.UserRecommendationBlocksVideosRelationshipRemoveOperationPayload
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface UserRecommendationBlocks {
+
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageUserRecommendationBlocksIdGet(val value: kotlin.String) {
+        @SerialName(value = "artists") artists("artists"),
+        @SerialName(value = "owners") owners("owners"),
+        @SerialName(value = "tracks") tracks("tracks"),
+        @SerialName(value = "videos") videos("videos"),
+    }
+
     /**
      * GET userRecommendationBlocks/{id} Get single userRecommendationBlock. Retrieves single
      * userRecommendationBlock by id. Responses:
@@ -36,8 +48,10 @@ interface UserRecommendationBlocks {
      *   resource
      * @param locale BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or
      *   unsupported. (optional, default to "en-US")
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: artists, owners, tracks, videos (optional)
+     * @param include Include related resources. Available relationships: artists, owners, tracks,
+     *   videos (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: artists.albums (optional)
@@ -49,6 +63,7 @@ interface UserRecommendationBlocks {
         @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<UserRecommendationBlocksSingleResourceDataDocument>
 
@@ -106,8 +121,7 @@ interface UserRecommendationBlocks {
      *   resource
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: artists (optional)
+     * @param include Include related resources. Available relationships: artists (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: artists.albums (optional)
@@ -171,8 +185,7 @@ interface UserRecommendationBlocks {
      *
      * @param id User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s
      *   resource
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners (optional)
+     * @param include Include related resources. Available relationships: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @return [UserRecommendationBlocksOwnersMultiRelationshipDataDocument]
@@ -239,8 +252,7 @@ interface UserRecommendationBlocks {
      *   resource
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: tracks (optional)
+     * @param include Include related resources. Available relationships: tracks (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: tracks (optional)
@@ -343,8 +355,7 @@ interface UserRecommendationBlocks {
      *   resource
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: videos (optional)
+     * @param include Include related resources. Available relationships: videos (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: videos (optional)

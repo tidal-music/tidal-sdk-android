@@ -6,10 +6,19 @@ import com.tidal.sdk.tidalapi.generated.models.SubscriptionPriceChangeDecisionsM
 import com.tidal.sdk.tidalapi.generated.models.SubscriptionPriceChangeDecisionsPriceChangeSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.SubscriptionPriceChangeDecisionsUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.SubscriptionPriceChangeDecisionsUpdateSingleResourceDataDocument
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface SubscriptionPriceChangeDecisions {
+
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageSubscriptionPriceChangeDecisionsGet(val value: kotlin.String) {
+        @SerialName(value = "priceChange") priceChange("priceChange")
+    }
+
     /**
      * GET subscriptionPriceChangeDecisions Get multiple subscriptionPriceChangeDecisions. Retrieves
      * multiple subscriptionPriceChangeDecisions by available filters, or without if applicable.
@@ -25,8 +34,9 @@ interface SubscriptionPriceChangeDecisions {
      * - 503: Service temporarily unavailable
      *
      * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: priceChange (optional)
+     * @param include Include related resources. Available relationships: priceChange (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @return [SubscriptionPriceChangeDecisionsMultiResourceDataDocument]
      */
     @GET("subscriptionPriceChangeDecisions")
@@ -35,6 +45,7 @@ interface SubscriptionPriceChangeDecisions {
         filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
     ): Response<SubscriptionPriceChangeDecisionsMultiResourceDataDocument>
 
     /**
@@ -83,8 +94,7 @@ interface SubscriptionPriceChangeDecisions {
      * - 503: Service temporarily unavailable
      *
      * @param id Price change decision id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: priceChange (optional)
+     * @param include Include related resources. Available relationships: priceChange (optional)
      * @return [SubscriptionPriceChangeDecisionsPriceChangeSingleRelationshipDataDocument]
      */
     @GET("subscriptionPriceChangeDecisions/{id}/relationships/priceChange")

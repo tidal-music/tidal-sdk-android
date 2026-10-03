@@ -3,10 +3,20 @@ package com.tidal.sdk.tidalapi.generated.apis
 import com.tidal.sdk.tidalapi.generated.models.ProviderOwnersMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ProviderOwnersOwnersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ProviderOwnersProviderSingleRelationshipDataDocument
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface ProviderOwners {
+
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageProviderOwnersGet(val value: kotlin.String) {
+        @SerialName(value = "owners") owners("owners"),
+        @SerialName(value = "provider") provider("provider"),
+    }
+
     /**
      * GET providerOwners Get multiple providerOwners. Retrieves multiple providerOwners by
      * available filters, or without if applicable. Responses:
@@ -21,8 +31,10 @@ interface ProviderOwners {
      * - 503: Service temporarily unavailable
      *
      * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners, provider (optional)
+     * @param include Include related resources. Available relationships: owners, provider
+     *   (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @return [ProviderOwnersMultiResourceDataDocument]
      */
     @GET("providerOwners")
@@ -31,6 +43,7 @@ interface ProviderOwners {
         filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
     ): Response<ProviderOwnersMultiResourceDataDocument>
 
     /**
@@ -47,8 +60,7 @@ interface ProviderOwners {
      * - 503: Service temporarily unavailable
      *
      * @param id Provider owner id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners (optional)
+     * @param include Include related resources. Available relationships: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @return [ProviderOwnersOwnersMultiRelationshipDataDocument]
@@ -75,8 +87,7 @@ interface ProviderOwners {
      * - 503: Service temporarily unavailable
      *
      * @param id Provider owner id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: provider (optional)
+     * @param include Include related resources. Available relationships: provider (optional)
      * @return [ProviderOwnersProviderSingleRelationshipDataDocument]
      */
     @GET("providerOwners/{id}/relationships/provider")

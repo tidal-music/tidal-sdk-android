@@ -34,6 +34,14 @@ interface Reactions {
         @SerialName(value = "trackSourceFiles") trackSourceFiles("trackSourceFiles"),
     }
 
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageReactionsGet(val value: kotlin.String) {
+        @SerialName(value = "author") author("author"),
+        @SerialName(value = "ownerProfiles") ownerProfiles("ownerProfiles"),
+        @SerialName(value = "owners") owners("owners"),
+    }
+
     /**
      * GET reactions Get multiple reactions. Retrieves multiple reactions by available filters, or
      * without if applicable. Responses:
@@ -52,8 +60,8 @@ interface Reactions {
      * @param viewerContext (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: author, ownerProfiles, owners (optional)
+     * @param include Include related resources. Available relationships: author, ownerProfiles,
+     *   owners (optional)
      * @param filterEmoji Filter by emoji (e.g. &#x60;👍&#x60;) (optional)
      * @param filterSubject The subject whose reactions to return. Use either subject or the
      *   deprecated subject.id and subject.type pair. (optional)
@@ -61,6 +69,8 @@ interface Reactions {
      *   &#x60;12345&#x60;) (optional)
      * @param filterSubjectType Deprecated: use filter[subject]. Filter by subject resource type
      *   (e.g. &#x60;albums&#x60;) (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: author.albums (optional)
@@ -81,6 +91,7 @@ interface Reactions {
         filterSubjectId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[subject.type]")
         filterSubjectType: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<ReactionsMultiResourceDataDocument>
 
@@ -124,8 +135,7 @@ interface Reactions {
      * - 503: Service temporarily unavailable
      *
      * @param id Reaction Id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: author (optional)
+     * @param include Include related resources. Available relationships: author (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: author.albums (optional)
@@ -153,8 +163,7 @@ interface Reactions {
      * - 503: Service temporarily unavailable
      *
      * @param id Reaction Id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: ownerProfiles (optional)
+     * @param include Include related resources. Available relationships: ownerProfiles (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @return [ReactionsOwnerProfilesMultiRelationshipDataDocument]
@@ -182,8 +191,7 @@ interface Reactions {
      * - 503: Service temporarily unavailable
      *
      * @param id Reaction Id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners (optional)
+     * @param include Include related resources. Available relationships: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @return [ReactionsOwnersMultiRelationshipDataDocument]

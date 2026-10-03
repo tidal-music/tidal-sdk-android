@@ -37,6 +37,14 @@ interface Comments {
         @SerialName(value = "trackSourceFiles") trackSourceFiles("trackSourceFiles"),
     }
 
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageCommentsGet(val value: kotlin.String) {
+        @SerialName(value = "author") author("author"),
+        @SerialName(value = "owners") owners("owners"),
+        @SerialName(value = "parentComment") parentComment("parentComment"),
+    }
+
     /**
      * GET comments Get multiple comments. Retrieves multiple comments by available filters, or
      * without if applicable. Responses:
@@ -54,8 +62,8 @@ interface Comments {
      *   targets first page if not specified (optional)
      * @param sort Values prefixed with \&quot;-\&quot; are sorted descending; values without it are
      *   sorted ascending. (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: author, owners, parentComment (optional)
+     * @param include Include related resources. Available relationships: author, owners,
+     *   parentComment (optional)
      * @param filterParentCommentId Filter by parent comment ID to get replies (e.g.
      *   &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) (optional)
      * @param filterSubject The subject whose comments to return. Use either subject or the
@@ -64,6 +72,8 @@ interface Comments {
      *   &#x60;12345&#x60;) (optional)
      * @param filterSubjectType Deprecated: use filter[subject]. Filter by subject resource type
      *   (e.g. &#x60;albums&#x60;) (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: author.albums (optional)
@@ -82,6 +92,7 @@ interface Comments {
         filterSubjectId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[subject.type]")
         filterSubjectType: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<CommentsMultiResourceDataDocument>
 
@@ -111,6 +122,14 @@ interface Comments {
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
     ): Response<MutationResponseDocument>
 
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageCommentsIdGet(val value: kotlin.String) {
+        @SerialName(value = "author") author("author"),
+        @SerialName(value = "owners") owners("owners"),
+        @SerialName(value = "parentComment") parentComment("parentComment"),
+    }
+
     /**
      * GET comments/{id} Get single comment. Retrieves single comment by id. Responses:
      * - 200: Successful response
@@ -124,8 +143,10 @@ interface Comments {
      * - 503: Service temporarily unavailable
      *
      * @param id Comment Id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: author, owners, parentComment (optional)
+     * @param include Include related resources. Available relationships: author, owners,
+     *   parentComment (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: author.albums (optional)
@@ -136,6 +157,7 @@ interface Comments {
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<CommentsSingleResourceDataDocument>
 
@@ -181,8 +203,7 @@ interface Comments {
      * - 503: Service temporarily unavailable
      *
      * @param id Comment Id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: author (optional)
+     * @param include Include related resources. Available relationships: author (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: author.albums (optional)
@@ -210,8 +231,7 @@ interface Comments {
      * - 503: Service temporarily unavailable
      *
      * @param id Comment Id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners (optional)
+     * @param include Include related resources. Available relationships: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @return [CommentsOwnersMultiRelationshipDataDocument]
@@ -238,8 +258,7 @@ interface Comments {
      * - 503: Service temporarily unavailable
      *
      * @param id Comment Id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: parentComment (optional)
+     * @param include Include related resources. Available relationships: parentComment (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: parentComment.author.albums (optional)

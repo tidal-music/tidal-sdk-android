@@ -31,6 +31,13 @@ interface DynamicPages {
         @SerialName(value = "WEB") WEB("WEB"),
     }
 
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageDynamicPagesGet(val value: kotlin.String) {
+        @SerialName(value = "modules") modules("modules"),
+        @SerialName(value = "subject") subject("subject"),
+    }
+
     /**
      * GET dynamicPages Get multiple dynamicPages. Retrieves multiple dynamicPages by available
      * filters, or without if applicable. Responses:
@@ -53,13 +60,15 @@ interface DynamicPages {
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param locale BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or
      *   unsupported. (optional, default to "en-US")
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: modules, subject (optional)
+     * @param include Include related resources. Available relationships: modules, subject
+     *   (optional)
      * @param filterSubject The page subject. Its type must match pageType. Required unless
      *   subject.id is supplied; both must be omitted for HOME_FREE. Do not combine with subject.id.
      *   (optional)
      * @param filterSubjectId Deprecated alternative to filter[subject]. Omit when subject is
      *   supplied or pageType is HOME_FREE. (e.g. &#x60;67890&#x60;) (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: modules.items (optional)
@@ -80,6 +89,7 @@ interface DynamicPages {
         @Query("filter[subject]") filterSubject: kotlin.String? = null,
         @Query("filter[subject.id]")
         filterSubjectId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<DynamicPagesMultiResourceDataDocument>
 
@@ -128,8 +138,7 @@ interface DynamicPages {
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param locale BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or
      *   unsupported. (optional, default to "en-US")
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: modules (optional)
+     * @param include Include related resources. Available relationships: modules (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: modules.items (optional)
@@ -164,8 +173,7 @@ interface DynamicPages {
      * - 503: Service temporarily unavailable
      *
      * @param id DynamicPages Id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: subject (optional)
+     * @param include Include related resources. Available relationships: subject (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: subject (optional)

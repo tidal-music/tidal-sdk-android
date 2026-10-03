@@ -41,6 +41,29 @@ interface Tracks {
         @SerialName(value = "-title") TitleDesc("-title"),
     }
 
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageTracksGet(val value: kotlin.String) {
+        @SerialName(value = "albums") albums("albums"),
+        @SerialName(value = "artists") artists("artists"),
+        @SerialName(value = "credits") credits("credits"),
+        @SerialName(value = "download") download("download"),
+        @SerialName(value = "genres") genres("genres"),
+        @SerialName(value = "lyrics") lyrics("lyrics"),
+        @SerialName(value = "metadataStatus") metadataStatus("metadataStatus"),
+        @SerialName(value = "owners") owners("owners"),
+        @SerialName(value = "priceConfig") priceConfig("priceConfig"),
+        @SerialName(value = "providers") providers("providers"),
+        @SerialName(value = "radio") radio("radio"),
+        @SerialName(value = "replacement") replacement("replacement"),
+        @SerialName(value = "shares") shares("shares"),
+        @SerialName(value = "similarTracks") similarTracks("similarTracks"),
+        @SerialName(value = "sourceFile") sourceFile("sourceFile"),
+        @SerialName(value = "suggestedTracks") suggestedTracks("suggestedTracks"),
+        @SerialName(value = "trackStatistics") trackStatistics("trackStatistics"),
+        @SerialName(value = "usageRules") usageRules("usageRules"),
+    }
+
     /**
      * GET tracks Get multiple tracks. Retrieves multiple tracks by available filters, or without if
      * applicable. Responses:
@@ -59,15 +82,17 @@ interface Tracks {
      * @param sort Values prefixed with \&quot;-\&quot; are sorted descending; values without it are
      *   sorted ascending. (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: albums, artists, credits, download, genres, lyrics, metadataStatus,
-     *   owners, priceConfig, providers, radio, replacement, shares, similarTracks, sourceFile,
-     *   suggestedTracks, trackStatistics, usageRules (optional)
+     * @param include Include related resources. Available relationships: albums, artists, credits,
+     *   download, genres, lyrics, metadataStatus, owners, priceConfig, providers, radio,
+     *   replacement, shares, similarTracks, sourceFile, suggestedTracks, trackStatistics,
+     *   usageRules (optional)
      * @param filterId List of track IDs (e.g. &#x60;75413016&#x60;) (optional)
      * @param filterIsrc List of ISRCs. When a single ISRC is provided, pagination is supported and
      *   multiple tracks may be returned. When multiple ISRCs are provided, one track per ISRC is
      *   returned without pagination. (e.g. &#x60;QMJMT1701237&#x60;) (optional)
      * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: albums (optional)
@@ -88,6 +113,7 @@ interface Tracks {
         filterIsrc: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[owners.id]")
         filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<TracksMultiResourceDataDocument>
@@ -118,6 +144,29 @@ interface Tracks {
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
     ): Response<MutationResponseDocument>
 
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageTracksIdGet(val value: kotlin.String) {
+        @SerialName(value = "albums") albums("albums"),
+        @SerialName(value = "artists") artists("artists"),
+        @SerialName(value = "credits") credits("credits"),
+        @SerialName(value = "download") download("download"),
+        @SerialName(value = "genres") genres("genres"),
+        @SerialName(value = "lyrics") lyrics("lyrics"),
+        @SerialName(value = "metadataStatus") metadataStatus("metadataStatus"),
+        @SerialName(value = "owners") owners("owners"),
+        @SerialName(value = "priceConfig") priceConfig("priceConfig"),
+        @SerialName(value = "providers") providers("providers"),
+        @SerialName(value = "radio") radio("radio"),
+        @SerialName(value = "replacement") replacement("replacement"),
+        @SerialName(value = "shares") shares("shares"),
+        @SerialName(value = "similarTracks") similarTracks("similarTracks"),
+        @SerialName(value = "sourceFile") sourceFile("sourceFile"),
+        @SerialName(value = "suggestedTracks") suggestedTracks("suggestedTracks"),
+        @SerialName(value = "trackStatistics") trackStatistics("trackStatistics"),
+        @SerialName(value = "usageRules") usageRules("usageRules"),
+    }
+
     /**
      * GET tracks/{id} Get single track. Retrieves single track by id. Responses:
      * - 200: Successful response
@@ -132,10 +181,12 @@ interface Tracks {
      *
      * @param id Track id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: albums, artists, credits, download, genres, lyrics, metadataStatus,
-     *   owners, priceConfig, providers, radio, replacement, shares, similarTracks, sourceFile,
-     *   suggestedTracks, trackStatistics, usageRules (optional)
+     * @param include Include related resources. Available relationships: albums, artists, credits,
+     *   download, genres, lyrics, metadataStatus, owners, priceConfig, providers, radio,
+     *   replacement, shares, similarTracks, sourceFile, suggestedTracks, trackStatistics,
+     *   usageRules (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: albums (optional)
@@ -149,6 +200,7 @@ interface Tracks {
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<TracksSingleResourceDataDocument>
@@ -196,8 +248,7 @@ interface Tracks {
      *
      * @param id Track id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: albums (optional)
+     * @param include Include related resources. Available relationships: albums (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
@@ -267,8 +318,7 @@ interface Tracks {
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: artists (optional)
+     * @param include Include related resources. Available relationships: artists (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: artists.albums (optional)
@@ -303,8 +353,7 @@ interface Tracks {
      * @param id Track id
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: credits (optional)
+     * @param include Include related resources. Available relationships: credits (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: credits.artist.albums (optional)
@@ -336,8 +385,7 @@ interface Tracks {
      * - 503: Service temporarily unavailable
      *
      * @param id Track id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: download (optional)
+     * @param include Include related resources. Available relationships: download (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [TracksDownloadSingleRelationshipDataDocument]
@@ -365,8 +413,7 @@ interface Tracks {
      *
      * @param id Track id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: genres (optional)
+     * @param include Include related resources. Available relationships: genres (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
@@ -397,8 +444,7 @@ interface Tracks {
      * - 503: Service temporarily unavailable
      *
      * @param id Track id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: lyrics (optional)
+     * @param include Include related resources. Available relationships: lyrics (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
@@ -432,8 +478,7 @@ interface Tracks {
      * - 503: Service temporarily unavailable
      *
      * @param id Track id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: metadataStatus (optional)
+     * @param include Include related resources. Available relationships: metadataStatus (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [TracksMetadataStatusSingleRelationshipDataDocument]
@@ -460,8 +505,7 @@ interface Tracks {
      * - 503: Service temporarily unavailable
      *
      * @param id Track id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners (optional)
+     * @param include Include related resources. Available relationships: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
@@ -492,8 +536,7 @@ interface Tracks {
      *
      * @param id Track id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: priceConfig (optional)
+     * @param include Include related resources. Available relationships: priceConfig (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [TracksPriceConfigSingleRelationshipDataDocument]
@@ -522,8 +565,7 @@ interface Tracks {
      *
      * @param id Track id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: providers (optional)
+     * @param include Include related resources. Available relationships: providers (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
@@ -554,8 +596,7 @@ interface Tracks {
      * - 503: Service temporarily unavailable
      *
      * @param id Track id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: radio (optional)
+     * @param include Include related resources. Available relationships: radio (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
@@ -590,8 +631,7 @@ interface Tracks {
      *
      * @param id Track id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: replacement (optional)
+     * @param include Include related resources. Available relationships: replacement (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: replacement (optional)
@@ -623,8 +663,7 @@ interface Tracks {
      * - 503: Service temporarily unavailable
      *
      * @param id Track id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: shares (optional)
+     * @param include Include related resources. Available relationships: shares (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
@@ -661,8 +700,7 @@ interface Tracks {
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: similarTracks (optional)
+     * @param include Include related resources. Available relationships: similarTracks (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: similarTracks (optional)
@@ -695,8 +733,7 @@ interface Tracks {
      * - 503: Service temporarily unavailable
      *
      * @param id Track id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: sourceFile (optional)
+     * @param include Include related resources. Available relationships: sourceFile (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [TracksSourceFileSingleRelationshipDataDocument]
@@ -726,8 +763,7 @@ interface Tracks {
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: suggestedTracks (optional)
+     * @param include Include related resources. Available relationships: suggestedTracks (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: suggestedTracks (optional)
@@ -760,8 +796,7 @@ interface Tracks {
      * - 503: Service temporarily unavailable
      *
      * @param id Track id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: trackStatistics (optional)
+     * @param include Include related resources. Available relationships: trackStatistics (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [TracksTrackStatisticsSingleRelationshipDataDocument]
@@ -789,8 +824,7 @@ interface Tracks {
      *
      * @param id Track id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: usageRules (optional)
+     * @param include Include related resources. Available relationships: usageRules (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [TracksUsageRulesSingleRelationshipDataDocument]

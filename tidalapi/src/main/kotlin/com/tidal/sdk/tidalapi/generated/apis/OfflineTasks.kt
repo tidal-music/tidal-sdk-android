@@ -7,10 +7,21 @@ import com.tidal.sdk.tidalapi.generated.models.OfflineTasksMultiResourceDataDocu
 import com.tidal.sdk.tidalapi.generated.models.OfflineTasksOwnersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.OfflineTasksSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.OfflineTasksUpdateOperationPayload
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface OfflineTasks {
+
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageOfflineTasksGet(val value: kotlin.String) {
+        @SerialName(value = "collection") collection("collection"),
+        @SerialName(value = "item") item("item"),
+        @SerialName(value = "owners") owners("owners"),
+    }
+
     /**
      * GET offlineTasks Get multiple offlineTasks. Retrieves multiple offlineTasks by available
      * filters, or without if applicable. Responses:
@@ -27,8 +38,10 @@ interface OfflineTasks {
      * @param filterInstallationId List of offline task IDs (e.g. &#x60;a468bee88def&#x60;)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: collection, item, owners (optional)
+     * @param include Include related resources. Available relationships: collection, item, owners
+     *   (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: collection (optional)
@@ -41,8 +54,17 @@ interface OfflineTasks {
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<OfflineTasksMultiResourceDataDocument>
+
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageOfflineTasksIdGet(val value: kotlin.String) {
+        @SerialName(value = "collection") collection("collection"),
+        @SerialName(value = "item") item("item"),
+        @SerialName(value = "owners") owners("owners"),
+    }
 
     /**
      * GET offlineTasks/{id} Get single offlineTask. Retrieves single offlineTask by id. Responses:
@@ -57,8 +79,10 @@ interface OfflineTasks {
      * - 503: Service temporarily unavailable
      *
      * @param id Offline task id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: collection, item, owners (optional)
+     * @param include Include related resources. Available relationships: collection, item, owners
+     *   (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: collection (optional)
@@ -69,6 +93,7 @@ interface OfflineTasks {
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<OfflineTasksSingleResourceDataDocument>
 
@@ -114,8 +139,7 @@ interface OfflineTasks {
      * - 503: Service temporarily unavailable
      *
      * @param id Offline task id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: collection (optional)
+     * @param include Include related resources. Available relationships: collection (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: collection (optional)
@@ -143,8 +167,7 @@ interface OfflineTasks {
      * - 503: Service temporarily unavailable
      *
      * @param id Offline task id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: item (optional)
+     * @param include Include related resources. Available relationships: item (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: item (optional)
@@ -172,8 +195,7 @@ interface OfflineTasks {
      * - 503: Service temporarily unavailable
      *
      * @param id Offline task id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners (optional)
+     * @param include Include related resources. Available relationships: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @return [OfflineTasksOwnersMultiRelationshipDataDocument]

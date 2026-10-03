@@ -8,6 +8,8 @@ import com.tidal.sdk.tidalapi.generated.models.FoldersSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.FoldersUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.FoldersUpdateSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.MutationResponseDocument
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -38,6 +40,13 @@ interface Folders {
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
     ): Response<MutationResponseDocument>
 
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageFoldersIdGet(val value: kotlin.String) {
+        @SerialName(value = "children") children("children"),
+        @SerialName(value = "owners") owners("owners"),
+    }
+
     /**
      * GET folders/{id} Get single folder. Retrieves single folder by id. Responses:
      * - 200: Successful response
@@ -51,8 +60,10 @@ interface Folders {
      * - 503: Service temporarily unavailable
      *
      * @param id Folder id. Use &#x60;me&#x60; for the authenticated user&#39;s resource
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: children, owners (optional)
+     * @param include Include related resources. Available relationships: children, owners
+     *   (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: children.subject (optional)
@@ -63,6 +74,7 @@ interface Folders {
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<FoldersSingleResourceDataDocument>
 
@@ -110,8 +122,7 @@ interface Folders {
      * @param id Folder id. Use &#x60;me&#x60; for the authenticated user&#39;s resource
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: children (optional)
+     * @param include Include related resources. Available relationships: children (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: children.subject (optional)
@@ -140,8 +151,7 @@ interface Folders {
      * - 503: Service temporarily unavailable
      *
      * @param id Folder id. Use &#x60;me&#x60; for the authenticated user&#39;s resource
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners (optional)
+     * @param include Include related resources. Available relationships: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @return [FoldersOwnersMultiRelationshipDataDocument]

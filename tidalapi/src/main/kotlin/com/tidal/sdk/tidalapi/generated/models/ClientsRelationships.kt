@@ -22,8 +22,13 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param owners */
+/**
+ * @param certificates
+ * @param owners
+ */
 @Serializable
 data class ClientsRelationships(
-    @SerialName(value = "owners") val owners: ClientsOwnersMultiRelationshipDataDocument? = null
+    @SerialName(value = "certificates")
+    val certificates: ClientsCertificatesMultiRelationshipDataDocument? = null,
+    @SerialName(value = "owners") val owners: ClientsOwnersMultiRelationshipDataDocument? = null,
 ) {}

@@ -17,6 +17,13 @@ interface Purchases {
         @SerialName(value = "tracks") tracks("tracks"),
     }
 
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkagePurchasesGet(val value: kotlin.String) {
+        @SerialName(value = "owners") owners("owners"),
+        @SerialName(value = "subject") subject("subject"),
+    }
+
     /**
      * GET purchases Get multiple purchases. Retrieves multiple purchases by available filters, or
      * without if applicable. Responses:
@@ -34,8 +41,9 @@ interface Purchases {
      * @param filterSubjectType The type of purchased content (e.g. &#x60;albums&#x60;)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners, subject (optional)
+     * @param include Include related resources. Available relationships: owners, subject (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: subject (optional)
@@ -50,6 +58,7 @@ interface Purchases {
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<PurchasesMultiResourceDataDocument>
 
@@ -67,8 +76,7 @@ interface Purchases {
      * - 503: Service temporarily unavailable
      *
      * @param id Purchase id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners (optional)
+     * @param include Include related resources. Available relationships: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @return [PurchasesOwnersMultiRelationshipDataDocument]
@@ -95,8 +103,7 @@ interface Purchases {
      * - 503: Service temporarily unavailable
      *
      * @param id Purchase id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: subject (optional)
+     * @param include Include related resources. Available relationships: subject (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: subject (optional)

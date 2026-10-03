@@ -7,10 +7,20 @@ import com.tidal.sdk.tidalapi.generated.models.UserCollectionSaveForLatersItemsR
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionSaveForLatersItemsRelationshipRemoveOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionSaveForLatersOwnersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionSaveForLatersSingleResourceDataDocument
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface UserCollectionSaveForLaters {
+
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageUserCollectionSaveForLatersIdGet(val value: kotlin.String) {
+        @SerialName(value = "items") items("items"),
+        @SerialName(value = "owners") owners("owners"),
+    }
+
     /**
      * GET userCollectionSaveForLaters/{id} Get single userCollectionSaveForLater. Retrieves single
      * userCollectionSaveForLater by id. Responses:
@@ -26,8 +36,9 @@ interface UserCollectionSaveForLaters {
      *
      * @param id User collection save for later id. Use &#x60;me&#x60; for the authenticated
      *   user&#39;s resource
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: items, owners (optional)
+     * @param include Include related resources. Available relationships: items, owners (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: items (optional)
@@ -38,6 +49,7 @@ interface UserCollectionSaveForLaters {
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<UserCollectionSaveForLatersSingleResourceDataDocument>
 
@@ -95,8 +107,7 @@ interface UserCollectionSaveForLaters {
      *   user&#39;s resource
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: items (optional)
+     * @param include Include related resources. Available relationships: items (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: items (optional)
@@ -160,8 +171,7 @@ interface UserCollectionSaveForLaters {
      *
      * @param id User collection save for later id. Use &#x60;me&#x60; for the authenticated
      *   user&#39;s resource
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners (optional)
+     * @param include Include related resources. Available relationships: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @return [UserCollectionSaveForLatersOwnersMultiRelationshipDataDocument]
