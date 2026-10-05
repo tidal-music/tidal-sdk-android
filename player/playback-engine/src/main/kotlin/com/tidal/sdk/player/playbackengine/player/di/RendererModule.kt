@@ -57,11 +57,14 @@ internal object RendererModule {
         audioCapabilities: AudioCapabilities,
         audioProcessors: Array<AudioProcessor>,
         defaultAudioTrackBufferSizeProvider: DefaultAudioTrackBufferSizeProvider,
+        @Named("enableFloatOutput") enableFloatOutput: Boolean,
     ) =
         DefaultAudioSink.Builder()
             .setAudioCapabilities(audioCapabilities)
             // Float output bypasses these, which would play crossfades at full volume.
             .setAudioProcessors(audioProcessors)
+            // When on, keeps 24-bit tracks at 24-bit instead of converting them to 16-bit.
+            .setEnableFloatOutput(enableFloatOutput)
             .setAudioTrackBufferSizeProvider(defaultAudioTrackBufferSizeProvider)
             .build()
 
