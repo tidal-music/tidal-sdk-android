@@ -636,6 +636,73 @@ internal class ExoPlayerPlaybackEngineCrossfadeTest {
         assertThat(playbackEngine.reflectionExtendedExoPlayer).isSameInstanceAs(outgoing)
     }
 
+    @Test
+    fun aFadeOutDuringTheFadeFadesBothTracks() {
+        incomingIsLoaded(AudioMode.STEREO, durationMs = TRACK_MS)
+        tickAt(FADE_POSITION_MS)
+
+        playbackEngine.pause(8_000L)
+        nowMs += 4_000L
+        tickAt(TRACK_MS - CROSSFADE_MS / 2)
+
+        verify(outgoing).volume = 0.25f
+        verify(incoming).volume = 0.25f
+    }
+
+    @Test
+    fun aFadeOutDuringTheFadePausesBothTracks() {
+        incomingIsLoaded(AudioMode.STEREO, durationMs = TRACK_MS)
+        tickAt(FADE_POSITION_MS)
+        clearInvocations(internalHandler)
+
+        playbackEngine.pause(8_000L)
+        val captor = argumentCaptor<Runnable>()
+        verify(internalHandler).postDelayed(captor.capture(), eq(50L))
+        nowMs += 8_000L
+        captor.lastValue.run()
+
+        verify(outgoing).pause()
+        verify(incoming).pause()
+    }
+
+    @Test
+    fun pausingAtTheEndSendsAHeldNextItemGapless() {
+        holdNext(otherMediaProduct)
+
+        playbackEngine.setPauseAtEndOfMediaProduct(true)
+
+        verifyOnOutgoing(otherMediaProduct)
+        verify(outgoing).pauseAtEndOfMediaItems = true
+    }
+
+    @Test
+    fun pausingAtTheEndAfterThePreloadFallsBackToGapless() {
+        playbackEngine.setPauseAtEndOfMediaProduct(true)
+
+        assertFellBackToGapless()
+    }
+
+    @Test
+    fun aNextItemSetWhilePausingAtTheEndGoesStraightToGapless() {
+        playbackEngine.setPauseAtEndOfMediaProduct(true)
+        whenever(outgoing.currentPosition) doReturn 0L
+
+        playbackEngine.setNext(otherMediaProduct)
+
+        verifyOnOutgoing(otherMediaProduct)
+    }
+
+    @Test
+    fun turningPausingAtTheEndOffCrossfadesAgain() {
+        playbackEngine.setPauseAtEndOfMediaProduct(true)
+        whenever(outgoing.currentPosition) doReturn 0L
+
+        playbackEngine.setPauseAtEndOfMediaProduct(false)
+        tickAt(PRELOAD_POSITION_MS)
+
+        verify(incoming, times(2)).loadAsNext(argThat { delegate === nextMediaProduct })
+    }
+
     private fun incomingIsLoaded(audioMode: AudioMode, durationMs: Long) {
         val playbackInfo = mock<PlaybackInfo.Track>()
         val playbackContext = nextPlaybackContext.copy(audioMode = audioMode)

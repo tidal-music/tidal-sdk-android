@@ -58,6 +58,16 @@ interface Action {
     fun pause()
 
     /**
+     * Fades the volume of active [MediaProduct] out over [fadeOutMs], then pauses it and puts the
+     * volume back. [play], [pause], [load], [skipToNext] and [reset] cancel the fade.
+     *
+     * The target playback state for this action is [PlaybackState.NOT_PLAYING].
+     *
+     * Should not be called when current state is [PlaybackState.IDLE].
+     */
+    fun pause(fadeOutMs: Long)
+
+    /**
      * Changes asset position in the active media product.
      *
      * This action does not explicitly affect [PlaybackState].
@@ -89,6 +99,12 @@ interface Action {
      * Should be called when bootstrapping Playback engine or whenever repeat mode one is enabled.
      */
     fun setRepeatOne(enable: Boolean)
+
+    /**
+     * Sets pausing at the end of each [MediaProduct] on or off. While on, playback pauses as the
+     * active one finishes, and [play] moves on to the one set via [setNext], without a crossfade.
+     */
+    fun setPauseAtEndOfMediaProduct(enable: Boolean)
 
     /**
      * Resets the playback engine to its initial state, effectively a stop action.

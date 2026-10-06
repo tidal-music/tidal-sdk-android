@@ -59,11 +59,15 @@ internal class SingleHandlerPlaybackEngineHandlerPostOrThrowTest {
 
             override fun pause() = Unit
 
+            override fun pause(fadeOutMs: Long) = Unit
+
             override fun seek(time: Float) = Unit
 
             override fun skipToNext() = Unit
 
             override fun setRepeatOne(enable: Boolean) = Unit
+
+            override fun setPauseAtEndOfMediaProduct(enable: Boolean) = Unit
 
             override fun reset() = Unit
 
@@ -86,6 +90,14 @@ internal class SingleHandlerPlaybackEngineHandlerPostOrThrowTest {
 
     @Test(expected = IllegalStateException::class)
     fun pauseThrowsIfReleased() = runAfterRelease { pause() }
+
+    @Test(expected = IllegalStateException::class)
+    fun pauseWithAFadeOutThrowsIfReleased() = runAfterRelease { pause(8_000L) }
+
+    @Test(expected = IllegalStateException::class)
+    fun setPauseAtEndOfMediaProductThrowsIfReleased() = runAfterRelease {
+        setPauseAtEndOfMediaProduct(true)
+    }
 
     @Test(expected = IllegalStateException::class)
     fun seekThrowsIfReleased() = runAfterRelease { seek(-7F) }

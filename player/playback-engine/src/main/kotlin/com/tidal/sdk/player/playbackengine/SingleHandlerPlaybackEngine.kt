@@ -69,11 +69,17 @@ internal class SingleHandlerPlaybackEngine(
 
     override fun pause() = postOrThrow { delegate.pause() }
 
+    override fun pause(fadeOutMs: Long) = postOrThrow { delegate.pause(fadeOutMs) }
+
     override fun seek(time: Float) = postOrThrow { delegate.seek(time) }
 
     override fun skipToNext() = postOrThrow { delegate.skipToNext() }
 
     override fun setRepeatOne(enable: Boolean) = postOrThrow { delegate.setRepeatOne(enable) }
+
+    override fun setPauseAtEndOfMediaProduct(enable: Boolean) = postOrThrow {
+        delegate.setPauseAtEndOfMediaProduct(enable)
+    }
 
     override fun reset() = postOrThrow { delegate.reset() }
 
