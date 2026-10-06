@@ -6,12 +6,15 @@ import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.analytics.AnalyticsListener
 import assertk.assertThat
+import assertk.assertions.isCloseTo
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isNull
 import assertk.assertions.isSameInstanceAs
 import assertk.assertions.isTrue
+import com.tidal.sdk.player.common.model.AudioMode
 import com.tidal.sdk.player.common.model.MediaProduct
+import com.tidal.sdk.player.playbackengine.model.PlaybackContext
 import com.tidal.sdk.player.playbackengine.player.ExtendedExoPlayer
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
@@ -29,16 +32,10 @@ private const val FADE_STARTED_AT_MS = 42L
 
 internal class CrossfadeTest {
 
-    private val incomingGain = mock<CrossfadeGainProcessor>()
     private val incoming =
-        mock<ExtendedExoPlayer> {
-            on { it.audioAttributes } doReturn AudioAttributes.DEFAULT
-            on { it.crossfadeGain } doReturn incomingGain
-        }
-    private val outgoingGain = mock<CrossfadeGainProcessor>()
+        mock<ExtendedExoPlayer> { on { it.audioAttributes } doReturn AudioAttributes.DEFAULT }
     private val outgoing =
         mock<ExtendedExoPlayer> {
-            on { it.crossfadeGain } doReturn outgoingGain
             on { it.duration } doReturn TRACK_MS
             on { it.playWhenReady } doReturn true
             on { it.playbackSuppressionReason } doReturn Player.PLAYBACK_SUPPRESSION_REASON_NONE
@@ -55,7 +52,6 @@ internal class CrossfadeTest {
         verify(incoming).setAudioAttributes(AudioAttributes.DEFAULT, false)
         verify(incoming).volume = 0f
         verify(incoming).playWhenReady = false
-        verify(incomingGain).fadeIn(CROSSFADE_MS)
     }
 
     @Test
@@ -69,14 +65,13 @@ internal class CrossfadeTest {
     }
 
     @Test
-    fun tickBeforeTheFadeWindowOnlySetsUpTheFadeOut() {
+    fun tickBeforeTheFadeWindowDoesNothing() {
         whenever(incoming.playbackState) doReturn Player.STATE_READY
         whenever(outgoing.currentPosition) doReturn TRACK_MS - CROSSFADE_MS - 1
 
         crossfade.tick(outgoing, 1f, 1f)
 
         assertThat(crossfade.isFading).isFalse()
-        verify(outgoingGain).fadeOut(TRACK_MS - CROSSFADE_MS, CROSSFADE_MS)
         verify(outgoing, never()).volume = any()
     }
 
@@ -88,7 +83,6 @@ internal class CrossfadeTest {
         crossfade.tick(outgoing, 1f, 1f)
 
         assertThat(crossfade.isFading).isFalse()
-        verify(outgoingGain, never()).fadeOut(any(), any())
     }
 
     @Test
@@ -101,7 +95,7 @@ internal class CrossfadeTest {
     }
 
     @Test
-    fun tickStartsTheFadeAtTheNormalizedVolumes() {
+    fun tickStartsTheFadeAndRampsWithAnSCurve() {
         whenever(incoming.playbackState) doReturn Player.STATE_READY
         whenever(outgoing.currentPosition) doReturn TRACK_MS - CROSSFADE_MS
 
@@ -110,7 +104,18 @@ internal class CrossfadeTest {
         assertThat(crossfade.fadeStartedAtMillis).isEqualTo(FADE_STARTED_AT_MS)
         verify(incoming).playWhenReady = true
         verify(outgoing).volume = 0.8f
-        verify(incoming).volume = 0.5f
+        verify(incoming, times(2)).volume = 0f
+
+        whenever(outgoing.currentPosition) doReturn TRACK_MS - CROSSFADE_MS / 2
+
+        crossfade.tick(outgoing, 0.8f, 0.5f)
+
+        val outgoingVolumes = argumentCaptor<Float>()
+        verify(outgoing, times(2)).volume = outgoingVolumes.capture()
+        assertThat(outgoingVolumes.lastValue).isCloseTo(0.8f * HALF_WAY_GAIN, TOLERANCE)
+        val incomingVolumes = argumentCaptor<Float>()
+        verify(incoming, times(3)).volume = incomingVolumes.capture()
+        assertThat(incomingVolumes.lastValue).isCloseTo(0.5f * HALF_WAY_GAIN, TOLERANCE)
     }
 
     @Test
@@ -122,6 +127,23 @@ internal class CrossfadeTest {
         crossfade.tick(outgoing, 1f, 1f)
 
         verify(incoming, times(2)).playWhenReady = false
+    }
+
+    @Test
+    fun tickRampsFromFullVolumeWhenNormalizationWouldGoAboveIt() {
+        whenever(incoming.playbackState) doReturn Player.STATE_READY
+        whenever(outgoing.currentPosition) doReturn TRACK_MS - CROSSFADE_MS
+        crossfade.tick(outgoing, 1.5f, 1.5f)
+        whenever(outgoing.currentPosition) doReturn TRACK_MS - CROSSFADE_MS / 2
+
+        crossfade.tick(outgoing, 1.5f, 1.5f)
+
+        val outgoingVolumes = argumentCaptor<Float>()
+        verify(outgoing, times(2)).volume = outgoingVolumes.capture()
+        assertThat(outgoingVolumes.lastValue).isCloseTo(HALF_WAY_GAIN, TOLERANCE)
+        val incomingVolumes = argumentCaptor<Float>()
+        verify(incoming, times(3)).volume = incomingVolumes.capture()
+        assertThat(incomingVolumes.lastValue).isCloseTo(HALF_WAY_GAIN, TOLERANCE)
     }
 
     @Test
@@ -150,7 +172,6 @@ internal class CrossfadeTest {
         verify(incoming).analyticsListener = analyticsListener
         verify(incoming).setAudioAttributes(AudioAttributes.DEFAULT, true)
         verify(incoming).playWhenReady = true
-        verify(incomingGain).clear()
     }
 
     @Test
@@ -163,6 +184,22 @@ internal class CrossfadeTest {
     @Test
     fun isDueIsFalseBeforeThePreloadWindow() {
         whenever(outgoing.currentPosition) doReturn TRACK_MS - CROSSFADE_MS - 15_001L
+
+        assertThat(Crossfade.isDue(outgoing, CROSSFADE_MS)).isFalse()
+    }
+
+    @Test
+    fun isDueOnceFullyBufferedBeforeThePreloadWindow() {
+        whenever(outgoing.currentPosition) doReturn 0L
+        whenever(outgoing.bufferedPosition) doReturn TRACK_MS
+
+        assertThat(Crossfade.isDue(outgoing, CROSSFADE_MS)).isTrue()
+    }
+
+    @Test
+    fun isDueIsFalseWhenFullyBufferedInTheFadeWindow() {
+        whenever(outgoing.currentPosition) doReturn TRACK_MS - CROSSFADE_MS
+        whenever(outgoing.bufferedPosition) doReturn TRACK_MS
 
         assertThat(Crossfade.isDue(outgoing, CROSSFADE_MS)).isFalse()
     }
@@ -216,5 +253,49 @@ internal class CrossfadeTest {
         assertThat(Crossfade.isLongEnough(CROSSFADE_MS * 2 + 1, CROSSFADE_MS)).isTrue()
         assertThat(Crossfade.isLongEnough(CROSSFADE_MS * 2, CROSSFADE_MS)).isFalse()
         assertThat(Crossfade.isLongEnough(C.TIME_UNSET, CROSSFADE_MS)).isFalse()
+    }
+
+    @Test
+    fun mayBeLongEnoughWhileTheDurationIsUnknown() {
+        assertThat(Crossfade.mayBeLongEnough(C.TIME_UNSET, CROSSFADE_MS)).isTrue()
+        assertThat(Crossfade.mayBeLongEnough(CROSSFADE_MS * 2 + 1, CROSSFADE_MS)).isTrue()
+        assertThat(Crossfade.mayBeLongEnough(CROSSFADE_MS * 2, CROSSFADE_MS)).isFalse()
+    }
+
+    @Test
+    fun mayFadeTracksExceptDolbyAtmos() {
+        assertThat(Crossfade.mayFade(trackContext(AudioMode.STEREO))).isTrue()
+        assertThat(Crossfade.mayFade(trackContext(null))).isTrue()
+        assertThat(Crossfade.mayFade(trackContext(AudioMode.DOLBY_ATMOS))).isFalse()
+    }
+
+    @Test
+    fun mayFadeWhileTheContextIsUnknown() {
+        assertThat(Crossfade.mayFade(null)).isTrue()
+    }
+
+    @Test
+    fun mayFadeIsFalseForVideos() {
+        assertThat(Crossfade.mayFade(mock<PlaybackContext.Video>())).isFalse()
+    }
+
+    @Test
+    fun isPastStartFromTheFadeLengthBeforeTheEnd() {
+        assertThat(Crossfade.isPastStart(TRACK_MS, TRACK_MS - CROSSFADE_MS, CROSSFADE_MS)).isTrue()
+        assertThat(Crossfade.isPastStart(TRACK_MS, TRACK_MS - CROSSFADE_MS - 1, CROSSFADE_MS))
+            .isFalse()
+    }
+
+    @Test
+    fun isPastStartIsFalseWithUnknownDuration() {
+        assertThat(Crossfade.isPastStart(C.TIME_UNSET, TRACK_MS, CROSSFADE_MS)).isFalse()
+    }
+
+    private fun trackContext(audioMode: AudioMode?) =
+        mock<PlaybackContext.Track> { on { it.audioMode } doReturn audioMode }
+
+    private companion object {
+        const val HALF_WAY_GAIN = 0.5f
+        const val TOLERANCE = 0.0001f
     }
 }

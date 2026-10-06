@@ -178,6 +178,7 @@ internal object ExoPlayerPlaybackEngineModule {
         undeterminedPlaybackSessionResolver: UndeterminedPlaybackSessionResolver,
         outputDeviceManager: OutputDeviceManager,
         playerCache: PlayerCache,
+        @Named("enableCrossfade") enableCrossfade: Boolean,
     ) =
         ExoPlayerPlaybackEngine(
             coroutineScope,
@@ -197,6 +198,7 @@ internal object ExoPlayerPlaybackEngineModule {
             undeterminedPlaybackSessionResolver,
             outputDeviceManager,
             playerCache,
+            enableCrossfade,
         )
 
     @Provides
