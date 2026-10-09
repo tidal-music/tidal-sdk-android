@@ -24,29 +24,6 @@ def download_file(url, dest_folder):
     return local_filename
 
 
-def remove_specific_line_from_files(directory, target_string):
-    for root, dirs, files in os.walk(directory):
-        for file in files:
-            if file.endswith('.kt'):
-                file_path = os.path.join(root, file)
-                with open(file_path, 'r') as f:
-                    lines = f.readlines()
-
-                found = False
-
-                with open(file_path, 'w') as f:
-                    for line in lines:
-                        if line.startswith(target_string):
-                            logging.info(f"Found and removed line in file: {file_path}")
-                            found = True
-                        else:
-                            f.write(line)
-
-                if not found:
-                    logging.info(
-                        f"No lines starting with '{target_string}' found in file: {file_path}")
-
-
 def process_api_spec(json_file_path, local_file=None, custom_url=None):
     try:
         with open(json_file_path, 'r') as f:
@@ -156,7 +133,7 @@ def main():
         "-c", "openapi-config/openapi-config.yml",
         "--skip-validate-spec",
         "--global-property",
-        "models,apis,supportingFiles=Utils.kt:src/main/kotlin/com/tidal/sdk/tidalapi/generated/ApiClient.kt"
+        "models,apis,supportingFiles=Utils.kt:CollectionFormats.kt:src/main/kotlin/com/tidal/sdk/tidalapi/generated/ApiClient.kt"
     ]
     logging.info(f"Executing command: {' '.join(cmd)}")
     
@@ -189,9 +166,6 @@ def main():
         logging.warning(f"ktfmt stdout: {result.stdout}")
         logging.warning(f"ktfmt stderr: {result.stderr}")
         logging.warning("Continuing with the rest of the script despite ktfmt failure.")
-
-    target_line = "import com.tidal.sdk.tidalapi.generated.infrastructure.CollectionFormats.*"
-    remove_specific_line_from_files(f"{project_root}/src", target_line)
 
     logging.info("Generation complete and cleaned up.")
 
