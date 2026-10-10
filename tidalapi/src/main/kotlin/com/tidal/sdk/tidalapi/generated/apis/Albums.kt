@@ -1,5 +1,6 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.infrastructure.CollectionFormats.*
 import com.tidal.sdk.tidalapi.generated.models.AlbumsAlbumStatisticsSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.AlbumsArtistsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.AlbumsCoverArtMultiRelationshipDataDocument
@@ -37,6 +38,24 @@ interface Albums {
         @SerialName(value = "-title") TitleDesc("-title"),
     }
 
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageAlbumsGet(val value: kotlin.String) {
+        @SerialName(value = "albumStatistics") albumStatistics("albumStatistics"),
+        @SerialName(value = "artists") artists("artists"),
+        @SerialName(value = "coverArt") coverArt("coverArt"),
+        @SerialName(value = "genres") genres("genres"),
+        @SerialName(value = "items") items("items"),
+        @SerialName(value = "owners") owners("owners"),
+        @SerialName(value = "priceConfig") priceConfig("priceConfig"),
+        @SerialName(value = "providers") providers("providers"),
+        @SerialName(value = "replacement") replacement("replacement"),
+        @SerialName(value = "shares") shares("shares"),
+        @SerialName(value = "similarAlbums") similarAlbums("similarAlbums"),
+        @SerialName(value = "suggestedCoverArts") suggestedCoverArts("suggestedCoverArts"),
+        @SerialName(value = "usageRules") usageRules("usageRules"),
+    }
+
     /**
      * GET albums Get multiple albums. Retrieves multiple albums by available filters, or without if
      * applicable. Responses:
@@ -55,14 +74,16 @@ interface Albums {
      * @param sort Values prefixed with \&quot;-\&quot; are sorted descending; values without it are
      *   sorted ascending. (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: albumStatistics, artists, coverArt, genres, items, owners, priceConfig,
-     *   providers, replacement, shares, similarAlbums, suggestedCoverArts, usageRules (optional)
+     * @param include Include related resources. Available relationships: albumStatistics, artists,
+     *   coverArt, genres, items, owners, priceConfig, providers, replacement, shares,
+     *   similarAlbums, suggestedCoverArts, usageRules (optional)
      * @param filterBarcodeId List of barcode IDs (EAN-13 or UPC-A). NOTE: Supplying more than one
      *   barcode ID will currently only return one album per barcode ID. (e.g.
      *   &#x60;196589525444&#x60;) (optional)
      * @param filterId List of album IDs (e.g. &#x60;251380836&#x60;) (optional)
      * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: artists.albums (optional)
@@ -83,6 +104,7 @@ interface Albums {
         filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[owners.id]")
         filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<AlbumsMultiResourceDataDocument>
@@ -113,6 +135,24 @@ interface Albums {
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
     ): Response<MutationResponseDocument>
 
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageAlbumsIdGet(val value: kotlin.String) {
+        @SerialName(value = "albumStatistics") albumStatistics("albumStatistics"),
+        @SerialName(value = "artists") artists("artists"),
+        @SerialName(value = "coverArt") coverArt("coverArt"),
+        @SerialName(value = "genres") genres("genres"),
+        @SerialName(value = "items") items("items"),
+        @SerialName(value = "owners") owners("owners"),
+        @SerialName(value = "priceConfig") priceConfig("priceConfig"),
+        @SerialName(value = "providers") providers("providers"),
+        @SerialName(value = "replacement") replacement("replacement"),
+        @SerialName(value = "shares") shares("shares"),
+        @SerialName(value = "similarAlbums") similarAlbums("similarAlbums"),
+        @SerialName(value = "suggestedCoverArts") suggestedCoverArts("suggestedCoverArts"),
+        @SerialName(value = "usageRules") usageRules("usageRules"),
+    }
+
     /**
      * GET albums/{id} Get single album. Retrieves single album by id. Responses:
      * - 200: Successful response
@@ -127,9 +167,11 @@ interface Albums {
      *
      * @param id Album id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: albumStatistics, artists, coverArt, genres, items, owners, priceConfig,
-     *   providers, replacement, shares, similarAlbums, suggestedCoverArts, usageRules (optional)
+     * @param include Include related resources. Available relationships: albumStatistics, artists,
+     *   coverArt, genres, items, owners, priceConfig, providers, replacement, shares,
+     *   similarAlbums, suggestedCoverArts, usageRules (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: artists.albums (optional)
@@ -143,6 +185,7 @@ interface Albums {
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<AlbumsSingleResourceDataDocument>
@@ -189,8 +232,7 @@ interface Albums {
      * - 503: Service temporarily unavailable
      *
      * @param id Album id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: albumStatistics (optional)
+     * @param include Include related resources. Available relationships: albumStatistics (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [AlbumsAlbumStatisticsSingleRelationshipDataDocument]
@@ -220,8 +262,7 @@ interface Albums {
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: artists (optional)
+     * @param include Include related resources. Available relationships: artists (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: artists.albums (optional)
@@ -257,8 +298,7 @@ interface Albums {
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: coverArt (optional)
+     * @param include Include related resources. Available relationships: coverArt (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [AlbumsCoverArtMultiRelationshipDataDocument]
@@ -322,8 +362,7 @@ interface Albums {
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: genres (optional)
+     * @param include Include related resources. Available relationships: genres (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [AlbumsGenresMultiRelationshipDataDocument]
@@ -355,8 +394,7 @@ interface Albums {
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: items (optional)
+     * @param include Include related resources. Available relationships: items (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: items (optional)
@@ -421,8 +459,7 @@ interface Albums {
      * - 503: Service temporarily unavailable
      *
      * @param id Album id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners (optional)
+     * @param include Include related resources. Available relationships: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
@@ -453,8 +490,7 @@ interface Albums {
      *
      * @param id Album id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: priceConfig (optional)
+     * @param include Include related resources. Available relationships: priceConfig (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [AlbumsPriceConfigSingleRelationshipDataDocument]
@@ -483,8 +519,7 @@ interface Albums {
      *
      * @param id Album id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: providers (optional)
+     * @param include Include related resources. Available relationships: providers (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
@@ -516,8 +551,7 @@ interface Albums {
      *
      * @param id Album id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: replacement (optional)
+     * @param include Include related resources. Available relationships: replacement (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: replacement (optional)
@@ -549,8 +583,7 @@ interface Albums {
      * - 503: Service temporarily unavailable
      *
      * @param id Album id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: shares (optional)
+     * @param include Include related resources. Available relationships: shares (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
@@ -587,8 +620,7 @@ interface Albums {
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: similarAlbums (optional)
+     * @param include Include related resources. Available relationships: similarAlbums (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: similarAlbums (optional)
@@ -621,8 +653,8 @@ interface Albums {
      * - 503: Service temporarily unavailable
      *
      * @param id Album id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: suggestedCoverArts (optional)
+     * @param include Include related resources. Available relationships: suggestedCoverArts
+     *   (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
@@ -653,8 +685,7 @@ interface Albums {
      *
      * @param id Album id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: usageRules (optional)
+     * @param include Include related resources. Available relationships: usageRules (optional)
      * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
      *   non-owners to access resources that would otherwise be restricted. (optional)
      * @return [AlbumsUsageRulesSingleRelationshipDataDocument]

@@ -19,6 +19,7 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -27,11 +28,15 @@ import kotlinx.serialization.Serializable
  *
  * @param href Artwork file href
  * @param meta
+ * @param type Media type hint for the artwork file
  */
 @Serializable
 data class ArtworkFile(
 
     /* Artwork file href */
-    @SerialName(value = "href") val href: kotlin.String,
+    @Contextual @SerialName(value = "href") val href: java.net.URI,
     @SerialName(value = "meta") val meta: ArtworkFileMeta,
+
+    /* Media type hint for the artwork file */
+    @SerialName(value = "type") val type: kotlin.String? = null,
 ) {}

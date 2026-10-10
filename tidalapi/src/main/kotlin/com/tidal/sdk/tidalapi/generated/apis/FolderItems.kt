@@ -1,5 +1,7 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.infrastructure.CollectionFormats.*
+import com.tidal.sdk.tidalapi.generated.models.FolderItemsBreadcrumbMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.FolderItemsCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.FolderItemsCreateSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.FolderItemsOwnersMultiRelationshipDataDocument
@@ -9,6 +11,8 @@ import com.tidal.sdk.tidalapi.generated.models.FolderItemsParentUpdateSingleRela
 import com.tidal.sdk.tidalapi.generated.models.FolderItemsSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.FolderItemsSubjectSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.MutationResponseDocument
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -39,6 +43,15 @@ interface FolderItems {
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
     ): Response<MutationResponseDocument>
 
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageFolderItemsIdGet(val value: kotlin.String) {
+        @SerialName(value = "breadcrumb") breadcrumb("breadcrumb"),
+        @SerialName(value = "owners") owners("owners"),
+        @SerialName(value = "parent") parent("parent"),
+        @SerialName(value = "subject") subject("subject"),
+    }
+
     /**
      * GET folderItems/{id} Get single folderItem. Retrieves single folderItem by id. Responses:
      * - 200: Successful response
@@ -52,11 +65,13 @@ interface FolderItems {
      * - 503: Service temporarily unavailable
      *
      * @param id Folder item id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners, parent, subject (optional)
+     * @param include Include related resources. Available relationships: breadcrumb, owners,
+     *   parent, subject (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
-     *   &#x60;include&#x60; syntax. Example: parent.children.subject (optional)
+     *   &#x60;include&#x60; syntax. Example: breadcrumb.children.subject (optional)
      * @return [FolderItemsSingleResourceDataDocument]
      */
     @GET("folderItems/{id}")
@@ -64,8 +79,41 @@ interface FolderItems {
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<FolderItemsSingleResourceDataDocument>
+
+    /**
+     * GET folderItems/{id}/relationships/breadcrumb Get breadcrumb relationship
+     * (\&quot;to-many\&quot;). The folders from the root to this item&#39;s parent; only for the
+     * tree&#39;s owner, empty otherwise. Responses:
+     * - 200: Successful response
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
+     * - 429: Rate limit exceeded
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
+     *
+     * @param id Folder item id
+     * @param include Include related resources. Available relationships: breadcrumb (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: breadcrumb.children.subject (optional)
+     * @return [FolderItemsBreadcrumbMultiRelationshipDataDocument]
+     */
+    @GET("folderItems/{id}/relationships/breadcrumb")
+    suspend fun folderItemsIdRelationshipsBreadcrumbGet(
+        @Path("id") id: kotlin.String,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
+    ): Response<FolderItemsBreadcrumbMultiRelationshipDataDocument>
 
     /**
      * GET folderItems/{id}/relationships/owners Get owners relationship (\&quot;to-many\&quot;).
@@ -81,8 +129,7 @@ interface FolderItems {
      * - 503: Service temporarily unavailable
      *
      * @param id Folder item id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners (optional)
+     * @param include Include related resources. Available relationships: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @return [FolderItemsOwnersMultiRelationshipDataDocument]
@@ -109,8 +156,7 @@ interface FolderItems {
      * - 503: Service temporarily unavailable
      *
      * @param id Folder item id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: parent (optional)
+     * @param include Include related resources. Available relationships: parent (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: parent.children.subject (optional)
@@ -170,8 +216,7 @@ interface FolderItems {
      * - 503: Service temporarily unavailable
      *
      * @param id Folder item id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: subject (optional)
+     * @param include Include related resources. Available relationships: subject (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: subject (optional)

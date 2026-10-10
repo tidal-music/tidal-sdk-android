@@ -35,12 +35,16 @@ data class PlaylistsAddMultiDataRelationshipWithResponse409ResponseBodyErrorsInn
     @SerialName(value = "detail") val detail: kotlin.String? = null,
 ) {
 
-    /** Values: DUPLICATE_ITEMS_IN_PLAYLIST,IDEMPOTENT_REQUEST_IN_PROGRESS */
+    /**
+     * Values: DUPLICATE_ITEMS_IN_PLAYLIST,IDEMPOTENT_REQUEST_IN_PROGRESS,TOO_MANY_ITEMS_IN_PLAYLIST
+     */
     @Serializable
     enum class Code(val value: kotlin.String) {
         @SerialName(value = "DUPLICATE_ITEMS_IN_PLAYLIST")
         DUPLICATE_ITEMS_IN_PLAYLIST("DUPLICATE_ITEMS_IN_PLAYLIST"),
         @SerialName(value = "IDEMPOTENT_REQUEST_IN_PROGRESS")
         IDEMPOTENT_REQUEST_IN_PROGRESS("IDEMPOTENT_REQUEST_IN_PROGRESS"),
+        @SerialName(value = "TOO_MANY_ITEMS_IN_PLAYLIST")
+        TOO_MANY_ITEMS_IN_PLAYLIST("TOO_MANY_ITEMS_IN_PLAYLIST"),
     }
 }

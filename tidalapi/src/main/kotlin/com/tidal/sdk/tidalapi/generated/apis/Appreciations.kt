@@ -1,5 +1,6 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.infrastructure.CollectionFormats.*
 import com.tidal.sdk.tidalapi.generated.models.AppreciationsCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.MutationResponseDocument
 import retrofit2.Response

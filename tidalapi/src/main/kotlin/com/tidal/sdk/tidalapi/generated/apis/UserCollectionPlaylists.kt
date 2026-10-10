@@ -1,5 +1,6 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.infrastructure.CollectionFormats.*
 import com.tidal.sdk.tidalapi.generated.models.MutationResponseDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionPlaylistsItemsAddMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.UserCollectionPlaylistsItemsMultiRelationshipDataDocument
@@ -13,6 +14,14 @@ import retrofit2.Response
 import retrofit2.http.*
 
 interface UserCollectionPlaylists {
+
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageUserCollectionPlaylistsIdGet(val value: kotlin.String) {
+        @SerialName(value = "items") items("items"),
+        @SerialName(value = "owners") owners("owners"),
+    }
+
     /**
      * GET userCollectionPlaylists/{id} Get single userCollectionPlaylist. Retrieves single
      * userCollectionPlaylist by id. Responses:
@@ -30,8 +39,9 @@ interface UserCollectionPlaylists {
      *   resource
      * @param locale BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or
      *   unsupported. (optional, default to "en-US")
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: items, owners (optional)
+     * @param include Include related resources. Available relationships: items, owners (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: items.items (optional)
@@ -43,6 +53,7 @@ interface UserCollectionPlaylists {
         @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<UserCollectionPlaylistsSingleResourceDataDocument>
 
@@ -108,6 +119,7 @@ interface UserCollectionPlaylists {
      * (\&quot;to-many\&quot;). Retrieves items relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
+     * - 403: filter[query] requires INTERNAL access tier
      * - 404: Resource not found
      * - 405: HTTP method not allowed
      * - 406: No acceptable response media type
@@ -123,8 +135,7 @@ interface UserCollectionPlaylists {
      *   targets first page if not specified (optional)
      * @param sort Values prefixed with \&quot;-\&quot; are sorted descending; values without it are
      *   sorted ascending. (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: items (optional)
+     * @param include Include related resources. Available relationships: items (optional)
      * @param filterQuery Filter playlists by a free-text query. Returns matching playlists only (no
      *   mixes or folders), including playlists inside folders. Cannot be combined with
      *   collectionView&#x3D;FOLDERS. Internal clients only (e.g. &#x60;summer&#x60;) (optional)
@@ -195,8 +206,7 @@ interface UserCollectionPlaylists {
      *
      * @param id User collection playlists id. Use &#x60;me&#x60; for the authenticated user&#39;s
      *   resource
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners (optional)
+     * @param include Include related resources. Available relationships: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @return [UserCollectionPlaylistsOwnersMultiRelationshipDataDocument]

@@ -1,5 +1,6 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.infrastructure.CollectionFormats.*
 import com.tidal.sdk.tidalapi.generated.models.ScopesMultiResourceDataDocument
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

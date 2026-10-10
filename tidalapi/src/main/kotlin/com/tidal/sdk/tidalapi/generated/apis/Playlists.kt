@@ -1,5 +1,6 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.infrastructure.CollectionFormats.*
 import com.tidal.sdk.tidalapi.generated.models.MutationResponseDocument
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsCollaboratorProfilesMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlaylistsCollaboratorProfilesRelationshipRemoveOperationPayload
@@ -39,6 +40,19 @@ interface Playlists {
         @SerialName(value = "-name") NameDesc("-name"),
     }
 
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkagePlaylistsGet(val value: kotlin.String) {
+        @SerialName(value = "collaboratorProfiles") collaboratorProfiles("collaboratorProfiles"),
+        @SerialName(value = "collaborators") collaborators("collaborators"),
+        @SerialName(value = "coverArt") coverArt("coverArt"),
+        @SerialName(value = "curators") curators("curators"),
+        @SerialName(value = "items") items("items"),
+        @SerialName(value = "ownerProfiles") ownerProfiles("ownerProfiles"),
+        @SerialName(value = "owners") owners("owners"),
+        @SerialName(value = "suggestedCoverArts") suggestedCoverArts("suggestedCoverArts"),
+    }
+
     /**
      * GET playlists Get multiple playlists. Retrieves multiple playlists by available filters, or
      * without if applicable. Responses:
@@ -57,14 +71,16 @@ interface Playlists {
      * @param sort Values prefixed with \&quot;-\&quot; are sorted descending; values without it are
      *   sorted ascending. (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: collaboratorProfiles, collaborators, coverArt, curators, items,
-     *   ownerProfiles, owners, suggestedCoverArts (optional)
+     * @param include Include related resources. Available relationships: collaboratorProfiles,
+     *   collaborators, coverArt, curators, items, ownerProfiles, owners, suggestedCoverArts
+     *   (optional)
      * @param filterCollaboratorsId User id. Use &#x60;me&#x60; for the authenticated user
      *   (optional)
      * @param filterId List of playlist IDs (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;)
      *   (optional)
      * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: curators.albums (optional)
@@ -83,6 +99,7 @@ interface Playlists {
         filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[owners.id]")
         filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<PlaylistsMultiResourceDataDocument>
 
@@ -112,6 +129,19 @@ interface Playlists {
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
     ): Response<MutationResponseDocument>
 
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkagePlaylistsIdGet(val value: kotlin.String) {
+        @SerialName(value = "collaboratorProfiles") collaboratorProfiles("collaboratorProfiles"),
+        @SerialName(value = "collaborators") collaborators("collaborators"),
+        @SerialName(value = "coverArt") coverArt("coverArt"),
+        @SerialName(value = "curators") curators("curators"),
+        @SerialName(value = "items") items("items"),
+        @SerialName(value = "ownerProfiles") ownerProfiles("ownerProfiles"),
+        @SerialName(value = "owners") owners("owners"),
+        @SerialName(value = "suggestedCoverArts") suggestedCoverArts("suggestedCoverArts"),
+    }
+
     /**
      * GET playlists/{id} Get single playlist. Retrieves single playlist by id. Responses:
      * - 200: Successful response
@@ -126,9 +156,11 @@ interface Playlists {
      *
      * @param id Playlist id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: collaboratorProfiles, collaborators, coverArt, curators, items,
-     *   ownerProfiles, owners, suggestedCoverArts (optional)
+     * @param include Include related resources. Available relationships: collaboratorProfiles,
+     *   collaborators, coverArt, curators, items, ownerProfiles, owners, suggestedCoverArts
+     *   (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: curators.albums (optional)
@@ -140,6 +172,7 @@ interface Playlists {
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<PlaylistsSingleResourceDataDocument>
 
@@ -223,8 +256,8 @@ interface Playlists {
      * - 503: Service temporarily unavailable
      *
      * @param id Playlist id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: collaboratorProfiles (optional)
+     * @param include Include related resources. Available relationships: collaboratorProfiles
+     *   (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @return [PlaylistsCollaboratorProfilesMultiRelationshipDataDocument]
@@ -252,8 +285,7 @@ interface Playlists {
      * - 503: Service temporarily unavailable
      *
      * @param id Playlist id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: collaborators (optional)
+     * @param include Include related resources. Available relationships: collaborators (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @return [PlaylistsCollaboratorsMultiRelationshipDataDocument]
@@ -281,8 +313,7 @@ interface Playlists {
      *
      * @param id Playlist id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: coverArt (optional)
+     * @param include Include related resources. Available relationships: coverArt (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @return [PlaylistsCoverArtMultiRelationshipDataDocument]
@@ -344,8 +375,7 @@ interface Playlists {
      * @param id Playlist id
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: curators (optional)
+     * @param include Include related resources. Available relationships: curators (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: curators.albums (optional)
@@ -428,8 +458,7 @@ interface Playlists {
      * @param sort Values prefixed with \&quot;-\&quot; are sorted descending; values without it are
      *   sorted ascending. (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: items (optional)
+     * @param include Include related resources. Available relationships: items (optional)
      * @param filterQuery Filter playlist items by a free-text query (e.g. &#x60;halo&#x60;)
      *   (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
@@ -489,8 +518,8 @@ interface Playlists {
      * - 404: Resource not found
      * - 405: HTTP method not allowed
      * - 406: No acceptable response media type
-     * - 409: Playlist already contains one or more requested items; Request already in progress for
-     *   this idempotency key
+     * - 409: Playlist already contains one or more requested items; Playlist item limit reached;
+     *   Request already in progress for this idempotency key
      * - 415: Unsupported request media type or encoding
      * - 422: Idempotency key reused with a different payload
      * - 429: Rate limit exceeded
@@ -528,8 +557,7 @@ interface Playlists {
      * - 503: Service temporarily unavailable
      *
      * @param id Playlist id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: ownerProfiles (optional)
+     * @param include Include related resources. Available relationships: ownerProfiles (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @return [PlaylistsOwnerProfilesMultiRelationshipDataDocument]
@@ -557,8 +585,7 @@ interface Playlists {
      * - 503: Service temporarily unavailable
      *
      * @param id Playlist id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners (optional)
+     * @param include Include related resources. Available relationships: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @return [PlaylistsOwnersMultiRelationshipDataDocument]
@@ -585,8 +612,8 @@ interface Playlists {
      * - 503: Service temporarily unavailable
      *
      * @param id Playlist id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: suggestedCoverArts (optional)
+     * @param include Include related resources. Available relationships: suggestedCoverArts
+     *   (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @return [PlaylistsSuggestedCoverArtsMultiRelationshipDataDocument]

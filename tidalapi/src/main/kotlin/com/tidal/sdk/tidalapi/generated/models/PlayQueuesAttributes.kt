@@ -19,6 +19,7 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -26,6 +27,7 @@ import kotlinx.serialization.Serializable
  * @param createdAt ISO 8601 creation timestamp
  * @param lastModifiedAt ISO 8601 last modified timestamp
  * @param repeat Queue's repeat mode
+ * @param revision Opaque queue-wide equality token.
  * @param shuffle Queue's shuffle mode
  * @param shuffled Queue is shuffled or not
  */
@@ -40,6 +42,9 @@ data class PlayQueuesAttributes(
 
     /* Queue's repeat mode */
     @SerialName(value = "repeat") val repeat: PlayQueuesAttributes.Repeat,
+
+    /* Opaque queue-wide equality token. */
+    @Contextual @SerialName(value = "revision") val revision: java.util.UUID,
 
     /* Queue's shuffle mode */
     @SerialName(value = "shuffle") val shuffle: PlayQueuesAttributes.Shuffle,
