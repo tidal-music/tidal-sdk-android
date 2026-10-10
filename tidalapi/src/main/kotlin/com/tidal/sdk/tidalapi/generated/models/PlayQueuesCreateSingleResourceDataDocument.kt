@@ -25,9 +25,11 @@ import kotlinx.serialization.Serializable
 /**
  * @param `data`
  * @param links
+ * @param meta
  */
 @Serializable
 data class PlayQueuesCreateSingleResourceDataDocument(
     @SerialName(value = "data") val `data`: PlayQueuesResourceObject,
     @SerialName(value = "links") val links: Links,
+    @SerialName(value = "meta") val meta: PlayQueuesCreateSingleResourceDataDocumentMeta? = null,
 ) {}

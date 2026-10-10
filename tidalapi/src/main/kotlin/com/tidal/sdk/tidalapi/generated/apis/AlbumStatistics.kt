@@ -1,11 +1,21 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.infrastructure.CollectionFormats.*
 import com.tidal.sdk.tidalapi.generated.models.AlbumStatisticsOwnersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.AlbumStatisticsSingleResourceDataDocument
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface AlbumStatistics {
+
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageAlbumStatisticsIdGet(val value: kotlin.String) {
+        @SerialName(value = "owners") owners("owners")
+    }
+
     /**
      * GET albumStatistics/{id} Get single albumStatistic. Retrieves single albumStatistic by id.
      * Responses:
@@ -21,8 +31,9 @@ interface AlbumStatistics {
      *
      * @param id Album statistic id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners (optional)
+     * @param include Include related resources. Available relationships: owners (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @return [AlbumStatisticsSingleResourceDataDocument]
      */
     @GET("albumStatistics/{id}")
@@ -31,6 +42,7 @@ interface AlbumStatistics {
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
     ): Response<AlbumStatisticsSingleResourceDataDocument>
 
     /**
@@ -47,8 +59,7 @@ interface AlbumStatistics {
      * - 503: Service temporarily unavailable
      *
      * @param id Album statistic id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners (optional)
+     * @param include Include related resources. Available relationships: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @return [AlbumStatisticsOwnersMultiRelationshipDataDocument]

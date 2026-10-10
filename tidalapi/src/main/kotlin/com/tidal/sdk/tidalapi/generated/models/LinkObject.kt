@@ -26,5 +26,12 @@ import kotlinx.serialization.Serializable
  * A JSON:API link object
  *
  * @param href
+ * @param type Media type hint for the linked resource
  */
-@Serializable data class LinkObject(@SerialName(value = "href") val href: kotlin.String) {}
+@Serializable
+data class LinkObject(
+    @SerialName(value = "href") val href: kotlin.String,
+
+    /* Media type hint for the linked resource */
+    @SerialName(value = "type") val type: kotlin.String? = null,
+) {}

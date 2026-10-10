@@ -1,5 +1,6 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.infrastructure.CollectionFormats.*
 import com.tidal.sdk.tidalapi.generated.models.CollaborationInvitesCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.CollaborationInvitesCreateSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.CollaborationInvitesMultiResourceDataDocument
@@ -7,10 +8,20 @@ import com.tidal.sdk.tidalapi.generated.models.CollaborationInvitesOwnersMultiRe
 import com.tidal.sdk.tidalapi.generated.models.CollaborationInvitesSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.CollaborationInvitesSubjectSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.MutationResponseDocument
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface CollaborationInvites {
+
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageCollaborationInvitesGet(val value: kotlin.String) {
+        @SerialName(value = "owners") owners("owners"),
+        @SerialName(value = "subject") subject("subject"),
+    }
+
     /**
      * GET collaborationInvites Get multiple collaborationInvites. Retrieves multiple
      * collaborationInvites by available filters, or without if applicable. Responses:
@@ -25,8 +36,9 @@ interface CollaborationInvites {
      * - 503: Service temporarily unavailable
      *
      * @param filterCode Invite code
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners, subject (optional)
+     * @param include Include related resources. Available relationships: owners, subject (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: subject.items (optional)
@@ -38,6 +50,7 @@ interface CollaborationInvites {
         filterCode: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<CollaborationInvitesMultiResourceDataDocument>
 
@@ -68,6 +81,13 @@ interface CollaborationInvites {
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
     ): Response<MutationResponseDocument>
 
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageCollaborationInvitesIdGet(val value: kotlin.String) {
+        @SerialName(value = "owners") owners("owners"),
+        @SerialName(value = "subject") subject("subject"),
+    }
+
     /**
      * GET collaborationInvites/{id} Get single collaborationInvite. Retrieves single
      * collaborationInvite by id. Responses:
@@ -82,8 +102,9 @@ interface CollaborationInvites {
      * - 503: Service temporarily unavailable
      *
      * @param id Collaboration invite id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners, subject (optional)
+     * @param include Include related resources. Available relationships: owners, subject (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: subject.items (optional)
@@ -94,6 +115,7 @@ interface CollaborationInvites {
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<CollaborationInvitesSingleResourceDataDocument>
 
@@ -111,8 +133,7 @@ interface CollaborationInvites {
      * - 503: Service temporarily unavailable
      *
      * @param id Collaboration invite id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners (optional)
+     * @param include Include related resources. Available relationships: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @return [CollaborationInvitesOwnersMultiRelationshipDataDocument]
@@ -139,8 +160,7 @@ interface CollaborationInvites {
      * - 503: Service temporarily unavailable
      *
      * @param id Collaboration invite id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: subject (optional)
+     * @param include Include related resources. Available relationships: subject (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: subject.items (optional)

@@ -25,11 +25,14 @@ import kotlinx.serialization.Serializable
 /**
  * @param attributes
  * @param type
+ * @param relationships
  */
 @Serializable
 data class FoldersCreateOperationPayloadData(
     @SerialName(value = "attributes") val attributes: FoldersCreateOperationPayloadDataAttributes,
     @SerialName(value = "type") val type: FoldersCreateOperationPayloadData.Type,
+    @SerialName(value = "relationships")
+    val relationships: FoldersCreateOperationPayloadDataRelationships? = null,
 ) {
 
     /** Values: folders */

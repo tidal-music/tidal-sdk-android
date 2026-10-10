@@ -1,5 +1,6 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.infrastructure.CollectionFormats.*
 import com.tidal.sdk.tidalapi.generated.models.VideosAlbumsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.VideosArtistsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.VideosCreditsMultiRelationshipDataDocument
@@ -11,10 +12,27 @@ import com.tidal.sdk.tidalapi.generated.models.VideosSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.VideosSuggestedVideosMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.VideosThumbnailArtMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.VideosUsageRulesSingleRelationshipDataDocument
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface Videos {
+
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageVideosGet(val value: kotlin.String) {
+        @SerialName(value = "albums") albums("albums"),
+        @SerialName(value = "artists") artists("artists"),
+        @SerialName(value = "credits") credits("credits"),
+        @SerialName(value = "providers") providers("providers"),
+        @SerialName(value = "replacement") replacement("replacement"),
+        @SerialName(value = "similarVideos") similarVideos("similarVideos"),
+        @SerialName(value = "suggestedVideos") suggestedVideos("suggestedVideos"),
+        @SerialName(value = "thumbnailArt") thumbnailArt("thumbnailArt"),
+        @SerialName(value = "usageRules") usageRules("usageRules"),
+    }
+
     /**
      * GET videos Get multiple videos. Retrieves multiple videos by available filters, or without if
      * applicable. Responses:
@@ -29,11 +47,12 @@ interface Videos {
      * - 503: Service temporarily unavailable
      *
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: albums, artists, credits, providers, replacement, similarVideos,
-     *   suggestedVideos, thumbnailArt, usageRules (optional)
+     * @param include Include related resources. Available relationships: albums, artists, credits,
+     *   providers, replacement, similarVideos, suggestedVideos, thumbnailArt, usageRules (optional)
      * @param filterId List of video IDs (e.g. &#x60;75623239&#x60;) (optional)
      * @param filterIsrc List of ISRCs (e.g. &#x60;QMJMT1701237&#x60;) (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: albums (optional)
@@ -48,8 +67,23 @@ interface Videos {
         filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[isrc]")
         filterIsrc: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<VideosMultiResourceDataDocument>
+
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageVideosIdGet(val value: kotlin.String) {
+        @SerialName(value = "albums") albums("albums"),
+        @SerialName(value = "artists") artists("artists"),
+        @SerialName(value = "credits") credits("credits"),
+        @SerialName(value = "providers") providers("providers"),
+        @SerialName(value = "replacement") replacement("replacement"),
+        @SerialName(value = "similarVideos") similarVideos("similarVideos"),
+        @SerialName(value = "suggestedVideos") suggestedVideos("suggestedVideos"),
+        @SerialName(value = "thumbnailArt") thumbnailArt("thumbnailArt"),
+        @SerialName(value = "usageRules") usageRules("usageRules"),
+    }
 
     /**
      * GET videos/{id} Get single video. Retrieves single video by id. Responses:
@@ -65,9 +99,10 @@ interface Videos {
      *
      * @param id Video id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: albums, artists, credits, providers, replacement, similarVideos,
-     *   suggestedVideos, thumbnailArt, usageRules (optional)
+     * @param include Include related resources. Available relationships: albums, artists, credits,
+     *   providers, replacement, similarVideos, suggestedVideos, thumbnailArt, usageRules (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: albums (optional)
@@ -79,6 +114,7 @@ interface Videos {
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<VideosSingleResourceDataDocument>
 
@@ -99,8 +135,7 @@ interface Videos {
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: albums (optional)
+     * @param include Include related resources. Available relationships: albums (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: albums (optional)
@@ -133,8 +168,7 @@ interface Videos {
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: artists (optional)
+     * @param include Include related resources. Available relationships: artists (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: artists.albums (optional)
@@ -166,8 +200,7 @@ interface Videos {
      * @param id Video id
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: credits (optional)
+     * @param include Include related resources. Available relationships: credits (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: credits.artist.albums (optional)
@@ -199,8 +232,7 @@ interface Videos {
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: providers (optional)
+     * @param include Include related resources. Available relationships: providers (optional)
      * @return [VideosProvidersMultiRelationshipDataDocument]
      */
     @GET("videos/{id}/relationships/providers")
@@ -227,8 +259,7 @@ interface Videos {
      *
      * @param id Video id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: replacement (optional)
+     * @param include Include related resources. Available relationships: replacement (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: replacement (optional)
@@ -260,8 +291,7 @@ interface Videos {
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: similarVideos (optional)
+     * @param include Include related resources. Available relationships: similarVideos (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: similarVideos (optional)
@@ -294,8 +324,7 @@ interface Videos {
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: suggestedVideos (optional)
+     * @param include Include related resources. Available relationships: suggestedVideos (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: suggestedVideos (optional)
@@ -328,8 +357,7 @@ interface Videos {
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: thumbnailArt (optional)
+     * @param include Include related resources. Available relationships: thumbnailArt (optional)
      * @return [VideosThumbnailArtMultiRelationshipDataDocument]
      */
     @GET("videos/{id}/relationships/thumbnailArt")
@@ -356,8 +384,7 @@ interface Videos {
      *
      * @param id Video id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: usageRules (optional)
+     * @param include Include related resources. Available relationships: usageRules (optional)
      * @return [VideosUsageRulesSingleRelationshipDataDocument]
      */
     @GET("videos/{id}/relationships/usageRules")

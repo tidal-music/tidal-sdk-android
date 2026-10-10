@@ -33,10 +33,11 @@ data class SharesCreateOperationPayloadDataRelationshipsSharedResourcesData(
     val type: SharesCreateOperationPayloadDataRelationshipsSharedResourcesData.Type,
 ) {
 
-    /** Values: tracks,albums */
+    /** Values: tracks,albums,playlists */
     @Serializable
     enum class Type(val value: kotlin.String) {
         @SerialName(value = "tracks") tracks("tracks"),
         @SerialName(value = "albums") albums("albums"),
+        @SerialName(value = "playlists") playlists("playlists"),
     }
 }
