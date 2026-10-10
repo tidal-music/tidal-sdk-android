@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.74] - 2026-10-06
+
+### Added
+- `PlaybackEngine.pause(fadeOutMs)` fades the volume out over that many milliseconds, then pauses and puts the volume back. `play`, `pause`, `load`, `skipToNext` and `reset` cancel the fade.
+- `PlaybackEngine.setPauseAtEndOfMediaProduct`, off by default. While on, playback pauses as each track ends and `play` moves on to the next one, without crossfading into it.
+
 ## [0.0.73] - 2026-10-01
 
 ### Added
