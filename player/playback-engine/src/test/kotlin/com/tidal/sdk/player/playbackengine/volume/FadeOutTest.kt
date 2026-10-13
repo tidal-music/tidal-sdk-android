@@ -24,7 +24,17 @@ internal class FadeOutTest {
     private var nowMillis = 1_000L
     private var steps = 0
     private var silences = 0
-    private val fadeOut = FadeOut(handler, { nowMillis }, { steps++ }, { silences++ })
+    private var stepLevel = 1f
+    private val fadeOut: FadeOut =
+        FadeOut(
+            handler,
+            { nowMillis },
+            {
+                steps++
+                stepLevel = fadeOut.level
+            },
+            { silences++ },
+        )
 
     @Test
     fun isAtFullLevelUntilStarted() {
@@ -52,7 +62,8 @@ internal class FadeOutTest {
         ticker.firstValue.run()
 
         assertThat(silences).isEqualTo(1)
-        assertThat(steps).isEqualTo(1)
+        assertThat(steps).isEqualTo(2)
+        assertThat(stepLevel).isCloseTo(0f, TOLERANCE)
     }
 
     @Test

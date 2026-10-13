@@ -51,11 +51,11 @@ internal class FadeOut(
 
     private fun tick() {
         val ramp = ramp ?: return
+        onStep()
         if (ramp.isDoneAt(currentTimeMillis())) {
             onSilent()
             return
         }
-        onStep()
         handler.postDelayed(ticker, TICK_MS)
     }
 }
