@@ -19,7 +19,6 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -34,7 +33,7 @@ data class DynamicPagesAttributes(
     @SerialName(value = "pageType") val pageType: DynamicPagesAttributes.PageType,
 
     /* Id used for reporting user events */
-    @Contextual @SerialName(value = "reportingId") val reportingId: java.util.UUID,
+    @SerialName(value = "reportingId") val reportingId: kotlin.String,
 ) {
 
     /**

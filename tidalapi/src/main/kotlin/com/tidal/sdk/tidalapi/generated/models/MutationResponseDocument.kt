@@ -33,5 +33,7 @@ data class MutationResponseDocument(
 
     /* Non-standard meta information */
     @SerialName(value = "meta")
-    val meta: kotlin.collections.Map<kotlin.String, @Contextual kotlin.Any>? = null,
+    val meta:
+        kotlin.collections.Map<kotlin.String, @Contextual kotlinx.serialization.json.JsonElement>? =
+        null,
 ) {}
