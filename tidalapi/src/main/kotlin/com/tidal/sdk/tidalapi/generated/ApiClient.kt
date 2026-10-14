@@ -11,6 +11,7 @@ import com.tidal.sdk.tidalapi.generated.apis.ArtistClaims
 import com.tidal.sdk.tidalapi.generated.apis.ArtistRoles
 import com.tidal.sdk.tidalapi.generated.apis.Artists
 import com.tidal.sdk.tidalapi.generated.apis.Artworks
+import com.tidal.sdk.tidalapi.generated.apis.ClientCertificates
 import com.tidal.sdk.tidalapi.generated.apis.Clients
 import com.tidal.sdk.tidalapi.generated.apis.CollaborationInviteRedemptions
 import com.tidal.sdk.tidalapi.generated.apis.CollaborationInvites
@@ -24,6 +25,7 @@ import com.tidal.sdk.tidalapi.generated.apis.DynamicPages
 import com.tidal.sdk.tidalapi.generated.apis.FolderItems
 import com.tidal.sdk.tidalapi.generated.apis.Folders
 import com.tidal.sdk.tidalapi.generated.apis.Genres
+import com.tidal.sdk.tidalapi.generated.apis.Groups
 import com.tidal.sdk.tidalapi.generated.apis.Installations
 import com.tidal.sdk.tidalapi.generated.apis.Lyrics
 import com.tidal.sdk.tidalapi.generated.apis.ManualArtistClaims
@@ -67,6 +69,8 @@ import com.tidal.sdk.tidalapi.generated.apis.UserCollectionVideos
 import com.tidal.sdk.tidalapi.generated.apis.UserDailyMixes
 import com.tidal.sdk.tidalapi.generated.apis.UserDataExportRequests
 import com.tidal.sdk.tidalapi.generated.apis.UserDiscoveryMixes
+import com.tidal.sdk.tidalapi.generated.apis.UserFeedItems
+import com.tidal.sdk.tidalapi.generated.apis.UserFeeds
 import com.tidal.sdk.tidalapi.generated.apis.UserNewReleaseMixes
 import com.tidal.sdk.tidalapi.generated.apis.UserOfflineMixes
 import com.tidal.sdk.tidalapi.generated.apis.UserPlaybackStates
@@ -76,6 +80,7 @@ import com.tidal.sdk.tidalapi.generated.apis.UserSubscriptionPriceChanges
 import com.tidal.sdk.tidalapi.generated.apis.Users
 import com.tidal.sdk.tidalapi.generated.apis.VideoManifests
 import com.tidal.sdk.tidalapi.generated.apis.Videos
+import com.tidal.sdk.tidalapi.generated.apis.ViewerContexts
 import com.tidal.sdk.tidalapi.networking.RetrofitProvider
 
 class TidalApiClient(
@@ -136,6 +141,13 @@ class TidalApiClient(
     /** Returns an instance of the [Artworks] which can be used to make API calls to the */
     fun createArtworks(): Artworks {
         return retrofit.create(Artworks::class.java)
+    }
+
+    /**
+     * Returns an instance of the [ClientCertificates] which can be used to make API calls to the
+     */
+    fun createClientCertificates(): ClientCertificates {
+        return retrofit.create(ClientCertificates::class.java)
     }
 
     /** Returns an instance of the [Clients] which can be used to make API calls to the */
@@ -206,6 +218,11 @@ class TidalApiClient(
     /** Returns an instance of the [Genres] which can be used to make API calls to the */
     fun createGenres(): Genres {
         return retrofit.create(Genres::class.java)
+    }
+
+    /** Returns an instance of the [Groups] which can be used to make API calls to the */
+    fun createGroups(): Groups {
+        return retrofit.create(Groups::class.java)
     }
 
     /** Returns an instance of the [Installations] which can be used to make API calls to the */
@@ -466,6 +483,16 @@ class TidalApiClient(
         return retrofit.create(UserDiscoveryMixes::class.java)
     }
 
+    /** Returns an instance of the [UserFeedItems] which can be used to make API calls to the */
+    fun createUserFeedItems(): UserFeedItems {
+        return retrofit.create(UserFeedItems::class.java)
+    }
+
+    /** Returns an instance of the [UserFeeds] which can be used to make API calls to the */
+    fun createUserFeeds(): UserFeeds {
+        return retrofit.create(UserFeeds::class.java)
+    }
+
     /**
      * Returns an instance of the [UserNewReleaseMixes] which can be used to make API calls to the
      */
@@ -519,6 +546,11 @@ class TidalApiClient(
     /** Returns an instance of the [Videos] which can be used to make API calls to the */
     fun createVideos(): Videos {
         return retrofit.create(Videos::class.java)
+    }
+
+    /** Returns an instance of the [ViewerContexts] which can be used to make API calls to the */
+    fun createViewerContexts(): ViewerContexts {
+        return retrofit.create(ViewerContexts::class.java)
     }
 
     companion object {

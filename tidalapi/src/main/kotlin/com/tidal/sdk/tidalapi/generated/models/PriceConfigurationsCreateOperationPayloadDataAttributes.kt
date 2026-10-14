@@ -24,7 +24,7 @@ import kotlinx.serialization.Serializable
 
 /**
  * @param currency Currency code (ISO 4217)
- * @param price Price amount with max 2 decimal places
+ * @param price Amount in the currency's major units
  */
 @Serializable
 data class PriceConfigurationsCreateOperationPayloadDataAttributes(
@@ -33,7 +33,7 @@ data class PriceConfigurationsCreateOperationPayloadDataAttributes(
     @SerialName(value = "currency")
     val currency: PriceConfigurationsCreateOperationPayloadDataAttributes.Currency,
 
-    /* Price amount with max 2 decimal places */
+    /* Amount in the currency's major units */
     @SerialName(value = "price") val price: kotlin.String,
 ) {
 

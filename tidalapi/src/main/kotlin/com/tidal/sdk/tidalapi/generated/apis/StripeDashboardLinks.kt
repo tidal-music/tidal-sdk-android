@@ -1,11 +1,21 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.infrastructure.CollectionFormats.*
 import com.tidal.sdk.tidalapi.generated.models.StripeDashboardLinksMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.StripeDashboardLinksOwnersMultiRelationshipDataDocument
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface StripeDashboardLinks {
+
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageStripeDashboardLinksGet(val value: kotlin.String) {
+        @SerialName(value = "owners") owners("owners")
+    }
+
     /**
      * GET stripeDashboardLinks Get multiple stripeDashboardLinks. Retrieves multiple
      * stripeDashboardLinks by available filters, or without if applicable. Responses:
@@ -20,8 +30,9 @@ interface StripeDashboardLinks {
      * - 503: Service temporarily unavailable
      *
      * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners (optional)
+     * @param include Include related resources. Available relationships: owners (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @return [StripeDashboardLinksMultiResourceDataDocument]
      */
     @GET("stripeDashboardLinks")
@@ -30,6 +41,7 @@ interface StripeDashboardLinks {
         filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
     ): Response<StripeDashboardLinksMultiResourceDataDocument>
 
     /**
@@ -47,8 +59,7 @@ interface StripeDashboardLinks {
      *
      * @param id Stripe dashboard link id. Use &#x60;me&#x60; for the authenticated user&#39;s
      *   resource
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners (optional)
+     * @param include Include related resources. Available relationships: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @return [StripeDashboardLinksOwnersMultiRelationshipDataDocument]

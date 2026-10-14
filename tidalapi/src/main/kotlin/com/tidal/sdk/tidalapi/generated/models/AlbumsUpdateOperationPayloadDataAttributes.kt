@@ -26,9 +26,10 @@ import kotlinx.serialization.Serializable
  * @param accessType Access type
  * @param albumType
  * @param barcodeId A barcode the rights holder already owns: a GTIN-12 or GTIN-13 (UPC-A or EAN-13)
- *   with a valid GS1 check digit. It can only be set while the album has no barcode of its own: the
- *   barcode TIDAL assigns at the album's first sale is permanent. Omit the field, and TIDAL assigns
- *   one then.
+ *   with a valid GS1 check digit. A barcode set here can be replaced until the album is first sold,
+ *   and null resets it to the default value. An empty string is also accepted as a reset for now,
+ *   for compatibility. After the first sale both are rejected. The barcode TIDAL assigns at the
+ *   album's first sale is permanent. Omit the field to leave the barcode unchanged.
  * @param copyright
  * @param explicit Explicit content
  * @param explicitLyrics Explicit content. Deprecated: use 'explicit' instead. This field will be
@@ -46,7 +47,7 @@ data class AlbumsUpdateOperationPayloadDataAttributes(
     @SerialName(value = "albumType")
     val albumType: AlbumsUpdateOperationPayloadDataAttributes.AlbumType? = null,
 
-    /* A barcode the rights holder already owns: a GTIN-12 or GTIN-13 (UPC-A or EAN-13) with a valid GS1 check digit. It can only be set while the album has no barcode of its own: the barcode TIDAL assigns at the album's first sale is permanent. Omit the field, and TIDAL assigns one then. */
+    /* A barcode the rights holder already owns: a GTIN-12 or GTIN-13 (UPC-A or EAN-13) with a valid GS1 check digit. A barcode set here can be replaced until the album is first sold, and null resets it to the default value. An empty string is also accepted as a reset for now, for compatibility. After the first sale both are rejected. The barcode TIDAL assigns at the album's first sale is permanent. Omit the field to leave the barcode unchanged. */
     @SerialName(value = "barcodeId") val barcodeId: kotlin.String? = null,
     @SerialName(value = "copyright") val copyright: Copyright? = null,
 

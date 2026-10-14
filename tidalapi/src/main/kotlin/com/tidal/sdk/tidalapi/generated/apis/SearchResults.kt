@@ -1,5 +1,6 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.infrastructure.CollectionFormats.*
 import com.tidal.sdk.tidalapi.generated.models.SearchResultsAlbumsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.SearchResultsArtistsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.SearchResultsMultiResourceDataDocument
@@ -42,6 +43,17 @@ interface SearchResults {
         @SerialName(value = "WEB") WEB("WEB"),
     }
 
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageSearchResultsGet(val value: kotlin.String) {
+        @SerialName(value = "albums") albums("albums"),
+        @SerialName(value = "artists") artists("artists"),
+        @SerialName(value = "playlists") playlists("playlists"),
+        @SerialName(value = "topHits") topHits("topHits"),
+        @SerialName(value = "tracks") tracks("tracks"),
+        @SerialName(value = "videos") videos("videos"),
+    }
+
     /**
      * GET searchResults Get search results by query. Searches for a query and returns a collection
      * containing exactly one search results resource. Responses:
@@ -62,8 +74,10 @@ interface SearchResults {
      * @param deviceType The type of device making the request (optional)
      * @param systemType The system type of the device making the request (optional)
      * @param clientVersion Client version number (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: albums, artists, playlists, topHits, tracks, videos (optional)
+     * @param include Include related resources. Available relationships: albums, artists,
+     *   playlists, topHits, tracks, videos (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: albums (optional)
@@ -80,6 +94,7 @@ interface SearchResults {
         @Query("clientVersion") clientVersion: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<SearchResultsMultiResourceDataDocument>
 
@@ -133,8 +148,7 @@ interface SearchResults {
      * @param deviceType The type of device making the request (optional)
      * @param systemType The system type of the device making the request (optional)
      * @param clientVersion Client version number (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: albums (optional)
+     * @param include Include related resources. Available relationships: albums (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: albums (optional)
@@ -206,8 +220,7 @@ interface SearchResults {
      * @param deviceType The type of device making the request (optional)
      * @param systemType The system type of the device making the request (optional)
      * @param clientVersion Client version number (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: artists (optional)
+     * @param include Include related resources. Available relationships: artists (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: artists (optional)
@@ -279,8 +292,7 @@ interface SearchResults {
      * @param deviceType The type of device making the request (optional)
      * @param systemType The system type of the device making the request (optional)
      * @param clientVersion Client version number (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: playlists (optional)
+     * @param include Include related resources. Available relationships: playlists (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: playlists (optional)
@@ -352,8 +364,7 @@ interface SearchResults {
      * @param deviceType The type of device making the request (optional)
      * @param systemType The system type of the device making the request (optional)
      * @param clientVersion Client version number (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: topHits (optional)
+     * @param include Include related resources. Available relationships: topHits (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: topHits (optional)
@@ -425,8 +436,7 @@ interface SearchResults {
      * @param deviceType The type of device making the request (optional)
      * @param systemType The system type of the device making the request (optional)
      * @param clientVersion Client version number (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: tracks (optional)
+     * @param include Include related resources. Available relationships: tracks (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: tracks (optional)
@@ -498,8 +508,7 @@ interface SearchResults {
      * @param deviceType The type of device making the request (optional)
      * @param systemType The system type of the device making the request (optional)
      * @param clientVersion Client version number (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: videos (optional)
+     * @param include Include related resources. Available relationships: videos (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: videos (optional)

@@ -1,7 +1,6 @@
 package com.tidal.sdk.tidalapi.generated.models
 
 import kotlinx.serialization.modules.SerializersModule
-import kotlinx.serialization.modules.contextual
 import kotlinx.serialization.modules.polymorphic
 
 fun getOneOfSerializer() = SerializersModule {
@@ -26,6 +25,10 @@ fun getOneOfSerializer() = SerializersModule {
             ChangeEventStreamsResourceObject::class,
             ChangeEventStreamsResourceObject.serializer(),
         )
+        subclass(
+            ClientCertificatesResourceObject::class,
+            ClientCertificatesResourceObject.serializer(),
+        )
         subclass(ClientsResourceObject::class, ClientsResourceObject.serializer())
         subclass(
             CollaborationInviteRedemptionsResourceObject::class,
@@ -45,6 +48,7 @@ fun getOneOfSerializer() = SerializersModule {
         subclass(FolderItemsResourceObject::class, FolderItemsResourceObject.serializer())
         subclass(FoldersResourceObject::class, FoldersResourceObject.serializer())
         subclass(GenresResourceObject::class, GenresResourceObject.serializer())
+        subclass(GroupsResourceObject::class, GroupsResourceObject.serializer())
         subclass(InstallationsResourceObject::class, InstallationsResourceObject.serializer())
         subclass(LyricsResourceObject::class, LyricsResourceObject.serializer())
         subclass(
@@ -155,6 +159,8 @@ fun getOneOfSerializer() = SerializersModule {
             UserDiscoveryMixesResourceObject::class,
             UserDiscoveryMixesResourceObject.serializer(),
         )
+        subclass(UserFeedItemsResourceObject::class, UserFeedItemsResourceObject.serializer())
+        subclass(UserFeedsResourceObject::class, UserFeedsResourceObject.serializer())
         subclass(
             UserNewReleaseMixesResourceObject::class,
             UserNewReleaseMixesResourceObject.serializer(),
@@ -176,6 +182,37 @@ fun getOneOfSerializer() = SerializersModule {
         subclass(UsersResourceObject::class, UsersResourceObject.serializer())
         subclass(VideoManifestsResourceObject::class, VideoManifestsResourceObject.serializer())
         subclass(VideosResourceObject::class, VideosResourceObject.serializer())
+        subclass(ViewerContextsResourceObject::class, ViewerContextsResourceObject.serializer())
     }
-    contextual(LyricsAttributesProvider::class, LyricsAttributesProviderSerializer)
+    polymorphic(LyricsProvider::class) {
+        subclass(ThirdPartyLyricsProvider::class, ThirdPartyLyricsProvider.serializer())
+        subclass(TidalLyricsProvider::class, TidalLyricsProvider.serializer())
+    }
+    polymorphic(UserFeedItemActivityDetails::class) {
+        subclass(
+            UserFeedItemAlbumReleasedDetails::class,
+            UserFeedItemAlbumReleasedDetails.serializer(),
+        )
+        subclass(UserFeedItemAlbumSharedDetails::class, UserFeedItemAlbumSharedDetails.serializer())
+        subclass(
+            UserFeedItemArtistFollowedDetails::class,
+            UserFeedItemArtistFollowedDetails.serializer(),
+        )
+        subclass(
+            UserFeedItemCommentRepliedDetails::class,
+            UserFeedItemCommentRepliedDetails.serializer(),
+        )
+        subclass(
+            UserFeedItemCopyrightFlaggedDetails::class,
+            UserFeedItemCopyrightFlaggedDetails.serializer(),
+        )
+        subclass(
+            UserFeedItemPlaylistUpdatedDetails::class,
+            UserFeedItemPlaylistUpdatedDetails.serializer(),
+        )
+        subclass(
+            UserFeedItemTrackSourceFileCommentedDetails::class,
+            UserFeedItemTrackSourceFileCommentedDetails.serializer(),
+        )
+    }
 }

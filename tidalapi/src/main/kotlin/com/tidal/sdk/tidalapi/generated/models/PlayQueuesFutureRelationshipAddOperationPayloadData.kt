@@ -25,22 +25,17 @@ import kotlinx.serialization.Serializable
 /**
  * @param id
  * @param type
- * @param meta
  */
 @Serializable
 data class PlayQueuesFutureRelationshipAddOperationPayloadData(
     @SerialName(value = "id") val id: kotlin.String,
     @SerialName(value = "type") val type: PlayQueuesFutureRelationshipAddOperationPayloadData.Type,
-    @SerialName(value = "meta")
-    val meta: PlayQueuesFutureRelationshipAddOperationPayloadDataMeta? = null,
 ) {
 
-    /** Values: tracks,videos,albums,playlists */
+    /** Values: tracks,videos */
     @Serializable
     enum class Type(val value: kotlin.String) {
         @SerialName(value = "tracks") tracks("tracks"),
         @SerialName(value = "videos") videos("videos"),
-        @SerialName(value = "albums") albums("albums"),
-        @SerialName(value = "playlists") playlists("playlists"),
     }
 }

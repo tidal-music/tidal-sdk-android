@@ -23,11 +23,13 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
+ * @param attributes
  * @param relationships
  * @param type
  */
 @Serializable
 data class SharesCreateOperationPayloadData(
+    @SerialName(value = "attributes") val attributes: SharesCreateOperationPayloadDataAttributes,
     @SerialName(value = "relationships")
     val relationships: SharesCreateOperationPayloadDataRelationships,
     @SerialName(value = "type") val type: SharesCreateOperationPayloadData.Type,

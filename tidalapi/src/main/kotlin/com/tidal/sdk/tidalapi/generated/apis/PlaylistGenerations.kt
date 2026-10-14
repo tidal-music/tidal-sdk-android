@@ -1,5 +1,6 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.infrastructure.CollectionFormats.*
 import com.tidal.sdk.tidalapi.generated.models.MutationResponseDocument
 import com.tidal.sdk.tidalapi.generated.models.PlaylistGenerationsBaseGenerationSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.PlaylistGenerationsCreateOperationPayload
@@ -13,10 +14,28 @@ import com.tidal.sdk.tidalapi.generated.models.PlaylistGenerationsTrackPreferenc
 import com.tidal.sdk.tidalapi.generated.models.PlaylistGenerationsTrackPreferencesRelationshipRemoveOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.PlaylistGenerationsTrackPreferencesRelationshipUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.PlaylistGenerationsTrackPreferencesUpdateMultiRelationshipDataDocument
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface PlaylistGenerations {
+
+    /** enum for parameter generationView */
+    @Serializable
+    enum class GenerationViewPlaylistGenerationsGet(val value: kotlin.String) {
+        @SerialName(value = "CURRENT") CURRENT("CURRENT"),
+        @SerialName(value = "LATEST") LATEST("LATEST"),
+    }
+
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkagePlaylistGenerationsGet(val value: kotlin.String) {
+        @SerialName(value = "baseGeneration") baseGeneration("baseGeneration"),
+        @SerialName(value = "playlist") playlist("playlist"),
+        @SerialName(value = "trackPreferences") trackPreferences("trackPreferences"),
+    }
+
     /**
      * GET playlistGenerations Get multiple playlistGenerations. Retrieves multiple
      * playlistGenerations by available filters, or without if applicable. Responses:
@@ -31,8 +50,13 @@ interface PlaylistGenerations {
      * - 503: Service temporarily unavailable
      *
      * @param filterPlaylistId Playlist id (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: baseGeneration, playlist, trackPreferences (optional)
+     * @param generationView CURRENT selects the committed generation. LATEST selects the newest
+     *   accepted attempt, regardless of status. New values may be added at any time. (optional,
+     *   default to GenerationView.CURRENT)
+     * @param include Include related resources. Available relationships: baseGeneration, playlist,
+     *   trackPreferences (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: baseGeneration.trackPreferences (optional)
@@ -42,10 +66,22 @@ interface PlaylistGenerations {
     suspend fun playlistGenerationsGet(
         @Query("filter[playlist.id]")
         filterPlaylistId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
+        @Query("generationView")
+        generationView: GenerationViewPlaylistGenerationsGet? =
+            GenerationViewPlaylistGenerationsGet.CURRENT,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<PlaylistGenerationsMultiResourceDataDocument>
+
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkagePlaylistGenerationsIdGet(val value: kotlin.String) {
+        @SerialName(value = "baseGeneration") baseGeneration("baseGeneration"),
+        @SerialName(value = "playlist") playlist("playlist"),
+        @SerialName(value = "trackPreferences") trackPreferences("trackPreferences"),
+    }
 
     /**
      * GET playlistGenerations/{id} Get single playlistGeneration. Retrieves single
@@ -61,8 +97,10 @@ interface PlaylistGenerations {
      * - 503: Service temporarily unavailable
      *
      * @param id Playlist generation id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: baseGeneration, playlist, trackPreferences (optional)
+     * @param include Include related resources. Available relationships: baseGeneration, playlist,
+     *   trackPreferences (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: baseGeneration.trackPreferences (optional)
@@ -73,6 +111,7 @@ interface PlaylistGenerations {
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<PlaylistGenerationsSingleResourceDataDocument>
 
@@ -90,8 +129,7 @@ interface PlaylistGenerations {
      * - 503: Service temporarily unavailable
      *
      * @param id Playlist generation id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: baseGeneration (optional)
+     * @param include Include related resources. Available relationships: baseGeneration (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: baseGeneration.trackPreferences (optional)
@@ -119,8 +157,7 @@ interface PlaylistGenerations {
      * - 503: Service temporarily unavailable
      *
      * @param id Playlist generation id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: playlist (optional)
+     * @param include Include related resources. Available relationships: playlist (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: playlist.items (optional)
@@ -193,8 +230,8 @@ interface PlaylistGenerations {
      * @param id Playlist generation id
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: trackPreferences (optional)
+     * @param include Include related resources. Available relationships: trackPreferences
+     *   (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: trackPreferences (optional)

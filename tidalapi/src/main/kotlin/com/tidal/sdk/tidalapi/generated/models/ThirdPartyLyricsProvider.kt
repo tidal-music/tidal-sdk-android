@@ -24,15 +24,23 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 
 /**
- * @param name
  * @param commonTrackId
  * @param lyricsId
+ * @param name
  * @param source
  */
 @Serializable
+@SerialName(value = "THIRD_PARTY")
 data class ThirdPartyLyricsProvider(
-    @SerialName(value = "name") override val name: kotlin.String,
     @SerialName(value = "commonTrackId") val commonTrackId: kotlin.String,
     @SerialName(value = "lyricsId") val lyricsId: kotlin.String,
-    @Transient @SerialName(value = "source") override val source: LyricsProvider.Source? = null,
-) : LyricsAttributesProvider, LyricsProvider {}
+    @SerialName(value = "name") val name: kotlin.String,
+    @Transient @SerialName(value = "source") val source: ThirdPartyLyricsProvider.Source = "",
+) : LyricsProvider {
+
+    /** Values: THIRD_PARTY */
+    @Serializable
+    enum class Source(val value: kotlin.String) {
+        @SerialName(value = "THIRD_PARTY") THIRD_PARTY("THIRD_PARTY")
+    }
+}

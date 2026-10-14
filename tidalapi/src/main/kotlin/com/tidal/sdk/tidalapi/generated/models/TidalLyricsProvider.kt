@@ -24,11 +24,19 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 
 /**
- * @param name
  * @param source
+ * @param name
  */
 @Serializable
+@SerialName(value = "TIDAL")
 data class TidalLyricsProvider(
-    @SerialName(value = "name") override val name: kotlin.String? = null,
-    @Transient @SerialName(value = "source") override val source: LyricsProvider.Source? = null,
-) : LyricsAttributesProvider, LyricsProvider {}
+    @Transient @SerialName(value = "source") val source: TidalLyricsProvider.Source = "",
+    @SerialName(value = "name") val name: kotlin.String? = null,
+) : LyricsProvider {
+
+    /** Values: TIDAL */
+    @Serializable
+    enum class Source(val value: kotlin.String) {
+        @SerialName(value = "TIDAL") TIDAL("TIDAL")
+    }
+}

@@ -1,13 +1,23 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.infrastructure.CollectionFormats.*
 import com.tidal.sdk.tidalapi.generated.models.TrackSourceFilesCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.TrackSourceFilesCreateSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.TrackSourceFilesOwnersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.TrackSourceFilesSingleResourceDataDocument
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface TrackSourceFiles {
+
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageTrackSourceFilesIdGet(val value: kotlin.String) {
+        @SerialName(value = "owners") owners("owners")
+    }
+
     /**
      * GET trackSourceFiles/{id} Get single trackSourceFile. Retrieves single trackSourceFile by id.
      * Responses:
@@ -22,8 +32,9 @@ interface TrackSourceFiles {
      * - 503: Service temporarily unavailable
      *
      * @param id Track source file id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners (optional)
+     * @param include Include related resources. Available relationships: owners (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @return [TrackSourceFilesSingleResourceDataDocument]
      */
     @GET("trackSourceFiles/{id}")
@@ -31,6 +42,7 @@ interface TrackSourceFiles {
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
     ): Response<TrackSourceFilesSingleResourceDataDocument>
 
     /**
@@ -47,8 +59,7 @@ interface TrackSourceFiles {
      * - 503: Service temporarily unavailable
      *
      * @param id Track source file id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners (optional)
+     * @param include Include related resources. Available relationships: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @return [TrackSourceFilesOwnersMultiRelationshipDataDocument]

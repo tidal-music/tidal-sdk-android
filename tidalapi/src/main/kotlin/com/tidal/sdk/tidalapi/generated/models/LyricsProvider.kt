@@ -19,22 +19,13 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.Serializable
 
 /**
  * @param name
  * @param source
+ * @param commonTrackId
+ * @param lyricsId
  */
-interface LyricsProvider {
-
-    @SerialName(value = "name") val name: kotlin.String?
-    @SerialName(value = "source") val source: LyricsProvider.Source?
-
-    /** Values: TIDAL,THIRD_PARTY */
-    @Serializable
-    enum class Source(val value: kotlin.String) {
-        @SerialName(value = "TIDAL") TIDAL("TIDAL"),
-        @SerialName(value = "THIRD_PARTY") THIRD_PARTY("THIRD_PARTY"),
-    }
-}
+@Serializable @Polymorphic sealed interface LyricsProvider

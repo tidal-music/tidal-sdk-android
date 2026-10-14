@@ -1,5 +1,6 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.infrastructure.CollectionFormats.*
 import com.tidal.sdk.tidalapi.generated.models.ContentClaimsClaimedResourceSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ContentClaimsClaimingArtistSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ContentClaimsCreateOperationPayload
@@ -7,10 +8,21 @@ import com.tidal.sdk.tidalapi.generated.models.ContentClaimsCreateSingleResource
 import com.tidal.sdk.tidalapi.generated.models.ContentClaimsMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ContentClaimsOwnersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ContentClaimsSingleResourceDataDocument
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface ContentClaims {
+
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageContentClaimsGet(val value: kotlin.String) {
+        @SerialName(value = "claimedResource") claimedResource("claimedResource"),
+        @SerialName(value = "claimingArtist") claimingArtist("claimingArtist"),
+        @SerialName(value = "owners") owners("owners"),
+    }
+
     /**
      * GET contentClaims Get multiple contentClaims. Retrieves multiple contentClaims by available
      * filters, or without if applicable. Responses:
@@ -25,8 +37,10 @@ interface ContentClaims {
      * - 503: Service temporarily unavailable
      *
      * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: claimedResource, claimingArtist, owners (optional)
+     * @param include Include related resources. Available relationships: claimedResource,
+     *   claimingArtist, owners (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: claimedResource (optional)
@@ -38,8 +52,17 @@ interface ContentClaims {
         filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<ContentClaimsMultiResourceDataDocument>
+
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageContentClaimsIdGet(val value: kotlin.String) {
+        @SerialName(value = "claimedResource") claimedResource("claimedResource"),
+        @SerialName(value = "claimingArtist") claimingArtist("claimingArtist"),
+        @SerialName(value = "owners") owners("owners"),
+    }
 
     /**
      * GET contentClaims/{id} Get single contentClaim. Retrieves single contentClaim by id.
@@ -55,8 +78,10 @@ interface ContentClaims {
      * - 503: Service temporarily unavailable
      *
      * @param id Content claim id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: claimedResource, claimingArtist, owners (optional)
+     * @param include Include related resources. Available relationships: claimedResource,
+     *   claimingArtist, owners (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: claimedResource (optional)
@@ -67,6 +92,7 @@ interface ContentClaims {
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<ContentClaimsSingleResourceDataDocument>
 
@@ -84,8 +110,7 @@ interface ContentClaims {
      * - 503: Service temporarily unavailable
      *
      * @param id Content claim id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: claimedResource (optional)
+     * @param include Include related resources. Available relationships: claimedResource (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: claimedResource (optional)
@@ -113,8 +138,7 @@ interface ContentClaims {
      * - 503: Service temporarily unavailable
      *
      * @param id Content claim id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: claimingArtist (optional)
+     * @param include Include related resources. Available relationships: claimingArtist (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: claimingArtist.albums (optional)
@@ -142,8 +166,7 @@ interface ContentClaims {
      * - 503: Service temporarily unavailable
      *
      * @param id Content claim id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners (optional)
+     * @param include Include related resources. Available relationships: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @return [ContentClaimsOwnersMultiRelationshipDataDocument]

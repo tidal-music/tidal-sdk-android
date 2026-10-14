@@ -1,5 +1,6 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.infrastructure.CollectionFormats.*
 import com.tidal.sdk.tidalapi.generated.models.InstallationsCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.InstallationsCreateSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.InstallationsMultiResourceDataDocument
@@ -15,6 +16,14 @@ import retrofit2.Response
 import retrofit2.http.*
 
 interface Installations {
+
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageInstallationsGet(val value: kotlin.String) {
+        @SerialName(value = "offlineInventory") offlineInventory("offlineInventory"),
+        @SerialName(value = "owners") owners("owners"),
+    }
+
     /**
      * GET installations Get multiple installations. Retrieves multiple installations by available
      * filters, or without if applicable. Responses:
@@ -30,12 +39,14 @@ interface Installations {
      *
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: offlineInventory, owners (optional)
+     * @param include Include related resources. Available relationships: offlineInventory, owners
+     *   (optional)
      * @param filterClientProvidedInstallationId Client-provided installation identifier to filter
      *   by (e.g. &#x60;a468bee88def&#x60;) (optional)
      * @param filterOwnersId User ID to filter by. Use &#x60;me&#x60; for the authenticated user
      *   (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: offlineInventory (optional)
@@ -53,8 +64,16 @@ interface Installations {
             null,
         @Query("filter[owners.id]")
         filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<InstallationsMultiResourceDataDocument>
+
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageInstallationsIdGet(val value: kotlin.String) {
+        @SerialName(value = "offlineInventory") offlineInventory("offlineInventory"),
+        @SerialName(value = "owners") owners("owners"),
+    }
 
     /**
      * GET installations/{id} Get single installation. Retrieves single installation by id.
@@ -70,8 +89,10 @@ interface Installations {
      * - 503: Service temporarily unavailable
      *
      * @param id Installation id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: offlineInventory, owners (optional)
+     * @param include Include related resources. Available relationships: offlineInventory, owners
+     *   (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: offlineInventory (optional)
@@ -82,6 +103,7 @@ interface Installations {
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<InstallationsSingleResourceDataDocument>
 
@@ -160,8 +182,8 @@ interface Installations {
      *   &#x60;tracks&#x60;)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: offlineInventory (optional)
+     * @param include Include related resources. Available relationships: offlineInventory
+     *   (optional)
      * @param filterId Offline item id (e.g. &#x60;1234&#x60;) (optional)
      * @param filterState One of: PENDING, STORED, FAILED (e.g. &#x60;PENDING&#x60;) (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
@@ -230,8 +252,7 @@ interface Installations {
      * - 503: Service temporarily unavailable
      *
      * @param id Installation id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners (optional)
+     * @param include Include related resources. Available relationships: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @return [InstallationsOwnersMultiRelationshipDataDocument]
