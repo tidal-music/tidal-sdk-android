@@ -6,6 +6,7 @@ import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.common.Timeline
+import androidx.media3.exoplayer.ExoPlaybackException
 import androidx.media3.exoplayer.analytics.AnalyticsListener.EventTime
 import assertk.assertThat
 import assertk.assertions.containsExactly
@@ -93,6 +94,11 @@ internal class ExoPlayerPlaybackEngineCrossfadeTest {
         }
     private val incomingMediaSource = mock<PlaybackInfoMediaSource>()
     private val internalHandler = mock<Handler>()
+    private val errorHandler = mock<ErrorHandler>()
+    private val extendedExoPlayerFactory =
+        mock<ExtendedExoPlayerFactory> {
+            on { it.create(any(), any()) }.doReturn(outgoing, incoming)
+        }
     private val testDispatcher = StandardTestDispatcher()
     private val eventSink = MutableSharedFlow<Event>(replay = 64)
     private var nowMs = FADE_START_MS
@@ -116,10 +122,6 @@ internal class ExoPlayerPlaybackEngineCrossfadeTest {
 
     @BeforeEach
     fun beforeEach() {
-        val extendedExoPlayerFactory =
-            mock<ExtendedExoPlayerFactory> {
-                on { it.create(any(), any()) }.doReturn(outgoing, incoming)
-            }
         whenever(internalHandler.post(any())).then {
             (it.arguments.single() as Runnable).run()
             true
@@ -138,7 +140,7 @@ internal class ExoPlayerPlaybackEngineCrossfadeTest {
                 volumeHelper,
                 trueTimeWrapper,
                 eventReporter,
-                mock<ErrorHandler>(),
+                errorHandler,
                 mock<DjSessionManager>(),
                 undeterminedPlaybackSessionResolver,
                 mock<OutputDeviceManager>(),
@@ -673,6 +675,31 @@ internal class ExoPlayerPlaybackEngineCrossfadeTest {
         assertThat(playbackEngine.reflectionExtendedExoPlayer).isSameInstanceAs(outgoing)
     }
 
+    @Test
+    fun aRendererErrorRetryKeepsAHeldNextItem() {
+        holdNext(otherMediaProduct)
+        val retryPlayer = retryPlayerForRendererError()
+
+        failWithRetryableRendererError()
+
+        verify(retryPlayer).load(argThat { delegate.productId == "1" })
+        verify(retryPlayer, never()).setNext(argThat { delegate === otherMediaProduct })
+        playbackEngine.crossfadeDurationMs = 0L
+        verify(retryPlayer).setNext(argThat { delegate === otherMediaProduct })
+    }
+
+    @Test
+    fun aRendererErrorRetryKeepsAPreloadedNextItem() {
+        val retryPlayer = retryPlayerForRendererError()
+
+        failWithRetryableRendererError()
+
+        verify(incoming).release()
+        verify(retryPlayer, never()).setNext(argThat { delegate === nextMediaProduct })
+        playbackEngine.crossfadeDurationMs = 0L
+        verify(retryPlayer).setNext(argThat { delegate === nextMediaProduct })
+    }
+
     /** The cancelled fade's incoming track ramps down alongside the volume recovery, then goes. */
     private fun assertFadedOutTheIncomingTrack() {
         assertThat(playbackEngine.reflectionExtendedExoPlayer).isSameInstanceAs(outgoing)
@@ -799,4 +826,51 @@ internal class ExoPlayerPlaybackEngineCrossfadeTest {
             playbackSessionId,
             null,
         )
+
+    private fun retryPlayerForRendererError(): ExtendedExoPlayer {
+        val retryPlayer =
+            mock<ExtendedExoPlayer> {
+                on { it.duration } doReturn C.TIME_UNSET
+                on { it.repeatMode } doReturn Player.REPEAT_MODE_OFF
+                on { it.currentStreamingSession } doReturn mock<StreamingSession.Explicit>()
+            }
+        whenever(retryPlayer.load(any())).then { mediaSourceFor(it.getArgument(0)) }
+        whenever(extendedExoPlayerFactory.create(any(), any())) doReturn retryPlayer
+        return retryPlayer
+    }
+
+    private fun failWithRetryableRendererError() {
+        val error = mock<ExoPlaybackException>()
+        error.reflectionSetType(ExoPlaybackException.TYPE_RENDERER)
+        whenever(errorHandler.getErrorEvent(any(), anyOrNull())) doReturn
+            Event.Error.Retryable("errorCode", null)
+        val timeline =
+            mock<Timeline> {
+                on { it.windowCount } doReturn 1
+                on { it.getWindow(eq(0), any()) } doReturn
+                    Timeline.Window()
+                        .set(
+                            Unit,
+                            MediaItem.Builder()
+                                .setMediaId(currentForwardingMediaProduct.hashCode().toString())
+                                .build(),
+                            null,
+                            -1L,
+                            -1L,
+                            -1L,
+                            false,
+                            false,
+                            null,
+                            -1L,
+                            TRACK_MS * 1_000L,
+                            -1,
+                            -1,
+                            -1L,
+                        )
+            }
+        playbackEngine.onPlayerError(
+            EventTime(-1, timeline, 0, null, 0L, Timeline.EMPTY, -1, null, -1, -1),
+            error,
+        )
+    }
 }
