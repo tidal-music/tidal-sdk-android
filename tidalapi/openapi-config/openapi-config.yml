@@ -21,3 +21,5 @@ files:
   Client.kt.mustache:
     templateType: SupportingFiles
     destinationFilename: src/main/kotlin/com/tidal/sdk/tidalapi/generated/ApiClient.kt
+typeMappings:
+  URI: kotlin.String

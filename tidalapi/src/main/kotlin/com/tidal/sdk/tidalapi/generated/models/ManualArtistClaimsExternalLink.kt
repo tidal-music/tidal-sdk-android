@@ -19,12 +19,9 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /** @param href */
 @Serializable
-data class ManualArtistClaimsExternalLink(
-    @Contextual @SerialName(value = "href") val href: java.net.URI
-) {}
+data class ManualArtistClaimsExternalLink(@SerialName(value = "href") val href: kotlin.String) {}

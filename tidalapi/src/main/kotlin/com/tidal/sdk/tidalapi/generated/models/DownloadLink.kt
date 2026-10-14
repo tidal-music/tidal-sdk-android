@@ -19,7 +19,6 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -31,6 +30,6 @@ import kotlinx.serialization.Serializable
 data class DownloadLink(
 
     /* URL to download the content from */
-    @Contextual @SerialName(value = "href") val href: java.net.URI,
+    @SerialName(value = "href") val href: kotlin.String,
     @SerialName(value = "meta") val meta: DownloadLinkMeta,
 ) {}
