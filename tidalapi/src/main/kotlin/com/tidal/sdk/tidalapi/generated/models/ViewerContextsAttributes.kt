@@ -19,7 +19,6 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -47,22 +46,28 @@ import kotlinx.serialization.Serializable
 data class ViewerContextsAttributes(
 
     /* The viewer has at least one existing comment on the subject; deleted historical comments do not count. Reserved; not currently populated and omitted from responses. Omission does not indicate that the relation is absent. */
-    @Contextual @SerialName(value = "hasCommentedOn") val hasCommentedOn: kotlin.Any? = null,
+    @SerialName(value = "hasCommentedOn")
+    val hasCommentedOn: kotlinx.serialization.json.JsonObject? = null,
 
     /* The viewer has the original subject in their normal collection. Present as an empty object when known present, otherwise omitted. Includes owned and saved playlists and saved mixes across folders; excludes Save for Later. */
-    @Contextual @SerialName(value = "hasInCollection") val hasInCollection: kotlin.Any? = null,
+    @SerialName(value = "hasInCollection")
+    val hasInCollection: kotlinx.serialization.json.JsonObject? = null,
 
     /* The viewer has a current qualifying purchase entitlement. Includes a track covered by its purchased album; excludes subscription access and free downloads. Reserved; not currently populated and omitted from responses. Omission does not indicate that the relation is absent. */
-    @Contextual @SerialName(value = "hasPurchased") val hasPurchased: kotlin.Any? = null,
+    @SerialName(value = "hasPurchased")
+    val hasPurchased: kotlinx.serialization.json.JsonObject? = null,
     @SerialName(value = "hasReactedTo") val hasReactedTo: Reaction? = null,
 
     /* The viewer has saved the subject for later. Reserved; not currently populated and omitted from responses. Omission does not indicate that the relation is absent. */
-    @Contextual @SerialName(value = "hasSavedForLater") val hasSavedForLater: kotlin.Any? = null,
+    @SerialName(value = "hasSavedForLater")
+    val hasSavedForLater: kotlinx.serialization.json.JsonObject? = null,
 
     /* The viewer is followed by the subject. Reserved; not currently populated and omitted from responses. Omission does not indicate that the relation is absent. */
-    @Contextual @SerialName(value = "isFollowedBy") val isFollowedBy: kotlin.Any? = null,
+    @SerialName(value = "isFollowedBy")
+    val isFollowedBy: kotlinx.serialization.json.JsonObject? = null,
 
     /* The viewer follows the subject. Reserved; not currently populated and omitted from responses. Omission does not indicate that the relation is absent. */
-    @Contextual @SerialName(value = "isFollowing") val isFollowing: kotlin.Any? = null,
+    @SerialName(value = "isFollowing")
+    val isFollowing: kotlinx.serialization.json.JsonObject? = null,
     @SerialName(value = "isGranteeOf") val isGranteeOf: Grantee? = null,
 ) {}
