@@ -24,9 +24,9 @@ import kotlinx.serialization.Serializable
 
 /**
  * @param currency ISO 4217 currency code
- * @param currentPrice Price amount with max 2 decimal places
+ * @param currentPrice Amount in the currency's major units
  * @param effectiveDate The date the new price takes effect
- * @param newPrice Price amount with max 2 decimal places
+ * @param newPrice Amount in the currency's major units
  */
 @Serializable
 data class UserSubscriptionPriceChangesAttributes(
@@ -34,12 +34,12 @@ data class UserSubscriptionPriceChangesAttributes(
     /* ISO 4217 currency code */
     @SerialName(value = "currency") val currency: kotlin.String,
 
-    /* Price amount with max 2 decimal places */
+    /* Amount in the currency's major units */
     @SerialName(value = "currentPrice") val currentPrice: kotlin.String,
 
     /* The date the new price takes effect */
     @SerialName(value = "effectiveDate") val effectiveDate: kotlin.String,
 
-    /* Price amount with max 2 decimal places */
+    /* Amount in the currency's major units */
     @SerialName(value = "newPrice") val newPrice: kotlin.String,
 ) {}

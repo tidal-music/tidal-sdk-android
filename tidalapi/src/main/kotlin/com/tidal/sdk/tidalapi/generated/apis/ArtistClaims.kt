@@ -1,5 +1,6 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.infrastructure.CollectionFormats.*
 import com.tidal.sdk.tidalapi.generated.models.ArtistClaimsAcceptedArtistsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistClaimsAcceptedArtistsRelationshipUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.ArtistClaimsCreateOperationPayload
@@ -10,10 +11,21 @@ import com.tidal.sdk.tidalapi.generated.models.ArtistClaimsRecommendedArtistsMul
 import com.tidal.sdk.tidalapi.generated.models.ArtistClaimsSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistClaimsUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.MutationResponseDocument
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface ArtistClaims {
+
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageArtistClaimsGet(val value: kotlin.String) {
+        @SerialName(value = "acceptedArtists") acceptedArtists("acceptedArtists"),
+        @SerialName(value = "owners") owners("owners"),
+        @SerialName(value = "recommendedArtists") recommendedArtists("recommendedArtists"),
+    }
+
     /**
      * GET artistClaims Get multiple artistClaims. Retrieves multiple artistClaims by available
      * filters, or without if applicable. Responses:
@@ -28,8 +40,10 @@ interface ArtistClaims {
      * - 503: Service temporarily unavailable
      *
      * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: acceptedArtists, owners, recommendedArtists (optional)
+     * @param include Include related resources. Available relationships: acceptedArtists, owners,
+     *   recommendedArtists (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: acceptedArtists.albums (optional)
@@ -41,6 +55,7 @@ interface ArtistClaims {
         filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<ArtistClaimsMultiResourceDataDocument>
 
@@ -70,6 +85,14 @@ interface ArtistClaims {
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
     ): Response<MutationResponseDocument>
 
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageArtistClaimsIdGet(val value: kotlin.String) {
+        @SerialName(value = "acceptedArtists") acceptedArtists("acceptedArtists"),
+        @SerialName(value = "owners") owners("owners"),
+        @SerialName(value = "recommendedArtists") recommendedArtists("recommendedArtists"),
+    }
+
     /**
      * GET artistClaims/{id} Get single artistClaim. Retrieves single artistClaim by id. Responses:
      * - 200: Successful response
@@ -83,8 +106,10 @@ interface ArtistClaims {
      * - 503: Service temporarily unavailable
      *
      * @param id Artist claim id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: acceptedArtists, owners, recommendedArtists (optional)
+     * @param include Include related resources. Available relationships: acceptedArtists, owners,
+     *   recommendedArtists (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: acceptedArtists.albums (optional)
@@ -95,6 +120,7 @@ interface ArtistClaims {
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<ArtistClaimsSingleResourceDataDocument>
 
@@ -140,8 +166,7 @@ interface ArtistClaims {
      * - 503: Service temporarily unavailable
      *
      * @param id Artist claim id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: acceptedArtists (optional)
+     * @param include Include related resources. Available relationships: acceptedArtists (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
@@ -204,8 +229,7 @@ interface ArtistClaims {
      * - 503: Service temporarily unavailable
      *
      * @param id Artist claim id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners (optional)
+     * @param include Include related resources. Available relationships: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @return [ArtistClaimsOwnersMultiRelationshipDataDocument]
@@ -232,8 +256,8 @@ interface ArtistClaims {
      * - 503: Service temporarily unavailable
      *
      * @param id Artist claim id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: recommendedArtists (optional)
+     * @param include Include related resources. Available relationships: recommendedArtists
+     *   (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in

@@ -23,19 +23,27 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
+ * @param backgroundColor Background colour override.
  * @param contributionsEnabled
  * @param contributionsSalesPitch
  * @param externalLinks
+ * @param foregroundColor Foreground colour override.
  * @param handle
  * @param name
  */
 @Serializable
 data class ArtistsUpdateOperationPayloadDataAttributes(
+
+    /* Background colour override. */
+    @SerialName(value = "backgroundColor") val backgroundColor: kotlin.String? = null,
     @SerialName(value = "contributionsEnabled") val contributionsEnabled: kotlin.Boolean? = null,
     @SerialName(value = "contributionsSalesPitch")
     val contributionsSalesPitch: kotlin.String? = null,
     @SerialName(value = "externalLinks")
     val externalLinks: kotlin.collections.List<ExternalLinkPayload>? = null,
+
+    /* Foreground colour override. */
+    @SerialName(value = "foregroundColor") val foregroundColor: kotlin.String? = null,
     @SerialName(value = "handle") val handle: kotlin.String? = null,
     @SerialName(value = "name") val name: kotlin.String? = null,
 ) {}

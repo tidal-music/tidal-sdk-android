@@ -24,7 +24,10 @@ import kotlinx.serialization.Serializable
 
 /**
  * @param code Share code
- * @param createdAt Datetime of share creation (ISO 8601)
+ * @param createdAt Time the share was created.
+ * @param expiresAt Time bearer access and acceptance expire. New shares expire seven days after
+ *   creation; accepted grants remain valid.
+ * @param role Role offered on the shared resource.
  * @param externalLinks Links external to TIDAL API
  */
 @Serializable
@@ -33,10 +36,28 @@ data class SharesAttributes(
     /* Share code */
     @SerialName(value = "code") val code: kotlin.String,
 
-    /* Datetime of share creation (ISO 8601) */
+    /* Time the share was created. */
     @SerialName(value = "createdAt") val createdAt: kotlin.String,
+
+    /* Time bearer access and acceptance expire. New shares expire seven days after creation; accepted grants remain valid. */
+    @SerialName(value = "expiresAt") val expiresAt: kotlin.String,
+
+    /* Role offered on the shared resource. */
+    @SerialName(value = "role") val role: SharesAttributes.Role,
 
     /* Links external to TIDAL API */
     @SerialName(value = "externalLinks")
     val externalLinks: kotlin.collections.List<ExternalLink>? = null,
-) {}
+) {
+
+    /**
+     * Role offered on the shared resource.
+     *
+     * Values: VIEWER,COLLABORATOR
+     */
+    @Serializable
+    enum class Role(val value: kotlin.String) {
+        @SerialName(value = "VIEWER") VIEWER("VIEWER"),
+        @SerialName(value = "COLLABORATOR") COLLABORATOR("COLLABORATOR"),
+    }
+}

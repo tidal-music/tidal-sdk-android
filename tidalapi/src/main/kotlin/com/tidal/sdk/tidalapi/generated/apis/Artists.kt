@@ -1,6 +1,9 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.infrastructure.CollectionFormats.*
 import com.tidal.sdk.tidalapi.generated.models.ArtistsAlbumsMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ArtistsBannerArtMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ArtistsBannerArtRelationshipUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.ArtistsBiographySingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistsClaimStatusSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistsCreateOperationPayload
@@ -8,6 +11,8 @@ import com.tidal.sdk.tidalapi.generated.models.ArtistsFollowersMultiRelationship
 import com.tidal.sdk.tidalapi.generated.models.ArtistsFollowingMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistsFollowingRelationshipAddOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.ArtistsFollowingRelationshipRemoveOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.ArtistsLogoArtMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ArtistsLogoArtRelationshipUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.ArtistsMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistsOwnersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtistsProfileArtMultiRelationshipDataDocument
@@ -27,6 +32,27 @@ import retrofit2.Response
 import retrofit2.http.*
 
 interface Artists {
+
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageArtistsGet(val value: kotlin.String) {
+        @SerialName(value = "albums") albums("albums"),
+        @SerialName(value = "bannerArt") bannerArt("bannerArt"),
+        @SerialName(value = "biography") biography("biography"),
+        @SerialName(value = "claimStatus") claimStatus("claimStatus"),
+        @SerialName(value = "followers") followers("followers"),
+        @SerialName(value = "following") following("following"),
+        @SerialName(value = "logoArt") logoArt("logoArt"),
+        @SerialName(value = "owners") owners("owners"),
+        @SerialName(value = "profileArt") profileArt("profileArt"),
+        @SerialName(value = "radio") radio("radio"),
+        @SerialName(value = "roles") roles("roles"),
+        @SerialName(value = "similarArtists") similarArtists("similarArtists"),
+        @SerialName(value = "trackProviders") trackProviders("trackProviders"),
+        @SerialName(value = "tracks") tracks("tracks"),
+        @SerialName(value = "videos") videos("videos"),
+    }
+
     /**
      * GET artists Get multiple artists. Retrieves multiple artists by available filters, or without
      * if applicable. Responses:
@@ -41,12 +67,14 @@ interface Artists {
      * - 503: Service temporarily unavailable
      *
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: albums, biography, claimStatus, followers, following, owners,
-     *   profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
+     * @param include Include related resources. Available relationships: albums, bannerArt,
+     *   biography, claimStatus, followers, following, logoArt, owners, profileArt, radio, roles,
+     *   similarArtists, trackProviders, tracks, videos (optional)
      * @param filterHandle Artist handle (e.g. &#x60;jayz&#x60;) (optional)
      * @param filterId List of artist IDs (e.g. &#x60;1566&#x60;) (optional)
      * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: albums (optional)
@@ -63,8 +91,29 @@ interface Artists {
         filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[owners.id]")
         filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<ArtistsMultiResourceDataDocument>
+
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageArtistsIdGet(val value: kotlin.String) {
+        @SerialName(value = "albums") albums("albums"),
+        @SerialName(value = "bannerArt") bannerArt("bannerArt"),
+        @SerialName(value = "biography") biography("biography"),
+        @SerialName(value = "claimStatus") claimStatus("claimStatus"),
+        @SerialName(value = "followers") followers("followers"),
+        @SerialName(value = "following") following("following"),
+        @SerialName(value = "logoArt") logoArt("logoArt"),
+        @SerialName(value = "owners") owners("owners"),
+        @SerialName(value = "profileArt") profileArt("profileArt"),
+        @SerialName(value = "radio") radio("radio"),
+        @SerialName(value = "roles") roles("roles"),
+        @SerialName(value = "similarArtists") similarArtists("similarArtists"),
+        @SerialName(value = "trackProviders") trackProviders("trackProviders"),
+        @SerialName(value = "tracks") tracks("tracks"),
+        @SerialName(value = "videos") videos("videos"),
+    }
 
     /**
      * GET artists/{id} Get single artist. Retrieves single artist by id. Responses:
@@ -80,9 +129,11 @@ interface Artists {
      *
      * @param id Artist id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: albums, biography, claimStatus, followers, following, owners,
-     *   profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
+     * @param include Include related resources. Available relationships: albums, bannerArt,
+     *   biography, claimStatus, followers, following, logoArt, owners, profileArt, radio, roles,
+     *   similarArtists, trackProviders, tracks, videos (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: albums (optional)
@@ -94,11 +145,13 @@ interface Artists {
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<ArtistsSingleResourceDataDocument>
 
     /**
-     * PATCH artists/{id} Update single artist. Updates existing artist. Responses:
+     * PATCH artists/{id} Update single artist. When both profile colours are available, they must
+     * have at least 3:1 contrast. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -142,8 +195,7 @@ interface Artists {
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: albums (optional)
+     * @param include Include related resources. Available relationships: albums (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: albums (optional)
@@ -160,6 +212,69 @@ interface Artists {
     ): Response<ArtistsAlbumsMultiRelationshipDataDocument>
 
     /**
+     * GET artists/{id}/relationships/bannerArt Get bannerArt relationship (\&quot;to-many\&quot;).
+     * Reads the selected header banner artwork. Responses:
+     * - 200: Successful response
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
+     * - 429: Rate limit exceeded
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
+     *
+     * @param id Artist id
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
+     * @param include Include related resources. Available relationships: bannerArt (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
+     * @return [ArtistsBannerArtMultiRelationshipDataDocument]
+     */
+    @GET("artists/{id}/relationships/bannerArt")
+    suspend fun artistsIdRelationshipsBannerArtGet(
+        @Path("id") id: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String? = null,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
+    ): Response<ArtistsBannerArtMultiRelationshipDataDocument>
+
+    /**
+     * PATCH artists/{id}/relationships/bannerArt Update bannerArt relationship
+     * (\&quot;to-many\&quot;). Selects one owned, attachable IMAGE artwork by ID, replacing the
+     * selection. Empty data clears the selection; null data and more than one entry are rejected.
+     * Returns an acknowledgement. Responses:
+     * - 200: Successful response
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 409: Request already in progress for this idempotency key
+     * - 415: Unsupported request media type or encoding
+     * - 422: Idempotency key reused with a different payload
+     * - 429: Rate limit exceeded
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
+     *
+     * @param id Artist id
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
+     * @param artistsBannerArtRelationshipUpdateOperationPayload (optional)
+     * @return [MutationResponseDocument]
+     */
+    @PATCH("artists/{id}/relationships/bannerArt")
+    suspend fun artistsIdRelationshipsBannerArtPatch(
+        @Path("id") id: kotlin.String,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
+        @Body
+        artistsBannerArtRelationshipUpdateOperationPayload:
+            ArtistsBannerArtRelationshipUpdateOperationPayload? =
+            null,
+    ): Response<MutationResponseDocument>
+
+    /**
      * GET artists/{id}/relationships/biography Get biography relationship (\&quot;to-one\&quot;).
      * Retrieves biography relationship. Responses:
      * - 200: Successful response
@@ -174,8 +289,7 @@ interface Artists {
      *
      * @param id Artist id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: biography (optional)
+     * @param include Include related resources. Available relationships: biography (optional)
      * @return [ArtistsBiographySingleRelationshipDataDocument]
      */
     @GET("artists/{id}/relationships/biography")
@@ -200,8 +314,7 @@ interface Artists {
      * - 503: Service temporarily unavailable
      *
      * @param id Artist id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: claimStatus (optional)
+     * @param include Include related resources. Available relationships: claimStatus (optional)
      * @return [ArtistsClaimStatusSingleRelationshipDataDocument]
      */
     @GET("artists/{id}/relationships/claimStatus")
@@ -228,8 +341,7 @@ interface Artists {
      * @param viewerContext (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: followers (optional)
+     * @param include Include related resources. Available relationships: followers (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: followers.albums (optional)
@@ -294,8 +406,7 @@ interface Artists {
      * @param viewerContext (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: following (optional)
+     * @param include Include related resources. Available relationships: following (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: following.albums (optional)
@@ -344,6 +455,69 @@ interface Artists {
     ): Response<MutationResponseDocument>
 
     /**
+     * GET artists/{id}/relationships/logoArt Get logoArt relationship (\&quot;to-many\&quot;).
+     * Reads the selected logo artwork. Responses:
+     * - 200: Successful response
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
+     * - 429: Rate limit exceeded
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
+     *
+     * @param id Artist id
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
+     * @param include Include related resources. Available relationships: logoArt (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
+     * @return [ArtistsLogoArtMultiRelationshipDataDocument]
+     */
+    @GET("artists/{id}/relationships/logoArt")
+    suspend fun artistsIdRelationshipsLogoArtGet(
+        @Path("id") id: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String? = null,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
+    ): Response<ArtistsLogoArtMultiRelationshipDataDocument>
+
+    /**
+     * PATCH artists/{id}/relationships/logoArt Update logoArt relationship (\&quot;to-many\&quot;).
+     * Selects one owned, attachable IMAGE artwork by ID, replacing the selection. Empty data clears
+     * the selection; null data and more than one entry are rejected. Returns an acknowledgement.
+     * Responses:
+     * - 200: Successful response
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 409: Request already in progress for this idempotency key
+     * - 415: Unsupported request media type or encoding
+     * - 422: Idempotency key reused with a different payload
+     * - 429: Rate limit exceeded
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
+     *
+     * @param id Artist id
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
+     *   duplicate key is sent with the same payload, the original response is replayed. If the
+     *   payload differs, a 422 error is returned. (optional)
+     * @param artistsLogoArtRelationshipUpdateOperationPayload (optional)
+     * @return [MutationResponseDocument]
+     */
+    @PATCH("artists/{id}/relationships/logoArt")
+    suspend fun artistsIdRelationshipsLogoArtPatch(
+        @Path("id") id: kotlin.String,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
+        @Body
+        artistsLogoArtRelationshipUpdateOperationPayload:
+            ArtistsLogoArtRelationshipUpdateOperationPayload? =
+            null,
+    ): Response<MutationResponseDocument>
+
+    /**
      * GET artists/{id}/relationships/owners Get owners relationship (\&quot;to-many\&quot;).
      * Retrieves owners relationship. Responses:
      * - 200: Successful response
@@ -357,8 +531,7 @@ interface Artists {
      * - 503: Service temporarily unavailable
      *
      * @param id Artist id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners (optional)
+     * @param include Include related resources. Available relationships: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @return [ArtistsOwnersMultiRelationshipDataDocument]
@@ -373,7 +546,7 @@ interface Artists {
 
     /**
      * GET artists/{id}/relationships/profileArt Get profileArt relationship
-     * (\&quot;to-many\&quot;). Retrieves profileArt relationship. Responses:
+     * (\&quot;to-many\&quot;). Reads the artist&#39;s avatar artwork. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -386,8 +559,7 @@ interface Artists {
      *
      * @param id Artist id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: profileArt (optional)
+     * @param include Include related resources. Available relationships: profileArt (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @return [ArtistsProfileArtMultiRelationshipDataDocument]
@@ -403,7 +575,7 @@ interface Artists {
 
     /**
      * PATCH artists/{id}/relationships/profileArt Update profileArt relationship
-     * (\&quot;to-many\&quot;). Updates profileArt relationship. Responses:
+     * (\&quot;to-many\&quot;). Updates the artist&#39;s avatar artwork. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -450,8 +622,7 @@ interface Artists {
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: radio (optional)
+     * @param include Include related resources. Available relationships: radio (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: radio.items (optional)
@@ -481,8 +652,7 @@ interface Artists {
      * - 503: Service temporarily unavailable
      *
      * @param id Artist id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: roles (optional)
+     * @param include Include related resources. Available relationships: roles (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @return [ArtistsRolesMultiRelationshipDataDocument]
@@ -512,8 +682,7 @@ interface Artists {
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: similarArtists (optional)
+     * @param include Include related resources. Available relationships: similarArtists (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: similarArtists.albums (optional)
@@ -545,8 +714,7 @@ interface Artists {
      * @param id Artist id
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: trackProviders (optional)
+     * @param include Include related resources. Available relationships: trackProviders (optional)
      * @return [ArtistsTrackProvidersMultiRelationshipDataDocument]
      */
     @GET("artists/{id}/relationships/trackProviders")
@@ -584,8 +752,7 @@ interface Artists {
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: tracks (optional)
+     * @param include Include related resources. Available relationships: tracks (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: tracks (optional)
@@ -619,8 +786,7 @@ interface Artists {
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: videos (optional)
+     * @param include Include related resources. Available relationships: videos (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: videos (optional)

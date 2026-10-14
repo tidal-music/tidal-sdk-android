@@ -19,22 +19,29 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.SerialName
+import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonContentPolymorphicSerializer
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
 
 /**
  * @param name
  * @param source
+ * @param commonTrackId
+ * @param lyricsId
  */
-interface LyricsProvider {
+@Serializable(with = LyricsProviderSerializer::class) sealed interface LyricsProvider
 
-    @SerialName(value = "name") val name: kotlin.String?
-    @SerialName(value = "source") val source: LyricsProvider.Source?
-
-    /** Values: TIDAL,THIRD_PARTY */
-    @Serializable
-    enum class Source(val value: kotlin.String) {
-        @SerialName(value = "TIDAL") TIDAL("TIDAL"),
-        @SerialName(value = "THIRD_PARTY") THIRD_PARTY("THIRD_PARTY"),
+object LyricsProviderSerializer :
+    JsonContentPolymorphicSerializer<LyricsProvider>(LyricsProvider::class) {
+    override fun selectDeserializer(element: JsonElement): DeserializationStrategy<LyricsProvider> {
+        val source = element.jsonObject["source"]?.jsonPrimitive?.content
+        return when (source) {
+            "THIRD_PARTY" -> ThirdPartyLyricsProvider.serializer()
+            "TIDAL" -> TidalLyricsProvider.serializer()
+            else -> throw IllegalArgumentException("Unknown LyricsProvider source: $source")
+        }
     }
 }

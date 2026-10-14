@@ -25,9 +25,11 @@ import kotlinx.serialization.Serializable
 /**
  * @param name Artist name
  * @param popularity Artist popularity (0.0 - 1.0)
+ * @param backgroundColor Artist profile background colour override
  * @param contributionsEnabled Is the artist enabled for contributions?
  * @param contributionsSalesPitch Contributions sales pitch
  * @param externalLinks Artist links external to TIDAL API
+ * @param foregroundColor Artist profile foreground colour override
  * @param handle Artist handle
  * @param numberOfFollowers Number of users in the followers relationship
  * @param ownerType Ownership type of the artist profile. LABEL: label-managed profile, USER:
@@ -44,6 +46,9 @@ data class ArtistsAttributes(
     /* Artist popularity (0.0 - 1.0) */
     @SerialName(value = "popularity") val popularity: kotlin.Double,
 
+    /* Artist profile background colour override */
+    @SerialName(value = "backgroundColor") val backgroundColor: kotlin.String? = null,
+
     /* Is the artist enabled for contributions? */
     @SerialName(value = "contributionsEnabled") val contributionsEnabled: kotlin.Boolean? = null,
 
@@ -54,6 +59,9 @@ data class ArtistsAttributes(
     /* Artist links external to TIDAL API */
     @SerialName(value = "externalLinks")
     val externalLinks: kotlin.collections.List<ExternalLink>? = null,
+
+    /* Artist profile foreground colour override */
+    @SerialName(value = "foregroundColor") val foregroundColor: kotlin.String? = null,
 
     /* Artist handle */
     @SerialName(value = "handle") val handle: kotlin.String? = null,

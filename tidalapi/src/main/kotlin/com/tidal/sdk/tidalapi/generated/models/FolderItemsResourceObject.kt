@@ -19,7 +19,6 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
@@ -39,6 +38,6 @@ data class FolderItemsResourceObject(
 
     /* Resource type */
     @Transient @SerialName(value = "type") val type: kotlin.String = "",
-    @Contextual @SerialName(value = "attributes") val attributes: kotlin.Any? = null,
+    @SerialName(value = "attributes") val attributes: FolderItemsAttributes? = null,
     @SerialName(value = "relationships") val relationships: FolderItemsRelationships? = null,
 ) : IncludedInner {}

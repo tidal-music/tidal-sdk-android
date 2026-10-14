@@ -25,7 +25,6 @@ import kotlinx.serialization.Serializable
 /**
  * @param trackNumber track number
  * @param volumeNumber volume number
- * @param itemCursor
  * @param replacement
  */
 @Serializable
@@ -36,6 +35,5 @@ data class AlbumsItemsResourceIdentifierMeta(
 
     /* volume number */
     @SerialName(value = "volumeNumber") val volumeNumber: kotlin.Int,
-    @SerialName(value = "itemCursor") val itemCursor: kotlin.String? = null,
     @SerialName(value = "replacement") val replacement: ReplacementProvenance? = null,
 ) {}

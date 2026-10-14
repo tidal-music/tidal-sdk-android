@@ -1,13 +1,23 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.infrastructure.CollectionFormats.*
 import com.tidal.sdk.tidalapi.generated.models.StripeConnectionsCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.StripeConnectionsCreateSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.StripeConnectionsMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.StripeConnectionsOwnersMultiRelationshipDataDocument
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface StripeConnections {
+
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageStripeConnectionsGet(val value: kotlin.String) {
+        @SerialName(value = "owners") owners("owners")
+    }
+
     /**
      * GET stripeConnections Get multiple stripeConnections. Retrieves multiple stripeConnections by
      * available filters, or without if applicable. Responses:
@@ -22,8 +32,9 @@ interface StripeConnections {
      * - 503: Service temporarily unavailable
      *
      * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners (optional)
+     * @param include Include related resources. Available relationships: owners (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @return [StripeConnectionsMultiResourceDataDocument]
      */
     @GET("stripeConnections")
@@ -32,6 +43,7 @@ interface StripeConnections {
         filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
     ): Response<StripeConnectionsMultiResourceDataDocument>
 
     /**
@@ -48,8 +60,7 @@ interface StripeConnections {
      * - 503: Service temporarily unavailable
      *
      * @param id Stripe connection id. Use &#x60;me&#x60; for the authenticated user&#39;s resource
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners (optional)
+     * @param include Include related resources. Available relationships: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @return [StripeConnectionsOwnersMultiRelationshipDataDocument]

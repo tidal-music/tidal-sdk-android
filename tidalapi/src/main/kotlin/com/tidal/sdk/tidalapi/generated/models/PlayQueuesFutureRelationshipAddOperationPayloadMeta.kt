@@ -28,6 +28,7 @@ import kotlinx.serialization.Serializable
  * @param batchId
  * @param legacySource
  * @param positionBefore
+ * @param source
  */
 @Serializable
 data class PlayQueuesFutureRelationshipAddOperationPayloadMeta(
@@ -35,6 +36,7 @@ data class PlayQueuesFutureRelationshipAddOperationPayloadMeta(
     @Contextual @SerialName(value = "batchId") val batchId: java.util.UUID? = null,
     @SerialName(value = "legacySource") val legacySource: LegacySource? = null,
     @SerialName(value = "positionBefore") val positionBefore: kotlin.String? = null,
+    @SerialName(value = "source") val source: PlayQueuesFutureRelationshipSource? = null,
 ) {
 
     /**
