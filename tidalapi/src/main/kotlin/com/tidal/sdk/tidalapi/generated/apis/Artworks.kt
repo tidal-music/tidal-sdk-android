@@ -1,14 +1,24 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.infrastructure.CollectionFormats.*
 import com.tidal.sdk.tidalapi.generated.models.ArtworksCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.ArtworksCreateSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtworksMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtworksOwnersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ArtworksSingleResourceDataDocument
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.*
 
 interface Artworks {
+
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageArtworksGet(val value: kotlin.String) {
+        @SerialName(value = "owners") owners("owners")
+    }
+
     /**
      * GET artworks Get multiple artworks. Retrieves multiple artworks by available filters, or
      * without if applicable. Responses:
@@ -24,8 +34,9 @@ interface Artworks {
      *
      * @param filterId Artwork id (e.g. &#x60;a468bee88def&#x60;)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners (optional)
+     * @param include Include related resources. Available relationships: owners (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @return [ArtworksMultiResourceDataDocument]
      */
     @GET("artworks")
@@ -34,7 +45,14 @@ interface Artworks {
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
     ): Response<ArtworksMultiResourceDataDocument>
+
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageArtworksIdGet(val value: kotlin.String) {
+        @SerialName(value = "owners") owners("owners")
+    }
 
     /**
      * GET artworks/{id} Get single artwork. Retrieves single artwork by id. Responses:
@@ -50,8 +68,9 @@ interface Artworks {
      *
      * @param id Artwork id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners (optional)
+     * @param include Include related resources. Available relationships: owners (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @return [ArtworksSingleResourceDataDocument]
      */
     @GET("artworks/{id}")
@@ -60,6 +79,7 @@ interface Artworks {
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
     ): Response<ArtworksSingleResourceDataDocument>
 
     /**
@@ -76,8 +96,7 @@ interface Artworks {
      * - 503: Service temporarily unavailable
      *
      * @param id Artwork id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners (optional)
+     * @param include Include related resources. Available relationships: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @return [ArtworksOwnersMultiRelationshipDataDocument]

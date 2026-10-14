@@ -1,5 +1,6 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.infrastructure.CollectionFormats.*
 import com.tidal.sdk.tidalapi.generated.models.CollaborationInviteRedemptionsCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.CollaborationInviteRedemptionsCreateSingleResourceDataDocument
 import retrofit2.Response
@@ -27,6 +28,7 @@ interface CollaborationInviteRedemptions {
      * @param collaborationInviteRedemptionsCreateOperationPayload (optional)
      * @return [CollaborationInviteRedemptionsCreateSingleResourceDataDocument]
      */
+    @Deprecated("This api was deprecated")
     @POST("collaborationInviteRedemptions")
     suspend fun collaborationInviteRedemptionsPost(
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,

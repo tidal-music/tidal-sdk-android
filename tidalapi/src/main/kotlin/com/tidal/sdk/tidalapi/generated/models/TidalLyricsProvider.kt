@@ -21,14 +21,20 @@ package com.tidal.sdk.tidalapi.generated.models
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.Transient
 
 /**
- * @param name
  * @param source
+ * @param name
  */
 @Serializable
 data class TidalLyricsProvider(
-    @SerialName(value = "name") override val name: kotlin.String? = null,
-    @Transient @SerialName(value = "source") override val source: LyricsProvider.Source? = null,
-) : LyricsAttributesProvider, LyricsProvider {}
+    @SerialName(value = "source") val source: TidalLyricsProvider.Source,
+    @SerialName(value = "name") val name: kotlin.String? = null,
+) : LyricsProvider {
+
+    /** Values: TIDAL */
+    @Serializable
+    enum class Source(val value: kotlin.String) {
+        @SerialName(value = "TIDAL") TIDAL("TIDAL")
+    }
+}

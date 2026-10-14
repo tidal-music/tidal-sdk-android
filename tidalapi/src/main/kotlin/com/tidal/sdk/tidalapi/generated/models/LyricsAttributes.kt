@@ -35,7 +35,7 @@ data class LyricsAttributes(
     @SerialName(value = "technicalStatus") val technicalStatus: LyricsAttributes.TechnicalStatus,
     @SerialName(value = "direction") val direction: LyricsAttributes.Direction? = null,
     @SerialName(value = "lrcText") val lrcText: kotlin.String? = null,
-    @Contextual @SerialName(value = "provider") val provider: LyricsAttributesProvider? = null,
+    @Contextual @SerialName(value = "provider") val provider: LyricsProvider? = null,
     @SerialName(value = "text") val text: kotlin.String? = null,
 ) {
 

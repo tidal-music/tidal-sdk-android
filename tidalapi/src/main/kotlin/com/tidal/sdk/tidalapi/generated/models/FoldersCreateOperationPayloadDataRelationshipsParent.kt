@@ -22,8 +22,8 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param itemCursor */
+/** @param `data` */
 @Serializable
-data class PlayQueuesFutureRelationshipAddOperationPayloadDataMeta(
-    @SerialName(value = "itemCursor") val itemCursor: kotlin.String? = null
+data class FoldersCreateOperationPayloadDataRelationshipsParent(
+    @SerialName(value = "data") val `data`: FoldersParentIdentifier
 ) {}

@@ -23,12 +23,15 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
+ * @param breadcrumb
  * @param owners
  * @param parent
  * @param subject
  */
 @Serializable
 data class FolderItemsRelationships(
+    @SerialName(value = "breadcrumb")
+    val breadcrumb: FolderItemsBreadcrumbMultiRelationshipDataDocument? = null,
     @SerialName(value = "owners")
     val owners: FolderItemsOwnersMultiRelationshipDataDocument? = null,
     @SerialName(value = "parent")

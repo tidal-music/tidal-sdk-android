@@ -1,5 +1,6 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
+import com.tidal.sdk.tidalapi.generated.infrastructure.CollectionFormats.*
 import com.tidal.sdk.tidalapi.generated.models.AcceptedTermsCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.AcceptedTermsCreateSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.AcceptedTermsMultiResourceDataDocument
@@ -22,6 +23,13 @@ interface AcceptedTerms {
         TIDAL_CONNECT_DEVELOPER("TIDAL_CONNECT_DEVELOPER"),
     }
 
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageAcceptedTermsGet(val value: kotlin.String) {
+        @SerialName(value = "owners") owners("owners"),
+        @SerialName(value = "terms") terms("terms"),
+    }
+
     /**
      * GET acceptedTerms Get multiple acceptedTerms. Retrieves multiple acceptedTerms by available
      * filters, or without if applicable. Responses:
@@ -38,9 +46,10 @@ interface AcceptedTerms {
      * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user
      * @param filterTermsTermsType One of: DEVELOPER, UPLOAD_MARKETPLACE, MERCH_GUIDELINES,
      *   TIDAL_CONNECT_DEVELOPER (e.g. &#x60;DEVELOPER&#x60;)
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners, terms (optional)
+     * @param include Include related resources. Available relationships: owners, terms (optional)
      * @param filterTermsIsLatestVersion Filter by terms.isLatestVersion (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
      * @return [AcceptedTermsMultiResourceDataDocument]
      */
     @GET("acceptedTerms")
@@ -54,6 +63,7 @@ interface AcceptedTerms {
         @Query("filter[terms.isLatestVersion]")
         filterTermsIsLatestVersion: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? =
             null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
     ): Response<AcceptedTermsMultiResourceDataDocument>
 
     /**
@@ -70,8 +80,7 @@ interface AcceptedTerms {
      * - 503: Service temporarily unavailable
      *
      * @param id Accepted terms id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: owners (optional)
+     * @param include Include related resources. Available relationships: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
      * @return [AcceptedTermsOwnersMultiRelationshipDataDocument]
@@ -98,8 +107,7 @@ interface AcceptedTerms {
      * - 503: Service temporarily unavailable
      *
      * @param id Accepted terms id
-     * @param include Allows the client to customize which related resources should be returned.
-     *   Available options: terms (optional)
+     * @param include Include related resources. Available relationships: terms (optional)
      * @return [AcceptedTermsTermsSingleRelationshipDataDocument]
      */
     @GET("acceptedTerms/{id}/relationships/terms")
