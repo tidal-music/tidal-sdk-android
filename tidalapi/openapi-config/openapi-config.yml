@@ -23,3 +23,14 @@ files:
     destinationFilename: src/main/kotlin/com/tidal/sdk/tidalapi/generated/ApiClient.kt
 typeMappings:
   URI: kotlin.String
+  UUID: kotlin.String
+  object: JsonObject
+  AnyType: JsonElement
+importMappings:
+  JsonObject: kotlinx.serialization.json.JsonObject
+  JsonElement: kotlinx.serialization.json.JsonElement
+languageSpecificPrimitives:
+  - JsonObject
+  - JsonElement
+  - kotlinx.serialization.json.JsonObject
+  - kotlinx.serialization.json.JsonElement

@@ -19,7 +19,6 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -31,7 +30,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ArtistClaimsUpdateOperationPayloadData(
     @SerialName(value = "type") val type: ArtistClaimsUpdateOperationPayloadData.Type,
-    @Contextual @SerialName(value = "attributes") val attributes: kotlin.Any? = null,
+    @SerialName(value = "attributes") val attributes: kotlinx.serialization.json.JsonObject? = null,
     @SerialName(value = "id") val id: kotlin.String? = null,
 ) {
 
