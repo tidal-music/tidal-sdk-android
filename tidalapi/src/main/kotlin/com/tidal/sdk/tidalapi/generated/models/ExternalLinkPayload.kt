@@ -19,7 +19,6 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -30,5 +29,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ExternalLinkPayload(
     @SerialName(value = "meta") val meta: ExternalLinkMeta,
-    @Contextual @SerialName(value = "href") val href: java.net.URI? = null,
+    @SerialName(value = "href") val href: kotlin.String? = null,
 ) {}

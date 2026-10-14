@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.60] - 2026-10-14
+### Fixed
+- Generate `format: uri` strings as `kotlin.String`; 0.3.59 typed them as `java.net.URI` without a registered serializer, so decoding artwork files and links failed
+- Decode `LyricsProvider` and `UserFeedItemActivityDetails` by their own discriminator (generator tidal-SNAPSHOT-2026-10-14), covered by a round-trip test
+
 ## [0.3.59] - 2026-10-14
 ### Changed
 - Updated generated code using api spec version 1.10.167
