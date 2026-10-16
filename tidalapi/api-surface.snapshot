@@ -1,5 +1,5 @@
 # TIDAL API Surface Snapshot
-# Spec version: 1.10.167 | Endpoints: 390 | Models: 1192
+# Spec version: 1.10.177 | Endpoints: 390 | Models: 1203
 
 ## Endpoints
 
@@ -3658,18 +3658,43 @@ PlayQueuesFutureRelationshipUpdateOperation_Payload_Data_Meta
 PlayQueuesFutureRelationshipUpdateOperation_Payload_Meta
   positionBefore: string (required)
 
+PlayQueuesUpdateOperation_Current
+  meta: PlayQueuesUpdateOperation_Current_Meta (required)
+
+PlayQueuesUpdateOperation_Current_Meta
+  mode: enum[FIRST_FUTURE_ITEM, ITEM] (required)
+  itemId: string (optional)
+
+PlayQueuesUpdateOperation_Future
+  data: array[PlayQueuesUpdateOperation_Future_Data] (required)
+  meta: PlayQueuesUpdateOperation_Future_Meta (required)
+
+PlayQueuesUpdateOperation_Future_Data
+  id: string (required)
+  type: enum[tracks, videos] (required)
+
+PlayQueuesUpdateOperation_Future_Meta
+  mode: enum[ADD_TO_FRONT, ADD_TO_BACK, ADD_BEFORE, REPLACE_ALL] (required)
+  positionBefore: string (optional)
+  source: PlayQueuesFutureRelationshipSource (optional)
+
 PlayQueuesUpdateOperation_Payload
   data: PlayQueuesUpdateOperation_Payload_Data (required)
 
 PlayQueuesUpdateOperation_Payload_Data
-  attributes: PlayQueuesUpdateOperation_Payload_Data_Attributes (required)
   id: string (required)
   type: enum[playQueues] (required)
+  attributes: PlayQueuesUpdateOperation_Payload_Data_Attributes (optional)
+  relationships: PlayQueuesUpdateOperation_Payload_Data_Relationships (optional)
 
 PlayQueuesUpdateOperation_Payload_Data_Attributes
   repeat: enum[NONE, ONE, BATCH] (optional)
   shuffle: enum[OFF, BATCH, ALL] (optional)
   shuffled: boolean (optional)
+
+PlayQueuesUpdateOperation_Payload_Data_Relationships
+  current: PlayQueuesUpdateOperation_Current (optional)
+  future: PlayQueuesUpdateOperation_Future (optional)
 
 PlayQueues_Attributes
   createdAt: string(date-time) (required)
@@ -4766,7 +4791,7 @@ SharesCreateOperation_Payload_Data_Relationships_SharedResources
 
 SharesCreateOperation_Payload_Data_Relationships_SharedResources_Data
   id: string (required)
-  type: enum[tracks, albums, playlists] (required)
+  type: enum[tracks, albums, playlists, folders] (required)
 
 Shares_Attributes
   code: string (required)
@@ -6211,7 +6236,10 @@ UserDiscoveryMixes_Single_Resource_Data_Document
   included: Included (optional)
 
 UserFeedItemActivityDetails
-  oneOf: UserFeedItemAlbumReleasedDetails, UserFeedItemAlbumSharedDetails, UserFeedItemArtistFollowedDetails, UserFeedItemCommentRepliedDetails, UserFeedItemCopyrightFlaggedDetails, UserFeedItemPlaylistUpdatedDetails, UserFeedItemTrackSourceFileCommentedDetails
+  oneOf: UserFeedItemAlbumFavouritedDetails, UserFeedItemAlbumReleasedDetails, UserFeedItemAlbumSharedDetails, UserFeedItemArtistFollowedDetails, UserFeedItemCommentRepliedDetails, UserFeedItemCopyrightFlaggedDetails, UserFeedItemHistoryMixReadyDetails, UserFeedItemPlaylistUpdatedDetails, UserFeedItemTrackFavouritedDetails, UserFeedItemTrackPlaylistedDetails, UserFeedItemTrackPlayMilestoneDetails, UserFeedItemTrackSourceFileCommentedDetails
+
+UserFeedItemAlbumFavouritedDetails
+  activityType: enum[ALBUM_FAVOURITED] (required)
 
 UserFeedItemAlbumReleasedDetails
   activityType: enum[ALBUM_RELEASED] (required)
@@ -6230,9 +6258,24 @@ UserFeedItemCopyrightFlaggedDetails
   activityType: enum[COPYRIGHT_FLAGGED] (required)
   matchCount: integer(int32) (optional)
 
+UserFeedItemHistoryMixReadyDetails
+  activityType: enum[HISTORY_MIX_READY] (required)
+  frequency: enum[MONTHLY, YEARLY] (required)
+  period: string (required)
+
 UserFeedItemPlaylistUpdatedDetails
   activityType: enum[PLAYLIST_UPDATED] (required)
   newItemCount: integer(int32) (optional)
+
+UserFeedItemTrackFavouritedDetails
+  activityType: enum[TRACK_FAVOURITED] (required)
+
+UserFeedItemTrackPlayMilestoneDetails
+  activityType: enum[TRACK_PLAY_MILESTONE] (required)
+  threshold: integer(int32) (required)
+
+UserFeedItemTrackPlaylistedDetails
+  activityType: enum[TRACK_PLAYLISTED] (required)
 
 UserFeedItemTrackSourceFileCommentedDetails
   activityType: enum[TRACK_SOURCE_FILE_COMMENTED] (required)

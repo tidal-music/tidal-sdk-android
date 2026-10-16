@@ -23,8 +23,8 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * The viewer's effective role for the subject. Reserved; not currently populated and omitted from
- * responses. Omission does not indicate that the relation is absent.
+ * The viewer's effective role for the subject. Populated for albums, tracks and folders; omitted
+ * for other subject types.
  *
  * @param role Effective role.
  */

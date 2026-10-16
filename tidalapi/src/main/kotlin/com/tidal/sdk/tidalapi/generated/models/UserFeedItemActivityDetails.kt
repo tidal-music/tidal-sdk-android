@@ -30,6 +30,10 @@ import kotlinx.serialization.json.jsonPrimitive
  * Details of the activity represented by the group.
  *
  * @param activityType Type of activity represented by the group
+ * @param frequency Recurrence frequency defined by RFC 5545
+ * @param period The calendar period the mix covers: `YYYY-MM` for a `MONTHLY` mix, `YYYY` for a
+ *   `YEARLY` one
+ * @param threshold The total play count the track reached
  * @param releaseSource How the album was supplied to TIDAL
  * @param matchCount Number of copyright matches found for the upload
  * @param newItemCount Number of items added to the playlist
@@ -46,12 +50,17 @@ object UserFeedItemActivityDetailsSerializer :
     ): DeserializationStrategy<UserFeedItemActivityDetails> {
         val activityType = element.jsonObject["activityType"]?.jsonPrimitive?.content
         return when (activityType) {
+            "ALBUM_FAVOURITED" -> UserFeedItemAlbumFavouritedDetails.serializer()
             "ALBUM_RELEASED" -> UserFeedItemAlbumReleasedDetails.serializer()
             "ALBUM_SHARED" -> UserFeedItemAlbumSharedDetails.serializer()
             "ARTIST_FOLLOWED" -> UserFeedItemArtistFollowedDetails.serializer()
             "COMMENT_REPLIED" -> UserFeedItemCommentRepliedDetails.serializer()
             "COPYRIGHT_FLAGGED" -> UserFeedItemCopyrightFlaggedDetails.serializer()
+            "HISTORY_MIX_READY" -> UserFeedItemHistoryMixReadyDetails.serializer()
             "PLAYLIST_UPDATED" -> UserFeedItemPlaylistUpdatedDetails.serializer()
+            "TRACK_FAVOURITED" -> UserFeedItemTrackFavouritedDetails.serializer()
+            "TRACK_PLAYLISTED" -> UserFeedItemTrackPlaylistedDetails.serializer()
+            "TRACK_PLAY_MILESTONE" -> UserFeedItemTrackPlayMilestoneDetails.serializer()
             "TRACK_SOURCE_FILE_COMMENTED" ->
                 UserFeedItemTrackSourceFileCommentedDetails.serializer()
             else ->

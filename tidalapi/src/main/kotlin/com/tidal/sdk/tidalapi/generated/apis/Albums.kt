@@ -87,8 +87,7 @@ interface Albums {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: artists.albums (optional)
-     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
-     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [AlbumsMultiResourceDataDocument]
      */
     @GET("albums")
@@ -175,8 +174,7 @@ interface Albums {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: artists.albums (optional)
-     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
-     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [AlbumsSingleResourceDataDocument]
      */
     @GET("albums/{id}")
@@ -233,8 +231,7 @@ interface Albums {
      *
      * @param id Album id
      * @param include Include related resources. Available relationships: albumStatistics (optional)
-     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
-     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [AlbumsAlbumStatisticsSingleRelationshipDataDocument]
      */
     @GET("albums/{id}/relationships/albumStatistics")
@@ -266,8 +263,7 @@ interface Albums {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: artists.albums (optional)
-     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
-     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [AlbumsArtistsMultiRelationshipDataDocument]
      */
     @GET("albums/{id}/relationships/artists")
@@ -299,8 +295,7 @@ interface Albums {
      *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Include related resources. Available relationships: coverArt (optional)
-     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
-     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [AlbumsCoverArtMultiRelationshipDataDocument]
      */
     @GET("albums/{id}/relationships/coverArt")
@@ -363,8 +358,7 @@ interface Albums {
      *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Include related resources. Available relationships: genres (optional)
-     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
-     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [AlbumsGenresMultiRelationshipDataDocument]
      */
     @GET("albums/{id}/relationships/genres")
@@ -398,8 +392,7 @@ interface Albums {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: items (optional)
-     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
-     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [AlbumsItemsMultiRelationshipDataDocument]
      */
     @GET("albums/{id}/relationships/items")
@@ -462,8 +455,7 @@ interface Albums {
      * @param include Include related resources. Available relationships: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
-     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [AlbumsOwnersMultiRelationshipDataDocument]
      */
     @GET("albums/{id}/relationships/owners")
@@ -491,8 +483,7 @@ interface Albums {
      * @param id Album id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Include related resources. Available relationships: priceConfig (optional)
-     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
-     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [AlbumsPriceConfigSingleRelationshipDataDocument]
      */
     @GET("albums/{id}/relationships/priceConfig")
@@ -522,8 +513,7 @@ interface Albums {
      * @param include Include related resources. Available relationships: providers (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
-     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [AlbumsProvidersMultiRelationshipDataDocument]
      */
     @GET("albums/{id}/relationships/providers")
@@ -555,8 +545,7 @@ interface Albums {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: replacement (optional)
-     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
-     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [AlbumsReplacementSingleRelationshipDataDocument]
      */
     @GET("albums/{id}/relationships/replacement")
@@ -589,8 +578,7 @@ interface Albums {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: shares.sharedResources (optional)
-     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
-     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [AlbumsSharesMultiRelationshipDataDocument]
      */
     @GET("albums/{id}/relationships/shares")
@@ -624,8 +612,7 @@ interface Albums {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: similarAlbums (optional)
-     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
-     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [AlbumsSimilarAlbumsMultiRelationshipDataDocument]
      */
     @GET("albums/{id}/relationships/similarAlbums")
@@ -657,8 +644,7 @@ interface Albums {
      *   (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
-     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [AlbumsSuggestedCoverArtsMultiRelationshipDataDocument]
      */
     @GET("albums/{id}/relationships/suggestedCoverArts")
@@ -686,8 +672,7 @@ interface Albums {
      * @param id Album id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Include related resources. Available relationships: usageRules (optional)
-     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
-     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [AlbumsUsageRulesSingleRelationshipDataDocument]
      */
     @GET("albums/{id}/relationships/usageRules")
