@@ -64,7 +64,10 @@ interface UserFeedItems {
 
     /**
      * GET userFeedItems/{id}/relationships/actors Get actors relationship (\&quot;to-many\&quot;).
-     * Artists attributed to the activity. Responses:
+     * Artists attributed to the activity. Always empty for &#x60;ALBUM_FAVOURITED&#x60;,
+     * &#x60;TRACK_FAVOURITED&#x60; and &#x60;TRACK_PLAYLISTED&#x60;, which are counts only, and for
+     * &#x60;HISTORY_MIX_READY&#x60; and &#x60;TRACK_PLAY_MILESTONE&#x60;, which nobody else acted
+     * on. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -95,7 +98,8 @@ interface UserFeedItems {
 
     /**
      * GET userFeedItems/{id}/relationships/subject Get subject relationship (\&quot;to-one\&quot;).
-     * The resource the activity concerns. Responses:
+     * The resource the activity concerns. For &#x60;HISTORY_MIX_READY&#x60;, the viewer&#39;s
+     * history mix as a playlist. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

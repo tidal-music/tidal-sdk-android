@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.61] - 2026-10-16
+### Changed
+- Updated generated code using api spec version 1.10.177
+
 ## [0.3.60] - 2026-10-14
 ### Fixed
 - Generate `format: uri` strings as `kotlin.String`; 0.3.59 typed them as `java.net.URI` without a registered serializer, so decoding artwork files and links failed

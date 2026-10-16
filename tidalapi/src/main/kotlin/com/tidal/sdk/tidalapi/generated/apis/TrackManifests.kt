@@ -62,8 +62,7 @@ interface TrackManifests {
      * @param uriScheme
      * @param usage
      * @param adaptive
-     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
-     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [TrackManifestsSingleResourceDataDocument]
      */
     @GET("trackManifests/{id}")

@@ -97,8 +97,7 @@ interface Tracks {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: albums (optional)
-     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
-     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [TracksMultiResourceDataDocument]
      */
     @GET("tracks")
@@ -191,8 +190,7 @@ interface Tracks {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: albums (optional)
-     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
-     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [TracksSingleResourceDataDocument]
      */
     @GET("tracks/{id}")
@@ -255,8 +253,7 @@ interface Tracks {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: albums (optional)
-     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
-     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [TracksAlbumsMultiRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/albums")
@@ -323,8 +320,7 @@ interface Tracks {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: artists.albums (optional)
-     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
-     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [TracksArtistsMultiRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/artists")
@@ -358,8 +354,7 @@ interface Tracks {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: credits.artist.albums (optional)
-     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
-     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [TracksCreditsMultiRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/credits")
@@ -387,8 +382,7 @@ interface Tracks {
      *
      * @param id Track id
      * @param include Include related resources. Available relationships: download (optional)
-     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
-     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [TracksDownloadSingleRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/download")
@@ -417,8 +411,7 @@ interface Tracks {
      * @param include Include related resources. Available relationships: genres (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
-     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [TracksGenresMultiRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/genres")
@@ -451,8 +444,7 @@ interface Tracks {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: lyrics.track (optional)
-     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
-     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [TracksLyricsMultiRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/lyrics")
@@ -480,8 +472,7 @@ interface Tracks {
      *
      * @param id Track id
      * @param include Include related resources. Available relationships: metadataStatus (optional)
-     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
-     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [TracksMetadataStatusSingleRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/metadataStatus")
@@ -509,8 +500,7 @@ interface Tracks {
      * @param include Include related resources. Available relationships: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
-     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [TracksOwnersMultiRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/owners")
@@ -538,8 +528,7 @@ interface Tracks {
      * @param id Track id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Include related resources. Available relationships: priceConfig (optional)
-     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
-     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [TracksPriceConfigSingleRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/priceConfig")
@@ -569,8 +558,7 @@ interface Tracks {
      * @param include Include related resources. Available relationships: providers (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
-     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [TracksProvidersMultiRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/providers")
@@ -603,8 +591,7 @@ interface Tracks {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: radio.items (optional)
-     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
-     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [TracksRadioMultiRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/radio")
@@ -636,8 +623,7 @@ interface Tracks {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: replacement (optional)
-     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
-     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [TracksReplacementSingleRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/replacement")
@@ -670,8 +656,7 @@ interface Tracks {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: shares.sharedResources (optional)
-     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
-     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [TracksSharesMultiRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/shares")
@@ -705,8 +690,7 @@ interface Tracks {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: similarTracks (optional)
-     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
-     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [TracksSimilarTracksMultiRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/similarTracks")
@@ -735,8 +719,7 @@ interface Tracks {
      *
      * @param id Track id
      * @param include Include related resources. Available relationships: sourceFile (optional)
-     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
-     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [TracksSourceFileSingleRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/sourceFile")
@@ -768,8 +751,7 @@ interface Tracks {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: suggestedTracks (optional)
-     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
-     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [TracksSuggestedTracksMultiRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/suggestedTracks")
@@ -798,8 +780,7 @@ interface Tracks {
      *
      * @param id Track id
      * @param include Include related resources. Available relationships: trackStatistics (optional)
-     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
-     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [TracksTrackStatisticsSingleRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/trackStatistics")
@@ -826,8 +807,7 @@ interface Tracks {
      * @param id Track id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Include related resources. Available relationships: usageRules (optional)
-     * @param shareCode Share code that grants access to UNLISTED resources. When provided, allows
-     *   non-owners to access resources that would otherwise be restricted. (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [TracksUsageRulesSingleRelationshipDataDocument]
      */
     @GET("tracks/{id}/relationships/usageRules")

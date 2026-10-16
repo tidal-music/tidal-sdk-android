@@ -141,7 +141,8 @@ interface PlayQueues {
     ): Response<PlayQueuesSingleResourceDataDocument>
 
     /**
-     * PATCH playQueues/{id} Update single playQueue. Updates existing playQueue. Responses:
+     * PATCH playQueues/{id} Update single playQueue. Atomically applies attributes, future items,
+     * then current selection. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
