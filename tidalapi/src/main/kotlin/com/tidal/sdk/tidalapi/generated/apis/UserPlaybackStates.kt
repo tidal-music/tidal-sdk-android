@@ -75,16 +75,16 @@ interface UserPlaybackStates {
      * - 406: No acceptable response media type
      * - 409: Request already in progress for this idempotency key
      * - 415: Unsupported request media type or encoding
-     * - 422: Idempotency key reused with a different payload
+     * - 422: Idempotency key reused for a different request
      * - 429: Rate limit exceeded
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
      * @param id User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s
      *   resource
-     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
-     *   duplicate key is sent with the same payload, the original response is replayed. If the
-     *   payload differs, a 422 error is returned. (optional)
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If the same
+     *   caller repeats a key with the same method, path, query and payload, the original response
+     *   is replayed. If the request differs, a 422 error is returned. (optional)
      * @param userPlaybackStatesUpdateOperationPayload (optional)
      * @return [UserPlaybackStatesUpdateSingleResourceDataDocument]
      */
@@ -135,16 +135,16 @@ interface UserPlaybackStates {
      * - 406: No acceptable response media type
      * - 409: Request already in progress for this idempotency key
      * - 415: Unsupported request media type or encoding
-     * - 422: Idempotency key reused with a different payload
+     * - 422: Idempotency key reused for a different request
      * - 429: Rate limit exceeded
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
      * @param id User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s
      *   resource
-     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
-     *   duplicate key is sent with the same payload, the original response is replayed. If the
-     *   payload differs, a 422 error is returned. (optional)
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If the same
+     *   caller repeats a key with the same method, path, query and payload, the original response
+     *   is replayed. If the request differs, a 422 error is returned. (optional)
      * @param userPlaybackStatesActivePlayerRelationshipUpdateOperationPayload (optional)
      * @return [UserPlaybackStatesActivePlayerUpdateSingleRelationshipDataDocument]
      */
@@ -169,16 +169,16 @@ interface UserPlaybackStates {
      * - 406: No acceptable response media type
      * - 409: Request already in progress for this idempotency key
      * - 415: Unsupported request media type or encoding
-     * - 422: Idempotency key reused with a different payload
+     * - 422: Idempotency key reused for a different request
      * - 429: Rate limit exceeded
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
      * @param id User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s
      *   resource
-     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
-     *   duplicate key is sent with the same payload, the original response is replayed. If the
-     *   payload differs, a 422 error is returned. (optional)
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If the same
+     *   caller repeats a key with the same method, path, query and payload, the original response
+     *   is replayed. If the request differs, a 422 error is returned. (optional)
      * @param userPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload (optional)
      * @return [MutationResponseDocument]
      */
@@ -240,16 +240,16 @@ interface UserPlaybackStates {
      * - 406: No acceptable response media type
      * - 409: Request already in progress for this idempotency key
      * - 415: Unsupported request media type or encoding
-     * - 422: Idempotency key reused with a different payload
+     * - 422: Idempotency key reused for a different request
      * - 429: Rate limit exceeded
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
      * @param id User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s
      *   resource
-     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
-     *   duplicate key is sent with the same payload, the original response is replayed. If the
-     *   payload differs, a 422 error is returned. (optional)
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If the same
+     *   caller repeats a key with the same method, path, query and payload, the original response
+     *   is replayed. If the request differs, a 422 error is returned. (optional)
      * @param userPlaybackStatesAvailablePlayersRelationshipAddOperationPayload (optional)
      * @return [UserPlaybackStatesAvailablePlayersAddMultiRelationshipDataDocument]
      */
@@ -327,16 +327,16 @@ interface UserPlaybackStates {
      * - 406: No acceptable response media type
      * - 409: Request already in progress for this idempotency key
      * - 415: Unsupported request media type or encoding
-     * - 422: Idempotency key reused with a different payload
+     * - 422: Idempotency key reused for a different request
      * - 429: Rate limit exceeded
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
      * @param id User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s
      *   resource
-     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
-     *   duplicate key is sent with the same payload, the original response is replayed. If the
-     *   payload differs, a 422 error is returned. (optional)
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If the same
+     *   caller repeats a key with the same method, path, query and payload, the original response
+     *   is replayed. If the request differs, a 422 error is returned. (optional)
      * @param userPlaybackStatesPlayQueueRelationshipUpdateOperationPayload (optional)
      * @return [UserPlaybackStatesPlayQueueUpdateSingleRelationshipDataDocument]
      */

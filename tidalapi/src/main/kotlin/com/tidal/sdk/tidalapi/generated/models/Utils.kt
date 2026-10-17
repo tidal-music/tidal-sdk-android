@@ -20,6 +20,14 @@ fun getOneOfSerializer() = SerializersModule {
         )
         subclass(ArtistClaimsResourceObject::class, ArtistClaimsResourceObject.serializer())
         subclass(ArtistRolesResourceObject::class, ArtistRolesResourceObject.serializer())
+        subclass(
+            ArtistSalesStatisticsResourceObject::class,
+            ArtistSalesStatisticsResourceObject.serializer(),
+        )
+        subclass(
+            ArtistStreamsStatisticsResourceObject::class,
+            ArtistStreamsStatisticsResourceObject.serializer(),
+        )
         subclass(ArtistsResourceObject::class, ArtistsResourceObject.serializer())
         subclass(ArtworksResourceObject::class, ArtworksResourceObject.serializer())
         subclass(
@@ -95,6 +103,7 @@ fun getOneOfSerializer() = SerializersModule {
             SquareConnectionsResourceObject::class,
             SquareConnectionsResourceObject.serializer(),
         )
+        subclass(SquareItemsResourceObject::class, SquareItemsResourceObject.serializer())
         subclass(SquareSitesResourceObject::class, SquareSitesResourceObject.serializer())
         subclass(
             StripeConnectionsResourceObject::class,

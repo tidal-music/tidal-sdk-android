@@ -9,6 +9,8 @@ import com.tidal.sdk.tidalapi.generated.apis.ArtistBiographies
 import com.tidal.sdk.tidalapi.generated.apis.ArtistClaimStatuses
 import com.tidal.sdk.tidalapi.generated.apis.ArtistClaims
 import com.tidal.sdk.tidalapi.generated.apis.ArtistRoles
+import com.tidal.sdk.tidalapi.generated.apis.ArtistSalesStatistics
+import com.tidal.sdk.tidalapi.generated.apis.ArtistStreamsStatistics
 import com.tidal.sdk.tidalapi.generated.apis.Artists
 import com.tidal.sdk.tidalapi.generated.apis.Artworks
 import com.tidal.sdk.tidalapi.generated.apis.ClientCertificates
@@ -47,6 +49,8 @@ import com.tidal.sdk.tidalapi.generated.apis.SearchResults
 import com.tidal.sdk.tidalapi.generated.apis.SearchSuggestions
 import com.tidal.sdk.tidalapi.generated.apis.Shares
 import com.tidal.sdk.tidalapi.generated.apis.SquareConnections
+import com.tidal.sdk.tidalapi.generated.apis.SquareItems
+import com.tidal.sdk.tidalapi.generated.apis.SquareSites
 import com.tidal.sdk.tidalapi.generated.apis.StripeConnections
 import com.tidal.sdk.tidalapi.generated.apis.StripeDashboardLinks
 import com.tidal.sdk.tidalapi.generated.apis.SubscriptionPriceChangeDecisions
@@ -131,6 +135,21 @@ class TidalApiClient(
     /** Returns an instance of the [ArtistRoles] which can be used to make API calls to the */
     fun createArtistRoles(): ArtistRoles {
         return retrofit.create(ArtistRoles::class.java)
+    }
+
+    /**
+     * Returns an instance of the [ArtistSalesStatistics] which can be used to make API calls to the
+     */
+    fun createArtistSalesStatistics(): ArtistSalesStatistics {
+        return retrofit.create(ArtistSalesStatistics::class.java)
+    }
+
+    /**
+     * Returns an instance of the [ArtistStreamsStatistics] which can be used to make API calls to
+     * the
+     */
+    fun createArtistStreamsStatistics(): ArtistStreamsStatistics {
+        return retrofit.create(ArtistStreamsStatistics::class.java)
     }
 
     /** Returns an instance of the [Artists] which can be used to make API calls to the */
@@ -341,6 +360,16 @@ class TidalApiClient(
     /** Returns an instance of the [SquareConnections] which can be used to make API calls to the */
     fun createSquareConnections(): SquareConnections {
         return retrofit.create(SquareConnections::class.java)
+    }
+
+    /** Returns an instance of the [SquareItems] which can be used to make API calls to the */
+    fun createSquareItems(): SquareItems {
+        return retrofit.create(SquareItems::class.java)
+    }
+
+    /** Returns an instance of the [SquareSites] which can be used to make API calls to the */
+    fun createSquareSites(): SquareSites {
+        return retrofit.create(SquareSites::class.java)
     }
 
     /** Returns an instance of the [StripeConnections] which can be used to make API calls to the */

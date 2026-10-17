@@ -4,6 +4,7 @@ import com.tidal.sdk.tidalapi.generated.infrastructure.CollectionFormats.*
 import com.tidal.sdk.tidalapi.generated.models.FolderItemsBreadcrumbMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.FolderItemsCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.FolderItemsCreateSingleResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.FolderItemsMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.FolderItemsOwnersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.FolderItemsParentRelationshipUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.FolderItemsParentSingleRelationshipDataDocument
@@ -17,6 +18,63 @@ import retrofit2.Response
 import retrofit2.http.*
 
 interface FolderItems {
+
+    /** enum for parameter includeLinkage */
+    @Serializable
+    enum class IncludeLinkageFolderItemsGet(val value: kotlin.String) {
+        @SerialName(value = "breadcrumb") breadcrumb("breadcrumb"),
+        @SerialName(value = "owners") owners("owners"),
+        @SerialName(value = "parent") parent("parent"),
+        @SerialName(value = "subject") subject("subject"),
+    }
+
+    /**
+     * GET folderItems Get multiple folderItems. Lists items in a folder, newest placement first.
+     * Select a folder with parent.id, or select your root with parent.isRoot&#x3D;true and
+     * parent.owners.id&#x3D;me. These forms cannot be combined; no other parent-filter combinations
+     * are supported. Responses:
+     * - 200: Successful response
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
+     * - 429: Rate limit exceeded
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
+     *
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
+     * @param include Include related resources. Available relationships: breadcrumb, owners,
+     *   parent, subject (optional)
+     * @param filterParentId Folder id (e.g. &#x60;e3226624-355b-48f8-aa93-db42532caa66&#x60;)
+     *   (optional)
+     * @param filterParentIsRoot Filter by parent.isRoot (optional)
+     * @param filterParentOwnersId Root folder owner; must be the authenticated user.. Use
+     *   &#x60;me&#x60; for the authenticated user (optional)
+     * @param filterSubjectOwnersId In folders you own, me selects owned placements and !me selects
+     *   shared placements. In someone else&#39;s folder, me returns no items and !me returns the
+     *   normal listing. Omit for all items. (optional)
+     * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
+     *   related content. (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: breadcrumb.children.subject (optional)
+     * @return [FolderItemsMultiResourceDataDocument]
+     */
+    @GET("folderItems")
+    suspend fun folderItemsGet(
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("filter[parent.id]") filterParentId: kotlin.String? = null,
+        @Query("filter[parent.isRoot]") filterParentIsRoot: kotlin.String? = null,
+        @Query("filter[parent.owners.id]") filterParentOwnersId: kotlin.String? = null,
+        @Query("filter[subject.owners.id]") filterSubjectOwnersId: kotlin.String? = null,
+        @Query("includeLinkage") includeLinkage: CSVParams? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
+    ): Response<FolderItemsMultiResourceDataDocument>
+
     /**
      * DELETE folderItems/{id} Delete single folderItem. Deletes existing folderItem. Responses:
      * - 200: Successful response
@@ -26,15 +84,15 @@ interface FolderItems {
      * - 406: No acceptable response media type
      * - 409: Request already in progress for this idempotency key
      * - 415: Unsupported request media type or encoding
-     * - 422: Idempotency key reused with a different payload
+     * - 422: Idempotency key reused for a different request
      * - 429: Rate limit exceeded
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
      * @param id Folder item id
-     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
-     *   duplicate key is sent with the same payload, the original response is replayed. If the
-     *   payload differs, a 422 error is returned. (optional)
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If the same
+     *   caller repeats a key with the same method, path, query and payload, the original response
+     *   is replayed. If the request differs, a 422 error is returned. (optional)
      * @return [MutationResponseDocument]
      */
     @DELETE("folderItems/{id}")
@@ -180,15 +238,15 @@ interface FolderItems {
      * - 406: No acceptable response media type
      * - 409: Request already in progress for this idempotency key
      * - 415: Unsupported request media type or encoding
-     * - 422: Idempotency key reused with a different payload
+     * - 422: Idempotency key reused for a different request
      * - 429: Rate limit exceeded
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
      * @param id Folder item id
-     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
-     *   duplicate key is sent with the same payload, the original response is replayed. If the
-     *   payload differs, a 422 error is returned. (optional)
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If the same
+     *   caller repeats a key with the same method, path, query and payload, the original response
+     *   is replayed. If the request differs, a 422 error is returned. (optional)
      * @param folderItemsParentRelationshipUpdateOperationPayload (optional)
      * @return [FolderItemsParentUpdateSingleRelationshipDataDocument]
      */
@@ -239,14 +297,14 @@ interface FolderItems {
      * - 406: No acceptable response media type
      * - 409: Request already in progress for this idempotency key
      * - 415: Unsupported request media type or encoding
-     * - 422: Idempotency key reused with a different payload
+     * - 422: Idempotency key reused for a different request
      * - 429: Rate limit exceeded
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
-     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
-     *   duplicate key is sent with the same payload, the original response is replayed. If the
-     *   payload differs, a 422 error is returned. (optional)
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If the same
+     *   caller repeats a key with the same method, path, query and payload, the original response
+     *   is replayed. If the request differs, a 422 error is returned. (optional)
      * @param folderItemsCreateOperationPayload (optional)
      * @return [FolderItemsCreateSingleResourceDataDocument]
      */

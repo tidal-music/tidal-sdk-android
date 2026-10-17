@@ -27,6 +27,7 @@ import kotlinx.serialization.Transient
  * @param id Resource id
  * @param type Resource type
  * @param attributes
+ * @param relationships
  */
 @Serializable
 @SerialName(value = "squareSites")
@@ -38,4 +39,5 @@ data class SquareSitesResourceObject(
     /* Resource type */
     @Transient @SerialName(value = "type") val type: kotlin.String = "",
     @SerialName(value = "attributes") val attributes: SquareSitesAttributes? = null,
+    @SerialName(value = "relationships") val relationships: SquareSitesRelationships? = null,
 ) : IncludedInner {}

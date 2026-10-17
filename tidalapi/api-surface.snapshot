@@ -1,5 +1,5 @@
 # TIDAL API Surface Snapshot
-# Spec version: 1.10.177 | Endpoints: 390 | Models: 1203
+# Spec version: 1.10.183 | Endpoints: 406 | Models: 1280
 
 ## Endpoints
 
@@ -166,6 +166,30 @@ GET /artistClaims/{id}/relationships/recommendedArtists
 GET /artistRoles/{id}
   params: id: string
   returns: ArtistRoles_Single_Resource_Data_Document
+
+GET /artistSalesStatistics
+  params: filter[artist.id]: array[string], include?: array[string], includeLinkage?: array[enum[artist, topSellers]], replaceMedia?: string
+  returns: ArtistSalesStatistics_Multi_Resource_Data_Document
+
+GET /artistSalesStatistics/{id}/relationships/artist
+  params: id: string, include?: array[string], replaceMedia?: string
+  returns: ArtistSalesStatistics_Artist_Single_Relationship_Data_Document
+
+GET /artistSalesStatistics/{id}/relationships/topSellers
+  params: id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string
+  returns: ArtistSalesStatistics_TopSellers_Multi_Relationship_Data_Document
+
+GET /artistStreamsStatistics
+  params: filter[artist.id]: array[string], include?: array[string], includeLinkage?: array[enum[artist, topTracks]], replaceMedia?: string
+  returns: ArtistStreamsStatistics_Multi_Resource_Data_Document
+
+GET /artistStreamsStatistics/{id}/relationships/artist
+  params: id: string, include?: array[string], replaceMedia?: string
+  returns: ArtistStreamsStatistics_Artist_Single_Relationship_Data_Document
+
+GET /artistStreamsStatistics/{id}/relationships/topTracks
+  params: id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string
+  returns: ArtistStreamsStatistics_TopTracks_Multi_Relationship_Data_Document
 
 GET /artists
   params: countryCode?: string, filter[handle]?: array[string], filter[id]?: array[string], filter[owners.id]?: array[string], include?: array[string], includeLinkage?: array[enum[albums, bannerArt, biography, claimStatus, followers, following, logoArt, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos]], replaceMedia?: string
@@ -463,6 +487,10 @@ GET /dynamicPages/{id}/relationships/subject
   params: id: string, include?: array[string], replaceMedia?: string
   returns: DynamicPages_Subject_Single_Relationship_Data_Document
 
+GET /folderItems
+  params: filter[parent.id]?: string, filter[parent.isRoot]?: string, filter[parent.owners.id]?: string, filter[subject.owners.id]?: string, include?: array[string], includeLinkage?: array[enum[breadcrumb, owners, parent, subject]], page[cursor]?: string, replaceMedia?: string
+  returns: FolderItems_Multi_Resource_Data_Document
+
 POST /folderItems
   params: ??: any
   returns: FolderItems_Create_Single_Resource_Data_Document
@@ -496,7 +524,7 @@ GET /folderItems/{id}/relationships/subject
   returns: FolderItems_Subject_Single_Relationship_Data_Document
 
 GET /folders
-  params: filter[id]: array[string], include?: array[string], includeLinkage?: array[enum[children, owners, parent, preview]], replaceMedia?: string
+  params: filter[id]: array[string], include?: array[string], includeLinkage?: array[enum[children, owners, parent, preview]], replaceMedia?: string, shareCode?: string
   returns: Folders_Multi_Resource_Data_Document
 
 POST /folders
@@ -504,7 +532,7 @@ POST /folders
   returns: Folders_Create_Single_Resource_Data_Document
 
 GET /folders/{id}
-  params: id: string, include?: array[string], includeLinkage?: array[enum[children, owners, parent, preview]], replaceMedia?: string
+  params: id: string, include?: array[string], includeLinkage?: array[enum[children, owners, parent, preview]], replaceMedia?: string, shareCode?: string
   returns: Folders_Single_Resource_Data_Document
 
 PATCH /folders/{id}
@@ -516,19 +544,19 @@ DELETE /folders/{id}
   returns: Mutation_Response_Document
 
 GET /folders/{id}/relationships/children
-  params: id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string
+  params: id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string, shareCode?: string
   returns: Folders_Children_Multi_Relationship_Data_Document
 
 GET /folders/{id}/relationships/owners
-  params: id: string, include?: array[string], page[cursor]?: string
+  params: id: string, include?: array[string], page[cursor]?: string, shareCode?: string
   returns: Folders_Owners_Multi_Relationship_Data_Document
 
 GET /folders/{id}/relationships/parent
-  params: id: string, include?: array[string], replaceMedia?: string
+  params: id: string, include?: array[string], replaceMedia?: string, shareCode?: string
   returns: Folders_Parent_Single_Relationship_Data_Document
 
 GET /folders/{id}/relationships/preview
-  params: id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string
+  params: id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string, shareCode?: string
   returns: Folders_Preview_Multi_Relationship_Data_Document
 
 GET /genres
@@ -986,6 +1014,42 @@ PATCH /squareConnections/{id}/relationships/selectedSite
 GET /squareConnections/{id}/relationships/sites
   params: id: string, include?: array[string], page[cursor]?: string
   returns: SquareConnections_Sites_Multi_Relationship_Data_Document
+
+GET /squareItems
+  params: filter[origin]?: enum[TIDAL, OTHER], filter[owners.id]: array[string], filter[query]?: string, include?: array[string], includeLinkage?: array[enum[owners]], page[cursor]?: string
+  returns: SquareItems_Multi_Resource_Data_Document
+
+POST /squareItems
+  params: Idempotency-Key: string
+  returns: SquareItems_Create_Single_Resource_Data_Document
+
+GET /squareItems/{id}
+  params: id: string, include?: array[string], includeLinkage?: array[enum[owners]]
+  returns: SquareItems_Single_Resource_Data_Document
+
+PATCH /squareItems/{id}
+  params: Idempotency-Key: string, id: string
+  returns: SquareItems_Update_Single_Resource_Data_Document
+
+DELETE /squareItems/{id}
+  params: ??: any, id: string
+  returns: Mutation_Response_Document
+
+GET /squareItems/{id}/relationships/owners
+  params: id: string, include?: array[string], page[cursor]?: string
+  returns: SquareItems_Owners_Multi_Relationship_Data_Document
+
+GET /squareSites/{id}/relationships/items
+  params: id: string, include?: array[string], page[cursor]?: string
+  returns: SquareSites_Items_Multi_Relationship_Data_Document
+
+POST /squareSites/{id}/relationships/items
+  params: ??: any, id: string
+  returns: Mutation_Response_Document
+
+DELETE /squareSites/{id}/relationships/items
+  params: ??: any, id: string
+  returns: Mutation_Response_Document
 
 GET /stripeConnections
   params: filter[owners.id]: array[string], include?: array[string], includeLinkage?: array[enum[owners]]
@@ -2061,6 +2125,191 @@ ArtistRoles_Single_Resource_Data_Document
   links: Links (required)
   included: Included (optional)
 
+ArtistSalesStatistics_Artist_Single_Relationship_Data_Document
+  links: Links (required)
+  data: Resource_Identifier | enum[None] (optional)
+  included: Included (optional)
+
+ArtistSalesStatistics_Attributes
+  dataThrough: string(date) (required)
+  endDate: string(date) (required)
+  lastModifiedAt: string(date-time) (required)
+  startDate: string(date) (required)
+  status: enum[OK, NOT_SET_UP, UNAVAILABLE] (required)
+  windowPeriod: ArtistStatisticsWindowPeriod (required)
+  buyerSources: ArtistSalesStatistics_BuyerSources (optional)
+  byType: ArtistSalesStatistics_ByType (optional)
+  currency: enum[USD] (optional)
+  itemsSold: integer(int64) (optional)
+  netSales: ArtistSalesStatistics_NetSales (optional)
+  orders: integer(int64) (optional)
+  refunds: ArtistSalesStatistics_Refunds (optional)
+  series: ArtistSalesStatistics_Series (optional)
+
+ArtistSalesStatistics_BuyerSourceShare
+  shareOfOrders: number(double) (required)
+  source: enum[ALBUM_AND_TRACK_PAGES, ARTIST_PROFILE, SHARED_LINKS, TIDAL_HOME, UNKNOWN] (required)
+
+ArtistSalesStatistics_BuyerSources
+  status: enum[OK, SUPPRESSED, UNAVAILABLE] (required)
+  items: array[ArtistSalesStatistics_BuyerSourceShare] (optional)
+
+ArtistSalesStatistics_ByType
+  downloadsAmount: string (required)
+  merchAmount: string (required)
+
+ArtistSalesStatistics_Multi_Resource_Data_Document
+  data: array[ArtistSalesStatistics_Resource_Object] (required)
+  links: Links (required)
+  included: Included (optional)
+
+ArtistSalesStatistics_NetSales
+  amount: string (required)
+  previousAmount: string (optional)
+
+ArtistSalesStatistics_Refunds
+  amount: string (required)
+  count: integer(int64) (required)
+
+ArtistSalesStatistics_Relationships
+  artist: ArtistSalesStatistics_Artist_Single_Relationship_Data_Document (optional)
+  topSellers: ArtistSalesStatistics_TopSellers_Multi_Relationship_Data_Document (optional)
+
+ArtistSalesStatistics_Resource_Object
+  id: string (required)
+  type: string (required)
+  attributes: ArtistSalesStatistics_Attributes (optional)
+  relationships: ArtistSalesStatistics_Relationships (optional)
+
+ArtistSalesStatistics_Series
+  points: array[ArtistSalesStatistics_SeriesPoint] (required)
+  bucketPeriod: ArtistStatisticsBucketPeriod (optional)
+
+ArtistSalesStatistics_SeriesPoint
+  date: string(date) (required)
+  downloadsAmount: string (required)
+  merchAmount: string (required)
+
+ArtistSalesStatistics_TopSellers_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[ArtistSalesStatistics_TopSellers_Resource_Identifier] (optional)
+  included: Included (optional)
+  meta: ArtistSalesStatistics_TopSellers_Multi_Relationship_Data_Document_Meta (optional)
+
+ArtistSalesStatistics_TopSellers_Multi_Relationship_Data_Document_Meta
+  status: enum[OK, NOT_SET_UP, UNAVAILABLE] (required)
+  currency: enum[USD] (optional)
+
+ArtistSalesStatistics_TopSellers_Resource_Identifier
+  id: string (required)
+  type: string (required)
+  meta: ArtistSalesStatistics_TopSellers_Resource_Identifier_Meta (optional)
+
+ArtistSalesStatistics_TopSellers_Resource_Identifier_Meta
+  kind: enum[DOWNLOAD, MERCH, UNKNOWN] (required)
+  netSalesAmount: string (required)
+  rank: integer(int32) (required)
+  units: integer(int64) (required)
+  replacement: Replacement_Provenance (optional)
+
+ArtistStatisticsBucketPeriod
+
+ArtistStatisticsWindowPeriod
+
+ArtistStreamsStatistics_Artist_Single_Relationship_Data_Document
+  links: Links (required)
+  data: Resource_Identifier | enum[None] (optional)
+  included: Included (optional)
+
+ArtistStreamsStatistics_Attributes
+  breakdownsStatus: enum[OK, SUPPRESSED, UNAVAILABLE] (required)
+  dataThrough: string(date) (required)
+  endDate: string(date) (required)
+  lastModifiedAt: string(date-time) (required)
+  listeners: ArtistStreamsStatistics_Count (required)
+  newFollowers: ArtistStreamsStatistics_Count (required)
+  plays: ArtistStreamsStatistics_Plays (required)
+  saves: ArtistStreamsStatistics_Count (required)
+  series: ArtistStreamsStatistics_Series (required)
+  startDate: string(date) (required)
+  windowPeriod: ArtistStatisticsWindowPeriod (required)
+  playsBySource: ArtistStreamsStatistics_PlaysBySource (optional)
+  topCountries: ArtistStreamsStatistics_TopCountries (optional)
+
+ArtistStreamsStatistics_Count
+  status: enum[OK, SUPPRESSED, UNAVAILABLE] (required)
+  value: integer(int64) (optional)
+
+ArtistStreamsStatistics_CountryListeners
+  countryCode: string (required)
+  listeners: integer(int64) (required)
+
+ArtistStreamsStatistics_Multi_Resource_Data_Document
+  data: array[ArtistStreamsStatistics_Resource_Object] (required)
+  links: Links (required)
+  included: Included (optional)
+
+ArtistStreamsStatistics_OtherPlays
+  plays: integer(int64) (required)
+  share: number(double) (required)
+
+ArtistStreamsStatistics_Plays
+  value: integer(int64) (required)
+  previous: integer(int64) (optional)
+
+ArtistStreamsStatistics_PlaysBySource
+  items: array[ArtistStreamsStatistics_SourcePlays] (required)
+  note: enum[GROUPED, HIDDEN, UNKNOWN] (optional)
+  other: ArtistStreamsStatistics_OtherPlays (optional)
+
+ArtistStreamsStatistics_Relationships
+  artist: ArtistStreamsStatistics_Artist_Single_Relationship_Data_Document (optional)
+  topTracks: ArtistStreamsStatistics_TopTracks_Multi_Relationship_Data_Document (optional)
+
+ArtistStreamsStatistics_Resource_Object
+  id: string (required)
+  type: string (required)
+  attributes: ArtistStreamsStatistics_Attributes (optional)
+  relationships: ArtistStreamsStatistics_Relationships (optional)
+
+ArtistStreamsStatistics_Series
+  points: array[ArtistStreamsStatistics_SeriesPoint] (required)
+  bucketPeriod: ArtistStatisticsBucketPeriod (optional)
+
+ArtistStreamsStatistics_SeriesPoint
+  date: string(date) (required)
+  plays: integer(int64) (required)
+
+ArtistStreamsStatistics_SourcePlays
+  plays: integer(int64) (required)
+  share: number(double) (required)
+  source: enum[MIXES_AND_RADIO, ALBUMS_AND_PROFILE, TIDAL_PLAYLISTS, LISTENER_PLAYLISTS, LISTENER_COLLECTIONS, SEARCH, UNKNOWN] (required)
+
+ArtistStreamsStatistics_TopCountries
+  items: array[ArtistStreamsStatistics_CountryListeners] (required)
+  note: enum[GROUPED, HIDDEN, UNKNOWN] (optional)
+  otherListeners: integer(int64) (optional)
+
+ArtistStreamsStatistics_TopTracks_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[ArtistStreamsStatistics_TopTracks_Resource_Identifier] (optional)
+  included: Included (optional)
+  meta: ArtistStreamsStatistics_TopTracks_Multi_Relationship_Data_Document_Meta (optional)
+
+ArtistStreamsStatistics_TopTracks_Multi_Relationship_Data_Document_Meta
+  status: enum[OK, SUPPRESSED, UNAVAILABLE] (required)
+  hiddenCount: integer(int32) (optional)
+
+ArtistStreamsStatistics_TopTracks_Resource_Identifier
+  id: string (required)
+  type: string (required)
+  meta: ArtistStreamsStatistics_TopTracks_Resource_Identifier_Meta (optional)
+
+ArtistStreamsStatistics_TopTracks_Resource_Identifier_Meta
+  plays: integer(int64) (required)
+  rank: integer(int32) (required)
+  replacement: Replacement_Provenance (optional)
+
 ArtistsBannerArtRelationshipUpdateOperation_Payload
   data: array[ArtistsBannerArtRelationshipUpdateOperation_Payload_Data] (required)
 
@@ -3095,6 +3344,11 @@ FolderItems_Create_Single_Resource_Data_Document
   data: FolderItems_Resource_Object (required)
   links: Links (required)
 
+FolderItems_Multi_Resource_Data_Document
+  data: array[FolderItems_Resource_Object] (required)
+  links: Links (required)
+  included: Included (optional)
+
 FolderItems_Owners_Multi_Relationship_Data_Document
   links: Links (required)
   data: array[Resource_Identifier] (optional)
@@ -3182,6 +3436,7 @@ FoldersUpdateResource400ResponseBody
   errors: array[object] (required)
 
 Folders_Attributes
+  isRoot: boolean (required)
   name: string (required)
 
 Folders_Children_Multi_Relationship_Data_Document
@@ -4923,15 +5178,178 @@ SquareConnections_Sites_Multi_Relationship_Data_Document
   data: array[Resource_Identifier] (optional)
   included: Included (optional)
 
+SquareItemsCreateOperation_Payload
+  data: SquareItemsCreateOperation_Payload_Data (required)
+
+SquareItemsCreateOperation_Payload_Data
+  attributes: SquareItemsCreateOperation_Payload_Data_Attributes (required)
+  type: enum[squareItems] (required)
+
+SquareItemsCreateOperation_Payload_Data_Attributes
+  title: string (required)
+  variations: array[SquareItemsCreateOperation_Payload_Data_Attributes_Variation] (required)
+  description: string (optional)
+
+SquareItemsCreateOperation_Payload_Data_Attributes_Variation
+  price: string (required)
+  stockTracked: boolean (required)
+  name: string (optional)
+  stockQuantity: integer(int64) (optional)
+
+SquareItemsCreateResource403ResponseBody
+  errors: array[object] (required)
+
+SquareItemsCreateResource409ResponseBody
+  errors: array[object] (required)
+
+SquareItemsDeleteResource403ResponseBody
+  errors: array[object] (required)
+
+SquareItemsDeleteResource409ResponseBody
+  errors: array[object] (required)
+
+SquareItemsReadByFilter403ResponseBody
+  errors: array[object] (required)
+
+SquareItemsReadByFilter409ResponseBody
+  errors: array[object] (required)
+
+SquareItemsReadById403ResponseBody
+  errors: array[object] (required)
+
+SquareItemsReadById409ResponseBody
+  errors: array[object] (required)
+
+SquareItemsUpdateOperation_Payload
+  data: SquareItemsUpdateOperation_Payload_Data (required)
+  meta: SquareItemsUpdateOperation_Payload_Meta (required)
+
+SquareItemsUpdateOperation_Payload_Data
+  attributes: SquareItemsUpdateOperation_Payload_Data_Attributes (required)
+  id: string (required)
+  type: enum[squareItems] (required)
+
+SquareItemsUpdateOperation_Payload_Data_Attributes
+  description: string (optional)
+  title: string (optional)
+  variations: array[SquareItemsUpdateOperation_Payload_Data_Attributes_Variation] (optional)
+
+SquareItemsUpdateOperation_Payload_Data_Attributes_Variation
+  name: string (required)
+  price: string (required)
+  stockTracked: boolean (required)
+  stockQuantity: integer(int64) (optional)
+  variationId: string (optional)
+
+SquareItemsUpdateOperation_Payload_Meta
+  expectedRevision: integer(int64) (required)
+
+SquareItemsUpdateResource403ResponseBody
+  errors: array[object] (required)
+
+SquareItemsUpdateResource409ResponseBody
+  errors: array[object] (required)
+
+SquareItems_Attributes
+  currency: enum[USD] (required)
+  revision: integer(int64) (required)
+  title: string (required)
+  variations: array[SquareItems_Variation] (required)
+  description: string (optional)
+  lastModifiedAt: string(date-time) (optional)
+  origin: enum[TIDAL, OTHER] (optional)
+  publishedInSelectedSite: boolean (optional)
+
+SquareItems_Create_Single_Resource_Data_Document
+  data: SquareItems_Resource_Object (required)
+  links: Links (required)
+
+SquareItems_Multi_Resource_Data_Document
+  data: array[SquareItems_Resource_Object] (required)
+  links: Links (required)
+  included: Included (optional)
+
+SquareItems_Owners_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[Resource_Identifier] (optional)
+  included: Included (optional)
+
+SquareItems_Relationships
+  owners: SquareItems_Owners_Multi_Relationship_Data_Document (optional)
+
+SquareItems_Resource_Object
+  id: string (required)
+  type: string (required)
+  attributes: SquareItems_Attributes (optional)
+  relationships: SquareItems_Relationships (optional)
+
+SquareItems_Single_Resource_Data_Document
+  data: SquareItems_Resource_Object (required)
+  links: Links (required)
+  included: Included (optional)
+
+SquareItems_Update_Single_Resource_Data_Document
+  data: SquareItems_Resource_Object (required)
+  links: Links (required)
+
+SquareItems_Variation
+  name: string (required)
+  pricingType: enum[FIXED, VARIABLE] (required)
+  variationId: string (required)
+  price: string (optional)
+  stockQuantity: integer(int64) (optional)
+  stockTracked: boolean (optional)
+
+SquareSitesAddMultiDataRelationship403ResponseBody
+  errors: array[object] (required)
+
+SquareSitesAddMultiDataRelationship409ResponseBody
+  errors: array[object] (required)
+
+SquareSitesItemsRelationshipAddOperation_Payload
+  data: array[SquareSitesItemsRelationshipAddOperation_Payload_Data] (required)
+
+SquareSitesItemsRelationshipAddOperation_Payload_Data
+  id: string (required)
+  type: enum[squareItems] (required)
+
+SquareSitesItemsRelationshipRemoveOperation_Payload
+  data: array[SquareSitesItemsRelationshipRemoveOperation_Payload_Data] (required)
+
+SquareSitesItemsRelationshipRemoveOperation_Payload_Data
+  id: string (required)
+  type: enum[squareItems] (required)
+
+SquareSitesReadMultiDataRelationship403ResponseBody
+  errors: array[object] (required)
+
+SquareSitesReadMultiDataRelationship409ResponseBody
+  errors: array[object] (required)
+
+SquareSitesRemoveMultiDataRelationship403ResponseBody
+  errors: array[object] (required)
+
+SquareSitesRemoveMultiDataRelationship409ResponseBody
+  errors: array[object] (required)
+
 SquareSites_Attributes
   domain: string (optional)
   published: boolean (optional)
   siteTitle: string (optional)
 
+SquareSites_Items_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[Resource_Identifier] (optional)
+  included: Included (optional)
+
+SquareSites_Relationships
+  items: SquareSites_Items_Multi_Relationship_Data_Document (optional)
+
 SquareSites_Resource_Object
   id: string (required)
   type: string (required)
   attributes: SquareSites_Attributes (optional)
+  relationships: SquareSites_Relationships (optional)
 
 StripeConnectionsCreateOperation_Payload
   data: StripeConnectionsCreateOperation_Payload_Data (required)
