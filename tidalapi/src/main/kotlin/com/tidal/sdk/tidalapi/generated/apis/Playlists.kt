@@ -112,15 +112,15 @@ interface Playlists {
      * - 406: No acceptable response media type
      * - 409: Request already in progress for this idempotency key
      * - 415: Unsupported request media type or encoding
-     * - 422: Idempotency key reused with a different payload
+     * - 422: Idempotency key reused for a different request
      * - 429: Rate limit exceeded
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
      * @param id Playlist id
-     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
-     *   duplicate key is sent with the same payload, the original response is replayed. If the
-     *   payload differs, a 422 error is returned. (optional)
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If the same
+     *   caller repeats a key with the same method, path, query and payload, the original response
+     *   is replayed. If the request differs, a 422 error is returned. (optional)
      * @return [MutationResponseDocument]
      */
     @DELETE("playlists/{id}")
@@ -185,15 +185,15 @@ interface Playlists {
      * - 406: No acceptable response media type
      * - 409: Request already in progress for this idempotency key
      * - 415: Unsupported request media type or encoding
-     * - 422: Idempotency key reused with a different payload
+     * - 422: Idempotency key reused for a different request
      * - 429: Rate limit exceeded
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
      * @param id Playlist id
-     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
-     *   duplicate key is sent with the same payload, the original response is replayed. If the
-     *   payload differs, a 422 error is returned. (optional)
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If the same
+     *   caller repeats a key with the same method, path, query and payload, the original response
+     *   is replayed. If the request differs, a 422 error is returned. (optional)
      * @param playlistsUpdateOperationPayload (optional)
      * @return [PlaylistsUpdateSingleResourceDataDocument]
      */
@@ -215,15 +215,15 @@ interface Playlists {
      * - 406: No acceptable response media type
      * - 409: Request already in progress for this idempotency key
      * - 415: Unsupported request media type or encoding
-     * - 422: Idempotency key reused with a different payload
+     * - 422: Idempotency key reused for a different request
      * - 429: Rate limit exceeded
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
      * @param id Playlist id
-     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
-     *   duplicate key is sent with the same payload, the original response is replayed. If the
-     *   payload differs, a 422 error is returned. (optional)
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If the same
+     *   caller repeats a key with the same method, path, query and payload, the original response
+     *   is replayed. If the request differs, a 422 error is returned. (optional)
      * @param playlistsCollaboratorProfilesRelationshipRemoveOperationPayload (optional)
      * @return [MutationResponseDocument]
      */
@@ -337,15 +337,15 @@ interface Playlists {
      * - 406: No acceptable response media type
      * - 409: Request already in progress for this idempotency key
      * - 415: Unsupported request media type or encoding
-     * - 422: Idempotency key reused with a different payload
+     * - 422: Idempotency key reused for a different request
      * - 429: Rate limit exceeded
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
      * @param id Playlist id
-     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
-     *   duplicate key is sent with the same payload, the original response is replayed. If the
-     *   payload differs, a 422 error is returned. (optional)
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If the same
+     *   caller repeats a key with the same method, path, query and payload, the original response
+     *   is replayed. If the request differs, a 422 error is returned. (optional)
      * @param playlistsCoverArtRelationshipUpdateOperationPayload (optional)
      * @return [MutationResponseDocument]
      */
@@ -400,15 +400,15 @@ interface Playlists {
      * - 406: No acceptable response media type
      * - 409: Request already in progress for this idempotency key
      * - 415: Unsupported request media type or encoding
-     * - 422: Idempotency key reused with a different payload
+     * - 422: Idempotency key reused for a different request
      * - 429: Rate limit exceeded
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
      * @param id Playlist id
-     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
-     *   duplicate key is sent with the same payload, the original response is replayed. If the
-     *   payload differs, a 422 error is returned. (optional)
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If the same
+     *   caller repeats a key with the same method, path, query and payload, the original response
+     *   is replayed. If the request differs, a 422 error is returned. (optional)
      * @param playlistsItemsRelationshipRemoveOperationPayload (optional)
      * @return [MutationResponseDocument]
      */
@@ -488,15 +488,15 @@ interface Playlists {
      * - 406: No acceptable response media type
      * - 409: Request already in progress for this idempotency key
      * - 415: Unsupported request media type or encoding
-     * - 422: Idempotency key reused with a different payload
+     * - 422: Idempotency key reused for a different request
      * - 429: Rate limit exceeded
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
      * @param id Playlist id
-     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
-     *   duplicate key is sent with the same payload, the original response is replayed. If the
-     *   payload differs, a 422 error is returned. (optional)
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If the same
+     *   caller repeats a key with the same method, path, query and payload, the original response
+     *   is replayed. If the request differs, a 422 error is returned. (optional)
      * @param playlistsItemsRelationshipUpdateOperationPayload (optional)
      * @return [MutationResponseDocument]
      */
@@ -521,15 +521,15 @@ interface Playlists {
      * - 409: Playlist already contains one or more requested items; Playlist item limit reached;
      *   Request already in progress for this idempotency key
      * - 415: Unsupported request media type or encoding
-     * - 422: Idempotency key reused with a different payload
+     * - 422: Idempotency key reused for a different request
      * - 429: Rate limit exceeded
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
      * @param id Playlist id
-     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
-     *   duplicate key is sent with the same payload, the original response is replayed. If the
-     *   payload differs, a 422 error is returned. (optional)
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If the same
+     *   caller repeats a key with the same method, path, query and payload, the original response
+     *   is replayed. If the request differs, a 422 error is returned. (optional)
      * @param playlistsItemsRelationshipAddOperationPayload (optional)
      * @return [PlaylistsItemsAddMultiRelationshipDataDocument]
      */
@@ -635,14 +635,14 @@ interface Playlists {
      * - 406: No acceptable response media type
      * - 409: Request already in progress for this idempotency key
      * - 415: Unsupported request media type or encoding
-     * - 422: Idempotency key reused with a different payload
+     * - 422: Idempotency key reused for a different request
      * - 429: Rate limit exceeded
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
-     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
-     *   duplicate key is sent with the same payload, the original response is replayed. If the
-     *   payload differs, a 422 error is returned. (optional)
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If the same
+     *   caller repeats a key with the same method, path, query and payload, the original response
+     *   is replayed. If the request differs, a 422 error is returned. (optional)
      * @param playlistsCreateOperationPayload (optional)
      * @return [PlaylistsCreateSingleResourceDataDocument]
      */

@@ -49,6 +49,7 @@ interface Folders {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: children.subject (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [FoldersMultiResourceDataDocument]
      */
     @GET("folders")
@@ -58,6 +59,7 @@ interface Folders {
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<FoldersMultiResourceDataDocument>
 
     /**
@@ -69,15 +71,15 @@ interface Folders {
      * - 406: No acceptable response media type
      * - 409: Request already in progress for this idempotency key
      * - 415: Unsupported request media type or encoding
-     * - 422: Idempotency key reused with a different payload
+     * - 422: Idempotency key reused for a different request
      * - 429: Rate limit exceeded
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
      * @param id Folder id. Use &#x60;me&#x60; for the authenticated user&#39;s resource
-     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
-     *   duplicate key is sent with the same payload, the original response is replayed. If the
-     *   payload differs, a 422 error is returned. (optional)
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If the same
+     *   caller repeats a key with the same method, path, query and payload, the original response
+     *   is replayed. If the request differs, a 422 error is returned. (optional)
      * @return [MutationResponseDocument]
      */
     @DELETE("folders/{id}")
@@ -115,6 +117,7 @@ interface Folders {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: children.subject (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [FoldersSingleResourceDataDocument]
      */
     @GET("folders/{id}")
@@ -124,6 +127,7 @@ interface Folders {
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<FoldersSingleResourceDataDocument>
 
     /**
@@ -135,15 +139,15 @@ interface Folders {
      * - 406: No acceptable response media type
      * - 409: Request already in progress for this idempotency key
      * - 415: Unsupported request media type or encoding
-     * - 422: Idempotency key reused with a different payload
+     * - 422: Idempotency key reused for a different request
      * - 429: Rate limit exceeded
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
      * @param id Folder id. Use &#x60;me&#x60; for the authenticated user&#39;s resource
-     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
-     *   duplicate key is sent with the same payload, the original response is replayed. If the
-     *   payload differs, a 422 error is returned. (optional)
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If the same
+     *   caller repeats a key with the same method, path, query and payload, the original response
+     *   is replayed. If the request differs, a 422 error is returned. (optional)
      * @param foldersUpdateOperationPayload (optional)
      * @return [FoldersUpdateSingleResourceDataDocument]
      */
@@ -175,6 +179,7 @@ interface Folders {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: children.subject (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [FoldersChildrenMultiRelationshipDataDocument]
      */
     @GET("folders/{id}/relationships/children")
@@ -184,6 +189,7 @@ interface Folders {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<FoldersChildrenMultiRelationshipDataDocument>
 
     /**
@@ -203,6 +209,7 @@ interface Folders {
      * @param include Include related resources. Available relationships: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [FoldersOwnersMultiRelationshipDataDocument]
      */
     @GET("folders/{id}/relationships/owners")
@@ -211,6 +218,7 @@ interface Folders {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<FoldersOwnersMultiRelationshipDataDocument>
 
     /**
@@ -231,6 +239,7 @@ interface Folders {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: parent.children.subject (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [FoldersParentSingleRelationshipDataDocument]
      */
     @GET("folders/{id}/relationships/parent")
@@ -239,6 +248,7 @@ interface Folders {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<FoldersParentSingleRelationshipDataDocument>
 
     /**
@@ -261,6 +271,7 @@ interface Folders {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: preview.subject (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [FoldersPreviewMultiRelationshipDataDocument]
      */
     @GET("folders/{id}/relationships/preview")
@@ -270,6 +281,7 @@ interface Folders {
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<FoldersPreviewMultiRelationshipDataDocument>
 
     /**
@@ -281,14 +293,14 @@ interface Folders {
      * - 406: No acceptable response media type
      * - 409: Request already in progress for this idempotency key
      * - 415: Unsupported request media type or encoding
-     * - 422: Idempotency key reused with a different payload
+     * - 422: Idempotency key reused for a different request
      * - 429: Rate limit exceeded
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
-     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
-     *   duplicate key is sent with the same payload, the original response is replayed. If the
-     *   payload differs, a 422 error is returned. (optional)
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If the same
+     *   caller repeats a key with the same method, path, query and payload, the original response
+     *   is replayed. If the request differs, a 422 error is returned. (optional)
      * @param foldersCreateOperationPayload (optional)
      * @return [FoldersCreateSingleResourceDataDocument]
      */

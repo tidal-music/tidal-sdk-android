@@ -22,5 +22,14 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param name */
-@Serializable data class FoldersAttributes(@SerialName(value = "name") val name: kotlin.String) {}
+/**
+ * @param isRoot Whether this is the root folder.
+ * @param name
+ */
+@Serializable
+data class FoldersAttributes(
+
+    /* Whether this is the root folder. */
+    @SerialName(value = "isRoot") val isRoot: kotlin.Boolean,
+    @SerialName(value = "name") val name: kotlin.String,
+) {}

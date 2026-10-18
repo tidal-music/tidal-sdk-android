@@ -82,15 +82,15 @@ interface PlayQueues {
      * - 406: No acceptable response media type
      * - 409: Request already in progress for this idempotency key
      * - 415: Unsupported request media type or encoding
-     * - 422: Idempotency key reused with a different payload
+     * - 422: Idempotency key reused for a different request
      * - 429: Rate limit exceeded
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
      * @param id Play queue id
-     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
-     *   duplicate key is sent with the same payload, the original response is replayed. If the
-     *   payload differs, a 422 error is returned. (optional)
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If the same
+     *   caller repeats a key with the same method, path, query and payload, the original response
+     *   is replayed. If the request differs, a 422 error is returned. (optional)
      * @return [MutationResponseDocument]
      */
     @DELETE("playQueues/{id}")
@@ -150,15 +150,15 @@ interface PlayQueues {
      * - 406: No acceptable response media type
      * - 409: Request already in progress for this idempotency key
      * - 415: Unsupported request media type or encoding
-     * - 422: Idempotency key reused with a different payload
+     * - 422: Idempotency key reused for a different request
      * - 429: Rate limit exceeded
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
      * @param id Play queue id
-     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
-     *   duplicate key is sent with the same payload, the original response is replayed. If the
-     *   payload differs, a 422 error is returned. (optional)
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If the same
+     *   caller repeats a key with the same method, path, query and payload, the original response
+     *   is replayed. If the request differs, a 422 error is returned. (optional)
      * @param playQueuesUpdateOperationPayload (optional)
      * @return [PlayQueuesUpdateSingleResourceDataDocument]
      */
@@ -232,15 +232,15 @@ interface PlayQueues {
      * - 406: No acceptable response media type
      * - 409: Request already in progress for this idempotency key
      * - 415: Unsupported request media type or encoding
-     * - 422: Idempotency key reused with a different payload
+     * - 422: Idempotency key reused for a different request
      * - 429: Rate limit exceeded
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
      * @param id Play queue id
-     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
-     *   duplicate key is sent with the same payload, the original response is replayed. If the
-     *   payload differs, a 422 error is returned. (optional)
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If the same
+     *   caller repeats a key with the same method, path, query and payload, the original response
+     *   is replayed. If the request differs, a 422 error is returned. (optional)
      * @param playQueuesCurrentRelationshipUpdateOperationPayload (optional)
      * @return [PlayQueuesCurrentUpdateSingleRelationshipDataDocument]
      */
@@ -264,15 +264,15 @@ interface PlayQueues {
      * - 406: No acceptable response media type
      * - 409: Request already in progress for this idempotency key
      * - 415: Unsupported request media type or encoding
-     * - 422: Idempotency key reused with a different payload
+     * - 422: Idempotency key reused for a different request
      * - 429: Rate limit exceeded
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
      * @param id Play queue id
-     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
-     *   duplicate key is sent with the same payload, the original response is replayed. If the
-     *   payload differs, a 422 error is returned. (optional)
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If the same
+     *   caller repeats a key with the same method, path, query and payload, the original response
+     *   is replayed. If the request differs, a 422 error is returned. (optional)
      * @param playQueuesFutureRelationshipRemoveOperationPayload (optional)
      * @return [MutationResponseDocument]
      */
@@ -328,15 +328,15 @@ interface PlayQueues {
      * - 406: No acceptable response media type
      * - 409: Request already in progress for this idempotency key
      * - 415: Unsupported request media type or encoding
-     * - 422: Idempotency key reused with a different payload
+     * - 422: Idempotency key reused for a different request
      * - 429: Rate limit exceeded
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
      * @param id Play queue id
-     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
-     *   duplicate key is sent with the same payload, the original response is replayed. If the
-     *   payload differs, a 422 error is returned. (optional)
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If the same
+     *   caller repeats a key with the same method, path, query and payload, the original response
+     *   is replayed. If the request differs, a 422 error is returned. (optional)
      * @param playQueuesFutureRelationshipUpdateOperationPayload (optional)
      * @return [PlayQueuesFutureUpdateMultiRelationshipDataDocument]
      */
@@ -365,15 +365,15 @@ interface PlayQueues {
      * - 406: No acceptable response media type
      * - 409: Request already in progress for this idempotency key
      * - 415: Unsupported request media type or encoding
-     * - 422: Idempotency key reused with a different payload
+     * - 422: Idempotency key reused for a different request
      * - 429: Rate limit exceeded
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
      * @param id Play queue id
-     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
-     *   duplicate key is sent with the same payload, the original response is replayed. If the
-     *   payload differs, a 422 error is returned. (optional)
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If the same
+     *   caller repeats a key with the same method, path, query and payload, the original response
+     *   is replayed. If the request differs, a 422 error is returned. (optional)
      * @param playQueuesFutureRelationshipAddOperationPayload (optional)
      * @return [PlayQueuesFutureAddMultiRelationshipDataDocument]
      */
@@ -454,14 +454,14 @@ interface PlayQueues {
      * - 406: No acceptable response media type
      * - 409: Request already in progress for this idempotency key
      * - 415: Unsupported request media type or encoding
-     * - 422: Idempotency key reused with a different payload
+     * - 422: Idempotency key reused for a different request
      * - 429: Rate limit exceeded
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
-     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If a
-     *   duplicate key is sent with the same payload, the original response is replayed. If the
-     *   payload differs, a 422 error is returned. (optional)
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If the same
+     *   caller repeats a key with the same method, path, query and payload, the original response
+     *   is replayed. If the request differs, a 422 error is returned. (optional)
      * @param playQueuesCreateOperationPayload (optional)
      * @return [PlayQueuesCreateSingleResourceDataDocument]
      */
