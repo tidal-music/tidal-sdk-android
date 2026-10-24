@@ -23,14 +23,13 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param id The item id. Use \"me\" when the type is userCollectionTracks to resolve to the
- *   authenticated user's collection.
+ * @param id Also accepts `me` when type is `userCollectionTracks`.
  * @param type
  */
 @Serializable
 data class InstallationsOfflineInventoryItemIdentifier(
 
-    /* The item id. Use \"me\" when the type is userCollectionTracks to resolve to the authenticated user's collection. */
+    /* Also accepts `me` when type is `userCollectionTracks`. */
     @SerialName(value = "id") val id: kotlin.String,
     @SerialName(value = "type") val type: InstallationsOfflineInventoryItemIdentifier.Type,
 ) {

@@ -219,24 +219,24 @@ interface UserCollectionFolders {
      * - 503: Service temporarily unavailable
      *
      * @param id Folder Id
+     * @param include Include related resources. Available relationships: items (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @param sort Values prefixed with \&quot;-\&quot; are sorted descending; values without it are
-     *   sorted ascending. (optional)
-     * @param include Include related resources. Available relationships: items (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: items.items (optional)
+     * @param sort Values prefixed with \&quot;-\&quot; are sorted descending; values without it are
+     *   sorted ascending. (optional)
      * @return [UserCollectionFoldersItemsMultiRelationshipDataDocument]
      */
     @GET("userCollectionFolders/{id}/relationships/items")
     suspend fun userCollectionFoldersIdRelationshipsItemsGet(
         @Path("id") id: kotlin.String,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-        @Query("sort") sort: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
+        @Query("sort") sort: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<UserCollectionFoldersItemsMultiRelationshipDataDocument>
 
     /**

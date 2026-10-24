@@ -23,11 +23,13 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param id
+ * @param id Also accepts `me`.
  * @param type
  */
 @Serializable
 data class FolderItemsParentRelationshipUpdateOperationPayloadData(
+
+    /* Also accepts `me`. */
     @SerialName(value = "id") val id: kotlin.String,
     @SerialName(value = "type")
     val type: FolderItemsParentRelationshipUpdateOperationPayloadData.Type,

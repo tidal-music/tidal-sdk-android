@@ -37,11 +37,11 @@ interface UserCollectionPlaylists {
      *
      * @param id User collection playlists id. Use &#x60;me&#x60; for the authenticated user&#39;s
      *   resource
-     * @param locale BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or
-     *   unsupported. (optional, default to "en-US")
      * @param include Include related resources. Available relationships: items, owners (optional)
      * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
      *   related content. (optional)
+     * @param locale BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or
+     *   unsupported. (optional, default to "en-US")
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: items.items (optional)
@@ -50,10 +50,10 @@ interface UserCollectionPlaylists {
     @GET("userCollectionPlaylists/{id}")
     suspend fun userCollectionPlaylistsIdGet(
         @Path("id") id: kotlin.String,
-        @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("includeLinkage") includeLinkage: CSVParams? = null,
+        @Query("locale") locale: kotlin.String? = "en-US",
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<UserCollectionPlaylistsSingleResourceDataDocument>
 
@@ -131,17 +131,17 @@ interface UserCollectionPlaylists {
      * @param id User collection playlists id. Use &#x60;me&#x60; for the authenticated user&#39;s
      *   resource
      * @param collectionView (optional)
-     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
-     *   targets first page if not specified (optional)
-     * @param sort Values prefixed with \&quot;-\&quot; are sorted descending; values without it are
-     *   sorted ascending. (optional)
-     * @param include Include related resources. Available relationships: items (optional)
      * @param filterQuery Filter playlists by a free-text query. Returns matching playlists only (no
      *   mixes or folders), including playlists inside folders. Cannot be combined with
      *   collectionView&#x3D;FOLDERS. Internal clients only (e.g. &#x60;summer&#x60;) (optional)
+     * @param include Include related resources. Available relationships: items (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: items.items (optional)
+     * @param sort Values prefixed with \&quot;-\&quot; are sorted descending; values without it are
+     *   sorted ascending. (optional)
      * @return [UserCollectionPlaylistsItemsMultiRelationshipDataDocument]
      */
     @GET("userCollectionPlaylists/{id}/relationships/items")
@@ -149,12 +149,12 @@ interface UserCollectionPlaylists {
         @Path("id") id: kotlin.String,
         @Query("collectionView")
         collectionView: CollectionViewUserCollectionPlaylistsIdRelationshipsItemsGet? = null,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-        @Query("sort") sort: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("filter[query]") filterQuery: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[query]") filterQuery: kotlin.String? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
+        @Query("sort") sort: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<UserCollectionPlaylistsItemsMultiRelationshipDataDocument>
 
     /**

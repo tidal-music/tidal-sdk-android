@@ -228,10 +228,10 @@ interface PlaylistGenerations {
      * - 503: Service temporarily unavailable
      *
      * @param id Playlist generation id
-     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
-     *   targets first page if not specified (optional)
      * @param include Include related resources. Available relationships: trackPreferences
      *   (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: trackPreferences (optional)
@@ -240,18 +240,19 @@ interface PlaylistGenerations {
     @GET("playlistGenerations/{id}/relationships/trackPreferences")
     suspend fun playlistGenerationsIdRelationshipsTrackPreferencesGet(
         @Path("id") id: kotlin.String,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<PlaylistGenerationsTrackPreferencesMultiRelationshipDataDocument>
 
     /**
      * PATCH playlistGenerations/{id}/relationships/trackPreferences Update trackPreferences
-     * relationship (\&quot;to-many\&quot;). Updates feedback for one existing track preference,
-     * leaving other entries unchanged. A missing entry returns 409. Returns the complete preference
-     * snapshot. Requires the current meta.preferenceVersion as meta.expectedPreferenceVersion;
-     * stale versions return 409. Responses:
+     * relationship (\&quot;to-many\&quot;). Incrementally updates feedback for one existing track
+     * preference, leaving other entries unchanged. Empty data is rejected; a missing entry
+     * returns 409. Returns the complete preference snapshot. Requires the current
+     * meta.preferenceVersion as meta.expectedPreferenceVersion; stale versions return 409.
+     * Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

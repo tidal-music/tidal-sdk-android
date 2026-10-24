@@ -29,15 +29,6 @@ import retrofit2.http.*
 
 interface Albums {
 
-    /** enum for parameter sort */
-    @Serializable
-    enum class SortAlbumsGet(val value: kotlin.String) {
-        @SerialName(value = "createdAt") CreatedAtAsc("createdAt"),
-        @SerialName(value = "-createdAt") CreatedAtDesc("-createdAt"),
-        @SerialName(value = "title") TitleAsc("title"),
-        @SerialName(value = "-title") TitleDesc("-title"),
-    }
-
     /** enum for parameter includeLinkage */
     @Serializable
     enum class IncludeLinkageAlbumsGet(val value: kotlin.String) {
@@ -56,6 +47,15 @@ interface Albums {
         @SerialName(value = "usageRules") usageRules("usageRules"),
     }
 
+    /** enum for parameter sort */
+    @Serializable
+    enum class SortAlbumsGet(val value: kotlin.String) {
+        @SerialName(value = "createdAt") CreatedAtAsc("createdAt"),
+        @SerialName(value = "-createdAt") CreatedAtDesc("-createdAt"),
+        @SerialName(value = "title") TitleAsc("title"),
+        @SerialName(value = "-title") TitleDesc("-title"),
+    }
+
     /**
      * GET albums Get multiple albums. Retrieves multiple albums by available filters, or without if
      * applicable. Responses:
@@ -69,43 +69,43 @@ interface Albums {
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
-     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
-     *   targets first page if not specified (optional)
-     * @param sort Values prefixed with \&quot;-\&quot; are sorted descending; values without it are
-     *   sorted ascending. (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Include related resources. Available relationships: albumStatistics, artists,
-     *   coverArt, genres, items, owners, priceConfig, providers, replacement, shares,
-     *   similarAlbums, suggestedCoverArts, usageRules (optional)
      * @param filterBarcodeId List of barcode IDs (EAN-13 or UPC-A). NOTE: Supplying more than one
      *   barcode ID will currently only return one album per barcode ID. (e.g.
      *   &#x60;196589525444&#x60;) (optional)
      * @param filterId List of album IDs (e.g. &#x60;251380836&#x60;) (optional)
-     * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user (optional)
+     * @param filterOwnersId User id. Also accepts &#x60;me&#x60;. (optional)
+     * @param include Include related resources. Available relationships: albumStatistics, artists,
+     *   coverArt, genres, items, owners, priceConfig, providers, replacement, shares,
+     *   similarAlbums, suggestedCoverArts, usageRules (optional)
      * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
      *   related content. (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: artists.albums (optional)
      * @param shareCode Share code used as a bearer credential for the resource. (optional)
+     * @param sort Values prefixed with \&quot;-\&quot; are sorted descending; values without it are
+     *   sorted ascending. (optional)
      * @return [AlbumsMultiResourceDataDocument]
      */
     @GET("albums")
     suspend fun albumsGet(
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-        @Query("sort") sort: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("countryCode") countryCode: kotlin.String? = null,
-        @Query("include")
-        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[barcodeId]")
         filterBarcodeId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[id]")
         filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[owners.id]")
         filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("includeLinkage") includeLinkage: CSVParams? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
+        @Query("sort") sort: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<AlbumsMultiResourceDataDocument>
 
     /**
@@ -126,12 +126,14 @@ interface Albums {
      * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If the same
      *   caller repeats a key with the same method, path, query and payload, the original response
      *   is replayed. If the request differs, a 422 error is returned. (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [MutationResponseDocument]
      */
     @DELETE("albums/{id}")
     suspend fun albumsIdDelete(
         @Path("id") id: kotlin.String,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<MutationResponseDocument>
 
     /** enum for parameter includeLinkage */
@@ -206,6 +208,7 @@ interface Albums {
      * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If the same
      *   caller repeats a key with the same method, path, query and payload, the original response
      *   is replayed. If the request differs, a 422 error is returned. (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @param albumsUpdateOperationPayload (optional)
      * @return [MutationResponseDocument]
      */
@@ -213,6 +216,7 @@ interface Albums {
     suspend fun albumsIdPatch(
         @Path("id") id: kotlin.String,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
         @Body albumsUpdateOperationPayload: AlbumsUpdateOperationPayload? = null,
     ): Response<MutationResponseDocument>
 
@@ -256,10 +260,10 @@ interface Albums {
      * - 503: Service temporarily unavailable
      *
      * @param id Album id
-     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
-     *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Include related resources. Available relationships: artists (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: artists.albums (optional)
@@ -269,10 +273,10 @@ interface Albums {
     @GET("albums/{id}/relationships/artists")
     suspend fun albumsIdRelationshipsArtistsGet(
         @Path("id") id: kotlin.String,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<AlbumsArtistsMultiRelationshipDataDocument>
@@ -291,26 +295,28 @@ interface Albums {
      * - 503: Service temporarily unavailable
      *
      * @param id Album id
-     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
-     *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Include related resources. Available relationships: coverArt (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
      * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [AlbumsCoverArtMultiRelationshipDataDocument]
      */
     @GET("albums/{id}/relationships/coverArt")
     suspend fun albumsIdRelationshipsCoverArtGet(
         @Path("id") id: kotlin.String,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<AlbumsCoverArtMultiRelationshipDataDocument>
 
     /**
      * PATCH albums/{id}/relationships/coverArt Update coverArt relationship
-     * (\&quot;to-many\&quot;). Updates coverArt relationship. Responses:
+     * (\&quot;to-many\&quot;). Replaces the uploaded cover artwork selection with one attachable
+     * artwork. Empty data clears the selection. Previously attached uploaded artwork is
+     * soft-deleted unless system-managed. Returns an acknowledgement. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -327,6 +333,7 @@ interface Albums {
      * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If the same
      *   caller repeats a key with the same method, path, query and payload, the original response
      *   is replayed. If the request differs, a 422 error is returned. (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @param albumsCoverArtRelationshipUpdateOperationPayload (optional)
      * @return [MutationResponseDocument]
      */
@@ -334,6 +341,7 @@ interface Albums {
     suspend fun albumsIdRelationshipsCoverArtPatch(
         @Path("id") id: kotlin.String,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
         @Body
         albumsCoverArtRelationshipUpdateOperationPayload:
             AlbumsCoverArtRelationshipUpdateOperationPayload? =
@@ -354,20 +362,20 @@ interface Albums {
      * - 503: Service temporarily unavailable
      *
      * @param id Album id
-     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
-     *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Include related resources. Available relationships: genres (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
      * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [AlbumsGenresMultiRelationshipDataDocument]
      */
     @GET("albums/{id}/relationships/genres")
     suspend fun albumsIdRelationshipsGenresGet(
         @Path("id") id: kotlin.String,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<AlbumsGenresMultiRelationshipDataDocument>
 
@@ -385,10 +393,10 @@ interface Albums {
      * - 503: Service temporarily unavailable
      *
      * @param id Album id
-     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
-     *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Include related resources. Available relationships: items (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: items (optional)
@@ -398,17 +406,19 @@ interface Albums {
     @GET("albums/{id}/relationships/items")
     suspend fun albumsIdRelationshipsItemsGet(
         @Path("id") id: kotlin.String,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<AlbumsItemsMultiRelationshipDataDocument>
 
     /**
      * PATCH albums/{id}/relationships/items Update items relationship (\&quot;to-many\&quot;).
-     * Updates items relationship. Responses:
+     * Incrementally updates one existing track&#39;s 1-based track number to meta.positionIndex.
+     * Does not replace the album&#39;s items or add or remove tracks. Empty data is rejected.
+     * Returns an acknowledgement. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -425,6 +435,7 @@ interface Albums {
      * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If the same
      *   caller repeats a key with the same method, path, query and payload, the original response
      *   is replayed. If the request differs, a 422 error is returned. (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @param albumsItemsRelationshipUpdateOperationPayload (optional)
      * @return [MutationResponseDocument]
      */
@@ -432,6 +443,7 @@ interface Albums {
     suspend fun albumsIdRelationshipsItemsPatch(
         @Path("id") id: kotlin.String,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
         @Body
         albumsItemsRelationshipUpdateOperationPayload:
             AlbumsItemsRelationshipUpdateOperationPayload? =
@@ -559,8 +571,8 @@ interface Albums {
     ): Response<AlbumsReplacementSingleRelationshipDataDocument>
 
     /**
-     * GET albums/{id}/relationships/shares Get shares relationship (\&quot;to-many\&quot;).
-     * Retrieves shares relationship. Responses:
+     * GET albums/{id}/relationships/shares Get shares relationship (\&quot;to-many\&quot;). The
+     * album&#39;s share links, active and expired, newest first. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -605,10 +617,10 @@ interface Albums {
      * - 503: Service temporarily unavailable
      *
      * @param id Album id
-     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
-     *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Include related resources. Available relationships: similarAlbums (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: similarAlbums (optional)
@@ -618,10 +630,10 @@ interface Albums {
     @GET("albums/{id}/relationships/similarAlbums")
     suspend fun albumsIdRelationshipsSimilarAlbumsGet(
         @Path("id") id: kotlin.String,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<AlbumsSimilarAlbumsMultiRelationshipDataDocument>

@@ -24,7 +24,6 @@ import kotlinx.serialization.Serializable
 
 /**
  * @param title Item title
- * @param variations Variations, in display order
  * @param description Item description
  */
 @Serializable
@@ -32,11 +31,6 @@ data class SquareItemsCreateOperationPayloadDataAttributes(
 
     /* Item title */
     @SerialName(value = "title") val title: kotlin.String,
-
-    /* Variations, in display order */
-    @SerialName(value = "variations")
-    val variations:
-        kotlin.collections.List<SquareItemsCreateOperationPayloadDataAttributesVariation>,
 
     /* Item description */
     @SerialName(value = "description") val description: kotlin.String? = null,

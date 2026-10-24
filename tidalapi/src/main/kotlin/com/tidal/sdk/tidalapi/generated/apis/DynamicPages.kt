@@ -22,6 +22,21 @@ interface DynamicPages {
         @SerialName(value = "TV") TV("TV"),
     }
 
+    /** enum for parameter filterPageType */
+    @Serializable
+    enum class FilterPageTypeDynamicPagesGet(val value: kotlin.String) {
+        @SerialName(value = "HOME_STATIC") HOME_STATIC("HOME_STATIC"),
+        @SerialName(value = "HOME_UPLOADS") HOME_UPLOADS("HOME_UPLOADS"),
+        @SerialName(value = "HOME_EDITORIAL") HOME_EDITORIAL("HOME_EDITORIAL"),
+        @SerialName(value = "HOME_FREE") HOME_FREE("HOME_FREE"),
+        @SerialName(value = "STUDIO_HOME") STUDIO_HOME("STUDIO_HOME"),
+        @SerialName(value = "ARTIST") ARTIST("ARTIST"),
+        @SerialName(value = "ALBUM") ALBUM("ALBUM"),
+        @SerialName(value = "PLAYLIST") PLAYLIST("PLAYLIST"),
+        @SerialName(value = "TRACK") TRACK("TRACK"),
+        @SerialName(value = "VIDEO") VIDEO("VIDEO"),
+    }
+
     /** enum for parameter systemType */
     @Serializable
     enum class SystemTypeDynamicPagesGet(val value: kotlin.String) {
@@ -52,24 +67,21 @@ interface DynamicPages {
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
-     * @param deviceType The type of device making the request
-     * @param systemType The system type of the device making the request
      * @param clientVersion Client version number
-     * @param filterPageType type of the page (e.g. &#x60;ARTIST&#x60;)
-     * @param refreshSeed Stable seed used to keep dynamic page and module results consistent across
-     *   a client session. (optional)
+     * @param deviceType The type of device making the request
+     * @param filterPageType Type of the page (e.g. &#x60;ARTIST&#x60;)
+     * @param systemType The system type of the device making the request
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param locale BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or
-     *   unsupported. (optional, default to "en-US")
+     * @param filterSubject The page subject. Its type must match pageType. Required except for
+     *   HOME_FREE, where it must be omitted. Also accepts &#x60;users:me&#x60;. (optional)
      * @param include Include related resources. Available relationships: modules, subject
      *   (optional)
-     * @param filterSubject The page subject. Its type must match pageType. Required unless
-     *   subject.id is supplied; both must be omitted for HOME_FREE. Do not combine with subject.id.
-     *   (optional)
-     * @param filterSubjectId Deprecated alternative to filter[subject]. Omit when subject is
-     *   supplied or pageType is HOME_FREE. (e.g. &#x60;67890&#x60;) (optional)
      * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
      *   related content. (optional)
+     * @param locale BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or
+     *   unsupported. (optional, default to "en-US")
+     * @param refreshSeed Stable seed used to keep dynamic page and module results consistent across
+     *   a client session. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: modules.items (optional)
@@ -77,20 +89,18 @@ interface DynamicPages {
      */
     @GET("dynamicPages")
     suspend fun dynamicPagesGet(
-        @Query("deviceType") deviceType: DeviceTypeDynamicPagesGet,
-        @Query("systemType") systemType: SystemTypeDynamicPagesGet,
         @Query("clientVersion") clientVersion: kotlin.String,
+        @Query("deviceType") deviceType: DeviceTypeDynamicPagesGet,
         @Query("filter[pageType]")
         filterPageType: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
-        @Query("refreshSeed") refreshSeed: kotlin.String? = null,
+        @Query("systemType") systemType: SystemTypeDynamicPagesGet,
         @Query("countryCode") countryCode: kotlin.String? = null,
-        @Query("locale") locale: kotlin.String? = "en-US",
+        @Query("filter[subject]") filterSubject: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[subject]") filterSubject: kotlin.String? = null,
-        @Query("filter[subject.id]")
-        filterSubjectId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("includeLinkage") includeLinkage: CSVParams? = null,
+        @Query("locale") locale: kotlin.String? = "en-US",
+        @Query("refreshSeed") refreshSeed: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<DynamicPagesMultiResourceDataDocument>
 
@@ -117,7 +127,7 @@ interface DynamicPages {
 
     /**
      * GET dynamicPages/{id}/relationships/modules Get modules relationship (\&quot;to-many\&quot;).
-     * Retrieves modules relationship. Responses:
+     * The page&#39;s modules, in display order. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -129,17 +139,17 @@ interface DynamicPages {
      * - 503: Service temporarily unavailable
      *
      * @param id DynamicPages Id
+     * @param clientVersion Client version number
      * @param deviceType The type of device making the request
      * @param systemType The system type of the device making the request
-     * @param clientVersion Client version number
-     * @param refreshSeed Stable seed used to keep dynamic page and module results consistent across
-     *   a client session. (optional)
-     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
-     *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
+     * @param include Include related resources. Available relationships: modules (optional)
      * @param locale BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or
      *   unsupported. (optional, default to "en-US")
-     * @param include Include related resources. Available relationships: modules (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
+     * @param refreshSeed Stable seed used to keep dynamic page and module results consistent across
+     *   a client session. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: modules.items (optional)
@@ -148,15 +158,15 @@ interface DynamicPages {
     @GET("dynamicPages/{id}/relationships/modules")
     suspend fun dynamicPagesIdRelationshipsModulesGet(
         @Path("id") id: kotlin.String,
+        @Query("clientVersion") clientVersion: kotlin.String,
         @Query("deviceType") deviceType: DeviceTypeDynamicPagesIdRelationshipsModulesGet,
         @Query("systemType") systemType: SystemTypeDynamicPagesIdRelationshipsModulesGet,
-        @Query("clientVersion") clientVersion: kotlin.String,
-        @Query("refreshSeed") refreshSeed: kotlin.String? = null,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("countryCode") countryCode: kotlin.String? = null,
-        @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("locale") locale: kotlin.String? = "en-US",
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("refreshSeed") refreshSeed: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<DynamicPagesModulesMultiRelationshipDataDocument>
 

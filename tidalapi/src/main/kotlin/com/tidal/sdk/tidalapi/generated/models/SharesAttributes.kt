@@ -23,6 +23,9 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
+ * @param accessModes Ways this share may be used to obtain access. BEARER permits access by
+ *   presenting its code while active. VOUCHER permits an authenticated user to redeem it for a
+ *   stored grant. Multiple modes may be enabled.
  * @param code Share code
  * @param createdAt Time the share was created.
  * @param expiresAt Time bearer access and acceptance expire. New shares expire seven days after
@@ -32,6 +35,10 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class SharesAttributes(
+
+    /* Ways this share may be used to obtain access. BEARER permits access by presenting its code while active. VOUCHER permits an authenticated user to redeem it for a stored grant. Multiple modes may be enabled. */
+    @SerialName(value = "accessModes")
+    val accessModes: kotlin.collections.Set<SharesAttributes.AccessModes>,
 
     /* Share code */
     @SerialName(value = "code") val code: kotlin.String,
@@ -49,6 +56,19 @@ data class SharesAttributes(
     @SerialName(value = "externalLinks")
     val externalLinks: kotlin.collections.List<ExternalLink>? = null,
 ) {
+
+    /**
+     * Ways this share may be used to obtain access. BEARER permits access by presenting its code
+     * while active. VOUCHER permits an authenticated user to redeem it for a stored grant. Multiple
+     * modes may be enabled.
+     *
+     * Values: BEARER,VOUCHER
+     */
+    @Serializable
+    enum class AccessModes(val value: kotlin.String) {
+        @SerialName(value = "BEARER") BEARER("BEARER"),
+        @SerialName(value = "VOUCHER") VOUCHER("VOUCHER"),
+    }
 
     /**
      * Role offered on the shared resource.

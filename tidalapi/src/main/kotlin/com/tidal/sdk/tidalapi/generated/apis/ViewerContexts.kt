@@ -32,7 +32,7 @@ interface ViewerContexts {
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
-     * @param filterSubject Original subjects to look up.
+     * @param filterSubject Original subjects to look up. Also accepts &#x60;folders:me&#x60;.
      * @param include Include related resources. Available relationships: subject, viewer (optional)
      * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
      *   related content. (optional)

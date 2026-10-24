@@ -31,11 +31,11 @@ interface UserDiscoveryMixes {
      *
      * @param id User discovery mixes id. Use &#x60;me&#x60; for the authenticated user&#39;s
      *   resource
-     * @param locale BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or
-     *   unsupported. (optional, default to "en-US")
      * @param include Include related resources. Available relationships: items (optional)
      * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
      *   related content. (optional)
+     * @param locale BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or
+     *   unsupported. (optional, default to "en-US")
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: items.items (optional)
@@ -44,10 +44,10 @@ interface UserDiscoveryMixes {
     @GET("userDiscoveryMixes/{id}")
     suspend fun userDiscoveryMixesIdGet(
         @Path("id") id: kotlin.String,
-        @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("includeLinkage") includeLinkage: CSVParams? = null,
+        @Query("locale") locale: kotlin.String? = "en-US",
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<UserDiscoveryMixesSingleResourceDataDocument>
 
@@ -66,11 +66,11 @@ interface UserDiscoveryMixes {
      *
      * @param id User discovery mixes id. Use &#x60;me&#x60; for the authenticated user&#39;s
      *   resource
-     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
-     *   targets first page if not specified (optional)
+     * @param include Include related resources. Available relationships: items (optional)
      * @param locale BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or
      *   unsupported. (optional, default to "en-US")
-     * @param include Include related resources. Available relationships: items (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: items.items (optional)
@@ -79,10 +79,10 @@ interface UserDiscoveryMixes {
     @GET("userDiscoveryMixes/{id}/relationships/items")
     suspend fun userDiscoveryMixesIdRelationshipsItemsGet(
         @Path("id") id: kotlin.String,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-        @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("locale") locale: kotlin.String? = "en-US",
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<UserDiscoveryMixesItemsMultiRelationshipDataDocument>
 }
