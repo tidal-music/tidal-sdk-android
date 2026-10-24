@@ -37,7 +37,7 @@ interface Clients {
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
-     * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user
+     * @param filterOwnersId User id. Also accepts &#x60;me&#x60;.
      * @param include Include related resources. Available relationships: certificates, owners
      *   (optional)
      * @param includeLinkage Comma-separated direct relationships to return as linkage only, without

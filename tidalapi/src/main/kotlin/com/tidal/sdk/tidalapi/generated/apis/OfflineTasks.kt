@@ -37,12 +37,12 @@ interface OfflineTasks {
      * - 503: Service temporarily unavailable
      *
      * @param filterInstallationId List of offline task IDs (e.g. &#x60;a468bee88def&#x60;)
-     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
-     *   targets first page if not specified (optional)
      * @param include Include related resources. Available relationships: collection, item, owners
      *   (optional)
      * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
      *   related content. (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: collection (optional)
@@ -52,10 +52,10 @@ interface OfflineTasks {
     suspend fun offlineTasksGet(
         @Query("filter[installation.id]")
         filterInstallationId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("includeLinkage") includeLinkage: CSVParams? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<OfflineTasksMultiResourceDataDocument>
 

@@ -22,8 +22,17 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param owners */
+/**
+ * @param artworks
+ * @param owners
+ * @param variations
+ */
 @Serializable
 data class SquareItemsRelationships(
-    @SerialName(value = "owners") val owners: SquareItemsOwnersMultiRelationshipDataDocument? = null
+    @SerialName(value = "artworks")
+    val artworks: SquareItemsArtworksMultiRelationshipDataDocument? = null,
+    @SerialName(value = "owners")
+    val owners: SquareItemsOwnersMultiRelationshipDataDocument? = null,
+    @SerialName(value = "variations")
+    val variations: SquareItemsVariationsMultiRelationshipDataDocument? = null,
 ) {}

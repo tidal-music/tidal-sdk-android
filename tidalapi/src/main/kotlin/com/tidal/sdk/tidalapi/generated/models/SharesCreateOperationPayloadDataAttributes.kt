@@ -22,12 +22,24 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param role Role offered by the share. */
+/**
+ * @param role Role offered by the share.
+ * @param accessModes Ways this share may be used to obtain access. BEARER permits access by
+ *   presenting its code while active. VOUCHER permits redemption for a stored grant. Defaults to
+ *   both modes for every role. Playlist shares must include VOUCHER; bearer-only playlist shares
+ *   are rejected with 400.
+ */
 @Serializable
 data class SharesCreateOperationPayloadDataAttributes(
 
     /* Role offered by the share. */
-    @SerialName(value = "role") val role: SharesCreateOperationPayloadDataAttributes.Role
+    @SerialName(value = "role") val role: SharesCreateOperationPayloadDataAttributes.Role,
+
+    /* Ways this share may be used to obtain access. BEARER permits access by presenting its code while active. VOUCHER permits redemption for a stored grant. Defaults to both modes for every role. Playlist shares must include VOUCHER; bearer-only playlist shares are rejected with 400. */
+    @SerialName(value = "accessModes")
+    val accessModes:
+        kotlin.collections.Set<SharesCreateOperationPayloadDataAttributes.AccessModes>? =
+        null,
 ) {
 
     /**
@@ -39,5 +51,19 @@ data class SharesCreateOperationPayloadDataAttributes(
     enum class Role(val value: kotlin.String) {
         @SerialName(value = "VIEWER") VIEWER("VIEWER"),
         @SerialName(value = "COLLABORATOR") COLLABORATOR("COLLABORATOR"),
+    }
+
+    /**
+     * Ways this share may be used to obtain access. BEARER permits access by presenting its code
+     * while active. VOUCHER permits redemption for a stored grant. Defaults to both modes for every
+     * role. Playlist shares must include VOUCHER; bearer-only playlist shares are rejected
+     * with 400.
+     *
+     * Values: BEARER,VOUCHER
+     */
+    @Serializable
+    enum class AccessModes(val value: kotlin.String) {
+        @SerialName(value = "BEARER") BEARER("BEARER"),
+        @SerialName(value = "VOUCHER") VOUCHER("VOUCHER"),
     }
 }

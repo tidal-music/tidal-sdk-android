@@ -26,5 +26,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class SquareItemsReadById403ResponseBody(
     @SerialName(value = "errors")
-    val errors: kotlin.collections.List<SquareConnectionsReadById403ResponseBodyErrorsInner>
+    val errors: kotlin.collections.List<AtomicOperations403ResponseBodyErrorsInner>
 ) {}

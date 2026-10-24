@@ -42,6 +42,7 @@ import com.tidal.sdk.tidalapi.generated.apis.ProviderProductInfos
 import com.tidal.sdk.tidalapi.generated.apis.Providers
 import com.tidal.sdk.tidalapi.generated.apis.Purchases
 import com.tidal.sdk.tidalapi.generated.apis.Reactions
+import com.tidal.sdk.tidalapi.generated.apis.ResourceGrants
 import com.tidal.sdk.tidalapi.generated.apis.SavedShares
 import com.tidal.sdk.tidalapi.generated.apis.Scopes
 import com.tidal.sdk.tidalapi.generated.apis.SearchHistoryEntries
@@ -49,6 +50,8 @@ import com.tidal.sdk.tidalapi.generated.apis.SearchResults
 import com.tidal.sdk.tidalapi.generated.apis.SearchSuggestions
 import com.tidal.sdk.tidalapi.generated.apis.Shares
 import com.tidal.sdk.tidalapi.generated.apis.SquareConnections
+import com.tidal.sdk.tidalapi.generated.apis.SquareItemVariationPhysicalCounts
+import com.tidal.sdk.tidalapi.generated.apis.SquareItemVariations
 import com.tidal.sdk.tidalapi.generated.apis.SquareItems
 import com.tidal.sdk.tidalapi.generated.apis.SquareSites
 import com.tidal.sdk.tidalapi.generated.apis.StripeConnections
@@ -325,6 +328,11 @@ class TidalApiClient(
         return retrofit.create(Reactions::class.java)
     }
 
+    /** Returns an instance of the [ResourceGrants] which can be used to make API calls to the */
+    fun createResourceGrants(): ResourceGrants {
+        return retrofit.create(ResourceGrants::class.java)
+    }
+
     /** Returns an instance of the [SavedShares] which can be used to make API calls to the */
     fun createSavedShares(): SavedShares {
         return retrofit.create(SavedShares::class.java)
@@ -360,6 +368,21 @@ class TidalApiClient(
     /** Returns an instance of the [SquareConnections] which can be used to make API calls to the */
     fun createSquareConnections(): SquareConnections {
         return retrofit.create(SquareConnections::class.java)
+    }
+
+    /**
+     * Returns an instance of the [SquareItemVariationPhysicalCounts] which can be used to make API
+     * calls to the
+     */
+    fun createSquareItemVariationPhysicalCounts(): SquareItemVariationPhysicalCounts {
+        return retrofit.create(SquareItemVariationPhysicalCounts::class.java)
+    }
+
+    /**
+     * Returns an instance of the [SquareItemVariations] which can be used to make API calls to the
+     */
+    fun createSquareItemVariations(): SquareItemVariations {
+        return retrofit.create(SquareItemVariations::class.java)
     }
 
     /** Returns an instance of the [SquareItems] which can be used to make API calls to the */
