@@ -91,6 +91,10 @@ internal class SingleHandlerPlaybackEngineThreadingTest {
                 assignThreadAndReleaseLock()
             }
 
+            override fun pause(fadeOutMs: Long) {
+                assignThreadAndReleaseLock()
+            }
+
             override fun seek(time: Float) {
                 assignThreadAndReleaseLock()
             }
@@ -100,6 +104,10 @@ internal class SingleHandlerPlaybackEngineThreadingTest {
             }
 
             override fun setRepeatOne(enable: Boolean) {
+                assignThreadAndReleaseLock()
+            }
+
+            override fun setPauseAtEndOfMediaProduct(enable: Boolean) {
                 assignThreadAndReleaseLock()
             }
 
@@ -167,6 +175,18 @@ internal class SingleHandlerPlaybackEngineThreadingTest {
     }
 
     @Test
+    fun pauseWithAFadeOutSwitchesThread() {
+        lock.withLock {
+            singleHandlerPlaybackEngine.pause(8_000L)
+            while (!this::executionThread.isInitialized) {
+                delegateWaitCondition.await()
+            }
+        }
+        assertThat(executionThread).isNotSameAs(Thread.currentThread())
+        assertThat(executionThread).isSameAs(handlerThread)
+    }
+
+    @Test
     fun seekSwitchesThread() {
         lock.withLock {
             singleHandlerPlaybackEngine.seek(78F)
@@ -193,6 +213,18 @@ internal class SingleHandlerPlaybackEngineThreadingTest {
     fun resetSwitchesThread() {
         lock.withLock {
             singleHandlerPlaybackEngine.reset()
+            while (!this::executionThread.isInitialized) {
+                delegateWaitCondition.await()
+            }
+        }
+        assertThat(executionThread).isNotSameAs(Thread.currentThread())
+        assertThat(executionThread).isSameAs(handlerThread)
+    }
+
+    @Test
+    fun setPauseAtEndOfMediaProductSwitchesThread() {
+        lock.withLock {
+            singleHandlerPlaybackEngine.setPauseAtEndOfMediaProduct(true)
             while (!this::executionThread.isInitialized) {
                 delegateWaitCondition.await()
             }
