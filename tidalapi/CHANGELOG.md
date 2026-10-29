@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.63] - 2026-10-29
+### Fixed
+- Redact the `Authorization` header in network logs, so the bearer token is no longer written to logs
+
 ## [0.3.62] - 2026-10-17
 ### Changed
 - Updated generated code using api spec version 1.10.183

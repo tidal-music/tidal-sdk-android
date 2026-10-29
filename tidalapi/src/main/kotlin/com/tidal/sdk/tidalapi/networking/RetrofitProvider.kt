@@ -56,7 +56,7 @@ constructor(
             .apply { retryPolicy?.let { addInterceptor(TidalApiRetryInterceptor(it)) } }
             .addInterceptor(AuthInterceptor(credentialsProvider))
             .authenticator(DefaultAuthenticator(credentialsProvider))
-            .addInterceptor(getLoggingInterceptor())
+            .addInterceptor(createLoggingInterceptor())
             .build()
 
     fun provideRetrofit(baseUrl: String, credentialsProvider: CredentialsProvider): Retrofit =
@@ -71,11 +71,6 @@ constructor(
         const val DEFAULT_READ_TIMEOUT_MILLIS = 5_000L
     }
 
-    private fun getLoggingInterceptor(): HttpLoggingInterceptor {
-        val logging = HttpLoggingInterceptor.Logger { String.logger.d { it } }
-        return HttpLoggingInterceptor(logging).apply { setLevel(HttpLoggingInterceptor.Level.BODY) }
-    }
-
     private fun createJsonSerializer(): Json {
         val oneOfSerializer = SerializersModule { include(getOneOfSerializer()) }
 
@@ -86,3 +81,11 @@ constructor(
         }
     }
 }
+
+internal fun createLoggingInterceptor(
+    logger: HttpLoggingInterceptor.Logger = HttpLoggingInterceptor.Logger { String.logger.d { it } }
+): HttpLoggingInterceptor =
+    HttpLoggingInterceptor(logger).apply {
+        setLevel(HttpLoggingInterceptor.Level.BODY)
+        redactHeader("Authorization")
+    }
