@@ -15,13 +15,6 @@ import retrofit2.http.*
 
 interface SearchResults {
 
-    /** enum for parameter explicitFilter */
-    @Serializable
-    enum class ExplicitFilterSearchResultsGet(val value: kotlin.String) {
-        @SerialName(value = "INCLUDE") INCLUDE("INCLUDE"),
-        @SerialName(value = "EXCLUDE") EXCLUDE("EXCLUDE"),
-    }
-
     /** enum for parameter deviceType */
     @Serializable
     enum class DeviceTypeSearchResultsGet(val value: kotlin.String) {
@@ -33,14 +26,11 @@ interface SearchResults {
         @SerialName(value = "TV") TV("TV"),
     }
 
-    /** enum for parameter systemType */
+    /** enum for parameter explicitFilter */
     @Serializable
-    enum class SystemTypeSearchResultsGet(val value: kotlin.String) {
-        @SerialName(value = "ANDROID") ANDROID("ANDROID"),
-        @SerialName(value = "DESKTOP") DESKTOP("DESKTOP"),
-        @SerialName(value = "TESLA") TESLA("TESLA"),
-        @SerialName(value = "IOS") IOS("IOS"),
-        @SerialName(value = "WEB") WEB("WEB"),
+    enum class ExplicitFilterSearchResultsGet(val value: kotlin.String) {
+        @SerialName(value = "INCLUDE") INCLUDE("INCLUDE"),
+        @SerialName(value = "EXCLUDE") EXCLUDE("EXCLUDE"),
     }
 
     /** enum for parameter includeLinkage */
@@ -52,6 +42,16 @@ interface SearchResults {
         @SerialName(value = "topHits") topHits("topHits"),
         @SerialName(value = "tracks") tracks("tracks"),
         @SerialName(value = "videos") videos("videos"),
+    }
+
+    /** enum for parameter systemType */
+    @Serializable
+    enum class SystemTypeSearchResultsGet(val value: kotlin.String) {
+        @SerialName(value = "ANDROID") ANDROID("ANDROID"),
+        @SerialName(value = "DESKTOP") DESKTOP("DESKTOP"),
+        @SerialName(value = "TESLA") TESLA("TESLA"),
+        @SerialName(value = "IOS") IOS("IOS"),
+        @SerialName(value = "WEB") WEB("WEB"),
     }
 
     /**
@@ -68,12 +68,11 @@ interface SearchResults {
      * - 503: Service temporarily unavailable
      *
      * @param filterQuery Search query (e.g. &#x60;hello&#x60;)
-     * @param explicitFilter Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to
-     *   ExplicitFilter.INCLUDE)
+     * @param clientVersion Client version number (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param deviceType The type of device making the request (optional)
-     * @param systemType The system type of the device making the request (optional)
-     * @param clientVersion Client version number (optional)
+     * @param explicitFilter Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to
+     *   ExplicitFilter.INCLUDE)
      * @param include Include related resources. Available relationships: albums, artists,
      *   playlists, topHits, tracks, videos (optional)
      * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
@@ -81,29 +80,23 @@ interface SearchResults {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: albums (optional)
+     * @param systemType The system type of the device making the request (optional)
      * @return [SearchResultsMultiResourceDataDocument]
      */
     @GET("searchResults")
     suspend fun searchResultsGet(
         @Query("filter[query]") filterQuery: kotlin.String,
-        @Query("explicitFilter")
-        explicitFilter: ExplicitFilterSearchResultsGet? = ExplicitFilterSearchResultsGet.INCLUDE,
+        @Query("clientVersion") clientVersion: kotlin.String? = null,
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("deviceType") deviceType: DeviceTypeSearchResultsGet? = null,
-        @Query("systemType") systemType: SystemTypeSearchResultsGet? = null,
-        @Query("clientVersion") clientVersion: kotlin.String? = null,
+        @Query("explicitFilter")
+        explicitFilter: ExplicitFilterSearchResultsGet? = ExplicitFilterSearchResultsGet.INCLUDE,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
+        @Query("systemType") systemType: SystemTypeSearchResultsGet? = null,
     ): Response<SearchResultsMultiResourceDataDocument>
-
-    /** enum for parameter explicitFilter */
-    @Serializable
-    enum class ExplicitFilterSearchResultsIdRelationshipsAlbumsGet(val value: kotlin.String) {
-        @SerialName(value = "INCLUDE") INCLUDE("INCLUDE"),
-        @SerialName(value = "EXCLUDE") EXCLUDE("EXCLUDE"),
-    }
 
     /** enum for parameter deviceType */
     @Serializable
@@ -114,6 +107,13 @@ interface SearchResults {
         @SerialName(value = "PHONE") PHONE("PHONE"),
         @SerialName(value = "TABLET") TABLET("TABLET"),
         @SerialName(value = "TV") TV("TV"),
+    }
+
+    /** enum for parameter explicitFilter */
+    @Serializable
+    enum class ExplicitFilterSearchResultsIdRelationshipsAlbumsGet(val value: kotlin.String) {
+        @SerialName(value = "INCLUDE") INCLUDE("INCLUDE"),
+        @SerialName(value = "EXCLUDE") EXCLUDE("EXCLUDE"),
     }
 
     /** enum for parameter systemType */
@@ -140,42 +140,35 @@ interface SearchResults {
      * - 503: Service temporarily unavailable
      *
      * @param id An opaque search results identifier
-     * @param explicitFilter Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to
-     *   ExplicitFilter.INCLUDE)
-     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
-     *   targets first page if not specified (optional)
+     * @param clientVersion Client version number (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param deviceType The type of device making the request (optional)
-     * @param systemType The system type of the device making the request (optional)
-     * @param clientVersion Client version number (optional)
+     * @param explicitFilter Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to
+     *   ExplicitFilter.INCLUDE)
      * @param include Include related resources. Available relationships: albums (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: albums (optional)
+     * @param systemType The system type of the device making the request (optional)
      * @return [SearchResultsAlbumsMultiRelationshipDataDocument]
      */
     @GET("searchResults/{id}/relationships/albums")
     suspend fun searchResultsIdRelationshipsAlbumsGet(
         @Path("id") id: kotlin.String,
+        @Query("clientVersion") clientVersion: kotlin.String? = null,
+        @Query("countryCode") countryCode: kotlin.String? = null,
+        @Query("deviceType") deviceType: DeviceTypeSearchResultsIdRelationshipsAlbumsGet? = null,
         @Query("explicitFilter")
         explicitFilter: ExplicitFilterSearchResultsIdRelationshipsAlbumsGet? =
             ExplicitFilterSearchResultsIdRelationshipsAlbumsGet.INCLUDE,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-        @Query("countryCode") countryCode: kotlin.String? = null,
-        @Query("deviceType") deviceType: DeviceTypeSearchResultsIdRelationshipsAlbumsGet? = null,
-        @Query("systemType") systemType: SystemTypeSearchResultsIdRelationshipsAlbumsGet? = null,
-        @Query("clientVersion") clientVersion: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
+        @Query("systemType") systemType: SystemTypeSearchResultsIdRelationshipsAlbumsGet? = null,
     ): Response<SearchResultsAlbumsMultiRelationshipDataDocument>
-
-    /** enum for parameter explicitFilter */
-    @Serializable
-    enum class ExplicitFilterSearchResultsIdRelationshipsArtistsGet(val value: kotlin.String) {
-        @SerialName(value = "INCLUDE") INCLUDE("INCLUDE"),
-        @SerialName(value = "EXCLUDE") EXCLUDE("EXCLUDE"),
-    }
 
     /** enum for parameter deviceType */
     @Serializable
@@ -186,6 +179,13 @@ interface SearchResults {
         @SerialName(value = "PHONE") PHONE("PHONE"),
         @SerialName(value = "TABLET") TABLET("TABLET"),
         @SerialName(value = "TV") TV("TV"),
+    }
+
+    /** enum for parameter explicitFilter */
+    @Serializable
+    enum class ExplicitFilterSearchResultsIdRelationshipsArtistsGet(val value: kotlin.String) {
+        @SerialName(value = "INCLUDE") INCLUDE("INCLUDE"),
+        @SerialName(value = "EXCLUDE") EXCLUDE("EXCLUDE"),
     }
 
     /** enum for parameter systemType */
@@ -212,42 +212,35 @@ interface SearchResults {
      * - 503: Service temporarily unavailable
      *
      * @param id An opaque search results identifier
-     * @param explicitFilter Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to
-     *   ExplicitFilter.INCLUDE)
-     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
-     *   targets first page if not specified (optional)
+     * @param clientVersion Client version number (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param deviceType The type of device making the request (optional)
-     * @param systemType The system type of the device making the request (optional)
-     * @param clientVersion Client version number (optional)
+     * @param explicitFilter Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to
+     *   ExplicitFilter.INCLUDE)
      * @param include Include related resources. Available relationships: artists (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
-     *   &#x60;include&#x60; syntax. Example: artists (optional)
+     *   &#x60;include&#x60; syntax. Example: artists.albums (optional)
+     * @param systemType The system type of the device making the request (optional)
      * @return [SearchResultsArtistsMultiRelationshipDataDocument]
      */
     @GET("searchResults/{id}/relationships/artists")
     suspend fun searchResultsIdRelationshipsArtistsGet(
         @Path("id") id: kotlin.String,
+        @Query("clientVersion") clientVersion: kotlin.String? = null,
+        @Query("countryCode") countryCode: kotlin.String? = null,
+        @Query("deviceType") deviceType: DeviceTypeSearchResultsIdRelationshipsArtistsGet? = null,
         @Query("explicitFilter")
         explicitFilter: ExplicitFilterSearchResultsIdRelationshipsArtistsGet? =
             ExplicitFilterSearchResultsIdRelationshipsArtistsGet.INCLUDE,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-        @Query("countryCode") countryCode: kotlin.String? = null,
-        @Query("deviceType") deviceType: DeviceTypeSearchResultsIdRelationshipsArtistsGet? = null,
-        @Query("systemType") systemType: SystemTypeSearchResultsIdRelationshipsArtistsGet? = null,
-        @Query("clientVersion") clientVersion: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
+        @Query("systemType") systemType: SystemTypeSearchResultsIdRelationshipsArtistsGet? = null,
     ): Response<SearchResultsArtistsMultiRelationshipDataDocument>
-
-    /** enum for parameter explicitFilter */
-    @Serializable
-    enum class ExplicitFilterSearchResultsIdRelationshipsPlaylistsGet(val value: kotlin.String) {
-        @SerialName(value = "INCLUDE") INCLUDE("INCLUDE"),
-        @SerialName(value = "EXCLUDE") EXCLUDE("EXCLUDE"),
-    }
 
     /** enum for parameter deviceType */
     @Serializable
@@ -258,6 +251,13 @@ interface SearchResults {
         @SerialName(value = "PHONE") PHONE("PHONE"),
         @SerialName(value = "TABLET") TABLET("TABLET"),
         @SerialName(value = "TV") TV("TV"),
+    }
+
+    /** enum for parameter explicitFilter */
+    @Serializable
+    enum class ExplicitFilterSearchResultsIdRelationshipsPlaylistsGet(val value: kotlin.String) {
+        @SerialName(value = "INCLUDE") INCLUDE("INCLUDE"),
+        @SerialName(value = "EXCLUDE") EXCLUDE("EXCLUDE"),
     }
 
     /** enum for parameter systemType */
@@ -284,42 +284,35 @@ interface SearchResults {
      * - 503: Service temporarily unavailable
      *
      * @param id An opaque search results identifier
-     * @param explicitFilter Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to
-     *   ExplicitFilter.INCLUDE)
-     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
-     *   targets first page if not specified (optional)
+     * @param clientVersion Client version number (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param deviceType The type of device making the request (optional)
-     * @param systemType The system type of the device making the request (optional)
-     * @param clientVersion Client version number (optional)
+     * @param explicitFilter Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to
+     *   ExplicitFilter.INCLUDE)
      * @param include Include related resources. Available relationships: playlists (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
-     *   &#x60;include&#x60; syntax. Example: playlists (optional)
+     *   &#x60;include&#x60; syntax. Example: playlists.items (optional)
+     * @param systemType The system type of the device making the request (optional)
      * @return [SearchResultsPlaylistsMultiRelationshipDataDocument]
      */
     @GET("searchResults/{id}/relationships/playlists")
     suspend fun searchResultsIdRelationshipsPlaylistsGet(
         @Path("id") id: kotlin.String,
+        @Query("clientVersion") clientVersion: kotlin.String? = null,
+        @Query("countryCode") countryCode: kotlin.String? = null,
+        @Query("deviceType") deviceType: DeviceTypeSearchResultsIdRelationshipsPlaylistsGet? = null,
         @Query("explicitFilter")
         explicitFilter: ExplicitFilterSearchResultsIdRelationshipsPlaylistsGet? =
             ExplicitFilterSearchResultsIdRelationshipsPlaylistsGet.INCLUDE,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-        @Query("countryCode") countryCode: kotlin.String? = null,
-        @Query("deviceType") deviceType: DeviceTypeSearchResultsIdRelationshipsPlaylistsGet? = null,
-        @Query("systemType") systemType: SystemTypeSearchResultsIdRelationshipsPlaylistsGet? = null,
-        @Query("clientVersion") clientVersion: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
+        @Query("systemType") systemType: SystemTypeSearchResultsIdRelationshipsPlaylistsGet? = null,
     ): Response<SearchResultsPlaylistsMultiRelationshipDataDocument>
-
-    /** enum for parameter explicitFilter */
-    @Serializable
-    enum class ExplicitFilterSearchResultsIdRelationshipsTopHitsGet(val value: kotlin.String) {
-        @SerialName(value = "INCLUDE") INCLUDE("INCLUDE"),
-        @SerialName(value = "EXCLUDE") EXCLUDE("EXCLUDE"),
-    }
 
     /** enum for parameter deviceType */
     @Serializable
@@ -330,6 +323,13 @@ interface SearchResults {
         @SerialName(value = "PHONE") PHONE("PHONE"),
         @SerialName(value = "TABLET") TABLET("TABLET"),
         @SerialName(value = "TV") TV("TV"),
+    }
+
+    /** enum for parameter explicitFilter */
+    @Serializable
+    enum class ExplicitFilterSearchResultsIdRelationshipsTopHitsGet(val value: kotlin.String) {
+        @SerialName(value = "INCLUDE") INCLUDE("INCLUDE"),
+        @SerialName(value = "EXCLUDE") EXCLUDE("EXCLUDE"),
     }
 
     /** enum for parameter systemType */
@@ -356,42 +356,35 @@ interface SearchResults {
      * - 503: Service temporarily unavailable
      *
      * @param id An opaque search results identifier
-     * @param explicitFilter Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to
-     *   ExplicitFilter.INCLUDE)
-     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
-     *   targets first page if not specified (optional)
+     * @param clientVersion Client version number (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param deviceType The type of device making the request (optional)
-     * @param systemType The system type of the device making the request (optional)
-     * @param clientVersion Client version number (optional)
+     * @param explicitFilter Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to
+     *   ExplicitFilter.INCLUDE)
      * @param include Include related resources. Available relationships: topHits (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: topHits (optional)
+     * @param systemType The system type of the device making the request (optional)
      * @return [SearchResultsTopHitsMultiRelationshipDataDocument]
      */
     @GET("searchResults/{id}/relationships/topHits")
     suspend fun searchResultsIdRelationshipsTopHitsGet(
         @Path("id") id: kotlin.String,
+        @Query("clientVersion") clientVersion: kotlin.String? = null,
+        @Query("countryCode") countryCode: kotlin.String? = null,
+        @Query("deviceType") deviceType: DeviceTypeSearchResultsIdRelationshipsTopHitsGet? = null,
         @Query("explicitFilter")
         explicitFilter: ExplicitFilterSearchResultsIdRelationshipsTopHitsGet? =
             ExplicitFilterSearchResultsIdRelationshipsTopHitsGet.INCLUDE,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-        @Query("countryCode") countryCode: kotlin.String? = null,
-        @Query("deviceType") deviceType: DeviceTypeSearchResultsIdRelationshipsTopHitsGet? = null,
-        @Query("systemType") systemType: SystemTypeSearchResultsIdRelationshipsTopHitsGet? = null,
-        @Query("clientVersion") clientVersion: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
+        @Query("systemType") systemType: SystemTypeSearchResultsIdRelationshipsTopHitsGet? = null,
     ): Response<SearchResultsTopHitsMultiRelationshipDataDocument>
-
-    /** enum for parameter explicitFilter */
-    @Serializable
-    enum class ExplicitFilterSearchResultsIdRelationshipsTracksGet(val value: kotlin.String) {
-        @SerialName(value = "INCLUDE") INCLUDE("INCLUDE"),
-        @SerialName(value = "EXCLUDE") EXCLUDE("EXCLUDE"),
-    }
 
     /** enum for parameter deviceType */
     @Serializable
@@ -402,6 +395,13 @@ interface SearchResults {
         @SerialName(value = "PHONE") PHONE("PHONE"),
         @SerialName(value = "TABLET") TABLET("TABLET"),
         @SerialName(value = "TV") TV("TV"),
+    }
+
+    /** enum for parameter explicitFilter */
+    @Serializable
+    enum class ExplicitFilterSearchResultsIdRelationshipsTracksGet(val value: kotlin.String) {
+        @SerialName(value = "INCLUDE") INCLUDE("INCLUDE"),
+        @SerialName(value = "EXCLUDE") EXCLUDE("EXCLUDE"),
     }
 
     /** enum for parameter systemType */
@@ -428,42 +428,35 @@ interface SearchResults {
      * - 503: Service temporarily unavailable
      *
      * @param id An opaque search results identifier
-     * @param explicitFilter Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to
-     *   ExplicitFilter.INCLUDE)
-     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
-     *   targets first page if not specified (optional)
+     * @param clientVersion Client version number (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param deviceType The type of device making the request (optional)
-     * @param systemType The system type of the device making the request (optional)
-     * @param clientVersion Client version number (optional)
+     * @param explicitFilter Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to
+     *   ExplicitFilter.INCLUDE)
      * @param include Include related resources. Available relationships: tracks (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: tracks (optional)
+     * @param systemType The system type of the device making the request (optional)
      * @return [SearchResultsTracksMultiRelationshipDataDocument]
      */
     @GET("searchResults/{id}/relationships/tracks")
     suspend fun searchResultsIdRelationshipsTracksGet(
         @Path("id") id: kotlin.String,
+        @Query("clientVersion") clientVersion: kotlin.String? = null,
+        @Query("countryCode") countryCode: kotlin.String? = null,
+        @Query("deviceType") deviceType: DeviceTypeSearchResultsIdRelationshipsTracksGet? = null,
         @Query("explicitFilter")
         explicitFilter: ExplicitFilterSearchResultsIdRelationshipsTracksGet? =
             ExplicitFilterSearchResultsIdRelationshipsTracksGet.INCLUDE,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-        @Query("countryCode") countryCode: kotlin.String? = null,
-        @Query("deviceType") deviceType: DeviceTypeSearchResultsIdRelationshipsTracksGet? = null,
-        @Query("systemType") systemType: SystemTypeSearchResultsIdRelationshipsTracksGet? = null,
-        @Query("clientVersion") clientVersion: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
+        @Query("systemType") systemType: SystemTypeSearchResultsIdRelationshipsTracksGet? = null,
     ): Response<SearchResultsTracksMultiRelationshipDataDocument>
-
-    /** enum for parameter explicitFilter */
-    @Serializable
-    enum class ExplicitFilterSearchResultsIdRelationshipsVideosGet(val value: kotlin.String) {
-        @SerialName(value = "INCLUDE") INCLUDE("INCLUDE"),
-        @SerialName(value = "EXCLUDE") EXCLUDE("EXCLUDE"),
-    }
 
     /** enum for parameter deviceType */
     @Serializable
@@ -474,6 +467,13 @@ interface SearchResults {
         @SerialName(value = "PHONE") PHONE("PHONE"),
         @SerialName(value = "TABLET") TABLET("TABLET"),
         @SerialName(value = "TV") TV("TV"),
+    }
+
+    /** enum for parameter explicitFilter */
+    @Serializable
+    enum class ExplicitFilterSearchResultsIdRelationshipsVideosGet(val value: kotlin.String) {
+        @SerialName(value = "INCLUDE") INCLUDE("INCLUDE"),
+        @SerialName(value = "EXCLUDE") EXCLUDE("EXCLUDE"),
     }
 
     /** enum for parameter systemType */
@@ -500,33 +500,33 @@ interface SearchResults {
      * - 503: Service temporarily unavailable
      *
      * @param id An opaque search results identifier
-     * @param explicitFilter Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to
-     *   ExplicitFilter.INCLUDE)
-     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
-     *   targets first page if not specified (optional)
+     * @param clientVersion Client version number (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param deviceType The type of device making the request (optional)
-     * @param systemType The system type of the device making the request (optional)
-     * @param clientVersion Client version number (optional)
+     * @param explicitFilter Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to
+     *   ExplicitFilter.INCLUDE)
      * @param include Include related resources. Available relationships: videos (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: videos (optional)
+     * @param systemType The system type of the device making the request (optional)
      * @return [SearchResultsVideosMultiRelationshipDataDocument]
      */
     @GET("searchResults/{id}/relationships/videos")
     suspend fun searchResultsIdRelationshipsVideosGet(
         @Path("id") id: kotlin.String,
+        @Query("clientVersion") clientVersion: kotlin.String? = null,
+        @Query("countryCode") countryCode: kotlin.String? = null,
+        @Query("deviceType") deviceType: DeviceTypeSearchResultsIdRelationshipsVideosGet? = null,
         @Query("explicitFilter")
         explicitFilter: ExplicitFilterSearchResultsIdRelationshipsVideosGet? =
             ExplicitFilterSearchResultsIdRelationshipsVideosGet.INCLUDE,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-        @Query("countryCode") countryCode: kotlin.String? = null,
-        @Query("deviceType") deviceType: DeviceTypeSearchResultsIdRelationshipsVideosGet? = null,
-        @Query("systemType") systemType: SystemTypeSearchResultsIdRelationshipsVideosGet? = null,
-        @Query("clientVersion") clientVersion: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
+        @Query("systemType") systemType: SystemTypeSearchResultsIdRelationshipsVideosGet? = null,
     ): Response<SearchResultsVideosMultiRelationshipDataDocument>
 }

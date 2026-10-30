@@ -71,19 +71,19 @@ interface Shares {
      * - 503: Service temporarily unavailable
      *
      * @param id Share id
-     * @param revokeGrants Also revoke the access granted to everyone who saved this share; access
-     *   from other sources stays. Defaults to false. Not supported for playlist shares or for
-     *   owners not yet on the access store; there true is rejected with 400. (optional)
      * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If the same
      *   caller repeats a key with the same method, path, query and payload, the original response
      *   is replayed. If the request differs, a 422 error is returned. (optional)
+     * @param revokeGrants Also revoke the access granted to everyone who saved this share; access
+     *   from other sources stays. Defaults to false. Not supported for playlist shares or for
+     *   owners not yet on the access store; there true is rejected with 400. (optional)
      * @return [MutationResponseDocument]
      */
     @DELETE("shares/{id}")
     suspend fun sharesIdDelete(
         @Path("id") id: kotlin.String,
-        @Query("revokeGrants") revokeGrants: kotlin.Boolean? = null,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
+        @Query("revokeGrants") revokeGrants: kotlin.Boolean? = null,
     ): Response<MutationResponseDocument>
 
     /** enum for parameter includeLinkage */
@@ -165,9 +165,9 @@ interface Shares {
      * - 503: Service temporarily unavailable
      *
      * @param id Share id
+     * @param include Include related resources. Available relationships: sharedResources (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @param include Include related resources. Available relationships: sharedResources (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: sharedResources (optional)
@@ -176,9 +176,9 @@ interface Shares {
     @GET("shares/{id}/relationships/sharedResources")
     suspend fun sharesIdRelationshipsSharedResourcesGet(
         @Path("id") id: kotlin.String,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<SharesSharedResourcesMultiRelationshipDataDocument>
 

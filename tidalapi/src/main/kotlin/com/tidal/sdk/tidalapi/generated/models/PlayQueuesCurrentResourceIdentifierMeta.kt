@@ -28,6 +28,8 @@ import kotlinx.serialization.Serializable
  * @param itemId
  * @param legacySource
  * @param position
+ * @param positionRevision Position revision for this itemId; advances only on explicit position
+ *   writes.
  * @param positionUpdatedAt
  * @param replacement
  * @param updatedByInstallationId
@@ -38,6 +40,9 @@ data class PlayQueuesCurrentResourceIdentifierMeta(
     @SerialName(value = "itemId") val itemId: kotlin.String,
     @SerialName(value = "legacySource") val legacySource: LegacySource? = null,
     @SerialName(value = "position") val position: kotlin.String? = null,
+
+    /* Position revision for this itemId; advances only on explicit position writes. */
+    @SerialName(value = "positionRevision") val positionRevision: kotlin.Long? = null,
     @SerialName(value = "positionUpdatedAt") val positionUpdatedAt: kotlin.String? = null,
     @SerialName(value = "replacement") val replacement: ReplacementProvenance? = null,
     @SerialName(value = "updatedByInstallationId")

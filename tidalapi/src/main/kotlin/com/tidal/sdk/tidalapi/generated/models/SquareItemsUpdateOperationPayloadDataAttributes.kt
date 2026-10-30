@@ -25,11 +25,6 @@ import kotlinx.serialization.Serializable
 /**
  * @param description Item description; an empty string removes it
  * @param title Item title
- * @param variations Complete variation list in display order; variations without a variationId are
- *   added and omitted ones deleted. Every price must be positive and is written as FIXED.
- *   Replacement requires every existing variation to have a positive fixed price at the main
- *   location; otherwise edit the variations in Square Dashboard. Updates without variations remain
- *   supported.
  */
 @Serializable
 data class SquareItemsUpdateOperationPayloadDataAttributes(
@@ -39,10 +34,4 @@ data class SquareItemsUpdateOperationPayloadDataAttributes(
 
     /* Item title */
     @SerialName(value = "title") val title: kotlin.String? = null,
-
-    /* Complete variation list in display order; variations without a variationId are added and omitted ones deleted. Every price must be positive and is written as FIXED. Replacement requires every existing variation to have a positive fixed price at the main location; otherwise edit the variations in Square Dashboard. Updates without variations remain supported. */
-    @SerialName(value = "variations")
-    val variations:
-        kotlin.collections.List<SquareItemsUpdateOperationPayloadDataAttributesVariation>? =
-        null,
 ) {}

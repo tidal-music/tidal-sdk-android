@@ -27,6 +27,7 @@ import kotlinx.serialization.Serializable
  * @param owners
  * @param parent
  * @param preview
+ * @param shares
  */
 @Serializable
 data class FoldersRelationships(
@@ -35,4 +36,5 @@ data class FoldersRelationships(
     @SerialName(value = "owners") val owners: FoldersOwnersMultiRelationshipDataDocument? = null,
     @SerialName(value = "parent") val parent: FoldersParentSingleRelationshipDataDocument? = null,
     @SerialName(value = "preview") val preview: FoldersPreviewMultiRelationshipDataDocument? = null,
+    @SerialName(value = "shares") val shares: FoldersSharesMultiRelationshipDataDocument? = null,
 ) {}

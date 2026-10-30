@@ -106,9 +106,9 @@ interface UserCollectionSaveForLaters {
      *
      * @param id User collection save for later id. Use &#x60;me&#x60; for the authenticated
      *   user&#39;s resource
+     * @param include Include related resources. Available relationships: items (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @param include Include related resources. Available relationships: items (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: items (optional)
@@ -117,9 +117,9 @@ interface UserCollectionSaveForLaters {
     @GET("userCollectionSaveForLaters/{id}/relationships/items")
     suspend fun userCollectionSaveForLatersIdRelationshipsItemsGet(
         @Path("id") id: kotlin.String,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<UserCollectionSaveForLatersItemsMultiRelationshipDataDocument>
 

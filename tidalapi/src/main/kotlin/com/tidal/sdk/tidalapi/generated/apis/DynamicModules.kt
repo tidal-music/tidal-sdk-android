@@ -53,18 +53,18 @@ interface DynamicModules {
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
-     * @param deviceType The type of device making the request
-     * @param systemType The system type of the device making the request
      * @param clientVersion Client version number
+     * @param deviceType The type of device making the request
      * @param filterId DynamicModules Id (e.g. &#x60;nejMcAhh5N8S3EQ4LaqysVdI0cZZ&#x60;)
-     * @param refreshSeed Stable seed used to keep dynamic page and module results consistent across
-     *   a client session. (optional)
+     * @param systemType The system type of the device making the request
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param locale BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or
-     *   unsupported. (optional, default to "en-US")
      * @param include Include related resources. Available relationships: items, seedItem (optional)
      * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
      *   related content. (optional)
+     * @param locale BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or
+     *   unsupported. (optional, default to "en-US")
+     * @param refreshSeed Stable seed used to keep dynamic page and module results consistent across
+     *   a client session. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: items (optional)
@@ -72,16 +72,16 @@ interface DynamicModules {
      */
     @GET("dynamicModules")
     suspend fun dynamicModulesGet(
-        @Query("deviceType") deviceType: DeviceTypeDynamicModulesGet,
-        @Query("systemType") systemType: SystemTypeDynamicModulesGet,
         @Query("clientVersion") clientVersion: kotlin.String,
+        @Query("deviceType") deviceType: DeviceTypeDynamicModulesGet,
         @Query("filter[id]") filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
-        @Query("refreshSeed") refreshSeed: kotlin.String? = null,
+        @Query("systemType") systemType: SystemTypeDynamicModulesGet,
         @Query("countryCode") countryCode: kotlin.String? = null,
-        @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("includeLinkage") includeLinkage: CSVParams? = null,
+        @Query("locale") locale: kotlin.String? = "en-US",
+        @Query("refreshSeed") refreshSeed: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<DynamicModulesMultiResourceDataDocument>
 
@@ -127,17 +127,17 @@ interface DynamicModules {
      * - 503: Service temporarily unavailable
      *
      * @param id DynamicModules Id
+     * @param clientVersion Client version number
      * @param deviceType The type of device making the request
      * @param systemType The system type of the device making the request
-     * @param clientVersion Client version number
-     * @param refreshSeed Stable seed used to keep dynamic page and module results consistent across
-     *   a client session. (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param locale BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or
-     *   unsupported. (optional, default to "en-US")
      * @param include Include related resources. Available relationships: items, seedItem (optional)
      * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
      *   related content. (optional)
+     * @param locale BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or
+     *   unsupported. (optional, default to "en-US")
+     * @param refreshSeed Stable seed used to keep dynamic page and module results consistent across
+     *   a client session. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: items (optional)
@@ -146,15 +146,15 @@ interface DynamicModules {
     @GET("dynamicModules/{id}")
     suspend fun dynamicModulesIdGet(
         @Path("id") id: kotlin.String,
+        @Query("clientVersion") clientVersion: kotlin.String,
         @Query("deviceType") deviceType: DeviceTypeDynamicModulesIdGet,
         @Query("systemType") systemType: SystemTypeDynamicModulesIdGet,
-        @Query("clientVersion") clientVersion: kotlin.String,
-        @Query("refreshSeed") refreshSeed: kotlin.String? = null,
         @Query("countryCode") countryCode: kotlin.String? = null,
-        @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("includeLinkage") includeLinkage: CSVParams? = null,
+        @Query("locale") locale: kotlin.String? = "en-US",
+        @Query("refreshSeed") refreshSeed: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<DynamicModulesSingleResourceDataDocument>
 
@@ -196,17 +196,17 @@ interface DynamicModules {
      * - 503: Service temporarily unavailable
      *
      * @param id DynamicModules Id
+     * @param clientVersion Client version number
      * @param deviceType The type of device making the request
      * @param systemType The system type of the device making the request
-     * @param clientVersion Client version number
-     * @param refreshSeed Stable seed used to keep dynamic page and module results consistent across
-     *   a client session. (optional)
-     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
-     *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
+     * @param include Include related resources. Available relationships: items (optional)
      * @param locale BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or
      *   unsupported. (optional, default to "en-US")
-     * @param include Include related resources. Available relationships: items (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
+     * @param refreshSeed Stable seed used to keep dynamic page and module results consistent across
+     *   a client session. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: items (optional)
@@ -215,15 +215,15 @@ interface DynamicModules {
     @GET("dynamicModules/{id}/relationships/items")
     suspend fun dynamicModulesIdRelationshipsItemsGet(
         @Path("id") id: kotlin.String,
+        @Query("clientVersion") clientVersion: kotlin.String,
         @Query("deviceType") deviceType: DeviceTypeDynamicModulesIdRelationshipsItemsGet,
         @Query("systemType") systemType: SystemTypeDynamicModulesIdRelationshipsItemsGet,
-        @Query("clientVersion") clientVersion: kotlin.String,
-        @Query("refreshSeed") refreshSeed: kotlin.String? = null,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("countryCode") countryCode: kotlin.String? = null,
-        @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("locale") locale: kotlin.String? = "en-US",
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("refreshSeed") refreshSeed: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<DynamicModulesItemsMultiRelationshipDataDocument>
 
@@ -264,15 +264,15 @@ interface DynamicModules {
      * - 503: Service temporarily unavailable
      *
      * @param id DynamicModules Id
+     * @param clientVersion Client version number
      * @param deviceType The type of device making the request
      * @param systemType The system type of the device making the request
-     * @param clientVersion Client version number
-     * @param refreshSeed Stable seed used to keep dynamic page and module results consistent across
-     *   a client session. (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
+     * @param include Include related resources. Available relationships: seedItem (optional)
      * @param locale BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or
      *   unsupported. (optional, default to "en-US")
-     * @param include Include related resources. Available relationships: seedItem (optional)
+     * @param refreshSeed Stable seed used to keep dynamic page and module results consistent across
+     *   a client session. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: seedItem (optional)
@@ -281,14 +281,14 @@ interface DynamicModules {
     @GET("dynamicModules/{id}/relationships/seedItem")
     suspend fun dynamicModulesIdRelationshipsSeedItemGet(
         @Path("id") id: kotlin.String,
+        @Query("clientVersion") clientVersion: kotlin.String,
         @Query("deviceType") deviceType: DeviceTypeDynamicModulesIdRelationshipsSeedItemGet,
         @Query("systemType") systemType: SystemTypeDynamicModulesIdRelationshipsSeedItemGet,
-        @Query("clientVersion") clientVersion: kotlin.String,
-        @Query("refreshSeed") refreshSeed: kotlin.String? = null,
         @Query("countryCode") countryCode: kotlin.String? = null,
-        @Query("locale") locale: kotlin.String? = "en-US",
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("locale") locale: kotlin.String? = "en-US",
+        @Query("refreshSeed") refreshSeed: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<DynamicModulesSeedItemSingleRelationshipDataDocument>
 }
