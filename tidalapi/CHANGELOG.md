@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.63] - 2026-11-03
+### Fixed
+- Generate `format: uuid` strings as `kotlin.String` and free-form objects as `kotlinx.serialization.json.JsonObject` (map values as `JsonElement`); they were typed `java.util.UUID` and `kotlin.Any` without a serializer, so decoding play queues, dynamic pages, viewer contexts, and mix attributes failed
+- `SerializerSmokeTest` now fails when any generated field resolves to a contextual type without a serializer
+
 ## [0.3.62] - 2026-10-17
 ### Changed
 - Updated generated code using api spec version 1.10.183

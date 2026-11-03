@@ -19,7 +19,6 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -33,7 +32,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class PlayQueuesFutureRelationshipAddOperationPayloadMeta(
     @SerialName(value = "mode") val mode: PlayQueuesFutureRelationshipAddOperationPayloadMeta.Mode,
-    @Contextual @SerialName(value = "batchId") val batchId: java.util.UUID? = null,
+    @SerialName(value = "batchId") val batchId: kotlin.String? = null,
     @SerialName(value = "legacySource") val legacySource: LegacySource? = null,
     @SerialName(value = "positionBefore") val positionBefore: kotlin.String? = null,
     @SerialName(value = "source") val source: PlayQueuesFutureRelationshipSource? = null,

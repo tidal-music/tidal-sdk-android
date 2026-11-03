@@ -6,8 +6,16 @@ import kotlin.reflect.full.companionObjectInstance
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
+import kotlinx.serialization.descriptors.PolymorphicKind
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.descriptors.SerialKind
+import kotlinx.serialization.descriptors.StructureKind
+import kotlinx.serialization.descriptors.capturedKClass
+import kotlinx.serialization.descriptors.elementDescriptors
+import kotlinx.serialization.descriptors.getContextualDescriptor
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.serializerOrNull
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -120,6 +128,53 @@ class SerializerSmokeTest {
         assertTrue(
             testedCount > 100,
             "Expected to test at least 100 serializers, tested $testedCount",
+        )
+    }
+
+    /**
+     * A `@Contextual` field whose type has neither a serializer in the module nor a default one
+     * compiles, but throws "Serializer for class ... is not found" the first time a payload
+     * contains that field.
+     */
+    @OptIn(ExperimentalSerializationApi::class)
+    @Test
+    fun `every contextual field resolves to a registered serializer`() {
+        val visited = mutableSetOf<String>()
+        val failures = sortedSetOf<String>()
+
+        fun visit(descriptor: SerialDescriptor, path: String) {
+            val name = descriptor.serialName.removeSuffix("?")
+            when {
+                descriptor.kind == SerialKind.CONTEXTUAL -> {
+                    val resolved =
+                        json.serializersModule.getContextualDescriptor(descriptor)
+                            ?: descriptor.capturedKClass
+                                ?.let { serializerOrNull(it.java) }
+                                ?.descriptor
+                    if (resolved == null) failures.add("$path: no serializer for $name")
+                    else visit(resolved, path)
+                }
+                !visited.add("$path:$name") -> Unit
+                descriptor.kind == PolymorphicKind.SEALED ->
+                    descriptor.elementDescriptors.lastOrNull()?.elementDescriptors?.forEach {
+                        visit(it, path)
+                    }
+                descriptor.kind == StructureKind.LIST || descriptor.kind == StructureKind.MAP ->
+                    descriptor.elementDescriptors.forEach { visit(it, path) }
+                visited.add(name) ->
+                    descriptor.elementDescriptors.forEachIndexed { index, element ->
+                        visit(element, "$name.${descriptor.getElementName(index)}")
+                    }
+            }
+        }
+
+        discoverModelClasses().forEach { kClass ->
+            getSerializer(kClass)?.let { visit(it.descriptor, kClass.simpleName.orEmpty()) }
+        }
+
+        assertTrue(
+            failures.isEmpty(),
+            "Unresolvable contextual fields:\n${failures.joinToString("\n")}",
         )
     }
 

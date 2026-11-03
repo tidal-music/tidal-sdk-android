@@ -19,7 +19,6 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -30,5 +29,5 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class PlayQueuesFutureAddMultiRelationshipDataDocumentMeta(
-    @Contextual @SerialName(value = "revision") val revision: java.util.UUID
+    @SerialName(value = "revision") val revision: kotlin.String
 ) {}
