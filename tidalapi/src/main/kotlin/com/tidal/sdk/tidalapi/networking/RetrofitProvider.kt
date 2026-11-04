@@ -25,19 +25,27 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
  * @param[readTimeoutMillis] The OkHttp read timeout, in milliseconds. Must be positive. Defaults to
  *   [DEFAULT_READ_TIMEOUT_MILLIS] (5s). A read that exceeds it surfaces a `SocketTimeoutException`,
  *   which the retry interceptor classifies as a timeout.
- * @param[logLevel] The [NetworkLogLevel] for request and response logging. Defaults to
- *   [NetworkLogLevel.NONE], so nothing is logged unless the consuming app opts in. Nothing is
+ * @param[logLevel] The [NetworkLogLevel] for request and response logging. Constructors without it
+ *   use [NetworkLogLevel.NONE], so nothing is logged unless the consuming app opts in. Nothing is
  *   redacted, so [NetworkLogLevel.HEADERS] and [NetworkLogLevel.BODY] log the access token.
  */
-class RetrofitProvider
-@JvmOverloads
-constructor(
+class RetrofitProvider(
     private val cacheDir: File? = null,
     private val cacheSize: Long = DEFAULT_CACHE_SIZE,
     private val retryPolicy: RetryPolicy? = DefaultRetryPolicy(),
     private val readTimeoutMillis: Long = DEFAULT_READ_TIMEOUT_MILLIS,
-    private val logLevel: NetworkLogLevel = NetworkLogLevel.NONE,
+    private val logLevel: NetworkLogLevel,
 ) {
+
+    // Keeps the constructor signatures of 0.3.62 and earlier, so binaries compiled against them
+    // still link.
+    @JvmOverloads
+    constructor(
+        cacheDir: File? = null,
+        cacheSize: Long = DEFAULT_CACHE_SIZE,
+        retryPolicy: RetryPolicy? = DefaultRetryPolicy(),
+        readTimeoutMillis: Long = DEFAULT_READ_TIMEOUT_MILLIS,
+    ) : this(cacheDir, cacheSize, retryPolicy, readTimeoutMillis, NetworkLogLevel.NONE)
 
     init {
         require(readTimeoutMillis > 0) {
