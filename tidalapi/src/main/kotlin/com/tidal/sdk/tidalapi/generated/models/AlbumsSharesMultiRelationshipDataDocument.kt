@@ -23,6 +23,8 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
+ * Target resource types: `shares`.
+ *
  * @param links
  * @param `data`
  * @param included

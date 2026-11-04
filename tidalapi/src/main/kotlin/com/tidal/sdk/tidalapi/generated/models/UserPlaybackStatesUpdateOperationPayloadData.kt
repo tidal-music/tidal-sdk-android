@@ -24,13 +24,15 @@ import kotlinx.serialization.Serializable
 
 /**
  * @param attributes
- * @param id
+ * @param id Also accepts `me`.
  * @param type
  */
 @Serializable
 data class UserPlaybackStatesUpdateOperationPayloadData(
     @SerialName(value = "attributes")
     val attributes: UserPlaybackStatesUpdateOperationPayloadDataAttributes,
+
+    /* Also accepts `me`. */
     @SerialName(value = "id") val id: kotlin.String,
     @SerialName(value = "type") val type: UserPlaybackStatesUpdateOperationPayloadData.Type,
 ) {

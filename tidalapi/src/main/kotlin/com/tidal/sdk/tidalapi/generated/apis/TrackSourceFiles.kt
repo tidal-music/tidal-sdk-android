@@ -35,6 +35,7 @@ interface TrackSourceFiles {
      * @param include Include related resources. Available relationships: owners (optional)
      * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
      *   related content. (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [TrackSourceFilesSingleResourceDataDocument]
      */
     @GET("trackSourceFiles/{id}")
@@ -43,6 +44,7 @@ interface TrackSourceFiles {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("includeLinkage") includeLinkage: CSVParams? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<TrackSourceFilesSingleResourceDataDocument>
 
     /**
@@ -62,6 +64,7 @@ interface TrackSourceFiles {
      * @param include Include related resources. Available relationships: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [TrackSourceFilesOwnersMultiRelationshipDataDocument]
      */
     @GET("trackSourceFiles/{id}/relationships/owners")
@@ -70,6 +73,7 @@ interface TrackSourceFiles {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<TrackSourceFilesOwnersMultiRelationshipDataDocument>
 
     /**

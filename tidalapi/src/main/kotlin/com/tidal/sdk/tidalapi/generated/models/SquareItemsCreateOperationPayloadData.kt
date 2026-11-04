@@ -25,12 +25,19 @@ import kotlinx.serialization.Serializable
 /**
  * @param attributes
  * @param type
+ * @param lid Local identity available to later operations in this request
+ * @param relationships
  */
 @Serializable
 data class SquareItemsCreateOperationPayloadData(
     @SerialName(value = "attributes")
     val attributes: SquareItemsCreateOperationPayloadDataAttributes,
     @SerialName(value = "type") val type: SquareItemsCreateOperationPayloadData.Type,
+
+    /* Local identity available to later operations in this request */
+    @SerialName(value = "lid") val lid: kotlin.String? = null,
+    @SerialName(value = "relationships")
+    val relationships: SquareItemsCreateOperationPayloadDataRelationships? = null,
 ) {
 
     /** Values: squareItems */

@@ -26,5 +26,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Idempotency422ResponseBody(
     @SerialName(value = "errors")
-    val errors: kotlin.collections.List<Idempotency422ResponseBodyErrorsInner>
+    val errors: kotlin.collections.List<AtomicOperations422ResponseBodyErrorsInner>
 ) {}

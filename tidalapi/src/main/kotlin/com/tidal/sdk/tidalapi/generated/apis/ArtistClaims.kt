@@ -39,7 +39,7 @@ interface ArtistClaims {
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
-     * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user
+     * @param filterOwnersId User id. Also accepts &#x60;me&#x60;.
      * @param include Include related resources. Available relationships: acceptedArtists, owners,
      *   recommendedArtists (optional)
      * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
@@ -185,7 +185,9 @@ interface ArtistClaims {
 
     /**
      * PATCH artistClaims/{id}/relationships/acceptedArtists Update acceptedArtists relationship
-     * (\&quot;to-many\&quot;). Updates acceptedArtists relationship. Responses:
+     * (\&quot;to-many\&quot;). Accepts one recommended artist and processes the claim, merging
+     * profile metadata or moving claimed albums according to the recommendation. Empty data cancels
+     * the claim; it does not delete any artist. Returns an acknowledgement. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

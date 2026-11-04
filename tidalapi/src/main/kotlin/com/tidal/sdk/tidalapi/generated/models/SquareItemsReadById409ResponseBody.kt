@@ -26,5 +26,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class SquareItemsReadById409ResponseBody(
     @SerialName(value = "errors")
-    val errors: kotlin.collections.List<SquareItemsReadByFilter409ResponseBodyErrorsInner>
+    val errors: kotlin.collections.List<SquareItemVariationsReadById409ResponseBodyErrorsInner>
 ) {}

@@ -23,15 +23,25 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
+ * @param accessModes Ways this share may be used to obtain access. BEARER permits access by
+ *   presenting its code while active. VOUCHER permits an authenticated user to redeem it for a
+ *   stored grant. Multiple modes may be enabled.
  * @param code Share code
  * @param createdAt Time the share was created.
- * @param expiresAt Time bearer access and acceptance expire. New shares expire seven days after
- *   creation; accepted grants remain valid.
+ * @param expiresAt Time bearer access and acceptance expire; accepted grants remain valid.
  * @param role Role offered on the shared resource.
  * @param externalLinks Links external to TIDAL API
+ * @param maxUses Number of users other than the owner who may save the share. Absent when
+ *   unlimited.
+ * @param useCount Number of users other than the owner who have saved the share. Once it reaches
+ *   maxUses, bearer access and acceptance end. Absent when maxUses is.
  */
 @Serializable
 data class SharesAttributes(
+
+    /* Ways this share may be used to obtain access. BEARER permits access by presenting its code while active. VOUCHER permits an authenticated user to redeem it for a stored grant. Multiple modes may be enabled. */
+    @SerialName(value = "accessModes")
+    val accessModes: kotlin.collections.Set<SharesAttributes.AccessModes>,
 
     /* Share code */
     @SerialName(value = "code") val code: kotlin.String,
@@ -39,7 +49,7 @@ data class SharesAttributes(
     /* Time the share was created. */
     @SerialName(value = "createdAt") val createdAt: kotlin.String,
 
-    /* Time bearer access and acceptance expire. New shares expire seven days after creation; accepted grants remain valid. */
+    /* Time bearer access and acceptance expire; accepted grants remain valid. */
     @SerialName(value = "expiresAt") val expiresAt: kotlin.String,
 
     /* Role offered on the shared resource. */
@@ -48,7 +58,26 @@ data class SharesAttributes(
     /* Links external to TIDAL API */
     @SerialName(value = "externalLinks")
     val externalLinks: kotlin.collections.List<ExternalLink>? = null,
+
+    /* Number of users other than the owner who may save the share. Absent when unlimited. */
+    @SerialName(value = "maxUses") val maxUses: kotlin.Int? = null,
+
+    /* Number of users other than the owner who have saved the share. Once it reaches maxUses, bearer access and acceptance end. Absent when maxUses is. */
+    @SerialName(value = "useCount") val useCount: kotlin.Int? = null,
 ) {
+
+    /**
+     * Ways this share may be used to obtain access. BEARER permits access by presenting its code
+     * while active. VOUCHER permits an authenticated user to redeem it for a stored grant. Multiple
+     * modes may be enabled.
+     *
+     * Values: BEARER,VOUCHER
+     */
+    @Serializable
+    enum class AccessModes(val value: kotlin.String) {
+        @SerialName(value = "BEARER") BEARER("BEARER"),
+        @SerialName(value = "VOUCHER") VOUCHER("VOUCHER"),
+    }
 
     /**
      * Role offered on the shared resource.

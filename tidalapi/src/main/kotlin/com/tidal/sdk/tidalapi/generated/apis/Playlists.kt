@@ -29,17 +29,6 @@ import retrofit2.http.*
 
 interface Playlists {
 
-    /** enum for parameter sort */
-    @Serializable
-    enum class SortPlaylistsGet(val value: kotlin.String) {
-        @SerialName(value = "createdAt") CreatedAtAsc("createdAt"),
-        @SerialName(value = "-createdAt") CreatedAtDesc("-createdAt"),
-        @SerialName(value = "lastModifiedAt") LastModifiedAtAsc("lastModifiedAt"),
-        @SerialName(value = "-lastModifiedAt") LastModifiedAtDesc("-lastModifiedAt"),
-        @SerialName(value = "name") NameAsc("name"),
-        @SerialName(value = "-name") NameDesc("-name"),
-    }
-
     /** enum for parameter includeLinkage */
     @Serializable
     enum class IncludeLinkagePlaylistsGet(val value: kotlin.String) {
@@ -51,6 +40,17 @@ interface Playlists {
         @SerialName(value = "ownerProfiles") ownerProfiles("ownerProfiles"),
         @SerialName(value = "owners") owners("owners"),
         @SerialName(value = "suggestedCoverArts") suggestedCoverArts("suggestedCoverArts"),
+    }
+
+    /** enum for parameter sort */
+    @Serializable
+    enum class SortPlaylistsGet(val value: kotlin.String) {
+        @SerialName(value = "createdAt") CreatedAtAsc("createdAt"),
+        @SerialName(value = "-createdAt") CreatedAtDesc("-createdAt"),
+        @SerialName(value = "lastModifiedAt") LastModifiedAtAsc("lastModifiedAt"),
+        @SerialName(value = "-lastModifiedAt") LastModifiedAtDesc("-lastModifiedAt"),
+        @SerialName(value = "name") NameAsc("name"),
+        @SerialName(value = "-name") NameDesc("-name"),
     }
 
     /**
@@ -66,41 +66,40 @@ interface Playlists {
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
-     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
-     *   targets first page if not specified (optional)
-     * @param sort Values prefixed with \&quot;-\&quot; are sorted descending; values without it are
-     *   sorted ascending. (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
+     * @param filterCollaboratorsId User id. Also accepts &#x60;me&#x60;. (optional)
+     * @param filterId List of playlist IDs (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;)
+     *   (optional)
+     * @param filterOwnersId User id. Also accepts &#x60;me&#x60;. (optional)
      * @param include Include related resources. Available relationships: collaboratorProfiles,
      *   collaborators, coverArt, curators, items, ownerProfiles, owners, suggestedCoverArts
      *   (optional)
-     * @param filterCollaboratorsId User id. Use &#x60;me&#x60; for the authenticated user
-     *   (optional)
-     * @param filterId List of playlist IDs (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;)
-     *   (optional)
-     * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user (optional)
      * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
      *   related content. (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: curators.albums (optional)
+     * @param sort Values prefixed with \&quot;-\&quot; are sorted descending; values without it are
+     *   sorted ascending. (optional)
      * @return [PlaylistsMultiResourceDataDocument]
      */
     @GET("playlists")
     suspend fun playlistsGet(
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-        @Query("sort") sort: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("countryCode") countryCode: kotlin.String? = null,
-        @Query("include")
-        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[collaborators.id]")
         filterCollaboratorsId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[id]")
         filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[owners.id]")
         filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("includeLinkage") includeLinkage: CSVParams? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
+        @Query("sort") sort: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<PlaylistsMultiResourceDataDocument>
 
     /**
@@ -329,7 +328,9 @@ interface Playlists {
 
     /**
      * PATCH playlists/{id}/relationships/coverArt Update coverArt relationship
-     * (\&quot;to-many\&quot;). Updates coverArt relationship. Responses:
+     * (\&quot;to-many\&quot;). Replaces the custom cover artwork selection with one attachable
+     * artwork. Empty data clears the custom selection. Previously attached uploaded artwork is
+     * soft-deleted unless system-managed. Returns an acknowledgement. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -373,9 +374,9 @@ interface Playlists {
      * - 503: Service temporarily unavailable
      *
      * @param id Playlist id
+     * @param include Include related resources. Available relationships: curators (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @param include Include related resources. Available relationships: curators (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: curators.albums (optional)
@@ -384,9 +385,9 @@ interface Playlists {
     @GET("playlists/{id}/relationships/curators")
     suspend fun playlistsIdRelationshipsCuratorsGet(
         @Path("id") id: kotlin.String,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<PlaylistsCuratorsMultiRelationshipDataDocument>
 
@@ -453,34 +454,37 @@ interface Playlists {
      * - 503: Service temporarily unavailable
      *
      * @param id Playlist id
-     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
-     *   targets first page if not specified (optional)
-     * @param sort Values prefixed with \&quot;-\&quot; are sorted descending; values without it are
-     *   sorted ascending. (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Include related resources. Available relationships: items (optional)
      * @param filterQuery Filter playlist items by a free-text query (e.g. &#x60;halo&#x60;)
      *   (optional)
+     * @param include Include related resources. Available relationships: items (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: items (optional)
+     * @param sort Values prefixed with \&quot;-\&quot; are sorted descending; values without it are
+     *   sorted ascending. (optional)
      * @return [PlaylistsItemsMultiRelationshipDataDocument]
      */
     @GET("playlists/{id}/relationships/items")
     suspend fun playlistsIdRelationshipsItemsGet(
         @Path("id") id: kotlin.String,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-        @Query("sort") sort: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("countryCode") countryCode: kotlin.String? = null,
+        @Query("filter[query]") filterQuery: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[query]") filterQuery: kotlin.String? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
+        @Query("sort") sort: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<PlaylistsItemsMultiRelationshipDataDocument>
 
     /**
      * PATCH playlists/{id}/relationships/items Update items relationship (\&quot;to-many\&quot;).
-     * Updates items relationship. Responses:
+     * Incrementally moves the occurrences selected by data[].meta.itemId before
+     * meta.positionBefore, or to the end when meta is omitted. Preserves unselected memberships,
+     * their metadata and relative order; no items are added or removed. Empty data is rejected.
+     * Returns an acknowledgement. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

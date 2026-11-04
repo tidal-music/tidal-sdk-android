@@ -38,13 +38,13 @@ interface Purchases {
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
-     * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user
+     * @param filterOwnersId User id. Also accepts &#x60;me&#x60;.
      * @param filterSubjectType The type of purchased content (e.g. &#x60;albums&#x60;)
-     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
-     *   targets first page if not specified (optional)
      * @param include Include related resources. Available relationships: owners, subject (optional)
      * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
      *   related content. (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: subject (optional)
@@ -56,10 +56,10 @@ interface Purchases {
         filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
         @Query("filter[subject.type]")
         filterSubjectType: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("includeLinkage") includeLinkage: CSVParams? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<PurchasesMultiResourceDataDocument>
 

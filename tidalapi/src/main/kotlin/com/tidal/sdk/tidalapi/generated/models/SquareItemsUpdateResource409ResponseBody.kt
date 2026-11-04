@@ -26,5 +26,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class SquareItemsUpdateResource409ResponseBody(
     @SerialName(value = "errors")
-    val errors: kotlin.collections.List<SquareItemsUpdateResource409ResponseBodyErrorsInner>
+    val errors:
+        kotlin.collections.List<
+            SquareItemVariationsArtworksUpdateMultiDataRelationship409ResponseBodyErrorsInner
+        >
 ) {}

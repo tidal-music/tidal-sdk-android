@@ -9,13 +9,6 @@ import retrofit2.http.*
 
 interface TrackManifests {
 
-    /** enum for parameter manifestType */
-    @Serializable
-    enum class ManifestTypeTrackManifestsIdGet(val value: kotlin.String) {
-        @SerialName(value = "HLS") HLS("HLS"),
-        @SerialName(value = "MPEG_DASH") MPEG_DASH("MPEG_DASH"),
-    }
-
     /** enum for parameter formats */
     @Serializable
     enum class FormatsTrackManifestsIdGet(val value: kotlin.String) {
@@ -24,6 +17,13 @@ interface TrackManifests {
         @SerialName(value = "FLAC") FLAC("FLAC"),
         @SerialName(value = "FLAC_HIRES") FLAC_HIRES("FLAC_HIRES"),
         @SerialName(value = "EAC3_JOC") EAC3_JOC("EAC3_JOC"),
+    }
+
+    /** enum for parameter manifestType */
+    @Serializable
+    enum class ManifestTypeTrackManifestsIdGet(val value: kotlin.String) {
+        @SerialName(value = "HLS") HLS("HLS"),
+        @SerialName(value = "MPEG_DASH") MPEG_DASH("MPEG_DASH"),
     }
 
     /** enum for parameter uriScheme */
@@ -57,22 +57,22 @@ interface TrackManifests {
      * - 503: Service temporarily unavailable
      *
      * @param id Track manifest id
-     * @param manifestType
+     * @param adaptive
      * @param formats
+     * @param manifestType
      * @param uriScheme
      * @param usage
-     * @param adaptive
      * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [TrackManifestsSingleResourceDataDocument]
      */
     @GET("trackManifests/{id}")
     suspend fun trackManifestsIdGet(
         @Path("id") id: kotlin.String,
-        @Query("manifestType") manifestType: ManifestTypeTrackManifestsIdGet,
+        @Query("adaptive") adaptive: kotlin.Boolean,
         @Query("formats") formats: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
+        @Query("manifestType") manifestType: ManifestTypeTrackManifestsIdGet,
         @Query("uriScheme") uriScheme: UriSchemeTrackManifestsIdGet,
         @Query("usage") usage: UsageTrackManifestsIdGet,
-        @Query("adaptive") adaptive: kotlin.Boolean,
         @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<TrackManifestsSingleResourceDataDocument>
 }

@@ -23,8 +23,9 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param icons Semantic icons the module should show. SPOTLIGHT_INFO identifies modules whose
- *   content was selected by TIDAL's editorial team.
+ * @param headerActions Actions available in the module header. SPOTLIGHT_INFO opens information
+ *   about TIDAL Spotlight. Clients choose the presentation and ignore unsupported actions,
+ *   including UNKNOWN.
  * @param previewLayout Presentation family for items in a dynamic module preview. The API selects
  *   the semantic presentation intent while clients own platform-specific geometry. A layout does
  *   not prescribe scroll direction, row or column count, dimensions, spacing, breakpoints, or
@@ -46,8 +47,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class DynamicModulesAttributes(
 
-    /* Semantic icons the module should show. SPOTLIGHT_INFO identifies modules whose content was selected by TIDAL's editorial team. */
-    @SerialName(value = "icons") val icons: kotlin.collections.List<DynamicModulesAttributes.Icons>,
+    /* Actions available in the module header. SPOTLIGHT_INFO opens information about TIDAL Spotlight. Clients choose the presentation and ignore unsupported actions, including UNKNOWN. */
+    @SerialName(value = "headerActions")
+    val headerActions: kotlin.collections.List<DynamicModulesAttributes.HeaderActions>,
 
     /* Presentation family for items in a dynamic module preview. The API selects the semantic presentation intent while clients own platform-specific geometry. A layout does not prescribe scroll direction, row or column count, dimensions, spacing, breakpoints, or visible item count; clients preserve the server-provided item order. GRID means artwork-forward tiles or cards. LIST means detail-forward row cells, which clients may arrange in one or more columns. SHORTCUT means compact quick-access items, which clients may arrange as a responsive grid or rail. UNKNOWN is the forward-compatible default; clients should skip the module or use a safe default. */
     @SerialName(value = "previewLayout") val previewLayout: DynamicModulesAttributes.PreviewLayout,
@@ -64,13 +66,13 @@ data class DynamicModulesAttributes(
 ) {
 
     /**
-     * Semantic icons the module should show. SPOTLIGHT_INFO identifies modules whose content was
-     * selected by TIDAL's editorial team.
+     * Actions available in the module header. SPOTLIGHT_INFO opens information about TIDAL
+     * Spotlight. Clients choose the presentation and ignore unsupported actions, including UNKNOWN.
      *
      * Values: SPOTLIGHT_INFO,UNKNOWN
      */
     @Serializable
-    enum class Icons(val value: kotlin.String) {
+    enum class HeaderActions(val value: kotlin.String) {
         @SerialName(value = "SPOTLIGHT_INFO") SPOTLIGHT_INFO("SPOTLIGHT_INFO"),
         @SerialName(value = "UNKNOWN") UNKNOWN("UNKNOWN"),
     }

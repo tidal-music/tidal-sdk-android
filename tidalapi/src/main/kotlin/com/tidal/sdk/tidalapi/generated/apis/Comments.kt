@@ -17,19 +17,6 @@ import retrofit2.http.*
 
 interface Comments {
 
-    /** enum for parameter sort */
-    @Serializable
-    enum class SortCommentsGet(val value: kotlin.String) {
-        @SerialName(value = "createdAt") CreatedAtAsc("createdAt"),
-        @SerialName(value = "-createdAt") CreatedAtDesc("-createdAt"),
-        @SerialName(value = "likeCount") LikeCountAsc("likeCount"),
-        @SerialName(value = "-likeCount") LikeCountDesc("-likeCount"),
-        @SerialName(value = "replyCount") ReplyCountAsc("replyCount"),
-        @SerialName(value = "-replyCount") ReplyCountDesc("-replyCount"),
-        @SerialName(value = "startTime") StartTimeAsc("startTime"),
-        @SerialName(value = "-startTime") StartTimeDesc("-startTime"),
-    }
-
     /** enum for parameter filterSubjectType */
     @Serializable
     enum class FilterSubjectTypeCommentsGet(val value: kotlin.String) {
@@ -46,6 +33,19 @@ interface Comments {
         @SerialName(value = "parentComment") parentComment("parentComment"),
     }
 
+    /** enum for parameter sort */
+    @Serializable
+    enum class SortCommentsGet(val value: kotlin.String) {
+        @SerialName(value = "createdAt") CreatedAtAsc("createdAt"),
+        @SerialName(value = "-createdAt") CreatedAtDesc("-createdAt"),
+        @SerialName(value = "likeCount") LikeCountAsc("likeCount"),
+        @SerialName(value = "-likeCount") LikeCountDesc("-likeCount"),
+        @SerialName(value = "replyCount") ReplyCountAsc("replyCount"),
+        @SerialName(value = "-replyCount") ReplyCountDesc("-replyCount"),
+        @SerialName(value = "startTime") StartTimeAsc("startTime"),
+        @SerialName(value = "-startTime") StartTimeDesc("-startTime"),
+    }
+
     /**
      * GET comments Get multiple comments. Retrieves multiple comments by available filters, or
      * without if applicable. Responses:
@@ -59,42 +59,42 @@ interface Comments {
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
-     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
-     *   targets first page if not specified (optional)
-     * @param sort Values prefixed with \&quot;-\&quot; are sorted descending; values without it are
-     *   sorted ascending. (optional)
-     * @param include Include related resources. Available relationships: author, owners,
-     *   parentComment (optional)
      * @param filterParentCommentId Filter by parent comment ID to get replies (e.g.
      *   &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) (optional)
-     * @param filterSubject The subject whose comments to return. Use either subject or the
-     *   deprecated subject.id and subject.type pair. (optional)
      * @param filterSubjectId Deprecated: use filter[subject]. Filter by subject resource ID (e.g.
      *   &#x60;12345&#x60;) (optional)
      * @param filterSubjectType Deprecated: use filter[subject]. Filter by subject resource type
      *   (e.g. &#x60;albums&#x60;) (optional)
+     * @param filterSubject The subject whose comments to return. Use either subject or the
+     *   deprecated subject.id and subject.type pair. (optional)
+     * @param include Include related resources. Available relationships: author, owners,
+     *   parentComment (optional)
      * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
      *   related content. (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: author.albums (optional)
+     * @param sort Values prefixed with \&quot;-\&quot; are sorted descending; values without it are
+     *   sorted ascending. (optional)
      * @return [CommentsMultiResourceDataDocument]
      */
     @GET("comments")
     suspend fun commentsGet(
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-        @Query("sort") sort: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("include")
-        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[parentComment.id]")
         filterParentCommentId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[subject]") filterSubject: kotlin.String? = null,
         @Query("filter[subject.id]")
         filterSubjectId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[subject.type]")
         filterSubjectType: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("filter[subject]") filterSubject: kotlin.String? = null,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("includeLinkage") includeLinkage: CSVParams? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
+        @Query("sort") sort: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
     ): Response<CommentsMultiResourceDataDocument>
 
     /**

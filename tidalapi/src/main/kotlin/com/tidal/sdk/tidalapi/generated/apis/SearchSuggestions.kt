@@ -39,9 +39,9 @@ interface SearchSuggestions {
      * - 503: Service temporarily unavailable
      *
      * @param filterQuery Search query (e.g. &#x60;hello&#x60;)
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param explicitFilter Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to
      *   ExplicitFilter.INCLUDE)
-     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Include related resources. Available relationships: directHits, history
      *   (optional)
      * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
@@ -54,10 +54,10 @@ interface SearchSuggestions {
     @GET("searchSuggestions")
     suspend fun searchSuggestionsGet(
         @Query("filter[query]") filterQuery: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("explicitFilter")
         explicitFilter: ExplicitFilterSearchSuggestionsGet? =
             ExplicitFilterSearchSuggestionsGet.INCLUDE,
-        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("includeLinkage") includeLinkage: CSVParams? = null,
@@ -87,9 +87,9 @@ interface SearchSuggestions {
      * - 503: Service temporarily unavailable
      *
      * @param id An opaque search suggestions identifier
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param explicitFilter Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to
      *   ExplicitFilter.INCLUDE)
-     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Include related resources. Available relationships: directHits (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
@@ -101,10 +101,10 @@ interface SearchSuggestions {
     @GET("searchSuggestions/{id}/relationships/directHits")
     suspend fun searchSuggestionsIdRelationshipsDirectHitsGet(
         @Path("id") id: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("explicitFilter")
         explicitFilter: ExplicitFilterSearchSuggestionsIdRelationshipsDirectHitsGet? =
             ExplicitFilterSearchSuggestionsIdRelationshipsDirectHitsGet.INCLUDE,
-        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
@@ -132,9 +132,9 @@ interface SearchSuggestions {
      * - 503: Service temporarily unavailable
      *
      * @param id An opaque search suggestions identifier
+     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param explicitFilter Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to
      *   ExplicitFilter.INCLUDE)
-     * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Include related resources. Available relationships: history (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
@@ -143,10 +143,10 @@ interface SearchSuggestions {
     @GET("searchSuggestions/{id}/relationships/history")
     suspend fun searchSuggestionsIdRelationshipsHistoryGet(
         @Path("id") id: kotlin.String,
+        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("explicitFilter")
         explicitFilter: ExplicitFilterSearchSuggestionsIdRelationshipsHistoryGet? =
             ExplicitFilterSearchSuggestionsIdRelationshipsHistoryGet.INCLUDE,
-        @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
