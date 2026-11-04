@@ -38,13 +38,13 @@ interface UserFeedItems {
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
-     * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user
+     * @param filterOwnersId User id. Also accepts &#x60;me&#x60;.
      * @param filterSurface Feed surface to read (e.g. &#x60;INBOX&#x60;)
-     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
-     *   targets first page if not specified (optional)
      * @param include Include related resources. Available relationships: actors, subject (optional)
      * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
      *   related content. (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: actors.albums (optional)
@@ -55,10 +55,10 @@ interface UserFeedItems {
         @Query("filter[owners.id]")
         filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
         @Query("filter[surface]") filterSurface: FilterSurfaceUserFeedItemsGet,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("includeLinkage") includeLinkage: CSVParams? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<UserFeedItemsMultiResourceDataDocument>
 
@@ -79,9 +79,9 @@ interface UserFeedItems {
      * - 503: Service temporarily unavailable
      *
      * @param id Opaque identifier of a user feed item.
+     * @param include Include related resources. Available relationships: actors (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @param include Include related resources. Available relationships: actors (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: actors.albums (optional)
@@ -90,9 +90,9 @@ interface UserFeedItems {
     @GET("userFeedItems/{id}/relationships/actors")
     suspend fun userFeedItemsIdRelationshipsActorsGet(
         @Path("id") id: kotlin.String,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<UserFeedItemsActorsMultiRelationshipDataDocument>
 

@@ -37,13 +37,13 @@ interface DspSharingLinks {
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
-     * @param include Include related resources. Available relationships: subject (optional)
-     * @param filterSubject The subject whose DSP sharing links to return. Use either subject or the
-     *   deprecated subject.id and subject.type pair. (optional)
      * @param filterSubjectId Deprecated: use filter[subject]. The id of the subject resource
      *   (optional)
      * @param filterSubjectType Deprecated: use filter[subject]. The type of the subject resource
      *   (e.g. &#x60;tracks&#x60;) (optional)
+     * @param filterSubject The subject whose DSP sharing links to return. Use either subject or the
+     *   deprecated subject.id and subject.type pair. (optional)
+     * @param include Include related resources. Available relationships: subject (optional)
      * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
      *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
@@ -53,13 +53,13 @@ interface DspSharingLinks {
      */
     @GET("dspSharingLinks")
     suspend fun dspSharingLinksGet(
-        @Query("include")
-        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[subject]") filterSubject: kotlin.String? = null,
         @Query("filter[subject.id]")
         filterSubjectId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[subject.type]")
         filterSubjectType: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("filter[subject]") filterSubject: kotlin.String? = null,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<DspSharingLinksMultiResourceDataDocument>

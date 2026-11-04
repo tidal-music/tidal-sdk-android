@@ -50,13 +50,13 @@ interface PlayQueues {
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
-     * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user
-     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
-     *   targets first page if not specified (optional)
+     * @param filterOwnersId User id. Also accepts &#x60;me&#x60;.
      * @param include Include related resources. Available relationships: changeEventStream,
      *   current, future, owners, past (optional)
      * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
      *   related content. (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: current (optional)
@@ -66,10 +66,10 @@ interface PlayQueues {
     suspend fun playQueuesGet(
         @Query("filter[owners.id]")
         filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("includeLinkage") includeLinkage: CSVParams? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<PlayQueuesMultiResourceDataDocument>
 
@@ -224,7 +224,10 @@ interface PlayQueues {
 
     /**
      * PATCH playQueues/{id}/relationships/current Update current relationship
-     * (\&quot;to-one\&quot;). Updates current relationship. Responses:
+     * (\&quot;to-one\&quot;). Sets the current item to the existing queue occurrence identified by
+     * data.meta.itemId, changing which entries are past and future. Null data is rejected. Optional
+     * position and updatedByInstallationId must be supplied together. Returns the current item
+     * linkage and queue revision. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -256,7 +259,9 @@ interface PlayQueues {
 
     /**
      * DELETE playQueues/{id}/relationships/future Delete from future relationship
-     * (\&quot;to-many\&quot;). Deletes item(s) from future relationship. Responses:
+     * (\&quot;to-many\&quot;). Removes the future occurrences selected by data[].meta.itemId
+     * without deleting their tracks or videos. Other queue entries are preserved. Returns an
+     * acknowledgement. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -300,9 +305,9 @@ interface PlayQueues {
      * - 503: Service temporarily unavailable
      *
      * @param id Play queue id
+     * @param include Include related resources. Available relationships: future (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @param include Include related resources. Available relationships: future (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: future (optional)
@@ -311,16 +316,18 @@ interface PlayQueues {
     @GET("playQueues/{id}/relationships/future")
     suspend fun playQueuesIdRelationshipsFutureGet(
         @Path("id") id: kotlin.String,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<PlayQueuesFutureMultiRelationshipDataDocument>
 
     /**
      * PATCH playQueues/{id}/relationships/future Update future relationship
-     * (\&quot;to-many\&quot;). Returns empty data and meta.revision as an acknowledgement.
-     * Responses:
+     * (\&quot;to-many\&quot;). Incrementally moves existing future occurrences selected by
+     * data[].meta.itemId, in their current queue order, before meta.positionBefore. Preserves
+     * memberships and unselected entries&#39; metadata and relative order. Empty data is rejected.
+     * Returns empty data and meta.revision as an acknowledgement. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -352,12 +359,19 @@ interface PlayQueues {
 
     /**
      * POST playQueues/{id}/relationships/future Add to future relationship (\&quot;to-many\&quot;).
-     * With meta.source, startIndex selects an entry in the first page&#39;s data before unsupported
-     * types are skipped. Tracks and videos are added in page order, retaining duplicates; other
-     * types are skipped without expansion. Reaching 1000 added items or 100 pages queues the
-     * collected prefix. Invalid sources or indexes, a suffix with no playable items, repeated
-     * pages, and read failures encountered before a cap leave the queue unchanged. Returns empty
-     * data and meta.revision as an acknowledgement. Responses:
+     * Omitting top-level meta or setting it to null defaults to REPLACE_ALL, replacing future
+     * entries. Use ADD_TO_FRONT, ADD_TO_BACK or ADD_BEFORE in meta.mode to add without replacing
+     * existing entries. ADD_BEFORE requires meta.positionBefore. REPLACE_ALL_AND_CURRENT replaces
+     * future entries; ADD_TO_FRONT_REPLACE_CURRENT prepends entries. Both select the first newly
+     * inserted entry in the active queue order as current, which may differ from request order when
+     * shuffled. With empty data and no source, replacement modes clear future entries; the current
+     * entry is unchanged when no entries are inserted. With meta.source, startIndex selects an
+     * entry in the first page&#39;s data before unsupported types are skipped. Tracks and videos
+     * are added in page order, retaining duplicates; other types are skipped without expansion.
+     * Reaching 1000 added items or 100 pages queues the collected prefix. Invalid sources or
+     * indexes, a suffix with no playable items, repeated pages, and read failures encountered
+     * before a cap leave the queue unchanged. Returns empty data and meta.revision as an
+     * acknowledgement. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -428,9 +442,9 @@ interface PlayQueues {
      * - 503: Service temporarily unavailable
      *
      * @param id Play queue id
+     * @param include Include related resources. Available relationships: past (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @param include Include related resources. Available relationships: past (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: past (optional)
@@ -439,9 +453,9 @@ interface PlayQueues {
     @GET("playQueues/{id}/relationships/past")
     suspend fun playQueuesIdRelationshipsPastGet(
         @Path("id") id: kotlin.String,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<PlayQueuesPastMultiRelationshipDataDocument>
 

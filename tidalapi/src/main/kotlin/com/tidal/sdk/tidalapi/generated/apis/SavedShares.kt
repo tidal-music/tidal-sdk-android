@@ -8,7 +8,8 @@ import retrofit2.http.*
 
 interface SavedShares {
     /**
-     * POST savedShares Create single savedShare. Creates a new savedShare. Responses:
+     * POST savedShares Create single savedShare. Redeem an active share with VOUCHER access mode
+     * for its offered role. A share without VOUCHER mode returns 403. Responses:
      * - 201: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

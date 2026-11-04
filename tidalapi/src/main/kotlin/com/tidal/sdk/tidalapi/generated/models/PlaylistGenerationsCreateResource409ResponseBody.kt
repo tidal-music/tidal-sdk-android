@@ -26,8 +26,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class PlaylistGenerationsCreateResource409ResponseBody(
     @SerialName(value = "errors")
-    val errors:
-        kotlin.collections.List<
-            PlaylistGenerationsAddMultiDataRelationshipWithResponse409ResponseBodyErrorsInner
-        >
+    val errors: kotlin.collections.List<PlaylistGenerationsCreateResource409ResponseBodyErrorsInner>
 ) {}

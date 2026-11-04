@@ -15,14 +15,6 @@ import retrofit2.http.*
 
 interface Reactions {
 
-    /** enum for parameter stats */
-    @Serializable
-    enum class StatsReactionsGet(val value: kotlin.String) {
-        @SerialName(value = "ALL") ALL("ALL"),
-        @SerialName(value = "COUNTS_BY_TYPE") COUNTS_BY_TYPE("COUNTS_BY_TYPE"),
-        @SerialName(value = "TOTAL_COUNT") TOTAL_COUNT("TOTAL_COUNT"),
-    }
-
     /** enum for parameter filterSubjectType */
     @Serializable
     enum class FilterSubjectTypeReactionsGet(val value: kotlin.String) {
@@ -43,6 +35,14 @@ interface Reactions {
         @SerialName(value = "owners") owners("owners"),
     }
 
+    /** enum for parameter stats */
+    @Serializable
+    enum class StatsReactionsGet(val value: kotlin.String) {
+        @SerialName(value = "ALL") ALL("ALL"),
+        @SerialName(value = "COUNTS_BY_TYPE") COUNTS_BY_TYPE("COUNTS_BY_TYPE"),
+        @SerialName(value = "TOTAL_COUNT") TOTAL_COUNT("TOTAL_COUNT"),
+    }
+
     /**
      * GET reactions Get multiple reactions. Retrieves multiple reactions by available filters, or
      * without if applicable. Responses:
@@ -56,44 +56,44 @@ interface Reactions {
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
-     * @param stats (optional)
-     * @param statsOnly (optional)
-     * @param viewerContext (optional)
-     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
-     *   targets first page if not specified (optional)
-     * @param include Include related resources. Available relationships: author, ownerProfiles,
-     *   owners (optional)
      * @param filterEmoji Filter by emoji (e.g. &#x60;👍&#x60;) (optional)
-     * @param filterSubject The subject whose reactions to return. Use either subject or the
-     *   deprecated subject.id and subject.type pair. (optional)
      * @param filterSubjectId Deprecated: use filter[subject]. Filter by subject resource ID (e.g.
      *   &#x60;12345&#x60;) (optional)
      * @param filterSubjectType Deprecated: use filter[subject]. Filter by subject resource type
      *   (e.g. &#x60;albums&#x60;) (optional)
+     * @param filterSubject The subject whose reactions to return. Use either subject or the
+     *   deprecated subject.id and subject.type pair. (optional)
+     * @param include Include related resources. Available relationships: author, ownerProfiles,
+     *   owners (optional)
      * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
      *   related content. (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: author.albums (optional)
+     * @param stats (optional)
+     * @param statsOnly (optional)
+     * @param viewerContext (optional)
      * @return [ReactionsMultiResourceDataDocument]
      */
     @GET("reactions")
     suspend fun reactionsGet(
-        @Query("stats") stats: StatsReactionsGet? = null,
-        @Query("statsOnly") statsOnly: kotlin.Boolean? = null,
-        @Query("viewerContext") viewerContext: kotlin.String? = null,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-        @Query("include")
-        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[emoji]")
         filterEmoji: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[subject]") filterSubject: kotlin.String? = null,
         @Query("filter[subject.id]")
         filterSubjectId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[subject.type]")
         filterSubjectType: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("filter[subject]") filterSubject: kotlin.String? = null,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("includeLinkage") includeLinkage: CSVParams? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
+        @Query("stats") stats: StatsReactionsGet? = null,
+        @Query("statsOnly") statsOnly: kotlin.Boolean? = null,
+        @Query("viewerContext") viewerContext: kotlin.String? = null,
     ): Response<ReactionsMultiResourceDataDocument>
 
     /**

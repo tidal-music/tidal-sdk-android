@@ -23,6 +23,8 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
+ * Target resource types: `genres`.
+ *
  * @param links
  * @param `data`
  * @param included

@@ -26,7 +26,6 @@ import kotlinx.serialization.Serializable
  * @param currency Currency of every price on the item
  * @param revision Square catalog item revision used to guard item updates; excludes inventory stock
  * @param title Item title; empty for an untitled item created in Square
- * @param variations Variations, in Square's order
  * @param description Item description
  * @param lastModifiedAt Timestamp when the item was last modified in Square; absent when Square has
  *   not reported one
@@ -45,9 +44,6 @@ data class SquareItemsAttributes(
 
     /* Item title; empty for an untitled item created in Square */
     @SerialName(value = "title") val title: kotlin.String,
-
-    /* Variations, in Square's order */
-    @SerialName(value = "variations") val variations: kotlin.collections.List<SquareItemsVariation>,
 
     /* Item description */
     @SerialName(value = "description") val description: kotlin.String? = null,

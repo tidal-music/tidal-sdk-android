@@ -30,5 +30,6 @@ import kotlinx.serialization.Serializable
 data class PlaylistGenerationsTrackPreferencesRelationshipUpdateOperationPayload(
     @SerialName(value = "data")
     val `data`: kotlin.collections.List<PlaylistGenerationsTrackPreferencesRelationshipPayloadData>,
-    @SerialName(value = "meta") val meta: PlaylistGenerationsTrackPreferencesRelationshipPayloadMeta,
+    @SerialName(value = "meta")
+    val meta: PlaylistGenerationsTrackPreferencesRelationshipUpdateOperationPayloadMeta,
 ) {}

@@ -29,6 +29,7 @@ fun getOneOfSerializer() = SerializersModule {
             ArtistStreamsStatisticsResourceObject.serializer(),
         )
         subclass(ArtistsResourceObject::class, ArtistsResourceObject.serializer())
+        subclass(ArtworkLibrariesResourceObject::class, ArtworkLibrariesResourceObject.serializer())
         subclass(ArtworksResourceObject::class, ArtworksResourceObject.serializer())
         subclass(
             ChangeEventStreamsResourceObject::class,
@@ -87,6 +88,11 @@ fun getOneOfSerializer() = SerializersModule {
         subclass(ProvidersResourceObject::class, ProvidersResourceObject.serializer())
         subclass(PurchasesResourceObject::class, PurchasesResourceObject.serializer())
         subclass(ReactionsResourceObject::class, ReactionsResourceObject.serializer())
+        subclass(ResourceGrantsResourceObject::class, ResourceGrantsResourceObject.serializer())
+        subclass(
+            ResourceSharingSettingsResourceObject::class,
+            ResourceSharingSettingsResourceObject.serializer(),
+        )
         subclass(SavedSharesResourceObject::class, SavedSharesResourceObject.serializer())
         subclass(ScopesResourceObject::class, ScopesResourceObject.serializer())
         subclass(
@@ -102,6 +108,14 @@ fun getOneOfSerializer() = SerializersModule {
         subclass(
             SquareConnectionsResourceObject::class,
             SquareConnectionsResourceObject.serializer(),
+        )
+        subclass(
+            SquareItemVariationPhysicalCountsResourceObject::class,
+            SquareItemVariationPhysicalCountsResourceObject.serializer(),
+        )
+        subclass(
+            SquareItemVariationsResourceObject::class,
+            SquareItemVariationsResourceObject.serializer(),
         )
         subclass(SquareItemsResourceObject::class, SquareItemsResourceObject.serializer())
         subclass(SquareSitesResourceObject::class, SquareSitesResourceObject.serializer())

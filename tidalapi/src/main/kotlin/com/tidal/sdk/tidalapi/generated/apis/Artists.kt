@@ -67,12 +67,12 @@ interface Artists {
      * - 503: Service temporarily unavailable
      *
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
+     * @param filterHandle Artist handle (e.g. &#x60;jayz&#x60;) (optional)
+     * @param filterId List of artist IDs (e.g. &#x60;1566&#x60;) (optional)
+     * @param filterOwnersId User id. Also accepts &#x60;me&#x60;. (optional)
      * @param include Include related resources. Available relationships: albums, bannerArt,
      *   biography, claimStatus, followers, following, logoArt, owners, profileArt, radio, roles,
      *   similarArtists, trackProviders, tracks, videos (optional)
-     * @param filterHandle Artist handle (e.g. &#x60;jayz&#x60;) (optional)
-     * @param filterId List of artist IDs (e.g. &#x60;1566&#x60;) (optional)
-     * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user (optional)
      * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
      *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
@@ -83,14 +83,14 @@ interface Artists {
     @GET("artists")
     suspend fun artistsGet(
         @Query("countryCode") countryCode: kotlin.String? = null,
-        @Query("include")
-        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[handle]")
         filterHandle: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[id]")
         filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[owners.id]")
         filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<ArtistsMultiResourceDataDocument>
@@ -192,10 +192,10 @@ interface Artists {
      * - 503: Service temporarily unavailable
      *
      * @param id Artist id
-     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
-     *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Include related resources. Available relationships: albums (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: albums (optional)
@@ -204,10 +204,10 @@ interface Artists {
     @GET("artists/{id}/relationships/albums")
     suspend fun artistsIdRelationshipsAlbumsGet(
         @Path("id") id: kotlin.String,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<ArtistsAlbumsMultiRelationshipDataDocument>
 
@@ -244,7 +244,8 @@ interface Artists {
      * PATCH artists/{id}/relationships/bannerArt Update bannerArt relationship
      * (\&quot;to-many\&quot;). Selects one owned, attachable IMAGE artwork by ID, replacing the
      * selection. Empty data clears the selection; null data and more than one entry are rejected.
-     * Returns an acknowledgement. Responses:
+     * Previous artwork no longer selected by profileArt, bannerArt or logoArt is soft-deleted
+     * unless system-managed. Returns an acknowledgement. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -338,23 +339,23 @@ interface Artists {
      * - 503: Service temporarily unavailable
      *
      * @param id Artist id
-     * @param viewerContext (optional)
+     * @param include Include related resources. Available relationships: followers (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @param include Include related resources. Available relationships: followers (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: followers.albums (optional)
+     * @param viewerContext (optional)
      * @return [ArtistsFollowersMultiRelationshipDataDocument]
      */
     @GET("artists/{id}/relationships/followers")
     suspend fun artistsIdRelationshipsFollowersGet(
         @Path("id") id: kotlin.String,
-        @Query("viewerContext") viewerContext: kotlin.String? = null,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
+        @Query("viewerContext") viewerContext: kotlin.String? = null,
     ): Response<ArtistsFollowersMultiRelationshipDataDocument>
 
     /**
@@ -403,23 +404,23 @@ interface Artists {
      * - 503: Service temporarily unavailable
      *
      * @param id Artist id
-     * @param viewerContext (optional)
+     * @param include Include related resources. Available relationships: following (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @param include Include related resources. Available relationships: following (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: following.albums (optional)
+     * @param viewerContext (optional)
      * @return [ArtistsFollowingMultiRelationshipDataDocument]
      */
     @GET("artists/{id}/relationships/following")
     suspend fun artistsIdRelationshipsFollowingGet(
         @Path("id") id: kotlin.String,
-        @Query("viewerContext") viewerContext: kotlin.String? = null,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
+        @Query("viewerContext") viewerContext: kotlin.String? = null,
     ): Response<ArtistsFollowingMultiRelationshipDataDocument>
 
     /**
@@ -486,8 +487,9 @@ interface Artists {
     /**
      * PATCH artists/{id}/relationships/logoArt Update logoArt relationship (\&quot;to-many\&quot;).
      * Selects one owned, attachable IMAGE artwork by ID, replacing the selection. Empty data clears
-     * the selection; null data and more than one entry are rejected. Returns an acknowledgement.
-     * Responses:
+     * the selection; null data and more than one entry are rejected. Previous artwork no longer
+     * selected by profileArt, bannerArt or logoArt is soft-deleted unless system-managed. Returns
+     * an acknowledgement. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -575,7 +577,11 @@ interface Artists {
 
     /**
      * PATCH artists/{id}/relationships/profileArt Update profileArt relationship
-     * (\&quot;to-many\&quot;). Updates the artist&#39;s avatar artwork. Responses:
+     * (\&quot;to-many\&quot;). Replaces the artist&#39;s uploaded avatar selection with one owned,
+     * attachable artwork. Empty data clears the uploaded selection; legacy pictures or album
+     * fallback artwork may still appear in profileArt. Previous artwork no longer selected by
+     * profileArt, bannerArt or logoArt is soft-deleted unless system-managed. Returns an
+     * acknowledgement. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -619,10 +625,10 @@ interface Artists {
      * - 503: Service temporarily unavailable
      *
      * @param id Artist id
-     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
-     *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Include related resources. Available relationships: radio (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: radio.items (optional)
@@ -631,10 +637,10 @@ interface Artists {
     @GET("artists/{id}/relationships/radio")
     suspend fun artistsIdRelationshipsRadioGet(
         @Path("id") id: kotlin.String,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<ArtistsRadioMultiRelationshipDataDocument>
 
@@ -679,10 +685,10 @@ interface Artists {
      * - 503: Service temporarily unavailable
      *
      * @param id Artist id
-     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
-     *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Include related resources. Available relationships: similarArtists (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: similarArtists.albums (optional)
@@ -691,10 +697,10 @@ interface Artists {
     @GET("artists/{id}/relationships/similarArtists")
     suspend fun artistsIdRelationshipsSimilarArtistsGet(
         @Path("id") id: kotlin.String,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<ArtistsSimilarArtistsMultiRelationshipDataDocument>
 
@@ -712,17 +718,17 @@ interface Artists {
      * - 503: Service temporarily unavailable
      *
      * @param id Artist id
+     * @param include Include related resources. Available relationships: trackProviders (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @param include Include related resources. Available relationships: trackProviders (optional)
      * @return [ArtistsTrackProvidersMultiRelationshipDataDocument]
      */
     @GET("artists/{id}/relationships/trackProviders")
     suspend fun artistsIdRelationshipsTrackProvidersGet(
         @Path("id") id: kotlin.String,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
     ): Response<ArtistsTrackProvidersMultiRelationshipDataDocument>
 
     /** enum for parameter collapseBy */
@@ -749,10 +755,10 @@ interface Artists {
      * @param collapseBy Collapse by options for getting artist tracks. Available options:
      *   FINGERPRINT, ID. FINGERPRINT option might collapse similar tracks based entry fingerprints
      *   while collapsing by ID always returns all available items.
-     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
-     *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Include related resources. Available relationships: tracks (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: tracks (optional)
@@ -762,10 +768,10 @@ interface Artists {
     suspend fun artistsIdRelationshipsTracksGet(
         @Path("id") id: kotlin.String,
         @Query("collapseBy") collapseBy: CollapseByArtistsIdRelationshipsTracksGet,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<ArtistsTracksMultiRelationshipDataDocument>
 
@@ -783,10 +789,10 @@ interface Artists {
      * - 503: Service temporarily unavailable
      *
      * @param id Artist id
-     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
-     *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Include related resources. Available relationships: videos (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: videos (optional)
@@ -795,10 +801,10 @@ interface Artists {
     @GET("artists/{id}/relationships/videos")
     suspend fun artistsIdRelationshipsVideosGet(
         @Path("id") id: kotlin.String,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<ArtistsVideosMultiRelationshipDataDocument>
 

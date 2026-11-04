@@ -22,9 +22,14 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param `data` */
+/**
+ * @param `data`
+ * @param meta
+ */
 @Serializable
 data class ArtistsProfileArtRelationshipUpdateOperationPayload(
     @SerialName(value = "data")
-    val `data`: kotlin.collections.List<ArtistsProfileArtRelationshipUpdateOperationPayloadData>
+    val `data`: kotlin.collections.List<ArtistsProfileArtRelationshipUpdateOperationPayloadData>,
+    @SerialName(value = "meta")
+    val meta: AlbumsArtistsRelationshipUpdateOperationPayloadMeta? = null,
 ) {}

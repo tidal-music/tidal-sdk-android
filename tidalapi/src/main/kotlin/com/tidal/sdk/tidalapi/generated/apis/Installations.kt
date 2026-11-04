@@ -37,16 +37,15 @@ interface Installations {
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
-     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
-     *   targets first page if not specified (optional)
-     * @param include Include related resources. Available relationships: offlineInventory, owners
-     *   (optional)
      * @param filterClientProvidedInstallationId Client-provided installation identifier to filter
      *   by (e.g. &#x60;a468bee88def&#x60;) (optional)
-     * @param filterOwnersId User ID to filter by. Use &#x60;me&#x60; for the authenticated user
+     * @param filterOwnersId User ID to filter by. Also accepts &#x60;me&#x60;. (optional)
+     * @param include Include related resources. Available relationships: offlineInventory, owners
      *   (optional)
      * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
      *   related content. (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: offlineInventory (optional)
@@ -54,9 +53,6 @@ interface Installations {
      */
     @GET("installations")
     suspend fun installationsGet(
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-        @Query("include")
-        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[clientProvidedInstallationId]")
         filterClientProvidedInstallationId:
             @JvmSuppressWildcards
@@ -64,7 +60,10 @@ interface Installations {
             null,
         @Query("filter[owners.id]")
         filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("includeLinkage") includeLinkage: CSVParams? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<InstallationsMultiResourceDataDocument>
 
@@ -180,12 +179,12 @@ interface Installations {
      * @param id Installation id
      * @param filterType One of: tracks, videos, albums, playlists, userCollectionTracks (e.g.
      *   &#x60;tracks&#x60;)
-     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
-     *   targets first page if not specified (optional)
-     * @param include Include related resources. Available relationships: offlineInventory
-     *   (optional)
      * @param filterId Offline item id (e.g. &#x60;1234&#x60;) (optional)
      * @param filterState One of: PENDING, STORED, FAILED (e.g. &#x60;PENDING&#x60;) (optional)
+     * @param include Include related resources. Available relationships: offlineInventory
+     *   (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: offlineInventory (optional)
@@ -196,13 +195,13 @@ interface Installations {
         @Path("id") id: kotlin.String,
         @Query("filter[type]")
         filterType: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-        @Query("include")
-        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[id]")
         filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[state]")
         filterState: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<InstallationsOfflineInventoryMultiRelationshipDataDocument>
 

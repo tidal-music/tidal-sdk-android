@@ -10,6 +10,7 @@ import com.tidal.sdk.tidalapi.generated.models.FolderItemsParentRelationshipUpda
 import com.tidal.sdk.tidalapi.generated.models.FolderItemsParentSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.FolderItemsParentUpdateSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.FolderItemsSingleResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.FolderItemsSubjectSharingSettingsSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.FolderItemsSubjectSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.MutationResponseDocument
 import kotlinx.serialization.SerialName
@@ -26,13 +27,16 @@ interface FolderItems {
         @SerialName(value = "owners") owners("owners"),
         @SerialName(value = "parent") parent("parent"),
         @SerialName(value = "subject") subject("subject"),
+        @SerialName(value = "subjectSharingSettings")
+        subjectSharingSettings("subjectSharingSettings"),
     }
 
     /**
      * GET folderItems Get multiple folderItems. Lists items in a folder, newest placement first.
      * Select a folder with parent.id, or select your root with parent.isRoot&#x3D;true and
      * parent.owners.id&#x3D;me. These forms cannot be combined; no other parent-filter combinations
-     * are supported. Responses:
+     * are supported. To search every folder in your tree instead, use query,
+     * subject.albums:published or both with parent.owners.id&#x3D;me alone. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -43,20 +47,35 @@ interface FolderItems {
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
-     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
-     *   targets first page if not specified (optional)
-     * @param include Include related resources. Available relationships: breadcrumb, owners,
-     *   parent, subject (optional)
-     * @param filterParentId Folder id (e.g. &#x60;e3226624-355b-48f8-aa93-db42532caa66&#x60;)
-     *   (optional)
+     * @param filterParentId Folder id (e.g. &#x60;e3226624-355b-48f8-aa93-db42532caa66&#x60;). Also
+     *   accepts &#x60;me&#x60;. (optional)
      * @param filterParentIsRoot Filter by parent.isRoot (optional)
-     * @param filterParentOwnersId Root folder owner; must be the authenticated user.. Use
-     *   &#x60;me&#x60; for the authenticated user (optional)
-     * @param filterSubjectOwnersId In folders you own, me selects owned placements and !me selects
-     *   shared placements. In someone else&#39;s folder, me returns no items and !me returns the
-     *   normal listing. Omit for all items. (optional)
+     * @param filterParentOwnersId Owner of the folder an item is in; must be the authenticated
+     *   user. With parent.isRoot&#x3D;true it selects your root, and with query or
+     *   subject.albums:published your whole tree. Also accepts &#x60;me&#x60;. (optional)
+     * @param filterQuery Searches every folder in your tree, selected with
+     *   parent.owners.id&#x3D;me, and lists the matching items in one flat list. An item matches
+     *   when each word given starts a word in its folder&#39;s name, its album&#39;s title or the
+     *   title of one of the album&#39;s tracks, ignoring case. An item shared with you matches by
+     *   its subject, and only while you can open it. (e.g. &#x60;demo&#x60;) (optional)
+     * @param filterSubjectAlbumsPublished Searches every folder in your tree, selected with
+     *   parent.owners.id&#x3D;me, for albums that are (true) or are not (false) published, and
+     *   lists them in one flat list. Other items never match. Combines with query. (e.g.
+     *   &#x60;true&#x60;) (optional)
+     * @param filterSubjectOwnersId In your folders, &#x60;&#x3D;me&#x60; selects owned placements
+     *   and &#x60;[ne]&#x3D;me&#x60; selects shared placements. In someone else&#39;s folder,
+     *   &#x60;&#x3D;me&#x60; returns no items and &#x60;[ne]&#x3D;me&#x60; returns all items.
+     *   Accepts only &#x60;me&#x60; or your own user ID. (optional)
+     * @param filterSubjectOwnersIdNe In your folders, &#x60;&#x3D;me&#x60; selects owned placements
+     *   and &#x60;[ne]&#x3D;me&#x60; selects shared placements. In someone else&#39;s folder,
+     *   &#x60;&#x3D;me&#x60; returns no items and &#x60;[ne]&#x3D;me&#x60; returns all items.
+     *   Accepts only &#x60;me&#x60; or your own user ID. (optional)
+     * @param include Include related resources. Available relationships: breadcrumb, owners,
+     *   parent, subject, subjectSharingSettings (optional)
      * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
      *   related content. (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: breadcrumb.children.subject (optional)
@@ -64,14 +83,18 @@ interface FolderItems {
      */
     @GET("folderItems")
     suspend fun folderItemsGet(
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-        @Query("include")
-        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[parent.id]") filterParentId: kotlin.String? = null,
         @Query("filter[parent.isRoot]") filterParentIsRoot: kotlin.String? = null,
         @Query("filter[parent.owners.id]") filterParentOwnersId: kotlin.String? = null,
+        @Query("filter[query]") filterQuery: kotlin.String? = null,
+        @Query("filter[subject.albums:published]")
+        filterSubjectAlbumsPublished: kotlin.String? = null,
         @Query("filter[subject.owners.id]") filterSubjectOwnersId: kotlin.String? = null,
+        @Query("filter[subject.owners.id][ne]") filterSubjectOwnersIdNe: kotlin.String? = null,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("includeLinkage") includeLinkage: CSVParams? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<FolderItemsMultiResourceDataDocument>
 
@@ -108,6 +131,8 @@ interface FolderItems {
         @SerialName(value = "owners") owners("owners"),
         @SerialName(value = "parent") parent("parent"),
         @SerialName(value = "subject") subject("subject"),
+        @SerialName(value = "subjectSharingSettings")
+        subjectSharingSettings("subjectSharingSettings"),
     }
 
     /**
@@ -124,7 +149,7 @@ interface FolderItems {
      *
      * @param id Folder item id
      * @param include Include related resources. Available relationships: breadcrumb, owners,
-     *   parent, subject (optional)
+     *   parent, subject, subjectSharingSettings (optional)
      * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
      *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
@@ -230,7 +255,9 @@ interface FolderItems {
 
     /**
      * PATCH folderItems/{id}/relationships/parent Update parent relationship
-     * (\&quot;to-one\&quot;). Updates parent relationship. Responses:
+     * (\&quot;to-one\&quot;). Moves the item to the supplied parent folder, replacing its previous
+     * parent. To move to the top level, supply the root folder explicitly; null data is rejected.
+     * Returns the new parent linkage. Responses:
      * - 200: Successful response
      * - 400: A folder cannot be placed inside itself or one of its descendants
      * - 404: Resource not found
@@ -287,6 +314,36 @@ interface FolderItems {
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<FolderItemsSubjectSingleRelationshipDataDocument>
+
+    /**
+     * GET folderItems/{id}/relationships/subjectSharingSettings Get subjectSharingSettings
+     * relationship (\&quot;to-one\&quot;). Retrieves subjectSharingSettings relationship.
+     * Responses:
+     * - 200: Successful response
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
+     * - 429: Rate limit exceeded
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
+     *
+     * @param id Folder item id
+     * @param include Include related resources. Available relationships: subjectSharingSettings
+     *   (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: subjectSharingSettings.subject (optional)
+     * @return [FolderItemsSubjectSharingSettingsSingleRelationshipDataDocument]
+     */
+    @GET("folderItems/{id}/relationships/subjectSharingSettings")
+    suspend fun folderItemsIdRelationshipsSubjectSharingSettingsGet(
+        @Path("id") id: kotlin.String,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
+    ): Response<FolderItemsSubjectSharingSettingsSingleRelationshipDataDocument>
 
     /**
      * POST folderItems Create single folderItem. Creates a new folderItem. Responses:

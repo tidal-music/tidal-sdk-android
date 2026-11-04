@@ -22,10 +22,32 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param positionIndex 1-based index */
+/**
+ * @param positionIndex 1-based index
+ * @param mode Relationship mutation mode. INCREMENTAL updates selected existing entries without
+ *   adding or removing memberships; REPLACE_ALL replaces the complete membership and its order
+ *   where applicable. Omission defaults to INCREMENTAL.
+ */
 @Serializable
 data class AlbumsItemsRelationshipUpdateOperationPayloadMeta(
 
     /* 1-based index */
-    @SerialName(value = "positionIndex") val positionIndex: kotlin.Int
-) {}
+    @SerialName(value = "positionIndex") val positionIndex: kotlin.Int,
+
+    /* Relationship mutation mode. INCREMENTAL updates selected existing entries without adding or removing memberships; REPLACE_ALL replaces the complete membership and its order where applicable. Omission defaults to INCREMENTAL. */
+    @SerialName(value = "mode")
+    val mode: AlbumsItemsRelationshipUpdateOperationPayloadMeta.Mode? = Mode.INCREMENTAL,
+) {
+
+    /**
+     * Relationship mutation mode. INCREMENTAL updates selected existing entries without adding or
+     * removing memberships; REPLACE_ALL replaces the complete membership and its order where
+     * applicable. Omission defaults to INCREMENTAL.
+     *
+     * Values: INCREMENTAL
+     */
+    @Serializable
+    enum class Mode(val value: kotlin.String) {
+        @SerialName(value = "INCREMENTAL") INCREMENTAL("INCREMENTAL")
+    }
+}

@@ -127,7 +127,11 @@ interface UserPlaybackStates {
 
     /**
      * PATCH userPlaybackStates/{id}/relationships/activePlayer Update activePlayer relationship
-     * (\&quot;to-one\&quot;). Updates activePlayer relationship. Responses:
+     * (\&quot;to-one\&quot;). Replaces the active-player selection with the supplied owned
+     * installation. Explicit null data releases the player without deleting the installation.
+     * Returns null linkage when released or when the selected installation has no live attachment.
+     * An unavailable selection is retained and becomes visible again when its attachment is
+     * refreshed. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -160,7 +164,8 @@ interface UserPlaybackStates {
 
     /**
      * DELETE userPlaybackStates/{id}/relationships/availablePlayers Delete from availablePlayers
-     * relationship (\&quot;to-many\&quot;). Deletes item(s) from availablePlayers relationship.
+     * relationship (\&quot;to-many\&quot;). Detaches one installation without deleting it. Also
+     * releases the active player when it is that installation. Returns an acknowledgement.
      * Responses:
      * - 200: Successful response
      * - 400: Invalid request
@@ -231,8 +236,9 @@ interface UserPlaybackStates {
 
     /**
      * POST userPlaybackStates/{id}/relationships/availablePlayers Add to availablePlayers
-     * relationship (\&quot;to-many\&quot;). Adds item(s) to availablePlayers relationship.
-     * Responses:
+     * relationship (\&quot;to-many\&quot;). Attaches or refreshes one owned installation as an
+     * available player, preserving other attachments. Returns all currently available player
+     * linkage. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -319,7 +325,9 @@ interface UserPlaybackStates {
 
     /**
      * PATCH userPlaybackStates/{id}/relationships/playQueue Update playQueue relationship
-     * (\&quot;to-one\&quot;). Updates playQueue relationship. Responses:
+     * (\&quot;to-one\&quot;). Replaces the selected play queue. Explicit null data clears the
+     * selection without deleting the queue. Returns the selected queue linkage, or null data when
+     * cleared. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

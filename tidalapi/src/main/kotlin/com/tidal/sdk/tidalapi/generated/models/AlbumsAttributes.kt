@@ -39,6 +39,8 @@ import kotlinx.serialization.Serializable
  * @param copyright
  * @param createdAt Datetime of album creation (ISO 8601)
  * @param externalLinks Album links external to TIDAL API
+ * @param published Whether the album is published and available to everyone. Present only for
+ *   uploaded albums.
  * @param releaseDate Release date (ISO-8601)
  * @param type Album type. Deprecated: use 'albumType' instead. This field will be removed in a
  *   future version.
@@ -88,6 +90,9 @@ data class AlbumsAttributes(
     /* Album links external to TIDAL API */
     @SerialName(value = "externalLinks")
     val externalLinks: kotlin.collections.List<ExternalLink>? = null,
+
+    /* Whether the album is published and available to everyone. Present only for uploaded albums. */
+    @SerialName(value = "published") val published: kotlin.Boolean? = null,
 
     /* Release date (ISO-8601) */
     @SerialName(value = "releaseDate") val releaseDate: kotlin.String? = null,

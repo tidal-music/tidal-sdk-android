@@ -26,5 +26,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Default503ResponseBody(
     @SerialName(value = "errors")
-    val errors: kotlin.collections.List<Default400ResponseBodyErrorsInner>
+    val errors: kotlin.collections.List<AtomicOperations400ResponseBodyErrorsInner>
 ) {}

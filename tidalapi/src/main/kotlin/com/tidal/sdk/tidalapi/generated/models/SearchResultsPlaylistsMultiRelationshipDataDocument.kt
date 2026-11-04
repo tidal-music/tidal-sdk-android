@@ -23,6 +23,8 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
+ * Target resource types: `playlists`.
+ *
  * @param links
  * @param `data`
  * @param included
@@ -30,7 +32,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class SearchResultsPlaylistsMultiRelationshipDataDocument(
     @SerialName(value = "links") val links: Links,
-    @SerialName(value = "data")
-    val `data`: kotlin.collections.List<SearchResultsPlaylistsResourceIdentifier>? = null,
+    @SerialName(value = "data") val `data`: kotlin.collections.List<ResourceIdentifier>? = null,
     @SerialName(value = "included") val included: kotlin.collections.List<IncludedInner>? = null,
 ) {}

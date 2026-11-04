@@ -78,7 +78,9 @@ interface SquareConnections {
 
     /**
      * PATCH squareConnections/{id}/relationships/selectedSite Update selectedSite relationship
-     * (\&quot;to-one\&quot;). Updates selectedSite relationship. Responses:
+     * (\&quot;to-one\&quot;). Replaces the selected Square site. Explicit null data clears the
+     * selection without deleting the site. Returns the selected site linkage, or null data when
+     * cleared. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 403: Latest terms and conditions must be accepted

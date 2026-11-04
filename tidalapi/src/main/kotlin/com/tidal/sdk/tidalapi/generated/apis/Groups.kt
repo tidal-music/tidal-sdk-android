@@ -20,12 +20,13 @@ interface Groups {
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
-     * @param filterName Exact group name (case-sensitive) (e.g. &#x60;Everyone&#x60;)
+     * @param filterId Group ID. The built-in Everyone group has the case-sensitive ID
+     *   &#x60;everyone&#x60;.
      * @return [GroupsMultiResourceDataDocument]
      */
     @GET("groups")
     suspend fun groupsGet(
-        @Query("filter[name]") filterName: kotlin.String
+        @Query("filter[id]") filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>
     ): Response<GroupsMultiResourceDataDocument>
 
     /**
@@ -40,7 +41,8 @@ interface Groups {
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
-     * @param id Group ID
+     * @param id Group ID. The built-in Everyone group has the case-sensitive ID
+     *   &#x60;everyone&#x60;.
      * @return [GroupsSingleResourceDataDocument]
      */
     @GET("groups/{id}")

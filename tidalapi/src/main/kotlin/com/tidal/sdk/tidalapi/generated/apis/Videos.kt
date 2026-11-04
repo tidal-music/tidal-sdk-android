@@ -47,10 +47,10 @@ interface Videos {
      * - 503: Service temporarily unavailable
      *
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param include Include related resources. Available relationships: albums, artists, credits,
-     *   providers, replacement, similarVideos, suggestedVideos, thumbnailArt, usageRules (optional)
      * @param filterId List of video IDs (e.g. &#x60;75623239&#x60;) (optional)
      * @param filterIsrc List of ISRCs (e.g. &#x60;QMJMT1701237&#x60;) (optional)
+     * @param include Include related resources. Available relationships: albums, artists, credits,
+     *   providers, replacement, similarVideos, suggestedVideos, thumbnailArt, usageRules (optional)
      * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
      *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
@@ -61,12 +61,12 @@ interface Videos {
     @GET("videos")
     suspend fun videosGet(
         @Query("countryCode") countryCode: kotlin.String? = null,
-        @Query("include")
-        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[id]")
         filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[isrc]")
         filterIsrc: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<VideosMultiResourceDataDocument>
@@ -132,10 +132,10 @@ interface Videos {
      * - 503: Service temporarily unavailable
      *
      * @param id Video id
-     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
-     *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Include related resources. Available relationships: albums (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: albums (optional)
@@ -144,10 +144,10 @@ interface Videos {
     @GET("videos/{id}/relationships/albums")
     suspend fun videosIdRelationshipsAlbumsGet(
         @Path("id") id: kotlin.String,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<VideosAlbumsMultiRelationshipDataDocument>
 
@@ -165,10 +165,10 @@ interface Videos {
      * - 503: Service temporarily unavailable
      *
      * @param id Video id
-     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
-     *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Include related resources. Available relationships: artists (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: artists.albums (optional)
@@ -177,10 +177,10 @@ interface Videos {
     @GET("videos/{id}/relationships/artists")
     suspend fun videosIdRelationshipsArtistsGet(
         @Path("id") id: kotlin.String,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<VideosArtistsMultiRelationshipDataDocument>
 
@@ -198,9 +198,9 @@ interface Videos {
      * - 503: Service temporarily unavailable
      *
      * @param id Video id
+     * @param include Include related resources. Available relationships: credits (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
-     * @param include Include related resources. Available relationships: credits (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: credits.artist.albums (optional)
@@ -209,9 +209,9 @@ interface Videos {
     @GET("videos/{id}/relationships/credits")
     suspend fun videosIdRelationshipsCreditsGet(
         @Path("id") id: kotlin.String,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<VideosCreditsMultiRelationshipDataDocument>
 
@@ -229,19 +229,19 @@ interface Videos {
      * - 503: Service temporarily unavailable
      *
      * @param id Video id
-     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
-     *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Include related resources. Available relationships: providers (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
      * @return [VideosProvidersMultiRelationshipDataDocument]
      */
     @GET("videos/{id}/relationships/providers")
     suspend fun videosIdRelationshipsProvidersGet(
         @Path("id") id: kotlin.String,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
     ): Response<VideosProvidersMultiRelationshipDataDocument>
 
     /**
@@ -288,10 +288,10 @@ interface Videos {
      * - 503: Service temporarily unavailable
      *
      * @param id Video id
-     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
-     *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Include related resources. Available relationships: similarVideos (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: similarVideos (optional)
@@ -300,10 +300,10 @@ interface Videos {
     @GET("videos/{id}/relationships/similarVideos")
     suspend fun videosIdRelationshipsSimilarVideosGet(
         @Path("id") id: kotlin.String,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<VideosSimilarVideosMultiRelationshipDataDocument>
 
@@ -321,10 +321,10 @@ interface Videos {
      * - 503: Service temporarily unavailable
      *
      * @param id Video id
-     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
-     *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Include related resources. Available relationships: suggestedVideos (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: suggestedVideos (optional)
@@ -333,10 +333,10 @@ interface Videos {
     @GET("videos/{id}/relationships/suggestedVideos")
     suspend fun videosIdRelationshipsSuggestedVideosGet(
         @Path("id") id: kotlin.String,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<VideosSuggestedVideosMultiRelationshipDataDocument>
 
@@ -354,19 +354,19 @@ interface Videos {
      * - 503: Service temporarily unavailable
      *
      * @param id Video id
-     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
-     *   targets first page if not specified (optional)
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Include related resources. Available relationships: thumbnailArt (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
      * @return [VideosThumbnailArtMultiRelationshipDataDocument]
      */
     @GET("videos/{id}/relationships/thumbnailArt")
     suspend fun videosIdRelationshipsThumbnailArtGet(
         @Path("id") id: kotlin.String,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("countryCode") countryCode: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
     ): Response<VideosThumbnailArtMultiRelationshipDataDocument>
 
     /**

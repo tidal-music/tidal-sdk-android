@@ -43,11 +43,11 @@ interface AcceptedTerms {
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
-     * @param filterOwnersId User id. Use &#x60;me&#x60; for the authenticated user
+     * @param filterOwnersId User id. Also accepts &#x60;me&#x60;.
      * @param filterTermsTermsType One of: DEVELOPER, UPLOAD_MARKETPLACE, MERCH_GUIDELINES,
      *   TIDAL_CONNECT_DEVELOPER (e.g. &#x60;DEVELOPER&#x60;)
-     * @param include Include related resources. Available relationships: owners, terms (optional)
      * @param filterTermsIsLatestVersion Filter by terms.isLatestVersion (optional)
+     * @param include Include related resources. Available relationships: owners, terms (optional)
      * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
      *   related content. (optional)
      * @return [AcceptedTermsMultiResourceDataDocument]
@@ -58,11 +58,11 @@ interface AcceptedTerms {
         filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
         @Query("filter[terms.termsType]")
         filterTermsTermsType: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
-        @Query("include")
-        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("filter[terms.isLatestVersion]")
         filterTermsIsLatestVersion: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? =
             null,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("includeLinkage") includeLinkage: CSVParams? = null,
     ): Response<AcceptedTermsMultiResourceDataDocument>
 
