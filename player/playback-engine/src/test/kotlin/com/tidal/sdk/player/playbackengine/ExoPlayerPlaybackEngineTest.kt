@@ -726,6 +726,32 @@ internal class ExoPlayerPlaybackEngineTest {
     }
 
     @Test
+    fun onStreamingPrivilegesRevokedWhileSuppressedPausesAndDispatchesEvent() {
+        whenever(internalHandler.post(any())).thenAnswer {
+            (it.arguments.single() as Runnable).run()
+            true
+        }
+        val privilegedClientDisplayName = "a privileged client"
+        playbackEngine.reflectionSetPlaybackState(PlaybackState.NOT_PLAYING)
+        playbackEngine.onPlaybackSuppressionReasonChanged(
+            mock(),
+            Player.PLAYBACK_SUPPRESSION_REASON_TRANSIENT_AUDIO_FOCUS_LOSS,
+        )
+
+        runTest(testDispatcher) {
+            val event =
+                async(start = CoroutineStart.UNDISPATCHED) {
+                    playbackEngine.events.filter { it is Event.StreamingPrivilegesRevoked }.first()
+                }
+            playbackEngine.onStreamingPrivilegesRevoked(privilegedClientDisplayName)
+            assertThat(event.await())
+                .isEqualTo(Event.StreamingPrivilegesRevoked(privilegedClientDisplayName))
+        }
+
+        verify(initialExtendedExoPlayer).pause()
+    }
+
+    @Test
     fun onPlaybackInfoFetchedForCurrentMediaProduct() {
         val actualProductId = 123
         val referenceId = "referenceId"
@@ -1002,6 +1028,7 @@ internal class ExoPlayerPlaybackEngineTest {
         verify(currentPlaybackSession).actions
         verify(trueTimeWrapper).currentTimeMillis
         verify(actions).add(Action(currentTimeMills, positionSeconds, actionType))
+        verify(initialExtendedExoPlayer).playbackState
         verifyNoMoreInteractions(
             forwardingMediaProduct,
             mediaSource,
@@ -1010,6 +1037,73 @@ internal class ExoPlayerPlaybackEngineTest {
             actions,
             initialExtendedExoPlayer,
         )
+    }
+
+    @ParameterizedTest
+    @MethodSource("readyPlaybackStates")
+    fun onPlaybackSuppressionReasonChangedWhileReadyUpdatesPlaybackState(
+        playWhenReady: Boolean,
+        suppressionReason: Int,
+        expectedPlaybackState: PlaybackState,
+    ) {
+        playbackEngine.reflectionSetPlaybackState(
+            if (expectedPlaybackState == PlaybackState.PLAYING) {
+                PlaybackState.NOT_PLAYING
+            } else {
+                PlaybackState.PLAYING
+            }
+        )
+        whenever(initialExtendedExoPlayer.playbackState) doReturn Player.STATE_READY
+        whenever(initialExtendedExoPlayer.playWhenReady) doReturn playWhenReady
+        whenever(initialExtendedExoPlayer.playbackSuppressionReason) doReturn suppressionReason
+
+        playbackEngine.onPlaybackSuppressionReasonChanged(mock(), suppressionReason)
+
+        assertThat(playbackEngine.playbackState).isEqualTo(expectedPlaybackState)
+    }
+
+    @Test
+    fun onPlaybackSuppressionReasonChangedWhileBufferingKeepsStalled() {
+        playbackEngine.reflectionSetPlaybackState(PlaybackState.STALLED)
+        whenever(initialExtendedExoPlayer.playbackState) doReturn Player.STATE_BUFFERING
+        whenever(initialExtendedExoPlayer.playWhenReady) doReturn true
+
+        playbackEngine.onPlaybackSuppressionReasonChanged(
+            mock(),
+            Player.PLAYBACK_SUPPRESSION_REASON_NONE,
+        )
+
+        assertThat(playbackEngine.playbackState).isEqualTo(PlaybackState.STALLED)
+    }
+
+    @Test
+    fun onPlayWhenReadyChangedToTrueWhileReadyAndSuppressedIsNotPlaying() {
+        playbackEngine.reflectionSetPlaybackState(PlaybackState.NOT_PLAYING)
+        whenever(initialExtendedExoPlayer.playbackState) doReturn Player.STATE_READY
+        whenever(initialExtendedExoPlayer.playbackSuppressionReason) doReturn
+            Player.PLAYBACK_SUPPRESSION_REASON_TRANSIENT_AUDIO_FOCUS_LOSS
+
+        playbackEngine.onPlayWhenReadyChanged(
+            mock(),
+            true,
+            Player.PLAY_WHEN_READY_CHANGE_REASON_USER_REQUEST,
+        )
+
+        assertThat(playbackEngine.playbackState).isEqualTo(PlaybackState.NOT_PLAYING)
+    }
+
+    @Test
+    fun onPlayWhenReadyChangedToTrueWhileReadyIsPlaying() {
+        playbackEngine.reflectionSetPlaybackState(PlaybackState.NOT_PLAYING)
+        whenever(initialExtendedExoPlayer.playbackState) doReturn Player.STATE_READY
+
+        playbackEngine.onPlayWhenReadyChanged(
+            mock(),
+            true,
+            Player.PLAY_WHEN_READY_CHANGE_REASON_USER_REQUEST,
+        )
+
+        assertThat(playbackEngine.playbackState).isEqualTo(PlaybackState.PLAYING)
     }
 
     @ParameterizedTest
@@ -1148,6 +1242,47 @@ internal class ExoPlayerPlaybackEngineTest {
         playbackEngine.onPlaybackStateChanged(eventTime, Player.STATE_READY)
 
         assertThat(playbackEngine.playbackState).isEqualTo(PlaybackState.NOT_PLAYING)
+    }
+
+    @ParameterizedTest
+    @MethodSource("readyPlaybackStates")
+    fun onPlaybackStateChangedToReadyPlaysOnlyWhenNotSuppressed(
+        playWhenReady: Boolean,
+        suppressionReason: Int,
+        expectedPlaybackState: PlaybackState,
+    ) {
+        val mediaItem =
+            MediaItem.Builder().setMediaId(forwardingMediaProduct.hashCode().toString()).build()
+        val window =
+            Timeline.Window()
+                .set(
+                    Unit,
+                    mediaItem,
+                    null,
+                    -1L,
+                    -1L,
+                    -1L,
+                    false,
+                    false,
+                    null,
+                    -1L,
+                    -1L,
+                    -1,
+                    -1,
+                    -1L,
+                )
+        val timeline =
+            mock<Timeline> {
+                on { it.windowCount } doReturn 1
+                on { it.getWindow(eq(0), any()) } doReturn window
+            }
+        val eventTime = EventTime(-1L, timeline, 0, null, -1L, Timeline.EMPTY, -1, null, -1L, -1L)
+        whenever(initialExtendedExoPlayer.playWhenReady) doReturn playWhenReady
+        whenever(initialExtendedExoPlayer.playbackSuppressionReason) doReturn suppressionReason
+
+        playbackEngine.onPlaybackStateChanged(eventTime, Player.STATE_READY)
+
+        assertThat(playbackEngine.playbackState).isEqualTo(expectedPlaybackState)
     }
 
     @Test
@@ -2693,6 +2828,32 @@ internal class ExoPlayerPlaybackEngineTest {
             setOf(
                 Arguments.of(MediaProduct(ProductType.TRACK, "2")),
                 Arguments.of(MediaProduct(ProductType.VIDEO, "3")),
+            )
+
+        @JvmStatic
+        @Suppress("UnusedPrivateMember")
+        private fun readyPlaybackStates() =
+            setOf(
+                Arguments.of(
+                    true,
+                    Player.PLAYBACK_SUPPRESSION_REASON_NONE,
+                    PlaybackState.PLAYING,
+                ),
+                Arguments.of(
+                    true,
+                    Player.PLAYBACK_SUPPRESSION_REASON_TRANSIENT_AUDIO_FOCUS_LOSS,
+                    PlaybackState.NOT_PLAYING,
+                ),
+                Arguments.of(
+                    false,
+                    Player.PLAYBACK_SUPPRESSION_REASON_NONE,
+                    PlaybackState.NOT_PLAYING,
+                ),
+                Arguments.of(
+                    false,
+                    Player.PLAYBACK_SUPPRESSION_REASON_TRANSIENT_AUDIO_FOCUS_LOSS,
+                    PlaybackState.NOT_PLAYING,
+                ),
             )
     }
 }

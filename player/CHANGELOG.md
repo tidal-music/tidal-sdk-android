@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- `PlaybackState` is `NOT_PLAYING` while a transient audio focus loss, such as a phone call, keeps playback silent, and `PLAYING` again once focus returns. It stayed `PLAYING` throughout.
+
 ## [0.0.74] - 2026-10-26
 
 ### Added

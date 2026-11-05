@@ -309,6 +309,9 @@ internal class ExoPlayerPlaybackEngine(
 
     private var pauseAtEndOfMediaProduct = false
 
+    /** Whether ExoPlayer holds playback back, such as for a transient audio focus loss. */
+    private var isPlaybackSuppressed = false
+
     /** The [pause] fade-out, scaling every volume the engine sets down to silence. */
     private val fadeOut =
         FadeOut(
@@ -455,7 +458,7 @@ internal class ExoPlayerPlaybackEngine(
     }
 
     override fun onStreamingPrivilegesRevoked(privilegedClientDisplayName: String?) {
-        if (playbackState == PlaybackState.PLAYING) {
+        if (playbackState == PlaybackState.PLAYING || isPlaybackSuppressed) {
             coroutineScope.launch {
                 eventSink.emit(Event.StreamingPrivilegesRevoked(privilegedClientDisplayName))
             }
@@ -551,6 +554,7 @@ internal class ExoPlayerPlaybackEngine(
         eventTime: EventTime,
         playbackSuppressionReason: Int,
     ) {
+        isPlaybackSuppressed = playbackSuppressionReason != Player.PLAYBACK_SUPPRESSION_REASON_NONE
         if (
             playbackSuppressionReason == Player.PLAYBACK_SUPPRESSION_REASON_NONE &&
                 forwardingMediaProduct?.productType == ProductType.BROADCAST &&
@@ -575,6 +579,9 @@ internal class ExoPlayerPlaybackEngine(
         currentPlaybackSession
             ?.actions
             ?.add(Action(trueTimeWrapper.currentTimeMillis, positionInSeconds, actionType))
+        if (extendedExoPlayer.playbackState == Player.STATE_READY) {
+            playbackState = readyPlaybackState()
+        }
         crossfadeController?.follow()
     }
 
@@ -633,12 +640,7 @@ internal class ExoPlayerPlaybackEngine(
             }
             resetInternal()
         } else if (state == Player.STATE_READY) {
-            playbackState =
-                if (extendedExoPlayer.playWhenReady) {
-                    PlaybackState.PLAYING
-                } else {
-                    PlaybackState.NOT_PLAYING
-                }
+            playbackState = readyPlaybackState()
         }
     }
 
@@ -830,7 +832,7 @@ internal class ExoPlayerPlaybackEngine(
         if (playWhenReady) {
             playbackState =
                 if (extendedExoPlayer.playbackState == Player.STATE_READY) {
-                    PlaybackState.PLAYING
+                    readyPlaybackState(playWhenReady)
                 } else {
                     playbackState
                 }
@@ -841,6 +843,22 @@ internal class ExoPlayerPlaybackEngine(
         }
         crossfadeController?.follow()
     }
+
+    /**
+     * The state of a ready [extendedExoPlayer]. It's only playing while nothing suppresses its
+     * playback, such as a transient audio focus loss during a phone call, as it's silent until
+     * that ends even though [playWhenReady] stays true.
+     */
+    private fun readyPlaybackState(playWhenReady: Boolean = extendedExoPlayer.playWhenReady) =
+        if (
+            playWhenReady &&
+                extendedExoPlayer.playbackSuppressionReason ==
+                    Player.PLAYBACK_SUPPRESSION_REASON_NONE
+        ) {
+            PlaybackState.PLAYING
+        } else {
+            PlaybackState.NOT_PLAYING
+        }
 
     private fun updatePlayerVolume() {
         val volume = volumeFor(mediaSource)
@@ -889,8 +907,7 @@ internal class ExoPlayerPlaybackEngine(
         playbackState =
             when {
                 incoming.playbackState != Player.STATE_READY -> PlaybackState.STALLED
-                incoming.playWhenReady -> PlaybackState.PLAYING
-                else -> PlaybackState.NOT_PLAYING
+                else -> readyPlaybackState()
             }
         updatePlayerVolume()
     }
