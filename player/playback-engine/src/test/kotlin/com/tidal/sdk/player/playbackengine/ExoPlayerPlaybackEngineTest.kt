@@ -2834,11 +2834,7 @@ internal class ExoPlayerPlaybackEngineTest {
         @Suppress("UnusedPrivateMember")
         private fun readyPlaybackStates() =
             setOf(
-                Arguments.of(
-                    true,
-                    Player.PLAYBACK_SUPPRESSION_REASON_NONE,
-                    PlaybackState.PLAYING,
-                ),
+                Arguments.of(true, Player.PLAYBACK_SUPPRESSION_REASON_NONE, PlaybackState.PLAYING),
                 Arguments.of(
                     true,
                     Player.PLAYBACK_SUPPRESSION_REASON_TRANSIENT_AUDIO_FOCUS_LOSS,

@@ -846,8 +846,8 @@ internal class ExoPlayerPlaybackEngine(
 
     /**
      * The state of a ready [extendedExoPlayer]. It's only playing while nothing suppresses its
-     * playback, such as a transient audio focus loss during a phone call, as it's silent until
-     * that ends even though [playWhenReady] stays true.
+     * playback, such as a transient audio focus loss during a phone call, as it's silent until that
+     * ends even though [playWhenReady] stays true.
      */
     private fun readyPlaybackState(playWhenReady: Boolean = extendedExoPlayer.playWhenReady) =
         if (
