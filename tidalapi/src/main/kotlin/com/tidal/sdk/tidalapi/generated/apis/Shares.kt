@@ -8,6 +8,8 @@ import com.tidal.sdk.tidalapi.generated.models.SharesMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.SharesOwnersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.SharesSharedResourcesMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.SharesSingleResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.SharesUpdateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.SharesUpdateSingleResourceDataDocument
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import retrofit2.Response
@@ -35,11 +37,19 @@ interface Shares {
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
-     * @param filterCode A share code (e.g. &#x60;xyz&#x60;)
+     * @param filterCode A share code (e.g. &#x60;xyz&#x60;) (optional)
+     * @param filterSelfAppliesTo Album, track or folder owned by the caller. Selects undeleted,
+     *   unexpired links on the resource or an ancestor album, and VOUCHER-enabled links on an
+     *   ancestor folder. Exhausted links are included. Each link keeps its own sharedResources.
+     *   Cannot be combined with other filters. Missing or non-owned resources and subjects without
+     *   a live access node return no records. Ordered by expiry then share ID; at most 20 links per
+     *   page. Also accepts &#x60;folders:me&#x60;. (optional)
      * @param include Include related resources. Available relationships: owners, sharedResources
      *   (optional)
      * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
      *   related content. (optional)
+     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
+     *   targets first page if not specified (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: sharedResources (optional)
@@ -48,10 +58,12 @@ interface Shares {
     @GET("shares")
     suspend fun sharesGet(
         @Query("filter[code]")
-        filterCode: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
+        filterCode: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("filter[self][appliesTo]") filterSelfAppliesTo: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("includeLinkage") includeLinkage: CSVParams? = null,
+        @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<SharesMultiResourceDataDocument>
 
@@ -123,6 +135,36 @@ interface Shares {
         @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<SharesSingleResourceDataDocument>
+
+    /**
+     * PATCH shares/{id} Update single share. Set, change or remove the share&#39;s password.
+     * Setting one also removes BEARER access; removing one leaves the access modes unchanged.
+     * Existing savers keep their access. Responses:
+     * - 200: Successful response
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 409: Request already in progress for this idempotency key
+     * - 415: Unsupported request media type or encoding
+     * - 422: Idempotency key reused for a different request
+     * - 429: Rate limit exceeded
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
+     *
+     * @param id Share id
+     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If the same
+     *   caller repeats a key with the same method, path, query and payload, the original response
+     *   is replayed. If the request differs, a 422 error is returned. (optional)
+     * @param sharesUpdateOperationPayload (optional)
+     * @return [SharesUpdateSingleResourceDataDocument]
+     */
+    @PATCH("shares/{id}")
+    suspend fun sharesIdPatch(
+        @Path("id") id: kotlin.String,
+        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
+        @Body sharesUpdateOperationPayload: SharesUpdateOperationPayload? = null,
+    ): Response<SharesUpdateSingleResourceDataDocument>
 
     /**
      * GET shares/{id}/relationships/owners Get owners relationship (\&quot;to-many\&quot;).

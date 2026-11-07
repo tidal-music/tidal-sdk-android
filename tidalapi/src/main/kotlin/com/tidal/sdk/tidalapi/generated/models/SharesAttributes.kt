@@ -29,10 +29,13 @@ import kotlinx.serialization.Serializable
  * @param code Share code
  * @param createdAt Time the share was created.
  * @param expiresAt Time bearer access and acceptance expire; accepted grants remain valid.
+ * @param passwordProtected Whether saving the share requires a password. A protected share never
+ *   permits BEARER access, and only its owner and savers see its shared resource.
  * @param role Role offered on the shared resource.
  * @param externalLinks Links external to TIDAL API
  * @param maxUses Number of users other than the owner who may save the share. Absent when
  *   unlimited.
+ * @param password Password a user must send to save the share. Write-only: never returned.
  * @param useCount Number of users other than the owner who have saved the share. Once it reaches
  *   maxUses, bearer access and acceptance end. Absent when maxUses is.
  */
@@ -52,6 +55,9 @@ data class SharesAttributes(
     /* Time bearer access and acceptance expire; accepted grants remain valid. */
     @SerialName(value = "expiresAt") val expiresAt: kotlin.String,
 
+    /* Whether saving the share requires a password. A protected share never permits BEARER access, and only its owner and savers see its shared resource. */
+    @SerialName(value = "passwordProtected") val passwordProtected: kotlin.Boolean,
+
     /* Role offered on the shared resource. */
     @SerialName(value = "role") val role: SharesAttributes.Role,
 
@@ -61,6 +67,9 @@ data class SharesAttributes(
 
     /* Number of users other than the owner who may save the share. Absent when unlimited. */
     @SerialName(value = "maxUses") val maxUses: kotlin.Int? = null,
+
+    /* Password a user must send to save the share. Write-only: never returned. */
+    @SerialName(value = "password") val password: kotlin.String? = null,
 
     /* Number of users other than the owner who have saved the share. Once it reaches maxUses, bearer access and acceptance end. Absent when maxUses is. */
     @SerialName(value = "useCount") val useCount: kotlin.Int? = null,

@@ -18,6 +18,7 @@ import com.tidal.sdk.tidalapi.generated.apis.ClientCertificates
 import com.tidal.sdk.tidalapi.generated.apis.Clients
 import com.tidal.sdk.tidalapi.generated.apis.CollaborationInviteRedemptions
 import com.tidal.sdk.tidalapi.generated.apis.CollaborationInvites
+import com.tidal.sdk.tidalapi.generated.apis.CommentSummaries
 import com.tidal.sdk.tidalapi.generated.apis.Comments
 import com.tidal.sdk.tidalapi.generated.apis.ContentClaims
 import com.tidal.sdk.tidalapi.generated.apis.Credits
@@ -42,15 +43,16 @@ import com.tidal.sdk.tidalapi.generated.apis.ProviderOwners
 import com.tidal.sdk.tidalapi.generated.apis.ProviderProductInfos
 import com.tidal.sdk.tidalapi.generated.apis.Providers
 import com.tidal.sdk.tidalapi.generated.apis.Purchases
+import com.tidal.sdk.tidalapi.generated.apis.ReactionSummaries
 import com.tidal.sdk.tidalapi.generated.apis.Reactions
 import com.tidal.sdk.tidalapi.generated.apis.ResourceGrants
-import com.tidal.sdk.tidalapi.generated.apis.ResourceSharingSettings
 import com.tidal.sdk.tidalapi.generated.apis.SavedShares
 import com.tidal.sdk.tidalapi.generated.apis.Scopes
 import com.tidal.sdk.tidalapi.generated.apis.SearchHistoryEntries
 import com.tidal.sdk.tidalapi.generated.apis.SearchResults
 import com.tidal.sdk.tidalapi.generated.apis.SearchSuggestions
 import com.tidal.sdk.tidalapi.generated.apis.Shares
+import com.tidal.sdk.tidalapi.generated.apis.SharingSummaries
 import com.tidal.sdk.tidalapi.generated.apis.SquareConnections
 import com.tidal.sdk.tidalapi.generated.apis.SquareItemVariationPhysicalCounts
 import com.tidal.sdk.tidalapi.generated.apis.SquareItemVariations
@@ -199,6 +201,11 @@ class TidalApiClient(
         return retrofit.create(CollaborationInvites::class.java)
     }
 
+    /** Returns an instance of the [CommentSummaries] which can be used to make API calls to the */
+    fun createCommentSummaries(): CommentSummaries {
+        return retrofit.create(CommentSummaries::class.java)
+    }
+
     /** Returns an instance of the [Comments] which can be used to make API calls to the */
     fun createComments(): Comments {
         return retrofit.create(Comments::class.java)
@@ -330,6 +337,11 @@ class TidalApiClient(
         return retrofit.create(Purchases::class.java)
     }
 
+    /** Returns an instance of the [ReactionSummaries] which can be used to make API calls to the */
+    fun createReactionSummaries(): ReactionSummaries {
+        return retrofit.create(ReactionSummaries::class.java)
+    }
+
     /** Returns an instance of the [Reactions] which can be used to make API calls to the */
     fun createReactions(): Reactions {
         return retrofit.create(Reactions::class.java)
@@ -338,14 +350,6 @@ class TidalApiClient(
     /** Returns an instance of the [ResourceGrants] which can be used to make API calls to the */
     fun createResourceGrants(): ResourceGrants {
         return retrofit.create(ResourceGrants::class.java)
-    }
-
-    /**
-     * Returns an instance of the [ResourceSharingSettings] which can be used to make API calls to
-     * the
-     */
-    fun createResourceSharingSettings(): ResourceSharingSettings {
-        return retrofit.create(ResourceSharingSettings::class.java)
     }
 
     /** Returns an instance of the [SavedShares] which can be used to make API calls to the */
@@ -378,6 +382,11 @@ class TidalApiClient(
     /** Returns an instance of the [Shares] which can be used to make API calls to the */
     fun createShares(): Shares {
         return retrofit.create(Shares::class.java)
+    }
+
+    /** Returns an instance of the [SharingSummaries] which can be used to make API calls to the */
+    fun createSharingSummaries(): SharingSummaries {
+        return retrofit.create(SharingSummaries::class.java)
     }
 
     /** Returns an instance of the [SquareConnections] which can be used to make API calls to the */

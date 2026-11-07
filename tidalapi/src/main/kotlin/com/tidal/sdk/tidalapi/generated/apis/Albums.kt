@@ -736,8 +736,8 @@ interface Albums {
 
     /**
      * POST albums Create single album. Creates an uploaded album. Album creation is not atomic with
-     * its artist assignment, so every listed artist must be owned by the caller; a collaborator or
-     * album-level grant is not enough until the album exists. Responses:
+     * its artist assignment, so the caller must be OWNER of every listed artist; COLLABORATOR, or a
+     * role on an album, is not enough until the album exists. Responses:
      * - 201: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

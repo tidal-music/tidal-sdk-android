@@ -22,8 +22,16 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param replacement */
+/**
+ * Target resource types: `albums`, `folders`, `tracks`.
+ *
+ * @param links
+ * @param `data`
+ * @param included
+ */
 @Serializable
-data class ResourceSharingSettingsSubjectResourceIdentifierMeta(
-    @SerialName(value = "replacement") val replacement: ReplacementProvenance? = null
+data class SharingSummariesSubjectSingleRelationshipDataDocument(
+    @SerialName(value = "links") val links: Links,
+    @SerialName(value = "data") val `data`: SharingSummariesSubjectResourceIdentifier? = null,
+    @SerialName(value = "included") val included: kotlin.collections.List<IncludedInner>? = null,
 ) {}

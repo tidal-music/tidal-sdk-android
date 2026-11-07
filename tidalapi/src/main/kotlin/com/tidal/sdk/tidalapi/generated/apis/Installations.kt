@@ -153,9 +153,9 @@ interface Installations {
         @SerialName(value = "userCollectionTracks") userCollectionTracks("userCollectionTracks"),
     }
 
-    /** enum for parameter filterState */
+    /** enum for parameter filterClientStorageState */
     @Serializable
-    enum class FilterStateInstallationsIdRelationshipsOfflineInventoryGet(
+    enum class FilterClientStorageStateInstallationsIdRelationshipsOfflineInventoryGet(
         val value: kotlin.String
     ) {
         @SerialName(value = "PENDING") PENDING("PENDING"),
@@ -179,8 +179,9 @@ interface Installations {
      * @param id Installation id
      * @param filterType One of: tracks, videos, albums, playlists, userCollectionTracks (e.g.
      *   &#x60;tracks&#x60;)
+     * @param filterClientStorageState One of: PENDING, STORED, FAILED (e.g. &#x60;PENDING&#x60;)
+     *   (optional)
      * @param filterId Offline item id (e.g. &#x60;1234&#x60;) (optional)
-     * @param filterState One of: PENDING, STORED, FAILED (e.g. &#x60;PENDING&#x60;) (optional)
      * @param include Include related resources. Available relationships: offlineInventory
      *   (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -195,10 +196,11 @@ interface Installations {
         @Path("id") id: kotlin.String,
         @Query("filter[type]")
         filterType: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
+        @Query("filter[clientStorageState]")
+        filterClientStorageState: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? =
+            null,
         @Query("filter[id]")
         filterId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[state]")
-        filterState: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,

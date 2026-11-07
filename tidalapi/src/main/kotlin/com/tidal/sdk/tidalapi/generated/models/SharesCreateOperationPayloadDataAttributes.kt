@@ -33,6 +33,9 @@ import kotlinx.serialization.Serializable
  * @param maxUses Number of users other than the owner who may save the share. Only a save counts as
  *   a use, and a used-up share also stops bearer access. Requires the VOUCHER access mode. Omit or
  *   send null for unlimited saves.
+ * @param password Password a user must send to save the share. Never returned. Must be printable
+ *   ASCII characters. Without accessModes, a protected share defaults to VOUCHER only; BEARER with
+ *   a password, or a password on a playlist share, is rejected with 400.
  */
 @Serializable
 data class SharesCreateOperationPayloadDataAttributes(
@@ -51,6 +54,9 @@ data class SharesCreateOperationPayloadDataAttributes(
 
     /* Number of users other than the owner who may save the share. Only a save counts as a use, and a used-up share also stops bearer access. Requires the VOUCHER access mode. Omit or send null for unlimited saves. */
     @SerialName(value = "maxUses") val maxUses: kotlin.Int? = null,
+
+    /* Password a user must send to save the share. Never returned. Must be printable ASCII characters. Without accessModes, a protected share defaults to VOUCHER only; BEARER with a password, or a password on a playlist share, is rejected with 400. */
+    @SerialName(value = "password") val password: kotlin.String? = null,
 ) {
 
     /**

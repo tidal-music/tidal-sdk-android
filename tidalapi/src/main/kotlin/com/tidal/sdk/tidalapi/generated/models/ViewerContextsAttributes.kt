@@ -23,9 +23,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param hasCommentedOn The viewer has at least one existing comment on the subject; deleted
- *   historical comments do not count. Reserved; not currently populated and omitted from responses.
- *   Omission does not indicate that the relation is absent.
+ * @param hasEffectiveRole
  * @param hasInCollection The viewer has the original subject in their normal collection. Present as
  *   an empty object when known present, otherwise omitted. Includes owned and saved playlists and
  *   saved mixes across folders; excludes Save for Later.
@@ -33,21 +31,16 @@ import kotlinx.serialization.Serializable
  *   covered by its purchased album; excludes subscription access and free downloads. Reserved; not
  *   currently populated and omitted from responses. Omission does not indicate that the relation is
  *   absent.
- * @param hasReactedTo
  * @param hasSavedForLater The viewer has saved the subject for later. Reserved; not currently
  *   populated and omitted from responses. Omission does not indicate that the relation is absent.
  * @param isFollowedBy The viewer is followed by the subject. Reserved; not currently populated and
  *   omitted from responses. Omission does not indicate that the relation is absent.
  * @param isFollowing The viewer follows the subject. Reserved; not currently populated and omitted
  *   from responses. Omission does not indicate that the relation is absent.
- * @param isGranteeOf
  */
 @Serializable
 data class ViewerContextsAttributes(
-
-    /* The viewer has at least one existing comment on the subject; deleted historical comments do not count. Reserved; not currently populated and omitted from responses. Omission does not indicate that the relation is absent. */
-    @SerialName(value = "hasCommentedOn")
-    val hasCommentedOn: kotlinx.serialization.json.JsonObject? = null,
+    @SerialName(value = "hasEffectiveRole") val hasEffectiveRole: EffectiveRole? = null,
 
     /* The viewer has the original subject in their normal collection. Present as an empty object when known present, otherwise omitted. Includes owned and saved playlists and saved mixes across folders; excludes Save for Later. */
     @SerialName(value = "hasInCollection")
@@ -56,7 +49,6 @@ data class ViewerContextsAttributes(
     /* The viewer has a current qualifying purchase entitlement. Includes a track covered by its purchased album; excludes subscription access and free downloads. Reserved; not currently populated and omitted from responses. Omission does not indicate that the relation is absent. */
     @SerialName(value = "hasPurchased")
     val hasPurchased: kotlinx.serialization.json.JsonObject? = null,
-    @SerialName(value = "hasReactedTo") val hasReactedTo: Reaction? = null,
 
     /* The viewer has saved the subject for later. Reserved; not currently populated and omitted from responses. Omission does not indicate that the relation is absent. */
     @SerialName(value = "hasSavedForLater")
@@ -69,5 +61,4 @@ data class ViewerContextsAttributes(
     /* The viewer follows the subject. Reserved; not currently populated and omitted from responses. Omission does not indicate that the relation is absent. */
     @SerialName(value = "isFollowing")
     val isFollowing: kotlinx.serialization.json.JsonObject? = null,
-    @SerialName(value = "isGranteeOf") val isGranteeOf: Grantee? = null,
 ) {}

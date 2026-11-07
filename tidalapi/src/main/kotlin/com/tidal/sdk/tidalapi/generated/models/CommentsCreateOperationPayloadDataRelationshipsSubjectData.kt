@@ -33,11 +33,10 @@ data class CommentsCreateOperationPayloadDataRelationshipsSubjectData(
     val type: CommentsCreateOperationPayloadDataRelationshipsSubjectData.Type,
 ) {
 
-    /** Values: albums,tracks,trackSourceFiles */
+    /** Values: trackSourceFiles,comments */
     @Serializable
     enum class Type(val value: kotlin.String) {
-        @SerialName(value = "albums") albums("albums"),
-        @SerialName(value = "tracks") tracks("tracks"),
         @SerialName(value = "trackSourceFiles") trackSourceFiles("trackSourceFiles"),
+        @SerialName(value = "comments") comments("comments"),
     }
 }

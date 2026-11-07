@@ -25,12 +25,10 @@ import kotlinx.serialization.Serializable
 /**
  * @param createdAt Datetime when the comment was created (ISO 8601)
  * @param lastModifiedAt Datetime when the comment was last modified (ISO 8601)
- * @param likeCount Number of likes on this comment
  * @param message The comment message content
  * @param moderationStatus Moderation status of the comment
- * @param replyCount Number of replies to this comment
- * @param endTime End time offset for timestamped comments (ISO 8601 duration)
- * @param startTime Start time offset for timestamped comments (ISO 8601 duration)
+ * @param endOffset End offset from the beginning of the source file (ISO 8601 duration)
+ * @param startOffset Start offset from the beginning of the source file (ISO 8601 duration)
  */
 @Serializable
 data class CommentsAttributes(
@@ -41,9 +39,6 @@ data class CommentsAttributes(
     /* Datetime when the comment was last modified (ISO 8601) */
     @SerialName(value = "lastModifiedAt") val lastModifiedAt: kotlin.String,
 
-    /* Number of likes on this comment */
-    @SerialName(value = "likeCount") val likeCount: kotlin.Int,
-
     /* The comment message content */
     @SerialName(value = "message") val message: kotlin.String,
 
@@ -51,14 +46,11 @@ data class CommentsAttributes(
     @SerialName(value = "moderationStatus")
     val moderationStatus: CommentsAttributes.ModerationStatus,
 
-    /* Number of replies to this comment */
-    @SerialName(value = "replyCount") val replyCount: kotlin.Int,
+    /* End offset from the beginning of the source file (ISO 8601 duration) */
+    @SerialName(value = "endOffset") val endOffset: kotlin.String? = null,
 
-    /* End time offset for timestamped comments (ISO 8601 duration) */
-    @SerialName(value = "endTime") val endTime: kotlin.String? = null,
-
-    /* Start time offset for timestamped comments (ISO 8601 duration) */
-    @SerialName(value = "startTime") val startTime: kotlin.String? = null,
+    /* Start offset from the beginning of the source file (ISO 8601 duration) */
+    @SerialName(value = "startOffset") val startOffset: kotlin.String? = null,
 ) {
 
     /**

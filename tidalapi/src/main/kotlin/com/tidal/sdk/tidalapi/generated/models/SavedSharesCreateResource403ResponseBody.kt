@@ -22,9 +22,9 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param `data` */
+/** @param errors */
 @Serializable
-data class CommentsCreateOperationPayloadDataRelationshipsParentComment(
-    @SerialName(value = "data")
-    val `data`: CommentsCreateOperationPayloadDataRelationshipsParentCommentData?
+data class SavedSharesCreateResource403ResponseBody(
+    @SerialName(value = "errors")
+    val errors: kotlin.collections.List<SavedSharesCreateResource403ResponseBodyErrorsInner>
 ) {}

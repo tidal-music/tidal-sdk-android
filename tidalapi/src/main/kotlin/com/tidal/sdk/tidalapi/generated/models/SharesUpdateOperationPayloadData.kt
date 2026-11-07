@@ -23,15 +23,20 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * Target resource types: `artists`.
- *
- * @param links
- * @param `data`
- * @param included
+ * @param attributes
+ * @param id
+ * @param type
  */
 @Serializable
-data class ReactionsOwnerProfilesMultiRelationshipDataDocument(
-    @SerialName(value = "links") val links: Links,
-    @SerialName(value = "data") val `data`: kotlin.collections.List<ResourceIdentifier>? = null,
-    @SerialName(value = "included") val included: kotlin.collections.List<IncludedInner>? = null,
-) {}
+data class SharesUpdateOperationPayloadData(
+    @SerialName(value = "attributes") val attributes: SharesUpdateOperationPayloadDataAttributes,
+    @SerialName(value = "id") val id: kotlin.String,
+    @SerialName(value = "type") val type: SharesUpdateOperationPayloadData.Type,
+) {
+
+    /** Values: shares */
+    @Serializable
+    enum class Type(val value: kotlin.String) {
+        @SerialName(value = "shares") shares("shares")
+    }
+}

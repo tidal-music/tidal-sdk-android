@@ -23,18 +23,12 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param id Resource id
- * @param type Resource type
- * @param meta
+ * @param totalCount Number of existing comments directly targeting the subject. For a source file
+ *   this counts root comments; for a comment this counts its direct replies.
  */
 @Serializable
-data class ResourceSharingSettingsSubjectResourceIdentifier(
+data class CommentSummariesAttributes(
 
-    /* Resource id */
-    @SerialName(value = "id") val id: kotlin.String,
-
-    /* Resource type */
-    @SerialName(value = "type") val type: kotlin.String,
-    @SerialName(value = "meta")
-    val meta: ResourceSharingSettingsSubjectResourceIdentifierMeta? = null,
+    /* Number of existing comments directly targeting the subject. For a source file this counts root comments; for a comment this counts its direct replies. */
+    @SerialName(value = "totalCount") val totalCount: kotlin.Long
 ) {}

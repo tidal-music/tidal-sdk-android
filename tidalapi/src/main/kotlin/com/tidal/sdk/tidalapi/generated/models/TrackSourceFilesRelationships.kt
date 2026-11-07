@@ -22,9 +22,17 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param owners */
+/**
+ * @param commentSummary
+ * @param owners
+ * @param reactionSummary
+ */
 @Serializable
 data class TrackSourceFilesRelationships(
+    @SerialName(value = "commentSummary")
+    val commentSummary: TrackSourceFilesCommentSummarySingleRelationshipDataDocument? = null,
     @SerialName(value = "owners")
-    val owners: TrackSourceFilesOwnersMultiRelationshipDataDocument? = null
+    val owners: TrackSourceFilesOwnersMultiRelationshipDataDocument? = null,
+    @SerialName(value = "reactionSummary")
+    val reactionSummary: TrackSourceFilesReactionSummarySingleRelationshipDataDocument? = null,
 ) {}

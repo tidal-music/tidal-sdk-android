@@ -25,6 +25,9 @@ import kotlinx.serialization.Serializable
 /**
  * @param createdAt Datetime of the reaction creation (ISO 8601)
  * @param emoji The type of reaction representing an emoji
+ * @param endOffset End offset of a source-file section. Omitted for a point or whole-subject
+ *   reaction.
+ * @param startOffset Source-file offset (ISO 8601 duration). Omitted for the whole subject.
  */
 @Serializable
 data class ReactionsAttributes(
@@ -34,4 +37,10 @@ data class ReactionsAttributes(
 
     /* The type of reaction representing an emoji */
     @SerialName(value = "emoji") val emoji: kotlin.String,
+
+    /* End offset of a source-file section. Omitted for a point or whole-subject reaction. */
+    @SerialName(value = "endOffset") val endOffset: kotlin.String? = null,
+
+    /* Source-file offset (ISO 8601 duration). Omitted for the whole subject. */
+    @SerialName(value = "startOffset") val startOffset: kotlin.String? = null,
 ) {}

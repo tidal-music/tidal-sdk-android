@@ -23,11 +23,17 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
+ * @param comments
+ * @param reactions
  * @param subject
  * @param viewer
  */
 @Serializable
 data class ViewerContextsRelationships(
+    @SerialName(value = "comments")
+    val comments: ViewerContextsCommentsMultiRelationshipDataDocument? = null,
+    @SerialName(value = "reactions")
+    val reactions: ViewerContextsReactionsMultiRelationshipDataDocument? = null,
     @SerialName(value = "subject")
     val subject: ViewerContextsSubjectSingleRelationshipDataDocument? = null,
     @SerialName(value = "viewer")
