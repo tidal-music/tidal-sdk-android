@@ -23,13 +23,15 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * Reaction response metadata with stats and current user reaction
+ * Target resource types: `comments`, `trackSourceFiles`.
  *
- * @param currentUserReaction
- * @param stats
+ * @param links
+ * @param `data`
+ * @param included
  */
 @Serializable
-data class ReactionsMultiResourceDataDocumentMeta(
-    @SerialName(value = "currentUserReaction") val currentUserReaction: CurrentUserReaction? = null,
-    @SerialName(value = "stats") val stats: ReactionStats? = null,
+data class ReactionsSubjectSingleRelationshipDataDocument(
+    @SerialName(value = "links") val links: Links,
+    @SerialName(value = "data") val `data`: ResourceIdentifier? = null,
+    @SerialName(value = "included") val included: kotlin.collections.List<IncludedInner>? = null,
 ) {}

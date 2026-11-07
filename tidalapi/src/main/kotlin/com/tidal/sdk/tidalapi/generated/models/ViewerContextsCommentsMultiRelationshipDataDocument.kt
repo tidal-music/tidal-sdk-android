@@ -23,18 +23,15 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * Reaction statistics
+ * Target resource types: `comments`.
  *
- * @param countsByType Count of reactions by type
- * @param totalCount Total number of reactions
+ * @param links
+ * @param `data`
+ * @param included
  */
 @Serializable
-data class ReactionStats(
-
-    /* Count of reactions by type */
-    @SerialName(value = "countsByType")
-    val countsByType: kotlin.collections.Map<kotlin.String, kotlin.Int>? = null,
-
-    /* Total number of reactions */
-    @SerialName(value = "totalCount") val totalCount: kotlin.Int? = null,
+data class ViewerContextsCommentsMultiRelationshipDataDocument(
+    @SerialName(value = "links") val links: Links,
+    @SerialName(value = "data") val `data`: kotlin.collections.List<ResourceIdentifier>? = null,
+    @SerialName(value = "included") val included: kotlin.collections.List<IncludedInner>? = null,
 ) {}

@@ -26,8 +26,8 @@ import kotlinx.serialization.Serializable
  * @param breadcrumb
  * @param owners
  * @param parent
+ * @param sharingSummary
  * @param subject
- * @param subjectSharingSettings
  */
 @Serializable
 data class FolderItemsRelationships(
@@ -37,9 +37,8 @@ data class FolderItemsRelationships(
     val owners: FolderItemsOwnersMultiRelationshipDataDocument? = null,
     @SerialName(value = "parent")
     val parent: FolderItemsParentSingleRelationshipDataDocument? = null,
+    @SerialName(value = "sharingSummary")
+    val sharingSummary: FolderItemsSharingSummarySingleRelationshipDataDocument? = null,
     @SerialName(value = "subject")
     val subject: FolderItemsSubjectSingleRelationshipDataDocument? = null,
-    @SerialName(value = "subjectSharingSettings")
-    val subjectSharingSettings: FolderItemsSubjectSharingSettingsSingleRelationshipDataDocument? =
-        null,
 ) {}

@@ -110,7 +110,7 @@ interface UserCollectionTracks {
      * (\&quot;to-many\&quot;). Retrieves items relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
-     * - 403: filter[query] requires INTERNAL access tier
+     * - 403: filter[self][matchesQuery] requires INTERNAL access tier
      * - 404: Resource not found
      * - 405: HTTP method not allowed
      * - 406: No acceptable response media type
@@ -121,8 +121,9 @@ interface UserCollectionTracks {
      *
      * @param id User collection tracks id. Use &#x60;me&#x60; for the authenticated user&#39;s
      *   resource
-     * @param filterQuery Filter tracks by a free-text query matched against the track title, artist
-     *   names and album title. Internal clients only (e.g. &#x60;love&#x60;) (optional)
+     * @param filterSelfMatchesQuery Filter tracks by a free-text query matched against the track
+     *   title, artist names and album title. Internal clients only (e.g. &#x60;love&#x60;)
+     *   (optional)
      * @param include Include related resources. Available relationships: items (optional)
      * @param locale BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or
      *   unsupported. (optional, default to "en-US")
@@ -138,7 +139,7 @@ interface UserCollectionTracks {
     @GET("userCollectionTracks/{id}/relationships/items")
     suspend fun userCollectionTracksIdRelationshipsItemsGet(
         @Path("id") id: kotlin.String,
-        @Query("filter[query]") filterQuery: kotlin.String? = null,
+        @Query("filter[self][matchesQuery]") filterSelfMatchesQuery: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("locale") locale: kotlin.String? = "en-US",

@@ -1,5 +1,5 @@
 # TIDAL API Surface Snapshot
-# Spec version: 1.10.222 | Endpoints: 438 | Models: 1418
+# Spec version: 1.10.236 | Endpoints: 447 | Models: 1433
 
 ## Endpoints
 
@@ -391,8 +391,16 @@ GET /collaborationInvites/{id}/relationships/subject
   params: id: string, include?: array[string], replaceMedia?: string
   returns: CollaborationInvites_Subject_Single_Relationship_Data_Document
 
+GET /commentSummaries
+  params: countryCode?: string, filter[subject]: array[string], include?: array[string], includeLinkage?: array[enum[subject]], replaceMedia?: string, shareCode?: string
+  returns: CommentSummaries_Multi_Resource_Data_Document
+
+GET /commentSummaries/{id}/relationships/subject
+  params: id: string, include?: array[string], replaceMedia?: string, shareCode?: string
+  returns: CommentSummaries_Subject_Single_Relationship_Data_Document
+
 GET /comments
-  params: filter[parentComment.id]?: array[string], filter[subject.id]?: array[string], filter[subject.type]?: array[enum[albums, tracks, trackSourceFiles]], filter[subject]?: string, include?: array[string], includeLinkage?: array[enum[author, owners, parentComment]], page[cursor]?: string, replaceMedia?: string, sort?: array[enum[createdAt, -createdAt, likeCount, -likeCount, replyCount, -replyCount, startTime, -startTime]]
+  params: filter[subject]: string, include?: array[string], includeLinkage?: array[enum[author, commentSummary, owners, reactionSummary, rootSubject, subject]], page[cursor]?: string, replaceMedia?: string, sort?: array[enum[createdAt, -createdAt]]
   returns: Comments_Multi_Resource_Data_Document
 
 POST /comments
@@ -400,7 +408,7 @@ POST /comments
   returns: Comments_Create_Single_Resource_Data_Document
 
 GET /comments/{id}
-  params: id: string, include?: array[string], includeLinkage?: array[enum[author, owners, parentComment]], replaceMedia?: string
+  params: id: string, include?: array[string], includeLinkage?: array[enum[author, commentSummary, owners, reactionSummary, rootSubject, subject]], replaceMedia?: string
   returns: Comments_Single_Resource_Data_Document
 
 PATCH /comments/{id}
@@ -415,13 +423,25 @@ GET /comments/{id}/relationships/author
   params: id: string, include?: array[string], replaceMedia?: string
   returns: Comments_Author_Single_Relationship_Data_Document
 
+GET /comments/{id}/relationships/commentSummary
+  params: id: string, include?: array[string]
+  returns: Comments_CommentSummary_Single_Relationship_Data_Document
+
 GET /comments/{id}/relationships/owners
   params: id: string, include?: array[string], page[cursor]?: string
   returns: Comments_Owners_Multi_Relationship_Data_Document
 
-GET /comments/{id}/relationships/parentComment
+GET /comments/{id}/relationships/reactionSummary
+  params: id: string, include?: array[string]
+  returns: Comments_ReactionSummary_Single_Relationship_Data_Document
+
+GET /comments/{id}/relationships/rootSubject
+  params: id: string, include?: array[string]
+  returns: Comments_RootSubject_Single_Relationship_Data_Document
+
+GET /comments/{id}/relationships/subject
   params: id: string, include?: array[string], replaceMedia?: string
-  returns: Comments_ParentComment_Single_Relationship_Data_Document
+  returns: Comments_Subject_Single_Relationship_Data_Document
 
 GET /contentClaims
   params: filter[owners.id]: array[string], include?: array[string], includeLinkage?: array[enum[claimedResource, claimingArtist, owners]], replaceMedia?: string
@@ -508,7 +528,7 @@ GET /dynamicPages/{id}/relationships/subject
   returns: DynamicPages_Subject_Single_Relationship_Data_Document
 
 GET /folderItems
-  params: filter[parent.id]?: string, filter[parent.isRoot]?: string, filter[parent.owners.id]?: string, filter[query]?: string, filter[subject.albums:published]?: string, filter[subject.owners.id]?: string, filter[subject.owners.id][ne]?: string, include?: array[string], includeLinkage?: array[enum[breadcrumb, owners, parent, subject, subjectSharingSettings]], page[cursor]?: string, replaceMedia?: string
+  params: filter[parent.id]?: string, filter[parent.isRoot]?: string, filter[parent.owners.id]?: string, filter[self][matchesQuery]?: string, filter[subject.albums:published]?: string, filter[subject.owners.id]?: string, filter[subject.owners.id][ne]?: string, include?: array[string], includeLinkage?: array[enum[breadcrumb, owners, parent, sharingSummary, subject]], page[cursor]?: string, replaceMedia?: string
   returns: FolderItems_Multi_Resource_Data_Document
 
 POST /folderItems
@@ -516,7 +536,7 @@ POST /folderItems
   returns: FolderItems_Create_Single_Resource_Data_Document
 
 GET /folderItems/{id}
-  params: id: string, include?: array[string], includeLinkage?: array[enum[breadcrumb, owners, parent, subject, subjectSharingSettings]], replaceMedia?: string
+  params: id: string, include?: array[string], includeLinkage?: array[enum[breadcrumb, owners, parent, sharingSummary, subject]], replaceMedia?: string
   returns: FolderItems_Single_Resource_Data_Document
 
 DELETE /folderItems/{id}
@@ -539,13 +559,13 @@ PATCH /folderItems/{id}/relationships/parent
   params: ??: any, id: string
   returns: FolderItems_Parent_Update_Single_Relationship_Data_Document
 
+GET /folderItems/{id}/relationships/sharingSummary
+  params: id: string, include?: array[string], replaceMedia?: string
+  returns: FolderItems_SharingSummary_Single_Relationship_Data_Document
+
 GET /folderItems/{id}/relationships/subject
   params: id: string, include?: array[string], replaceMedia?: string
   returns: FolderItems_Subject_Single_Relationship_Data_Document
-
-GET /folderItems/{id}/relationships/subjectSharingSettings
-  params: id: string, include?: array[string], replaceMedia?: string
-  returns: FolderItems_SubjectSharingSettings_Single_Relationship_Data_Document
 
 GET /folders
   params: filter[id]: array[string], include?: array[string], includeLinkage?: array[enum[children, owners, parent, preview, shares]], replaceMedia?: string, shareCode?: string
@@ -616,7 +636,7 @@ GET /installations/{id}
   returns: Installations_Single_Resource_Data_Document
 
 GET /installations/{id}/relationships/offlineInventory
-  params: filter[id]?: array[string], filter[state]?: array[enum[PENDING, STORED, FAILED]], filter[type]: array[enum[tracks, videos, albums, playlists, userCollectionTracks]], id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string
+  params: filter[clientStorageState]?: array[enum[PENDING, STORED, FAILED]], filter[id]?: array[string], filter[type]: array[enum[tracks, videos, albums, playlists, userCollectionTracks]], id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string
   returns: Installations_OfflineInventory_Multi_Relationship_Data_Document
 
 POST /installations/{id}/relationships/offlineInventory
@@ -848,7 +868,7 @@ GET /playlists/{id}/relationships/curators
   returns: Playlists_Curators_Multi_Relationship_Data_Document
 
 GET /playlists/{id}/relationships/items
-  params: countryCode?: string, filter[query]?: string, id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string, sort?: array[enum[addedAt, -addedAt, albums.title, -albums.title, artists.name, -artists.name, duration, -duration, itemIndex, -itemIndex, title, -title]]
+  params: countryCode?: string, filter[self][matchesQuery]?: string, id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string, sort?: array[enum[addedAt, -addedAt, albums.title, -albums.title, artists.name, -artists.name, duration, -duration, itemIndex, -itemIndex, title, -title]]
   returns: Playlists_Items_Multi_Relationship_Data_Document
 
 POST /playlists/{id}/relationships/items
@@ -927,8 +947,16 @@ GET /purchases/{id}/relationships/subject
   params: id: string, include?: array[string], replaceMedia?: string
   returns: Purchases_Subject_Single_Relationship_Data_Document
 
+GET /reactionSummaries
+  params: countryCode?: string, filter[subject]: array[string], include?: array[string], includeLinkage?: array[enum[subject]], replaceMedia?: string, shareCode?: string
+  returns: ReactionSummaries_Multi_Resource_Data_Document
+
+GET /reactionSummaries/{id}/relationships/subject
+  params: id: string, include?: array[string], replaceMedia?: string, shareCode?: string
+  returns: ReactionSummaries_Subject_Single_Relationship_Data_Document
+
 GET /reactions
-  params: filter[emoji]?: array[string], filter[subject.id]?: array[string], filter[subject.type]?: array[enum[albums, tracks, artists, videos, playlists, comments, trackSourceFiles]], filter[subject]?: string, include?: array[string], includeLinkage?: array[enum[author, ownerProfiles, owners]], page[cursor]?: string, replaceMedia?: string, stats?: enum[ALL, COUNTS_BY_TYPE, TOTAL_COUNT], statsOnly?: boolean, viewerContext?: string
+  params: filter[emoji]?: array[string], filter[subject]: string, include?: array[string], includeLinkage?: array[enum[author, owners, subject]], page[cursor]?: string, replaceMedia?: string
   returns: Reactions_Multi_Resource_Data_Document
 
 POST /reactions
@@ -943,16 +971,16 @@ GET /reactions/{id}/relationships/author
   params: id: string, include?: array[string], replaceMedia?: string
   returns: Reactions_Author_Single_Relationship_Data_Document
 
-GET /reactions/{id}/relationships/ownerProfiles
-  params: id: string, include?: array[string], page[cursor]?: string
-  returns: Reactions_OwnerProfiles_Multi_Relationship_Data_Document
-
 GET /reactions/{id}/relationships/owners
   params: id: string, include?: array[string], page[cursor]?: string
   returns: Reactions_Owners_Multi_Relationship_Data_Document
 
+GET /reactions/{id}/relationships/subject
+  params: id: string, include?: array[string], replaceMedia?: string
+  returns: Reactions_Subject_Single_Relationship_Data_Document
+
 GET /resourceGrants
-  params: filter[grantee]?: string, filter[role]?: enum[VIEWER, COLLABORATOR, OWNER], filter[subject]?: string, include?: array[string], includeLinkage?: array[enum[grantee, subject]], page[cursor]?: string, replaceMedia?: string
+  params: filter[grantee]?: string, filter[role]?: enum[VIEWER, COLLABORATOR, OWNER], filter[self][appliesTo]?: string, filter[subject]?: string, include?: array[string], includeLinkage?: array[enum[grantee, subject]], page[cursor]?: string, replaceMedia?: string
   returns: ResourceGrants_Multi_Resource_Data_Document
 
 POST /resourceGrants
@@ -978,26 +1006,6 @@ GET /resourceGrants/{id}/relationships/grantee
 GET /resourceGrants/{id}/relationships/subject
   params: id: string, include?: array[string], replaceMedia?: string
   returns: ResourceGrants_Subject_Single_Relationship_Data_Document
-
-GET /resourceSharingSettings
-  params: filter[subject]: array[string], include?: array[string], includeLinkage?: array[enum[grants, shares, subject]], replaceMedia?: string
-  returns: ResourceSharingSettings_Multi_Resource_Data_Document
-
-GET /resourceSharingSettings/{id}
-  params: id: string, include?: array[string], includeLinkage?: array[enum[grants, shares, subject]], replaceMedia?: string
-  returns: ResourceSharingSettings_Single_Resource_Data_Document
-
-GET /resourceSharingSettings/{id}/relationships/grants
-  params: id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string
-  returns: ResourceSharingSettings_Grants_Multi_Relationship_Data_Document
-
-GET /resourceSharingSettings/{id}/relationships/shares
-  params: id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string
-  returns: ResourceSharingSettings_Shares_Multi_Relationship_Data_Document
-
-GET /resourceSharingSettings/{id}/relationships/subject
-  params: id: string, include?: array[string], replaceMedia?: string
-  returns: ResourceSharingSettings_Subject_Single_Relationship_Data_Document
 
 POST /savedShares
   params: ??: any
@@ -1052,7 +1060,7 @@ GET /searchSuggestions/{id}/relationships/history
   returns: SearchSuggestions_History_Multi_Relationship_Data_Document
 
 GET /shares
-  params: filter[code]: array[string], include?: array[string], includeLinkage?: array[enum[owners, sharedResources]], replaceMedia?: string
+  params: filter[code]?: array[string], filter[self][appliesTo]?: string, include?: array[string], includeLinkage?: array[enum[owners, sharedResources]], page[cursor]?: string, replaceMedia?: string
   returns: Shares_Multi_Resource_Data_Document
 
 POST /shares
@@ -1062,6 +1070,10 @@ POST /shares
 GET /shares/{id}
   params: id: string, include?: array[string], includeLinkage?: array[enum[owners, sharedResources]], replaceMedia?: string
   returns: Shares_Single_Resource_Data_Document
+
+PATCH /shares/{id}
+  params: ??: any, id: string
+  returns: Shares_Update_Single_Resource_Data_Document
 
 DELETE /shares/{id}
   params: ??: any, id: string, revokeGrants?: boolean
@@ -1074,6 +1086,14 @@ GET /shares/{id}/relationships/owners
 GET /shares/{id}/relationships/sharedResources
   params: id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string
   returns: Shares_SharedResources_Multi_Relationship_Data_Document
+
+GET /sharingSummaries
+  params: filter[subject]: array[string], include?: array[string], includeLinkage?: array[enum[subject]], replaceMedia?: string
+  returns: SharingSummaries_Multi_Resource_Data_Document
+
+GET /sharingSummaries/{id}/relationships/subject
+  params: id: string, include?: array[string], replaceMedia?: string
+  returns: SharingSummaries_Subject_Single_Relationship_Data_Document
 
 POST /squareConnections
   params: ??: any
@@ -1128,7 +1148,7 @@ GET /squareItemVariations/{id}/relationships/owners
   returns: SquareItemVariations_Owners_Multi_Relationship_Data_Document
 
 GET /squareItems
-  params: filter[origin]?: enum[TIDAL, OTHER], filter[owners.id]: array[string], filter[query]?: string, include?: array[string], includeLinkage?: array[enum[artworks, owners, variations]], page[cursor]?: string
+  params: filter[origin]?: enum[TIDAL, OTHER], filter[owners.id]: array[string], filter[self][matchesQuery]?: string, include?: array[string], includeLinkage?: array[enum[artworks, owners, variations]], page[cursor]?: string
   returns: SquareItems_Multi_Resource_Data_Document
 
 GET /squareItems/{id}
@@ -1244,12 +1264,20 @@ POST /trackSourceFiles
   returns: TrackSourceFiles_Create_Single_Resource_Data_Document
 
 GET /trackSourceFiles/{id}
-  params: id: string, include?: array[string], includeLinkage?: array[enum[owners]], shareCode?: string
+  params: id: string, include?: array[string], includeLinkage?: array[enum[commentSummary, owners, reactionSummary]], shareCode?: string
   returns: TrackSourceFiles_Single_Resource_Data_Document
+
+GET /trackSourceFiles/{id}/relationships/commentSummary
+  params: id: string, include?: array[string], shareCode?: string
+  returns: TrackSourceFiles_CommentSummary_Single_Relationship_Data_Document
 
 GET /trackSourceFiles/{id}/relationships/owners
   params: id: string, include?: array[string], page[cursor]?: string, shareCode?: string
   returns: TrackSourceFiles_Owners_Multi_Relationship_Data_Document
+
+GET /trackSourceFiles/{id}/relationships/reactionSummary
+  params: id: string, include?: array[string], shareCode?: string
+  returns: TrackSourceFiles_ReactionSummary_Single_Relationship_Data_Document
 
 GET /trackStatistics/{id}
   params: countryCode?: string, id: string, include?: array[string], includeLinkage?: array[enum[owners]]
@@ -1376,7 +1404,7 @@ GET /userCollectionAlbums/{id}
   returns: UserCollectionAlbums_Single_Resource_Data_Document
 
 GET /userCollectionAlbums/{id}/relationships/items
-  params: filter[query]?: string, id: string, include?: array[string], locale?: string, page[cursor]?: string, replaceMedia?: string, sort?: array[enum[addedAt, -addedAt, artists.name, -artists.name, releaseDate, -releaseDate, title, -title]]
+  params: filter[self][matchesQuery]?: string, id: string, include?: array[string], locale?: string, page[cursor]?: string, replaceMedia?: string, sort?: array[enum[addedAt, -addedAt, artists.name, -artists.name, releaseDate, -releaseDate, title, -title]]
   returns: UserCollectionAlbums_Items_Multi_Relationship_Data_Document
 
 POST /userCollectionAlbums/{id}/relationships/items
@@ -1396,7 +1424,7 @@ GET /userCollectionArtists/{id}
   returns: UserCollectionArtists_Single_Resource_Data_Document
 
 GET /userCollectionArtists/{id}/relationships/items
-  params: filter[query]?: string, id: string, include?: array[string], locale?: string, page[cursor]?: string, replaceMedia?: string, sort?: array[enum[addedAt, -addedAt, name, -name]]
+  params: filter[self][matchesQuery]?: string, id: string, include?: array[string], locale?: string, page[cursor]?: string, replaceMedia?: string, sort?: array[enum[addedAt, -addedAt, name, -name]]
   returns: UserCollectionArtists_Items_Multi_Relationship_Data_Document
 
 POST /userCollectionArtists/{id}/relationships/items
@@ -1456,7 +1484,7 @@ GET /userCollectionPlaylists/{id}
   returns: UserCollectionPlaylists_Single_Resource_Data_Document
 
 GET /userCollectionPlaylists/{id}/relationships/items
-  params: collectionView?: enum[FLAT, FOLDERS], filter[query]?: string, id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string, sort?: array[enum[addedAt, -addedAt, lastModifiedAt, -lastModifiedAt, name, -name]]
+  params: collectionView?: enum[FLAT, FOLDERS], filter[self][matchesQuery]?: string, id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string, sort?: array[enum[addedAt, -addedAt, lastModifiedAt, -lastModifiedAt, name, -name]]
   returns: UserCollectionPlaylists_Items_Multi_Relationship_Data_Document
 
 POST /userCollectionPlaylists/{id}/relationships/items
@@ -1496,7 +1524,7 @@ GET /userCollectionTracks/{id}
   returns: UserCollectionTracks_Single_Resource_Data_Document
 
 GET /userCollectionTracks/{id}/relationships/items
-  params: filter[query]?: string, id: string, include?: array[string], locale?: string, page[cursor]?: string, replaceMedia?: string, sort?: array[enum[addedAt, -addedAt, albums.title, -albums.title, artists.name, -artists.name, duration, -duration, title, -title]]
+  params: filter[self][matchesQuery]?: string, id: string, include?: array[string], locale?: string, page[cursor]?: string, replaceMedia?: string, sort?: array[enum[addedAt, -addedAt, albums.title, -albums.title, artists.name, -artists.name, duration, -duration, title, -title]]
   returns: UserCollectionTracks_Items_Multi_Relationship_Data_Document
 
 POST /userCollectionTracks/{id}/relationships/items
@@ -1516,7 +1544,7 @@ GET /userCollectionVideos/{id}
   returns: UserCollectionVideos_Single_Resource_Data_Document
 
 GET /userCollectionVideos/{id}/relationships/items
-  params: filter[query]?: string, id: string, include?: array[string], locale?: string, page[cursor]?: string, replaceMedia?: string, sort?: array[enum[addedAt, -addedAt, artists.name, -artists.name, duration, -duration, title, -title]]
+  params: filter[self][matchesQuery]?: string, id: string, include?: array[string], locale?: string, page[cursor]?: string, replaceMedia?: string, sort?: array[enum[addedAt, -addedAt, artists.name, -artists.name, duration, -duration, title, -title]]
   returns: UserCollectionVideos_Items_Multi_Relationship_Data_Document
 
 POST /userCollectionVideos/{id}/relationships/items
@@ -1740,12 +1768,20 @@ GET /videos/{id}/relationships/usageRules
   returns: Videos_UsageRules_Single_Relationship_Data_Document
 
 GET /viewerContexts
-  params: filter[subject]: array[string], include?: array[string], includeLinkage?: array[enum[subject, viewer]], replaceMedia?: string
+  params: filter[subject]: array[string], include?: array[string], includeLinkage?: array[enum[comments, reactions, subject, viewer]], replaceMedia?: string
   returns: ViewerContexts_Multi_Resource_Data_Document
 
 GET /viewerContexts/{id}
-  params: id: string, include?: array[string], includeLinkage?: array[enum[subject, viewer]], replaceMedia?: string
+  params: id: string, include?: array[string], includeLinkage?: array[enum[comments, reactions, subject, viewer]], replaceMedia?: string
   returns: ViewerContexts_Single_Resource_Data_Document
+
+GET /viewerContexts/{id}/relationships/comments
+  params: id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string
+  returns: ViewerContexts_Comments_Multi_Relationship_Data_Document
+
+GET /viewerContexts/{id}/relationships/reactions
+  params: id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string
+  returns: ViewerContexts_Reactions_Multi_Relationship_Data_Document
 
 GET /viewerContexts/{id}/relationships/subject
   params: id: string, include?: array[string], replaceMedia?: string
@@ -3089,7 +3125,27 @@ CollaborationInvites_Subject_Single_Relationship_Data_Document
   data: Resource_Identifier | enum[None] (optional)
   included: Included (optional)
 
-Commented
+CommentSummaries_Attributes
+  totalCount: integer(int64) (required)
+
+CommentSummaries_Multi_Resource_Data_Document
+  data: array[CommentSummaries_Resource_Object] (required)
+  links: Links (required)
+  included: Included (optional)
+
+CommentSummaries_Relationships
+  subject: CommentSummaries_Subject_Single_Relationship_Data_Document (optional)
+
+CommentSummaries_Resource_Object
+  id: string (required)
+  type: string (required)
+  attributes: CommentSummaries_Attributes (optional)
+  relationships: CommentSummaries_Relationships (optional)
+
+CommentSummaries_Subject_Single_Relationship_Data_Document
+  links: Links (required)
+  data: Resource_Identifier | enum[None] (optional)
+  included: Included (optional)
 
 CommentsCreateOperation_Payload
   data: CommentsCreateOperation_Payload_Data (required)
@@ -3101,26 +3157,18 @@ CommentsCreateOperation_Payload_Data
 
 CommentsCreateOperation_Payload_Data_Attributes
   message: string (required)
-  endTime: string (optional)
-  startTime: string (optional)
+  endOffset: string (optional)
+  startOffset: string (optional)
 
 CommentsCreateOperation_Payload_Data_Relationships
   subject: CommentsCreateOperation_Payload_Data_Relationships_Subject (required)
-  parentComment: CommentsCreateOperation_Payload_Data_Relationships_ParentComment (optional)
-
-CommentsCreateOperation_Payload_Data_Relationships_ParentComment
-  data: CommentsCreateOperation_Payload_Data_Relationships_ParentComment_Data | enum[None] (required)
-
-CommentsCreateOperation_Payload_Data_Relationships_ParentComment_Data
-  id: string (required)
-  type: enum[comments] (required)
 
 CommentsCreateOperation_Payload_Data_Relationships_Subject
   data: CommentsCreateOperation_Payload_Data_Relationships_Subject_Data (required)
 
 CommentsCreateOperation_Payload_Data_Relationships_Subject_Data
   id: string (required)
-  type: enum[albums, tracks, trackSourceFiles] (required)
+  type: enum[trackSourceFiles, comments] (required)
 
 CommentsUpdateOperation_Payload
   data: CommentsUpdateOperation_Payload_Data (required)
@@ -3131,21 +3179,24 @@ CommentsUpdateOperation_Payload_Data
   type: enum[comments] (required)
 
 CommentsUpdateOperation_Payload_Data_Attributes
-  endTime: string (optional)
+  endOffset: string (optional)
   message: string (optional)
-  startTime: string (optional)
+  startOffset: string (optional)
 
 Comments_Attributes
   createdAt: string(date-time) (required)
   lastModifiedAt: string(date-time) (required)
-  likeCount: integer(int32) (required)
   message: string (required)
   moderationStatus: enum[NOT_MODERATED, FLAGGED, TAKEN_DOWN, OK, ERROR] (required)
-  replyCount: integer(int32) (required)
-  endTime: string (optional)
-  startTime: string (optional)
+  endOffset: string (optional)
+  startOffset: string (optional)
 
 Comments_Author_Single_Relationship_Data_Document
+  links: Links (required)
+  data: Resource_Identifier | enum[None] (optional)
+  included: Included (optional)
+
+Comments_CommentSummary_Single_Relationship_Data_Document
   links: Links (required)
   data: Resource_Identifier | enum[None] (optional)
   included: Included (optional)
@@ -3164,15 +3215,18 @@ Comments_Owners_Multi_Relationship_Data_Document
   data: array[Resource_Identifier] (optional)
   included: Included (optional)
 
-Comments_ParentComment_Single_Relationship_Data_Document
+Comments_ReactionSummary_Single_Relationship_Data_Document
   links: Links (required)
   data: Resource_Identifier | enum[None] (optional)
   included: Included (optional)
 
 Comments_Relationships
   author: Comments_Author_Single_Relationship_Data_Document (optional)
+  commentSummary: Comments_CommentSummary_Single_Relationship_Data_Document (optional)
   owners: Comments_Owners_Multi_Relationship_Data_Document (optional)
-  parentComment: Comments_ParentComment_Single_Relationship_Data_Document (optional)
+  reactionSummary: Comments_ReactionSummary_Single_Relationship_Data_Document (optional)
+  rootSubject: Comments_RootSubject_Single_Relationship_Data_Document (optional)
+  subject: Comments_Subject_Single_Relationship_Data_Document (optional)
 
 Comments_Resource_Object
   id: string (required)
@@ -3180,9 +3234,19 @@ Comments_Resource_Object
   attributes: Comments_Attributes (optional)
   relationships: Comments_Relationships (optional)
 
+Comments_RootSubject_Single_Relationship_Data_Document
+  links: Links (required)
+  data: Resource_Identifier | enum[None] (optional)
+  included: Included (optional)
+
 Comments_Single_Resource_Data_Document
   data: Comments_Resource_Object (required)
   links: Links (required)
+  included: Included (optional)
+
+Comments_Subject_Single_Relationship_Data_Document
+  links: Links (required)
+  data: Resource_Identifier | enum[None] (optional)
   included: Included (optional)
 
 ContentClaimsCreateOperation_Payload
@@ -3299,11 +3363,6 @@ Credits_Single_Resource_Data_Document
   data: Credits_Resource_Object (required)
   links: Links (required)
   included: Included (optional)
-
-CurrentUserReaction
-  createdAt: string(date-time) (optional)
-  emoji: string (optional)
-  id: string (optional)
 
 Default400ResponseBody
   errors: array[object] (required)
@@ -3496,6 +3555,9 @@ DynamicPages_Subject_Single_Relationship_Data_Document
   data: DynamicPages_Subject_Resource_Identifier | enum[None] (optional)
   included: Included (optional)
 
+EffectiveRole
+  role: enum[VIEWER, COLLABORATOR, OWNER] (required)
+
 Error_Object
   code: string (optional)
   detail: string (optional)
@@ -3614,8 +3676,8 @@ FolderItems_Relationships
   breadcrumb: FolderItems_Breadcrumb_Multi_Relationship_Data_Document (optional)
   owners: FolderItems_Owners_Multi_Relationship_Data_Document (optional)
   parent: FolderItems_Parent_Single_Relationship_Data_Document (optional)
+  sharingSummary: FolderItems_SharingSummary_Single_Relationship_Data_Document (optional)
   subject: FolderItems_Subject_Single_Relationship_Data_Document (optional)
-  subjectSharingSettings: FolderItems_SubjectSharingSettings_Single_Relationship_Data_Document (optional)
 
 FolderItems_Resource_Object
   id: string (required)
@@ -3623,14 +3685,14 @@ FolderItems_Resource_Object
   attributes: FolderItems_Attributes (optional)
   relationships: FolderItems_Relationships (optional)
 
+FolderItems_SharingSummary_Single_Relationship_Data_Document
+  links: Links (required)
+  data: Resource_Identifier | enum[None] (optional)
+  included: Included (optional)
+
 FolderItems_Single_Resource_Data_Document
   data: FolderItems_Resource_Object (required)
   links: Links (required)
-  included: Included (optional)
-
-FolderItems_SubjectSharingSettings_Single_Relationship_Data_Document
-  links: Links (required)
-  data: Resource_Identifier | enum[None] (optional)
   included: Included (optional)
 
 FolderItems_Subject_Resource_Identifier
@@ -3765,9 +3827,6 @@ Genres_Single_Resource_Data_Document
   data: Genres_Resource_Object (required)
   links: Links (required)
   included: Included (optional)
-
-Grantee
-  role: enum[VIEWER, COLLABORATOR, OWNER] (required)
 
 Groups_Attributes
   name: string (required)
@@ -5004,12 +5063,28 @@ Purchases_Subject_Single_Relationship_Data_Document
   data: Purchases_Subject_Resource_Identifier | enum[None] (optional)
   included: Included (optional)
 
-Reaction
-  emoji: string (required)
+ReactionSummaries_Attributes
+  countsByEmoji: object (required)
+  totalCount: integer(int64) (required)
 
-ReactionStats
-  countsByType: object (optional)
-  totalCount: integer(int32) (optional)
+ReactionSummaries_Multi_Resource_Data_Document
+  data: array[ReactionSummaries_Resource_Object] (required)
+  links: Links (required)
+  included: Included (optional)
+
+ReactionSummaries_Relationships
+  subject: ReactionSummaries_Subject_Single_Relationship_Data_Document (optional)
+
+ReactionSummaries_Resource_Object
+  id: string (required)
+  type: string (required)
+  attributes: ReactionSummaries_Attributes (optional)
+  relationships: ReactionSummaries_Relationships (optional)
+
+ReactionSummaries_Subject_Single_Relationship_Data_Document
+  links: Links (required)
+  data: Resource_Identifier | enum[None] (optional)
+  included: Included (optional)
 
 ReactionsCreateOperation_Payload
   data: ReactionsCreateOperation_Payload_Data (required)
@@ -5021,6 +5096,8 @@ ReactionsCreateOperation_Payload_Data
 
 ReactionsCreateOperation_Payload_Data_Attributes
   emoji: string (required)
+  endOffset: string (optional)
+  startOffset: string (optional)
 
 ReactionsCreateOperation_Payload_Data_Relationships
   subject: ReactionsCreateOperation_Payload_Data_Relationships_Subject (required)
@@ -5030,11 +5107,13 @@ ReactionsCreateOperation_Payload_Data_Relationships_Subject
 
 ReactionsCreateOperation_Payload_Data_Relationships_Subject_Data
   id: string (required)
-  type: enum[albums, tracks, artists, videos, playlists, comments, trackSourceFiles] (required)
+  type: enum[trackSourceFiles, comments] (required)
 
 Reactions_Attributes
   createdAt: string(date-time) (required)
   emoji: string (required)
+  endOffset: string (optional)
+  startOffset: string (optional)
 
 Reactions_Author_Single_Relationship_Data_Document
   links: Links (required)
@@ -5049,16 +5128,6 @@ Reactions_Multi_Resource_Data_Document
   data: array[Reactions_Resource_Object] (required)
   links: Links (required)
   included: Included (optional)
-  meta: Reactions_Multi_Resource_Data_Document_Meta (optional)
-
-Reactions_Multi_Resource_Data_Document_Meta
-  currentUserReaction: CurrentUserReaction (optional)
-  stats: ReactionStats (optional)
-
-Reactions_OwnerProfiles_Multi_Relationship_Data_Document
-  links: Links (required)
-  data: array[Resource_Identifier] (optional)
-  included: Included (optional)
 
 Reactions_Owners_Multi_Relationship_Data_Document
   links: Links (required)
@@ -5067,14 +5136,19 @@ Reactions_Owners_Multi_Relationship_Data_Document
 
 Reactions_Relationships
   author: Reactions_Author_Single_Relationship_Data_Document (optional)
-  ownerProfiles: any (optional)
   owners: Reactions_Owners_Multi_Relationship_Data_Document (optional)
+  subject: Reactions_Subject_Single_Relationship_Data_Document (optional)
 
 Reactions_Resource_Object
   id: string (required)
   type: string (required)
   attributes: Reactions_Attributes (optional)
   relationships: Reactions_Relationships (optional)
+
+Reactions_Subject_Single_Relationship_Data_Document
+  links: Links (required)
+  data: Resource_Identifier | enum[None] (optional)
+  included: Included (optional)
 
 Replacement_Original_Identifier
   id: string (required)
@@ -5173,54 +5247,6 @@ ResourceGrants_Update_Single_Resource_Data_Document
   data: ResourceGrants_Resource_Object (required)
   links: Links (required)
 
-ResourceSharingSettings_Attributes
-  shared: boolean (required)
-  sharedViaParent: boolean (required)
-
-ResourceSharingSettings_Grants_Multi_Relationship_Data_Document
-  links: Links (required)
-  data: array[Resource_Identifier] (optional)
-  included: Included (optional)
-
-ResourceSharingSettings_Multi_Resource_Data_Document
-  data: array[ResourceSharingSettings_Resource_Object] (required)
-  links: Links (required)
-  included: Included (optional)
-
-ResourceSharingSettings_Relationships
-  grants: ResourceSharingSettings_Grants_Multi_Relationship_Data_Document (optional)
-  shares: ResourceSharingSettings_Shares_Multi_Relationship_Data_Document (optional)
-  subject: ResourceSharingSettings_Subject_Single_Relationship_Data_Document (optional)
-
-ResourceSharingSettings_Resource_Object
-  id: string (required)
-  type: string (required)
-  attributes: ResourceSharingSettings_Attributes (optional)
-  relationships: ResourceSharingSettings_Relationships (optional)
-
-ResourceSharingSettings_Shares_Multi_Relationship_Data_Document
-  links: Links (required)
-  data: array[Resource_Identifier] (optional)
-  included: Included (optional)
-
-ResourceSharingSettings_Single_Resource_Data_Document
-  data: ResourceSharingSettings_Resource_Object (required)
-  links: Links (required)
-  included: Included (optional)
-
-ResourceSharingSettings_Subject_Resource_Identifier
-  id: string (required)
-  type: string (required)
-  meta: ResourceSharingSettings_Subject_Resource_Identifier_Meta (optional)
-
-ResourceSharingSettings_Subject_Resource_Identifier_Meta
-  replacement: Replacement_Provenance (optional)
-
-ResourceSharingSettings_Subject_Single_Relationship_Data_Document
-  links: Links (required)
-  data: ResourceSharingSettings_Subject_Resource_Identifier | enum[None] (optional)
-  included: Included (optional)
-
 Resource_Identifier
   id: string (required)
   type: string (required)
@@ -5235,6 +5261,7 @@ SavedForLater
 
 SavedSharesCreateOperation_Payload
   data: SavedSharesCreateOperation_Payload_Data (required)
+  meta: SavedSharesCreateOperation_Payload_Meta (optional)
 
 SavedSharesCreateOperation_Payload_Data
   relationships: SavedSharesCreateOperation_Payload_Data_Relationships (required)
@@ -5249,6 +5276,15 @@ SavedSharesCreateOperation_Payload_Data_Relationships_Share
 SavedSharesCreateOperation_Payload_Data_Relationships_Share_Data
   id: string (required)
   type: enum[shares] (required)
+
+SavedSharesCreateOperation_Payload_Meta
+  password: string(password) (optional)
+
+SavedSharesCreateResource403ResponseBody
+  errors: array[object] (required)
+
+SavedSharesCreateResource429ResponseBody
+  errors: array[object] (required)
 
 SavedShares_Attributes
   createdAt: string(date-time) (required)
@@ -5431,6 +5467,7 @@ SharesCreateOperation_Payload_Data_Attributes
   accessModes: array[enum[BEARER, VOUCHER]] (optional)
   expiresAt: string(date-time) (optional)
   maxUses: integer(int32) (optional)
+  password: string(password) (optional)
 
 SharesCreateOperation_Payload_Data_Relationships
   sharedResources: SharesCreateOperation_Payload_Data_Relationships_SharedResources (required)
@@ -5442,14 +5479,27 @@ SharesCreateOperation_Payload_Data_Relationships_SharedResources_Data
   id: string (required)
   type: enum[tracks, albums, playlists, folders] (required)
 
+SharesUpdateOperation_Payload
+  data: SharesUpdateOperation_Payload_Data (required)
+
+SharesUpdateOperation_Payload_Data
+  attributes: SharesUpdateOperation_Payload_Data_Attributes (required)
+  id: string (required)
+  type: enum[shares] (required)
+
+SharesUpdateOperation_Payload_Data_Attributes
+  password: string(password) | enum[None] (optional)
+
 Shares_Attributes
   accessModes: array[enum[BEARER, VOUCHER]] (required)
   code: string (required)
   createdAt: string(date-time) (required)
   expiresAt: string(date-time) (required)
+  passwordProtected: boolean (required)
   role: enum[VIEWER, COLLABORATOR] (required)
   externalLinks: array[External_Link] (optional)
   maxUses: integer(int32) (optional)
+  password: string(password) (optional)
   useCount: integer(int32) (optional)
 
 Shares_Create_Single_Resource_Data_Document
@@ -5492,6 +5542,41 @@ Shares_SharedResources_Resource_Identifier_Meta
 Shares_Single_Resource_Data_Document
   data: Shares_Resource_Object (required)
   links: Links (required)
+  included: Included (optional)
+
+Shares_Update_Single_Resource_Data_Document
+  data: Shares_Resource_Object (required)
+  links: Links (required)
+
+SharingSummaries_Attributes
+  shared: boolean (required)
+  sharedViaParent: boolean (required)
+
+SharingSummaries_Multi_Resource_Data_Document
+  data: array[SharingSummaries_Resource_Object] (required)
+  links: Links (required)
+  included: Included (optional)
+
+SharingSummaries_Relationships
+  subject: SharingSummaries_Subject_Single_Relationship_Data_Document (optional)
+
+SharingSummaries_Resource_Object
+  id: string (required)
+  type: string (required)
+  attributes: SharingSummaries_Attributes (optional)
+  relationships: SharingSummaries_Relationships (optional)
+
+SharingSummaries_Subject_Resource_Identifier
+  id: string (required)
+  type: string (required)
+  meta: SharingSummaries_Subject_Resource_Identifier_Meta (optional)
+
+SharingSummaries_Subject_Resource_Identifier_Meta
+  replacement: Replacement_Provenance (optional)
+
+SharingSummaries_Subject_Single_Relationship_Data_Document
+  links: Links (required)
+  data: SharingSummaries_Subject_Resource_Identifier | enum[None] (optional)
   included: Included (optional)
 
 Site
@@ -6286,12 +6371,17 @@ TrackSourceFilesCreateOperation_Payload_Data_Relationships_Track_Data
   type: enum[tracks] (required)
 
 TrackSourceFiles_Attributes
-  md5Hash: string (required)
-  size: integer(int64) (required)
-  status: File_Status (required)
   downloadLink: Link_Object (optional)
+  md5Hash: string (optional)
   processing: SourceProcessing (optional)
+  size: integer(int64) (optional)
+  status: File_Status (optional)
   uploadLink: File_Upload_Link (optional)
+
+TrackSourceFiles_CommentSummary_Single_Relationship_Data_Document
+  links: Links (required)
+  data: Resource_Identifier | enum[None] (optional)
+  included: Included (optional)
 
 TrackSourceFiles_Create_Single_Resource_Data_Document
   data: TrackSourceFiles_Resource_Object (required)
@@ -6302,8 +6392,15 @@ TrackSourceFiles_Owners_Multi_Relationship_Data_Document
   data: array[Resource_Identifier] (optional)
   included: Included (optional)
 
+TrackSourceFiles_ReactionSummary_Single_Relationship_Data_Document
+  links: Links (required)
+  data: Resource_Identifier | enum[None] (optional)
+  included: Included (optional)
+
 TrackSourceFiles_Relationships
+  commentSummary: TrackSourceFiles_CommentSummary_Single_Relationship_Data_Document (optional)
   owners: TrackSourceFiles_Owners_Multi_Relationship_Data_Document (optional)
+  reactionSummary: TrackSourceFiles_ReactionSummary_Single_Relationship_Data_Document (optional)
 
 TrackSourceFiles_Resource_Object
   id: string (required)
@@ -6643,6 +6740,9 @@ UsageRulesCreateOperation_Payload_Data_Relationships_Subject
 UsageRulesCreateOperation_Payload_Subject
   id: string (required)
   type: enum[tracks, albums, videos] (required)
+
+UsageRulesCreateResource403ResponseBody
+  errors: array[object] (required)
 
 UsageRules_Attributes
   countryCode: string (required)
@@ -7977,21 +8077,31 @@ Videos_UsageRules_Single_Relationship_Data_Document
   included: Included (optional)
 
 ViewerContexts_Attributes
-  hasCommentedOn: Commented (optional)
+  hasEffectiveRole: EffectiveRole (optional)
   hasInCollection: InCollection (optional)
   hasPurchased: Purchased (optional)
-  hasReactedTo: Reaction (optional)
   hasSavedForLater: SavedForLater (optional)
   isFollowedBy: FollowedBy (optional)
   isFollowing: Following (optional)
-  isGranteeOf: Grantee (optional)
+
+ViewerContexts_Comments_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[Resource_Identifier] (optional)
+  included: Included (optional)
 
 ViewerContexts_Multi_Resource_Data_Document
   data: array[ViewerContexts_Resource_Object] (required)
   links: Links (required)
   included: Included (optional)
 
+ViewerContexts_Reactions_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[Resource_Identifier] (optional)
+  included: Included (optional)
+
 ViewerContexts_Relationships
+  comments: ViewerContexts_Comments_Multi_Relationship_Data_Document (optional)
+  reactions: ViewerContexts_Reactions_Multi_Relationship_Data_Document (optional)
   subject: ViewerContexts_Subject_Single_Relationship_Data_Document (optional)
   viewer: ViewerContexts_Viewer_Single_Relationship_Data_Document (optional)
 

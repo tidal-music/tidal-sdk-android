@@ -22,20 +22,8 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/**
- * @param id
- * @param type
- */
+/** @param replacement */
 @Serializable
-data class CommentsCreateOperationPayloadDataRelationshipsParentCommentData(
-    @SerialName(value = "id") val id: kotlin.String,
-    @SerialName(value = "type")
-    val type: CommentsCreateOperationPayloadDataRelationshipsParentCommentData.Type,
-) {
-
-    /** Values: comments */
-    @Serializable
-    enum class Type(val value: kotlin.String) {
-        @SerialName(value = "comments") comments("comments")
-    }
-}
+data class SharingSummariesSubjectResourceIdentifierMeta(
+    @SerialName(value = "replacement") val replacement: ReplacementProvenance? = null
+) {}

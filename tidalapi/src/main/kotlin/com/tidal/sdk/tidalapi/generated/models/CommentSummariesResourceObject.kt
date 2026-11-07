@@ -21,29 +21,23 @@ package com.tidal.sdk.tidalapi.generated.models
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 /**
- * The viewer's effective role for the subject. Populated for albums, tracks and folders; omitted
- * for other subject types.
- *
- * @param role Effective role.
+ * @param id Resource id
+ * @param type Resource type
+ * @param attributes
+ * @param relationships
  */
 @Serializable
-data class Grantee(
+@SerialName(value = "commentSummaries")
+data class CommentSummariesResourceObject(
 
-    /* Effective role. */
-    @SerialName(value = "role") val role: Grantee.Role
-) {
+    /* Resource id */
+    @SerialName(value = "id") val id: kotlin.String,
 
-    /**
-     * Effective role.
-     *
-     * Values: VIEWER,COLLABORATOR,OWNER
-     */
-    @Serializable
-    enum class Role(val value: kotlin.String) {
-        @SerialName(value = "VIEWER") VIEWER("VIEWER"),
-        @SerialName(value = "COLLABORATOR") COLLABORATOR("COLLABORATOR"),
-        @SerialName(value = "OWNER") OWNER("OWNER"),
-    }
-}
+    /* Resource type */
+    @Transient @SerialName(value = "type") val type: kotlin.String = "",
+    @SerialName(value = "attributes") val attributes: CommentSummariesAttributes? = null,
+    @SerialName(value = "relationships") val relationships: CommentSummariesRelationships? = null,
+) : IncludedInner {}
