@@ -23,9 +23,11 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * The viewer has a current reaction to the subject, with its emoji. Reserved; not currently
- * populated and omitted from responses. Omission does not indicate that the relation is absent.
- *
- * @param emoji
+ * @param `data`
+ * @param links
  */
-@Serializable data class Reaction(@SerialName(value = "emoji") val emoji: kotlin.String) {}
+@Serializable
+data class SharesUpdateSingleResourceDataDocument(
+    @SerialName(value = "data") val `data`: SharesResourceObject,
+    @SerialName(value = "links") val links: Links,
+) {}

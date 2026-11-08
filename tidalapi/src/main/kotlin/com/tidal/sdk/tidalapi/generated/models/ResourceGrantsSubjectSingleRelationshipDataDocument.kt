@@ -23,7 +23,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * Target resource types: `albums`, `folders`, `tracks`.
+ * Target resource types: `albums`, `folders`, `playlists`, `tracks`.
  *
  * @param links
  * @param `data`

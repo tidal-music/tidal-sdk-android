@@ -22,10 +22,13 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param redeemedAt Datetime the invite was redeemed (ISO 8601) */
+/**
+ * @param redeemedAt Time of this redemption (ISO 8601). Redeeming the invite again returns the same
+ *   id with the time of that request.
+ */
 @Serializable
 data class CollaborationInviteRedemptionsAttributes(
 
-    /* Datetime the invite was redeemed (ISO 8601) */
+    /* Time of this redemption (ISO 8601). Redeeming the invite again returns the same id with the time of that request. */
     @SerialName(value = "redeemedAt") val redeemedAt: kotlin.String
 ) {}

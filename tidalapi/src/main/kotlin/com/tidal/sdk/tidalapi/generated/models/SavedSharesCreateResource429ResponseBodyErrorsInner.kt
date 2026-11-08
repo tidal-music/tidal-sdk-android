@@ -23,21 +23,21 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * Current user's reaction
- *
- * @param createdAt When the reaction was created
- * @param emoji User's emoji reaction
- * @param id Reaction ID
+ * @param code
+ * @param status
+ * @param detail
  */
 @Serializable
-data class CurrentUserReaction(
+data class SavedSharesCreateResource429ResponseBodyErrorsInner(
+    @SerialName(value = "code") val code: SavedSharesCreateResource429ResponseBodyErrorsInner.Code,
+    @SerialName(value = "status") val status: kotlin.String,
+    @SerialName(value = "detail") val detail: kotlin.String? = null,
+) {
 
-    /* When the reaction was created */
-    @SerialName(value = "createdAt") val createdAt: kotlin.String? = null,
-
-    /* User's emoji reaction */
-    @SerialName(value = "emoji") val emoji: kotlin.String? = null,
-
-    /* Reaction ID */
-    @SerialName(value = "id") val id: kotlin.String? = null,
-) {}
+    /** Values: SHARE_PASSWORD_ATTEMPTS_EXCEEDED */
+    @Serializable
+    enum class Code(val value: kotlin.String) {
+        @SerialName(value = "SHARE_PASSWORD_ATTEMPTS_EXCEEDED")
+        SHARE_PASSWORD_ATTEMPTS_EXCEEDED("SHARE_PASSWORD_ATTEMPTS_EXCEEDED")
+    }
+}

@@ -119,7 +119,7 @@ interface UserCollectionPlaylists {
      * (\&quot;to-many\&quot;). Retrieves items relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
-     * - 403: filter[query] requires INTERNAL access tier
+     * - 403: filter[self][matchesQuery] requires INTERNAL access tier
      * - 404: Resource not found
      * - 405: HTTP method not allowed
      * - 406: No acceptable response media type
@@ -131,9 +131,10 @@ interface UserCollectionPlaylists {
      * @param id User collection playlists id. Use &#x60;me&#x60; for the authenticated user&#39;s
      *   resource
      * @param collectionView (optional)
-     * @param filterQuery Filter playlists by a free-text query. Returns matching playlists only (no
-     *   mixes or folders), including playlists inside folders. Cannot be combined with
-     *   collectionView&#x3D;FOLDERS. Internal clients only (e.g. &#x60;summer&#x60;) (optional)
+     * @param filterSelfMatchesQuery Filter playlists by a free-text query. Returns matching
+     *   playlists only (no mixes or folders), including playlists inside folders. Cannot be
+     *   combined with collectionView&#x3D;FOLDERS. Internal clients only (e.g. &#x60;summer&#x60;)
+     *   (optional)
      * @param include Include related resources. Available relationships: items (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
@@ -149,7 +150,7 @@ interface UserCollectionPlaylists {
         @Path("id") id: kotlin.String,
         @Query("collectionView")
         collectionView: CollectionViewUserCollectionPlaylistsIdRelationshipsItemsGet? = null,
-        @Query("filter[query]") filterQuery: kotlin.String? = null,
+        @Query("filter[self][matchesQuery]") filterSelfMatchesQuery: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,

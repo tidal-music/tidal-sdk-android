@@ -22,8 +22,20 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param emoji */
+/**
+ * @param emoji
+ * @param endOffset Section end offset (ISO 8601 duration), at or after startOffset. Requires
+ *   startOffset; omitted for a point reaction.
+ * @param startOffset Nonnegative source-file offset (ISO 8601 duration); omitted for the whole
+ *   subject.
+ */
 @Serializable
 data class ReactionsCreateOperationPayloadDataAttributes(
-    @SerialName(value = "emoji") val emoji: kotlin.String
+    @SerialName(value = "emoji") val emoji: kotlin.String,
+
+    /* Section end offset (ISO 8601 duration), at or after startOffset. Requires startOffset; omitted for a point reaction. */
+    @SerialName(value = "endOffset") val endOffset: kotlin.String? = null,
+
+    /* Nonnegative source-file offset (ISO 8601 duration); omitted for the whole subject. */
+    @SerialName(value = "startOffset") val startOffset: kotlin.String? = null,
 ) {}

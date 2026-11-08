@@ -48,6 +48,7 @@ fun getOneOfSerializer() = SerializersModule {
             CollaborationInvitesResourceObject::class,
             CollaborationInvitesResourceObject.serializer(),
         )
+        subclass(CommentSummariesResourceObject::class, CommentSummariesResourceObject.serializer())
         subclass(CommentsResourceObject::class, CommentsResourceObject.serializer())
         subclass(ContentClaimsResourceObject::class, ContentClaimsResourceObject.serializer())
         subclass(CreditsResourceObject::class, CreditsResourceObject.serializer())
@@ -87,12 +88,12 @@ fun getOneOfSerializer() = SerializersModule {
         )
         subclass(ProvidersResourceObject::class, ProvidersResourceObject.serializer())
         subclass(PurchasesResourceObject::class, PurchasesResourceObject.serializer())
+        subclass(
+            ReactionSummariesResourceObject::class,
+            ReactionSummariesResourceObject.serializer(),
+        )
         subclass(ReactionsResourceObject::class, ReactionsResourceObject.serializer())
         subclass(ResourceGrantsResourceObject::class, ResourceGrantsResourceObject.serializer())
-        subclass(
-            ResourceSharingSettingsResourceObject::class,
-            ResourceSharingSettingsResourceObject.serializer(),
-        )
         subclass(SavedSharesResourceObject::class, SavedSharesResourceObject.serializer())
         subclass(ScopesResourceObject::class, ScopesResourceObject.serializer())
         subclass(
@@ -105,6 +106,7 @@ fun getOneOfSerializer() = SerializersModule {
             SearchSuggestionsResourceObject.serializer(),
         )
         subclass(SharesResourceObject::class, SharesResourceObject.serializer())
+        subclass(SharingSummariesResourceObject::class, SharingSummariesResourceObject.serializer())
         subclass(
             SquareConnectionsResourceObject::class,
             SquareConnectionsResourceObject.serializer(),

@@ -32,11 +32,12 @@ data class ResourceGrantsSubject(
     @SerialName(value = "type") val type: ResourceGrantsSubject.Type,
 ) {
 
-    /** Values: albums,tracks,folders */
+    /** Values: albums,tracks,folders,playlists */
     @Serializable
     enum class Type(val value: kotlin.String) {
         @SerialName(value = "albums") albums("albums"),
         @SerialName(value = "tracks") tracks("tracks"),
         @SerialName(value = "folders") folders("folders"),
+        @SerialName(value = "playlists") playlists("playlists"),
     }
 }

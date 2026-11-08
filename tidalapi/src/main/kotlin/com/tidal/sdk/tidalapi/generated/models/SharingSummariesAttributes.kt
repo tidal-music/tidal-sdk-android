@@ -23,18 +23,18 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param shared Whether a user other than the owner has a grant, or an active share link exists, on
- *   the subject or above it. The Everyone grant that comes with an album's usage rules does not
- *   count.
- * @param sharedViaParent Whether a folder or album above the subject is shared, so the subject
- *   stays shared whatever is set on it.
+ * @param shared Whether a live grant to another user or an applicable undeleted, unexpired share
+ *   exists on the subject or an ancestor. Everyone grants do not count. Ancestor folder links
+ *   require VOUCHER; exhausted links still count.
+ * @param sharedViaParent The same sharing check restricted to ancestor folders and albums.
+ *   Descendants never contribute.
  */
 @Serializable
-data class ResourceSharingSettingsAttributes(
+data class SharingSummariesAttributes(
 
-    /* Whether a user other than the owner has a grant, or an active share link exists, on the subject or above it. The Everyone grant that comes with an album's usage rules does not count. */
+    /* Whether a live grant to another user or an applicable undeleted, unexpired share exists on the subject or an ancestor. Everyone grants do not count. Ancestor folder links require VOUCHER; exhausted links still count. */
     @SerialName(value = "shared") val shared: kotlin.Boolean,
 
-    /* Whether a folder or album above the subject is shared, so the subject stays shared whatever is set on it. */
+    /* The same sharing check restricted to ancestor folders and albums. Descendants never contribute. */
     @SerialName(value = "sharedViaParent") val sharedViaParent: kotlin.Boolean,
 ) {}

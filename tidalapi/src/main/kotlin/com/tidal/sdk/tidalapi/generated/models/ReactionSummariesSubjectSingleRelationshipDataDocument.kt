@@ -23,14 +23,14 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * Target resource types: `comments`.
+ * Target resource types: `comments`, `trackSourceFiles`.
  *
  * @param links
  * @param `data`
  * @param included
  */
 @Serializable
-data class CommentsParentCommentSingleRelationshipDataDocument(
+data class ReactionSummariesSubjectSingleRelationshipDataDocument(
     @SerialName(value = "links") val links: Links,
     @SerialName(value = "data") val `data`: ResourceIdentifier? = null,
     @SerialName(value = "included") val included: kotlin.collections.List<IncludedInner>? = null,

@@ -33,9 +33,8 @@ interface ResourceGrants {
     }
 
     /**
-     * GET resourceGrants Get multiple resourceGrants. Lists stored grants from every source visible
-     * to the subject&#39;s owner or named user grantee, selected by subject or grantee, optionally
-     * restricted by assigned role. Requires subject or grantee. Responses:
+     * GET resourceGrants Get multiple resourceGrants. Retrieves multiple resourceGrants by
+     * available filters, or without if applicable. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -49,7 +48,16 @@ interface ResourceGrants {
      * @param filterGrantee Filter by grantee. Use &#x60;groups:everyone&#x60; for the Everyone
      *   group. Also accepts &#x60;users:me&#x60;. (optional)
      * @param filterRole One of: VIEWER, COLLABORATOR, OWNER (e.g. &#x60;VIEWER&#x60;) (optional)
-     * @param filterSubject Filter by subject. Also accepts &#x60;folders:me&#x60;. (optional)
+     * @param filterSelfAppliesTo Album, track or folder owned by the caller; playlists return 400.
+     *   Selects every live stored grant on the resource and its ancestor folders and albums, direct
+     *   and from saved share links. Each grant keeps the subject it is stored on, so a grantee can
+     *   have several. Does not expand groups or bearer access or resolve effective permissions.
+     *   Cannot be combined with other filters. Missing or non-owned resources return no records.
+     *   Ordered by grantee, each grantee&#39;s nearest grants first; at most 20 grants per page.
+     *   Also accepts &#x60;folders:me&#x60;. (optional)
+     * @param filterSubject Filter by subject. Required unless &#x60;filter[self][appliesTo]&#x60;
+     *   is used. The subject&#39;s owner reads all its grants; other callers read only grants made
+     *   directly to them. Also accepts &#x60;folders:me&#x60;. (optional)
      * @param include Include related resources. Available relationships: grantee, subject
      *   (optional)
      * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
@@ -65,6 +73,7 @@ interface ResourceGrants {
     suspend fun resourceGrantsGet(
         @Query("filter[grantee]") filterGrantee: kotlin.String? = null,
         @Query("filter[role]") filterRole: FilterRoleResourceGrantsGet? = null,
+        @Query("filter[self][appliesTo]") filterSelfAppliesTo: kotlin.String? = null,
         @Query("filter[subject]") filterSubject: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
