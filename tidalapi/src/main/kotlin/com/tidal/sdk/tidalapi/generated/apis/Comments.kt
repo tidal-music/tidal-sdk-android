@@ -2,12 +2,15 @@ package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.infrastructure.CollectionFormats.*
 import com.tidal.sdk.tidalapi.generated.models.CommentsAuthorSingleRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.CommentsCommentSummarySingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.CommentsCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.CommentsCreateSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.CommentsMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.CommentsOwnersMultiRelationshipDataDocument
-import com.tidal.sdk.tidalapi.generated.models.CommentsParentCommentSingleRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.CommentsReactionSummarySingleRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.CommentsRootSubjectSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.CommentsSingleResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.CommentsSubjectSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.CommentsUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.MutationResponseDocument
 import kotlinx.serialization.SerialName
@@ -17,20 +20,15 @@ import retrofit2.http.*
 
 interface Comments {
 
-    /** enum for parameter filterSubjectType */
-    @Serializable
-    enum class FilterSubjectTypeCommentsGet(val value: kotlin.String) {
-        @SerialName(value = "albums") albums("albums"),
-        @SerialName(value = "tracks") tracks("tracks"),
-        @SerialName(value = "trackSourceFiles") trackSourceFiles("trackSourceFiles"),
-    }
-
     /** enum for parameter includeLinkage */
     @Serializable
     enum class IncludeLinkageCommentsGet(val value: kotlin.String) {
         @SerialName(value = "author") author("author"),
+        @SerialName(value = "commentSummary") commentSummary("commentSummary"),
         @SerialName(value = "owners") owners("owners"),
-        @SerialName(value = "parentComment") parentComment("parentComment"),
+        @SerialName(value = "reactionSummary") reactionSummary("reactionSummary"),
+        @SerialName(value = "rootSubject") rootSubject("rootSubject"),
+        @SerialName(value = "subject") subject("subject"),
     }
 
     /** enum for parameter sort */
@@ -38,17 +36,11 @@ interface Comments {
     enum class SortCommentsGet(val value: kotlin.String) {
         @SerialName(value = "createdAt") CreatedAtAsc("createdAt"),
         @SerialName(value = "-createdAt") CreatedAtDesc("-createdAt"),
-        @SerialName(value = "likeCount") LikeCountAsc("likeCount"),
-        @SerialName(value = "-likeCount") LikeCountDesc("-likeCount"),
-        @SerialName(value = "replyCount") ReplyCountAsc("replyCount"),
-        @SerialName(value = "-replyCount") ReplyCountDesc("-replyCount"),
-        @SerialName(value = "startTime") StartTimeAsc("startTime"),
-        @SerialName(value = "-startTime") StartTimeDesc("-startTime"),
     }
 
     /**
-     * GET comments Get multiple comments. Retrieves multiple comments by available filters, or
-     * without if applicable. Responses:
+     * GET comments Get multiple comments. Returns root comments on a resource, or replies to a
+     * comment. Both support createdAt in either direction, newest first by default. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -59,16 +51,9 @@ interface Comments {
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
-     * @param filterParentCommentId Filter by parent comment ID to get replies (e.g.
-     *   &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) (optional)
-     * @param filterSubjectId Deprecated: use filter[subject]. Filter by subject resource ID (e.g.
-     *   &#x60;12345&#x60;) (optional)
-     * @param filterSubjectType Deprecated: use filter[subject]. Filter by subject resource type
-     *   (e.g. &#x60;albums&#x60;) (optional)
-     * @param filterSubject The subject whose comments to return. Use either subject or the
-     *   deprecated subject.id and subject.type pair. (optional)
-     * @param include Include related resources. Available relationships: author, owners,
-     *   parentComment (optional)
+     * @param filterSubject The immediate subject whose comments to return.
+     * @param include Include related resources. Available relationships: author, commentSummary,
+     *   owners, reactionSummary, rootSubject, subject (optional)
      * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
      *   related content. (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -82,13 +67,7 @@ interface Comments {
      */
     @GET("comments")
     suspend fun commentsGet(
-        @Query("filter[parentComment.id]")
-        filterParentCommentId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[subject.id]")
-        filterSubjectId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[subject.type]")
-        filterSubjectType: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[subject]") filterSubject: kotlin.String? = null,
+        @Query("filter[subject]") filterSubject: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("includeLinkage") includeLinkage: CSVParams? = null,
@@ -127,8 +106,11 @@ interface Comments {
     @Serializable
     enum class IncludeLinkageCommentsIdGet(val value: kotlin.String) {
         @SerialName(value = "author") author("author"),
+        @SerialName(value = "commentSummary") commentSummary("commentSummary"),
         @SerialName(value = "owners") owners("owners"),
-        @SerialName(value = "parentComment") parentComment("parentComment"),
+        @SerialName(value = "reactionSummary") reactionSummary("reactionSummary"),
+        @SerialName(value = "rootSubject") rootSubject("rootSubject"),
+        @SerialName(value = "subject") subject("subject"),
     }
 
     /**
@@ -144,8 +126,8 @@ interface Comments {
      * - 503: Service temporarily unavailable
      *
      * @param id Comment Id
-     * @param include Include related resources. Available relationships: author, owners,
-     *   parentComment (optional)
+     * @param include Include related resources. Available relationships: author, commentSummary,
+     *   owners, reactionSummary, rootSubject, subject (optional)
      * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
      *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
@@ -219,6 +201,30 @@ interface Comments {
     ): Response<CommentsAuthorSingleRelationshipDataDocument>
 
     /**
+     * GET comments/{id}/relationships/commentSummary Get commentSummary relationship
+     * (\&quot;to-one\&quot;). Retrieves commentSummary relationship. Responses:
+     * - 200: Successful response
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
+     * - 429: Rate limit exceeded
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
+     *
+     * @param id Comment Id
+     * @param include Include related resources. Available relationships: commentSummary (optional)
+     * @return [CommentsCommentSummarySingleRelationshipDataDocument]
+     */
+    @GET("comments/{id}/relationships/commentSummary")
+    suspend fun commentsIdRelationshipsCommentSummaryGet(
+        @Path("id") id: kotlin.String,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+    ): Response<CommentsCommentSummarySingleRelationshipDataDocument>
+
+    /**
      * GET comments/{id}/relationships/owners Get owners relationship (\&quot;to-many\&quot;).
      * Retrieves owners relationship. Responses:
      * - 200: Successful response
@@ -246,8 +252,8 @@ interface Comments {
     ): Response<CommentsOwnersMultiRelationshipDataDocument>
 
     /**
-     * GET comments/{id}/relationships/parentComment Get parentComment relationship
-     * (\&quot;to-one\&quot;). Retrieves parentComment relationship. Responses:
+     * GET comments/{id}/relationships/reactionSummary Get reactionSummary relationship
+     * (\&quot;to-one\&quot;). Retrieves reactionSummary relationship. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -259,22 +265,71 @@ interface Comments {
      * - 503: Service temporarily unavailable
      *
      * @param id Comment Id
-     * @param include Include related resources. Available relationships: parentComment (optional)
+     * @param include Include related resources. Available relationships: reactionSummary (optional)
+     * @return [CommentsReactionSummarySingleRelationshipDataDocument]
+     */
+    @GET("comments/{id}/relationships/reactionSummary")
+    suspend fun commentsIdRelationshipsReactionSummaryGet(
+        @Path("id") id: kotlin.String,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+    ): Response<CommentsReactionSummarySingleRelationshipDataDocument>
+
+    /**
+     * GET comments/{id}/relationships/rootSubject Get rootSubject relationship
+     * (\&quot;to-one\&quot;). Retrieves rootSubject relationship. Responses:
+     * - 200: Successful response
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
+     * - 429: Rate limit exceeded
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
+     *
+     * @param id Comment Id
+     * @param include Include related resources. Available relationships: rootSubject (optional)
+     * @return [CommentsRootSubjectSingleRelationshipDataDocument]
+     */
+    @GET("comments/{id}/relationships/rootSubject")
+    suspend fun commentsIdRelationshipsRootSubjectGet(
+        @Path("id") id: kotlin.String,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+    ): Response<CommentsRootSubjectSingleRelationshipDataDocument>
+
+    /**
+     * GET comments/{id}/relationships/subject Get subject relationship (\&quot;to-one\&quot;).
+     * Retrieves subject relationship. Responses:
+     * - 200: Successful response
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
+     * - 429: Rate limit exceeded
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
+     *
+     * @param id Comment Id
+     * @param include Include related resources. Available relationships: subject (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
-     *   &#x60;include&#x60; syntax. Example: parentComment.author.albums (optional)
-     * @return [CommentsParentCommentSingleRelationshipDataDocument]
+     *   &#x60;include&#x60; syntax. Example: subject.author.albums (optional)
+     * @return [CommentsSubjectSingleRelationshipDataDocument]
      */
-    @GET("comments/{id}/relationships/parentComment")
-    suspend fun commentsIdRelationshipsParentCommentGet(
+    @GET("comments/{id}/relationships/subject")
+    suspend fun commentsIdRelationshipsSubjectGet(
         @Path("id") id: kotlin.String,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
-    ): Response<CommentsParentCommentSingleRelationshipDataDocument>
+    ): Response<CommentsSubjectSingleRelationshipDataDocument>
 
     /**
-     * POST comments Create single comment. Creates a new comment. Responses:
+     * POST comments Create single comment. Creates a root comment on a resource or a reply whose
+     * subject is a root comment. Replies to replies are rejected. Responses:
      * - 201: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

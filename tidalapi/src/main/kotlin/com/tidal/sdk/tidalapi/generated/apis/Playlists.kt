@@ -455,8 +455,8 @@ interface Playlists {
      *
      * @param id Playlist id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
-     * @param filterQuery Filter playlist items by a free-text query (e.g. &#x60;halo&#x60;)
-     *   (optional)
+     * @param filterSelfMatchesQuery Filter playlist items by a free-text query (e.g.
+     *   &#x60;halo&#x60;) (optional)
      * @param include Include related resources. Available relationships: items (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
@@ -471,7 +471,7 @@ interface Playlists {
     suspend fun playlistsIdRelationshipsItemsGet(
         @Path("id") id: kotlin.String,
         @Query("countryCode") countryCode: kotlin.String? = null,
-        @Query("filter[query]") filterQuery: kotlin.String? = null,
+        @Query("filter[self][matchesQuery]") filterSelfMatchesQuery: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,

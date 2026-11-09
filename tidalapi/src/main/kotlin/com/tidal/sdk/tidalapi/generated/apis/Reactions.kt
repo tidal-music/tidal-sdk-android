@@ -6,8 +6,8 @@ import com.tidal.sdk.tidalapi.generated.models.ReactionsAuthorSingleRelationship
 import com.tidal.sdk.tidalapi.generated.models.ReactionsCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.ReactionsCreateSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ReactionsMultiResourceDataDocument
-import com.tidal.sdk.tidalapi.generated.models.ReactionsOwnerProfilesMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ReactionsOwnersMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ReactionsSubjectSingleRelationshipDataDocument
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import retrofit2.Response
@@ -15,37 +15,17 @@ import retrofit2.http.*
 
 interface Reactions {
 
-    /** enum for parameter filterSubjectType */
-    @Serializable
-    enum class FilterSubjectTypeReactionsGet(val value: kotlin.String) {
-        @SerialName(value = "albums") albums("albums"),
-        @SerialName(value = "tracks") tracks("tracks"),
-        @SerialName(value = "artists") artists("artists"),
-        @SerialName(value = "videos") videos("videos"),
-        @SerialName(value = "playlists") playlists("playlists"),
-        @SerialName(value = "comments") comments("comments"),
-        @SerialName(value = "trackSourceFiles") trackSourceFiles("trackSourceFiles"),
-    }
-
     /** enum for parameter includeLinkage */
     @Serializable
     enum class IncludeLinkageReactionsGet(val value: kotlin.String) {
         @SerialName(value = "author") author("author"),
-        @SerialName(value = "ownerProfiles") ownerProfiles("ownerProfiles"),
         @SerialName(value = "owners") owners("owners"),
-    }
-
-    /** enum for parameter stats */
-    @Serializable
-    enum class StatsReactionsGet(val value: kotlin.String) {
-        @SerialName(value = "ALL") ALL("ALL"),
-        @SerialName(value = "COUNTS_BY_TYPE") COUNTS_BY_TYPE("COUNTS_BY_TYPE"),
-        @SerialName(value = "TOTAL_COUNT") TOTAL_COUNT("TOTAL_COUNT"),
+        @SerialName(value = "subject") subject("subject"),
     }
 
     /**
-     * GET reactions Get multiple reactions. Retrieves multiple reactions by available filters, or
-     * without if applicable. Responses:
+     * GET reactions Get multiple reactions. Lists reactions on a source file or comment, newest
+     * first. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -56,15 +36,10 @@ interface Reactions {
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
+     * @param filterSubject The subject whose reactions to return.
      * @param filterEmoji Filter by emoji (e.g. &#x60;👍&#x60;) (optional)
-     * @param filterSubjectId Deprecated: use filter[subject]. Filter by subject resource ID (e.g.
-     *   &#x60;12345&#x60;) (optional)
-     * @param filterSubjectType Deprecated: use filter[subject]. Filter by subject resource type
-     *   (e.g. &#x60;albums&#x60;) (optional)
-     * @param filterSubject The subject whose reactions to return. Use either subject or the
-     *   deprecated subject.id and subject.type pair. (optional)
-     * @param include Include related resources. Available relationships: author, ownerProfiles,
-     *   owners (optional)
+     * @param include Include related resources. Available relationships: author, owners, subject
+     *   (optional)
      * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
      *   related content. (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -72,28 +47,18 @@ interface Reactions {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: author.albums (optional)
-     * @param stats (optional)
-     * @param statsOnly (optional)
-     * @param viewerContext (optional)
      * @return [ReactionsMultiResourceDataDocument]
      */
     @GET("reactions")
     suspend fun reactionsGet(
+        @Query("filter[subject]") filterSubject: kotlin.String,
         @Query("filter[emoji]")
         filterEmoji: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[subject.id]")
-        filterSubjectId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[subject.type]")
-        filterSubjectType: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("filter[subject]") filterSubject: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
-        @Query("stats") stats: StatsReactionsGet? = null,
-        @Query("statsOnly") statsOnly: kotlin.Boolean? = null,
-        @Query("viewerContext") viewerContext: kotlin.String? = null,
     ): Response<ReactionsMultiResourceDataDocument>
 
     /**
@@ -151,34 +116,6 @@ interface Reactions {
     ): Response<ReactionsAuthorSingleRelationshipDataDocument>
 
     /**
-     * GET reactions/{id}/relationships/ownerProfiles Get ownerProfiles relationship
-     * (\&quot;to-many\&quot;). Deprecated. Use author for attribution. Responses:
-     * - 200: Successful response
-     * - 400: Invalid request
-     * - 404: Resource not found
-     * - 405: HTTP method not allowed
-     * - 406: No acceptable response media type
-     * - 415: Unsupported request media type or encoding
-     * - 429: Rate limit exceeded
-     * - 500: Internal server error
-     * - 503: Service temporarily unavailable
-     *
-     * @param id Reaction Id
-     * @param include Include related resources. Available relationships: ownerProfiles (optional)
-     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
-     *   targets first page if not specified (optional)
-     * @return [ReactionsOwnerProfilesMultiRelationshipDataDocument]
-     */
-    @Deprecated("This api was deprecated")
-    @GET("reactions/{id}/relationships/ownerProfiles")
-    suspend fun reactionsIdRelationshipsOwnerProfilesGet(
-        @Path("id") id: kotlin.String,
-        @Query("include")
-        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-    ): Response<ReactionsOwnerProfilesMultiRelationshipDataDocument>
-
-    /**
      * GET reactions/{id}/relationships/owners Get owners relationship (\&quot;to-many\&quot;).
      * Retrieves owners relationship. Responses:
      * - 200: Successful response
@@ -206,7 +143,40 @@ interface Reactions {
     ): Response<ReactionsOwnersMultiRelationshipDataDocument>
 
     /**
-     * POST reactions Create single reaction. Creates a new reaction. Responses:
+     * GET reactions/{id}/relationships/subject Get subject relationship (\&quot;to-one\&quot;).
+     * Retrieves subject relationship. Responses:
+     * - 200: Successful response
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
+     * - 429: Rate limit exceeded
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
+     *
+     * @param id Reaction Id
+     * @param include Include related resources. Available relationships: subject (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: subject.author.albums (optional)
+     * @return [ReactionsSubjectSingleRelationshipDataDocument]
+     */
+    @GET("reactions/{id}/relationships/subject")
+    suspend fun reactionsIdRelationshipsSubjectGet(
+        @Path("id") id: kotlin.String,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
+    ): Response<ReactionsSubjectSingleRelationshipDataDocument>
+
+    /**
+     * POST reactions Create single reaction. Adds the caller&#39;s emoji reaction on a subject and
+     * exact time offsets. Omit both offsets for the whole subject, provide startOffset for a point,
+     * or both for a section. Offsets are supported only on source files and must be nonnegative,
+     * with endOffset at or after startOffset. Each user can add different emojis at the same
+     * position or section. Repeating the same emoji returns the existing reaction with its UUID and
+     * creation time unchanged. Responses:
      * - 201: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

@@ -23,23 +23,23 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
+ * @param downloadLink
  * @param md5Hash MD5 hash of file to be uploaded
+ * @param processing
  * @param propertySize File size of the track in bytes
  * @param status
- * @param downloadLink
- * @param processing
  * @param uploadLink
  */
 @Serializable
 data class TrackSourceFilesAttributes(
+    @SerialName(value = "downloadLink") val downloadLink: LinkObject? = null,
 
     /* MD5 hash of file to be uploaded */
-    @SerialName(value = "md5Hash") val md5Hash: kotlin.String,
+    @SerialName(value = "md5Hash") val md5Hash: kotlin.String? = null,
+    @SerialName(value = "processing") val processing: SourceProcessing? = null,
 
     /* File size of the track in bytes */
-    @SerialName(value = "size") val propertySize: kotlin.Long,
-    @SerialName(value = "status") val status: FileStatus,
-    @SerialName(value = "downloadLink") val downloadLink: LinkObject? = null,
-    @SerialName(value = "processing") val processing: SourceProcessing? = null,
+    @SerialName(value = "size") val propertySize: kotlin.Long? = null,
+    @SerialName(value = "status") val status: FileStatus? = null,
     @SerialName(value = "uploadLink") val uploadLink: FileUploadLink? = null,
 ) {}

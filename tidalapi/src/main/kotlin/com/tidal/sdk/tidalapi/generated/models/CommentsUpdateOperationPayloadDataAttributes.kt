@@ -23,15 +23,19 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param endTime
+ * @param endOffset End offset from the beginning of the source file (ISO 8601 duration).
  * @param message The comment message content
- * @param startTime
+ * @param startOffset Start offset from the beginning of the source file (ISO 8601 duration).
  */
 @Serializable
 data class CommentsUpdateOperationPayloadDataAttributes(
-    @SerialName(value = "endTime") val endTime: kotlin.String? = null,
+
+    /* End offset from the beginning of the source file (ISO 8601 duration). */
+    @SerialName(value = "endOffset") val endOffset: kotlin.String? = null,
 
     /* The comment message content */
     @SerialName(value = "message") val message: kotlin.String? = null,
-    @SerialName(value = "startTime") val startTime: kotlin.String? = null,
+
+    /* Start offset from the beginning of the source file (ISO 8601 duration). */
+    @SerialName(value = "startOffset") val startOffset: kotlin.String? = null,
 ) {}

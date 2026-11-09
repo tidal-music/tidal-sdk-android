@@ -22,14 +22,9 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/**
- * @param subject
- * @param parentComment
- */
+/** @param subject */
 @Serializable
 data class CommentsCreateOperationPayloadDataRelationships(
     @SerialName(value = "subject")
-    val subject: CommentsCreateOperationPayloadDataRelationshipsSubject,
-    @SerialName(value = "parentComment")
-    val parentComment: CommentsCreateOperationPayloadDataRelationshipsParentComment? = null,
+    val subject: CommentsCreateOperationPayloadDataRelationshipsSubject
 ) {}

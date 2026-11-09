@@ -32,6 +32,7 @@ interface UsageRules {
      * POST usageRules Create single usageRule. Creates a new usageRule. Responses:
      * - 201: Successful response
      * - 400: Invalid request
+     * - 403: An active seller connection is required for paid usage rules
      * - 404: Resource not found
      * - 405: HTTP method not allowed
      * - 406: No acceptable response media type

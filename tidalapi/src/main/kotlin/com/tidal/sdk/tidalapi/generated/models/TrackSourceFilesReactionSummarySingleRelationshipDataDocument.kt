@@ -21,24 +21,17 @@ package com.tidal.sdk.tidalapi.generated.models
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.Transient
 
 /**
- * @param id Resource id
- * @param type Resource type
- * @param attributes
- * @param relationships
+ * Target resource types: `reactionSummaries`.
+ *
+ * @param links
+ * @param `data`
+ * @param included
  */
 @Serializable
-@SerialName(value = "resourceSharingSettings")
-data class ResourceSharingSettingsResourceObject(
-
-    /* Resource id */
-    @SerialName(value = "id") val id: kotlin.String,
-
-    /* Resource type */
-    @Transient @SerialName(value = "type") val type: kotlin.String = "",
-    @SerialName(value = "attributes") val attributes: ResourceSharingSettingsAttributes? = null,
-    @SerialName(value = "relationships")
-    val relationships: ResourceSharingSettingsRelationships? = null,
-) : IncludedInner {}
+data class TrackSourceFilesReactionSummarySingleRelationshipDataDocument(
+    @SerialName(value = "links") val links: Links,
+    @SerialName(value = "data") val `data`: ResourceIdentifier? = null,
+    @SerialName(value = "included") val included: kotlin.collections.List<IncludedInner>? = null,
+) {}

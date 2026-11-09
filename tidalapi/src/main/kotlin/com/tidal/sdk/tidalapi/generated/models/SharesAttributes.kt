@@ -23,24 +23,27 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param accessModes Ways this share may be used to obtain access. BEARER permits access by
- *   presenting its code while active. VOUCHER permits an authenticated user to redeem it for a
- *   stored grant. Multiple modes may be enabled.
+ * @param accessModes Ways this share may be used to obtain access, decided by the server.
+ *   Deprecated: clients must not rely on it.
  * @param code Share code
  * @param createdAt Time the share was created.
  * @param expiresAt Time bearer access and acceptance expire; accepted grants remain valid.
+ * @param passwordProtected Whether saving the share requires a password. A protected share never
+ *   permits BEARER access, and only its owner and users with a role on its shared resource see that
+ *   resource.
  * @param role Role offered on the shared resource.
  * @param externalLinks Links external to TIDAL API
- * @param maxUses Number of users other than the owner who may save the share. Absent when
- *   unlimited.
- * @param useCount Number of users other than the owner who have saved the share. Once it reaches
- *   maxUses, bearer access and acceptance end. Absent when maxUses is.
+ * @param maxUses Number of saves the share permits. Absent when unlimited.
+ * @param password Password a user must send to save the share. Write-only: never returned.
+ * @param useCount Number of saves so far, repeated saves included. Once it reaches maxUses, bearer
+ *   access and acceptance end. Absent when maxUses is.
  */
 @Serializable
 data class SharesAttributes(
 
-    /* Ways this share may be used to obtain access. BEARER permits access by presenting its code while active. VOUCHER permits an authenticated user to redeem it for a stored grant. Multiple modes may be enabled. */
+    /* Ways this share may be used to obtain access, decided by the server. Deprecated: clients must not rely on it. */
     @SerialName(value = "accessModes")
+    @Deprecated(message = "This property is deprecated.")
     val accessModes: kotlin.collections.Set<SharesAttributes.AccessModes>,
 
     /* Share code */
@@ -52,6 +55,9 @@ data class SharesAttributes(
     /* Time bearer access and acceptance expire; accepted grants remain valid. */
     @SerialName(value = "expiresAt") val expiresAt: kotlin.String,
 
+    /* Whether saving the share requires a password. A protected share never permits BEARER access, and only its owner and users with a role on its shared resource see that resource. */
+    @SerialName(value = "passwordProtected") val passwordProtected: kotlin.Boolean,
+
     /* Role offered on the shared resource. */
     @SerialName(value = "role") val role: SharesAttributes.Role,
 
@@ -59,17 +65,19 @@ data class SharesAttributes(
     @SerialName(value = "externalLinks")
     val externalLinks: kotlin.collections.List<ExternalLink>? = null,
 
-    /* Number of users other than the owner who may save the share. Absent when unlimited. */
+    /* Number of saves the share permits. Absent when unlimited. */
     @SerialName(value = "maxUses") val maxUses: kotlin.Int? = null,
 
-    /* Number of users other than the owner who have saved the share. Once it reaches maxUses, bearer access and acceptance end. Absent when maxUses is. */
+    /* Password a user must send to save the share. Write-only: never returned. */
+    @SerialName(value = "password") val password: kotlin.String? = null,
+
+    /* Number of saves so far, repeated saves included. Once it reaches maxUses, bearer access and acceptance end. Absent when maxUses is. */
     @SerialName(value = "useCount") val useCount: kotlin.Int? = null,
 ) {
 
     /**
-     * Ways this share may be used to obtain access. BEARER permits access by presenting its code
-     * while active. VOUCHER permits an authenticated user to redeem it for a stored grant. Multiple
-     * modes may be enabled.
+     * Ways this share may be used to obtain access, decided by the server. Deprecated: clients must
+     * not rely on it.
      *
      * Values: BEARER,VOUCHER
      */

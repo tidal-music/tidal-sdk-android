@@ -24,15 +24,13 @@ import kotlinx.serialization.Serializable
 
 /**
  * @param role Role offered by the share.
- * @param accessModes Ways this share may be used to obtain access. BEARER permits access by
- *   presenting its code while active. VOUCHER permits redemption for a stored grant. Defaults to
- *   both modes for every role. Playlist shares must include VOUCHER; bearer-only playlist shares
- *   are rejected with 400.
  * @param expiresAt Time bearer access and acceptance expire; must be in the future and at most a
  *   year away. Defaults to seven days after creation when omitted or null.
- * @param maxUses Number of users other than the owner who may save the share. Only a save counts as
- *   a use, and a used-up share also stops bearer access. Requires the VOUCHER access mode. Omit or
- *   send null for unlimited saves.
+ * @param maxUses Number of saves the share permits. Every save counts as a use, and a used-up share
+ *   also stops bearer access. Omit or send null for unlimited saves.
+ * @param password Password a user must send to save the share. Never returned. Must be printable
+ *   ASCII characters. A protected share permits no bearer access. A password on a playlist share is
+ *   rejected with 400.
  */
 @Serializable
 data class SharesCreateOperationPayloadDataAttributes(
@@ -40,17 +38,14 @@ data class SharesCreateOperationPayloadDataAttributes(
     /* Role offered by the share. */
     @SerialName(value = "role") val role: SharesCreateOperationPayloadDataAttributes.Role,
 
-    /* Ways this share may be used to obtain access. BEARER permits access by presenting its code while active. VOUCHER permits redemption for a stored grant. Defaults to both modes for every role. Playlist shares must include VOUCHER; bearer-only playlist shares are rejected with 400. */
-    @SerialName(value = "accessModes")
-    val accessModes:
-        kotlin.collections.Set<SharesCreateOperationPayloadDataAttributes.AccessModes>? =
-        null,
-
     /* Time bearer access and acceptance expire; must be in the future and at most a year away. Defaults to seven days after creation when omitted or null. */
     @SerialName(value = "expiresAt") val expiresAt: kotlin.String? = null,
 
-    /* Number of users other than the owner who may save the share. Only a save counts as a use, and a used-up share also stops bearer access. Requires the VOUCHER access mode. Omit or send null for unlimited saves. */
+    /* Number of saves the share permits. Every save counts as a use, and a used-up share also stops bearer access. Omit or send null for unlimited saves. */
     @SerialName(value = "maxUses") val maxUses: kotlin.Int? = null,
+
+    /* Password a user must send to save the share. Never returned. Must be printable ASCII characters. A protected share permits no bearer access. A password on a playlist share is rejected with 400. */
+    @SerialName(value = "password") val password: kotlin.String? = null,
 ) {
 
     /**
@@ -62,19 +57,5 @@ data class SharesCreateOperationPayloadDataAttributes(
     enum class Role(val value: kotlin.String) {
         @SerialName(value = "VIEWER") VIEWER("VIEWER"),
         @SerialName(value = "COLLABORATOR") COLLABORATOR("COLLABORATOR"),
-    }
-
-    /**
-     * Ways this share may be used to obtain access. BEARER permits access by presenting its code
-     * while active. VOUCHER permits redemption for a stored grant. Defaults to both modes for every
-     * role. Playlist shares must include VOUCHER; bearer-only playlist shares are rejected
-     * with 400.
-     *
-     * Values: BEARER,VOUCHER
-     */
-    @Serializable
-    enum class AccessModes(val value: kotlin.String) {
-        @SerialName(value = "BEARER") BEARER("BEARER"),
-        @SerialName(value = "VOUCHER") VOUCHER("VOUCHER"),
     }
 }

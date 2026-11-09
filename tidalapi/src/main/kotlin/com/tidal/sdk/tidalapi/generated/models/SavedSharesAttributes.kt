@@ -22,10 +22,13 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param createdAt Datetime of saved share creation (ISO 8601) */
+/**
+ * @param createdAt Time of this save (ISO 8601). Saving the share again returns the same id with
+ *   the time of that request.
+ */
 @Serializable
 data class SavedSharesAttributes(
 
-    /* Datetime of saved share creation (ISO 8601) */
+    /* Time of this save (ISO 8601). Saving the share again returns the same id with the time of that request. */
     @SerialName(value = "createdAt") val createdAt: kotlin.String
 ) {}

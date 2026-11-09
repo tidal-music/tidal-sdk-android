@@ -1,9 +1,11 @@
 package com.tidal.sdk.tidalapi.generated.apis
 
 import com.tidal.sdk.tidalapi.generated.infrastructure.CollectionFormats.*
+import com.tidal.sdk.tidalapi.generated.models.TrackSourceFilesCommentSummarySingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.TrackSourceFilesCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.TrackSourceFilesCreateSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.TrackSourceFilesOwnersMultiRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.TrackSourceFilesReactionSummarySingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.TrackSourceFilesSingleResourceDataDocument
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -15,7 +17,9 @@ interface TrackSourceFiles {
     /** enum for parameter includeLinkage */
     @Serializable
     enum class IncludeLinkageTrackSourceFilesIdGet(val value: kotlin.String) {
-        @SerialName(value = "owners") owners("owners")
+        @SerialName(value = "commentSummary") commentSummary("commentSummary"),
+        @SerialName(value = "owners") owners("owners"),
+        @SerialName(value = "reactionSummary") reactionSummary("reactionSummary"),
     }
 
     /**
@@ -32,7 +36,8 @@ interface TrackSourceFiles {
      * - 503: Service temporarily unavailable
      *
      * @param id Track source file id
-     * @param include Include related resources. Available relationships: owners (optional)
+     * @param include Include related resources. Available relationships: commentSummary, owners,
+     *   reactionSummary (optional)
      * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
      *   related content. (optional)
      * @param shareCode Share code used as a bearer credential for the resource. (optional)
@@ -46,6 +51,32 @@ interface TrackSourceFiles {
         @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<TrackSourceFilesSingleResourceDataDocument>
+
+    /**
+     * GET trackSourceFiles/{id}/relationships/commentSummary Get commentSummary relationship
+     * (\&quot;to-one\&quot;). Retrieves commentSummary relationship. Responses:
+     * - 200: Successful response
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
+     * - 429: Rate limit exceeded
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
+     *
+     * @param id Track source file id
+     * @param include Include related resources. Available relationships: commentSummary (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
+     * @return [TrackSourceFilesCommentSummarySingleRelationshipDataDocument]
+     */
+    @GET("trackSourceFiles/{id}/relationships/commentSummary")
+    suspend fun trackSourceFilesIdRelationshipsCommentSummaryGet(
+        @Path("id") id: kotlin.String,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
+    ): Response<TrackSourceFilesCommentSummarySingleRelationshipDataDocument>
 
     /**
      * GET trackSourceFiles/{id}/relationships/owners Get owners relationship
@@ -75,6 +106,32 @@ interface TrackSourceFiles {
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<TrackSourceFilesOwnersMultiRelationshipDataDocument>
+
+    /**
+     * GET trackSourceFiles/{id}/relationships/reactionSummary Get reactionSummary relationship
+     * (\&quot;to-one\&quot;). Retrieves reactionSummary relationship. Responses:
+     * - 200: Successful response
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
+     * - 429: Rate limit exceeded
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
+     *
+     * @param id Track source file id
+     * @param include Include related resources. Available relationships: reactionSummary (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
+     * @return [TrackSourceFilesReactionSummarySingleRelationshipDataDocument]
+     */
+    @GET("trackSourceFiles/{id}/relationships/reactionSummary")
+    suspend fun trackSourceFilesIdRelationshipsReactionSummaryGet(
+        @Path("id") id: kotlin.String,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
+    ): Response<TrackSourceFilesReactionSummarySingleRelationshipDataDocument>
 
     /**
      * POST trackSourceFiles Create single trackSourceFile. Create a track source file. &lt;p/&gt;

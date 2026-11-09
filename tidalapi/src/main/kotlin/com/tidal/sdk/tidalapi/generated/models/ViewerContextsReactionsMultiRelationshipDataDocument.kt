@@ -23,15 +23,15 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * Target resource types: `resourceSharingSettings`.
+ * Target resource types: `reactions`.
  *
  * @param links
  * @param `data`
  * @param included
  */
 @Serializable
-data class FolderItemsSubjectSharingSettingsSingleRelationshipDataDocument(
+data class ViewerContextsReactionsMultiRelationshipDataDocument(
     @SerialName(value = "links") val links: Links,
-    @SerialName(value = "data") val `data`: ResourceIdentifier? = null,
+    @SerialName(value = "data") val `data`: kotlin.collections.List<ResourceIdentifier>? = null,
     @SerialName(value = "included") val included: kotlin.collections.List<IncludedInner>? = null,
 ) {}

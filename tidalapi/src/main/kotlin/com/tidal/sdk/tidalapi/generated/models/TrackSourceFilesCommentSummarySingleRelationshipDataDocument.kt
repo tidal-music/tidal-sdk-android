@@ -23,16 +23,15 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param grants
- * @param shares
- * @param subject
+ * Target resource types: `commentSummaries`.
+ *
+ * @param links
+ * @param `data`
+ * @param included
  */
 @Serializable
-data class ResourceSharingSettingsRelationships(
-    @SerialName(value = "grants")
-    val grants: ResourceSharingSettingsGrantsMultiRelationshipDataDocument? = null,
-    @SerialName(value = "shares")
-    val shares: ResourceSharingSettingsSharesMultiRelationshipDataDocument? = null,
-    @SerialName(value = "subject")
-    val subject: ResourceSharingSettingsSubjectSingleRelationshipDataDocument? = null,
+data class TrackSourceFilesCommentSummarySingleRelationshipDataDocument(
+    @SerialName(value = "links") val links: Links,
+    @SerialName(value = "data") val `data`: ResourceIdentifier? = null,
+    @SerialName(value = "included") val included: kotlin.collections.List<IncludedInner>? = null,
 ) {}

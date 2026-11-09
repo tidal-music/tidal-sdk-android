@@ -86,8 +86,8 @@ interface SquareItems {
      *
      * @param filterOwnersId User id. Also accepts &#x60;me&#x60;.
      * @param filterOrigin Only items with this origin (e.g. &#x60;TIDAL&#x60;) (optional)
-     * @param filterQuery Word-prefix match on item titles, descriptions and abbreviations, and on
-     *   variation names, SKUs and UPCs (e.g. &#x60;tee&#x60;) (optional)
+     * @param filterSelfMatchesQuery Word-prefix match on item titles, descriptions and
+     *   abbreviations, and on variation names, SKUs and UPCs (e.g. &#x60;tee&#x60;) (optional)
      * @param include Include related resources. Available relationships: artworks, owners,
      *   variations (optional)
      * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
@@ -101,7 +101,7 @@ interface SquareItems {
         @Query("filter[owners.id]")
         filterOwnersId: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>,
         @Query("filter[origin]") filterOrigin: FilterOriginSquareItemsGet? = null,
-        @Query("filter[query]") filterQuery: kotlin.String? = null,
+        @Query("filter[self][matchesQuery]") filterSelfMatchesQuery: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("includeLinkage") includeLinkage: CSVParams? = null,

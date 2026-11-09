@@ -23,15 +23,17 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * Target resource types: `shares`.
- *
- * @param links
- * @param `data`
- * @param included
+ * @param id Resource id
+ * @param type Resource type
+ * @param meta
  */
 @Serializable
-data class ResourceSharingSettingsSharesMultiRelationshipDataDocument(
-    @SerialName(value = "links") val links: Links,
-    @SerialName(value = "data") val `data`: kotlin.collections.List<ResourceIdentifier>? = null,
-    @SerialName(value = "included") val included: kotlin.collections.List<IncludedInner>? = null,
+data class SharingSummariesSubjectResourceIdentifier(
+
+    /* Resource id */
+    @SerialName(value = "id") val id: kotlin.String,
+
+    /* Resource type */
+    @SerialName(value = "type") val type: kotlin.String,
+    @SerialName(value = "meta") val meta: SharingSummariesSubjectResourceIdentifierMeta? = null,
 ) {}
