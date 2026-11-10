@@ -86,6 +86,9 @@ tidal-sdk-eventproducer = { module = "com.tidal.sdk:eventproducer", version = "0
 tidal-sdk-player = { module = "com.tidal.sdk:player", version = "0.0.39" }
 tidal-sdk-tidalapi = { module = "com.tidal.sdk:tidalapi", version = "0.3.65" }
 
+# Tooling
+japicmp = { module = "com.github.siom79.japicmp:japicmp", version = "0.27.0" }
+
 # Testing
 test-androidx-espresso-core = "androidx.test.espresso:espresso-core:3.5.1"
 test-androidx-junit = { module = "androidx.test.ext:junit", version = "1.1.5" }
