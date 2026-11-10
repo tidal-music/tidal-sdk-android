@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.75] - 2026-11-10
+
 ### Fixed
 - Playback works with tidalapi 0.3.64 and later. Those versions reorder the `trackManifestsIdGet` parameters, so apps that use them failed every track with `NoSuchMethodError`. The player now builds against tidalapi 0.3.65.
 - `PlaybackState` is `NOT_PLAYING` while a transient audio focus loss, such as a phone call, keeps playback silent, and `PLAYING` again once focus returns. It stayed `PLAYING` throughout.
