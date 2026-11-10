@@ -13,11 +13,11 @@ internal class TrackManifestsStub : TrackManifests {
 
     override suspend fun trackManifestsIdGet(
         id: String,
-        manifestType: TrackManifests.ManifestTypeTrackManifestsIdGet,
+        adaptive: Boolean,
         formats: List<String>,
+        manifestType: TrackManifests.ManifestTypeTrackManifestsIdGet,
         uriScheme: TrackManifests.UriSchemeTrackManifestsIdGet,
         usage: TrackManifests.UsageTrackManifestsIdGet,
-        adaptive: Boolean,
         shareCode: String?,
     ): Response<TrackManifestsSingleResourceDataDocument> {
         val attributes =
