@@ -20,8 +20,12 @@
 package com.tidal.sdk.tidalapi.generated.models
 
 import kotlinx.serialization.Contextual
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param breakdownsStatus Status of artist statistics that may be withheld. OK: the data is
@@ -75,12 +79,28 @@ data class ArtistStreamsStatisticsAttributes(
      * withheld because too few people are counted to show it. UNAVAILABLE: not available at the
      * moment
      *
-     * Values: OK,SUPPRESSED,UNAVAILABLE
+     * Values: OK,SUPPRESSED,UNAVAILABLE,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = BreakdownsStatusSerializer::class)
     enum class BreakdownsStatus(val value: kotlin.String) {
         @SerialName(value = "OK") OK("OK"),
         @SerialName(value = "SUPPRESSED") SUPPRESSED("SUPPRESSED"),
         @SerialName(value = "UNAVAILABLE") UNAVAILABLE("UNAVAILABLE"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object BreakdownsStatusSerializer : KSerializer<BreakdownsStatus> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): BreakdownsStatus {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return BreakdownsStatus.entries.firstOrNull { it.value == value }
+                ?: BreakdownsStatus.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: BreakdownsStatus) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 }

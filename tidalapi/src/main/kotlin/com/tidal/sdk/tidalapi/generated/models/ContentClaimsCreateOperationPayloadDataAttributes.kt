@@ -19,8 +19,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 /** @param assertion */
 @Serializable
@@ -29,10 +33,26 @@ data class ContentClaimsCreateOperationPayloadDataAttributes(
     val assertion: ContentClaimsCreateOperationPayloadDataAttributes.Assertion
 ) {
 
-    /** Values: CLAIM,DISCLAIM */
-    @Serializable
+    /** Values: CLAIM,DISCLAIM,unknown_default_open_api */
+    @Serializable(with = AssertionSerializer::class)
     enum class Assertion(val value: kotlin.String) {
         @SerialName(value = "CLAIM") CLAIM("CLAIM"),
         @SerialName(value = "DISCLAIM") DISCLAIM("DISCLAIM"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object AssertionSerializer : KSerializer<Assertion> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): Assertion {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return Assertion.entries.firstOrNull { it.value == value }
+                ?: Assertion.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: Assertion) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 }

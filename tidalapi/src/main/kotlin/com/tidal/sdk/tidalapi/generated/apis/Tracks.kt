@@ -208,7 +208,8 @@ interface Tracks {
     ): Response<TracksSingleResourceDataDocument>
 
     /**
-     * PATCH tracks/{id} Update single track. Updates existing track. Responses:
+     * PATCH tracks/{id} Update single track. Updates existing track. A COLLABORATOR on the track
+     * may update it; changing accessType or isrc needs OWNER. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -275,8 +276,9 @@ interface Tracks {
     /**
      * PATCH tracks/{id}/relationships/albums Update albums relationship (\&quot;to-many\&quot;).
      * Moves the uploaded track to the supplied album, replacing its previous album association.
-     * Exactly one album is required; empty data cannot clear it. Returns an acknowledgement.
-     * Responses:
+     * Exactly one album is required; empty data cannot clear it. The caller needs COLLABORATOR on
+     * the track and the album. The album must be in the same user&#39;s folders as the track (409
+     * otherwise). Returns an acknowledgement. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -347,8 +349,8 @@ interface Tracks {
      * PATCH tracks/{id}/relationships/artists Update artists relationship (\&quot;to-many\&quot;).
      * Sets the track&#39;s artists, replacing the current list. Artists are listed in the order
      * given. Provide 1 to 10 distinct artists. You can add your own artist profile and the profiles
-     * of users who have owner or collaborator access to the track or its album. Only the
-     * track&#39;s owner can change its artists. Returns an acknowledgement. Responses:
+     * of users who have owner or collaborator access to the track or its album. Owners and
+     * collaborators can change its artists. Returns an acknowledgement. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

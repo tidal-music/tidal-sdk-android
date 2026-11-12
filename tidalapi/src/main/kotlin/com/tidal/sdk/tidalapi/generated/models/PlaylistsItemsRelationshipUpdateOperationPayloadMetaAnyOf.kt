@@ -19,8 +19,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param positionBefore
@@ -42,10 +46,25 @@ data class PlaylistsItemsRelationshipUpdateOperationPayloadMetaAnyOf(
      * removing memberships; REPLACE_ALL replaces the complete membership and its order where
      * applicable. Omission defaults to INCREMENTAL.
      *
-     * Values: INCREMENTAL
+     * Values: INCREMENTAL,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = ModeSerializer::class)
     enum class Mode(val value: kotlin.String) {
-        @SerialName(value = "INCREMENTAL") INCREMENTAL("INCREMENTAL")
+        @SerialName(value = "INCREMENTAL") INCREMENTAL("INCREMENTAL"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object ModeSerializer : KSerializer<Mode> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): Mode {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return Mode.entries.firstOrNull { it.value == value } ?: Mode.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: Mode) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 }

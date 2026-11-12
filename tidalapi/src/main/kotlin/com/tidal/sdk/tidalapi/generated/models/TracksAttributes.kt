@@ -19,8 +19,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param duration Duration (ISO 8601)
@@ -101,9 +105,9 @@ data class TracksAttributes(
     /**
      * Key
      *
-     * Values: UNKNOWN,C,CSharp,D,Eb,E,F,FSharp,G,Ab,A,Bb,B
+     * Values: UNKNOWN,C,CSharp,D,Eb,E,F,FSharp,G,Ab,A,Bb,B,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = KeySerializer::class)
     enum class Key(val value: kotlin.String) {
         @SerialName(value = "UNKNOWN") UNKNOWN("UNKNOWN"),
         @SerialName(value = "C") C("C"),
@@ -118,15 +122,30 @@ data class TracksAttributes(
         @SerialName(value = "A") A("A"),
         @SerialName(value = "Bb") Bb("Bb"),
         @SerialName(value = "B") B("B"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object KeySerializer : KSerializer<Key> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): Key {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return Key.entries.firstOrNull { it.value == value } ?: Key.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: Key) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 
     /**
      * The scale of the key
      *
      * Values:
-     * UNKNOWN,MAJOR,MINOR,AEOLIAN,BLUES,DORIAN,HARMONIC_MINOR,LOCRIAN,LYDIAN,MIXOLYDIAN,PENTATONIC_MAJOR,PHRYGIAN,MELODIC_MINOR,PENTATONIC_MINOR
+     * UNKNOWN,MAJOR,MINOR,AEOLIAN,BLUES,DORIAN,HARMONIC_MINOR,LOCRIAN,LYDIAN,MIXOLYDIAN,PENTATONIC_MAJOR,PHRYGIAN,MELODIC_MINOR,PENTATONIC_MINOR,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = KeyScaleSerializer::class)
     enum class KeyScale(val value: kotlin.String) {
         @SerialName(value = "UNKNOWN") UNKNOWN("UNKNOWN"),
         @SerialName(value = "MAJOR") MAJOR("MAJOR"),
@@ -142,30 +161,78 @@ data class TracksAttributes(
         @SerialName(value = "PHRYGIAN") PHRYGIAN("PHRYGIAN"),
         @SerialName(value = "MELODIC_MINOR") MELODIC_MINOR("MELODIC_MINOR"),
         @SerialName(value = "PENTATONIC_MINOR") PENTATONIC_MINOR("PENTATONIC_MINOR"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object KeyScaleSerializer : KSerializer<KeyScale> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): KeyScale {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return KeyScale.entries.firstOrNull { it.value == value }
+                ?: KeyScale.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: KeyScale) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 
     /**
      * Access type
      *
-     * Values: PUBLIC,UNLISTED,PRIVATE
+     * Values: PUBLIC,UNLISTED,PRIVATE,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = AccessTypeSerializer::class)
     enum class AccessType(val value: kotlin.String) {
         @SerialName(value = "PUBLIC") PUBLIC("PUBLIC"),
         @SerialName(value = "UNLISTED") UNLISTED("UNLISTED"),
         @SerialName(value = "PRIVATE") PRIVATE("PRIVATE"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object AccessTypeSerializer : KSerializer<AccessType> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): AccessType {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return AccessType.entries.firstOrNull { it.value == value }
+                ?: AccessType.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: AccessType) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 
     /**
      * Available usage for this track. Deprecated: use 'usageRules' instead. This field will be
      * removed in a future version.
      *
-     * Values: STREAM,DJ,STEM
+     * Values: STREAM,DJ,STEM,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = AvailabilitySerializer::class)
     enum class Availability(val value: kotlin.String) {
         @SerialName(value = "STREAM") STREAM("STREAM"),
         @SerialName(value = "DJ") DJ("DJ"),
         @SerialName(value = "STEM") STEM("STEM"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object AvailabilitySerializer : KSerializer<Availability> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): Availability {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return Availability.entries.firstOrNull { it.value == value }
+                ?: Availability.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: Availability) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 }

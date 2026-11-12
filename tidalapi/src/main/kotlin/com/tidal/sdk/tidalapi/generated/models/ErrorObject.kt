@@ -26,6 +26,7 @@ import kotlinx.serialization.Serializable
  * @param code application-specific error code
  * @param detail human-readable explanation specific to this occurrence of the problem
  * @param id unique identifier for this particular occurrence of the problem
+ * @param meta
  * @param source
  * @param status HTTP status code applicable to this problem
  */
@@ -40,6 +41,7 @@ data class ErrorObject(
 
     /* unique identifier for this particular occurrence of the problem */
     @SerialName(value = "id") val id: kotlin.String? = null,
+    @SerialName(value = "meta") val meta: kotlinx.serialization.json.JsonObject? = null,
     @SerialName(value = "source") val source: ErrorObjectSource? = null,
 
     /* HTTP status code applicable to this problem */

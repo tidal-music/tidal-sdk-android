@@ -19,8 +19,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param accessModes Ways this share may be used to obtain access, decided by the server.
@@ -79,22 +83,53 @@ data class SharesAttributes(
      * Ways this share may be used to obtain access, decided by the server. Deprecated: clients must
      * not rely on it.
      *
-     * Values: BEARER,VOUCHER
+     * Values: BEARER,VOUCHER,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = AccessModesSerializer::class)
     enum class AccessModes(val value: kotlin.String) {
         @SerialName(value = "BEARER") BEARER("BEARER"),
         @SerialName(value = "VOUCHER") VOUCHER("VOUCHER"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object AccessModesSerializer : KSerializer<AccessModes> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): AccessModes {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return AccessModes.entries.firstOrNull { it.value == value }
+                ?: AccessModes.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: AccessModes) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 
     /**
      * Role offered on the shared resource.
      *
-     * Values: VIEWER,COLLABORATOR
+     * Values: VIEWER,COLLABORATOR,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = RoleSerializer::class)
     enum class Role(val value: kotlin.String) {
         @SerialName(value = "VIEWER") VIEWER("VIEWER"),
         @SerialName(value = "COLLABORATOR") COLLABORATOR("COLLABORATOR"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object RoleSerializer : KSerializer<Role> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): Role {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return Role.entries.firstOrNull { it.value == value } ?: Role.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: Role) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 }

@@ -22,23 +22,10 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param redactionReason Reason why data has been redacted on this page */
+/** @param password Password of a password-protected invitation. Ignored for other invitations. */
 @Serializable
-data class DynamicPagesResourceObjectMeta(
+data class ResourceGrantsCreateOperationPayloadMeta(
 
-    /* Reason why data has been redacted on this page */
-    @SerialName(value = "redactionReason")
-    val redactionReason: DynamicPagesResourceObjectMeta.RedactionReason? = null
-) {
-
-    /**
-     * Reason why data has been redacted on this page
-     *
-     * Values: NO_BIRTHDAY,MINOR
-     */
-    @Serializable
-    enum class RedactionReason(val value: kotlin.String) {
-        @SerialName(value = "NO_BIRTHDAY") NO_BIRTHDAY("NO_BIRTHDAY"),
-        @SerialName(value = "MINOR") MINOR("MINOR"),
-    }
-}
+    /* Password of a password-protected invitation. Ignored for other invitations. */
+    @SerialName(value = "password") val password: kotlin.String? = null
+) {}

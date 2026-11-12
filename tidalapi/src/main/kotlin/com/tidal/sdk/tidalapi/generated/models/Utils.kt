@@ -93,6 +93,10 @@ fun getOneOfSerializer() = SerializersModule {
             ReactionSummariesResourceObject.serializer(),
         )
         subclass(ReactionsResourceObject::class, ReactionsResourceObject.serializer())
+        subclass(
+            ResourceGrantInvitationsResourceObject::class,
+            ResourceGrantInvitationsResourceObject.serializer(),
+        )
         subclass(ResourceGrantsResourceObject::class, ResourceGrantsResourceObject.serializer())
         subclass(SavedSharesResourceObject::class, SavedSharesResourceObject.serializer())
         subclass(ScopesResourceObject::class, ScopesResourceObject.serializer())
@@ -181,6 +185,7 @@ fun getOneOfSerializer() = SerializersModule {
             UserDataExportRequestsResourceObject::class,
             UserDataExportRequestsResourceObject.serializer(),
         )
+        subclass(UserDataExportsResourceObject::class, UserDataExportsResourceObject.serializer())
         subclass(
             UserDiscoveryMixesResourceObject::class,
             UserDiscoveryMixesResourceObject.serializer(),

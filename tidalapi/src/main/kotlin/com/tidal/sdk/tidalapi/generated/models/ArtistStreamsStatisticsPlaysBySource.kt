@@ -19,8 +19,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 /**
  * Plays by where they started. other holds the plays not in items. Without a note, items and other
@@ -50,12 +54,27 @@ data class ArtistStreamsStatisticsPlaysBySource(
      * withheld, so the breakdown adds up to less than the total. UNKNOWN: a note this API does not
      * know, so the breakdown may not add up
      *
-     * Values: GROUPED,HIDDEN,UNKNOWN
+     * Values: GROUPED,HIDDEN,UNKNOWN,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = NoteSerializer::class)
     enum class Note(val value: kotlin.String) {
         @SerialName(value = "GROUPED") GROUPED("GROUPED"),
         @SerialName(value = "HIDDEN") HIDDEN("HIDDEN"),
         @SerialName(value = "UNKNOWN") UNKNOWN("UNKNOWN"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object NoteSerializer : KSerializer<Note> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): Note {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return Note.entries.firstOrNull { it.value == value } ?: Note.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: Note) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 }

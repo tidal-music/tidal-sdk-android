@@ -19,8 +19,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param certificateStatus Current lifecycle status of the certificate
@@ -59,26 +63,58 @@ data class ClientCertificatesAttributes(
     /**
      * Current lifecycle status of the certificate
      *
-     * Values: NOT_ISSUED,ACTIVE,EXPIRED,REVOKED
+     * Values: NOT_ISSUED,ACTIVE,EXPIRED,REVOKED,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = CertificateStatusSerializer::class)
     enum class CertificateStatus(val value: kotlin.String) {
         @SerialName(value = "NOT_ISSUED") NOT_ISSUED("NOT_ISSUED"),
         @SerialName(value = "ACTIVE") ACTIVE("ACTIVE"),
         @SerialName(value = "EXPIRED") EXPIRED("EXPIRED"),
         @SerialName(value = "REVOKED") REVOKED("REVOKED"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object CertificateStatusSerializer : KSerializer<CertificateStatus> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): CertificateStatus {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return CertificateStatus.entries.firstOrNull { it.value == value }
+                ?: CertificateStatus.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: CertificateStatus) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 
     /**
      * Status of certificate and package provisioning
      *
-     * Values: PENDING,PROCESSING,OK,ERROR
+     * Values: PENDING,PROCESSING,OK,ERROR,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = ProvisioningStatusSerializer::class)
     enum class ProvisioningStatus(val value: kotlin.String) {
         @SerialName(value = "PENDING") PENDING("PENDING"),
         @SerialName(value = "PROCESSING") PROCESSING("PROCESSING"),
         @SerialName(value = "OK") OK("OK"),
         @SerialName(value = "ERROR") ERROR("ERROR"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object ProvisioningStatusSerializer : KSerializer<ProvisioningStatus> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): ProvisioningStatus {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return ProvisioningStatus.entries.firstOrNull { it.value == value }
+                ?: ProvisioningStatus.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: ProvisioningStatus) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 }

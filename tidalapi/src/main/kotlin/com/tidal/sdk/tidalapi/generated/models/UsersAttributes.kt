@@ -19,8 +19,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param country ISO 3166-1 alpha-2 country code
@@ -64,14 +68,31 @@ data class UsersAttributes(
     /**
      * Developer access tier for this user.
      *
-     * Values: THIRD_PARTY,THIRD_PARTY_PROD,PARTNER,PARTNER_TIDAL_CONNECT,INTERNAL
+     * Values:
+     * THIRD_PARTY,THIRD_PARTY_PROD,PARTNER,PARTNER_TIDAL_CONNECT,INTERNAL,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = DeveloperAccessTierSerializer::class)
     enum class DeveloperAccessTier(val value: kotlin.String) {
         @SerialName(value = "THIRD_PARTY") THIRD_PARTY("THIRD_PARTY"),
         @SerialName(value = "THIRD_PARTY_PROD") THIRD_PARTY_PROD("THIRD_PARTY_PROD"),
         @SerialName(value = "PARTNER") PARTNER("PARTNER"),
         @SerialName(value = "PARTNER_TIDAL_CONNECT") PARTNER_TIDAL_CONNECT("PARTNER_TIDAL_CONNECT"),
         @SerialName(value = "INTERNAL") INTERNAL("INTERNAL"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object DeveloperAccessTierSerializer : KSerializer<DeveloperAccessTier> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): DeveloperAccessTier {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return DeveloperAccessTier.entries.firstOrNull { it.value == value }
+                ?: DeveloperAccessTier.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: DeveloperAccessTier) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 }

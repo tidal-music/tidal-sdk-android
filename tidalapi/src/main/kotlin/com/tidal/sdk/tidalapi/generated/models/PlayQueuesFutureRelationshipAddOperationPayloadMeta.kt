@@ -19,8 +19,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param mode
@@ -40,9 +44,9 @@ data class PlayQueuesFutureRelationshipAddOperationPayloadMeta(
 
     /**
      * Values:
-     * ADD_TO_FRONT,ADD_TO_BACK,ADD_BEFORE,REPLACE_ALL,REPLACE_ALL_AND_CURRENT,ADD_TO_FRONT_REPLACE_CURRENT
+     * ADD_TO_FRONT,ADD_TO_BACK,ADD_BEFORE,REPLACE_ALL,REPLACE_ALL_AND_CURRENT,ADD_TO_FRONT_REPLACE_CURRENT,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = ModeSerializer::class)
     enum class Mode(val value: kotlin.String) {
         @SerialName(value = "ADD_TO_FRONT") ADD_TO_FRONT("ADD_TO_FRONT"),
         @SerialName(value = "ADD_TO_BACK") ADD_TO_BACK("ADD_TO_BACK"),
@@ -52,5 +56,20 @@ data class PlayQueuesFutureRelationshipAddOperationPayloadMeta(
         REPLACE_ALL_AND_CURRENT("REPLACE_ALL_AND_CURRENT"),
         @SerialName(value = "ADD_TO_FRONT_REPLACE_CURRENT")
         ADD_TO_FRONT_REPLACE_CURRENT("ADD_TO_FRONT_REPLACE_CURRENT"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object ModeSerializer : KSerializer<Mode> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): Mode {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return Mode.entries.firstOrNull { it.value == value } ?: Mode.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: Mode) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 }

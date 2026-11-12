@@ -19,8 +19,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param commonTrackId
@@ -36,9 +40,25 @@ data class ThirdPartyLyricsProvider(
     @SerialName(value = "source") val source: ThirdPartyLyricsProvider.Source,
 ) : LyricsProvider {
 
-    /** Values: THIRD_PARTY */
-    @Serializable
+    /** Values: THIRD_PARTY,unknown_default_open_api */
+    @Serializable(with = SourceSerializer::class)
     enum class Source(val value: kotlin.String) {
-        @SerialName(value = "THIRD_PARTY") THIRD_PARTY("THIRD_PARTY")
+        @SerialName(value = "THIRD_PARTY") THIRD_PARTY("THIRD_PARTY"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object SourceSerializer : KSerializer<Source> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): Source {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return Source.entries.firstOrNull { it.value == value }
+                ?: Source.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: Source) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 }

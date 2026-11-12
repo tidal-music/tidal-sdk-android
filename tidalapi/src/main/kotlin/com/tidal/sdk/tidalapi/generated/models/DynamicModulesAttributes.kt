@@ -19,8 +19,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param headerActions Actions available in the module header. SPOTLIGHT_INFO opens information
@@ -69,12 +73,28 @@ data class DynamicModulesAttributes(
      * Actions available in the module header. SPOTLIGHT_INFO opens information about TIDAL
      * Spotlight. Clients choose the presentation and ignore unsupported actions, including UNKNOWN.
      *
-     * Values: SPOTLIGHT_INFO,UNKNOWN
+     * Values: SPOTLIGHT_INFO,UNKNOWN,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = HeaderActionsSerializer::class)
     enum class HeaderActions(val value: kotlin.String) {
         @SerialName(value = "SPOTLIGHT_INFO") SPOTLIGHT_INFO("SPOTLIGHT_INFO"),
         @SerialName(value = "UNKNOWN") UNKNOWN("UNKNOWN"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object HeaderActionsSerializer : KSerializer<HeaderActions> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): HeaderActions {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return HeaderActions.entries.firstOrNull { it.value == value }
+                ?: HeaderActions.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: HeaderActions) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 
     /**
@@ -87,14 +107,30 @@ data class DynamicModulesAttributes(
      * rail. UNKNOWN is the forward-compatible default; clients should skip the module or use a safe
      * default.
      *
-     * Values: GRID,LIST,SHORTCUT,UNKNOWN
+     * Values: GRID,LIST,SHORTCUT,UNKNOWN,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = PreviewLayoutSerializer::class)
     enum class PreviewLayout(val value: kotlin.String) {
         @SerialName(value = "GRID") GRID("GRID"),
         @SerialName(value = "LIST") LIST("LIST"),
         @SerialName(value = "SHORTCUT") SHORTCUT("SHORTCUT"),
         @SerialName(value = "UNKNOWN") UNKNOWN("UNKNOWN"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object PreviewLayoutSerializer : KSerializer<PreviewLayout> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): PreviewLayout {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return PreviewLayout.entries.firstOrNull { it.value == value }
+                ?: PreviewLayout.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: PreviewLayout) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 
     /**
@@ -106,12 +142,28 @@ data class DynamicModulesAttributes(
      * cells, which clients may arrange in one or more columns or as a table. UNKNOWN is the
      * forward-compatible default; clients should skip the module or use a safe default.
      *
-     * Values: GRID,LIST,UNKNOWN
+     * Values: GRID,LIST,UNKNOWN,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = ViewAllLayoutSerializer::class)
     enum class ViewAllLayout(val value: kotlin.String) {
         @SerialName(value = "GRID") GRID("GRID"),
         @SerialName(value = "LIST") LIST("LIST"),
         @SerialName(value = "UNKNOWN") UNKNOWN("UNKNOWN"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object ViewAllLayoutSerializer : KSerializer<ViewAllLayout> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): ViewAllLayout {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return ViewAllLayout.entries.firstOrNull { it.value == value }
+                ?: ViewAllLayout.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: ViewAllLayout) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 }

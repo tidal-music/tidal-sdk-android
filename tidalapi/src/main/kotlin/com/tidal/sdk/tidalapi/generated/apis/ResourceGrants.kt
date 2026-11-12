@@ -5,6 +5,7 @@ import com.tidal.sdk.tidalapi.generated.models.MutationResponseDocument
 import com.tidal.sdk.tidalapi.generated.models.ResourceGrantsCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.ResourceGrantsCreateSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ResourceGrantsGranteeSingleRelationshipDataDocument
+import com.tidal.sdk.tidalapi.generated.models.ResourceGrantsInvitationSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ResourceGrantsMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ResourceGrantsSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ResourceGrantsSubjectSingleRelationshipDataDocument
@@ -29,6 +30,7 @@ interface ResourceGrants {
     @Serializable
     enum class IncludeLinkageResourceGrantsGet(val value: kotlin.String) {
         @SerialName(value = "grantee") grantee("grantee"),
+        @SerialName(value = "invitation") invitation("invitation"),
         @SerialName(value = "subject") subject("subject"),
     }
 
@@ -48,18 +50,14 @@ interface ResourceGrants {
      * @param filterGrantee Filter by grantee. Use &#x60;groups:everyone&#x60; for the Everyone
      *   group. Also accepts &#x60;users:me&#x60;. (optional)
      * @param filterRole One of: VIEWER, COLLABORATOR, OWNER (e.g. &#x60;VIEWER&#x60;) (optional)
-     * @param filterSelfAppliesTo Album, track or folder owned by the caller; playlists return 400.
-     *   Selects every live stored grant on the resource and its ancestor folders and albums, direct
-     *   and from saved share links. Each grant keeps the subject it is stored on, so a grantee can
-     *   have several. Does not expand groups or bearer access or resolve effective permissions.
-     *   Cannot be combined with other filters. Missing or non-owned resources return no records.
-     *   Ordered by grantee, each grantee&#39;s nearest grants first; at most 20 grants per page.
-     *   Also accepts &#x60;folders:me&#x60;. (optional)
+     * @param filterSelfAppliesTo Album, track or folder whose grants are listed, including those on
+     *   its ancestor folders and albums. Each grant keeps the subject it is stored on. Also accepts
+     *   &#x60;folders:me&#x60;. (optional)
      * @param filterSubject Filter by subject. Required unless &#x60;filter[self][appliesTo]&#x60;
      *   is used. The subject&#39;s owner reads all its grants; other callers read only grants made
      *   directly to them. Also accepts &#x60;folders:me&#x60;. (optional)
-     * @param include Include related resources. Available relationships: grantee, subject
-     *   (optional)
+     * @param include Include related resources. Available relationships: grantee, invitation,
+     *   subject (optional)
      * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
      *   related content. (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
@@ -113,6 +111,7 @@ interface ResourceGrants {
     @Serializable
     enum class IncludeLinkageResourceGrantsIdGet(val value: kotlin.String) {
         @SerialName(value = "grantee") grantee("grantee"),
+        @SerialName(value = "invitation") invitation("invitation"),
         @SerialName(value = "subject") subject("subject"),
     }
 
@@ -130,8 +129,8 @@ interface ResourceGrants {
      * - 503: Service temporarily unavailable
      *
      * @param id Opaque resource grant ID
-     * @param include Include related resources. Available relationships: grantee, subject
-     *   (optional)
+     * @param include Include related resources. Available relationships: grantee, invitation,
+     *   subject (optional)
      * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
      *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
@@ -206,6 +205,34 @@ interface ResourceGrants {
     ): Response<ResourceGrantsGranteeSingleRelationshipDataDocument>
 
     /**
+     * GET resourceGrants/{id}/relationships/invitation Get invitation relationship
+     * (\&quot;to-one\&quot;). Retrieves invitation relationship. Responses:
+     * - 200: Successful response
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
+     * - 429: Rate limit exceeded
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
+     *
+     * @param id Opaque resource grant ID
+     * @param include Include related resources. Available relationships: invitation (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: invitation.subject (optional)
+     * @return [ResourceGrantsInvitationSingleRelationshipDataDocument]
+     */
+    @GET("resourceGrants/{id}/relationships/invitation")
+    suspend fun resourceGrantsIdRelationshipsInvitationGet(
+        @Path("id") id: kotlin.String,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
+    ): Response<ResourceGrantsInvitationSingleRelationshipDataDocument>
+
+    /**
      * GET resourceGrants/{id}/relationships/subject Get subject relationship
      * (\&quot;to-one\&quot;). Retrieves subject relationship. Responses:
      * - 200: Successful response
@@ -234,16 +261,24 @@ interface ResourceGrants {
     ): Response<ResourceGrantsSubjectSingleRelationshipDataDocument>
 
     /**
-     * POST resourceGrants Create single resourceGrant. Creates a new resourceGrant. Responses:
+     * POST resourceGrants Create single resourceGrant. Create a direct grant from &#x60;role&#x60;,
+     * &#x60;subject&#x60; and &#x60;grantee&#x60;. Alternatively, redeem an invitation with only
+     * the &#x60;invitation&#x60; relationship: the caller receives the invitation&#39;s role on its
+     * subject, and the response is the caller&#39;s grant. Redeeming again returns the same grant.
+     * Every redemption, repeated ones included, needs a password-protected invitation&#39;s
+     * password and counts as a use of a limited invitation; password attempts are rate limited. The
+     * invitation&#39;s creator cannot redeem it. Responses:
      * - 201: Successful response
      * - 400: Invalid request
+     * - 403: This invitation can no longer be accepted; The invitation is password protected; send
+     *   its password; The invitation password is incorrect
      * - 404: Resource not found
      * - 405: HTTP method not allowed
      * - 406: No acceptable response media type
      * - 409: Request already in progress for this idempotency key
      * - 415: Unsupported request media type or encoding
      * - 422: Idempotency key reused for a different request
-     * - 429: Rate limit exceeded
+     * - 429: Too many invitation password attempts; try again later
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *

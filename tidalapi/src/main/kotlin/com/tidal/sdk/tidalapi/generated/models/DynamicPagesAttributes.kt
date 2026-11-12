@@ -19,8 +19,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param pageType Type of the page eg. home, artist
@@ -40,9 +44,9 @@ data class DynamicPagesAttributes(
      * Type of the page eg. home, artist
      *
      * Values:
-     * HOME_STATIC,HOME_UPLOADS,HOME_EDITORIAL,HOME_FREE,STUDIO_HOME,ARTIST,ALBUM,PLAYLIST,TRACK,VIDEO
+     * HOME_STATIC,HOME_UPLOADS,HOME_EDITORIAL,HOME_FREE,STUDIO_HOME,ARTIST,ALBUM,PLAYLIST,TRACK,VIDEO,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = PageTypeSerializer::class)
     enum class PageType(val value: kotlin.String) {
         @SerialName(value = "HOME_STATIC") HOME_STATIC("HOME_STATIC"),
         @SerialName(value = "HOME_UPLOADS") HOME_UPLOADS("HOME_UPLOADS"),
@@ -54,5 +58,21 @@ data class DynamicPagesAttributes(
         @SerialName(value = "PLAYLIST") PLAYLIST("PLAYLIST"),
         @SerialName(value = "TRACK") TRACK("TRACK"),
         @SerialName(value = "VIDEO") VIDEO("VIDEO"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object PageTypeSerializer : KSerializer<PageType> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): PageType {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return PageType.entries.firstOrNull { it.value == value }
+                ?: PageType.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: PageType) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 }

@@ -22,8 +22,12 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param `data` */
+/**
+ * @param `data`
+ * @param meta
+ */
 @Serializable
 data class ResourceGrantsCreateOperationPayload(
-    @SerialName(value = "data") val `data`: ResourceGrantsCreateOperationPayloadData
+    @SerialName(value = "data") val `data`: ResourceGrantsCreateOperationPayloadData,
+    @SerialName(value = "meta") val meta: ResourceGrantsCreateOperationPayloadMeta? = null,
 ) {}

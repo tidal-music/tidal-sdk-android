@@ -19,25 +19,46 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param code
  * @param status
  * @param detail
+ * @param meta
  */
 @Serializable
 data class AtomicOperations403ResponseBodyErrorsInner(
     @SerialName(value = "code") val code: AtomicOperations403ResponseBodyErrorsInner.Code,
     @SerialName(value = "status") val status: kotlin.String,
     @SerialName(value = "detail") val detail: kotlin.String? = null,
+    @SerialName(value = "meta") val meta: MissingTermsMeta? = null,
 ) {
 
-    /** Values: REQUIRED_TERMS_NOT_ACCEPTED */
-    @Serializable
+    /** Values: REQUIRED_TERMS_NOT_ACCEPTED,unknown_default_open_api */
+    @Serializable(with = CodeSerializer::class)
     enum class Code(val value: kotlin.String) {
         @SerialName(value = "REQUIRED_TERMS_NOT_ACCEPTED")
-        REQUIRED_TERMS_NOT_ACCEPTED("REQUIRED_TERMS_NOT_ACCEPTED")
+        REQUIRED_TERMS_NOT_ACCEPTED("REQUIRED_TERMS_NOT_ACCEPTED"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object CodeSerializer : KSerializer<Code> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): Code {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return Code.entries.firstOrNull { it.value == value } ?: Code.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: Code) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 }

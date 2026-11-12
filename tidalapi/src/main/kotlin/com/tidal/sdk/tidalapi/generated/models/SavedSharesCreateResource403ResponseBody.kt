@@ -26,5 +26,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class SavedSharesCreateResource403ResponseBody(
     @SerialName(value = "errors")
-    val errors: kotlin.collections.List<SavedSharesCreateResource403ResponseBodyErrorsInner>
+    val errors: kotlin.collections.List<ResourceGrantsCreateResource403ResponseBodyErrorsInner>
 ) {}

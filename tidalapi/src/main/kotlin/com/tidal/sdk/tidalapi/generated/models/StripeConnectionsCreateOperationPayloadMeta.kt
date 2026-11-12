@@ -19,8 +19,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param integrationType Integration type for Stripe onboarding
@@ -45,11 +49,27 @@ data class StripeConnectionsCreateOperationPayloadMeta(
     /**
      * Integration type for Stripe onboarding
      *
-     * Values: REDIRECT,EMBEDDED
+     * Values: REDIRECT,EMBEDDED,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = IntegrationTypeSerializer::class)
     enum class IntegrationType(val value: kotlin.String) {
         @SerialName(value = "REDIRECT") REDIRECT("REDIRECT"),
         @SerialName(value = "EMBEDDED") EMBEDDED("EMBEDDED"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object IntegrationTypeSerializer : KSerializer<IntegrationType> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): IntegrationType {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return IntegrationType.entries.firstOrNull { it.value == value }
+                ?: IntegrationType.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: IntegrationType) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 }

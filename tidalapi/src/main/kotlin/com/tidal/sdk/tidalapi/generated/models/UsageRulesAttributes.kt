@@ -19,8 +19,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param countryCode Country code (ISO 3166-1 alpha-2)
@@ -61,39 +65,85 @@ data class UsageRulesAttributes(
     /**
      * Usage types allowed for free/ad-supported model
      *
-     * Values: STREAM,DJ,STEM,DOWNLOAD
+     * Values: STREAM,DJ,STEM,DOWNLOAD,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = FreeSerializer::class)
     enum class Free(val value: kotlin.String) {
         @SerialName(value = "STREAM") STREAM("STREAM"),
         @SerialName(value = "DJ") DJ("DJ"),
         @SerialName(value = "STEM") STEM("STEM"),
         @SerialName(value = "DOWNLOAD") DOWNLOAD("DOWNLOAD"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object FreeSerializer : KSerializer<Free> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): Free {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return Free.entries.firstOrNull { it.value == value } ?: Free.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: Free) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 
     /**
      * Usage types allowed for paid/purchase model
      *
-     * Values: STREAM,DJ,STEM,DOWNLOAD
+     * Values: STREAM,DJ,STEM,DOWNLOAD,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = PaidSerializer::class)
     enum class Paid(val value: kotlin.String) {
         @SerialName(value = "STREAM") STREAM("STREAM"),
         @SerialName(value = "DJ") DJ("DJ"),
         @SerialName(value = "STEM") STEM("STEM"),
         @SerialName(value = "DOWNLOAD") DOWNLOAD("DOWNLOAD"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object PaidSerializer : KSerializer<Paid> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): Paid {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return Paid.entries.firstOrNull { it.value == value } ?: Paid.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: Paid) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 
     /**
      * Usage types allowed for subscription model
      *
-     * Values: STREAM,DJ,STEM,DOWNLOAD
+     * Values: STREAM,DJ,STEM,DOWNLOAD,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = SubscriptionSerializer::class)
     enum class Subscription(val value: kotlin.String) {
         @SerialName(value = "STREAM") STREAM("STREAM"),
         @SerialName(value = "DJ") DJ("DJ"),
         @SerialName(value = "STEM") STEM("STEM"),
         @SerialName(value = "DOWNLOAD") DOWNLOAD("DOWNLOAD"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object SubscriptionSerializer : KSerializer<Subscription> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): Subscription {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return Subscription.entries.firstOrNull { it.value == value }
+                ?: Subscription.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: Subscription) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 }
