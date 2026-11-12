@@ -45,6 +45,7 @@ import com.tidal.sdk.tidalapi.generated.apis.Providers
 import com.tidal.sdk.tidalapi.generated.apis.Purchases
 import com.tidal.sdk.tidalapi.generated.apis.ReactionSummaries
 import com.tidal.sdk.tidalapi.generated.apis.Reactions
+import com.tidal.sdk.tidalapi.generated.apis.ResourceGrantInvitations
 import com.tidal.sdk.tidalapi.generated.apis.ResourceGrants
 import com.tidal.sdk.tidalapi.generated.apis.SavedShares
 import com.tidal.sdk.tidalapi.generated.apis.Scopes
@@ -79,6 +80,7 @@ import com.tidal.sdk.tidalapi.generated.apis.UserCollectionTracks
 import com.tidal.sdk.tidalapi.generated.apis.UserCollectionVideos
 import com.tidal.sdk.tidalapi.generated.apis.UserDailyMixes
 import com.tidal.sdk.tidalapi.generated.apis.UserDataExportRequests
+import com.tidal.sdk.tidalapi.generated.apis.UserDataExports
 import com.tidal.sdk.tidalapi.generated.apis.UserDiscoveryMixes
 import com.tidal.sdk.tidalapi.generated.apis.UserFeedItems
 import com.tidal.sdk.tidalapi.generated.apis.UserFeeds
@@ -347,6 +349,14 @@ class TidalApiClient(
         return retrofit.create(Reactions::class.java)
     }
 
+    /**
+     * Returns an instance of the [ResourceGrantInvitations] which can be used to make API calls to
+     * the
+     */
+    fun createResourceGrantInvitations(): ResourceGrantInvitations {
+        return retrofit.create(ResourceGrantInvitations::class.java)
+    }
+
     /** Returns an instance of the [ResourceGrants] which can be used to make API calls to the */
     fun createResourceGrants(): ResourceGrants {
         return retrofit.create(ResourceGrants::class.java)
@@ -550,6 +560,11 @@ class TidalApiClient(
      */
     fun createUserDataExportRequests(): UserDataExportRequests {
         return retrofit.create(UserDataExportRequests::class.java)
+    }
+
+    /** Returns an instance of the [UserDataExports] which can be used to make API calls to the */
+    fun createUserDataExports(): UserDataExports {
+        return retrofit.create(UserDataExports::class.java)
     }
 
     /**

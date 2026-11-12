@@ -19,8 +19,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param currency Currency of every price on the item
@@ -62,21 +66,53 @@ data class SquareItemsAttributes(
     /**
      * Currency of every price on the item
      *
-     * Values: USD
+     * Values: USD,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = CurrencySerializer::class)
     enum class Currency(val value: kotlin.String) {
-        @SerialName(value = "USD") USD("USD")
+        @SerialName(value = "USD") USD("USD"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object CurrencySerializer : KSerializer<Currency> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): Currency {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return Currency.entries.firstOrNull { it.value == value }
+                ?: Currency.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: Currency) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 
     /**
      * Where the item was created
      *
-     * Values: TIDAL,OTHER
+     * Values: TIDAL,OTHER,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = OriginSerializer::class)
     enum class Origin(val value: kotlin.String) {
         @SerialName(value = "TIDAL") TIDAL("TIDAL"),
         @SerialName(value = "OTHER") OTHER("OTHER"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object OriginSerializer : KSerializer<Origin> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): Origin {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return Origin.entries.firstOrNull { it.value == value }
+                ?: Origin.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: Origin) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 }

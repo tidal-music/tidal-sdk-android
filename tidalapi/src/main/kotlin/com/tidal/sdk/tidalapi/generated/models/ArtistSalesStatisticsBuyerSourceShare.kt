@@ -19,8 +19,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param shareOfOrders Share of orders
@@ -39,14 +43,31 @@ data class ArtistSalesStatisticsBuyerSourceShare(
     /**
      * Where buyers came from. UNKNOWN: a source this API does not know
      *
-     * Values: ALBUM_AND_TRACK_PAGES,ARTIST_PROFILE,SHARED_LINKS,TIDAL_HOME,UNKNOWN
+     * Values:
+     * ALBUM_AND_TRACK_PAGES,ARTIST_PROFILE,SHARED_LINKS,TIDAL_HOME,UNKNOWN,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = SourceSerializer::class)
     enum class Source(val value: kotlin.String) {
         @SerialName(value = "ALBUM_AND_TRACK_PAGES") ALBUM_AND_TRACK_PAGES("ALBUM_AND_TRACK_PAGES"),
         @SerialName(value = "ARTIST_PROFILE") ARTIST_PROFILE("ARTIST_PROFILE"),
         @SerialName(value = "SHARED_LINKS") SHARED_LINKS("SHARED_LINKS"),
         @SerialName(value = "TIDAL_HOME") TIDAL_HOME("TIDAL_HOME"),
         @SerialName(value = "UNKNOWN") UNKNOWN("UNKNOWN"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object SourceSerializer : KSerializer<Source> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): Source {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return Source.entries.firstOrNull { it.value == value }
+                ?: Source.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: Source) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 }

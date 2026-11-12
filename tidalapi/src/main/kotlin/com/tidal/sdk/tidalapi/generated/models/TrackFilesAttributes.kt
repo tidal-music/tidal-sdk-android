@@ -19,8 +19,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param albumAudioNormalizationData
@@ -50,25 +54,57 @@ data class TrackFilesAttributes(
     /**
      * File's audio format
      *
-     * Values: HEAACV1,AACLC,FLAC,FLAC_HIRES,EAC3_JOC
+     * Values: HEAACV1,AACLC,FLAC,FLAC_HIRES,EAC3_JOC,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = FormatSerializer::class)
     enum class Format(val value: kotlin.String) {
         @SerialName(value = "HEAACV1") HEAACV1("HEAACV1"),
         @SerialName(value = "AACLC") AACLC("AACLC"),
         @SerialName(value = "FLAC") FLAC("FLAC"),
         @SerialName(value = "FLAC_HIRES") FLAC_HIRES("FLAC_HIRES"),
         @SerialName(value = "EAC3_JOC") EAC3_JOC("EAC3_JOC"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object FormatSerializer : KSerializer<Format> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): Format {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return Format.entries.firstOrNull { it.value == value }
+                ?: Format.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: Format) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 
     /**
      * Track presentation
      *
-     * Values: FULL,PREVIEW
+     * Values: FULL,PREVIEW,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = TrackPresentationSerializer::class)
     enum class TrackPresentation(val value: kotlin.String) {
         @SerialName(value = "FULL") FULL("FULL"),
         @SerialName(value = "PREVIEW") PREVIEW("PREVIEW"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object TrackPresentationSerializer : KSerializer<TrackPresentation> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): TrackPresentation {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return TrackPresentation.entries.firstOrNull { it.value == value }
+                ?: TrackPresentation.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: TrackPresentation) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 }

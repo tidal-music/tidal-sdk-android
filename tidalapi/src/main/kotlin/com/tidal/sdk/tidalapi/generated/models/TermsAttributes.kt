@@ -19,8 +19,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param contentLink
@@ -36,13 +40,32 @@ data class TermsAttributes(
     @SerialName(value = "termsType") val termsType: TermsAttributes.TermsType,
 ) {
 
-    /** Values: DEVELOPER,UPLOAD_MARKETPLACE,MERCH_GUIDELINES,TIDAL_CONNECT_DEVELOPER */
-    @Serializable
+    /**
+     * Values:
+     * DEVELOPER,UPLOAD_MARKETPLACE,MERCH_GUIDELINES,TIDAL_CONNECT_DEVELOPER,unknown_default_open_api
+     */
+    @Serializable(with = TermsTypeSerializer::class)
     enum class TermsType(val value: kotlin.String) {
         @SerialName(value = "DEVELOPER") DEVELOPER("DEVELOPER"),
         @SerialName(value = "UPLOAD_MARKETPLACE") UPLOAD_MARKETPLACE("UPLOAD_MARKETPLACE"),
         @SerialName(value = "MERCH_GUIDELINES") MERCH_GUIDELINES("MERCH_GUIDELINES"),
         @SerialName(value = "TIDAL_CONNECT_DEVELOPER")
         TIDAL_CONNECT_DEVELOPER("TIDAL_CONNECT_DEVELOPER"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object TermsTypeSerializer : KSerializer<TermsType> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): TermsType {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return TermsType.entries.firstOrNull { it.value == value }
+                ?: TermsType.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: TermsType) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 }

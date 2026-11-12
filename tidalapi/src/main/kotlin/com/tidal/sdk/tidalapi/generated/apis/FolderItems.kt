@@ -255,7 +255,9 @@ interface FolderItems {
      * PATCH folderItems/{id}/relationships/parent Update parent relationship
      * (\&quot;to-one\&quot;). Moves the item to the supplied parent folder, replacing its previous
      * parent. To move to the top level, supply the root folder explicitly; null data is rejected.
-     * Returns the new parent linkage. Responses:
+     * The caller needs at least COLLABORATOR on the new parent. Within the item&#39;s tree they
+     * need OWNER on the item or COLLABORATOR on the folder holding it; only its creator moves it
+     * into another user&#39;s tree. Returns the new parent linkage. Responses:
      * - 200: Successful response
      * - 400: A folder cannot be placed inside itself or one of its descendants
      * - 404: Resource not found

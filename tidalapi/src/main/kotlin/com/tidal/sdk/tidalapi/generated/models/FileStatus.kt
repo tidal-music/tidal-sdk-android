@@ -19,8 +19,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 /**
  * File status
@@ -50,9 +54,9 @@ data class FileStatus(
     /**
      * Moderation status for file
      *
-     * Values: NOT_MODERATED,SCANNING,FLAGGED,TAKEN_DOWN,OK,ERROR
+     * Values: NOT_MODERATED,SCANNING,FLAGGED,TAKEN_DOWN,OK,ERROR,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = ModerationFileStatusSerializer::class)
     enum class ModerationFileStatus(val value: kotlin.String) {
         @SerialName(value = "NOT_MODERATED") NOT_MODERATED("NOT_MODERATED"),
         @SerialName(value = "SCANNING") SCANNING("SCANNING"),
@@ -60,20 +64,52 @@ data class FileStatus(
         @SerialName(value = "TAKEN_DOWN") TAKEN_DOWN("TAKEN_DOWN"),
         @SerialName(value = "OK") OK("OK"),
         @SerialName(value = "ERROR") ERROR("ERROR"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object ModerationFileStatusSerializer : KSerializer<ModerationFileStatus> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): ModerationFileStatus {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return ModerationFileStatus.entries.firstOrNull { it.value == value }
+                ?: ModerationFileStatus.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: ModerationFileStatus) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 
     /**
      * Technical status for file
      *
-     * Values: UPLOAD_REQUESTED,PROCESSING,OK,ERROR,DELETED
+     * Values: UPLOAD_REQUESTED,PROCESSING,OK,ERROR,DELETED,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = TechnicalFileStatusSerializer::class)
     enum class TechnicalFileStatus(val value: kotlin.String) {
         @SerialName(value = "UPLOAD_REQUESTED") UPLOAD_REQUESTED("UPLOAD_REQUESTED"),
         @SerialName(value = "PROCESSING") PROCESSING("PROCESSING"),
         @SerialName(value = "OK") OK("OK"),
         @SerialName(value = "ERROR") ERROR("ERROR"),
         @SerialName(value = "DELETED") DELETED("DELETED"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object TechnicalFileStatusSerializer : KSerializer<TechnicalFileStatus> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): TechnicalFileStatus {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return TechnicalFileStatus.entries.firstOrNull { it.value == value }
+                ?: TechnicalFileStatus.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: TechnicalFileStatus) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 
     /**
@@ -81,14 +117,30 @@ data class FileStatus(
      * AI scanning (e.g. track source files) and when a scanning status is available for the file;
      * absent otherwise.
      *
-     * Values: NOT_SCANNED,SCANNING,IS_AI,NOT_AI,ERROR
+     * Values: NOT_SCANNED,SCANNING,IS_AI,NOT_AI,ERROR,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = AiScanningFileStatusSerializer::class)
     enum class AiScanningFileStatus(val value: kotlin.String) {
         @SerialName(value = "NOT_SCANNED") NOT_SCANNED("NOT_SCANNED"),
         @SerialName(value = "SCANNING") SCANNING("SCANNING"),
         @SerialName(value = "IS_AI") IS_AI("IS_AI"),
         @SerialName(value = "NOT_AI") NOT_AI("NOT_AI"),
         @SerialName(value = "ERROR") ERROR("ERROR"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object AiScanningFileStatusSerializer : KSerializer<AiScanningFileStatus> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): AiScanningFileStatus {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return AiScanningFileStatus.entries.firstOrNull { it.value == value }
+                ?: AiScanningFileStatus.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: AiScanningFileStatus) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 }

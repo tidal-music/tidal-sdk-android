@@ -19,8 +19,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param editable Boolean to indicate if the biography is editable (source = tidal or artist)
@@ -43,9 +47,9 @@ data class ArtistBiographiesAttributes(
     /**
      * Source the biography is coming from
      *
-     * Values: TIDAL,TiVo,MusicBrainz,Avex,Artist,UNKNOWN
+     * Values: TIDAL,TiVo,MusicBrainz,Avex,Artist,UNKNOWN,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = SourceSerializer::class)
     enum class Source(val value: kotlin.String) {
         @SerialName(value = "TIDAL") TIDAL("TIDAL"),
         @SerialName(value = "TiVo") TiVo("TiVo"),
@@ -53,5 +57,21 @@ data class ArtistBiographiesAttributes(
         @SerialName(value = "Avex") Avex("Avex"),
         @SerialName(value = "Artist") Artist("Artist"),
         @SerialName(value = "UNKNOWN") UNKNOWN("UNKNOWN"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object SourceSerializer : KSerializer<Source> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): Source {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return Source.entries.firstOrNull { it.value == value }
+                ?: Source.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: Source) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 }

@@ -19,8 +19,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param accessType Access type
@@ -85,25 +89,57 @@ data class PlaylistsAttributes(
     /**
      * Access type
      *
-     * Values: PUBLIC,UNLISTED,PRIVATE
+     * Values: PUBLIC,UNLISTED,PRIVATE,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = AccessTypeSerializer::class)
     enum class AccessType(val value: kotlin.String) {
         @SerialName(value = "PUBLIC") PUBLIC("PUBLIC"),
         @SerialName(value = "UNLISTED") UNLISTED("UNLISTED"),
         @SerialName(value = "PRIVATE") PRIVATE("PRIVATE"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object AccessTypeSerializer : KSerializer<AccessType> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): AccessType {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return AccessType.entries.firstOrNull { it.value == value }
+                ?: AccessType.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: AccessType) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 
     /**
      * The type of the playlist
      *
-     * Values: EDITORIAL,USER,MIX,ARTIST
+     * Values: EDITORIAL,USER,MIX,ARTIST,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = PlaylistTypeSerializer::class)
     enum class PlaylistType(val value: kotlin.String) {
         @SerialName(value = "EDITORIAL") EDITORIAL("EDITORIAL"),
         @SerialName(value = "USER") USER("USER"),
         @SerialName(value = "MIX") MIX("MIX"),
         @SerialName(value = "ARTIST") ARTIST("ARTIST"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object PlaylistTypeSerializer : KSerializer<PlaylistType> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): PlaylistType {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return PlaylistType.entries.firstOrNull { it.value == value }
+                ?: PlaylistType.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: PlaylistType) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 }

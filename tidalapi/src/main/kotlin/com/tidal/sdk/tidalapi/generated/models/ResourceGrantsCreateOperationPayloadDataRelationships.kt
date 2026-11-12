@@ -23,11 +23,15 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
+ * Either `subject` and `grantee` for a direct grant, or only `invitation` to redeem it.
+ *
  * @param grantee
+ * @param invitation
  * @param subject
  */
 @Serializable
 data class ResourceGrantsCreateOperationPayloadDataRelationships(
-    @SerialName(value = "grantee") val grantee: ResourceGrantsGranteeLinkage,
-    @SerialName(value = "subject") val subject: ResourceGrantsSubjectLinkage,
+    @SerialName(value = "grantee") val grantee: ResourceGrantsGranteeLinkage? = null,
+    @SerialName(value = "invitation") val invitation: ResourceGrantsInvitationLinkage? = null,
+    @SerialName(value = "subject") val subject: ResourceGrantsSubjectLinkage? = null,
 ) {}

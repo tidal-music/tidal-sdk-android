@@ -19,8 +19,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 /**
  * status is the status of the sales statistics
@@ -45,22 +49,54 @@ data class ArtistSalesStatisticsTopSellersMultiRelationshipDataDocumentMeta(
      * Status of sales statistics. NOT_SET_UP: the artist has not set up sales. UNAVAILABLE: not
      * available at the moment
      *
-     * Values: OK,NOT_SET_UP,UNAVAILABLE
+     * Values: OK,NOT_SET_UP,UNAVAILABLE,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = StatusSerializer::class)
     enum class Status(val value: kotlin.String) {
         @SerialName(value = "OK") OK("OK"),
         @SerialName(value = "NOT_SET_UP") NOT_SET_UP("NOT_SET_UP"),
         @SerialName(value = "UNAVAILABLE") UNAVAILABLE("UNAVAILABLE"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object StatusSerializer : KSerializer<Status> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): Status {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return Status.entries.firstOrNull { it.value == value }
+                ?: Status.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: Status) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 
     /**
      * Currency of netSalesAmount. Present when status is OK
      *
-     * Values: USD
+     * Values: USD,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = CurrencySerializer::class)
     enum class Currency(val value: kotlin.String) {
-        @SerialName(value = "USD") USD("USD")
+        @SerialName(value = "USD") USD("USD"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object CurrencySerializer : KSerializer<Currency> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): Currency {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return Currency.entries.firstOrNull { it.value == value }
+                ?: Currency.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: Currency) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 }

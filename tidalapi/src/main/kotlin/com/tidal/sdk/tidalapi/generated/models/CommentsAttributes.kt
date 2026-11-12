@@ -19,8 +19,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param createdAt Datetime when the comment was created (ISO 8601)
@@ -56,14 +60,30 @@ data class CommentsAttributes(
     /**
      * Moderation status of the comment
      *
-     * Values: NOT_MODERATED,FLAGGED,TAKEN_DOWN,OK,ERROR
+     * Values: NOT_MODERATED,FLAGGED,TAKEN_DOWN,OK,ERROR,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = ModerationStatusSerializer::class)
     enum class ModerationStatus(val value: kotlin.String) {
         @SerialName(value = "NOT_MODERATED") NOT_MODERATED("NOT_MODERATED"),
         @SerialName(value = "FLAGGED") FLAGGED("FLAGGED"),
         @SerialName(value = "TAKEN_DOWN") TAKEN_DOWN("TAKEN_DOWN"),
         @SerialName(value = "OK") OK("OK"),
         @SerialName(value = "ERROR") ERROR("ERROR"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object ModerationStatusSerializer : KSerializer<ModerationStatus> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): ModerationStatus {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return ModerationStatus.entries.firstOrNull { it.value == value }
+                ?: ModerationStatus.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: ModerationStatus) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 }

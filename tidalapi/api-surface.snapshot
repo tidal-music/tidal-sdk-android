@@ -1,5 +1,5 @@
 # TIDAL API Surface Snapshot
-# Spec version: 1.10.239 | Endpoints: 447 | Models: 1433
+# Spec version: 1.10.251 | Endpoints: 460 | Models: 1474
 
 ## Endpoints
 
@@ -979,8 +979,40 @@ GET /reactions/{id}/relationships/subject
   params: id: string, include?: array[string], replaceMedia?: string
   returns: Reactions_Subject_Single_Relationship_Data_Document
 
+GET /resourceGrantInvitations
+  params: filter[code]?: string, filter[self][appliesTo]?: string, include?: array[string], includeLinkage?: array[enum[owners, previewGrant, subject]], page[cursor]?: string, replaceMedia?: string
+  returns: ResourceGrantInvitations_Multi_Resource_Data_Document
+
+POST /resourceGrantInvitations
+  params: ??: any
+  returns: ResourceGrantInvitations_Create_Single_Resource_Data_Document
+
+GET /resourceGrantInvitations/{id}
+  params: id: string, include?: array[string], includeLinkage?: array[enum[owners, previewGrant, subject]], replaceMedia?: string
+  returns: ResourceGrantInvitations_Single_Resource_Data_Document
+
+PATCH /resourceGrantInvitations/{id}
+  params: ??: any, id: string
+  returns: ResourceGrantInvitations_Update_Single_Resource_Data_Document
+
+DELETE /resourceGrantInvitations/{id}
+  params: ??: any, id: string, revokeGrants?: boolean
+  returns: Mutation_Response_Document
+
+GET /resourceGrantInvitations/{id}/relationships/owners
+  params: id: string, include?: array[string], page[cursor]?: string
+  returns: ResourceGrantInvitations_Owners_Multi_Relationship_Data_Document
+
+GET /resourceGrantInvitations/{id}/relationships/previewGrant
+  params: id: string, include?: array[string], replaceMedia?: string
+  returns: ResourceGrantInvitations_PreviewGrant_Single_Relationship_Data_Document
+
+GET /resourceGrantInvitations/{id}/relationships/subject
+  params: id: string, include?: array[string], replaceMedia?: string
+  returns: ResourceGrantInvitations_Subject_Single_Relationship_Data_Document
+
 GET /resourceGrants
-  params: filter[grantee]?: string, filter[role]?: enum[VIEWER, COLLABORATOR, OWNER], filter[self][appliesTo]?: string, filter[subject]?: string, include?: array[string], includeLinkage?: array[enum[grantee, subject]], page[cursor]?: string, replaceMedia?: string
+  params: filter[grantee]?: string, filter[role]?: enum[VIEWER, COLLABORATOR, OWNER], filter[self][appliesTo]?: string, filter[subject]?: string, include?: array[string], includeLinkage?: array[enum[grantee, invitation, subject]], page[cursor]?: string, replaceMedia?: string
   returns: ResourceGrants_Multi_Resource_Data_Document
 
 POST /resourceGrants
@@ -988,7 +1020,7 @@ POST /resourceGrants
   returns: ResourceGrants_Create_Single_Resource_Data_Document
 
 GET /resourceGrants/{id}
-  params: id: string, include?: array[string], includeLinkage?: array[enum[grantee, subject]], replaceMedia?: string
+  params: id: string, include?: array[string], includeLinkage?: array[enum[grantee, invitation, subject]], replaceMedia?: string
   returns: ResourceGrants_Single_Resource_Data_Document
 
 PATCH /resourceGrants/{id}
@@ -1002,6 +1034,10 @@ DELETE /resourceGrants/{id}
 GET /resourceGrants/{id}/relationships/grantee
   params: id: string, include?: array[string], replaceMedia?: string
   returns: ResourceGrants_Grantee_Single_Relationship_Data_Document
+
+GET /resourceGrants/{id}/relationships/invitation
+  params: id: string, include?: array[string], replaceMedia?: string
+  returns: ResourceGrants_Invitation_Single_Relationship_Data_Document
 
 GET /resourceGrants/{id}/relationships/subject
   params: id: string, include?: array[string], replaceMedia?: string
@@ -1571,6 +1607,22 @@ POST /userDataExportRequests
   params: ??: any
   returns: UserDataExportRequests_Create_Single_Resource_Data_Document
 
+GET /userDataExports
+  params: filter[owners.id]: array[string], include?: array[string], includeLinkage?: array[enum[owners]], page[cursor]?: string
+  returns: UserDataExports_Multi_Resource_Data_Document
+
+POST /userDataExports
+  params: ??: any
+  returns: UserDataExports_Create_Single_Resource_Data_Document
+
+GET /userDataExports/{id}
+  params: id: string, include?: array[string], includeLinkage?: array[enum[owners]]
+  returns: UserDataExports_Single_Resource_Data_Document
+
+GET /userDataExports/{id}/relationships/owners
+  params: id: string, include?: array[string], page[cursor]?: string
+  returns: UserDataExports_Owners_Multi_Relationship_Data_Document
+
 GET /userDiscoveryMixes/{id}
   params: id: string, include?: array[string], includeLinkage?: array[enum[items]], locale?: string, replaceMedia?: string
   returns: UserDiscoveryMixes_Single_Resource_Data_Document
@@ -1944,6 +1996,7 @@ AlbumsUpdateOperation_Payload_Data_Attributes
   copyright: Copyright (optional)
   explicit: boolean (optional)
   explicitLyrics: boolean (optional)
+  published: boolean (optional)
   releaseDate: string(date) (optional)
   title: string (optional)
   version: string (optional)
@@ -2582,6 +2635,7 @@ Artists_Attributes
   foregroundColor: string (optional)
   handle: string (optional)
   numberOfFollowers: integer(int32) (optional)
+  numberOfFollowing: integer(int32) (optional)
   ownerType: enum[LABEL, USER, MIXED] (optional)
   spotlighted: boolean (optional)
 
@@ -3536,11 +3590,7 @@ DynamicPages_Resource_Object
   id: string (required)
   type: string (required)
   attributes: DynamicPages_Attributes (optional)
-  meta: DynamicPages_Resource_Object_Meta (optional)
   relationships: DynamicPages_Relationships (optional)
-
-DynamicPages_Resource_Object_Meta
-  redactionReason: enum[NO_BIRTHDAY, MINOR] (optional)
 
 DynamicPages_Subject_Resource_Identifier
   id: string (required)
@@ -3562,6 +3612,7 @@ Error_Object
   code: string (optional)
   detail: string (optional)
   id: string (optional)
+  meta: MetaObject (optional)
   source: Error_Object_Source (optional)
   status: string (optional)
 
@@ -4101,6 +4152,11 @@ ManualArtistClaims_Resource_Object
   id: string (required)
   type: string (required)
   attributes: ManualArtistClaims_Attributes (optional)
+
+MetaObject
+
+MissingTermsMeta
+  missingTermsTypes: array[enum[DEVELOPER, UPLOAD_MARKETPLACE, MERCH_GUIDELINES, TIDAL_CONNECT_DEVELOPER]] (required)
 
 Mutation_Response_Document
   links: Links (required)
@@ -5158,20 +5214,132 @@ Replacement_Provenance
   status: enum[ORIGINAL, REPLACED, NOT_REPLACED] (required)
   original: Replacement_Original_Identifier (optional)
 
+ResourceGrantInvitationsCreateOperation_Payload
+  data: ResourceGrantInvitationsCreateOperation_Payload_Data (required)
+
+ResourceGrantInvitationsCreateOperation_Payload_Data
+  attributes: ResourceGrantInvitationsCreateOperation_Payload_Data_Attributes (required)
+  relationships: ResourceGrantInvitationsCreateOperation_Payload_Data_Relationships (required)
+  type: enum[resourceGrantInvitations] (required)
+
+ResourceGrantInvitationsCreateOperation_Payload_Data_Attributes
+  role: enum[VIEWER, COLLABORATOR] (required)
+  expiresAt: string(date-time) (optional)
+  maxUses: integer(int32) (optional)
+  password: string(password) (optional)
+  preview: boolean (optional)
+
+ResourceGrantInvitationsCreateOperation_Payload_Data_Relationships
+  subject: ResourceGrantInvitationsCreateOperation_Payload_Data_Relationships_Subject (required)
+
+ResourceGrantInvitationsCreateOperation_Payload_Data_Relationships_Subject
+  data: ResourceGrantInvitationsCreateOperation_Payload_Data_Relationships_Subject_Data (required)
+
+ResourceGrantInvitationsCreateOperation_Payload_Data_Relationships_Subject_Data
+  id: string (required)
+  type: enum[albums, tracks, folders, playlists] (required)
+
+ResourceGrantInvitationsUpdateOperation_Payload
+  data: ResourceGrantInvitationsUpdateOperation_Payload_Data (required)
+
+ResourceGrantInvitationsUpdateOperation_Payload_Data
+  attributes: ResourceGrantInvitationsUpdateOperation_Payload_Data_Attributes (required)
+  id: string (required)
+  type: enum[resourceGrantInvitations] (required)
+
+ResourceGrantInvitationsUpdateOperation_Payload_Data_Attributes
+  password: string(password) | enum[None] (optional)
+  preview: boolean (optional)
+
+ResourceGrantInvitations_Attributes
+  code: string (required)
+  createdAt: string(date-time) (required)
+  expiresAt: string(date-time) (required)
+  passwordProtected: boolean (required)
+  preview: boolean (required)
+  role: enum[VIEWER, COLLABORATOR] (required)
+  maxUses: integer(int32) (optional)
+  password: string(password) (optional)
+  redemptionLink: Link_Object (optional)
+  useCount: integer(int32) (optional)
+
+ResourceGrantInvitations_Create_Single_Resource_Data_Document
+  data: ResourceGrantInvitations_Resource_Object (required)
+  links: Links (required)
+
+ResourceGrantInvitations_Multi_Resource_Data_Document
+  data: array[ResourceGrantInvitations_Resource_Object] (required)
+  links: Links (required)
+  included: Included (optional)
+
+ResourceGrantInvitations_Owners_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[Resource_Identifier] (optional)
+  included: Included (optional)
+
+ResourceGrantInvitations_PreviewGrant_Single_Relationship_Data_Document
+  links: Links (required)
+  data: Resource_Identifier | enum[None] (optional)
+  included: Included (optional)
+
+ResourceGrantInvitations_Relationships
+  owners: ResourceGrantInvitations_Owners_Multi_Relationship_Data_Document (optional)
+  previewGrant: ResourceGrantInvitations_PreviewGrant_Single_Relationship_Data_Document (optional)
+  subject: ResourceGrantInvitations_Subject_Single_Relationship_Data_Document (optional)
+
+ResourceGrantInvitations_Resource_Object
+  id: string (required)
+  type: string (required)
+  attributes: ResourceGrantInvitations_Attributes (optional)
+  relationships: ResourceGrantInvitations_Relationships (optional)
+
+ResourceGrantInvitations_Single_Resource_Data_Document
+  data: ResourceGrantInvitations_Resource_Object (required)
+  links: Links (required)
+  included: Included (optional)
+
+ResourceGrantInvitations_Subject_Resource_Identifier
+  id: string (required)
+  type: string (required)
+  meta: ResourceGrantInvitations_Subject_Resource_Identifier_Meta (optional)
+
+ResourceGrantInvitations_Subject_Resource_Identifier_Meta
+  replacement: Replacement_Provenance (optional)
+
+ResourceGrantInvitations_Subject_Single_Relationship_Data_Document
+  links: Links (required)
+  data: ResourceGrantInvitations_Subject_Resource_Identifier | enum[None] (optional)
+  included: Included (optional)
+
+ResourceGrantInvitations_Update_Single_Resource_Data_Document
+  data: ResourceGrantInvitations_Resource_Object (required)
+  links: Links (required)
+
 ResourceGrantsCreateOperation_Payload
   data: ResourceGrantsCreateOperation_Payload_Data (required)
+  meta: ResourceGrantsCreateOperation_Payload_Meta (optional)
 
 ResourceGrantsCreateOperation_Payload_Data
-  attributes: ResourceGrantsCreateOperation_Payload_Data_Attributes (required)
   relationships: ResourceGrantsCreateOperation_Payload_Data_Relationships (required)
   type: enum[resourceGrants] (required)
+  attributes: ResourceGrantsCreateOperation_Payload_Data_Attributes (optional)
 
 ResourceGrantsCreateOperation_Payload_Data_Attributes
   role: enum[VIEWER, COLLABORATOR] (required)
 
 ResourceGrantsCreateOperation_Payload_Data_Relationships
-  grantee: ResourceGrantsGranteeLinkage (required)
-  subject: ResourceGrantsSubjectLinkage (required)
+  grantee: ResourceGrantsGranteeLinkage (optional)
+  invitation: ResourceGrantsInvitationLinkage (optional)
+  subject: ResourceGrantsSubjectLinkage (optional)
+
+ResourceGrantsCreateOperation_Payload_Meta
+  password: string(password) (optional)
+
+ResourceGrantsCreateResource403ResponseBody
+  errors: array[object] (required)
+
+ResourceGrantsCreateResource429ResponseBody
+  errors: array[object] (required)
 
 ResourceGrantsGrantee
   id: string (required)
@@ -5179,6 +5347,13 @@ ResourceGrantsGrantee
 
 ResourceGrantsGranteeLinkage
   data: ResourceGrantsGrantee (required)
+
+ResourceGrantsInvitation
+  id: string (required)
+  type: enum[resourceGrantInvitations] (required)
+
+ResourceGrantsInvitationLinkage
+  data: ResourceGrantsInvitation (required)
 
 ResourceGrantsSubject
   id: string (required)
@@ -5210,6 +5385,11 @@ ResourceGrants_Grantee_Single_Relationship_Data_Document
   data: Resource_Identifier | enum[None] (optional)
   included: Included (optional)
 
+ResourceGrants_Invitation_Single_Relationship_Data_Document
+  links: Links (required)
+  data: Resource_Identifier | enum[None] (optional)
+  included: Included (optional)
+
 ResourceGrants_Multi_Resource_Data_Document
   data: array[ResourceGrants_Resource_Object] (required)
   links: Links (required)
@@ -5217,6 +5397,7 @@ ResourceGrants_Multi_Resource_Data_Document
 
 ResourceGrants_Relationships
   grantee: ResourceGrants_Grantee_Single_Relationship_Data_Document (optional)
+  invitation: ResourceGrants_Invitation_Single_Relationship_Data_Document (optional)
   subject: ResourceGrants_Subject_Single_Relationship_Data_Document (optional)
 
 ResourceGrants_Resource_Object
@@ -7399,6 +7580,62 @@ UserDataExportRequests_Resource_Object
   id: string (required)
   type: string (required)
   attributes: UserDataExportRequests_Attributes (optional)
+
+UserDataExportsCreateOperation_Payload
+  data: UserDataExportsCreateOperation_Payload_Data (required)
+  meta: UserDataExportsCreateOperation_Payload_Meta (optional)
+
+UserDataExportsCreateOperation_Payload_Data
+  type: enum[userDataExports] (required)
+  attributes: UserDataExportsCreateOperation_Payload_Data_Attributes (optional)
+
+UserDataExportsCreateOperation_Payload_Data_Attributes
+  dataTypes: array[enum[ALBUMS, ARTISTS, ARTIST_CLAIMS, BIOGRAPHY, BLOCKED_ITEMS, CHILDREN_ACCOUNTS, FOLDERS, LOGIN_LOCATION, MIXES, NOTIFICATION, PAYMENT, PLAYLISTS, SEARCHES, STREAMS, SUBSCRIPTION_EVENTS, TRACKS, USER, USER_CLIENT, UPLOADS, VIDEOS]] (optional)
+
+UserDataExportsCreateOperation_Payload_Meta
+  locale: string (optional)
+
+UserDataExportsCreateResource400ResponseBody
+  errors: array[object] (required)
+
+UserDataExportsCreateResource409ResponseBody
+  errors: array[object] (required)
+
+UserDataExports_Attributes
+  createdAt: string(date-time) (required)
+  dataTypes: array[enum[ALBUMS, ARTISTS, ARTIST_CLAIMS, BIOGRAPHY, BLOCKED_ITEMS, CHILDREN_ACCOUNTS, FOLDERS, LOGIN_LOCATION, MIXES, NOTIFICATION, PAYMENT, PLAYLISTS, SEARCHES, STREAMS, SUBSCRIPTION_EVENTS, TRACKS, USER, USER_CLIENT, UPLOADS, VIDEOS]] (required)
+  status: enum[PENDING, PROCESSING, OK, ERROR, EXPIRED, CANCELLED] (required)
+  downloadLink: Link_Object (optional)
+  expiresAt: string(date-time) (optional)
+  readyAt: string(date-time) (optional)
+
+UserDataExports_Create_Single_Resource_Data_Document
+  data: UserDataExports_Resource_Object (required)
+  links: Links (required)
+
+UserDataExports_Multi_Resource_Data_Document
+  data: array[UserDataExports_Resource_Object] (required)
+  links: Links (required)
+  included: Included (optional)
+
+UserDataExports_Owners_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[Resource_Identifier] (optional)
+  included: Included (optional)
+
+UserDataExports_Relationships
+  owners: UserDataExports_Owners_Multi_Relationship_Data_Document (optional)
+
+UserDataExports_Resource_Object
+  id: string (required)
+  type: string (required)
+  attributes: UserDataExports_Attributes (optional)
+  relationships: UserDataExports_Relationships (optional)
+
+UserDataExports_Single_Resource_Data_Document
+  data: UserDataExports_Resource_Object (required)
+  links: Links (required)
+  included: Included (optional)
 
 UserDiscoveryMixes_Attributes
 

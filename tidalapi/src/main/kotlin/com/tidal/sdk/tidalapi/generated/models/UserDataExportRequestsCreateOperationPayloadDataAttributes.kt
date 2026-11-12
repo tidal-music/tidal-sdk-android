@@ -19,8 +19,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 /** @param flowType */
 @Serializable
@@ -29,8 +33,11 @@ data class UserDataExportRequestsCreateOperationPayloadDataAttributes(
     val flowType: UserDataExportRequestsCreateOperationPayloadDataAttributes.FlowType
 ) {
 
-    /** Values: GDPR,CCPA,COPPA,ANZ_PA,US_PRIVACY_REGULATION,APPI,RETENTION_POLICY */
-    @Serializable
+    /**
+     * Values:
+     * GDPR,CCPA,COPPA,ANZ_PA,US_PRIVACY_REGULATION,APPI,RETENTION_POLICY,unknown_default_open_api
+     */
+    @Serializable(with = FlowTypeSerializer::class)
     enum class FlowType(val value: kotlin.String) {
         @SerialName(value = "GDPR") GDPR("GDPR"),
         @SerialName(value = "CCPA") CCPA("CCPA"),
@@ -39,5 +46,21 @@ data class UserDataExportRequestsCreateOperationPayloadDataAttributes(
         @SerialName(value = "US_PRIVACY_REGULATION") US_PRIVACY_REGULATION("US_PRIVACY_REGULATION"),
         @SerialName(value = "APPI") APPI("APPI"),
         @SerialName(value = "RETENTION_POLICY") RETENTION_POLICY("RETENTION_POLICY"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object FlowTypeSerializer : KSerializer<FlowType> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): FlowType {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return FlowType.entries.firstOrNull { it.value == value }
+                ?: FlowType.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: FlowType) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 }
