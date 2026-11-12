@@ -1,5 +1,6 @@
 package com.tidal.sdk.tidalapi.networking
 
+import com.tidal.sdk.tidalapi.generated.models.ArtworksAttributes
 import com.tidal.sdk.tidalapi.generated.models.ArtworksResourceObject
 import com.tidal.sdk.tidalapi.generated.models.ArtworksSingleResourceDataDocument
 import kotlinx.coroutines.test.runTest
@@ -57,22 +58,24 @@ class SkipUnknownIncludedConverterFactoryTest {
     }
 
     @Test
-    fun `drops included resources with an unknown value`() = runTest {
-        val unknownMediaType =
-            """{"id":"3","type":"artworks","attributes":{"files":[],"mediaType":"HOLOGRAM"}}"""
-
-        val result = fetch(document(included = arrayOf(ARTWORK, unknownMediaType)))
-
-        assertEquals(listOf("2"), result?.included?.map { (it as ArtworksResourceObject).id })
-    }
-
-    @Test
-    fun `still fails when the primary data does not decode`() = runTest {
+    fun `decodes an unknown enum value as the unknown case`() = runTest {
         val unknownMediaType =
             """{"id":"1","type":"artworks","attributes":{"files":[],"mediaType":"HOLOGRAM"}}"""
 
+        val result = fetch(document(data = unknownMediaType, ARTWORK))
+
+        assertEquals(
+            ArtworksAttributes.MediaType.unknown_default_open_api,
+            result?.data?.attributes?.mediaType,
+        )
+    }
+
+    @Test
+    fun `still fails when a known resource does not decode`() = runTest {
+        val missingFiles = """{"id":"3","type":"artworks","attributes":{"mediaType":"IMAGE"}}"""
+
         assertThrows<SerializationException> {
-            fetch(document(data = unknownMediaType, """{"id":"3","type":"holograms"}"""))
+            fetch(document(included = arrayOf(ARTWORK, missingFiles)))
         }
     }
 
