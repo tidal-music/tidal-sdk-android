@@ -10,6 +10,7 @@ additionalProperties:
   apiNameSuffix: ''
   apiSuffix: ''
   removeEnumValuePrefix: true
+  enumUnknownDefaultCase: true
   groupId: com.tidal.sdk
   library: jvm-retrofit2
   serializationLibrary: kotlinx_serialization

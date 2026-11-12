@@ -19,8 +19,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param timeZone IANA Time Zone Database identifier used to evaluate local civil time.
@@ -35,8 +39,8 @@ data class PlaylistGenerationSchedulesUpdateOperationPayloadDataAttributes(
     val weekday: PlaylistGenerationSchedulesUpdateOperationPayloadDataAttributes.Weekday? = null,
 ) {
 
-    /** Values: MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY,SUNDAY */
-    @Serializable
+    /** Values: MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY,SUNDAY,unknown_default_open_api */
+    @Serializable(with = WeekdaySerializer::class)
     enum class Weekday(val value: kotlin.String) {
         @SerialName(value = "MONDAY") MONDAY("MONDAY"),
         @SerialName(value = "TUESDAY") TUESDAY("TUESDAY"),
@@ -45,5 +49,21 @@ data class PlaylistGenerationSchedulesUpdateOperationPayloadDataAttributes(
         @SerialName(value = "FRIDAY") FRIDAY("FRIDAY"),
         @SerialName(value = "SATURDAY") SATURDAY("SATURDAY"),
         @SerialName(value = "SUNDAY") SUNDAY("SUNDAY"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object WeekdaySerializer : KSerializer<Weekday> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): Weekday {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return Weekday.entries.firstOrNull { it.value == value }
+                ?: Weekday.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: Weekday) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 }

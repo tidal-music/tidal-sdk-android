@@ -19,8 +19,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param id
@@ -36,16 +40,47 @@ data class UserCollectionTracksItemsRelationshipAddOperationResponseMetaSkippedI
     val type: UserCollectionTracksItemsRelationshipAddOperationResponseMetaSkippedItem.Type,
 ) {
 
-    /** Values: NOT_FOUND,ALREADY_PRESENT */
-    @Serializable
+    /** Values: NOT_FOUND,ALREADY_PRESENT,unknown_default_open_api */
+    @Serializable(with = ReasonSerializer::class)
     enum class Reason(val value: kotlin.String) {
         @SerialName(value = "NOT_FOUND") NOT_FOUND("NOT_FOUND"),
         @SerialName(value = "ALREADY_PRESENT") ALREADY_PRESENT("ALREADY_PRESENT"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
     }
 
-    /** Values: tracks */
-    @Serializable
+    internal object ReasonSerializer : KSerializer<Reason> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): Reason {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return Reason.entries.firstOrNull { it.value == value }
+                ?: Reason.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: Reason) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
+    }
+
+    /** Values: tracks,unknown_default_open_api */
+    @Serializable(with = TypeSerializer::class)
     enum class Type(val value: kotlin.String) {
-        @SerialName(value = "tracks") tracks("tracks")
+        @SerialName(value = "tracks") tracks("tracks"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object TypeSerializer : KSerializer<Type> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): Type {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return Type.entries.firstOrNull { it.value == value } ?: Type.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: Type) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 }

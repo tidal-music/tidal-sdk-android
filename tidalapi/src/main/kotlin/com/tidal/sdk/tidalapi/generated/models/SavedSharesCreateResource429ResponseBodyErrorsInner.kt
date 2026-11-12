@@ -19,8 +19,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param code
@@ -34,10 +38,25 @@ data class SavedSharesCreateResource429ResponseBodyErrorsInner(
     @SerialName(value = "detail") val detail: kotlin.String? = null,
 ) {
 
-    /** Values: SHARE_PASSWORD_ATTEMPTS_EXCEEDED */
-    @Serializable
+    /** Values: SHARE_PASSWORD_ATTEMPTS_EXCEEDED,unknown_default_open_api */
+    @Serializable(with = CodeSerializer::class)
     enum class Code(val value: kotlin.String) {
         @SerialName(value = "SHARE_PASSWORD_ATTEMPTS_EXCEEDED")
-        SHARE_PASSWORD_ATTEMPTS_EXCEEDED("SHARE_PASSWORD_ATTEMPTS_EXCEEDED")
+        SHARE_PASSWORD_ATTEMPTS_EXCEEDED("SHARE_PASSWORD_ATTEMPTS_EXCEEDED"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object CodeSerializer : KSerializer<Code> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): Code {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return Code.entries.firstOrNull { it.value == value } ?: Code.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: Code) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 }

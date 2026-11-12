@@ -19,8 +19,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param status Current status of this Square connection
@@ -61,9 +65,10 @@ data class SquareConnectionsAttributes(
     /**
      * Current status of this Square connection
      *
-     * Values: DRAFT,PENDING_REQUIREMENTS,KYC_PENDING,ACCEPTED,REJECTED,SUSPENDED
+     * Values:
+     * DRAFT,PENDING_REQUIREMENTS,KYC_PENDING,ACCEPTED,REJECTED,SUSPENDED,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = StatusSerializer::class)
     enum class Status(val value: kotlin.String) {
         @SerialName(value = "DRAFT") DRAFT("DRAFT"),
         @SerialName(value = "PENDING_REQUIREMENTS") PENDING_REQUIREMENTS("PENDING_REQUIREMENTS"),
@@ -71,5 +76,21 @@ data class SquareConnectionsAttributes(
         @SerialName(value = "ACCEPTED") ACCEPTED("ACCEPTED"),
         @SerialName(value = "REJECTED") REJECTED("REJECTED"),
         @SerialName(value = "SUSPENDED") SUSPENDED("SUSPENDED"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object StatusSerializer : KSerializer<Status> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): Status {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return Status.entries.firstOrNull { it.value == value }
+                ?: Status.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: Status) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 }

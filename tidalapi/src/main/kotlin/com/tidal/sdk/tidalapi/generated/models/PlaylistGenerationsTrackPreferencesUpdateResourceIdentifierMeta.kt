@@ -19,8 +19,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 /** @param preference */
 @Serializable
@@ -29,12 +33,28 @@ data class PlaylistGenerationsTrackPreferencesUpdateResourceIdentifierMeta(
     val preference: PlaylistGenerationsTrackPreferencesUpdateResourceIdentifierMeta.Preference
 ) {
 
-    /** Values: KEEP,REMOVE,MORE_LIKE_THIS,UNKNOWN */
-    @Serializable
+    /** Values: KEEP,REMOVE,MORE_LIKE_THIS,UNKNOWN,unknown_default_open_api */
+    @Serializable(with = PreferenceSerializer::class)
     enum class Preference(val value: kotlin.String) {
         @SerialName(value = "KEEP") KEEP("KEEP"),
         @SerialName(value = "REMOVE") REMOVE("REMOVE"),
         @SerialName(value = "MORE_LIKE_THIS") MORE_LIKE_THIS("MORE_LIKE_THIS"),
         @SerialName(value = "UNKNOWN") UNKNOWN("UNKNOWN"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object PreferenceSerializer : KSerializer<Preference> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): Preference {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return Preference.entries.firstOrNull { it.value == value }
+                ?: Preference.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: Preference) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 }

@@ -19,8 +19,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 /** @param redactionReason Reason why data has been redacted on this page */
 @Serializable
@@ -34,11 +38,27 @@ data class DynamicPagesResourceObjectMeta(
     /**
      * Reason why data has been redacted on this page
      *
-     * Values: NO_BIRTHDAY,MINOR
+     * Values: NO_BIRTHDAY,MINOR,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = RedactionReasonSerializer::class)
     enum class RedactionReason(val value: kotlin.String) {
         @SerialName(value = "NO_BIRTHDAY") NO_BIRTHDAY("NO_BIRTHDAY"),
         @SerialName(value = "MINOR") MINOR("MINOR"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object RedactionReasonSerializer : KSerializer<RedactionReason> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): RedactionReason {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return RedactionReason.entries.firstOrNull { it.value == value }
+                ?: RedactionReason.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: RedactionReason) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 }

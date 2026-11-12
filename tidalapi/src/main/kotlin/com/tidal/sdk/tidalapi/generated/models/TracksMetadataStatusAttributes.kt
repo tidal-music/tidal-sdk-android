@@ -19,8 +19,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 /** @param status Status of the metadata detection job */
 @Serializable
@@ -33,13 +37,29 @@ data class TracksMetadataStatusAttributes(
     /**
      * Status of the metadata detection job
      *
-     * Values: PENDING,PROCESSING,ERROR,OK
+     * Values: PENDING,PROCESSING,ERROR,OK,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = StatusSerializer::class)
     enum class Status(val value: kotlin.String) {
         @SerialName(value = "PENDING") PENDING("PENDING"),
         @SerialName(value = "PROCESSING") PROCESSING("PROCESSING"),
         @SerialName(value = "ERROR") ERROR("ERROR"),
         @SerialName(value = "OK") OK("OK"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object StatusSerializer : KSerializer<Status> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): Status {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return Status.entries.firstOrNull { it.value == value }
+                ?: Status.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: Status) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 }

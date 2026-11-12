@@ -19,8 +19,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param code
@@ -37,9 +41,10 @@ data class SquareItemVariationsArtworksUpdateMultiDataRelationship409ResponseBod
 ) {
 
     /**
-     * Values: CATALOG_VERSION_MISMATCH,CONFLICT,IDEMPOTENT_REQUEST_IN_PROGRESS,MISSING_ITEMS_SCOPE
+     * Values:
+     * CATALOG_VERSION_MISMATCH,CONFLICT,IDEMPOTENT_REQUEST_IN_PROGRESS,MISSING_ITEMS_SCOPE,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = CodeSerializer::class)
     enum class Code(val value: kotlin.String) {
         @SerialName(value = "CATALOG_VERSION_MISMATCH")
         CATALOG_VERSION_MISMATCH("CATALOG_VERSION_MISMATCH"),
@@ -47,5 +52,20 @@ data class SquareItemVariationsArtworksUpdateMultiDataRelationship409ResponseBod
         @SerialName(value = "IDEMPOTENT_REQUEST_IN_PROGRESS")
         IDEMPOTENT_REQUEST_IN_PROGRESS("IDEMPOTENT_REQUEST_IN_PROGRESS"),
         @SerialName(value = "MISSING_ITEMS_SCOPE") MISSING_ITEMS_SCOPE("MISSING_ITEMS_SCOPE"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object CodeSerializer : KSerializer<Code> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): Code {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return Code.entries.firstOrNull { it.value == value } ?: Code.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: Code) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 }

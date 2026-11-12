@@ -19,8 +19,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param mediaType
@@ -34,10 +38,26 @@ data class ArtworksCreateOperationPayloadDataAttributes(
     val sourceFile: ArtworksCreateOperationPayloadDataAttributesSourceFile,
 ) {
 
-    /** Values: IMAGE,VIDEO */
-    @Serializable
+    /** Values: IMAGE,VIDEO,unknown_default_open_api */
+    @Serializable(with = MediaTypeSerializer::class)
     enum class MediaType(val value: kotlin.String) {
         @SerialName(value = "IMAGE") IMAGE("IMAGE"),
         @SerialName(value = "VIDEO") VIDEO("VIDEO"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object MediaTypeSerializer : KSerializer<MediaType> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): MediaType {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return MediaType.entries.firstOrNull { it.value == value }
+                ?: MediaType.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: MediaType) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 }

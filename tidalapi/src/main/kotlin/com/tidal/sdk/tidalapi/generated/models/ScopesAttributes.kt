@@ -19,8 +19,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param description Technical description of the scope.
@@ -51,13 +55,29 @@ data class ScopesAttributes(
      * Client access tier required to request this scope. A client whose access tier is at least
      * this value can include the scope when initiating an OAuth flow.
      *
-     * Values: THIRD_PARTY,THIRD_PARTY_PROD,PARTNER,INTERNAL
+     * Values: THIRD_PARTY,THIRD_PARTY_PROD,PARTNER,INTERNAL,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = RequiredAccessTierSerializer::class)
     enum class RequiredAccessTier(val value: kotlin.String) {
         @SerialName(value = "THIRD_PARTY") THIRD_PARTY("THIRD_PARTY"),
         @SerialName(value = "THIRD_PARTY_PROD") THIRD_PARTY_PROD("THIRD_PARTY_PROD"),
         @SerialName(value = "PARTNER") PARTNER("PARTNER"),
         @SerialName(value = "INTERNAL") INTERNAL("INTERNAL"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object RequiredAccessTierSerializer : KSerializer<RequiredAccessTier> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): RequiredAccessTier {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return RequiredAccessTier.entries.firstOrNull { it.value == value }
+                ?: RequiredAccessTier.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: RequiredAccessTier) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 }

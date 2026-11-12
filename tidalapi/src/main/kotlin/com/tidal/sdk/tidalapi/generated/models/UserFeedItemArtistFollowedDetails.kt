@@ -19,8 +19,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 /** @param activityType Type of activity represented by the group */
 @Serializable
@@ -34,10 +38,26 @@ data class UserFeedItemArtistFollowedDetails(
     /**
      * Type of activity represented by the group
      *
-     * Values: ARTIST_FOLLOWED
+     * Values: ARTIST_FOLLOWED,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = ActivityTypeSerializer::class)
     enum class ActivityType(val value: kotlin.String) {
-        @SerialName(value = "ARTIST_FOLLOWED") ARTIST_FOLLOWED("ARTIST_FOLLOWED")
+        @SerialName(value = "ARTIST_FOLLOWED") ARTIST_FOLLOWED("ARTIST_FOLLOWED"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object ActivityTypeSerializer : KSerializer<ActivityType> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): ActivityType {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return ActivityType.entries.firstOrNull { it.value == value }
+                ?: ActivityType.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: ActivityType) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 }

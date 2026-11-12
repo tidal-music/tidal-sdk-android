@@ -19,8 +19,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param duration Duration (ISO 8601)
@@ -74,12 +78,28 @@ data class VideosAttributes(
      * Available usage for this video. Deprecated: use 'usageRules' instead. This field will be
      * removed in a future version.
      *
-     * Values: STREAM,DJ,STEM
+     * Values: STREAM,DJ,STEM,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = AvailabilitySerializer::class)
     enum class Availability(val value: kotlin.String) {
         @SerialName(value = "STREAM") STREAM("STREAM"),
         @SerialName(value = "DJ") DJ("DJ"),
         @SerialName(value = "STEM") STEM("STEM"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object AvailabilitySerializer : KSerializer<Availability> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): Availability {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return Availability.entries.firstOrNull { it.value == value }
+                ?: Availability.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: Availability) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 }

@@ -19,8 +19,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param onDuplicates How to handle available items already present in the playlist. Presence is
@@ -50,12 +54,28 @@ data class PlaylistsItemsRelationshipAddOperationPayloadMeta(
      * absent resources and reports every omitted occurrence in response meta.skipped with reason
      * ALREADY_PRESENT. Track and video identities with the same id are distinct. Defaults to ADD.
      *
-     * Values: ADD,FAIL,SKIP
+     * Values: ADD,FAIL,SKIP,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = OnDuplicatesSerializer::class)
     enum class OnDuplicates(val value: kotlin.String) {
         @SerialName(value = "ADD") ADD("ADD"),
         @SerialName(value = "FAIL") FAIL("FAIL"),
         @SerialName(value = "SKIP") SKIP("SKIP"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object OnDuplicatesSerializer : KSerializer<OnDuplicates> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): OnDuplicates {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return OnDuplicates.entries.firstOrNull { it.value == value }
+                ?: OnDuplicates.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: OnDuplicates) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 }

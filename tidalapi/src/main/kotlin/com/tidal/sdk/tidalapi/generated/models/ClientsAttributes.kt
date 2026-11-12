@@ -19,8 +19,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param accessTier
@@ -43,12 +47,28 @@ data class ClientsAttributes(
     @SerialName(value = "scopes") val scopes: kotlin.collections.Set<kotlin.String>? = null,
 ) {
 
-    /** Values: THIRD_PARTY,THIRD_PARTY_PROD,PARTNER,INTERNAL */
-    @Serializable
+    /** Values: THIRD_PARTY,THIRD_PARTY_PROD,PARTNER,INTERNAL,unknown_default_open_api */
+    @Serializable(with = AccessTierSerializer::class)
     enum class AccessTier(val value: kotlin.String) {
         @SerialName(value = "THIRD_PARTY") THIRD_PARTY("THIRD_PARTY"),
         @SerialName(value = "THIRD_PARTY_PROD") THIRD_PARTY_PROD("THIRD_PARTY_PROD"),
         @SerialName(value = "PARTNER") PARTNER("PARTNER"),
         @SerialName(value = "INTERNAL") INTERNAL("INTERNAL"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object AccessTierSerializer : KSerializer<AccessTier> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): AccessTier {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return AccessTier.entries.firstOrNull { it.value == value }
+                ?: AccessTier.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: AccessTier) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 }

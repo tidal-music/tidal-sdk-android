@@ -19,8 +19,12 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param name The capability name
@@ -39,21 +43,52 @@ data class SquareConnectionsCapability(
     /**
      * The capability name
      *
-     * Values: SITES
+     * Values: SITES,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = NameSerializer::class)
     enum class Name(val value: kotlin.String) {
-        @SerialName(value = "SITES") SITES("SITES")
+        @SerialName(value = "SITES") SITES("SITES"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object NameSerializer : KSerializer<Name> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): Name {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return Name.entries.firstOrNull { it.value == value } ?: Name.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: Name) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 
     /**
      * The capability's current status
      *
-     * Values: GRANTED,REQUIRES_REAUTH
+     * Values: GRANTED,REQUIRES_REAUTH,unknown_default_open_api
      */
-    @Serializable
+    @Serializable(with = StatusSerializer::class)
     enum class Status(val value: kotlin.String) {
         @SerialName(value = "GRANTED") GRANTED("GRANTED"),
         @SerialName(value = "REQUIRES_REAUTH") REQUIRES_REAUTH("REQUIRES_REAUTH"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object StatusSerializer : KSerializer<Status> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): Status {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return Status.entries.firstOrNull { it.value == value }
+                ?: Status.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: Status) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
     }
 }
