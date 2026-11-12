@@ -98,7 +98,8 @@ internal class CrossfadeController(
     private var crossfade: Crossfade? = null
 
     /** The next item, kept off [Host.player] while the current one may still crossfade into it. */
-    private var heldNext: MediaProduct? = null
+    var heldNext: MediaProduct? = null
+        private set
 
     private var disabledForCurrent = false
 
