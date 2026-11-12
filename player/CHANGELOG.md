@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.76] - 2026-11-12
+
+### Changed
+- Builds against tidalapi 0.4.0. A track or video presentation the player doesn't know plays as full, and an unknown preview reason is treated as none. Before, either value failed the manifest.
+
 ## [0.0.75] - 2026-11-10
 
 ### Fixed

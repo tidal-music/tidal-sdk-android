@@ -7,9 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.3.67] - 2026-11-11
+## [0.4.0] - 2026-11-12
+### Changed
+- Every generated enum has an `unknown_default_open_api` case, and values this version doesn't know decode to it instead of failing the response. Exhaustive `when`s over these enums need the new case or an `else`
 ### Fixed
-- Responses no longer fail to decode when `included` holds a resource this version can't decode, such as a new resource type or an unknown enum value; those resources are dropped
+- Responses no longer fail to decode when `included` holds a resource type this version doesn't know; those resources are dropped
 
 ## [0.3.66] - 2026-11-08
 ### Changed
