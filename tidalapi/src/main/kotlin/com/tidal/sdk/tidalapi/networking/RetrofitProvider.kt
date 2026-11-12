@@ -56,9 +56,11 @@ class RetrofitProvider(
     // Built lazily so the ~100+ generated kotlinx.serialization descriptors are initialized on
     // first request rather than at construction, keeping serializer init off callers' hot paths.
     private val converterFactories: List<Converter.Factory> by lazy {
+        val json = createJsonSerializer()
         listOf(
             ScalarsConverterFactory.create(),
-            createJsonSerializer().asConverterFactory("application/json".toMediaType()),
+            SkipUnknownIncludedConverterFactory(json),
+            json.asConverterFactory("application/json".toMediaType()),
         )
     }
 
