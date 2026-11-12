@@ -167,8 +167,7 @@ internal class PlaybackInfoRepositoryDefault(
     private fun convertTrackPresentation(presentation: TrackPresentation?): AssetPresentation {
         return when (presentation) {
             TrackPresentation.PREVIEW -> AssetPresentation.PREVIEW
-            TrackPresentation.FULL,
-            TrackPresentation.unknown_default_open_api,
+            TrackPresentation.FULL -> AssetPresentation.FULL
             null -> AssetPresentation.FULL // Default fallback
         }
     }
@@ -187,7 +186,6 @@ internal class PlaybackInfoRepositoryDefault(
             TrackManifestsAttributes.PreviewReason.PURCHASE -> PreviewReason.PURCHASE
             TrackManifestsAttributes.PreviewReason.HIGHER_ACCESS_TIER ->
                 PreviewReason.HIGHER_ACCESS_TIER
-            TrackManifestsAttributes.PreviewReason.unknown_default_open_api,
             null -> null
         }
     }
@@ -198,7 +196,6 @@ internal class PlaybackInfoRepositoryDefault(
         return when (presentation) {
             VideoManifestsAttributes.VideoPresentation.FULL -> AssetPresentation.FULL
             VideoManifestsAttributes.VideoPresentation.PREVIEW -> AssetPresentation.PREVIEW
-            VideoManifestsAttributes.VideoPresentation.unknown_default_open_api,
             null -> AssetPresentation.FULL
         }
     }

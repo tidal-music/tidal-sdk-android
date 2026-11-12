@@ -19,12 +19,8 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param code
@@ -40,29 +36,14 @@ data class TrackFilesReadById403ResponseBodyErrorsInner(
 
     /**
      * Values:
-     * CLIENT_NOT_ENTITLED,CONCURRENT_PLAYBACK,GEO_RESTRICTED,PREREQUISITE_MISSING,PURCHASE_REQUIRED,unknown_default_open_api
+     * CLIENT_NOT_ENTITLED,CONCURRENT_PLAYBACK,GEO_RESTRICTED,PREREQUISITE_MISSING,PURCHASE_REQUIRED
      */
-    @Serializable(with = CodeSerializer::class)
+    @Serializable
     enum class Code(val value: kotlin.String) {
         @SerialName(value = "CLIENT_NOT_ENTITLED") CLIENT_NOT_ENTITLED("CLIENT_NOT_ENTITLED"),
         @SerialName(value = "CONCURRENT_PLAYBACK") CONCURRENT_PLAYBACK("CONCURRENT_PLAYBACK"),
         @SerialName(value = "GEO_RESTRICTED") GEO_RESTRICTED("GEO_RESTRICTED"),
         @SerialName(value = "PREREQUISITE_MISSING") PREREQUISITE_MISSING("PREREQUISITE_MISSING"),
         @SerialName(value = "PURCHASE_REQUIRED") PURCHASE_REQUIRED("PURCHASE_REQUIRED"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
-    }
-
-    internal object CodeSerializer : KSerializer<Code> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): Code {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return Code.entries.firstOrNull { it.value == value } ?: Code.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: Code) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
     }
 }

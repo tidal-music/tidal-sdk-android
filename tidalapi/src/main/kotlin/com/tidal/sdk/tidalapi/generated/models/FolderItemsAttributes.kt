@@ -19,12 +19,8 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param itemStatus
@@ -39,27 +35,11 @@ data class FolderItemsAttributes(
     @SerialName(value = "reference") val reference: kotlin.Boolean,
 ) {
 
-    /** Values: OK,DELETED,NO_ACCESS,unknown_default_open_api */
-    @Serializable(with = ItemStatusSerializer::class)
+    /** Values: OK,DELETED,NO_ACCESS */
+    @Serializable
     enum class ItemStatus(val value: kotlin.String) {
         @SerialName(value = "OK") OK("OK"),
         @SerialName(value = "DELETED") DELETED("DELETED"),
         @SerialName(value = "NO_ACCESS") NO_ACCESS("NO_ACCESS"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
-    }
-
-    internal object ItemStatusSerializer : KSerializer<ItemStatus> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): ItemStatus {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return ItemStatus.entries.firstOrNull { it.value == value }
-                ?: ItemStatus.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: ItemStatus) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
     }
 }

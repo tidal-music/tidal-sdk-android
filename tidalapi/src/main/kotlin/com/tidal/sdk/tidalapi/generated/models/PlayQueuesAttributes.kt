@@ -19,12 +19,8 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param createdAt ISO 8601 creation timestamp
@@ -59,56 +55,24 @@ data class PlayQueuesAttributes(
     /**
      * Queue's repeat mode
      *
-     * Values: NONE,ONE,BATCH,unknown_default_open_api
+     * Values: NONE,ONE,BATCH
      */
-    @Serializable(with = RepeatSerializer::class)
+    @Serializable
     enum class Repeat(val value: kotlin.String) {
         @SerialName(value = "NONE") NONE("NONE"),
         @SerialName(value = "ONE") ONE("ONE"),
         @SerialName(value = "BATCH") BATCH("BATCH"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
-    }
-
-    internal object RepeatSerializer : KSerializer<Repeat> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): Repeat {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return Repeat.entries.firstOrNull { it.value == value }
-                ?: Repeat.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: Repeat) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
     }
 
     /**
      * Queue's shuffle mode
      *
-     * Values: OFF,BATCH,ALL,unknown_default_open_api
+     * Values: OFF,BATCH,ALL
      */
-    @Serializable(with = ShuffleSerializer::class)
+    @Serializable
     enum class Shuffle(val value: kotlin.String) {
         @SerialName(value = "OFF") OFF("OFF"),
         @SerialName(value = "BATCH") BATCH("BATCH"),
         @SerialName(value = "ALL") ALL("ALL"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
-    }
-
-    internal object ShuffleSerializer : KSerializer<Shuffle> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): Shuffle {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return Shuffle.entries.firstOrNull { it.value == value }
-                ?: Shuffle.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: Shuffle) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
     }
 }

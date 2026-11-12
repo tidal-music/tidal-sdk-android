@@ -19,12 +19,8 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 
 /** @param role */
 @Serializable
@@ -32,25 +28,10 @@ data class ResourceGrantsCreateOperationPayloadDataAttributes(
     @SerialName(value = "role") val role: ResourceGrantsCreateOperationPayloadDataAttributes.Role
 ) {
 
-    /** Values: VIEWER,COLLABORATOR,unknown_default_open_api */
-    @Serializable(with = RoleSerializer::class)
+    /** Values: VIEWER,COLLABORATOR */
+    @Serializable
     enum class Role(val value: kotlin.String) {
         @SerialName(value = "VIEWER") VIEWER("VIEWER"),
         @SerialName(value = "COLLABORATOR") COLLABORATOR("COLLABORATOR"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
-    }
-
-    internal object RoleSerializer : KSerializer<Role> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): Role {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return Role.entries.firstOrNull { it.value == value } ?: Role.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: Role) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
     }
 }

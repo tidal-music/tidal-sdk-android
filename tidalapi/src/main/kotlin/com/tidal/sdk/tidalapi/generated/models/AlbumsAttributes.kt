@@ -19,12 +19,8 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param albumType Album type
@@ -113,113 +109,50 @@ data class AlbumsAttributes(
     /**
      * Album type
      *
-     * Values: ALBUM,EP,SINGLE,unknown_default_open_api
+     * Values: ALBUM,EP,SINGLE
      */
-    @Serializable(with = AlbumTypeSerializer::class)
+    @Serializable
     enum class AlbumType(val value: kotlin.String) {
         @SerialName(value = "ALBUM") ALBUM("ALBUM"),
         @SerialName(value = "EP") EP("EP"),
         @SerialName(value = "SINGLE") SINGLE("SINGLE"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
-    }
-
-    internal object AlbumTypeSerializer : KSerializer<AlbumType> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): AlbumType {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return AlbumType.entries.firstOrNull { it.value == value }
-                ?: AlbumType.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: AlbumType) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
     }
 
     /**
      * Access type
      *
-     * Values: PUBLIC,UNLISTED,PRIVATE,unknown_default_open_api
+     * Values: PUBLIC,UNLISTED,PRIVATE
      */
-    @Serializable(with = AccessTypeSerializer::class)
+    @Serializable
     enum class AccessType(val value: kotlin.String) {
         @SerialName(value = "PUBLIC") PUBLIC("PUBLIC"),
         @SerialName(value = "UNLISTED") UNLISTED("UNLISTED"),
         @SerialName(value = "PRIVATE") PRIVATE("PRIVATE"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
-    }
-
-    internal object AccessTypeSerializer : KSerializer<AccessType> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): AccessType {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return AccessType.entries.firstOrNull { it.value == value }
-                ?: AccessType.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: AccessType) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
     }
 
     /**
      * Available usage for this album. Deprecated: use 'usageRules' instead. This field will be
      * removed in a future version.
      *
-     * Values: STREAM,DJ,STEM,unknown_default_open_api
+     * Values: STREAM,DJ,STEM
      */
-    @Serializable(with = AvailabilitySerializer::class)
+    @Serializable
     enum class Availability(val value: kotlin.String) {
         @SerialName(value = "STREAM") STREAM("STREAM"),
         @SerialName(value = "DJ") DJ("DJ"),
         @SerialName(value = "STEM") STEM("STEM"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
-    }
-
-    internal object AvailabilitySerializer : KSerializer<Availability> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): Availability {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return Availability.entries.firstOrNull { it.value == value }
-                ?: Availability.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: Availability) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
     }
 
     /**
      * Album type. Deprecated: use 'albumType' instead. This field will be removed in a future
      * version.
      *
-     * Values: ALBUM,EP,SINGLE,unknown_default_open_api
+     * Values: ALBUM,EP,SINGLE
      */
-    @Serializable(with = TypeSerializer::class)
+    @Serializable
     enum class Type(val value: kotlin.String) {
         @SerialName(value = "ALBUM") ALBUM("ALBUM"),
         @SerialName(value = "EP") EP("EP"),
         @SerialName(value = "SINGLE") SINGLE("SINGLE"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
-    }
-
-    internal object TypeSerializer : KSerializer<Type> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): Type {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return Type.entries.firstOrNull { it.value == value } ?: Type.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: Type) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
     }
 }

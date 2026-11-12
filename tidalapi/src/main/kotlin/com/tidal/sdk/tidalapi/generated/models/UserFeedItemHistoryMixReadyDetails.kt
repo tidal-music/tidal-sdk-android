@@ -19,12 +19,8 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 
 /**
  * A new history mix of the viewer's own listening is ready. The `subject` is the mix, as a
@@ -53,53 +49,21 @@ data class UserFeedItemHistoryMixReadyDetails(
     /**
      * Type of activity represented by the group
      *
-     * Values: HISTORY_MIX_READY,unknown_default_open_api
+     * Values: HISTORY_MIX_READY
      */
-    @Serializable(with = ActivityTypeSerializer::class)
+    @Serializable
     enum class ActivityType(val value: kotlin.String) {
-        @SerialName(value = "HISTORY_MIX_READY") HISTORY_MIX_READY("HISTORY_MIX_READY"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
-    }
-
-    internal object ActivityTypeSerializer : KSerializer<ActivityType> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): ActivityType {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return ActivityType.entries.firstOrNull { it.value == value }
-                ?: ActivityType.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: ActivityType) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
+        @SerialName(value = "HISTORY_MIX_READY") HISTORY_MIX_READY("HISTORY_MIX_READY")
     }
 
     /**
      * Recurrence frequency defined by RFC 5545
      *
-     * Values: MONTHLY,YEARLY,unknown_default_open_api
+     * Values: MONTHLY,YEARLY
      */
-    @Serializable(with = FrequencySerializer::class)
+    @Serializable
     enum class Frequency(val value: kotlin.String) {
         @SerialName(value = "MONTHLY") MONTHLY("MONTHLY"),
         @SerialName(value = "YEARLY") YEARLY("YEARLY"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
-    }
-
-    internal object FrequencySerializer : KSerializer<Frequency> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): Frequency {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return Frequency.entries.firstOrNull { it.value == value }
-                ?: Frequency.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: Frequency) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
     }
 }

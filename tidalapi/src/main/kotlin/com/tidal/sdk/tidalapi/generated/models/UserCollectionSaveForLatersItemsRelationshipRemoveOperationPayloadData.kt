@@ -19,12 +19,8 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param id
@@ -37,28 +33,13 @@ data class UserCollectionSaveForLatersItemsRelationshipRemoveOperationPayloadDat
     val type: UserCollectionSaveForLatersItemsRelationshipRemoveOperationPayloadData.Type,
 ) {
 
-    /** Values: tracks,albums,artists,playlists,videos,unknown_default_open_api */
-    @Serializable(with = TypeSerializer::class)
+    /** Values: tracks,albums,artists,playlists,videos */
+    @Serializable
     enum class Type(val value: kotlin.String) {
         @SerialName(value = "tracks") tracks("tracks"),
         @SerialName(value = "albums") albums("albums"),
         @SerialName(value = "artists") artists("artists"),
         @SerialName(value = "playlists") playlists("playlists"),
         @SerialName(value = "videos") videos("videos"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
-    }
-
-    internal object TypeSerializer : KSerializer<Type> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): Type {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return Type.entries.firstOrNull { it.value == value } ?: Type.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: Type) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
     }
 }

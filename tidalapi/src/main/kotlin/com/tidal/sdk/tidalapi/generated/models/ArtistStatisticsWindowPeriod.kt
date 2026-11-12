@@ -19,26 +19,20 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 
 /**
  * Reporting window preset. startDate and endDate give the actual data coverage
  *
- * Values: P7D,P28D,P12M,unknown_default_open_api
+ * Values: P7D,P28D,P12M
  */
-@Serializable(with = ArtistStatisticsWindowPeriodSerializer::class)
+@Serializable
 enum class ArtistStatisticsWindowPeriod(val value: kotlin.String) {
 
     @SerialName(value = "P7D") P7D("P7D"),
     @SerialName(value = "P28D") P28D("P28D"),
-    @SerialName(value = "P12M") P12M("P12M"),
-    @SerialName(value = "unknown_default_open_api")
-    unknown_default_open_api("unknown_default_open_api");
+    @SerialName(value = "P12M") P12M("P12M");
 
     /**
      * Override [toString()] to avoid using the enum variable name as the value, and instead use the
@@ -62,19 +56,5 @@ enum class ArtistStatisticsWindowPeriod(val value: kotlin.String) {
                     it == value || normalizedData == "$value".lowercase()
                 }
             }
-    }
-}
-
-internal object ArtistStatisticsWindowPeriodSerializer : KSerializer<ArtistStatisticsWindowPeriod> {
-    override val descriptor = kotlin.String.serializer().descriptor
-
-    override fun deserialize(decoder: Decoder): ArtistStatisticsWindowPeriod {
-        val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-        return ArtistStatisticsWindowPeriod.entries.firstOrNull { it.value == value }
-            ?: ArtistStatisticsWindowPeriod.unknown_default_open_api
-    }
-
-    override fun serialize(encoder: Encoder, value: ArtistStatisticsWindowPeriod) {
-        encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
     }
 }

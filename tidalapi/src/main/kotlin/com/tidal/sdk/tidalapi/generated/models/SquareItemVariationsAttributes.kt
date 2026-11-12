@@ -19,12 +19,8 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param currency
@@ -62,53 +58,21 @@ data class SquareItemVariationsAttributes(
     @SerialName(value = "stockQuantity") val stockQuantity: kotlin.Long? = null,
 ) {
 
-    /** Values: USD,unknown_default_open_api */
-    @Serializable(with = CurrencySerializer::class)
+    /** Values: USD */
+    @Serializable
     enum class Currency(val value: kotlin.String) {
-        @SerialName(value = "USD") USD("USD"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
-    }
-
-    internal object CurrencySerializer : KSerializer<Currency> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): Currency {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return Currency.entries.firstOrNull { it.value == value }
-                ?: Currency.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: Currency) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
+        @SerialName(value = "USD") USD("USD")
     }
 
     /**
      * Effective pricing mode at the selected site's shipping location (merchant-main fallback).
      * Price is present only for FIXED when its amount is available
      *
-     * Values: FIXED,VARIABLE,unknown_default_open_api
+     * Values: FIXED,VARIABLE
      */
-    @Serializable(with = PricingTypeSerializer::class)
+    @Serializable
     enum class PricingType(val value: kotlin.String) {
         @SerialName(value = "FIXED") FIXED("FIXED"),
         @SerialName(value = "VARIABLE") VARIABLE("VARIABLE"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
-    }
-
-    internal object PricingTypeSerializer : KSerializer<PricingType> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): PricingType {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return PricingType.entries.firstOrNull { it.value == value }
-                ?: PricingType.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: PricingType) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
     }
 }

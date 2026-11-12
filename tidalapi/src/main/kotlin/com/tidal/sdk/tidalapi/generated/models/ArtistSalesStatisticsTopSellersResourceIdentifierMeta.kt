@@ -19,12 +19,8 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 
 /**
  * netSalesAmount is the product's net sales in the window, in the relationship's currency
@@ -57,27 +53,12 @@ data class ArtistSalesStatisticsTopSellersResourceIdentifierMeta(
     /**
      * What was sold. UNKNOWN: a kind this API does not know
      *
-     * Values: DOWNLOAD,MERCH,UNKNOWN,unknown_default_open_api
+     * Values: DOWNLOAD,MERCH,UNKNOWN
      */
-    @Serializable(with = KindSerializer::class)
+    @Serializable
     enum class Kind(val value: kotlin.String) {
         @SerialName(value = "DOWNLOAD") DOWNLOAD("DOWNLOAD"),
         @SerialName(value = "MERCH") MERCH("MERCH"),
         @SerialName(value = "UNKNOWN") UNKNOWN("UNKNOWN"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
-    }
-
-    internal object KindSerializer : KSerializer<Kind> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): Kind {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return Kind.entries.firstOrNull { it.value == value } ?: Kind.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: Kind) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
     }
 }

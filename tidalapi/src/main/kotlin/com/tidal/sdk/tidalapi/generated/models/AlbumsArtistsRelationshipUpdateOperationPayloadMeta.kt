@@ -19,12 +19,8 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param mode Relationship mutation mode. INCREMENTAL updates selected existing entries without
@@ -44,25 +40,10 @@ data class AlbumsArtistsRelationshipUpdateOperationPayloadMeta(
      * removing memberships; REPLACE_ALL replaces the complete membership and its order where
      * applicable. Omission defaults to REPLACE_ALL.
      *
-     * Values: REPLACE_ALL,unknown_default_open_api
+     * Values: REPLACE_ALL
      */
-    @Serializable(with = ModeSerializer::class)
+    @Serializable
     enum class Mode(val value: kotlin.String) {
-        @SerialName(value = "REPLACE_ALL") REPLACE_ALL("REPLACE_ALL"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
-    }
-
-    internal object ModeSerializer : KSerializer<Mode> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): Mode {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return Mode.entries.firstOrNull { it.value == value } ?: Mode.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: Mode) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
+        @SerialName(value = "REPLACE_ALL") REPLACE_ALL("REPLACE_ALL")
     }
 }

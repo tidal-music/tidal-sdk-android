@@ -20,12 +20,8 @@
 package com.tidal.sdk.tidalapi.generated.models
 
 import kotlinx.serialization.Contextual
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param technicalStatus
@@ -43,51 +39,19 @@ data class LyricsAttributes(
     @SerialName(value = "text") val text: kotlin.String? = null,
 ) {
 
-    /** Values: PENDING,PROCESSING,ERROR,OK,unknown_default_open_api */
-    @Serializable(with = TechnicalStatusSerializer::class)
+    /** Values: PENDING,PROCESSING,ERROR,OK */
+    @Serializable
     enum class TechnicalStatus(val value: kotlin.String) {
         @SerialName(value = "PENDING") PENDING("PENDING"),
         @SerialName(value = "PROCESSING") PROCESSING("PROCESSING"),
         @SerialName(value = "ERROR") ERROR("ERROR"),
         @SerialName(value = "OK") OK("OK"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
     }
 
-    internal object TechnicalStatusSerializer : KSerializer<TechnicalStatus> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): TechnicalStatus {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return TechnicalStatus.entries.firstOrNull { it.value == value }
-                ?: TechnicalStatus.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: TechnicalStatus) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
-    }
-
-    /** Values: LEFT_TO_RIGHT,RIGHT_TO_LEFT,unknown_default_open_api */
-    @Serializable(with = DirectionSerializer::class)
+    /** Values: LEFT_TO_RIGHT,RIGHT_TO_LEFT */
+    @Serializable
     enum class Direction(val value: kotlin.String) {
         @SerialName(value = "LEFT_TO_RIGHT") LEFT_TO_RIGHT("LEFT_TO_RIGHT"),
         @SerialName(value = "RIGHT_TO_LEFT") RIGHT_TO_LEFT("RIGHT_TO_LEFT"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
-    }
-
-    internal object DirectionSerializer : KSerializer<Direction> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): Direction {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return Direction.entries.firstOrNull { it.value == value }
-                ?: Direction.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: Direction) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
     }
 }

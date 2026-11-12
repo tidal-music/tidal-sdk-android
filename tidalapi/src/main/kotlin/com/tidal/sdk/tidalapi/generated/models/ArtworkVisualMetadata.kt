@@ -19,12 +19,8 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 
 /**
  * Color information extracted from artwork
@@ -49,28 +45,12 @@ data class ArtworkVisualMetadata(
     /**
      * Status of visual metadata extraction
      *
-     * Values: NONE,PROCESSING,OK,unknown_default_open_api
+     * Values: NONE,PROCESSING,OK
      */
-    @Serializable(with = StatusSerializer::class)
+    @Serializable
     enum class Status(val value: kotlin.String) {
         @SerialName(value = "NONE") NONE("NONE"),
         @SerialName(value = "PROCESSING") PROCESSING("PROCESSING"),
         @SerialName(value = "OK") OK("OK"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
-    }
-
-    internal object StatusSerializer : KSerializer<Status> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): Status {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return Status.entries.firstOrNull { it.value == value }
-                ?: Status.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: Status) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
     }
 }

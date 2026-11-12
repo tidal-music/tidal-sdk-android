@@ -19,12 +19,8 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 
 /**
  * Listeners saved one of your tracks. `eventCount` is the number of distinct people who saved it in
@@ -43,26 +39,10 @@ data class UserFeedItemTrackFavouritedDetails(
     /**
      * Type of activity represented by the group
      *
-     * Values: TRACK_FAVOURITED,unknown_default_open_api
+     * Values: TRACK_FAVOURITED
      */
-    @Serializable(with = ActivityTypeSerializer::class)
+    @Serializable
     enum class ActivityType(val value: kotlin.String) {
-        @SerialName(value = "TRACK_FAVOURITED") TRACK_FAVOURITED("TRACK_FAVOURITED"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
-    }
-
-    internal object ActivityTypeSerializer : KSerializer<ActivityType> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): ActivityType {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return ActivityType.entries.firstOrNull { it.value == value }
-                ?: ActivityType.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: ActivityType) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
+        @SerialName(value = "TRACK_FAVOURITED") TRACK_FAVOURITED("TRACK_FAVOURITED")
     }
 }

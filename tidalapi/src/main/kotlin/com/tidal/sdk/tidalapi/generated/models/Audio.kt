@@ -19,12 +19,8 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 
 /**
  * Available audio measurements for this source. May be absent independently of waveform.
@@ -60,9 +56,9 @@ data class Audio(
      * Source audio encoding. New values may be added.
      *
      * Values:
-     * FLAC,ALAC,AAC,MP3,WMA_LOSSLESS,PCM_S16LE,PCM_S16BE,PCM_S24LE,PCM_S24BE,PCM_S32LE,PCM_S32BE,PCM_F32LE,PCM_F32BE,EAC3,AC4,MHA1,unknown_default_open_api
+     * FLAC,ALAC,AAC,MP3,WMA_LOSSLESS,PCM_S16LE,PCM_S16BE,PCM_S24LE,PCM_S24BE,PCM_S32LE,PCM_S32BE,PCM_F32LE,PCM_F32BE,EAC3,AC4,MHA1
      */
-    @Serializable(with = CodecSerializer::class)
+    @Serializable
     enum class Codec(val value: kotlin.String) {
         @SerialName(value = "FLAC") FLAC("FLAC"),
         @SerialName(value = "ALAC") ALAC("ALAC"),
@@ -80,20 +76,5 @@ data class Audio(
         @SerialName(value = "EAC3") EAC3("EAC3"),
         @SerialName(value = "AC4") AC4("AC4"),
         @SerialName(value = "MHA1") MHA1("MHA1"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
-    }
-
-    internal object CodecSerializer : KSerializer<Codec> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): Codec {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return Codec.entries.firstOrNull { it.value == value } ?: Codec.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: Codec) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
     }
 }

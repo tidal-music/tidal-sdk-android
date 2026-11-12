@@ -19,12 +19,8 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 
 /**
  * status is the breakdownsStatus of the statistics. When it is not OK the entries are withheld, so
@@ -52,28 +48,12 @@ data class ArtistStreamsStatisticsTopTracksMultiRelationshipDataDocumentMeta(
      * withheld because too few people are counted to show it. UNAVAILABLE: not available at the
      * moment
      *
-     * Values: OK,SUPPRESSED,UNAVAILABLE,unknown_default_open_api
+     * Values: OK,SUPPRESSED,UNAVAILABLE
      */
-    @Serializable(with = StatusSerializer::class)
+    @Serializable
     enum class Status(val value: kotlin.String) {
         @SerialName(value = "OK") OK("OK"),
         @SerialName(value = "SUPPRESSED") SUPPRESSED("SUPPRESSED"),
         @SerialName(value = "UNAVAILABLE") UNAVAILABLE("UNAVAILABLE"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
-    }
-
-    internal object StatusSerializer : KSerializer<Status> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): Status {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return Status.entries.firstOrNull { it.value == value }
-                ?: Status.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: Status) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
     }
 }

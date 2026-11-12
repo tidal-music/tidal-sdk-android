@@ -19,12 +19,8 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 
 /**
  * Recoverable AI playlist generation progress snapshot
@@ -51,8 +47,8 @@ data class PlaylistGenerationProgress(
     @SerialName(value = "targetTrackCount") val targetTrackCount: kotlin.Int? = null,
 ) {
 
-    /** Values: PENDING,PROCESSING,ERROR,OK,SKIPPED,UNKNOWN,unknown_default_open_api */
-    @Serializable(with = CoverArtStatusSerializer::class)
+    /** Values: PENDING,PROCESSING,ERROR,OK,SKIPPED,UNKNOWN */
+    @Serializable
     enum class CoverArtStatus(val value: kotlin.String) {
         @SerialName(value = "PENDING") PENDING("PENDING"),
         @SerialName(value = "PROCESSING") PROCESSING("PROCESSING"),
@@ -60,46 +56,15 @@ data class PlaylistGenerationProgress(
         @SerialName(value = "OK") OK("OK"),
         @SerialName(value = "SKIPPED") SKIPPED("SKIPPED"),
         @SerialName(value = "UNKNOWN") UNKNOWN("UNKNOWN"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
     }
 
-    internal object CoverArtStatusSerializer : KSerializer<CoverArtStatus> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): CoverArtStatus {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return CoverArtStatus.entries.firstOrNull { it.value == value }
-                ?: CoverArtStatus.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: CoverArtStatus) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
-    }
-
-    /** Values: PLANNING,SEARCHING,CHOOSING,COMMITTING,UNKNOWN,unknown_default_open_api */
-    @Serializable(with = StageSerializer::class)
+    /** Values: PLANNING,SEARCHING,CHOOSING,COMMITTING,UNKNOWN */
+    @Serializable
     enum class Stage(val value: kotlin.String) {
         @SerialName(value = "PLANNING") PLANNING("PLANNING"),
         @SerialName(value = "SEARCHING") SEARCHING("SEARCHING"),
         @SerialName(value = "CHOOSING") CHOOSING("CHOOSING"),
         @SerialName(value = "COMMITTING") COMMITTING("COMMITTING"),
         @SerialName(value = "UNKNOWN") UNKNOWN("UNKNOWN"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
-    }
-
-    internal object StageSerializer : KSerializer<Stage> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): Stage {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return Stage.entries.firstOrNull { it.value == value } ?: Stage.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: Stage) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
     }
 }

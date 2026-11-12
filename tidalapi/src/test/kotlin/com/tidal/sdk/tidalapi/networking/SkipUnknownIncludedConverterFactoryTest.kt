@@ -1,6 +1,5 @@
 package com.tidal.sdk.tidalapi.networking
 
-import com.tidal.sdk.tidalapi.generated.models.ArtworksAttributes
 import com.tidal.sdk.tidalapi.generated.models.ArtworksResourceObject
 import com.tidal.sdk.tidalapi.generated.models.ArtworksSingleResourceDataDocument
 import kotlinx.coroutines.test.runTest
@@ -55,19 +54,6 @@ class SkipUnknownIncludedConverterFactoryTest {
         val result = fetch(body)
 
         assertEquals(listOf("2"), result?.included?.map { (it as ArtworksResourceObject).id })
-    }
-
-    @Test
-    fun `decodes an unknown enum value as the unknown case`() = runTest {
-        val unknownMediaType =
-            """{"id":"1","type":"artworks","attributes":{"files":[],"mediaType":"HOLOGRAM"}}"""
-
-        val result = fetch(document(data = unknownMediaType, ARTWORK))
-
-        assertEquals(
-            ArtworksAttributes.MediaType.unknown_default_open_api,
-            result?.data?.attributes?.mediaType,
-        )
     }
 
     @Test

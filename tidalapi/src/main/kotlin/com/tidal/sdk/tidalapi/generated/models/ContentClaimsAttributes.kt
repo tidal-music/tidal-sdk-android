@@ -19,12 +19,8 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param assertion The claim assertion type
@@ -51,56 +47,24 @@ data class ContentClaimsAttributes(
     /**
      * The claim assertion type
      *
-     * Values: CLAIM,DISCLAIM,unknown_default_open_api
+     * Values: CLAIM,DISCLAIM
      */
-    @Serializable(with = AssertionSerializer::class)
+    @Serializable
     enum class Assertion(val value: kotlin.String) {
         @SerialName(value = "CLAIM") CLAIM("CLAIM"),
         @SerialName(value = "DISCLAIM") DISCLAIM("DISCLAIM"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
-    }
-
-    internal object AssertionSerializer : KSerializer<Assertion> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): Assertion {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return Assertion.entries.firstOrNull { it.value == value }
-                ?: Assertion.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: Assertion) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
     }
 
     /**
      * Current status of this claim
      *
-     * Values: OPEN,IN_PROGRESS,RESOLVED,REJECTED,unknown_default_open_api
+     * Values: OPEN,IN_PROGRESS,RESOLVED,REJECTED
      */
-    @Serializable(with = StatusSerializer::class)
+    @Serializable
     enum class Status(val value: kotlin.String) {
         @SerialName(value = "OPEN") OPEN("OPEN"),
         @SerialName(value = "IN_PROGRESS") IN_PROGRESS("IN_PROGRESS"),
         @SerialName(value = "RESOLVED") RESOLVED("RESOLVED"),
         @SerialName(value = "REJECTED") REJECTED("REJECTED"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
-    }
-
-    internal object StatusSerializer : KSerializer<Status> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): Status {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return Status.entries.firstOrNull { it.value == value }
-                ?: Status.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: Status) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
     }
 }

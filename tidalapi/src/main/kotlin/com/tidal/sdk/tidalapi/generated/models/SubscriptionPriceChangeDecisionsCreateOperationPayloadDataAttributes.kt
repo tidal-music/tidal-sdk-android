@@ -19,12 +19,8 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param status The decision to record. A decision may only be created once — changing a rejection
@@ -42,27 +38,11 @@ data class SubscriptionPriceChangeDecisionsCreateOperationPayloadDataAttributes(
      * The decision to record. A decision may only be created once — changing a rejection to an
      * acceptance is a PATCH.
      *
-     * Values: ACCEPTED,REJECTED,unknown_default_open_api
+     * Values: ACCEPTED,REJECTED
      */
-    @Serializable(with = StatusSerializer::class)
+    @Serializable
     enum class Status(val value: kotlin.String) {
         @SerialName(value = "ACCEPTED") ACCEPTED("ACCEPTED"),
         @SerialName(value = "REJECTED") REJECTED("REJECTED"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
-    }
-
-    internal object StatusSerializer : KSerializer<Status> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): Status {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return Status.entries.firstOrNull { it.value == value }
-                ?: Status.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: Status) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
     }
 }

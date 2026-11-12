@@ -19,12 +19,8 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param artistId The artist id which is being claimed
@@ -62,38 +58,22 @@ data class ArtistClaimsAttributes(
     /**
      * The DSP used for authentication
      *
-     * Values: DISTROKID,CDBABY,TUNECORE,unknown_default_open_api
+     * Values: DISTROKID,CDBABY,TUNECORE
      */
-    @Serializable(with = ProviderSerializer::class)
+    @Serializable
     enum class Provider(val value: kotlin.String) {
         @SerialName(value = "DISTROKID") DISTROKID("DISTROKID"),
         @SerialName(value = "CDBABY") CDBABY("CDBABY"),
         @SerialName(value = "TUNECORE") TUNECORE("TUNECORE"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
-    }
-
-    internal object ProviderSerializer : KSerializer<Provider> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): Provider {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return Provider.entries.firstOrNull { it.value == value }
-                ?: Provider.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: Provider) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
     }
 
     /**
      * Current status of this claim
      *
      * Values:
-     * AWAITING_OAUTH,FETCHING_CONTENT,VERIFIED,NO_MATCHES,AUTHENTICATION_FAILED,PROCESSING,COMPLETED,FAILED,CANCELLED,NAME_MISMATCH,CLAIMED_ARTIST_MISMATCH,unknown_default_open_api
+     * AWAITING_OAUTH,FETCHING_CONTENT,VERIFIED,NO_MATCHES,AUTHENTICATION_FAILED,PROCESSING,COMPLETED,FAILED,CANCELLED,NAME_MISMATCH,CLAIMED_ARTIST_MISMATCH
      */
-    @Serializable(with = StatusSerializer::class)
+    @Serializable
     enum class Status(val value: kotlin.String) {
         @SerialName(value = "AWAITING_OAUTH") AWAITING_OAUTH("AWAITING_OAUTH"),
         @SerialName(value = "FETCHING_CONTENT") FETCHING_CONTENT("FETCHING_CONTENT"),
@@ -107,48 +87,16 @@ data class ArtistClaimsAttributes(
         @SerialName(value = "NAME_MISMATCH") NAME_MISMATCH("NAME_MISMATCH"),
         @SerialName(value = "CLAIMED_ARTIST_MISMATCH")
         CLAIMED_ARTIST_MISMATCH("CLAIMED_ARTIST_MISMATCH"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
-    }
-
-    internal object StatusSerializer : KSerializer<Status> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): Status {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return Status.entries.firstOrNull { it.value == value }
-                ?: Status.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: Status) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
     }
 
     /**
      * The recommended claim resolution
      *
-     * Values: PROFILE,CONTENT,unknown_default_open_api
+     * Values: PROFILE,CONTENT
      */
-    @Serializable(with = RecommendationSerializer::class)
+    @Serializable
     enum class Recommendation(val value: kotlin.String) {
         @SerialName(value = "CLAIM_PROFILE") PROFILE("CLAIM_PROFILE"),
         @SerialName(value = "CLAIM_CONTENT") CONTENT("CLAIM_CONTENT"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
-    }
-
-    internal object RecommendationSerializer : KSerializer<Recommendation> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): Recommendation {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return Recommendation.entries.firstOrNull { it.value == value }
-                ?: Recommendation.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: Recommendation) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
     }
 }

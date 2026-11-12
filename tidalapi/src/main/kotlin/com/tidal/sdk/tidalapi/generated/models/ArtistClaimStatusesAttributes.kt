@@ -19,12 +19,8 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param claimSources Claim sources contributing to the current status. Empty when there is no
@@ -45,54 +41,22 @@ data class ArtistClaimStatusesAttributes(
     /**
      * Claim sources contributing to the current status. Empty when there is no active claim.
      *
-     * Values: ARTIST_CLAIMS,MANUAL_ARTIST_CLAIMS,unknown_default_open_api
+     * Values: ARTIST_CLAIMS,MANUAL_ARTIST_CLAIMS
      */
-    @Serializable(with = ClaimSourcesSerializer::class)
+    @Serializable
     enum class ClaimSources(val value: kotlin.String) {
         @SerialName(value = "ARTIST_CLAIMS") ARTIST_CLAIMS("ARTIST_CLAIMS"),
         @SerialName(value = "MANUAL_ARTIST_CLAIMS") MANUAL_ARTIST_CLAIMS("MANUAL_ARTIST_CLAIMS"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
-    }
-
-    internal object ClaimSourcesSerializer : KSerializer<ClaimSources> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): ClaimSources {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return ClaimSources.entries.firstOrNull { it.value == value }
-                ?: ClaimSources.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: ClaimSources) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
     }
 
     /**
      * Whether the artist profile currently has an active claim
      *
-     * Values: CLAIM_IN_PROGRESS,NO_ACTIVE_CLAIM,unknown_default_open_api
+     * Values: CLAIM_IN_PROGRESS,NO_ACTIVE_CLAIM
      */
-    @Serializable(with = StatusSerializer::class)
+    @Serializable
     enum class Status(val value: kotlin.String) {
         @SerialName(value = "CLAIM_IN_PROGRESS") CLAIM_IN_PROGRESS("CLAIM_IN_PROGRESS"),
         @SerialName(value = "NO_ACTIVE_CLAIM") NO_ACTIVE_CLAIM("NO_ACTIVE_CLAIM"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
-    }
-
-    internal object StatusSerializer : KSerializer<Status> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): Status {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return Status.entries.firstOrNull { it.value == value }
-                ?: Status.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: Status) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
     }
 }

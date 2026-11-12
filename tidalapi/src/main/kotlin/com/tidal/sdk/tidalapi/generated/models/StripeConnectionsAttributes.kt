@@ -19,12 +19,8 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param status Current status of this Stripe connection
@@ -52,31 +48,14 @@ data class StripeConnectionsAttributes(
     /**
      * Current status of this Stripe connection
      *
-     * Values:
-     * PENDING_REQUIREMENTS,UNDER_REVIEW,ACCEPTED,REJECTED,SUSPENDED,unknown_default_open_api
+     * Values: PENDING_REQUIREMENTS,UNDER_REVIEW,ACCEPTED,REJECTED,SUSPENDED
      */
-    @Serializable(with = StatusSerializer::class)
+    @Serializable
     enum class Status(val value: kotlin.String) {
         @SerialName(value = "PENDING_REQUIREMENTS") PENDING_REQUIREMENTS("PENDING_REQUIREMENTS"),
         @SerialName(value = "UNDER_REVIEW") UNDER_REVIEW("UNDER_REVIEW"),
         @SerialName(value = "ACCEPTED") ACCEPTED("ACCEPTED"),
         @SerialName(value = "REJECTED") REJECTED("REJECTED"),
         @SerialName(value = "SUSPENDED") SUSPENDED("SUSPENDED"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
-    }
-
-    internal object StatusSerializer : KSerializer<Status> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): Status {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return Status.entries.firstOrNull { it.value == value }
-                ?: Status.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: Status) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
     }
 }

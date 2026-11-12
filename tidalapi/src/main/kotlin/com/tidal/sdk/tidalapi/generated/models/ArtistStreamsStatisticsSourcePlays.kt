@@ -19,12 +19,8 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param plays
@@ -46,9 +42,9 @@ data class ArtistStreamsStatisticsSourcePlays(
      * Where plays started. UNKNOWN: a source this API does not know
      *
      * Values:
-     * MIXES_AND_RADIO,ALBUMS_AND_PROFILE,TIDAL_PLAYLISTS,LISTENER_PLAYLISTS,LISTENER_COLLECTIONS,SEARCH,UNKNOWN,unknown_default_open_api
+     * MIXES_AND_RADIO,ALBUMS_AND_PROFILE,TIDAL_PLAYLISTS,LISTENER_PLAYLISTS,LISTENER_COLLECTIONS,SEARCH,UNKNOWN
      */
-    @Serializable(with = SourceSerializer::class)
+    @Serializable
     enum class Source(val value: kotlin.String) {
         @SerialName(value = "MIXES_AND_RADIO") MIXES_AND_RADIO("MIXES_AND_RADIO"),
         @SerialName(value = "ALBUMS_AND_PROFILE") ALBUMS_AND_PROFILE("ALBUMS_AND_PROFILE"),
@@ -57,21 +53,5 @@ data class ArtistStreamsStatisticsSourcePlays(
         @SerialName(value = "LISTENER_COLLECTIONS") LISTENER_COLLECTIONS("LISTENER_COLLECTIONS"),
         @SerialName(value = "SEARCH") SEARCH("SEARCH"),
         @SerialName(value = "UNKNOWN") UNKNOWN("UNKNOWN"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
-    }
-
-    internal object SourceSerializer : KSerializer<Source> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): Source {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return Source.entries.firstOrNull { it.value == value }
-                ?: Source.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: Source) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
     }
 }

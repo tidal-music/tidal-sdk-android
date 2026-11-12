@@ -19,12 +19,8 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param name Artist name
@@ -85,28 +81,12 @@ data class ArtistsAttributes(
      * profile, MIXED: claimed profile with both label and user content. May be null during
      * rollout/backfill.
      *
-     * Values: LABEL,USER,MIXED,unknown_default_open_api
+     * Values: LABEL,USER,MIXED
      */
-    @Serializable(with = OwnerTypeSerializer::class)
+    @Serializable
     enum class OwnerType(val value: kotlin.String) {
         @SerialName(value = "LABEL") LABEL("LABEL"),
         @SerialName(value = "USER") USER("USER"),
         @SerialName(value = "MIXED") MIXED("MIXED"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
-    }
-
-    internal object OwnerTypeSerializer : KSerializer<OwnerType> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): OwnerType {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return OwnerType.entries.firstOrNull { it.value == value }
-                ?: OwnerType.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: OwnerType) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
     }
 }

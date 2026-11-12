@@ -18,7 +18,7 @@ import retrofit2.Retrofit
 /**
  * Decodes response bodies like the kotlinx converter, but first drops `included` resources whose
  * `type` this SDK version doesn't know. The API can add resource types at any time; unknown enum
- * values are handled by the generated `unknown_default_open_api` cases.
+ * values are handled by the generator (`enumUnknownDefaultCase`), not here.
  */
 internal class SkipUnknownIncludedConverterFactory(private val json: Json) : Converter.Factory() {
 

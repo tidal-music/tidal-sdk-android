@@ -19,12 +19,8 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 
 /** @param playbackStatus */
 @Serializable
@@ -33,27 +29,11 @@ data class UserPlaybackStatesAttributes(
     val playbackStatus: UserPlaybackStatesAttributes.PlaybackStatus
 ) {
 
-    /** Values: IDLE,PLAYING,PAUSED,unknown_default_open_api */
-    @Serializable(with = PlaybackStatusSerializer::class)
+    /** Values: IDLE,PLAYING,PAUSED */
+    @Serializable
     enum class PlaybackStatus(val value: kotlin.String) {
         @SerialName(value = "IDLE") IDLE("IDLE"),
         @SerialName(value = "PLAYING") PLAYING("PLAYING"),
         @SerialName(value = "PAUSED") PAUSED("PAUSED"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
-    }
-
-    internal object PlaybackStatusSerializer : KSerializer<PlaybackStatus> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): PlaybackStatus {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return PlaybackStatus.entries.firstOrNull { it.value == value }
-                ?: PlaybackStatus.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: PlaybackStatus) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
     }
 }

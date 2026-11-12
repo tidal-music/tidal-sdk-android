@@ -19,12 +19,8 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param description
@@ -38,9 +34,9 @@ data class UserReportsCreateOperationPayloadDataAttributes(
 
     /**
      * Values:
-     * SEXUAL_CONTENT_OR_NUDITY,VIOLENT_OR_DANGEROUS_CONTENT,HATEFUL_OR_ABUSIVE_CONTENT,HARASSMENT,PRIVACY_VIOLATION,SCAMS_OR_FRAUD,SPAM,COPYRIGHT_INFRINGEMENT,APPEAL,UNKNOWN,unknown_default_open_api
+     * SEXUAL_CONTENT_OR_NUDITY,VIOLENT_OR_DANGEROUS_CONTENT,HATEFUL_OR_ABUSIVE_CONTENT,HARASSMENT,PRIVACY_VIOLATION,SCAMS_OR_FRAUD,SPAM,COPYRIGHT_INFRINGEMENT,APPEAL,UNKNOWN
      */
-    @Serializable(with = ReasonSerializer::class)
+    @Serializable
     enum class Reason(val value: kotlin.String) {
         @SerialName(value = "SEXUAL_CONTENT_OR_NUDITY")
         SEXUAL_CONTENT_OR_NUDITY("SEXUAL_CONTENT_OR_NUDITY"),
@@ -56,21 +52,5 @@ data class UserReportsCreateOperationPayloadDataAttributes(
         COPYRIGHT_INFRINGEMENT("COPYRIGHT_INFRINGEMENT"),
         @SerialName(value = "APPEAL") APPEAL("APPEAL"),
         @SerialName(value = "UNKNOWN") UNKNOWN("UNKNOWN"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
-    }
-
-    internal object ReasonSerializer : KSerializer<Reason> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): Reason {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return Reason.entries.firstOrNull { it.value == value }
-                ?: Reason.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: Reason) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
     }
 }

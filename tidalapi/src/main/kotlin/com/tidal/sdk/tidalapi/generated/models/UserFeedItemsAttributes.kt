@@ -20,12 +20,8 @@
 package com.tidal.sdk.tidalapi.generated.models
 
 import kotlinx.serialization.Contextual
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param activityDetails
@@ -64,27 +60,11 @@ data class UserFeedItemsAttributes(
     /**
      * The feed surface containing the activity
      *
-     * Values: INBOX,FEED,unknown_default_open_api
+     * Values: INBOX,FEED
      */
-    @Serializable(with = SurfaceSerializer::class)
+    @Serializable
     enum class Surface(val value: kotlin.String) {
         @SerialName(value = "INBOX") INBOX("INBOX"),
         @SerialName(value = "FEED") FEED("FEED"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
-    }
-
-    internal object SurfaceSerializer : KSerializer<Surface> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): Surface {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return Surface.entries.firstOrNull { it.value == value }
-                ?: Surface.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: Surface) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
     }
 }

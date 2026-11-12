@@ -19,12 +19,8 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param configurationVersion
@@ -53,33 +49,15 @@ data class PlaylistGenerationSchedulesAttributes(
     /**
      * Recurrence frequency defined by RFC 5545
      *
-     * Values: WEEKLY,unknown_default_open_api
+     * Values: WEEKLY
      */
-    @Serializable(with = FrequencySerializer::class)
+    @Serializable
     enum class Frequency(val value: kotlin.String) {
-        @SerialName(value = "WEEKLY") WEEKLY("WEEKLY"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
+        @SerialName(value = "WEEKLY") WEEKLY("WEEKLY")
     }
 
-    internal object FrequencySerializer : KSerializer<Frequency> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): Frequency {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return Frequency.entries.firstOrNull { it.value == value }
-                ?: Frequency.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: Frequency) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
-    }
-
-    /**
-     * Values: ACTIVE,DISABLED,DELETING,PROVISIONING,UPDATING,ERROR,UNKNOWN,unknown_default_open_api
-     */
-    @Serializable(with = StatusSerializer::class)
+    /** Values: ACTIVE,DISABLED,DELETING,PROVISIONING,UPDATING,ERROR,UNKNOWN */
+    @Serializable
     enum class Status(val value: kotlin.String) {
         @SerialName(value = "ACTIVE") ACTIVE("ACTIVE"),
         @SerialName(value = "DISABLED") DISABLED("DISABLED"),
@@ -88,26 +66,10 @@ data class PlaylistGenerationSchedulesAttributes(
         @SerialName(value = "UPDATING") UPDATING("UPDATING"),
         @SerialName(value = "ERROR") ERROR("ERROR"),
         @SerialName(value = "UNKNOWN") UNKNOWN("UNKNOWN"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
     }
 
-    internal object StatusSerializer : KSerializer<Status> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): Status {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return Status.entries.firstOrNull { it.value == value }
-                ?: Status.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: Status) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
-    }
-
-    /** Values: MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY,SUNDAY,unknown_default_open_api */
-    @Serializable(with = WeekdaySerializer::class)
+    /** Values: MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY,SUNDAY */
+    @Serializable
     enum class Weekday(val value: kotlin.String) {
         @SerialName(value = "MONDAY") MONDAY("MONDAY"),
         @SerialName(value = "TUESDAY") TUESDAY("TUESDAY"),
@@ -116,21 +78,5 @@ data class PlaylistGenerationSchedulesAttributes(
         @SerialName(value = "FRIDAY") FRIDAY("FRIDAY"),
         @SerialName(value = "SATURDAY") SATURDAY("SATURDAY"),
         @SerialName(value = "SUNDAY") SUNDAY("SUNDAY"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
-    }
-
-    internal object WeekdaySerializer : KSerializer<Weekday> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): Weekday {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return Weekday.entries.firstOrNull { it.value == value }
-                ?: Weekday.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: Weekday) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
     }
 }

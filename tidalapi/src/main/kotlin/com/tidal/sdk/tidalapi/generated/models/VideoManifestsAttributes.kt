@@ -19,12 +19,8 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param drmData
@@ -49,57 +45,25 @@ data class VideoManifestsAttributes(
     /**
      * Why a preview is served instead of the full video
      *
-     * Values: SUBSCRIPTION,PURCHASE,HIGHER_ACCESS_TIER,unknown_default_open_api
+     * Values: SUBSCRIPTION,PURCHASE,HIGHER_ACCESS_TIER
      */
-    @Serializable(with = PreviewReasonSerializer::class)
+    @Serializable
     enum class PreviewReason(val value: kotlin.String) {
         @SerialName(value = "FULL_REQUIRES_SUBSCRIPTION")
         SUBSCRIPTION("FULL_REQUIRES_SUBSCRIPTION"),
         @SerialName(value = "FULL_REQUIRES_PURCHASE") PURCHASE("FULL_REQUIRES_PURCHASE"),
         @SerialName(value = "FULL_REQUIRES_HIGHER_ACCESS_TIER")
         HIGHER_ACCESS_TIER("FULL_REQUIRES_HIGHER_ACCESS_TIER"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
-    }
-
-    internal object PreviewReasonSerializer : KSerializer<PreviewReason> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): PreviewReason {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return PreviewReason.entries.firstOrNull { it.value == value }
-                ?: PreviewReason.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: PreviewReason) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
     }
 
     /**
      * Video presentation
      *
-     * Values: FULL,PREVIEW,unknown_default_open_api
+     * Values: FULL,PREVIEW
      */
-    @Serializable(with = VideoPresentationSerializer::class)
+    @Serializable
     enum class VideoPresentation(val value: kotlin.String) {
         @SerialName(value = "FULL") FULL("FULL"),
         @SerialName(value = "PREVIEW") PREVIEW("PREVIEW"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
-    }
-
-    internal object VideoPresentationSerializer : KSerializer<VideoPresentation> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): VideoPresentation {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return VideoPresentation.entries.firstOrNull { it.value == value }
-                ?: VideoPresentation.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: VideoPresentation) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
     }
 }

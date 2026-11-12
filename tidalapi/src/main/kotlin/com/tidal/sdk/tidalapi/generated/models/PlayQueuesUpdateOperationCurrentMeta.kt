@@ -19,12 +19,8 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param mode FIRST_FUTURE_ITEM follows shuffle/repeat; no-op when future is empty.
@@ -43,26 +39,11 @@ data class PlayQueuesUpdateOperationCurrentMeta(
     /**
      * FIRST_FUTURE_ITEM follows shuffle/repeat; no-op when future is empty.
      *
-     * Values: FIRST_FUTURE_ITEM,ITEM,unknown_default_open_api
+     * Values: FIRST_FUTURE_ITEM,ITEM
      */
-    @Serializable(with = ModeSerializer::class)
+    @Serializable
     enum class Mode(val value: kotlin.String) {
         @SerialName(value = "FIRST_FUTURE_ITEM") FIRST_FUTURE_ITEM("FIRST_FUTURE_ITEM"),
         @SerialName(value = "ITEM") ITEM("ITEM"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
-    }
-
-    internal object ModeSerializer : KSerializer<Mode> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): Mode {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return Mode.entries.firstOrNull { it.value == value } ?: Mode.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: Mode) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
     }
 }

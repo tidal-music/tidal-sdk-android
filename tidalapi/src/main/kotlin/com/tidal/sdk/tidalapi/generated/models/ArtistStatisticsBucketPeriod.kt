@@ -19,25 +19,19 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 
 /**
  * Calendar width of each bucket. Absent when the producer's width is not recognized
  *
- * Values: P1D,P7D,unknown_default_open_api
+ * Values: P1D,P7D
  */
-@Serializable(with = ArtistStatisticsBucketPeriodSerializer::class)
+@Serializable
 enum class ArtistStatisticsBucketPeriod(val value: kotlin.String) {
 
     @SerialName(value = "P1D") P1D("P1D"),
-    @SerialName(value = "P7D") P7D("P7D"),
-    @SerialName(value = "unknown_default_open_api")
-    unknown_default_open_api("unknown_default_open_api");
+    @SerialName(value = "P7D") P7D("P7D");
 
     /**
      * Override [toString()] to avoid using the enum variable name as the value, and instead use the
@@ -61,19 +55,5 @@ enum class ArtistStatisticsBucketPeriod(val value: kotlin.String) {
                     it == value || normalizedData == "$value".lowercase()
                 }
             }
-    }
-}
-
-internal object ArtistStatisticsBucketPeriodSerializer : KSerializer<ArtistStatisticsBucketPeriod> {
-    override val descriptor = kotlin.String.serializer().descriptor
-
-    override fun deserialize(decoder: Decoder): ArtistStatisticsBucketPeriod {
-        val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-        return ArtistStatisticsBucketPeriod.entries.firstOrNull { it.value == value }
-            ?: ArtistStatisticsBucketPeriod.unknown_default_open_api
-    }
-
-    override fun serialize(encoder: Encoder, value: ArtistStatisticsBucketPeriod) {
-        encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
     }
 }

@@ -19,12 +19,8 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param action Action to perform
@@ -51,55 +47,24 @@ data class OfflineTasksAttributes(
     /**
      * Action to perform
      *
-     * Values: STORE,REMOVE,unknown_default_open_api
+     * Values: STORE,REMOVE
      */
-    @Serializable(with = ActionSerializer::class)
+    @Serializable
     enum class Action(val value: kotlin.String) {
         @SerialName(value = "STORE") STORE("STORE"),
         @SerialName(value = "REMOVE") REMOVE("REMOVE"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
-    }
-
-    internal object ActionSerializer : KSerializer<Action> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): Action {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return Action.entries.firstOrNull { it.value == value }
-                ?: Action.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: Action) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
     }
 
     /**
      * Task state
      *
-     * Values: PENDING,IN_PROGRESS,FAILED,COMPLETED,unknown_default_open_api
+     * Values: PENDING,IN_PROGRESS,FAILED,COMPLETED
      */
-    @Serializable(with = StateSerializer::class)
+    @Serializable
     enum class State(val value: kotlin.String) {
         @SerialName(value = "PENDING") PENDING("PENDING"),
         @SerialName(value = "IN_PROGRESS") IN_PROGRESS("IN_PROGRESS"),
         @SerialName(value = "FAILED") FAILED("FAILED"),
         @SerialName(value = "COMPLETED") COMPLETED("COMPLETED"),
-        @SerialName(value = "unknown_default_open_api")
-        unknown_default_open_api("unknown_default_open_api"),
-    }
-
-    internal object StateSerializer : KSerializer<State> {
-        override val descriptor = kotlin.String.serializer().descriptor
-
-        override fun deserialize(decoder: Decoder): State {
-            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
-            return State.entries.firstOrNull { it.value == value } ?: State.unknown_default_open_api
-        }
-
-        override fun serialize(encoder: Encoder, value: State) {
-            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
-        }
     }
 }
