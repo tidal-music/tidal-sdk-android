@@ -22,22 +22,9 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/**
- * @param code
- * @param status
- * @param detail
- */
+/** @param errors */
 @Serializable
-data class SavedSharesCreateResource429ResponseBodyErrorsInner(
-    @SerialName(value = "code") val code: SavedSharesCreateResource429ResponseBodyErrorsInner.Code,
-    @SerialName(value = "status") val status: kotlin.String,
-    @SerialName(value = "detail") val detail: kotlin.String? = null,
-) {
-
-    /** Values: SHARE_PASSWORD_ATTEMPTS_EXCEEDED */
-    @Serializable
-    enum class Code(val value: kotlin.String) {
-        @SerialName(value = "SHARE_PASSWORD_ATTEMPTS_EXCEEDED")
-        SHARE_PASSWORD_ATTEMPTS_EXCEEDED("SHARE_PASSWORD_ATTEMPTS_EXCEEDED")
-    }
-}
+data class UserDataExportsCreateResource400ResponseBody(
+    @SerialName(value = "errors")
+    val errors: kotlin.collections.List<UserDataExportsCreateResource400ResponseBodyErrorsInner>
+) {}

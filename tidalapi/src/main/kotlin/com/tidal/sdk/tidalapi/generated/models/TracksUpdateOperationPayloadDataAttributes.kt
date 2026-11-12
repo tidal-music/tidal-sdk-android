@@ -30,7 +30,8 @@ import kotlinx.serialization.Serializable
  *   the hyphens of the display form. An ISRC set here can be replaced until the track is first
  *   sold, and null resets it to the default value. An empty string is also accepted as a reset for
  *   now, for compatibility. After the first sale both are rejected. The ISRC TIDAL assigns at the
- *   track's first sale is permanent. Omit the field to leave the ISRC unchanged.
+ *   track's first sale is permanent. Omit the field to leave the ISRC unchanged. Only the track's
+ *   owners can set it.
  * @param key
  * @param keyScale
  * @param title
@@ -47,7 +48,7 @@ data class TracksUpdateOperationPayloadDataAttributes(
     /* Explicit content */
     @SerialName(value = "explicit") val explicit: kotlin.Boolean? = null,
 
-    /* An ISRC the rights holder already owns: the 12 characters ISO 3901 defines, without the hyphens of the display form. An ISRC set here can be replaced until the track is first sold, and null resets it to the default value. An empty string is also accepted as a reset for now, for compatibility. After the first sale both are rejected. The ISRC TIDAL assigns at the track's first sale is permanent. Omit the field to leave the ISRC unchanged. */
+    /* An ISRC the rights holder already owns: the 12 characters ISO 3901 defines, without the hyphens of the display form. An ISRC set here can be replaced until the track is first sold, and null resets it to the default value. An empty string is also accepted as a reset for now, for compatibility. After the first sale both are rejected. The ISRC TIDAL assigns at the track's first sale is permanent. Omit the field to leave the ISRC unchanged. Only the track's owners can set it. */
     @SerialName(value = "isrc") val isrc: kotlin.String? = null,
     @SerialName(value = "key") val key: TracksUpdateOperationPayloadDataAttributes.Key? = null,
     @SerialName(value = "keyScale")

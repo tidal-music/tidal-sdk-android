@@ -28,19 +28,17 @@ import kotlinx.serialization.Serializable
  * @param detail
  */
 @Serializable
-data class SavedSharesCreateResource403ResponseBodyErrorsInner(
-    @SerialName(value = "code") val code: SavedSharesCreateResource403ResponseBodyErrorsInner.Code,
+data class ResourceGrantsCreateResource429ResponseBodyErrorsInner(
+    @SerialName(value = "code")
+    val code: ResourceGrantsCreateResource429ResponseBodyErrorsInner.Code,
     @SerialName(value = "status") val status: kotlin.String,
     @SerialName(value = "detail") val detail: kotlin.String? = null,
 ) {
 
-    /** Values: SHARE_PASSWORD_INVALID,SHARE_PASSWORD_REQUIRED,UNAUTHORIZED */
+    /** Values: SHARE_PASSWORD_ATTEMPTS_EXCEEDED */
     @Serializable
     enum class Code(val value: kotlin.String) {
-        @SerialName(value = "SHARE_PASSWORD_INVALID")
-        SHARE_PASSWORD_INVALID("SHARE_PASSWORD_INVALID"),
-        @SerialName(value = "SHARE_PASSWORD_REQUIRED")
-        SHARE_PASSWORD_REQUIRED("SHARE_PASSWORD_REQUIRED"),
-        @SerialName(value = "UNAUTHORIZED") UNAUTHORIZED("UNAUTHORIZED"),
+        @SerialName(value = "SHARE_PASSWORD_ATTEMPTS_EXCEEDED")
+        SHARE_PASSWORD_ATTEMPTS_EXCEEDED("SHARE_PASSWORD_ATTEMPTS_EXCEEDED")
     }
 }

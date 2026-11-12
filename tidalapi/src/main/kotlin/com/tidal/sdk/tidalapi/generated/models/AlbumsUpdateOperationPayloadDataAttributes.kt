@@ -29,11 +29,13 @@ import kotlinx.serialization.Serializable
  *   with a valid GS1 check digit. A barcode set here can be replaced until the album is first sold,
  *   and null resets it to the default value. An empty string is also accepted as a reset for now,
  *   for compatibility. After the first sale both are rejected. The barcode TIDAL assigns at the
- *   album's first sale is permanent. Omit the field to leave the barcode unchanged.
+ *   album's first sale is permanent. Omit the field to leave the barcode unchanged. Only the
+ *   album's owners can set it.
  * @param copyright
  * @param explicit Explicit content
  * @param explicitLyrics Explicit content. Deprecated: use 'explicit' instead. This field will be
  *   removed in a future version.
+ * @param published Whether the album is published to everyone.
  * @param releaseDate
  * @param title
  * @param version
@@ -47,7 +49,7 @@ data class AlbumsUpdateOperationPayloadDataAttributes(
     @SerialName(value = "albumType")
     val albumType: AlbumsUpdateOperationPayloadDataAttributes.AlbumType? = null,
 
-    /* A barcode the rights holder already owns: a GTIN-12 or GTIN-13 (UPC-A or EAN-13) with a valid GS1 check digit. A barcode set here can be replaced until the album is first sold, and null resets it to the default value. An empty string is also accepted as a reset for now, for compatibility. After the first sale both are rejected. The barcode TIDAL assigns at the album's first sale is permanent. Omit the field to leave the barcode unchanged. */
+    /* A barcode the rights holder already owns: a GTIN-12 or GTIN-13 (UPC-A or EAN-13) with a valid GS1 check digit. A barcode set here can be replaced until the album is first sold, and null resets it to the default value. An empty string is also accepted as a reset for now, for compatibility. After the first sale both are rejected. The barcode TIDAL assigns at the album's first sale is permanent. Omit the field to leave the barcode unchanged. Only the album's owners can set it. */
     @SerialName(value = "barcodeId") val barcodeId: kotlin.String? = null,
     @SerialName(value = "copyright") val copyright: Copyright? = null,
 
@@ -58,6 +60,9 @@ data class AlbumsUpdateOperationPayloadDataAttributes(
     @SerialName(value = "explicitLyrics")
     @Deprecated(message = "This property is deprecated.")
     val explicitLyrics: kotlin.Boolean? = null,
+
+    /* Whether the album is published to everyone. */
+    @SerialName(value = "published") val published: kotlin.Boolean? = null,
     @SerialName(value = "releaseDate") val releaseDate: kotlin.String? = null,
     @SerialName(value = "title") val title: kotlin.String? = null,
     @SerialName(value = "version") val version: kotlin.String? = null,

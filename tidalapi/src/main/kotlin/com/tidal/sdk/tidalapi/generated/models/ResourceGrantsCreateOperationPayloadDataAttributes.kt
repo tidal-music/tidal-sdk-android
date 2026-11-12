@@ -22,7 +22,11 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param role */
+/**
+ * Required for a direct grant; omitted when redeeming.
+ *
+ * @param role
+ */
 @Serializable
 data class ResourceGrantsCreateOperationPayloadDataAttributes(
     @SerialName(value = "role") val role: ResourceGrantsCreateOperationPayloadDataAttributes.Role

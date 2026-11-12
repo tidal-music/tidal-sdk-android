@@ -23,17 +23,17 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * @param attributes
  * @param relationships
  * @param type
+ * @param attributes
  */
 @Serializable
 data class ResourceGrantsCreateOperationPayloadData(
-    @SerialName(value = "attributes")
-    val attributes: ResourceGrantsCreateOperationPayloadDataAttributes,
     @SerialName(value = "relationships")
     val relationships: ResourceGrantsCreateOperationPayloadDataRelationships,
     @SerialName(value = "type") val type: ResourceGrantsCreateOperationPayloadData.Type,
+    @SerialName(value = "attributes")
+    val attributes: ResourceGrantsCreateOperationPayloadDataAttributes? = null,
 ) {
 
     /** Values: resourceGrants */

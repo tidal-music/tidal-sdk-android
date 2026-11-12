@@ -192,7 +192,8 @@ interface Albums {
     ): Response<AlbumsSingleResourceDataDocument>
 
     /**
-     * PATCH albums/{id} Update single album. Updates existing album. Responses:
+     * PATCH albums/{id} Update single album. Updates existing album. A COLLABORATOR on the album
+     * may update it; changing accessType, published or barcodeId needs OWNER. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -286,7 +287,7 @@ interface Albums {
      * PATCH albums/{id}/relationships/artists Update artists relationship (\&quot;to-many\&quot;).
      * Sets the album&#39;s artists, replacing the current list. Artists are listed in the order
      * given. Provide 1 to 10 distinct artists. You can add your own artist profile and the profiles
-     * of users who have owner or collaborator access to the album. Only the album&#39;s owner can
+     * of users who have owner or collaborator access to the album. Owners and collaborators can
      * change its artists. Returns an acknowledgement. Responses:
      * - 200: Successful response
      * - 400: Invalid request
@@ -455,8 +456,8 @@ interface Albums {
     /**
      * PATCH albums/{id}/relationships/items Update items relationship (\&quot;to-many\&quot;).
      * Incrementally updates one existing track&#39;s 1-based track number to meta.positionIndex.
-     * Does not replace the album&#39;s items or add or remove tracks. Empty data is rejected.
-     * Returns an acknowledgement. Responses:
+     * Does not replace the album&#39;s items or add or remove tracks. Empty data is rejected. A
+     * COLLABORATOR on the album may reorder. Returns an acknowledgement. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found

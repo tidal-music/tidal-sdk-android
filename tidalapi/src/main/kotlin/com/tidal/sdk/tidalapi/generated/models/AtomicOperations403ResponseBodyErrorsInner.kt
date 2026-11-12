@@ -26,12 +26,14 @@ import kotlinx.serialization.Serializable
  * @param code
  * @param status
  * @param detail
+ * @param meta
  */
 @Serializable
 data class AtomicOperations403ResponseBodyErrorsInner(
     @SerialName(value = "code") val code: AtomicOperations403ResponseBodyErrorsInner.Code,
     @SerialName(value = "status") val status: kotlin.String,
     @SerialName(value = "detail") val detail: kotlin.String? = null,
+    @SerialName(value = "meta") val meta: MissingTermsMeta? = null,
 ) {
 
     /** Values: REQUIRED_TERMS_NOT_ACCEPTED */

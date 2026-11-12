@@ -24,12 +24,15 @@ import kotlinx.serialization.Serializable
 
 /**
  * @param grantee
+ * @param invitation
  * @param subject
  */
 @Serializable
 data class ResourceGrantsRelationships(
     @SerialName(value = "grantee")
     val grantee: ResourceGrantsGranteeSingleRelationshipDataDocument? = null,
+    @SerialName(value = "invitation")
+    val invitation: ResourceGrantsInvitationSingleRelationshipDataDocument? = null,
     @SerialName(value = "subject")
     val subject: ResourceGrantsSubjectSingleRelationshipDataDocument? = null,
 ) {}
