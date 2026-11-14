@@ -1,5 +1,5 @@
 # TIDAL API Surface Snapshot
-# Spec version: 1.10.251 | Endpoints: 460 | Models: 1474
+# Spec version: 1.10.254 | Endpoints: 465 | Models: 1488
 
 ## Endpoints
 
@@ -1250,6 +1250,26 @@ GET /stripeDashboardLinks
 GET /stripeDashboardLinks/{id}/relationships/owners
   params: id: string, include?: array[string], page[cursor]?: string
   returns: StripeDashboardLinks_Owners_Multi_Relationship_Data_Document
+
+GET /studioHomeEventTiles/{id}
+  params: id: string
+  returns: StudioHomeEventTiles_Single_Resource_Data_Document
+
+GET /studioHomeInsightTiles/{id}
+  params: id: string
+  returns: StudioHomeInsightTiles_Single_Resource_Data_Document
+
+GET /studioHomeMerchTiles/{id}
+  params: id: string, include?: array[string], includeLinkage?: array[enum[items]]
+  returns: StudioHomeMerchTiles_Single_Resource_Data_Document
+
+GET /studioHomeMerchTiles/{id}/relationships/items
+  params: id: string, include?: array[string], page[cursor]?: string
+  returns: StudioHomeMerchTiles_Items_Multi_Relationship_Data_Document
+
+GET /studioHomeMusicTiles/{id}
+  params: id: string
+  returns: StudioHomeMusicTiles_Single_Resource_Data_Document
 
 GET /subscriptionPriceChangeDecisions
   params: filter[owners.id]: array[string], include?: array[string], includeLinkage?: array[enum[priceChange]]
@@ -3041,6 +3061,7 @@ ClientsUpdateOperation_Payload_Data
   type: enum[clients] (required)
 
 ClientsUpdateOperation_Payload_Data_Attributes
+  clientPreset: enum[STANDARD_THIRD_PARTY, TIDAL_CONNECT_CD, TIDAL_CONNECT_HIRES, TIDAL_CONNECT_CD_WITH_ATMOS, TIDAL_CONNECT_HIRES_WITH_ATMOS] (optional)
   description: string (optional)
   name: string (optional)
   redirectUris: array[string] (optional)
@@ -3048,6 +3069,7 @@ ClientsUpdateOperation_Payload_Data_Attributes
 
 Clients_Attributes
   accessTier: enum[THIRD_PARTY, THIRD_PARTY_PROD, PARTNER, INTERNAL] (required)
+  clientPreset: enum[STANDARD_THIRD_PARTY, TIDAL_CONNECT_CD, TIDAL_CONNECT_HIRES, TIDAL_CONNECT_CD_WITH_ATMOS, TIDAL_CONNECT_HIRES_WITH_ATMOS] (required)
   name: string (required)
   clientSecret: string (optional)
   createdAt: string(date-time) (optional)
@@ -5375,6 +5397,8 @@ ResourceGrantsUpdateOperation_Payload_Data_Attributes
 
 ResourceGrants_Attributes
   role: enum[VIEWER, COLLABORATOR, OWNER] (required)
+  code: string (optional)
+  expiresAt: string(date-time) (optional)
 
 ResourceGrants_Create_Single_Resource_Data_Document
   data: ResourceGrants_Resource_Object (required)
@@ -6342,6 +6366,67 @@ StripeDashboardLinks_Resource_Object
   type: string (required)
   attributes: StripeDashboardLinks_Attributes (optional)
   relationships: StripeDashboardLinks_Relationships (optional)
+
+StudioHomeEventTiles_Attributes
+  requiredTerms: array[enum[DEVELOPER, UPLOAD_MARKETPLACE, MERCH_GUIDELINES, TIDAL_CONNECT_DEVELOPER]] (required)
+
+StudioHomeEventTiles_Resource_Object
+  id: string (required)
+  type: string (required)
+  attributes: StudioHomeEventTiles_Attributes (optional)
+
+StudioHomeEventTiles_Single_Resource_Data_Document
+  data: StudioHomeEventTiles_Resource_Object (required)
+  links: Links (required)
+  included: Included (optional)
+
+StudioHomeInsightTiles_Attributes
+  requiredTerms: array[enum[DEVELOPER, UPLOAD_MARKETPLACE, MERCH_GUIDELINES, TIDAL_CONNECT_DEVELOPER]] (required)
+
+StudioHomeInsightTiles_Resource_Object
+  id: string (required)
+  type: string (required)
+  attributes: StudioHomeInsightTiles_Attributes (optional)
+
+StudioHomeInsightTiles_Single_Resource_Data_Document
+  data: StudioHomeInsightTiles_Resource_Object (required)
+  links: Links (required)
+  included: Included (optional)
+
+StudioHomeMerchTiles_Attributes
+  requiredTerms: array[enum[DEVELOPER, UPLOAD_MARKETPLACE, MERCH_GUIDELINES, TIDAL_CONNECT_DEVELOPER]] (required)
+
+StudioHomeMerchTiles_Items_Multi_Relationship_Data_Document
+  links: Links (required)
+  data: array[Resource_Identifier] (optional)
+  included: Included (optional)
+
+StudioHomeMerchTiles_Relationships
+  items: StudioHomeMerchTiles_Items_Multi_Relationship_Data_Document (optional)
+
+StudioHomeMerchTiles_Resource_Object
+  id: string (required)
+  type: string (required)
+  attributes: StudioHomeMerchTiles_Attributes (optional)
+  relationships: StudioHomeMerchTiles_Relationships (optional)
+
+StudioHomeMerchTiles_Single_Resource_Data_Document
+  data: StudioHomeMerchTiles_Resource_Object (required)
+  links: Links (required)
+  included: Included (optional)
+
+StudioHomeMusicTiles_Attributes
+  requiredTerms: array[enum[DEVELOPER, UPLOAD_MARKETPLACE, MERCH_GUIDELINES, TIDAL_CONNECT_DEVELOPER]] (required)
+
+StudioHomeMusicTiles_Resource_Object
+  id: string (required)
+  type: string (required)
+  attributes: StudioHomeMusicTiles_Attributes (optional)
+
+StudioHomeMusicTiles_Single_Resource_Data_Document
+  data: StudioHomeMusicTiles_Resource_Object (required)
+  links: Links (required)
+  included: Included (optional)
 
 SubscriptionPriceChangeDecisionsCreateOperation_Payload
   data: SubscriptionPriceChangeDecisionsCreateOperation_Payload_Data (required)

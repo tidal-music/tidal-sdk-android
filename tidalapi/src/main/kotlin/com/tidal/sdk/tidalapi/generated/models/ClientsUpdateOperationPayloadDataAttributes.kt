@@ -19,10 +19,15 @@
 
 package com.tidal.sdk.tidalapi.generated.models
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 /**
+ * @param clientPreset Client preset defining default OAuth settings and supported audio formats.
  * @param description
  * @param name
  * @param redirectUris
@@ -30,9 +35,47 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class ClientsUpdateOperationPayloadDataAttributes(
+
+    /* Client preset defining default OAuth settings and supported audio formats. */
+    @SerialName(value = "clientPreset")
+    val clientPreset: ClientsUpdateOperationPayloadDataAttributes.ClientPreset? = null,
     @SerialName(value = "description") val description: kotlin.String? = null,
     @SerialName(value = "name") val name: kotlin.String? = null,
     @SerialName(value = "redirectUris")
     val redirectUris: kotlin.collections.List<kotlin.String>? = null,
     @SerialName(value = "scopes") val scopes: kotlin.collections.Set<kotlin.String>? = null,
-) {}
+) {
+
+    /**
+     * Client preset defining default OAuth settings and supported audio formats.
+     *
+     * Values:
+     * STANDARD_THIRD_PARTY,TIDAL_CONNECT_CD,TIDAL_CONNECT_HIRES,TIDAL_CONNECT_CD_WITH_ATMOS,TIDAL_CONNECT_HIRES_WITH_ATMOS,unknown_default_open_api
+     */
+    @Serializable(with = ClientPresetSerializer::class)
+    enum class ClientPreset(val value: kotlin.String) {
+        @SerialName(value = "STANDARD_THIRD_PARTY") STANDARD_THIRD_PARTY("STANDARD_THIRD_PARTY"),
+        @SerialName(value = "TIDAL_CONNECT_CD") TIDAL_CONNECT_CD("TIDAL_CONNECT_CD"),
+        @SerialName(value = "TIDAL_CONNECT_HIRES") TIDAL_CONNECT_HIRES("TIDAL_CONNECT_HIRES"),
+        @SerialName(value = "TIDAL_CONNECT_CD_WITH_ATMOS")
+        TIDAL_CONNECT_CD_WITH_ATMOS("TIDAL_CONNECT_CD_WITH_ATMOS"),
+        @SerialName(value = "TIDAL_CONNECT_HIRES_WITH_ATMOS")
+        TIDAL_CONNECT_HIRES_WITH_ATMOS("TIDAL_CONNECT_HIRES_WITH_ATMOS"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object ClientPresetSerializer : KSerializer<ClientPreset> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): ClientPreset {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return ClientPreset.entries.firstOrNull { it.value == value }
+                ?: ClientPreset.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: ClientPreset) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
+    }
+}

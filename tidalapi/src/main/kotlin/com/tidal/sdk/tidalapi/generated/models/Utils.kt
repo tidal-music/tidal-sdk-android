@@ -134,6 +134,22 @@ fun getOneOfSerializer() = SerializersModule {
             StripeDashboardLinksResourceObject.serializer(),
         )
         subclass(
+            StudioHomeEventTilesResourceObject::class,
+            StudioHomeEventTilesResourceObject.serializer(),
+        )
+        subclass(
+            StudioHomeInsightTilesResourceObject::class,
+            StudioHomeInsightTilesResourceObject.serializer(),
+        )
+        subclass(
+            StudioHomeMerchTilesResourceObject::class,
+            StudioHomeMerchTilesResourceObject.serializer(),
+        )
+        subclass(
+            StudioHomeMusicTilesResourceObject::class,
+            StudioHomeMusicTilesResourceObject.serializer(),
+        )
+        subclass(
             SubscriptionPriceChangeDecisionsResourceObject::class,
             SubscriptionPriceChangeDecisionsResourceObject.serializer(),
         )

@@ -26,10 +26,21 @@ import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-/** @param role */
+/**
+ * @param role
+ * @param code Code of a bearer grant: whoever presents it as `shareCode` holds the role on the
+ *   subject and everything below it.
+ * @param expiresAt Time a bearer grant stops applying.
+ */
 @Serializable
 data class ResourceGrantsAttributes(
-    @SerialName(value = "role") val role: ResourceGrantsAttributes.Role
+    @SerialName(value = "role") val role: ResourceGrantsAttributes.Role,
+
+    /* Code of a bearer grant: whoever presents it as `shareCode` holds the role on the subject and everything below it. */
+    @SerialName(value = "code") val code: kotlin.String? = null,
+
+    /* Time a bearer grant stops applying. */
+    @SerialName(value = "expiresAt") val expiresAt: kotlin.String? = null,
 ) {
 
     /** Values: VIEWER,COLLABORATOR,OWNER,unknown_default_open_api */

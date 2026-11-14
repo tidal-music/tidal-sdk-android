@@ -26,9 +26,8 @@ import kotlinx.serialization.Serializable
  * @param password Password a user must send to redeem. Never returned. Must be printable ASCII
  *   characters. A value sets or changes it; null removes it; omitted leaves it unchanged. Playlist
  *   invitations cannot have one.
- * @param preview Whether the code also gives VIEWER access to the subject, whatever the role, until
- *   the invitation expires. Previews are not yet supported, so true is rejected with 400. Omitted
- *   leaves it unchanged.
+ * @param preview Whether previewGrant gives VIEWER access to the subject, whatever the role, until
+ *   the invitation expires. Omitted leaves it unchanged.
  */
 @Serializable
 data class ResourceGrantInvitationsUpdateOperationPayloadDataAttributes(
@@ -36,6 +35,6 @@ data class ResourceGrantInvitationsUpdateOperationPayloadDataAttributes(
     /* Password a user must send to redeem. Never returned. Must be printable ASCII characters. A value sets or changes it; null removes it; omitted leaves it unchanged. Playlist invitations cannot have one. */
     @SerialName(value = "password") val password: kotlin.String? = null,
 
-    /* Whether the code also gives VIEWER access to the subject, whatever the role, until the invitation expires. Previews are not yet supported, so true is rejected with 400. Omitted leaves it unchanged. */
+    /* Whether previewGrant gives VIEWER access to the subject, whatever the role, until the invitation expires. Omitted leaves it unchanged. */
     @SerialName(value = "preview") val preview: kotlin.Boolean? = null,
 ) {}
