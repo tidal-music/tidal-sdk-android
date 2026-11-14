@@ -32,8 +32,8 @@ import kotlinx.serialization.encoding.Encoder
  * @param expiresAt Time redemption ends; issued grants remain.
  * @param passwordProtected Whether redemption requires a password. Only the owner and users with a
  *   role on the subject see a protected invitation's subject; others get null linkage.
- * @param preview Whether the code also gives VIEWER access to the subject until the invitation
- *   expires, through previewGrant. Previews are not yet supported, so it is always false.
+ * @param preview Whether previewGrant gives VIEWER access to the subject until the invitation
+ *   expires.
  * @param role Role a redemption grants.
  * @param maxUses Number of redemptions permitted. Absent when unlimited.
  * @param password Password a user must send to redeem. Write-only: never returned.
@@ -55,7 +55,7 @@ data class ResourceGrantInvitationsAttributes(
     /* Whether redemption requires a password. Only the owner and users with a role on the subject see a protected invitation's subject; others get null linkage. */
     @SerialName(value = "passwordProtected") val passwordProtected: kotlin.Boolean,
 
-    /* Whether the code also gives VIEWER access to the subject until the invitation expires, through previewGrant. Previews are not yet supported, so it is always false. */
+    /* Whether previewGrant gives VIEWER access to the subject until the invitation expires. */
     @SerialName(value = "preview") val preview: kotlin.Boolean,
 
     /* Role a redemption grants. */
