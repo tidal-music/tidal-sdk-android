@@ -6,4 +6,8 @@ interface BaseMediaProduct {
     val sourceType: String?
     val sourceId: String?
     val extras: Extras?
+
+    /** Grants playback of an upload shared by link to a recipient who has not saved the share. */
+    val shareCode: String?
+        get() = null
 }

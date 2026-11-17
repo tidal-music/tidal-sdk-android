@@ -10,6 +10,7 @@ import assertk.assertions.isInstanceOf
 import assertk.assertions.isSameInstanceAs
 import com.tidal.sdk.player.common.ForwardingMediaProduct
 import com.tidal.sdk.player.common.model.AudioQuality
+import com.tidal.sdk.player.common.model.MediaProduct
 import com.tidal.sdk.player.common.model.ProductQuality
 import com.tidal.sdk.player.common.model.ProductType
 import com.tidal.sdk.player.common.model.UriSchemeType
@@ -234,6 +235,40 @@ internal class StreamingApiRepositoryTest {
                 ),
                 emptyMap(),
             )
+    }
+
+    @Test
+    fun testGetPlaybackInfoForStreamingPassesShareCodeForTrack() = runBlocking {
+        val streamingSessionId = "streamingSessionId"
+        val productId = "33"
+        val shareCode = "shareCode"
+        val mediaProduct =
+            ForwardingMediaProduct(
+                MediaProduct(ProductType.TRACK, productId, shareCode = shareCode)
+            )
+        val audioQuality = mock<AudioQuality>()
+        val expected = mock<PlaybackInfo.Track>()
+        whenever(audioQualityRepository.streamingQuality) doReturn audioQuality
+        whenever(audioQualityRepository.enableAdaptive) doReturn false
+        whenever(trueTimeWrapper.currentTimeMillis).thenReturn(0L, 0L)
+        whenever(
+                streamingApi.getTrackPlaybackInfo(
+                    productId,
+                    audioQuality,
+                    PlaybackMode.STREAM,
+                    false,
+                    streamingSessionId,
+                    enableAdaptive = false,
+                    uriSchemeType = UriSchemeType.DATA,
+                    shareCode = shareCode,
+                )
+            )
+            .thenReturn(expected)
+
+        val actual =
+            streamingApiRepository.getPlaybackInfoForStreaming(streamingSessionId, mediaProduct)
+
+        assertThat(actual).isSameInstanceAs(expected)
     }
 
     @ParameterizedTest

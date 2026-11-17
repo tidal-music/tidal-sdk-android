@@ -11,6 +11,8 @@ package com.tidal.sdk.player.common.model
  * @param[sourceId] The id of source as [String]. May be null or empty.
  * @param[referenceId] A unique id as [String]. Typically used to differentiate on an otherwise
  *   identical media product. May be null or empty.
+ * @param[shareCode] The share code of an upload shared by link, sent with the track manifest
+ *   request so that a recipient can play it before saving it. Only used for [ProductType.TRACK].
  */
 data class MediaProduct(
     override val productType: ProductType,
@@ -19,4 +21,5 @@ data class MediaProduct(
     override val sourceId: String? = null,
     override val extras: Extras? = null,
     val referenceId: String? = null,
+    override val shareCode: String? = null,
 ) : BaseMediaProduct

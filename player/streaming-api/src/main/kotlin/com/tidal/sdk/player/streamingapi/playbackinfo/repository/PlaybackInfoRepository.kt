@@ -20,6 +20,7 @@ internal interface PlaybackInfoRepository {
      *   this streaming session.
      * @param[enableAdaptive] Whether to enable adaptive streaming.
      * @param[uriSchemeType] The manifest URI scheme to request. [UriSchemeType]
+     * @param[shareCode] The share code of an upload shared by link, or null.
      */
     suspend fun getTrackPlaybackInfo(
         trackId: String,
@@ -29,6 +30,7 @@ internal interface PlaybackInfoRepository {
         streamingSessionId: String,
         enableAdaptive: Boolean,
         uriSchemeType: UriSchemeType,
+        shareCode: String? = null,
     ): PlaybackInfo
 
     /**

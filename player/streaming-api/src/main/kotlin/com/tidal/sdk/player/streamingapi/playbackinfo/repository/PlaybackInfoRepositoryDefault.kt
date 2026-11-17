@@ -50,6 +50,7 @@ internal class PlaybackInfoRepositoryDefault(
         streamingSessionId: String,
         enableAdaptive: Boolean,
         uriSchemeType: UriSchemeType,
+        shareCode: String?,
     ) =
         try {
             val response =
@@ -64,6 +65,7 @@ internal class PlaybackInfoRepositoryDefault(
                         if (playbackMode == PlaybackMode.STREAM) UsageTrackManifestsIdGet.PLAYBACK
                         else UsageTrackManifestsIdGet.DOWNLOAD,
                     adaptive = enableAdaptive,
+                    shareCode = shareCode,
                 )
             if (!response.isSuccessful) throw HttpException(response)
             val data = response.body()?.data
