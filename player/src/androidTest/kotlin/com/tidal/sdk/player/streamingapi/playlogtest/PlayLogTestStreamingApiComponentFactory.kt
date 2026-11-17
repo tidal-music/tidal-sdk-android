@@ -95,6 +95,7 @@ private class PlayLogTestStreamingApi(private val trackPlaybackInfo: PlaybackInf
         streamingSessionId: String,
         enableAdaptive: Boolean,
         uriSchemeType: UriSchemeType,
+        shareCode: String?,
     ): PlaybackInfo {
         return trackPlaybackInfo.copy(streamingSessionId = streamingSessionId)
     }

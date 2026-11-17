@@ -25,6 +25,7 @@ interface StreamingApi {
      *   this streaming session.
      * @param[enableAdaptive] Whether to enable adaptive streaming.
      * @param[uriSchemeType] The manifest URI scheme to request. [UriSchemeType]
+     * @param[shareCode] The share code of an upload shared by link, or null.
      */
     @Suppress("LongParameterList")
     suspend fun getTrackPlaybackInfo(
@@ -35,6 +36,7 @@ interface StreamingApi {
         streamingSessionId: String,
         enableAdaptive: Boolean,
         uriSchemeType: UriSchemeType,
+        shareCode: String? = null,
     ): PlaybackInfo
 
     /**

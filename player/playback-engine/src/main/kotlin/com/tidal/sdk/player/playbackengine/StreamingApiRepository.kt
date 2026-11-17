@@ -133,6 +133,7 @@ internal class StreamingApiRepository(
                             streamingSessionId,
                             audioQualityRepository.enableAdaptive,
                             UriSchemeType.DATA,
+                            forwardingMediaProduct.shareCode,
                         )
 
                     ProductType.VIDEO ->

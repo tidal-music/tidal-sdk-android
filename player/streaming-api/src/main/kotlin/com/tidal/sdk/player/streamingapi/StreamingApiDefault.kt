@@ -27,6 +27,7 @@ internal class StreamingApiDefault(
         streamingSessionId: String,
         enableAdaptive: Boolean,
         uriSchemeType: UriSchemeType,
+        shareCode: String?,
     ) =
         playbackInfoRepository.getTrackPlaybackInfo(
             trackId,
@@ -36,6 +37,7 @@ internal class StreamingApiDefault(
             streamingSessionId,
             enableAdaptive,
             uriSchemeType,
+            shareCode,
         )
 
     override suspend fun getVideoPlaybackInfo(

@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.77] - 2026-11-17
+
+### Added
+- `MediaProduct.shareCode`, null by default. When set on a track, the player sends it as `shareCode` with the track manifest request, so someone who opens an upload's share link can play it before saving it.
+
 ## [0.0.76] - 2026-11-12
 
 ### Changed

@@ -11,6 +11,9 @@ import retrofit2.Response
 
 internal class TrackManifestsStub : TrackManifests {
 
+    var lastShareCode: String? = null
+        private set
+
     override suspend fun trackManifestsIdGet(
         id: String,
         adaptive: Boolean,
@@ -20,6 +23,7 @@ internal class TrackManifestsStub : TrackManifests {
         usage: TrackManifests.UsageTrackManifestsIdGet,
         shareCode: String?,
     ): Response<TrackManifestsSingleResourceDataDocument> {
+        lastShareCode = shareCode
         val attributes =
             TrackManifestsAttributes(
                 albumAudioNormalizationData =

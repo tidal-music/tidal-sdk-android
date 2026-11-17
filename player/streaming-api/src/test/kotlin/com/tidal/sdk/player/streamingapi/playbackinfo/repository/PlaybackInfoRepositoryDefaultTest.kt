@@ -4,6 +4,7 @@ import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.hasClass
 import assertk.assertions.isEqualTo
+import assertk.assertions.isNull
 import com.google.gson.Gson
 import com.tidal.sdk.player.common.model.ApiError
 import com.tidal.sdk.player.common.model.AssetPresentation
@@ -73,7 +74,29 @@ internal class PlaybackInfoRepositoryDefaultTest {
         assertThat(playbackInfo).isEqualTo(expected)
     }
 
-    private suspend fun getTrackPlaybackInfo(trackId: String, streamingSessionId: String) =
+    @Test
+    fun getTrackPlaybackInfoShouldSendShareCodeWhenGiven() = runBlocking {
+        getTrackPlaybackInfo(
+            ApiConstants.PLAYBACK_INFO_ID_FOR_DEFAULT,
+            "streamingSessionId",
+            shareCode = "shareCode",
+        )
+
+        assertThat(trackManifests.lastShareCode).isEqualTo("shareCode")
+    }
+
+    @Test
+    fun getTrackPlaybackInfoShouldNotSendShareCodeWhenNotGiven() = runBlocking {
+        getTrackPlaybackInfo(ApiConstants.PLAYBACK_INFO_ID_FOR_DEFAULT, "streamingSessionId")
+
+        assertThat(trackManifests.lastShareCode).isNull()
+    }
+
+    private suspend fun getTrackPlaybackInfo(
+        trackId: String,
+        streamingSessionId: String,
+        shareCode: String? = null,
+    ) =
         playbackInfoRepository.getTrackPlaybackInfo(
             trackId,
             AudioQuality.LOW,
@@ -82,6 +105,7 @@ internal class PlaybackInfoRepositoryDefaultTest {
             streamingSessionId,
             false,
             UriSchemeType.DATA,
+            shareCode,
         )
 
     @Test
