@@ -34,9 +34,8 @@ import kotlinx.serialization.encoding.Encoder
  *   null.
  * @param password Password a user must send to redeem. Never returned. Must be printable ASCII
  *   characters. Playlist invitations cannot have one; 400.
- * @param preview Whether the code also gives VIEWER access to the subject, whatever the role, until
- *   the invitation expires. Previews are not yet supported, so true is rejected with 400. Defaults
- *   to false.
+ * @param preview Whether previewGrant gives VIEWER access to the subject, whatever the role, until
+ *   the invitation expires. Defaults to false.
  */
 @Serializable
 data class ResourceGrantInvitationsCreateOperationPayloadDataAttributes(
@@ -54,7 +53,7 @@ data class ResourceGrantInvitationsCreateOperationPayloadDataAttributes(
     /* Password a user must send to redeem. Never returned. Must be printable ASCII characters. Playlist invitations cannot have one; 400. */
     @SerialName(value = "password") val password: kotlin.String? = null,
 
-    /* Whether the code also gives VIEWER access to the subject, whatever the role, until the invitation expires. Previews are not yet supported, so true is rejected with 400. Defaults to false. */
+    /* Whether previewGrant gives VIEWER access to the subject, whatever the role, until the invitation expires. Defaults to false. */
     @SerialName(value = "preview") val preview: kotlin.Boolean? = null,
 ) {
 
