@@ -24,7 +24,8 @@ import kotlinx.serialization.Serializable
 
 /**
  * Target resource types: `albums`, `artistStreamsStatistics`, `artists`, `playlists`,
- * `squareItems`, `tracks`, `videos`.
+ * `squareItems`, `studioHomeEventTiles`, `studioHomeInsightTiles`, `studioHomeMerchTiles`,
+ * `studioHomeMusicTiles`, `tracks`, `videos`.
  *
  * @param links
  * @param `data`

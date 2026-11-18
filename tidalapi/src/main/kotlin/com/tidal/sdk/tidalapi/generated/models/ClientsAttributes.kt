@@ -28,6 +28,7 @@ import kotlinx.serialization.encoding.Encoder
 
 /**
  * @param accessTier
+ * @param clientPreset Client preset defining default OAuth settings and supported audio formats.
  * @param name
  * @param clientSecret
  * @param createdAt
@@ -38,6 +39,9 @@ import kotlinx.serialization.encoding.Encoder
 @Serializable
 data class ClientsAttributes(
     @SerialName(value = "accessTier") val accessTier: ClientsAttributes.AccessTier,
+
+    /* Client preset defining default OAuth settings and supported audio formats. */
+    @SerialName(value = "clientPreset") val clientPreset: ClientsAttributes.ClientPreset,
     @SerialName(value = "name") val name: kotlin.String,
     @SerialName(value = "clientSecret") val clientSecret: kotlin.String? = null,
     @SerialName(value = "createdAt") val createdAt: kotlin.String? = null,
@@ -68,6 +72,39 @@ data class ClientsAttributes(
         }
 
         override fun serialize(encoder: Encoder, value: AccessTier) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
+    }
+
+    /**
+     * Client preset defining default OAuth settings and supported audio formats.
+     *
+     * Values:
+     * STANDARD_THIRD_PARTY,TIDAL_CONNECT_CD,TIDAL_CONNECT_HIRES,TIDAL_CONNECT_CD_WITH_ATMOS,TIDAL_CONNECT_HIRES_WITH_ATMOS,unknown_default_open_api
+     */
+    @Serializable(with = ClientPresetSerializer::class)
+    enum class ClientPreset(val value: kotlin.String) {
+        @SerialName(value = "STANDARD_THIRD_PARTY") STANDARD_THIRD_PARTY("STANDARD_THIRD_PARTY"),
+        @SerialName(value = "TIDAL_CONNECT_CD") TIDAL_CONNECT_CD("TIDAL_CONNECT_CD"),
+        @SerialName(value = "TIDAL_CONNECT_HIRES") TIDAL_CONNECT_HIRES("TIDAL_CONNECT_HIRES"),
+        @SerialName(value = "TIDAL_CONNECT_CD_WITH_ATMOS")
+        TIDAL_CONNECT_CD_WITH_ATMOS("TIDAL_CONNECT_CD_WITH_ATMOS"),
+        @SerialName(value = "TIDAL_CONNECT_HIRES_WITH_ATMOS")
+        TIDAL_CONNECT_HIRES_WITH_ATMOS("TIDAL_CONNECT_HIRES_WITH_ATMOS"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object ClientPresetSerializer : KSerializer<ClientPreset> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): ClientPreset {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return ClientPreset.entries.firstOrNull { it.value == value }
+                ?: ClientPreset.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: ClientPreset) {
             encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
         }
     }

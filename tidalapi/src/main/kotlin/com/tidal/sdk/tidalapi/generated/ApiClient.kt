@@ -61,6 +61,10 @@ import com.tidal.sdk.tidalapi.generated.apis.SquareItems
 import com.tidal.sdk.tidalapi.generated.apis.SquareSites
 import com.tidal.sdk.tidalapi.generated.apis.StripeConnections
 import com.tidal.sdk.tidalapi.generated.apis.StripeDashboardLinks
+import com.tidal.sdk.tidalapi.generated.apis.StudioHomeEventTiles
+import com.tidal.sdk.tidalapi.generated.apis.StudioHomeInsightTiles
+import com.tidal.sdk.tidalapi.generated.apis.StudioHomeMerchTiles
+import com.tidal.sdk.tidalapi.generated.apis.StudioHomeMusicTiles
 import com.tidal.sdk.tidalapi.generated.apis.SubscriptionPriceChangeDecisions
 import com.tidal.sdk.tidalapi.generated.apis.TemporaryUserTokens
 import com.tidal.sdk.tidalapi.generated.apis.Terms
@@ -439,6 +443,35 @@ class TidalApiClient(
      */
     fun createStripeDashboardLinks(): StripeDashboardLinks {
         return retrofit.create(StripeDashboardLinks::class.java)
+    }
+
+    /**
+     * Returns an instance of the [StudioHomeEventTiles] which can be used to make API calls to the
+     */
+    fun createStudioHomeEventTiles(): StudioHomeEventTiles {
+        return retrofit.create(StudioHomeEventTiles::class.java)
+    }
+
+    /**
+     * Returns an instance of the [StudioHomeInsightTiles] which can be used to make API calls to
+     * the
+     */
+    fun createStudioHomeInsightTiles(): StudioHomeInsightTiles {
+        return retrofit.create(StudioHomeInsightTiles::class.java)
+    }
+
+    /**
+     * Returns an instance of the [StudioHomeMerchTiles] which can be used to make API calls to the
+     */
+    fun createStudioHomeMerchTiles(): StudioHomeMerchTiles {
+        return retrofit.create(StudioHomeMerchTiles::class.java)
+    }
+
+    /**
+     * Returns an instance of the [StudioHomeMusicTiles] which can be used to make API calls to the
+     */
+    fun createStudioHomeMusicTiles(): StudioHomeMusicTiles {
+        return retrofit.create(StudioHomeMusicTiles::class.java)
     }
 
     /**

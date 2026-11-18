@@ -70,7 +70,7 @@ interface ResourceGrantInvitations {
 
     /**
      * DELETE resourceGrantInvitations/{id} Delete single resourceGrantInvitation. Delete the
-     * invitation, ending redemption. Responses:
+     * invitation, ending redemption and its preview. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -140,7 +140,8 @@ interface ResourceGrantInvitations {
 
     /**
      * PATCH resourceGrantInvitations/{id} Update single resourceGrantInvitation. Set, change or
-     * remove the password. Users who redeemed keep their grants. Responses:
+     * remove the password, or turn the preview on or off. Users who redeemed keep their grants.
+     * Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
