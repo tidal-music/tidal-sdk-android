@@ -1146,6 +1146,7 @@ src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/StudioHomeMerchTilesItem
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/StudioHomeMerchTilesRelationships.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/StudioHomeMerchTilesResourceObject.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/StudioHomeMerchTilesSingleResourceDataDocument.kt
+src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/StudioHomeMerchTilesSquareConnectionSingleRelationshipDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/StudioHomeMusicTilesAttributes.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/StudioHomeMusicTilesItemsMultiRelationshipDataDocument.kt
 src/main/kotlin/com/tidal/sdk/tidalapi/generated/models/StudioHomeMusicTilesItemsResourceIdentifier.kt

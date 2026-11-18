@@ -22,9 +22,14 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param items */
+/**
+ * @param items
+ * @param squareConnection
+ */
 @Serializable
 data class StudioHomeMerchTilesRelationships(
     @SerialName(value = "items")
-    val items: StudioHomeMerchTilesItemsMultiRelationshipDataDocument? = null
+    val items: StudioHomeMerchTilesItemsMultiRelationshipDataDocument? = null,
+    @SerialName(value = "squareConnection")
+    val squareConnection: StudioHomeMerchTilesSquareConnectionSingleRelationshipDataDocument? = null,
 ) {}

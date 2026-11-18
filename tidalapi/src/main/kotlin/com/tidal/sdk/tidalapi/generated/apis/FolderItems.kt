@@ -78,6 +78,7 @@ interface FolderItems {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: breadcrumb.children.subject (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [FolderItemsMultiResourceDataDocument]
      */
     @GET("folderItems")
@@ -95,6 +96,7 @@ interface FolderItems {
         @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<FolderItemsMultiResourceDataDocument>
 
     /**
@@ -115,12 +117,14 @@ interface FolderItems {
      * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If the same
      *   caller repeats a key with the same method, path, query and payload, the original response
      *   is replayed. If the request differs, a 422 error is returned. (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [MutationResponseDocument]
      */
     @DELETE("folderItems/{id}")
     suspend fun folderItemsIdDelete(
         @Path("id") id: kotlin.String,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<MutationResponseDocument>
 
     /** enum for parameter includeLinkage */
@@ -153,6 +157,7 @@ interface FolderItems {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: breadcrumb.children.subject (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [FolderItemsSingleResourceDataDocument]
      */
     @GET("folderItems/{id}")
@@ -162,6 +167,7 @@ interface FolderItems {
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<FolderItemsSingleResourceDataDocument>
 
     /**
@@ -185,6 +191,7 @@ interface FolderItems {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: breadcrumb.children.subject (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [FolderItemsBreadcrumbMultiRelationshipDataDocument]
      */
     @GET("folderItems/{id}/relationships/breadcrumb")
@@ -194,6 +201,7 @@ interface FolderItems {
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<FolderItemsBreadcrumbMultiRelationshipDataDocument>
 
     /**
@@ -213,6 +221,7 @@ interface FolderItems {
      * @param include Include related resources. Available relationships: owners (optional)
      * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
      *   targets first page if not specified (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [FolderItemsOwnersMultiRelationshipDataDocument]
      */
     @GET("folderItems/{id}/relationships/owners")
@@ -221,6 +230,7 @@ interface FolderItems {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("page[cursor]") pageCursor: kotlin.String? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<FolderItemsOwnersMultiRelationshipDataDocument>
 
     /**
@@ -241,6 +251,7 @@ interface FolderItems {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: parent.children.subject (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [FolderItemsParentSingleRelationshipDataDocument]
      */
     @GET("folderItems/{id}/relationships/parent")
@@ -249,6 +260,7 @@ interface FolderItems {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<FolderItemsParentSingleRelationshipDataDocument>
 
     /**
@@ -274,6 +286,7 @@ interface FolderItems {
      * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If the same
      *   caller repeats a key with the same method, path, query and payload, the original response
      *   is replayed. If the request differs, a 422 error is returned. (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @param folderItemsParentRelationshipUpdateOperationPayload (optional)
      * @return [FolderItemsParentUpdateSingleRelationshipDataDocument]
      */
@@ -281,6 +294,7 @@ interface FolderItems {
     suspend fun folderItemsIdRelationshipsParentPatch(
         @Path("id") id: kotlin.String,
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
         @Body
         folderItemsParentRelationshipUpdateOperationPayload:
             FolderItemsParentRelationshipUpdateOperationPayload? =
@@ -305,6 +319,7 @@ interface FolderItems {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: sharingSummary.subject (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [FolderItemsSharingSummarySingleRelationshipDataDocument]
      */
     @GET("folderItems/{id}/relationships/sharingSummary")
@@ -313,6 +328,7 @@ interface FolderItems {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<FolderItemsSharingSummarySingleRelationshipDataDocument>
 
     /**
@@ -333,6 +349,7 @@ interface FolderItems {
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
      *   selected relationships without changing stored data. Paths are comma-separated and follow
      *   &#x60;include&#x60; syntax. Example: subject (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [FolderItemsSubjectSingleRelationshipDataDocument]
      */
     @GET("folderItems/{id}/relationships/subject")
@@ -341,6 +358,7 @@ interface FolderItems {
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
     ): Response<FolderItemsSubjectSingleRelationshipDataDocument>
 
     /**
