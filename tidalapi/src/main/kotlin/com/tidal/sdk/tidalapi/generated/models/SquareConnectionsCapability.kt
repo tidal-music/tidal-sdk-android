@@ -43,11 +43,12 @@ data class SquareConnectionsCapability(
     /**
      * The capability name
      *
-     * Values: SITES,unknown_default_open_api
+     * Values: SITES,ITEMS,unknown_default_open_api
      */
     @Serializable(with = NameSerializer::class)
     enum class Name(val value: kotlin.String) {
         @SerialName(value = "SITES") SITES("SITES"),
+        @SerialName(value = "ITEMS") ITEMS("ITEMS"),
         @SerialName(value = "unknown_default_open_api")
         unknown_default_open_api("unknown_default_open_api"),
     }

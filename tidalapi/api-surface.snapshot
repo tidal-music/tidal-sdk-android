@@ -1,5 +1,5 @@
 # TIDAL API Surface Snapshot
-# Spec version: 1.10.255 | Endpoints: 467 | Models: 1494
+# Spec version: 1.10.257 | Endpoints: 468 | Models: 1495
 
 ## Endpoints
 
@@ -528,7 +528,7 @@ GET /dynamicPages/{id}/relationships/subject
   returns: DynamicPages_Subject_Single_Relationship_Data_Document
 
 GET /folderItems
-  params: filter[parent.id]?: string, filter[parent.isRoot]?: string, filter[parent.owners.id]?: string, filter[self][matchesQuery]?: string, filter[subject.albums:published]?: string, filter[subject.owners.id]?: string, filter[subject.owners.id][ne]?: string, include?: array[string], includeLinkage?: array[enum[breadcrumb, owners, parent, sharingSummary, subject]], page[cursor]?: string, replaceMedia?: string
+  params: filter[parent.id]?: string, filter[parent.isRoot]?: string, filter[parent.owners.id]?: string, filter[self][matchesQuery]?: string, filter[subject.albums:published]?: string, filter[subject.owners.id]?: string, filter[subject.owners.id][ne]?: string, include?: array[string], includeLinkage?: array[enum[breadcrumb, owners, parent, sharingSummary, subject]], page[cursor]?: string, replaceMedia?: string, shareCode?: string
   returns: FolderItems_Multi_Resource_Data_Document
 
 POST /folderItems
@@ -536,35 +536,35 @@ POST /folderItems
   returns: FolderItems_Create_Single_Resource_Data_Document
 
 GET /folderItems/{id}
-  params: id: string, include?: array[string], includeLinkage?: array[enum[breadcrumb, owners, parent, sharingSummary, subject]], replaceMedia?: string
+  params: id: string, include?: array[string], includeLinkage?: array[enum[breadcrumb, owners, parent, sharingSummary, subject]], replaceMedia?: string, shareCode?: string
   returns: FolderItems_Single_Resource_Data_Document
 
 DELETE /folderItems/{id}
-  params: ??: any, id: string
+  params: ??: any, id: string, shareCode?: string
   returns: Mutation_Response_Document
 
 GET /folderItems/{id}/relationships/breadcrumb
-  params: id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string
+  params: id: string, include?: array[string], page[cursor]?: string, replaceMedia?: string, shareCode?: string
   returns: FolderItems_Breadcrumb_Multi_Relationship_Data_Document
 
 GET /folderItems/{id}/relationships/owners
-  params: id: string, include?: array[string], page[cursor]?: string
+  params: id: string, include?: array[string], page[cursor]?: string, shareCode?: string
   returns: FolderItems_Owners_Multi_Relationship_Data_Document
 
 GET /folderItems/{id}/relationships/parent
-  params: id: string, include?: array[string], replaceMedia?: string
+  params: id: string, include?: array[string], replaceMedia?: string, shareCode?: string
   returns: FolderItems_Parent_Single_Relationship_Data_Document
 
 PATCH /folderItems/{id}/relationships/parent
-  params: ??: any, id: string
+  params: ??: any, id: string, shareCode?: string
   returns: FolderItems_Parent_Update_Single_Relationship_Data_Document
 
 GET /folderItems/{id}/relationships/sharingSummary
-  params: id: string, include?: array[string], replaceMedia?: string
+  params: id: string, include?: array[string], replaceMedia?: string, shareCode?: string
   returns: FolderItems_SharingSummary_Single_Relationship_Data_Document
 
 GET /folderItems/{id}/relationships/subject
-  params: id: string, include?: array[string], replaceMedia?: string
+  params: id: string, include?: array[string], replaceMedia?: string, shareCode?: string
   returns: FolderItems_Subject_Single_Relationship_Data_Document
 
 GET /folders
@@ -1264,12 +1264,16 @@ GET /studioHomeInsightTiles/{id}/relationships/items
   returns: StudioHomeInsightTiles_Items_Multi_Relationship_Data_Document
 
 GET /studioHomeMerchTiles/{id}
-  params: id: string, include?: array[string], includeLinkage?: array[enum[items]]
+  params: id: string, include?: array[string], includeLinkage?: array[enum[items, squareConnection]]
   returns: StudioHomeMerchTiles_Single_Resource_Data_Document
 
 GET /studioHomeMerchTiles/{id}/relationships/items
   params: id: string, include?: array[string], page[cursor]?: string
   returns: StudioHomeMerchTiles_Items_Multi_Relationship_Data_Document
+
+GET /studioHomeMerchTiles/{id}/relationships/squareConnection
+  params: id: string, include?: array[string]
+  returns: StudioHomeMerchTiles_SquareConnection_Single_Relationship_Data_Document
 
 GET /studioHomeMusicTiles/{id}
   params: id: string, include?: array[string], includeLinkage?: array[enum[items]], replaceMedia?: string
@@ -5840,7 +5844,7 @@ SquareConnections_Attributes
   lastModifiedAt: string(date-time) (optional)
 
 SquareConnections_Capability
-  name: enum[SITES] (required)
+  name: enum[SITES, ITEMS] (required)
   status: enum[GRANTED, REQUIRES_REAUTH] (required)
 
 SquareConnections_Create_Single_Resource_Data_Document
@@ -6420,6 +6424,7 @@ StudioHomeMerchTiles_Items_Multi_Relationship_Data_Document
 
 StudioHomeMerchTiles_Relationships
   items: StudioHomeMerchTiles_Items_Multi_Relationship_Data_Document (optional)
+  squareConnection: StudioHomeMerchTiles_SquareConnection_Single_Relationship_Data_Document (optional)
 
 StudioHomeMerchTiles_Resource_Object
   id: string (required)
@@ -6430,6 +6435,11 @@ StudioHomeMerchTiles_Resource_Object
 StudioHomeMerchTiles_Single_Resource_Data_Document
   data: StudioHomeMerchTiles_Resource_Object (required)
   links: Links (required)
+  included: Included (optional)
+
+StudioHomeMerchTiles_SquareConnection_Single_Relationship_Data_Document
+  links: Links (required)
+  data: Resource_Identifier | enum[None] (optional)
   included: Included (optional)
 
 StudioHomeMusicTiles_Attributes
