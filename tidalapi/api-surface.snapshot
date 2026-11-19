@@ -1,5 +1,5 @@
 # TIDAL API Surface Snapshot
-# Spec version: 1.10.257 | Endpoints: 468 | Models: 1495
+# Spec version: 1.10.258 | Endpoints: 468 | Models: 1495
 
 ## Endpoints
 
@@ -5844,7 +5844,7 @@ SquareConnections_Attributes
   lastModifiedAt: string(date-time) (optional)
 
 SquareConnections_Capability
-  name: enum[SITES, ITEMS] (required)
+  name: enum[SITES] (required)
   status: enum[GRANTED, REQUIRES_REAUTH] (required)
 
 SquareConnections_Create_Single_Resource_Data_Document
