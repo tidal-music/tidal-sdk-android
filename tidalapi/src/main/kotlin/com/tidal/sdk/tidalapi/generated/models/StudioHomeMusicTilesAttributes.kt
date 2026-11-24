@@ -27,15 +27,18 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
 /**
+ * @param contentCounts
  * @param requiredTerms Terms types the user must accept before using this tile; empty when none are
  *   missing.
  */
 @Serializable
 data class StudioHomeMusicTilesAttributes(
+    @SerialName(value = "contentCounts")
+    val contentCounts: StudioHomeMusicTilesAttributesContentCounts,
 
     /* Terms types the user must accept before using this tile; empty when none are missing. */
     @SerialName(value = "requiredTerms")
-    val requiredTerms: kotlin.collections.List<StudioHomeMusicTilesAttributes.RequiredTerms>
+    val requiredTerms: kotlin.collections.List<StudioHomeMusicTilesAttributes.RequiredTerms>,
 ) {
 
     /**

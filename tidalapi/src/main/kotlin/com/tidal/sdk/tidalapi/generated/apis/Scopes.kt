@@ -18,6 +18,15 @@ interface Scopes {
         @SerialName(value = "INTERNAL") INTERNAL("INTERNAL"),
     }
 
+    /** enum for parameter filterRequiredAccessTierSatisfiedBy */
+    @Serializable
+    enum class FilterRequiredAccessTierSatisfiedByScopesGet(val value: kotlin.String) {
+        @SerialName(value = "THIRD_PARTY") THIRD_PARTY("THIRD_PARTY"),
+        @SerialName(value = "THIRD_PARTY_PROD") THIRD_PARTY_PROD("THIRD_PARTY_PROD"),
+        @SerialName(value = "PARTNER") PARTNER("PARTNER"),
+        @SerialName(value = "INTERNAL") INTERNAL("INTERNAL"),
+    }
+
     /**
      * GET scopes Get multiple scopes. Retrieves multiple scopes by available filters, or without if
      * applicable. Responses:
@@ -31,13 +40,18 @@ interface Scopes {
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
-     * @param filterRequiredAccessTier Filters scopes by their &#x60;requiredAccessTier&#x60;. (e.g.
-     *   &#x60;THIRD_PARTY&#x60;)
+     * @param filterRequiredAccessTier Filters scopes by their required client access tier. (e.g.
+     *   &#x60;THIRD_PARTY&#x60;) (optional)
+     * @param filterRequiredAccessTierSatisfiedBy Selects scopes whose required access tier is
+     *   satisfied by the client tier. (e.g. &#x60;PARTNER&#x60;) (optional)
      * @return [ScopesMultiResourceDataDocument]
      */
     @GET("scopes")
     suspend fun scopesGet(
         @Query("filter[requiredAccessTier]")
-        filterRequiredAccessTier: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>
+        filterRequiredAccessTier: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? =
+            null,
+        @Query("filter[requiredAccessTier][satisfiedBy]")
+        filterRequiredAccessTierSatisfiedBy: FilterRequiredAccessTierSatisfiedByScopesGet? = null,
     ): Response<ScopesMultiResourceDataDocument>
 }
