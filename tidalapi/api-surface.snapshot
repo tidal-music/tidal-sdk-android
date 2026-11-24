@@ -1,5 +1,5 @@
 # TIDAL API Surface Snapshot
-# Spec version: 1.10.257 | Endpoints: 468 | Models: 1495
+# Spec version: 1.10.260 | Endpoints: 468 | Models: 1496
 
 ## Endpoints
 
@@ -1048,7 +1048,7 @@ POST /savedShares
   returns: SavedShares_Create_Single_Resource_Data_Document
 
 GET /scopes
-  params: filter[requiredAccessTier]: array[enum[THIRD_PARTY, THIRD_PARTY_PROD, PARTNER, INTERNAL]]
+  params: filter[requiredAccessTier]?: array[enum[THIRD_PARTY, THIRD_PARTY_PROD, PARTNER, INTERNAL]], filter[requiredAccessTier][satisfiedBy]?: enum[THIRD_PARTY, THIRD_PARTY_PROD, PARTNER, INTERNAL]
   returns: Scopes_Multi_Resource_Data_Document
 
 DELETE /searchHistoryEntries/{id}
@@ -5844,7 +5844,7 @@ SquareConnections_Attributes
   lastModifiedAt: string(date-time) (optional)
 
 SquareConnections_Capability
-  name: enum[SITES, ITEMS] (required)
+  name: enum[SITES] (required)
   status: enum[GRANTED, REQUIRES_REAUTH] (required)
 
 SquareConnections_Create_Single_Resource_Data_Document
@@ -6443,7 +6443,12 @@ StudioHomeMerchTiles_SquareConnection_Single_Relationship_Data_Document
   included: Included (optional)
 
 StudioHomeMusicTiles_Attributes
+  contentCounts: StudioHomeMusicTiles_Attributes_ContentCounts (required)
   requiredTerms: array[enum[DEVELOPER, UPLOAD_MARKETPLACE, MERCH_GUIDELINES, TIDAL_CONNECT_DEVELOPER]] (required)
+
+StudioHomeMusicTiles_Attributes_ContentCounts
+  albums: integer(int32) (required)
+  folders: integer(int32) (required)
 
 StudioHomeMusicTiles_Items_Multi_Relationship_Data_Document
   links: Links (required)
