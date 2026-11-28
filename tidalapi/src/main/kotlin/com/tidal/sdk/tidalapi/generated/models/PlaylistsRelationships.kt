@@ -36,18 +36,16 @@ import kotlinx.serialization.Serializable
 data class PlaylistsRelationships(
     @SerialName(value = "collaboratorProfiles")
     @Deprecated(message = "This property is deprecated.")
-    val collaboratorProfiles: PlaylistsCollaboratorProfilesMultiRelationshipDataDocument? = null,
+    val collaboratorProfiles: PlaylistsCollaboratorProfilesMultiRelationshipObject? = null,
     @SerialName(value = "collaborators")
-    val collaborators: PlaylistsCollaboratorsMultiRelationshipDataDocument? = null,
-    @SerialName(value = "coverArt")
-    val coverArt: PlaylistsCoverArtMultiRelationshipDataDocument? = null,
-    @SerialName(value = "curators")
-    val curators: PlaylistsCuratorsMultiRelationshipDataDocument? = null,
-    @SerialName(value = "items") val items: PlaylistsItemsMultiRelationshipDataDocument? = null,
+    val collaborators: PlaylistsCollaboratorsMultiRelationshipObject? = null,
+    @SerialName(value = "coverArt") val coverArt: PlaylistsCoverArtMultiRelationshipObject? = null,
+    @SerialName(value = "curators") val curators: PlaylistsCuratorsMultiRelationshipObject? = null,
+    @SerialName(value = "items") val items: PlaylistsItemsMultiRelationshipObject? = null,
     @SerialName(value = "ownerProfiles")
     @Deprecated(message = "This property is deprecated.")
-    val ownerProfiles: PlaylistsOwnerProfilesMultiRelationshipDataDocument? = null,
-    @SerialName(value = "owners") val owners: PlaylistsOwnersMultiRelationshipDataDocument? = null,
+    val ownerProfiles: PlaylistsOwnerProfilesMultiRelationshipObject? = null,
+    @SerialName(value = "owners") val owners: PlaylistsOwnersMultiRelationshipObject? = null,
     @SerialName(value = "suggestedCoverArts")
-    val suggestedCoverArts: PlaylistsSuggestedCoverArtsMultiRelationshipDataDocument? = null,
+    val suggestedCoverArts: PlaylistsSuggestedCoverArtsMultiRelationshipObject? = null,
 ) {}

@@ -30,9 +30,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class PlaylistGenerationsRelationships(
     @SerialName(value = "baseGeneration")
-    val baseGeneration: PlaylistGenerationsBaseGenerationSingleRelationshipDataDocument? = null,
+    val baseGeneration: PlaylistGenerationsBaseGenerationSingleRelationshipObject? = null,
     @SerialName(value = "playlist")
-    val playlist: PlaylistGenerationsPlaylistSingleRelationshipDataDocument? = null,
+    val playlist: PlaylistGenerationsPlaylistSingleRelationshipObject? = null,
     @SerialName(value = "trackPreferences")
-    val trackPreferences: PlaylistGenerationsTrackPreferencesMultiRelationshipDataDocument? = null,
+    val trackPreferences: PlaylistGenerationsTrackPreferencesMultiRelationshipObject? = null,
 ) {}

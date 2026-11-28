@@ -26,5 +26,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class PlaylistGenerationSchedulesRelationships(
     @SerialName(value = "playlist")
-    val playlist: PlaylistGenerationSchedulesPlaylistSingleRelationshipDataDocument? = null
+    val playlist: PlaylistGenerationSchedulesPlaylistSingleRelationshipObject? = null
 ) {}

@@ -23,19 +23,17 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * Target resource types: `artworks`.
- *
  * @param links
  * @param `data`
- * @param included
  * @param meta
+ * @param included
  */
 @Serializable
 data class AlbumsSuggestedCoverArtsMultiRelationshipDataDocument(
     @SerialName(value = "links") val links: Links,
     @SerialName(value = "data")
     val `data`: kotlin.collections.List<AlbumsSuggestedCoverArtsResourceIdentifier>? = null,
-    @SerialName(value = "included") val included: kotlin.collections.List<IncludedInner>? = null,
     @SerialName(value = "meta")
     val meta: AlbumsSuggestedCoverArtsMultiRelationshipDataDocumentMeta? = null,
+    @SerialName(value = "included") val included: kotlin.collections.List<IncludedInner>? = null,
 ) {}

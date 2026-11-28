@@ -30,9 +30,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class UserCollectionFoldersRelationships(
     @SerialName(value = "items")
-    val items: UserCollectionFoldersItemsMultiRelationshipDataDocument? = null,
+    val items: UserCollectionFoldersItemsMultiRelationshipObject? = null,
     @SerialName(value = "owners")
-    val owners: UserCollectionFoldersOwnersMultiRelationshipDataDocument? = null,
+    val owners: UserCollectionFoldersOwnersMultiRelationshipObject? = null,
     @SerialName(value = "userCollection")
-    val userCollection: UserCollectionFoldersUserCollectionSingleRelationshipDataDocument? = null,
+    val userCollection: UserCollectionFoldersUserCollectionSingleRelationshipObject? = null,
 ) {}

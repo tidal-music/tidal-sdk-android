@@ -686,7 +686,8 @@ interface Tracks {
 
     /**
      * GET tracks/{id}/relationships/shares Get shares relationship (\&quot;to-many\&quot;). The
-     * track&#39;s share links, active and expired, newest first. Responses:
+     * track&#39;s share links, active and expired, newest first. Deprecated: use
+     * &#x60;resourceGrantInvitations&#x60; instead. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -707,6 +708,7 @@ interface Tracks {
      * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [TracksSharesMultiRelationshipDataDocument]
      */
+    @Deprecated("This api was deprecated")
     @GET("tracks/{id}/relationships/shares")
     suspend fun tracksIdRelationshipsSharesGet(
         @Path("id") id: kotlin.String,

@@ -29,7 +29,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class UserCollectionSaveForLatersRelationships(
     @SerialName(value = "items")
-    val items: UserCollectionSaveForLatersItemsMultiRelationshipDataDocument? = null,
+    val items: UserCollectionSaveForLatersItemsMultiRelationshipObject? = null,
     @SerialName(value = "owners")
-    val owners: UserCollectionSaveForLatersOwnersMultiRelationshipDataDocument? = null,
+    val owners: UserCollectionSaveForLatersOwnersMultiRelationshipObject? = null,
 ) {}

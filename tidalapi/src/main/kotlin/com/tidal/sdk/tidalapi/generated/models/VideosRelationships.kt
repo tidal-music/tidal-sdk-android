@@ -35,19 +35,18 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class VideosRelationships(
-    @SerialName(value = "albums") val albums: VideosAlbumsMultiRelationshipDataDocument? = null,
-    @SerialName(value = "artists") val artists: VideosArtistsMultiRelationshipDataDocument? = null,
-    @SerialName(value = "credits") val credits: VideosCreditsMultiRelationshipDataDocument? = null,
-    @SerialName(value = "providers")
-    val providers: VideosProvidersMultiRelationshipDataDocument? = null,
+    @SerialName(value = "albums") val albums: VideosAlbumsMultiRelationshipObject? = null,
+    @SerialName(value = "artists") val artists: VideosArtistsMultiRelationshipObject? = null,
+    @SerialName(value = "credits") val credits: VideosCreditsMultiRelationshipObject? = null,
+    @SerialName(value = "providers") val providers: VideosProvidersMultiRelationshipObject? = null,
     @SerialName(value = "replacement")
-    val replacement: VideosReplacementSingleRelationshipDataDocument? = null,
+    val replacement: VideosReplacementSingleRelationshipObject? = null,
     @SerialName(value = "similarVideos")
-    val similarVideos: VideosSimilarVideosMultiRelationshipDataDocument? = null,
+    val similarVideos: VideosSimilarVideosMultiRelationshipObject? = null,
     @SerialName(value = "suggestedVideos")
-    val suggestedVideos: VideosSuggestedVideosMultiRelationshipDataDocument? = null,
+    val suggestedVideos: VideosSuggestedVideosMultiRelationshipObject? = null,
     @SerialName(value = "thumbnailArt")
-    val thumbnailArt: VideosThumbnailArtMultiRelationshipDataDocument? = null,
+    val thumbnailArt: VideosThumbnailArtMultiRelationshipObject? = null,
     @SerialName(value = "usageRules")
-    val usageRules: VideosUsageRulesSingleRelationshipDataDocument? = null,
+    val usageRules: VideosUsageRulesSingleRelationshipObject? = null,
 ) {}

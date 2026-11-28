@@ -11,6 +11,7 @@ import com.tidal.sdk.tidalapi.generated.models.AlbumsCreateSingleResourceDataDoc
 import com.tidal.sdk.tidalapi.generated.models.AlbumsGenresMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.AlbumsItemsMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.AlbumsItemsRelationshipUpdateOperationPayload
+import com.tidal.sdk.tidalapi.generated.models.AlbumsLocationSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.AlbumsMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.AlbumsOwnersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.AlbumsPriceConfigSingleRelationshipDataDocument
@@ -38,6 +39,7 @@ interface Albums {
         @SerialName(value = "coverArt") coverArt("coverArt"),
         @SerialName(value = "genres") genres("genres"),
         @SerialName(value = "items") items("items"),
+        @SerialName(value = "location") location("location"),
         @SerialName(value = "owners") owners("owners"),
         @SerialName(value = "priceConfig") priceConfig("priceConfig"),
         @SerialName(value = "providers") providers("providers"),
@@ -77,7 +79,7 @@ interface Albums {
      * @param filterId List of album IDs (e.g. &#x60;251380836&#x60;) (optional)
      * @param filterOwnersId User id. Also accepts &#x60;me&#x60;. (optional)
      * @param include Include related resources. Available relationships: albumStatistics, artists,
-     *   coverArt, genres, items, owners, priceConfig, providers, replacement, shares,
+     *   coverArt, genres, items, location, owners, priceConfig, providers, replacement, shares,
      *   similarAlbums, suggestedCoverArts, usageRules (optional)
      * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
      *   related content. (optional)
@@ -145,6 +147,7 @@ interface Albums {
         @SerialName(value = "coverArt") coverArt("coverArt"),
         @SerialName(value = "genres") genres("genres"),
         @SerialName(value = "items") items("items"),
+        @SerialName(value = "location") location("location"),
         @SerialName(value = "owners") owners("owners"),
         @SerialName(value = "priceConfig") priceConfig("priceConfig"),
         @SerialName(value = "providers") providers("providers"),
@@ -170,7 +173,7 @@ interface Albums {
      * @param id Album id
      * @param countryCode ISO 3166-1 alpha-2 country code (optional)
      * @param include Include related resources. Available relationships: albumStatistics, artists,
-     *   coverArt, genres, items, owners, priceConfig, providers, replacement, shares,
+     *   coverArt, genres, items, location, owners, priceConfig, providers, replacement, shares,
      *   similarAlbums, suggestedCoverArts, usageRules (optional)
      * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
      *   related content. (optional)
@@ -490,6 +493,36 @@ interface Albums {
     ): Response<MutationResponseDocument>
 
     /**
+     * GET albums/{id}/relationships/location Get location relationship (\&quot;to-one\&quot;).
+     * Retrieves location relationship. Responses:
+     * - 200: Successful response
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
+     * - 429: Rate limit exceeded
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
+     *
+     * @param id Album id
+     * @param include Include related resources. Available relationships: location (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: location.children.subject (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
+     * @return [AlbumsLocationSingleRelationshipDataDocument]
+     */
+    @GET("albums/{id}/relationships/location")
+    suspend fun albumsIdRelationshipsLocationGet(
+        @Path("id") id: kotlin.String,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
+    ): Response<AlbumsLocationSingleRelationshipDataDocument>
+
+    /**
      * GET albums/{id}/relationships/owners Get owners relationship (\&quot;to-many\&quot;).
      * Retrieves owners relationship. Responses:
      * - 200: Successful response
@@ -611,7 +644,8 @@ interface Albums {
 
     /**
      * GET albums/{id}/relationships/shares Get shares relationship (\&quot;to-many\&quot;). The
-     * album&#39;s share links, active and expired, newest first. Responses:
+     * album&#39;s share links, active and expired, newest first. Deprecated: use
+     * &#x60;resourceGrantInvitations&#x60; instead. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -632,6 +666,7 @@ interface Albums {
      * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [AlbumsSharesMultiRelationshipDataDocument]
      */
+    @Deprecated("This api was deprecated")
     @GET("albums/{id}/relationships/shares")
     suspend fun albumsIdRelationshipsSharesGet(
         @Path("id") id: kotlin.String,

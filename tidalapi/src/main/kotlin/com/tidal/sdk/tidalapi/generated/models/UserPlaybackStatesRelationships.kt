@@ -31,12 +31,11 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class UserPlaybackStatesRelationships(
     @SerialName(value = "activePlayer")
-    val activePlayer: UserPlaybackStatesActivePlayerSingleRelationshipDataDocument? = null,
+    val activePlayer: UserPlaybackStatesActivePlayerSingleRelationshipObject? = null,
     @SerialName(value = "availablePlayers")
-    val availablePlayers: UserPlaybackStatesAvailablePlayersMultiRelationshipDataDocument? = null,
+    val availablePlayers: UserPlaybackStatesAvailablePlayersMultiRelationshipObject? = null,
     @SerialName(value = "changeEventStream")
-    val changeEventStream: UserPlaybackStatesChangeEventStreamSingleRelationshipDataDocument? =
-        null,
+    val changeEventStream: UserPlaybackStatesChangeEventStreamSingleRelationshipObject? = null,
     @SerialName(value = "playQueue")
-    val playQueue: UserPlaybackStatesPlayQueueSingleRelationshipDataDocument? = null,
+    val playQueue: UserPlaybackStatesPlayQueueSingleRelationshipObject? = null,
 ) {}

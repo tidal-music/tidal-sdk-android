@@ -38,12 +38,11 @@ interface Shares {
      * - 503: Service temporarily unavailable
      *
      * @param filterCode A share code (e.g. &#x60;xyz&#x60;) (optional)
-     * @param filterSelfAppliesTo Album, track or folder owned by the caller. Selects undeleted,
-     *   unexpired links on the resource or an ancestor album, and VOUCHER-enabled links on an
-     *   ancestor folder. Exhausted links are included. Each link keeps its own sharedResources.
-     *   Cannot be combined with other filters. Missing or non-owned resources and subjects without
-     *   a live access node return no records. Ordered by expiry then share ID; at most 20 links per
-     *   page. Also accepts &#x60;folders:me&#x60;. (optional)
+     * @param filterSelfAppliesTo Album or track owned by the caller. Selects undeleted, unexpired
+     *   links on the resource or its album. Exhausted links are included. Each link keeps its own
+     *   sharedResources. Cannot be combined with other filters. Missing or non-owned resources and
+     *   subjects without a live access node return no records. Ordered by expiry then share ID; at
+     *   most 20 links per page. (optional)
      * @param include Include related resources. Available relationships: owners, sharedResources
      *   (optional)
      * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
@@ -55,6 +54,7 @@ interface Shares {
      *   &#x60;include&#x60; syntax. Example: sharedResources (optional)
      * @return [SharesMultiResourceDataDocument]
      */
+    @Deprecated("This api was deprecated")
     @GET("shares")
     suspend fun sharesGet(
         @Query("filter[code]")
@@ -69,7 +69,7 @@ interface Shares {
 
     /**
      * DELETE shares/{id} Delete single share. Delete share. Effectively revokes bearer access and
-     * acceptance. Responses:
+     * acceptance. Deprecated: use &#x60;resourceGrantInvitations&#x60; instead. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -91,6 +91,7 @@ interface Shares {
      *   owners not yet on the access store; there true is rejected with 400. (optional)
      * @return [MutationResponseDocument]
      */
+    @Deprecated("This api was deprecated")
     @DELETE("shares/{id}")
     suspend fun sharesIdDelete(
         @Path("id") id: kotlin.String,
@@ -127,6 +128,7 @@ interface Shares {
      *   &#x60;include&#x60; syntax. Example: sharedResources (optional)
      * @return [SharesSingleResourceDataDocument]
      */
+    @Deprecated("This api was deprecated")
     @GET("shares/{id}")
     suspend fun sharesIdGet(
         @Path("id") id: kotlin.String,
@@ -139,7 +141,8 @@ interface Shares {
     /**
      * PATCH shares/{id} Update single share. Set, change or remove the share&#39;s password.
      * Setting one also removes BEARER access; removing one leaves the access modes unchanged.
-     * Existing savers keep their access. Responses:
+     * Existing savers keep their access. Deprecated: use &#x60;resourceGrantInvitations&#x60;
+     * instead. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -159,6 +162,7 @@ interface Shares {
      * @param sharesUpdateOperationPayload (optional)
      * @return [SharesUpdateSingleResourceDataDocument]
      */
+    @Deprecated("This api was deprecated")
     @PATCH("shares/{id}")
     suspend fun sharesIdPatch(
         @Path("id") id: kotlin.String,
@@ -215,6 +219,7 @@ interface Shares {
      *   &#x60;include&#x60; syntax. Example: sharedResources (optional)
      * @return [SharesSharedResourcesMultiRelationshipDataDocument]
      */
+    @Deprecated("This api was deprecated")
     @GET("shares/{id}/relationships/sharedResources")
     suspend fun sharesIdRelationshipsSharedResourcesGet(
         @Path("id") id: kotlin.String,
@@ -225,7 +230,8 @@ interface Shares {
     ): Response<SharesSharedResourcesMultiRelationshipDataDocument>
 
     /**
-     * POST shares Create single share. Creates a new share. Responses:
+     * POST shares Create single share. Creates a new share. Deprecated: use
+     * &#x60;resourceGrantInvitations&#x60; instead. Responses:
      * - 201: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -244,6 +250,7 @@ interface Shares {
      * @param sharesCreateOperationPayload (optional)
      * @return [SharesCreateSingleResourceDataDocument]
      */
+    @Deprecated("This api was deprecated")
     @POST("shares")
     suspend fun sharesPost(
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,

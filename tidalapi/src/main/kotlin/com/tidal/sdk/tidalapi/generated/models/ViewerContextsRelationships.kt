@@ -31,11 +31,10 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ViewerContextsRelationships(
     @SerialName(value = "comments")
-    val comments: ViewerContextsCommentsMultiRelationshipDataDocument? = null,
+    val comments: ViewerContextsCommentsMultiRelationshipObject? = null,
     @SerialName(value = "reactions")
-    val reactions: ViewerContextsReactionsMultiRelationshipDataDocument? = null,
+    val reactions: ViewerContextsReactionsMultiRelationshipObject? = null,
     @SerialName(value = "subject")
-    val subject: ViewerContextsSubjectSingleRelationshipDataDocument? = null,
-    @SerialName(value = "viewer")
-    val viewer: ViewerContextsViewerSingleRelationshipDataDocument? = null,
+    val subject: ViewerContextsSubjectSingleRelationshipObject? = null,
+    @SerialName(value = "viewer") val viewer: ViewerContextsViewerSingleRelationshipObject? = null,
 ) {}

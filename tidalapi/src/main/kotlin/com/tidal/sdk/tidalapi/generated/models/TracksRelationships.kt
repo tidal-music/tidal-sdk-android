@@ -44,32 +44,30 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class TracksRelationships(
-    @SerialName(value = "albums") val albums: TracksAlbumsMultiRelationshipDataDocument? = null,
-    @SerialName(value = "artists") val artists: TracksArtistsMultiRelationshipDataDocument? = null,
-    @SerialName(value = "credits") val credits: TracksCreditsMultiRelationshipDataDocument? = null,
-    @SerialName(value = "download")
-    val download: TracksDownloadSingleRelationshipDataDocument? = null,
-    @SerialName(value = "genres") val genres: TracksGenresMultiRelationshipDataDocument? = null,
-    @SerialName(value = "lyrics") val lyrics: TracksLyricsMultiRelationshipDataDocument? = null,
+    @SerialName(value = "albums") val albums: TracksAlbumsMultiRelationshipObject? = null,
+    @SerialName(value = "artists") val artists: TracksArtistsMultiRelationshipObject? = null,
+    @SerialName(value = "credits") val credits: TracksCreditsMultiRelationshipObject? = null,
+    @SerialName(value = "download") val download: TracksDownloadSingleRelationshipObject? = null,
+    @SerialName(value = "genres") val genres: TracksGenresMultiRelationshipObject? = null,
+    @SerialName(value = "lyrics") val lyrics: TracksLyricsMultiRelationshipObject? = null,
     @SerialName(value = "metadataStatus")
-    val metadataStatus: TracksMetadataStatusSingleRelationshipDataDocument? = null,
-    @SerialName(value = "owners") val owners: TracksOwnersMultiRelationshipDataDocument? = null,
+    val metadataStatus: TracksMetadataStatusSingleRelationshipObject? = null,
+    @SerialName(value = "owners") val owners: TracksOwnersMultiRelationshipObject? = null,
     @SerialName(value = "priceConfig")
-    val priceConfig: TracksPriceConfigSingleRelationshipDataDocument? = null,
-    @SerialName(value = "providers")
-    val providers: TracksProvidersMultiRelationshipDataDocument? = null,
-    @SerialName(value = "radio") val radio: TracksRadioMultiRelationshipDataDocument? = null,
+    val priceConfig: TracksPriceConfigSingleRelationshipObject? = null,
+    @SerialName(value = "providers") val providers: TracksProvidersMultiRelationshipObject? = null,
+    @SerialName(value = "radio") val radio: TracksRadioMultiRelationshipObject? = null,
     @SerialName(value = "replacement")
-    val replacement: TracksReplacementSingleRelationshipDataDocument? = null,
-    @SerialName(value = "shares") val shares: TracksSharesMultiRelationshipDataDocument? = null,
+    val replacement: TracksReplacementSingleRelationshipObject? = null,
+    @SerialName(value = "shares") val shares: TracksSharesMultiRelationshipObject? = null,
     @SerialName(value = "similarTracks")
-    val similarTracks: TracksSimilarTracksMultiRelationshipDataDocument? = null,
+    val similarTracks: TracksSimilarTracksMultiRelationshipObject? = null,
     @SerialName(value = "sourceFile")
-    val sourceFile: TracksSourceFileSingleRelationshipDataDocument? = null,
+    val sourceFile: TracksSourceFileSingleRelationshipObject? = null,
     @SerialName(value = "suggestedTracks")
-    val suggestedTracks: TracksSuggestedTracksMultiRelationshipDataDocument? = null,
+    val suggestedTracks: TracksSuggestedTracksMultiRelationshipObject? = null,
     @SerialName(value = "trackStatistics")
-    val trackStatistics: TracksTrackStatisticsSingleRelationshipDataDocument? = null,
+    val trackStatistics: TracksTrackStatisticsSingleRelationshipObject? = null,
     @SerialName(value = "usageRules")
-    val usageRules: TracksUsageRulesSingleRelationshipDataDocument? = null,
+    val usageRules: TracksUsageRulesSingleRelationshipObject? = null,
 ) {}

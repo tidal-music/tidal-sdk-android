@@ -25,6 +25,5 @@ import kotlinx.serialization.Serializable
 /** @param owners */
 @Serializable
 data class TrackStatisticsRelationships(
-    @SerialName(value = "owners")
-    val owners: TrackStatisticsOwnersMultiRelationshipDataDocument? = null
+    @SerialName(value = "owners") val owners: TrackStatisticsOwnersMultiRelationshipObject? = null
 ) {}

@@ -37,13 +37,12 @@ data class SharesCreateOperationPayloadDataRelationshipsSharedResourcesData(
     val type: SharesCreateOperationPayloadDataRelationshipsSharedResourcesData.Type,
 ) {
 
-    /** Values: tracks,albums,playlists,folders,unknown_default_open_api */
+    /** Values: tracks,albums,playlists,unknown_default_open_api */
     @Serializable(with = TypeSerializer::class)
     enum class Type(val value: kotlin.String) {
         @SerialName(value = "tracks") tracks("tracks"),
         @SerialName(value = "albums") albums("albums"),
         @SerialName(value = "playlists") playlists("playlists"),
-        @SerialName(value = "folders") folders("folders"),
         @SerialName(value = "unknown_default_open_api")
         unknown_default_open_api("unknown_default_open_api"),
     }

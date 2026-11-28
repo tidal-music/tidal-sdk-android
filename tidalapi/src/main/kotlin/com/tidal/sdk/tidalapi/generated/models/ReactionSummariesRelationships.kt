@@ -26,5 +26,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ReactionSummariesRelationships(
     @SerialName(value = "subject")
-    val subject: ReactionSummariesSubjectSingleRelationshipDataDocument? = null
+    val subject: ReactionSummariesSubjectSingleRelationshipObject? = null
 ) {}

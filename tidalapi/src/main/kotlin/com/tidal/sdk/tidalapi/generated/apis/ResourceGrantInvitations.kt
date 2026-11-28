@@ -9,8 +9,6 @@ import com.tidal.sdk.tidalapi.generated.models.ResourceGrantInvitationsOwnersMul
 import com.tidal.sdk.tidalapi.generated.models.ResourceGrantInvitationsPreviewGrantSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ResourceGrantInvitationsSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.ResourceGrantInvitationsSubjectSingleRelationshipDataDocument
-import com.tidal.sdk.tidalapi.generated.models.ResourceGrantInvitationsUpdateOperationPayload
-import com.tidal.sdk.tidalapi.generated.models.ResourceGrantInvitationsUpdateSingleResourceDataDocument
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import retrofit2.Response
@@ -46,6 +44,8 @@ interface ResourceGrantInvitations {
      *   keeps its own subject. Cannot be combined with other filters. Missing or non-owned
      *   resources and subjects without a live access node return no records. Ordered by expiry then
      *   ID; at most 20 invitations per page. Also accepts &#x60;folders:me&#x60;. (optional)
+     * @param filterSubject Resource the invitations offer a role on. Also accepts
+     *   &#x60;folders:me&#x60;. (optional)
      * @param include Include related resources. Available relationships: owners, previewGrant,
      *   subject (optional)
      * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
@@ -61,6 +61,7 @@ interface ResourceGrantInvitations {
     suspend fun resourceGrantInvitationsGet(
         @Query("filter[code]") filterCode: kotlin.String? = null,
         @Query("filter[self][appliesTo]") filterSelfAppliesTo: kotlin.String? = null,
+        @Query("filter[subject]") filterSubject: kotlin.String? = null,
         @Query("include")
         include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
         @Query("includeLinkage") includeLinkage: CSVParams? = null,
@@ -137,39 +138,6 @@ interface ResourceGrantInvitations {
         @Query("includeLinkage") includeLinkage: CSVParams? = null,
         @Query("replaceMedia") replaceMedia: kotlin.String? = null,
     ): Response<ResourceGrantInvitationsSingleResourceDataDocument>
-
-    /**
-     * PATCH resourceGrantInvitations/{id} Update single resourceGrantInvitation. Set, change or
-     * remove the password, or turn the preview on or off. Users who redeemed keep their grants.
-     * Responses:
-     * - 200: Successful response
-     * - 400: Invalid request
-     * - 404: Resource not found
-     * - 405: HTTP method not allowed
-     * - 406: No acceptable response media type
-     * - 409: Request already in progress for this idempotency key
-     * - 415: Unsupported request media type or encoding
-     * - 422: Idempotency key reused for a different request
-     * - 429: Rate limit exceeded
-     * - 500: Internal server error
-     * - 503: Service temporarily unavailable
-     *
-     * @param id Invitation id
-     * @param idempotencyKey Unique idempotency key for safe retry of mutation requests. If the same
-     *   caller repeats a key with the same method, path, query and payload, the original response
-     *   is replayed. If the request differs, a 422 error is returned. (optional)
-     * @param resourceGrantInvitationsUpdateOperationPayload (optional)
-     * @return [ResourceGrantInvitationsUpdateSingleResourceDataDocument]
-     */
-    @PATCH("resourceGrantInvitations/{id}")
-    suspend fun resourceGrantInvitationsIdPatch(
-        @Path("id") id: kotlin.String,
-        @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,
-        @Body
-        resourceGrantInvitationsUpdateOperationPayload:
-            ResourceGrantInvitationsUpdateOperationPayload? =
-            null,
-    ): Response<ResourceGrantInvitationsUpdateSingleResourceDataDocument>
 
     /**
      * GET resourceGrantInvitations/{id}/relationships/owners Get owners relationship

@@ -29,7 +29,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ArtistSalesStatisticsRelationships(
     @SerialName(value = "artist")
-    val artist: ArtistSalesStatisticsArtistSingleRelationshipDataDocument? = null,
+    val artist: ArtistSalesStatisticsArtistSingleRelationshipObject? = null,
     @SerialName(value = "topSellers")
-    val topSellers: ArtistSalesStatisticsTopSellersMultiRelationshipDataDocument? = null,
+    val topSellers: ArtistSalesStatisticsTopSellersMultiRelationshipObject? = null,
 ) {}

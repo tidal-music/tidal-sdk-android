@@ -23,7 +23,7 @@ interface PriceConfigurations {
      * - 503: Service temporarily unavailable
      *
      * @param filterId List of price configurations IDs (e.g.
-     *   &#x60;cHJpY2UtY29uZmlnLTEyMzpVUw&#x60;)
+     *   &#x60;3suohewWQFbLbNrEzU3xzB2Ead&#x60;)
      * @return [PriceConfigurationsMultiResourceDataDocument]
      */
     @GET("priceConfigurations")

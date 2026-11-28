@@ -29,7 +29,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class SearchSuggestionsRelationships(
     @SerialName(value = "directHits")
-    val directHits: SearchSuggestionsDirectHitsMultiRelationshipDataDocument? = null,
+    val directHits: SearchSuggestionsDirectHitsMultiRelationshipObject? = null,
     @SerialName(value = "history")
-    val history: SearchSuggestionsHistoryMultiRelationshipDataDocument? = null,
+    val history: SearchSuggestionsHistoryMultiRelationshipObject? = null,
 ) {}

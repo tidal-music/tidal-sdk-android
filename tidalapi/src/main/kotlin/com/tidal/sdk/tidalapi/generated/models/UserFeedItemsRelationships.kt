@@ -28,8 +28,6 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class UserFeedItemsRelationships(
-    @SerialName(value = "actors")
-    val actors: UserFeedItemsActorsMultiRelationshipDataDocument? = null,
-    @SerialName(value = "subject")
-    val subject: UserFeedItemsSubjectSingleRelationshipDataDocument? = null,
+    @SerialName(value = "actors") val actors: UserFeedItemsActorsMultiRelationshipObject? = null,
+    @SerialName(value = "subject") val subject: UserFeedItemsSubjectSingleRelationshipObject? = null,
 ) {}

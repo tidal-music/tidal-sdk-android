@@ -29,7 +29,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class UserCollectionTracksRelationships(
     @SerialName(value = "items")
-    val items: UserCollectionTracksItemsMultiRelationshipDataDocument? = null,
+    val items: UserCollectionTracksItemsMultiRelationshipObject? = null,
     @SerialName(value = "owners")
-    val owners: UserCollectionTracksOwnersMultiRelationshipDataDocument? = null,
+    val owners: UserCollectionTracksOwnersMultiRelationshipObject? = null,
 ) {}

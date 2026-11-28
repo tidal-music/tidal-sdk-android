@@ -24,7 +24,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * Plays per bucket
+ * Plays and follower count per bucket
  *
  * @param points
  * @param bucketPeriod

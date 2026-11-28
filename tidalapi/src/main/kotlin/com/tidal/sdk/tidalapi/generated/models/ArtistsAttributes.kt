@@ -37,6 +37,8 @@ import kotlinx.serialization.encoding.Encoder
  * @param handle Artist handle
  * @param numberOfFollowers Number of users in the followers relationship
  * @param numberOfFollowing Number of artists in the following relationship
+ * @param ownerAgeRestricted
+ * @param ownerAgeRestriction
  * @param ownerType Ownership type of the artist profile. LABEL: label-managed profile, USER:
  *   user-created profile, MIXED: claimed profile with both label and user content. May be null
  *   during rollout/backfill.
@@ -76,6 +78,9 @@ data class ArtistsAttributes(
 
     /* Number of artists in the following relationship */
     @SerialName(value = "numberOfFollowing") val numberOfFollowing: kotlin.Int? = null,
+    @SerialName(value = "ownerAgeRestricted") val ownerAgeRestricted: kotlin.Boolean? = null,
+    @SerialName(value = "ownerAgeRestriction")
+    val ownerAgeRestriction: ArtistsAttributes.OwnerAgeRestriction? = null,
 
     /* Ownership type of the artist profile. LABEL: label-managed profile, USER: user-created profile, MIXED: claimed profile with both label and user content. May be null during rollout/backfill. */
     @SerialName(value = "ownerType") val ownerType: ArtistsAttributes.OwnerType? = null,
@@ -83,6 +88,29 @@ data class ArtistsAttributes(
     /* Is the artist spotlighted? */
     @SerialName(value = "spotlighted") val spotlighted: kotlin.Boolean? = null,
 ) {
+
+    /** Values: MINOR,NO_BIRTHDAY,unknown_default_open_api */
+    @Serializable(with = OwnerAgeRestrictionSerializer::class)
+    enum class OwnerAgeRestriction(val value: kotlin.String) {
+        @SerialName(value = "MINOR") MINOR("MINOR"),
+        @SerialName(value = "NO_BIRTHDAY") NO_BIRTHDAY("NO_BIRTHDAY"),
+        @SerialName(value = "unknown_default_open_api")
+        unknown_default_open_api("unknown_default_open_api"),
+    }
+
+    internal object OwnerAgeRestrictionSerializer : KSerializer<OwnerAgeRestriction> {
+        override val descriptor = kotlin.String.serializer().descriptor
+
+        override fun deserialize(decoder: Decoder): OwnerAgeRestriction {
+            val value = decoder.decodeSerializableValue(kotlin.String.serializer())
+            return OwnerAgeRestriction.entries.firstOrNull { it.value == value }
+                ?: OwnerAgeRestriction.unknown_default_open_api
+        }
+
+        override fun serialize(encoder: Encoder, value: OwnerAgeRestriction) {
+            encoder.encodeSerializableValue(kotlin.String.serializer(), value.value)
+        }
+    }
 
     /**
      * Ownership type of the artist profile. LABEL: label-managed profile, USER: user-created

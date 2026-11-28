@@ -41,27 +41,24 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class ArtistsRelationships(
-    @SerialName(value = "albums") val albums: ArtistsAlbumsMultiRelationshipDataDocument? = null,
-    @SerialName(value = "bannerArt")
-    val bannerArt: ArtistsBannerArtMultiRelationshipDataDocument? = null,
+    @SerialName(value = "albums") val albums: ArtistsAlbumsMultiRelationshipObject? = null,
+    @SerialName(value = "bannerArt") val bannerArt: ArtistsBannerArtMultiRelationshipObject? = null,
     @SerialName(value = "biography")
-    val biography: ArtistsBiographySingleRelationshipDataDocument? = null,
+    val biography: ArtistsBiographySingleRelationshipObject? = null,
     @SerialName(value = "claimStatus")
-    val claimStatus: ArtistsClaimStatusSingleRelationshipDataDocument? = null,
-    @SerialName(value = "followers")
-    val followers: ArtistsFollowersMultiRelationshipDataDocument? = null,
-    @SerialName(value = "following")
-    val following: ArtistsFollowingMultiRelationshipDataDocument? = null,
-    @SerialName(value = "logoArt") val logoArt: ArtistsLogoArtMultiRelationshipDataDocument? = null,
-    @SerialName(value = "owners") val owners: ArtistsOwnersMultiRelationshipDataDocument? = null,
+    val claimStatus: ArtistsClaimStatusSingleRelationshipObject? = null,
+    @SerialName(value = "followers") val followers: ArtistsFollowersMultiRelationshipObject? = null,
+    @SerialName(value = "following") val following: ArtistsFollowingMultiRelationshipObject? = null,
+    @SerialName(value = "logoArt") val logoArt: ArtistsLogoArtMultiRelationshipObject? = null,
+    @SerialName(value = "owners") val owners: ArtistsOwnersMultiRelationshipObject? = null,
     @SerialName(value = "profileArt")
-    val profileArt: ArtistsProfileArtMultiRelationshipDataDocument? = null,
-    @SerialName(value = "radio") val radio: ArtistsRadioMultiRelationshipDataDocument? = null,
-    @SerialName(value = "roles") val roles: ArtistsRolesMultiRelationshipDataDocument? = null,
+    val profileArt: ArtistsProfileArtMultiRelationshipObject? = null,
+    @SerialName(value = "radio") val radio: ArtistsRadioMultiRelationshipObject? = null,
+    @SerialName(value = "roles") val roles: ArtistsRolesMultiRelationshipObject? = null,
     @SerialName(value = "similarArtists")
-    val similarArtists: ArtistsSimilarArtistsMultiRelationshipDataDocument? = null,
+    val similarArtists: ArtistsSimilarArtistsMultiRelationshipObject? = null,
     @SerialName(value = "trackProviders")
-    val trackProviders: ArtistsTrackProvidersMultiRelationshipDataDocument? = null,
-    @SerialName(value = "tracks") val tracks: ArtistsTracksMultiRelationshipDataDocument? = null,
-    @SerialName(value = "videos") val videos: ArtistsVideosMultiRelationshipDataDocument? = null,
+    val trackProviders: ArtistsTrackProvidersMultiRelationshipObject? = null,
+    @SerialName(value = "tracks") val tracks: ArtistsTracksMultiRelationshipObject? = null,
+    @SerialName(value = "videos") val videos: ArtistsVideosMultiRelationshipObject? = null,
 ) {}

@@ -24,15 +24,15 @@ import kotlinx.serialization.Serializable
 
 /**
  * @param shared Whether a live grant to another user, an unexpired bearer grant or an applicable
- *   undeleted, unexpired share exists on the subject or an ancestor. Everyone grants do not count.
- *   Ancestor folder links require VOUCHER; exhausted links still count.
+ *   undeleted, unexpired share exists on the subject or an ancestor. Everyone grants do not count;
+ *   exhausted links still count.
  * @param sharedViaParent The same sharing check restricted to ancestor folders and albums.
  *   Descendants never contribute.
  */
 @Serializable
 data class SharingSummariesAttributes(
 
-    /* Whether a live grant to another user, an unexpired bearer grant or an applicable undeleted, unexpired share exists on the subject or an ancestor. Everyone grants do not count. Ancestor folder links require VOUCHER; exhausted links still count. */
+    /* Whether a live grant to another user, an unexpired bearer grant or an applicable undeleted, unexpired share exists on the subject or an ancestor. Everyone grants do not count; exhausted links still count. */
     @SerialName(value = "shared") val shared: kotlin.Boolean,
 
     /* The same sharing check restricted to ancestor folders and albums. Descendants never contribute. */

@@ -25,6 +25,8 @@ import kotlinx.serialization.Serializable
 /**
  * @param date First day of the bucket
  * @param plays
+ * @param followers Follower count at the end of the bucket, as known when the statistics were
+ *   computed. Earlier points can change between updates
  */
 @Serializable
 data class ArtistStreamsStatisticsSeriesPoint(
@@ -32,4 +34,7 @@ data class ArtistStreamsStatisticsSeriesPoint(
     /* First day of the bucket */
     @SerialName(value = "date") val date: kotlin.String,
     @SerialName(value = "plays") val plays: kotlin.Long,
+
+    /* Follower count at the end of the bucket, as known when the statistics were computed. Earlier points can change between updates */
+    @SerialName(value = "followers") val followers: kotlin.Long? = null,
 ) {}

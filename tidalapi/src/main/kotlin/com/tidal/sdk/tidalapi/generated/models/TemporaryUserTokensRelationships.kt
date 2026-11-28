@@ -26,5 +26,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class TemporaryUserTokensRelationships(
     @SerialName(value = "owners")
-    val owners: TemporaryUserTokensOwnersMultiRelationshipDataDocument? = null
+    val owners: TemporaryUserTokensOwnersMultiRelationshipObject? = null
 ) {}

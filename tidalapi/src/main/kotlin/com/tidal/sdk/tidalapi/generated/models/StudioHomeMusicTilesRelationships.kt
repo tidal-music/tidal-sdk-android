@@ -25,6 +25,5 @@ import kotlinx.serialization.Serializable
 /** @param items */
 @Serializable
 data class StudioHomeMusicTilesRelationships(
-    @SerialName(value = "items")
-    val items: StudioHomeMusicTilesItemsMultiRelationshipDataDocument? = null
+    @SerialName(value = "items") val items: StudioHomeMusicTilesItemsMultiRelationshipObject? = null
 ) {}

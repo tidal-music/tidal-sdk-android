@@ -26,5 +26,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class FoldersDeleteResource400ResponseBody(
     @SerialName(value = "errors")
-    val errors: kotlin.collections.List<FoldersDeleteResource400ResponseBodyErrorsInner>
+    val errors: kotlin.collections.List<FoldersCreateResource400ResponseBodyErrorsInner>
 ) {}

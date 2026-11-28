@@ -25,8 +25,8 @@ import kotlinx.serialization.Serializable
 /**
  * @param code Opaque invite code embedded in the share link
  * @param createdAt Datetime the invite was created (ISO 8601)
- * @param expiresAt Time the underlying share expires; accepted grants remain valid
- * @param revoked Whether the underlying share has been revoked
+ * @param expiresAt Time the invitation expires; accepted grants remain valid
+ * @param revoked Whether the invitation has been deleted
  */
 @Serializable
 data class CollaborationInvitesAttributes(
@@ -37,9 +37,9 @@ data class CollaborationInvitesAttributes(
     /* Datetime the invite was created (ISO 8601) */
     @SerialName(value = "createdAt") val createdAt: kotlin.String,
 
-    /* Time the underlying share expires; accepted grants remain valid */
+    /* Time the invitation expires; accepted grants remain valid */
     @SerialName(value = "expiresAt") val expiresAt: kotlin.String,
 
-    /* Whether the underlying share has been revoked */
+    /* Whether the invitation has been deleted */
     @SerialName(value = "revoked") val revoked: kotlin.Boolean,
 ) {}

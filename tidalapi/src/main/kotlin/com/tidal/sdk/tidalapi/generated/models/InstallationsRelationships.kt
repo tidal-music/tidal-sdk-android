@@ -29,7 +29,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class InstallationsRelationships(
     @SerialName(value = "offlineInventory")
-    val offlineInventory: InstallationsOfflineInventoryMultiRelationshipDataDocument? = null,
-    @SerialName(value = "owners")
-    val owners: InstallationsOwnersMultiRelationshipDataDocument? = null,
+    val offlineInventory: InstallationsOfflineInventoryMultiRelationshipObject? = null,
+    @SerialName(value = "owners") val owners: InstallationsOwnersMultiRelationshipObject? = null,
 ) {}

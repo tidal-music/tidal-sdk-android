@@ -29,7 +29,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class StudioHomeMerchTilesRelationships(
     @SerialName(value = "items")
-    val items: StudioHomeMerchTilesItemsMultiRelationshipDataDocument? = null,
+    val items: StudioHomeMerchTilesItemsMultiRelationshipObject? = null,
     @SerialName(value = "squareConnection")
-    val squareConnection: StudioHomeMerchTilesSquareConnectionSingleRelationshipDataDocument? = null,
+    val squareConnection: StudioHomeMerchTilesSquareConnectionSingleRelationshipObject? = null,
 ) {}

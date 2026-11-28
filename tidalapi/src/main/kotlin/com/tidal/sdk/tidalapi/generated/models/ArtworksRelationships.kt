@@ -25,5 +25,5 @@ import kotlinx.serialization.Serializable
 /** @param owners */
 @Serializable
 data class ArtworksRelationships(
-    @SerialName(value = "owners") val owners: ArtworksOwnersMultiRelationshipDataDocument? = null
+    @SerialName(value = "owners") val owners: ArtworksOwnersMultiRelationshipObject? = null
 ) {}

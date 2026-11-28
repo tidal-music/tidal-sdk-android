@@ -25,6 +25,5 @@ import kotlinx.serialization.Serializable
 /** @param owners */
 @Serializable
 data class UserDataExportsRelationships(
-    @SerialName(value = "owners")
-    val owners: UserDataExportsOwnersMultiRelationshipDataDocument? = null
+    @SerialName(value = "owners") val owners: UserDataExportsOwnersMultiRelationshipObject? = null
 ) {}

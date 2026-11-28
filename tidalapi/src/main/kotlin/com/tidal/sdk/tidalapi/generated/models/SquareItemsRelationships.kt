@@ -30,9 +30,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class SquareItemsRelationships(
     @SerialName(value = "artworks")
-    val artworks: SquareItemsArtworksMultiRelationshipDataDocument? = null,
-    @SerialName(value = "owners")
-    val owners: SquareItemsOwnersMultiRelationshipDataDocument? = null,
+    val artworks: SquareItemsArtworksMultiRelationshipObject? = null,
+    @SerialName(value = "owners") val owners: SquareItemsOwnersMultiRelationshipObject? = null,
     @SerialName(value = "variations")
-    val variations: SquareItemsVariationsMultiRelationshipDataDocument? = null,
+    val variations: SquareItemsVariationsMultiRelationshipObject? = null,
 ) {}

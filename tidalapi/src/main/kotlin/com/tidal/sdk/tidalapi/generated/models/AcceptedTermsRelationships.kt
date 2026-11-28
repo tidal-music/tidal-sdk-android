@@ -28,7 +28,6 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class AcceptedTermsRelationships(
-    @SerialName(value = "owners")
-    val owners: AcceptedTermsOwnersMultiRelationshipDataDocument? = null,
-    @SerialName(value = "terms") val terms: AcceptedTermsTermsSingleRelationshipDataDocument? = null,
+    @SerialName(value = "owners") val owners: AcceptedTermsOwnersMultiRelationshipObject? = null,
+    @SerialName(value = "terms") val terms: AcceptedTermsTermsSingleRelationshipObject? = null,
 ) {}
