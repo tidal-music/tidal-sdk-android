@@ -29,6 +29,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ClientsRelationships(
     @SerialName(value = "certificates")
-    val certificates: ClientsCertificatesMultiRelationshipDataDocument? = null,
-    @SerialName(value = "owners") val owners: ClientsOwnersMultiRelationshipDataDocument? = null,
+    val certificates: ClientsCertificatesMultiRelationshipObject? = null,
+    @SerialName(value = "owners") val owners: ClientsOwnersMultiRelationshipObject? = null,
 ) {}

@@ -29,7 +29,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ArtworkLibrariesRelationships(
     @SerialName(value = "artworks")
-    val artworks: ArtworkLibrariesArtworksMultiRelationshipDataDocument? = null,
+    val artworks: ArtworkLibrariesArtworksMultiRelationshipObject? = null,
     @SerialName(value = "randomArtwork")
-    val randomArtwork: ArtworkLibrariesRandomArtworkSingleRelationshipDataDocument? = null,
+    val randomArtwork: ArtworkLibrariesRandomArtworkSingleRelationshipObject? = null,
 ) {}

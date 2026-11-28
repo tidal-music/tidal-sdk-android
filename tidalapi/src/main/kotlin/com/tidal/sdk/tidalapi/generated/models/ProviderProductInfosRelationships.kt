@@ -29,7 +29,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ProviderProductInfosRelationships(
     @SerialName(value = "provider")
-    val provider: ProviderProductInfosProviderSingleRelationshipDataDocument? = null,
+    val provider: ProviderProductInfosProviderSingleRelationshipObject? = null,
     @SerialName(value = "subject")
-    val subject: ProviderProductInfosSubjectSingleRelationshipDataDocument? = null,
+    val subject: ProviderProductInfosSubjectSingleRelationshipObject? = null,
 ) {}

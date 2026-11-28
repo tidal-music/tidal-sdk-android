@@ -4,11 +4,11 @@ import com.tidal.sdk.tidalapi.generated.infrastructure.CollectionFormats.*
 import com.tidal.sdk.tidalapi.generated.models.FoldersChildrenMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.FoldersCreateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.FoldersCreateSingleResourceDataDocument
+import com.tidal.sdk.tidalapi.generated.models.FoldersLocationSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.FoldersMultiResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.FoldersOwnersMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.FoldersParentSingleRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.FoldersPreviewMultiRelationshipDataDocument
-import com.tidal.sdk.tidalapi.generated.models.FoldersSharesMultiRelationshipDataDocument
 import com.tidal.sdk.tidalapi.generated.models.FoldersSingleResourceDataDocument
 import com.tidal.sdk.tidalapi.generated.models.FoldersUpdateOperationPayload
 import com.tidal.sdk.tidalapi.generated.models.FoldersUpdateSingleResourceDataDocument
@@ -24,10 +24,10 @@ interface Folders {
     @Serializable
     enum class IncludeLinkageFoldersGet(val value: kotlin.String) {
         @SerialName(value = "children") children("children"),
+        @SerialName(value = "location") location("location"),
         @SerialName(value = "owners") owners("owners"),
         @SerialName(value = "parent") parent("parent"),
         @SerialName(value = "preview") preview("preview"),
-        @SerialName(value = "shares") shares("shares"),
     }
 
     /**
@@ -45,8 +45,8 @@ interface Folders {
      *
      * @param filterId Folder id (e.g. &#x60;e3226624-355b-48f8-aa93-db42532caa66&#x60;). Also
      *   accepts &#x60;me&#x60;.
-     * @param include Include related resources. Available relationships: children, owners, parent,
-     *   preview, shares (optional)
+     * @param include Include related resources. Available relationships: children, location,
+     *   owners, parent, preview (optional)
      * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
      *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
@@ -68,7 +68,8 @@ interface Folders {
     /**
      * DELETE folders/{id} Delete single folder. Deletes existing folder. Responses:
      * - 200: Successful response
-     * - 400: The root folder cannot be renamed or deleted
+     * - 400: The root folder cannot be renamed or deleted; Supply location or the deprecated
+     *   parent, not both
      * - 404: Resource not found
      * - 405: HTTP method not allowed
      * - 406: No acceptable response media type
@@ -97,10 +98,10 @@ interface Folders {
     @Serializable
     enum class IncludeLinkageFoldersIdGet(val value: kotlin.String) {
         @SerialName(value = "children") children("children"),
+        @SerialName(value = "location") location("location"),
         @SerialName(value = "owners") owners("owners"),
         @SerialName(value = "parent") parent("parent"),
         @SerialName(value = "preview") preview("preview"),
-        @SerialName(value = "shares") shares("shares"),
     }
 
     /**
@@ -116,8 +117,8 @@ interface Folders {
      * - 503: Service temporarily unavailable
      *
      * @param id Folder id. Use &#x60;me&#x60; for the authenticated user&#39;s resource
-     * @param include Include related resources. Available relationships: children, owners, parent,
-     *   preview, shares (optional)
+     * @param include Include related resources. Available relationships: children, location,
+     *   owners, parent, preview (optional)
      * @param includeLinkage Comma-separated direct relationships to return as linkage only, without
      *   related content. (optional)
      * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
@@ -139,7 +140,8 @@ interface Folders {
     /**
      * PATCH folders/{id} Update single folder. Updates existing folder. Responses:
      * - 200: Successful response
-     * - 400: The root folder cannot be renamed or deleted
+     * - 400: The root folder cannot be renamed or deleted; Supply location or the deprecated
+     *   parent, not both
      * - 404: Resource not found
      * - 405: HTTP method not allowed
      * - 406: No acceptable response media type
@@ -201,6 +203,36 @@ interface Folders {
     ): Response<FoldersChildrenMultiRelationshipDataDocument>
 
     /**
+     * GET folders/{id}/relationships/location Get location relationship (\&quot;to-one\&quot;).
+     * Retrieves location relationship. Responses:
+     * - 200: Successful response
+     * - 400: Invalid request
+     * - 404: Resource not found
+     * - 405: HTTP method not allowed
+     * - 406: No acceptable response media type
+     * - 415: Unsupported request media type or encoding
+     * - 429: Rate limit exceeded
+     * - 500: Internal server error
+     * - 503: Service temporarily unavailable
+     *
+     * @param id Folder id. Use &#x60;me&#x60; for the authenticated user&#39;s resource
+     * @param include Include related resources. Available relationships: location (optional)
+     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
+     *   selected relationships without changing stored data. Paths are comma-separated and follow
+     *   &#x60;include&#x60; syntax. Example: location.children.subject (optional)
+     * @param shareCode Share code used as a bearer credential for the resource. (optional)
+     * @return [FoldersLocationSingleRelationshipDataDocument]
+     */
+    @GET("folders/{id}/relationships/location")
+    suspend fun foldersIdRelationshipsLocationGet(
+        @Path("id") id: kotlin.String,
+        @Query("include")
+        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
+        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
+        @Query("shareCode") shareCode: kotlin.String? = null,
+    ): Response<FoldersLocationSingleRelationshipDataDocument>
+
+    /**
      * GET folders/{id}/relationships/owners Get owners relationship (\&quot;to-many\&quot;).
      * Retrieves owners relationship. Responses:
      * - 200: Successful response
@@ -231,7 +263,7 @@ interface Folders {
 
     /**
      * GET folders/{id}/relationships/parent Get parent relationship (\&quot;to-one\&quot;).
-     * Retrieves parent relationship. Responses:
+     * Deprecated. Use location. Responses:
      * - 200: Successful response
      * - 400: Invalid request
      * - 404: Resource not found
@@ -250,6 +282,7 @@ interface Folders {
      * @param shareCode Share code used as a bearer credential for the resource. (optional)
      * @return [FoldersParentSingleRelationshipDataDocument]
      */
+    @Deprecated("This api was deprecated")
     @GET("folders/{id}/relationships/parent")
     suspend fun foldersIdRelationshipsParentGet(
         @Path("id") id: kotlin.String,
@@ -293,42 +326,10 @@ interface Folders {
     ): Response<FoldersPreviewMultiRelationshipDataDocument>
 
     /**
-     * GET folders/{id}/relationships/shares Get shares relationship (\&quot;to-many\&quot;). The
-     * folder&#39;s share links, active and expired, newest first. Responses:
-     * - 200: Successful response
-     * - 400: Invalid request
-     * - 404: Resource not found
-     * - 405: HTTP method not allowed
-     * - 406: No acceptable response media type
-     * - 415: Unsupported request media type or encoding
-     * - 429: Rate limit exceeded
-     * - 500: Internal server error
-     * - 503: Service temporarily unavailable
-     *
-     * @param id Folder id. Use &#x60;me&#x60; for the authenticated user&#39;s resource
-     * @param include Include related resources. Available relationships: shares (optional)
-     * @param pageCursor Server-generated cursor value pointing a certain page of items. Optional,
-     *   targets first page if not specified (optional)
-     * @param replaceMedia Applies context-dependent replacements to media resource identifiers in
-     *   selected relationships without changing stored data. Paths are comma-separated and follow
-     *   &#x60;include&#x60; syntax. Example: shares.sharedResources (optional)
-     * @param shareCode Share code used as a bearer credential for the resource. (optional)
-     * @return [FoldersSharesMultiRelationshipDataDocument]
-     */
-    @GET("folders/{id}/relationships/shares")
-    suspend fun foldersIdRelationshipsSharesGet(
-        @Path("id") id: kotlin.String,
-        @Query("include")
-        include: @JvmSuppressWildcards kotlin.collections.List<kotlin.String>? = null,
-        @Query("page[cursor]") pageCursor: kotlin.String? = null,
-        @Query("replaceMedia") replaceMedia: kotlin.String? = null,
-        @Query("shareCode") shareCode: kotlin.String? = null,
-    ): Response<FoldersSharesMultiRelationshipDataDocument>
-
-    /**
      * POST folders Create single folder. Creates a new folder. Responses:
      * - 201: Successful response
-     * - 400: Invalid request
+     * - 400: The root folder cannot be renamed or deleted; Supply location or the deprecated
+     *   parent, not both
      * - 404: Resource not found
      * - 405: HTTP method not allowed
      * - 406: No acceptable response media type

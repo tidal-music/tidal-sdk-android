@@ -25,5 +25,5 @@ import kotlinx.serialization.Serializable
 /** @param items */
 @Serializable
 data class SquareSitesRelationships(
-    @SerialName(value = "items") val items: SquareSitesItemsMultiRelationshipDataDocument? = null
+    @SerialName(value = "items") val items: SquareSitesItemsMultiRelationshipObject? = null
 ) {}

@@ -30,9 +30,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ResourceGrantsRelationships(
     @SerialName(value = "grantee")
-    val grantee: ResourceGrantsGranteeSingleRelationshipDataDocument? = null,
+    val grantee: ResourceGrantsGranteeSingleRelationshipObject? = null,
     @SerialName(value = "invitation")
-    val invitation: ResourceGrantsInvitationSingleRelationshipDataDocument? = null,
+    val invitation: ResourceGrantsInvitationSingleRelationshipObject? = null,
     @SerialName(value = "subject")
-    val subject: ResourceGrantsSubjectSingleRelationshipDataDocument? = null,
+    val subject: ResourceGrantsSubjectSingleRelationshipObject? = null,
 ) {}

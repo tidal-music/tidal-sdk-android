@@ -8,21 +8,22 @@ import retrofit2.http.*
 
 interface SavedShares {
     /**
-     * POST savedShares Create single savedShare. Redeem an active share with VOUCHER access mode
-     * for its offered role. A share without VOUCHER mode returns 403. Every save, repeated ones
-     * included, needs a password-protected share&#39;s password and counts as a use of a limited
-     * share; password attempts are rate limited. Responses:
+     * POST savedShares Create single savedShare. Redeem an active share for its offered role. Every
+     * save, repeated ones included, needs a password-protected share&#39;s password and counts as a
+     * use of a limited share; password attempts are rate limited. The share&#39;s creator cannot
+     * save it. Deprecated: use &#x60;POST /resourceGrants&#x60; with an &#x60;invitation&#x60;
+     * relationship instead. Responses:
      * - 201: Successful response
      * - 400: Invalid request
-     * - 403: This share does not permit redemption; This share can no longer be accepted; The share
-     *   is password protected; send its password; The share password is incorrect
+     * - 403: This invitation can no longer be accepted; The invitation is password protected; send
+     *   its password; The invitation password is incorrect
      * - 404: Resource not found
      * - 405: HTTP method not allowed
      * - 406: No acceptable response media type
      * - 409: Request already in progress for this idempotency key
      * - 415: Unsupported request media type or encoding
      * - 422: Idempotency key reused for a different request
-     * - 429: Too many share password attempts; try again later
+     * - 429: Too many invitation password attempts; try again later
      * - 500: Internal server error
      * - 503: Service temporarily unavailable
      *
@@ -32,6 +33,7 @@ interface SavedShares {
      * @param savedSharesCreateOperationPayload (optional)
      * @return [SavedSharesCreateSingleResourceDataDocument]
      */
+    @Deprecated("This api was deprecated")
     @POST("savedShares")
     suspend fun savedSharesPost(
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,

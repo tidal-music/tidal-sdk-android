@@ -26,5 +26,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class DspSharingLinksRelationships(
     @SerialName(value = "subject")
-    val subject: DspSharingLinksSubjectSingleRelationshipDataDocument? = null
+    val subject: DspSharingLinksSubjectSingleRelationshipObject? = null
 ) {}

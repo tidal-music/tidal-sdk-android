@@ -28,6 +28,6 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class LyricsRelationships(
-    @SerialName(value = "owners") val owners: LyricsOwnersMultiRelationshipDataDocument? = null,
-    @SerialName(value = "track") val track: LyricsTrackSingleRelationshipDataDocument? = null,
+    @SerialName(value = "owners") val owners: LyricsOwnersMultiRelationshipObject? = null,
+    @SerialName(value = "track") val track: LyricsTrackSingleRelationshipObject? = null,
 ) {}

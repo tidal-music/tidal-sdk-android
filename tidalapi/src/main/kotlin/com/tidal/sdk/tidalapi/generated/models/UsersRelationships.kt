@@ -25,5 +25,5 @@ import kotlinx.serialization.Serializable
 /** @param artist */
 @Serializable
 data class UsersRelationships(
-    @SerialName(value = "artist") val artist: UsersArtistSingleRelationshipDataDocument? = null
+    @SerialName(value = "artist") val artist: UsersArtistSingleRelationshipObject? = null
 ) {}

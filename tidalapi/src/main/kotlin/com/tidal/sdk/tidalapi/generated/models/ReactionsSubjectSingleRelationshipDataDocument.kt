@@ -23,8 +23,6 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * Target resource types: `comments`, `trackSourceFiles`.
- *
  * @param links
  * @param `data`
  * @param included

@@ -32,14 +32,13 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class CommentsRelationships(
-    @SerialName(value = "author") val author: CommentsAuthorSingleRelationshipDataDocument? = null,
+    @SerialName(value = "author") val author: CommentsAuthorSingleRelationshipObject? = null,
     @SerialName(value = "commentSummary")
-    val commentSummary: CommentsCommentSummarySingleRelationshipDataDocument? = null,
-    @SerialName(value = "owners") val owners: CommentsOwnersMultiRelationshipDataDocument? = null,
+    val commentSummary: CommentsCommentSummarySingleRelationshipObject? = null,
+    @SerialName(value = "owners") val owners: CommentsOwnersMultiRelationshipObject? = null,
     @SerialName(value = "reactionSummary")
-    val reactionSummary: CommentsReactionSummarySingleRelationshipDataDocument? = null,
+    val reactionSummary: CommentsReactionSummarySingleRelationshipObject? = null,
     @SerialName(value = "rootSubject")
-    val rootSubject: CommentsRootSubjectSingleRelationshipDataDocument? = null,
-    @SerialName(value = "subject")
-    val subject: CommentsSubjectSingleRelationshipDataDocument? = null,
+    val rootSubject: CommentsRootSubjectSingleRelationshipObject? = null,
+    @SerialName(value = "subject") val subject: CommentsSubjectSingleRelationshipObject? = null,
 ) {}

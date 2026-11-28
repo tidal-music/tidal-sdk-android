@@ -28,8 +28,7 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class DynamicModulesRelationships(
-    @SerialName(value = "items")
-    val items: DynamicModulesItemsMultiRelationshipDataDocument? = null,
+    @SerialName(value = "items") val items: DynamicModulesItemsMultiRelationshipObject? = null,
     @SerialName(value = "seedItem")
-    val seedItem: DynamicModulesSeedItemSingleRelationshipDataDocument? = null,
+    val seedItem: DynamicModulesSeedItemSingleRelationshipObject? = null,
 ) {}

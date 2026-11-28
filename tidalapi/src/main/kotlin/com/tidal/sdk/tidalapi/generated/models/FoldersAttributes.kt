@@ -25,6 +25,7 @@ import kotlinx.serialization.Serializable
 /**
  * @param isRoot Whether this is the root folder.
  * @param name
+ * @param numberOfChildren Number of items in the folder's children relationship.
  */
 @Serializable
 data class FoldersAttributes(
@@ -32,4 +33,7 @@ data class FoldersAttributes(
     /* Whether this is the root folder. */
     @SerialName(value = "isRoot") val isRoot: kotlin.Boolean,
     @SerialName(value = "name") val name: kotlin.String,
+
+    /* Number of items in the folder's children relationship. */
+    @SerialName(value = "numberOfChildren") val numberOfChildren: kotlin.Int? = null,
 ) {}

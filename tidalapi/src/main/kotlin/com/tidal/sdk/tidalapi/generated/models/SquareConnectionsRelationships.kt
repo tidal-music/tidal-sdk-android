@@ -29,7 +29,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class SquareConnectionsRelationships(
     @SerialName(value = "selectedSite")
-    val selectedSite: SquareConnectionsSelectedSiteSingleRelationshipDataDocument? = null,
-    @SerialName(value = "sites")
-    val sites: SquareConnectionsSitesMultiRelationshipDataDocument? = null,
+    val selectedSite: SquareConnectionsSelectedSiteSingleRelationshipObject? = null,
+    @SerialName(value = "sites") val sites: SquareConnectionsSitesMultiRelationshipObject? = null,
 ) {}

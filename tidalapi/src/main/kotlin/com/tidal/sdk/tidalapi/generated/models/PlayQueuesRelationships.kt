@@ -32,10 +32,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class PlayQueuesRelationships(
     @SerialName(value = "changeEventStream")
-    val changeEventStream: PlayQueuesChangeEventStreamSingleRelationshipDataDocument? = null,
-    @SerialName(value = "current")
-    val current: PlayQueuesCurrentSingleRelationshipDataDocument? = null,
-    @SerialName(value = "future") val future: PlayQueuesFutureMultiRelationshipDataDocument? = null,
-    @SerialName(value = "owners") val owners: PlayQueuesOwnersMultiRelationshipDataDocument? = null,
-    @SerialName(value = "past") val past: PlayQueuesPastMultiRelationshipDataDocument? = null,
+    val changeEventStream: PlayQueuesChangeEventStreamSingleRelationshipObject? = null,
+    @SerialName(value = "current") val current: PlayQueuesCurrentSingleRelationshipObject? = null,
+    @SerialName(value = "future") val future: PlayQueuesFutureMultiRelationshipObject? = null,
+    @SerialName(value = "owners") val owners: PlayQueuesOwnersMultiRelationshipObject? = null,
+    @SerialName(value = "past") val past: PlayQueuesPastMultiRelationshipObject? = null,
 ) {}

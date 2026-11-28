@@ -31,11 +31,11 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class UserRecommendationBlocksRelationships(
     @SerialName(value = "artists")
-    val artists: UserRecommendationBlocksArtistsMultiRelationshipDataDocument? = null,
+    val artists: UserRecommendationBlocksArtistsMultiRelationshipObject? = null,
     @SerialName(value = "owners")
-    val owners: UserRecommendationBlocksOwnersMultiRelationshipDataDocument? = null,
+    val owners: UserRecommendationBlocksOwnersMultiRelationshipObject? = null,
     @SerialName(value = "tracks")
-    val tracks: UserRecommendationBlocksTracksMultiRelationshipDataDocument? = null,
+    val tracks: UserRecommendationBlocksTracksMultiRelationshipObject? = null,
     @SerialName(value = "videos")
-    val videos: UserRecommendationBlocksVideosMultiRelationshipDataDocument? = null,
+    val videos: UserRecommendationBlocksVideosMultiRelationshipObject? = null,
 ) {}

@@ -362,7 +362,8 @@ interface FolderItems {
     ): Response<FolderItemsSubjectSingleRelationshipDataDocument>
 
     /**
-     * POST folderItems Create single folderItem. Creates a new folderItem. Responses:
+     * POST folderItems Create single folderItem. Places a folder or album in a folder. Deprecated:
+     * create albums and folders with their &#x60;location&#x60; relationship. Responses:
      * - 201: Successful response
      * - 400: A folder cannot be placed inside itself or one of its descendants
      * - 404: Resource not found
@@ -381,6 +382,7 @@ interface FolderItems {
      * @param folderItemsCreateOperationPayload (optional)
      * @return [FolderItemsCreateSingleResourceDataDocument]
      */
+    @Deprecated("This api was deprecated")
     @POST("folderItems")
     suspend fun folderItemsPost(
         @Header("Idempotency-Key") idempotencyKey: kotlin.String? = null,

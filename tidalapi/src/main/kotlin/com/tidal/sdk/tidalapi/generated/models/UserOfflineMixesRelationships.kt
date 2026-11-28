@@ -25,6 +25,5 @@ import kotlinx.serialization.Serializable
 /** @param items */
 @Serializable
 data class UserOfflineMixesRelationships(
-    @SerialName(value = "items")
-    val items: UserOfflineMixesItemsMultiRelationshipDataDocument? = null
+    @SerialName(value = "items") val items: UserOfflineMixesItemsMultiRelationshipObject? = null
 ) {}

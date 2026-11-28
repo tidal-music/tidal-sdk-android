@@ -29,6 +29,7 @@ import kotlinx.serialization.encoding.Encoder
 /**
  * @param pageType Type of the page eg. home, artist
  * @param reportingId Id used for reporting user events
+ * @param title Title of the page
  */
 @Serializable
 data class DynamicPagesAttributes(
@@ -38,16 +39,20 @@ data class DynamicPagesAttributes(
 
     /* Id used for reporting user events */
     @SerialName(value = "reportingId") val reportingId: kotlin.String,
+
+    /* Title of the page */
+    @SerialName(value = "title") val title: kotlin.String? = null,
 ) {
 
     /**
      * Type of the page eg. home, artist
      *
      * Values:
-     * HOME_STATIC,HOME_UPLOADS,HOME_EDITORIAL,HOME_FREE,STUDIO_HOME,ARTIST,ALBUM,PLAYLIST,TRACK,VIDEO,unknown_default_open_api
+     * HOME,HOME_STATIC,HOME_UPLOADS,HOME_EDITORIAL,HOME_FREE,STUDIO_HOME,ARTIST,ALBUM,PLAYLIST,TRACK,VIDEO,unknown_default_open_api
      */
     @Serializable(with = PageTypeSerializer::class)
     enum class PageType(val value: kotlin.String) {
+        @SerialName(value = "HOME") HOME("HOME"),
         @SerialName(value = "HOME_STATIC") HOME_STATIC("HOME_STATIC"),
         @SerialName(value = "HOME_UPLOADS") HOME_UPLOADS("HOME_UPLOADS"),
         @SerialName(value = "HOME_EDITORIAL") HOME_EDITORIAL("HOME_EDITORIAL"),

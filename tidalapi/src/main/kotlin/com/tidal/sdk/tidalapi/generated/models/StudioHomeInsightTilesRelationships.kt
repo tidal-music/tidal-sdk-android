@@ -26,5 +26,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class StudioHomeInsightTilesRelationships(
     @SerialName(value = "items")
-    val items: StudioHomeInsightTilesItemsMultiRelationshipDataDocument? = null
+    val items: StudioHomeInsightTilesItemsMultiRelationshipObject? = null
 ) {}

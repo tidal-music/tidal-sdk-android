@@ -22,8 +22,13 @@ package com.tidal.sdk.tidalapi.generated.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** @param `data` */
+/**
+ * Deprecated: use `location`.
+ *
+ * @param `data`
+ */
 @Serializable
+@Deprecated(message = "This schema is deprecated.")
 data class FoldersCreateOperationPayloadDataRelationshipsParent(
     @SerialName(value = "data") val `data`: FoldersParentIdentifier
 ) {}

@@ -30,8 +30,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class OfflineTasksRelationships(
     @SerialName(value = "collection")
-    val collection: OfflineTasksCollectionSingleRelationshipDataDocument? = null,
-    @SerialName(value = "item") val item: OfflineTasksItemSingleRelationshipDataDocument? = null,
-    @SerialName(value = "owners")
-    val owners: OfflineTasksOwnersMultiRelationshipDataDocument? = null,
+    val collection: OfflineTasksCollectionSingleRelationshipObject? = null,
+    @SerialName(value = "item") val item: OfflineTasksItemSingleRelationshipObject? = null,
+    @SerialName(value = "owners") val owners: OfflineTasksOwnersMultiRelationshipObject? = null,
 ) {}

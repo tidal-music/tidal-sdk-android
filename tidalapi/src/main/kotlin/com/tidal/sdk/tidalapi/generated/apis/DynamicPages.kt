@@ -25,6 +25,7 @@ interface DynamicPages {
     /** enum for parameter filterPageType */
     @Serializable
     enum class FilterPageTypeDynamicPagesGet(val value: kotlin.String) {
+        @SerialName(value = "HOME") HOME("HOME"),
         @SerialName(value = "HOME_STATIC") HOME_STATIC("HOME_STATIC"),
         @SerialName(value = "HOME_UPLOADS") HOME_UPLOADS("HOME_UPLOADS"),
         @SerialName(value = "HOME_EDITORIAL") HOME_EDITORIAL("HOME_EDITORIAL"),

@@ -24,17 +24,18 @@ import kotlinx.serialization.Serializable
 
 /**
  * @param children
+ * @param location
  * @param owners
  * @param parent
  * @param preview
- * @param shares
  */
 @Serializable
 data class FoldersRelationships(
-    @SerialName(value = "children")
-    val children: FoldersChildrenMultiRelationshipDataDocument? = null,
-    @SerialName(value = "owners") val owners: FoldersOwnersMultiRelationshipDataDocument? = null,
-    @SerialName(value = "parent") val parent: FoldersParentSingleRelationshipDataDocument? = null,
-    @SerialName(value = "preview") val preview: FoldersPreviewMultiRelationshipDataDocument? = null,
-    @SerialName(value = "shares") val shares: FoldersSharesMultiRelationshipDataDocument? = null,
+    @SerialName(value = "children") val children: FoldersChildrenMultiRelationshipObject? = null,
+    @SerialName(value = "location") val location: FoldersLocationSingleRelationshipObject? = null,
+    @SerialName(value = "owners") val owners: FoldersOwnersMultiRelationshipObject? = null,
+    @SerialName(value = "parent")
+    @Deprecated(message = "This property is deprecated.")
+    val parent: FoldersParentSingleRelationshipObject? = null,
+    @SerialName(value = "preview") val preview: FoldersPreviewMultiRelationshipObject? = null,
 ) {}

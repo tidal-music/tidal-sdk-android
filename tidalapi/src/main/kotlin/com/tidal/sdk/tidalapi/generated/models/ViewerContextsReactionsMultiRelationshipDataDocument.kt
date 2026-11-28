@@ -23,8 +23,6 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * Target resource types: `reactions`.
- *
  * @param links
  * @param `data`
  * @param included

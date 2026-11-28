@@ -25,6 +25,7 @@ import kotlinx.serialization.Serializable
 /**
  * @param artists
  * @param genres
+ * @param location
  */
 @Serializable
 data class AlbumsCreateOperationPayloadDataRelationships(
@@ -32,4 +33,6 @@ data class AlbumsCreateOperationPayloadDataRelationships(
     val artists: AlbumsCreateOperationPayloadDataRelationshipsArtists,
     @SerialName(value = "genres")
     val genres: AlbumsCreateOperationPayloadDataRelationshipsGenres? = null,
+    @SerialName(value = "location")
+    val location: AlbumsCreateOperationPayloadDataRelationshipsLocation? = null,
 ) {}

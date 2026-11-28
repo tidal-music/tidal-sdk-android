@@ -30,9 +30,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class TrackSourceFilesRelationships(
     @SerialName(value = "commentSummary")
-    val commentSummary: TrackSourceFilesCommentSummarySingleRelationshipDataDocument? = null,
-    @SerialName(value = "owners")
-    val owners: TrackSourceFilesOwnersMultiRelationshipDataDocument? = null,
+    val commentSummary: TrackSourceFilesCommentSummarySingleRelationshipObject? = null,
+    @SerialName(value = "owners") val owners: TrackSourceFilesOwnersMultiRelationshipObject? = null,
     @SerialName(value = "reactionSummary")
-    val reactionSummary: TrackSourceFilesReactionSummarySingleRelationshipDataDocument? = null,
+    val reactionSummary: TrackSourceFilesReactionSummarySingleRelationshipObject? = null,
 ) {}
